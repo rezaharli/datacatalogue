@@ -1,0 +1,11 @@
+{
+    "environment": "dev",
+    "host": "localhost",
+    "port": "9001",
+    "database": {
+        "host": "127.0.0.1:27123",
+        "username": "",
+        "password": "",
+        "name": "dbdc"
+    }
+}
