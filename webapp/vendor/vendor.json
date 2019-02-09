@@ -1,0 +1,49 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "JDb0cWencvk/LeTrPsAo5dKfKyI=",
+			"path": "git.eaciitapp.com/sebar/dbflex",
+			"revision": "32a6507d7520ff1ccc667fcbaecfc55865961672",
+			"revisionTime": "2019-02-06T23:08:02Z"
+		},
+		{
+			"checksumSHA1": "Q07AlUf1wR1wNchpVj+ZkN2DMo4=",
+			"path": "git.eaciitapp.com/sebar/knot",
+			"revision": "feb6072aefe548f152ea33dc64900c47c73fec99",
+			"revisionTime": "2019-02-06T10:00:04Z"
+		},
+		{
+			"checksumSHA1": "MU36RGkDfOxPEax93Xken7/ia1Y=",
+			"path": "github.com/eaciit/appconfig",
+			"revision": "fd7912aff1be8fd67a89a77e925b1f56209bf7fc",
+			"revisionTime": "2017-08-08T02:36:21Z"
+		},
+		{
+			"checksumSHA1": "g7EejMWOXHQrMAWoaONMXtO9wMk=",
+			"path": "github.com/eaciit/clit",
+			"revision": "655ca35ccf7b209df59d2bfff401436b5a561663",
+			"revisionTime": "2017-09-14T05:05:18Z"
+		},
+		{
+			"checksumSHA1": "Tsi7fuCqYuassTkdO5JYUPW4jIU=",
+			"path": "github.com/eaciit/toolkit",
+			"revision": "f1e8cbe737d7a0d10abe4c3402d20d6a7d7db5db",
+			"revisionTime": "2019-01-15T05:28:47Z"
+		},
+		{
+			"checksumSHA1": "VMoF3pagO47x0/nx0GQyFPt9Grk=",
+			"path": "golang.org/x/net/html",
+			"revision": "65e2d4e15006aab9813ff8769e768bbf4bb667a0",
+			"revisionTime": "2019-02-01T23:59:58Z"
+		},
+		{
+			"checksumSHA1": "XtSbs1gpyaEsIqf6VRhJsgOQe5U=",
+			"path": "golang.org/x/net/html/atom",
+			"revision": "65e2d4e15006aab9813ff8769e768bbf4bb667a0",
+			"revisionTime": "2019-02-01T23:59:58Z"
+		}
+	],
+	"rootPath": "eaciit/datacatalogue/webapp"
+}
