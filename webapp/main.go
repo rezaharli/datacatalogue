@@ -26,6 +26,7 @@ func main() {
 	s := knot.NewServer()
 	s.RegisterApp(app, "")
 
+	fmt.Println("environment", clit.Config("default", "environment", "").(string))
 	switch clit.Config("default", "environment", "").(string) {
 	case "prod", "production":
 		s.Route("/", func(ctx *knot.WebContext) {
