@@ -30,7 +30,7 @@
                   
                   <v-card-title primary-title class="justify-center">
                     <div>
-                      <h3 class="mb-0">kerek</h3>
+                      <h3 class="mb-0">Dataset</h3>
                       <h3 class="mb-0">Custodian</h3>
                     </div>
                   </v-card-title>
