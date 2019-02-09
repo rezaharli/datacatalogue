@@ -1,0 +1,27 @@
+.v-toolbar__title.app-title {
+    font-weight: bolder;
+    color: #3269B4;
+}
+
+.v-toolbar__title.login-name {
+    font-size: 14px;
+}
+.v-toolbar__title .toolbar-title {
+    color: inherit;
+    text-decoration: inherit;
+  }
+
+.v-tabs.page-tab .v-tabs__bar{
+    background-color: transparent;
+}
+
+.main-table-search-dropdown-form{
+    width: 300px;
+}
+
+.container-fluid-needpadding {
+    padding-top: 24px;
+    padding-right: 15px;
+    padding-bottom: 24px;
+    padding-left: 15px;
+}

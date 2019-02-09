@@ -1,0 +1,25 @@
+.back {
+    background-image: url('../images/u2.png');
+    background-size: cover;
+}
+
+.rounded-card{
+    border-radius: 50%;
+    padding-top: 100%;
+    cursor: pointer;
+}
+
+.rounded-card .menu-image{
+    position: absolute;
+    top: 14%;
+    width: 50%;
+    left: 25%;
+    border-radius: 0px !important;
+}
+
+.rounded-card .v-card__title{
+    position: absolute;
+    bottom: 10%;
+    width: 100%;
+    color: #666666;
+}
