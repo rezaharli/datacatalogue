@@ -17,3 +17,8 @@
 .fade-leave-active {
     opacity: 0
 }
+
+.row-kasijarak .row+.row {
+    margin-top: 16px;
+    margin-top: 1rem;
+}

@@ -5,15 +5,11 @@
 <template>
   <b-row>
     <b-col>
-      <b-row>
-        <b-col>
-          <transition name="fade" mode="out-in">
-            <router-view></router-view>
-          </transition>
-        </b-col>
-      </b-row>
+      <!-- Dsc details -->
+      <router-view/>
 
-      <b-row v-if="showTabs">
+      <!-- Main content -->
+      <b-row>
         <b-col>
           <b-row>
             <b-col>
@@ -89,7 +85,8 @@
                 class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
                   <template slot="items" slot-scope="props">
-                      <td><b-link to="/dsc/my/asdf/details">{{ props.item.name }}</b-link></td>
+                      <!-- <td><b-link v-b-modal.modallg>{{ props.item.name }}</b-link></td> -->
+                      <td><b-link to="/dsc/my/asdf/details" v-b-modal.modallg>{{ props.item.name }}</b-link></td>
                       <td>{{ props.item.calories }}</td>
                       <td>{{ props.item.fat }}</td>
                       <td>{{ props.item.carbs }}</td>
@@ -107,7 +104,6 @@
 export default {
     data () {
       return {
-        showTabs: this.isShowTabs(),
         search: '',
         secondtable: false,
         systemId: "asdf",
@@ -195,23 +191,19 @@ export default {
         ]
       }
     },
-    watch:{
+    watch: {
       $route (to){
-        this.showTabs = this.isShowTabs();
         this.secondtable = false;
 
         if (to.params != undefined) {
           this.secondtable = to.params.system; 
         }
-      }
+      },
     },
     created() {
       this.secondtable = this.$route.params.system; 
     },
     methods: {
-      isShowTabs (){
-        return (this.$route.name == "dsc.my.details") ? false : true
-      },
       systemRowClick (evt) {
         evt.preventDefault();
         this.$router.push({ path: `my/${this.systemId}` });

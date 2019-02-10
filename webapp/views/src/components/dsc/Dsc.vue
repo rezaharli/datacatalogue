@@ -7,7 +7,7 @@
         <CToolbar></CToolbar>
 
         <b-container fluid>
-            <b-row v-if="showTabs">
+            <b-row>
                 <b-col>
                     <v-tabs left class="page-tab">
                         <v-tab to="/dsc/my">My Systems</v-tab>
@@ -36,19 +36,7 @@ import CToolbar from '../ComponentToolbar';
 export default {
     components: { CToolbar },
     data () {
-      return {
-          showTabs: this.isShowTabs(),
-      }
+      return {}
     },
-    watch: {
-        $route (){
-            this.showTabs = this.isShowTabs()
-        }
-    },
-    methods: {
-        isShowTabs (){
-            return (this.$route.name == "dsc.my.details") ? false : true
-        }
-    }
 }
 </script>

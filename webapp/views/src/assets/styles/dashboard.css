@@ -25,3 +25,28 @@
     padding-bottom: 24px;
     padding-left: 15px;
 }
+
+#modal-details .modal-details-header{
+    border-bottom: 0px !important;
+    padding: 0.5rem 1rem !important;
+}
+
+#modal-details .modal-body{
+    padding: 0 1rem;
+}
+
+#modal-details .setbackground{
+    background-color: #F2F3F7 !important;
+}
+
+@media (min-width: 992px) {
+    #modal-details .modal-lg{
+        max-width: 80%;
+    }
+}
+
+@media (min-width: 576px) {
+    #modal-details .modal-lg{
+        max-width: 80%;
+    }
+}
