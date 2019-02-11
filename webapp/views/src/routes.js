@@ -3,6 +3,8 @@ import VueRouter from 'vue-router';
 
 import Home from './components/Home';
 
+import Login from './components/Login';
+
 import Dsc from './components/dsc/Dsc';
 import DscDetails from './components/dsc/Dsc-details';
 import DscMy from './components/dsc/Dsc-my';
@@ -18,86 +20,89 @@ Vue.use(VueRouter);
 const router = new VueRouter({
   mode: 'history',
   routes: [{ // home
-    path: '/', component: Home, 
+    path: '/', name: 'landingpage', component: Home, 
     meta: { 
       title: "Home - Data Catalogue" 
-    } 
-  }, { // dsc
-    path: '/dsc', component: Dsc, 
-    meta: { 
-      title: "DSC - Data Catalogue" 
-    }, 
-    children: [{ 
-      path: '', name: 'dsc', redirect: { name: 'dsc.my' }
-    }, { //dsc.my
-      path: 'my', 
-      name: 'dsc.my', 
-      component: DscMy, 
-      meta: { 
-        title: "DSC - Data Catalogue",
-        showModal: false
-      } 
-    }, { // dsc.my.system
-      path: 'my/:system', name: 'dsc.my', component: DscMy, 
-      meta: { 
-        title: "DSC - Data Catalogue",
-        showModal: false
-      }, 
-      children: [{ // dsc.my.system.details
-        path: 'details', name: 'dsc.my.details', component: DscDetails, 
-        meta: { 
-          title: "DSC Details - Data Catalogue",
-          showModal: true
-        } 
-      }] 
-    }, { // dsc.all
-      path: 'all', name: 'dsc.all', component: DscAll, 
-      meta: { 
-        title: "DSC - Data Catalogue" 
-      } 
-    }, { 
-      path: 'all/:system', name: 'dsc.all', component: DscAll, 
+    },
+    children: [{ // dsc
+      path: '/dsc', component: Dsc, 
       meta: { 
         title: "DSC - Data Catalogue" 
       }, 
       children: [{ 
-        path: 'details', name: 'dsc.all.details', component: DscDetails, 
+        path: '', name: 'dsc', redirect: { name: 'dsc.my' }
+      }, { //dsc.my
+        path: 'my', 
+        name: 'dsc.my', 
+        component: DscMy, 
         meta: { 
-          title: "DSC Details - Data Catalogue" 
-        }
-      }] 
-    }, {
-      path: 'interfaces', name: 'dsc.interfaces', component: DscInterfaces, 
+          title: "DSC - Data Catalogue",
+          showModal: false
+        } 
+      }, { // dsc.my.system
+        path: 'my/:system', name: 'dsc.my', component: DscMy, 
+        meta: { 
+          title: "DSC - Data Catalogue",
+          showModal: false
+        }, 
+        children: [{ // dsc.my.system.details
+          path: 'details', name: 'dsc.my.details', component: DscDetails, 
+          meta: { 
+            title: "DSC Details - Data Catalogue",
+            showModal: true
+          } 
+        }] 
+      }, { // dsc.all
+        path: 'all', name: 'dsc.all', component: DscAll, 
+        meta: { 
+          title: "DSC - Data Catalogue" 
+        } 
+      }, { 
+        path: 'all/:system', name: 'dsc.all', component: DscAll, 
+        meta: { 
+          title: "DSC - Data Catalogue" 
+        }, 
+        children: [{ 
+          path: 'details', name: 'dsc.all.details', component: DscDetails, 
+          meta: { 
+            title: "DSC Details - Data Catalogue" 
+          }
+        }] 
+      }, {
+        path: 'interfaces', name: 'dsc.interfaces', component: DscInterfaces, 
+        meta: { 
+          title: "DSC - Data Catalogue" 
+        } 
+      }, { 
+        path: 'interfaces/:system', name: 'dsc.interfaces', component: DscInterfaces, 
+        meta: { 
+          title: "DSC - Data Catalogue" 
+        }, 
+        children: [{ 
+          path: 'details', name: 'dsc.interfaces.details', component: DscDetails, 
+          meta: { 
+            title: "DSC Details - Data Catalogue" 
+          } 
+        }] 
+      }]
+    }, { 
+      path: '/dpo', component: Dpo, 
       meta: { 
-        title: "DSC - Data Catalogue" 
+        title: "DPO - Data Catalogue" 
       } 
     }, { 
-      path: 'interfaces/:system', name: 'dsc.interfaces', component: DscInterfaces, 
+      path: '/ddo', component: Ddo, 
       meta: { 
-        title: "DSC - Data Catalogue" 
-      }, 
-      children: [{ 
-        path: 'details', name: 'dsc.interfaces.details', component: DscDetails, 
-        meta: { 
-          title: "DSC Details - Data Catalogue" 
-        } 
-      }] 
+        title: "DDO - Data Catalogue" 
+      } 
+    }, { 
+      path: '/rfo', component: Rfo, 
+      meta: { 
+        title: "RFO - Data Catalogue" 
+      } 
     }]
-  }, { 
-    path: '/dpo', component: Dpo, 
-    meta: { 
-      title: "DPO - Data Catalogue" 
-    } 
-  }, { 
-    path: '/ddo', component: Ddo, 
-    meta: { 
-      title: "DDO - Data Catalogue" 
-    } 
-  }, { 
-    path: '/rfo', component: Rfo, 
-    meta: { 
-      title: "RFO - Data Catalogue" 
-    } 
+  }, {
+    path: '/login', name: 'login', component: Login, 
   }]
 });
 

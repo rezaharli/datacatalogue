@@ -3,8 +3,14 @@
 </style>
 
 <template>
+
   <v-content>
-    <v-container fluid fill-height back>
+    <b-container fluid v-if="!isHome">
+      <CToolbar></CToolbar>
+      <router-view></router-view>
+    </b-container>
+
+    <v-container fluid fill-height back v-if="isHome">
       <v-layout align-center justify-center>
         <v-flex xs12 sm12 md12 card-container>
           <v-container grid-list-md text-xs-center>
@@ -96,9 +102,13 @@
 </template>
 
 <script>
+import CToolbar from './ComponentToolbar';
+
 export default {
+  components: { CToolbar },
   data() {
     return {
+      isHome: this.decideIsHome(),
       elevation: {
         dsc: 12,
         dpo: 12,
@@ -113,7 +123,18 @@ export default {
       }
     };
   },
+  created () {
+    this.decideIsHome();
+  },
+  watch: {
+      $route (to){
+        this.decideIsHome();
+      },
+    },
   methods: {
+    decideIsHome: function(){
+      this.isHome = this.$route.name == "landingpage" ? true : false;
+    },
     dscClick: function () {
       this.$router.push('/dsc');
     },
