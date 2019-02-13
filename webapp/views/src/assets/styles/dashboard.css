@@ -39,6 +39,11 @@
     background-color: #F2F3F7 !important;
 }
 
+#ddowntoolbarname__BV_toggle_{
+    background-color: transparent;
+    border-color: transparent;
+}
+
 @media (min-width: 992px) {
     #modal-details .modal-lg{
         max-width: 80%;

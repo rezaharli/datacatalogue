@@ -99,6 +99,17 @@ div#app div#login div#form button {
 div#app div#login div#form button:hover {
     background-color: #eeeeee;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+}
   
 @media screen and (max-width: 600px) {
     div#app div#login {

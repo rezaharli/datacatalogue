@@ -14,13 +14,13 @@
             <div id="form">
                 <b-form @submit.prevent="doLogin">
                     <b-form-group id="exampleInputGroup1"
-                            label="Email"
-                            label-for="email">
-                        <b-form-input id="email"
-                            type="text"
-                            v-model="email"
+                            label="ID"
+                            label-for="userid">
+                        <b-form-input id="userid"
+                            type="number"
+                            v-model="userid"
                             required
-                            placeholder="Enter email"></b-form-input>
+                            placeholder="Enter ID"></b-form-input>
                     </b-form-group>
 
                     <b-form-group id="exampleInputGroup2"
@@ -45,25 +45,52 @@
 </template>
 
 <script>
+import jQuery from 'jquery'
+import { mapState, mapActions } from 'vuex'
+
 export default {
     data() {
         return {
-            email: '',
+            userid: '',
             password: '',
-            hidePassword: true
+            hidePassword: true,
+            submitted: false
         };
     },
     computed: {
+        ...mapState('account', ['status']),
         passwordType() {
             return this.hidePassword ? 'password' : 'text'
         },
         passwordIcon() {
             return this.hidePassword ? 'visibility' : 'visibility_off'
+        },
+    },
+    created () {
+        jQuery('form').on('focus', 'input[type=number]', function () {
+            jQuery(this).on('mousewheel.disableScroll', function (e) {
+                e.preventDefault()
+            })
+        })
+
+        jQuery('form').on('blur', 'input[type=number]', function () {
+            jQuery(this).off('mousewheel.disableScroll')
+        })
+
+        var user = localStorage.getItem('user');
+        if(user){
+            this.$router.push("/")
         }
     },
     methods: {
+        ...mapActions('account', ['login']),
         doLogin() {
-            this.$router.push("/")
+            this.submitted = true;
+            const { userid, password } = this;
+
+            if (userid && password) {
+                this.login({ userid, password })
+            }
         }
     }
 }

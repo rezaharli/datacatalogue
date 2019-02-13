@@ -9,6 +9,8 @@ import (
 	"github.com/eaciit/clit"
 
 	"git.eaciitapp.com/sebar/knot"
+
+	c "eaciit/datacatalogue/webapp/controllers"
 )
 
 func main() {
@@ -19,6 +21,8 @@ func main() {
 	defer clit.Close()
 
 	app := knot.NewApp()
+	app.Register(c.NewUsersController(), "")
+
 	app.Static("css", filepath.Join(clit.ExeDir(), "views", "dist", "css"))
 	app.Static("js", filepath.Join(clit.ExeDir(), "views", "dist", "js"))
 	app.Static("img", filepath.Join(clit.ExeDir(), "views", "dist", "img"))

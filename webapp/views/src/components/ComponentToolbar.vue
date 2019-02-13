@@ -46,14 +46,23 @@
             <v-spacer></v-spacer>
 
             <v-toolbar-title class="login-name">Hi, Samuel Rajakumar</v-toolbar-title>
-            <v-btn icon>
-                <v-icon>more_vert</v-icon>
-            </v-btn>
+
+            <b-dropdown right no-caret id="ddowntoolbarname">
+                <template slot="button-content">
+                    <v-btn icon>
+                        <v-icon>more_vert</v-icon>
+                    </v-btn>
+                </template>
+
+                <b-dropdown-item @click="doLogout">Logout</b-dropdown-item>
+            </b-dropdown>
         </v-toolbar>
     </div>
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+
 export default {
     data () {
         return {
@@ -70,7 +79,14 @@ export default {
             },
         }
     },
+    computed: {
+        ...mapState('account', ['status']),
+    },
     methods: {
+        ...mapActions('account', ['logout']),
+        doLogout() {
+            this.logout();
+        },
         toggleDrawer () {
             if (this.drawer.permanent) {
                 this.drawer.permanent = !this.drawer.permanent
