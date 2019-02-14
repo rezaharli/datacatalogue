@@ -34,6 +34,10 @@ func main() {
 	switch clit.Config("default", "environment", "").(string) {
 	case "prod", "production":
 		s.Route("/", func(ctx *knot.WebContext) {
+			ctx.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+			ctx.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+			ctx.Writer.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+
 			http.ServeFile(ctx.Writer, ctx.Request, filepath.Join("views/dist", "/index.html"))
 		})
 	case "dev", "development":

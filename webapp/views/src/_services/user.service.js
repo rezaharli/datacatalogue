@@ -1,7 +1,7 @@
 import { authHeader } from '../_helpers/auth-header';
 
 const config = {
-    apiUrl: 'http://localhost:9001'
+    apiUrl: 'http://0.0.0.0:9001'
 }
 
 export const userService = {
@@ -21,7 +21,7 @@ function login(userid, password) {
         body: JSON.stringify({ userid, password })
     };
 
-    return fetch(`${config.apiUrl}/users/authenticate`, requestOptions)
+    return fetch(`/users/authenticate`, requestOptions)
         .then(handleResponse)
         .then(user => {
 
