@@ -2,6 +2,21 @@
   @import '../../assets/styles/dashboard.css';
 </style>
 
+<style>
+table.v-table thead th > div.btn-group {
+  width: auto;
+}
+
+.header-filter-icon{
+
+}
+.header-filter-icon .dropdown-menu{
+  overflow: scroll;
+  height: 200px;
+}
+</style>
+
+
 <template>
   <b-row>
     <b-col>
@@ -63,10 +78,34 @@
             <b-col>
               <v-data-table
                 :headers="firstTableHeaders"
-                :items="desserts"
+                :items="datax"
                 :loading="true"
                 class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+                  <template slot="no-data">
+                    <v-alert :value="true" color="error" icon="warning">
+                      Sorry, nothing to display here :(
+                    </v-alert>
+                  </template>
+
+                  <template slot="headerCell" slot-scope="props">
+                    {{ props.header.text }} ({{ distinctData(props.header.value).length }})
+
+                    <b-dropdown no-caret variant="link" class="header-filter-icon">
+                      <template slot="button-content">
+                        <i class="fa fa-filter text-muted"></i>
+                      </template>
+
+                      <b-dropdown-header>
+                        <b-form-input v-model="search" type="text" placeholder="Filter"></b-form-input>
+                      </b-dropdown-header>
+
+                      <b-dropdown-item v-for="item in distinctData(props.header.value)" v-bind:key="item">
+                        {{ item }}
+                      </b-dropdown-item>
+                    </b-dropdown>
+                  </template>
+
                   <template slot="items" slot-scope="props">
                       <td><b-link to="/dsc/my/asdf" href="#foo">{{ props.item.name }}</b-link></td>
                       <td>{{ props.item.calories }}</td>
@@ -79,7 +118,7 @@
             <b-col>
               <v-data-table
                 :headers="secondTableHeaders"
-                :items="desserts"
+                :items="datax"
                 :loading="true"
                 v-if="secondtable"
                 class="elevation-1">
@@ -101,6 +140,69 @@
 </template>
 
 <script>
+var dummy = [
+  {
+    name: 'Frozen Yogurt',
+    calories: 159,
+    fat: 6.0,
+    carbs: 24,
+  },
+  {
+    name: 'Ice cream sandwich',
+    calories: 237,
+    fat: 9.0,
+    carbs: 37,
+  },
+  {
+    name: 'Eclair',
+    calories: 262,
+    fat: 16.0,
+    carbs: 23,
+  },
+  {
+    name: 'Cupcake',
+    calories: 305,
+    fat: 3.7,
+    carbs: 67,
+  },
+  {
+    name: 'Gingerbread',
+    calories: 356,
+    fat: 16.0,
+    carbs: 49,
+  },
+  {
+    name: 'Jelly bean',
+    calories: 375,
+    fat: 0.0,
+    carbs: 94,
+  },
+  {
+    name: 'Lollipop',
+    calories: 392,
+    fat: 0.2,
+    carbs: 98,
+  },
+  {
+    name: 'Honeycomb',
+    calories: 408,
+    fat: 3.2,
+    carbs: 87,
+  },
+  {
+    name: 'Donut',
+    calories: 452,
+    fat: 25.0,
+    carbs: 51,
+  },
+  {
+    name: 'KitKat',
+    calories: 518,
+    fat: 26.0,
+    carbs: 65,
+  }
+];
+
 export default {
     data () {
       return {
@@ -116,10 +218,10 @@ export default {
           colName: '',
         },
         firstTableHeaders: [
-          { text: 'System Name (4)', align: 'left', sortable: false, value: 'name' },
-          { text: 'ITAM ID (4)', align: 'left', sortable: false, value: 'calories' },
-          { text: 'Dataset Custodian', align: 'left', sortable: false, value: 'fat' },
-          { text: 'Bank ID', align: 'left', sortable: false, value: 'carbs' }
+          { text: 'System Name', align: 'left', value: 'name', sortable: false },
+          { text: 'ITAM ID (4)', align: 'left', value: 'calories', sortable: false },
+          { text: 'Dataset Custodian', align: 'left', value: 'fat', sortable: false },
+          { text: 'Bank ID', align: 'left', value: 'carbs', sortable: false }
         ],
         secondTableHeaders: [
           { text: 'Table Name (2890)', align: 'left', sortable: false, value: 'name' },
@@ -127,69 +229,10 @@ export default {
           { text: 'Business Alias Name (1250)', align: 'left', sortable: false, value: 'fat' },
           { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'carbs' }
         ],
-        desserts: [
-          {
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-          },
-          {
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-          },
-          {
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-          },
-          {
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-          },
-          {
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-          },
-          {
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-          },
-          {
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-          },
-          {
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-          },
-          {
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-          },
-          {
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-          }
-        ]
+        datax: dummy
       }
+    },
+    computed: {
     },
     watch: {
       $route (to){
@@ -204,6 +247,9 @@ export default {
       this.secondtable = this.$route.params.system; 
     },
     methods: {
+      distinctData (col) {
+        return this._.uniq(this._.map(this.datax, col));
+      },
       systemRowClick (evt) {
         evt.preventDefault();
         this.$router.push({ path: `my/${this.systemId}` });

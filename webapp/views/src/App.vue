@@ -1,5 +1,6 @@
 <style>
   @import './assets/styles/style.css';
+  @import './assets/vendors/font-awesome-4.7.0/css/font-awesome.min.css';
 </style>
 
 <template>
