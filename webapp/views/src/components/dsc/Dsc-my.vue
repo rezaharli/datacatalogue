@@ -248,7 +248,12 @@ export default {
     },
     methods: {
       distinctData (col) {
-        return this._.uniq(this._.map(this.datax, col));
+        return this._.uniq(
+                this._.map(
+                  this._.sortBy(this.datax, col), 
+                  col
+                )
+              );
       },
       systemRowClick (evt) {
         evt.preventDefault();

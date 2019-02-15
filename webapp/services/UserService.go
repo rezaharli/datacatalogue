@@ -21,7 +21,7 @@ type UserService struct {
 
 func NewUserService() *UserService {
 	ret := new(UserService)
-	ret.TableName = m.NewUserModel().TableName()
+	ret.TableName = m.NewSysUserModel().TableName()
 	return ret
 }
 
@@ -34,11 +34,11 @@ func (s *UserService) HashPassword(password string) string {
 	return fmt.Sprintf("%x", hashedPassword.Sum(nil))
 }
 
-func (s *UserService) Authenticate(username int, password string) (bool, *m.User, error) {
-	users := make([]m.User, 0)
+func (s *UserService) Authenticate(username int, password string) (bool, *m.SysUser, error) {
+	users := make([]m.SysUser, 0)
 
 	err := h.NewDBcmd().GetBy(h.GetByParam{
-		TableName: m.NewUserModel().TableName(),
+		TableName: m.NewSysUserModel().TableName(),
 		Clause: dbflex.And(
 			dbflex.Eq("username", username),
 			dbflex.Eq("password", s.HashPassword(password)),
@@ -46,18 +46,18 @@ func (s *UserService) Authenticate(username int, password string) (bool, *m.User
 		Result: &users,
 	})
 	if err != nil {
-		return false, m.NewUserModel(), err
+		return false, m.NewSysUserModel(), err
 	}
 
 	if len(users) == 0 {
-		return false, m.NewUserModel(), nil
+		return false, m.NewSysUserModel(), nil
 	}
 
 	return true, &(users[0]), nil
 }
 
-func (s *UserService) GetAll(sortKey, sortOrder string, skip, take int, filter toolkit.M) ([]m.User, int, error) {
-	resultRows := make([]m.User, 0)
+func (s *UserService) GetAll(sortKey, sortOrder string, skip, take int, filter toolkit.M) ([]m.SysUser, int, error) {
+	resultRows := make([]m.SysUser, 0)
 	resultTotal := 0
 
 	err := h.NewDBcmd().GetAll(h.GetAllParam{
@@ -78,11 +78,11 @@ func (s *UserService) GetAll(sortKey, sortOrder string, skip, take int, filter t
 	return resultRows, resultTotal, nil
 }
 
-func (s *UserService) Insert(data *m.User) error {
+func (s *UserService) Insert(data *m.SysUser) error {
 	data.CreatedAt = time.Now()
 	data.UpdatedAt = time.Now()
 
-	users := make([]m.User, 0)
+	users := make([]m.SysUser, 0)
 	err := h.NewDBcmd().GetBy(h.GetByParam{
 		TableName: s.TableName,
 		Clause:    dbflex.Eq("Username", data.Username),

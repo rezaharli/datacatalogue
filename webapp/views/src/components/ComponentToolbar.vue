@@ -45,7 +45,7 @@
             <v-toolbar-title to="/" class="app-title"><router-link to="/" class="toolbar-title">Data Catalogue</router-link></v-toolbar-title>
             <v-spacer></v-spacer>
 
-            <v-toolbar-title class="login-name">Hi, Samuel Rajakumar</v-toolbar-title>
+            <v-toolbar-title class="login-name">Hi, {{ account.user.Name }}</v-toolbar-title>
 
             <b-dropdown right no-caret id="ddowntoolbarname">
                 <template slot="button-content">
@@ -80,7 +80,9 @@ export default {
         }
     },
     computed: {
-        ...mapState('account', ['status']),
+        ...mapState({
+            account: state => state.account,
+        })
     },
     methods: {
         ...mapActions('account', ['logout']),
