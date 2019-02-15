@@ -1,4 +1,5 @@
 import { authHeader } from '../_helpers/auth-header';
+import router from '../routes';
 
 const config = {
     apiUrl: 'http://0.0.0.0:9001'
@@ -14,25 +15,27 @@ export const userService = {
     delete: _delete
 };
 
-function login(userid, password) {
+function login(username, password) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userid, password })
+        body: JSON.stringify({ username: username, password: password })
     };
 
     return fetch(`/users/authenticate`, requestOptions)
         .then(handleResponse)
-        .then(user => {
-
+        .then(res => {
+            
             // if (user.token) {
             //     // store user details and jwt token in local storage to keep user logged in between page refreshes
             //     localStorage.setItem('user', JSON.stringify(user));
             // }
 
-            localStorage.setItem('user', JSON.stringify({ userid }));
-
-            return user;
+            localStorage.setItem('user', JSON.stringify(res.Data));
+        
+            return res.Data;
+        }, err => {
+            return Promise.reject(err);
         });
 }
 
@@ -92,15 +95,21 @@ function _delete(id) {
 function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
+        
         if (!response.ok) {
             if (response.status === 401) {
                 // auto logout if 401 response returned from api
                 logout();
-                location.reload(true);
+                router.push("/");
             }
-
-            const error = (data && data.message) || response.statusText;
+            
+            const error = (data && data.Message) || response.statusText;
             return Promise.reject(error);
+        } else {
+            if (data.Status == "NOK"){
+                const error = (data && data.Message) || response.statusText;
+                return Promise.reject(error);
+            }
         }
 
         return data;

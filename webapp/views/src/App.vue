@@ -15,6 +15,8 @@
 
 <script>
 import Footer from '@/components/Footer.vue'
+import { mapState, mapActions } from 'vuex'
+
 
 export default {
   name: 'App',
@@ -22,5 +24,16 @@ export default {
   data() {
     return {}
   },
+  methods: {
+      ...mapActions({
+          clearAlert: 'alert/clear' 
+      })
+  },
+  watch: {
+      $route (to, from){
+          // clear alert on location change
+          this.clearAlert();
+      }
+  } 
 }
 </script>

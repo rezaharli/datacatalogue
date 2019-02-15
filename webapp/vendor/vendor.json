@@ -9,6 +9,12 @@
 			"revisionTime": "2019-02-06T23:08:02Z"
 		},
 		{
+			"checksumSHA1": "HSDPUkCsVjt7Nu0N7tZpTaS5IB4=",
+			"path": "git.eaciitapp.com/sebar/dbflex/drivers/mongodb",
+			"revision": "32a6507d7520ff1ccc667fcbaecfc55865961672",
+			"revisionTime": "2019-02-06T23:08:02Z"
+		},
+		{
 			"checksumSHA1": "Q07AlUf1wR1wNchpVj+ZkN2DMo4=",
 			"path": "git.eaciitapp.com/sebar/knot",
 			"revision": "feb6072aefe548f152ea33dc64900c47c73fec99",
@@ -43,6 +49,36 @@
 			"path": "golang.org/x/net/html/atom",
 			"revision": "65e2d4e15006aab9813ff8769e768bbf4bb667a0",
 			"revisionTime": "2019-02-01T23:59:58Z"
+		},
+		{
+			"checksumSHA1": "1D8GzeoFGUs5FZOoyC2DpQg8c5Y=",
+			"path": "gopkg.in/mgo.v2",
+			"revision": "3f83fa5005286a7fe593b055f0d7771a7dce4655",
+			"revisionTime": "2016-08-18T02:01:20Z"
+		},
+		{
+			"checksumSHA1": "YsB2DChSV9HxdzHaKATllAUKWSI=",
+			"path": "gopkg.in/mgo.v2/bson",
+			"revision": "3f83fa5005286a7fe593b055f0d7771a7dce4655",
+			"revisionTime": "2016-08-18T02:01:20Z"
+		},
+		{
+			"checksumSHA1": "XQsrqoNT1U0KzLxOFcAZVvqhLfk=",
+			"path": "gopkg.in/mgo.v2/internal/json",
+			"revision": "3f83fa5005286a7fe593b055f0d7771a7dce4655",
+			"revisionTime": "2016-08-18T02:01:20Z"
+		},
+		{
+			"checksumSHA1": "LEvMCnprte47qdAxWvQ/zRxVF1U=",
+			"path": "gopkg.in/mgo.v2/internal/sasl",
+			"revision": "3f83fa5005286a7fe593b055f0d7771a7dce4655",
+			"revisionTime": "2016-08-18T02:01:20Z"
+		},
+		{
+			"checksumSHA1": "+1WDRPaOphSCmRMxVPIPBV4aubc=",
+			"path": "gopkg.in/mgo.v2/internal/scram",
+			"revision": "3f83fa5005286a7fe593b055f0d7771a7dce4655",
+			"revisionTime": "2016-08-18T02:01:20Z"
 		}
 	],
 	"rootPath": "eaciit/datacatalogue/webapp"

@@ -12,13 +12,14 @@
             </div>
 
             <div id="form">
+        <!-- <v-alert :value="alert.message? true : false" :type="alert.type">{{alert.message}}</v-alert> -->
                 <b-form @submit.prevent="doLogin">
                     <b-form-group id="exampleInputGroup1"
                             label="ID"
-                            label-for="userid">
-                        <b-form-input id="userid"
+                            label-for="username">
+                        <b-form-input id="username"
                             type="number"
-                            v-model="userid"
+                            v-model="username"
                             required
                             placeholder="Enter ID"></b-form-input>
                     </b-form-group>
@@ -36,7 +37,9 @@
                         </div>
                     </b-form-group>
 
-                    <b-button type="submit" size="xs">Login</b-button>
+                    <b-alert :show="alert.message? true : false" :variant="alert.type">{{alert.message}}</b-alert>
+                    <b-button type="submit" size="xs" :disabled="status.loggingIn">Login</b-button>
+                    <img v-show="status.loggingIn" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                 </b-form>
             </div>
         </div>
@@ -51,7 +54,7 @@ import { mapState, mapActions } from 'vuex'
 export default {
     data() {
         return {
-            userid: '',
+            username: '',
             password: '',
             hidePassword: true,
             submitted: false
@@ -59,6 +62,9 @@ export default {
     },
     computed: {
         ...mapState('account', ['status']),
+        ...mapState({
+            alert: state => state.alert
+        }),
         passwordType() {
             return this.hidePassword ? 'password' : 'text'
         },
@@ -86,10 +92,10 @@ export default {
         ...mapActions('account', ['login']),
         doLogin() {
             this.submitted = true;
-            const { userid, password } = this;
+            const { username, password } = this;
 
-            if (userid && password) {
-                this.login({ userid, password })
+            if (username && password) {
+                this.login({ username, password })
             }
         }
     }
