@@ -78,22 +78,22 @@ func (s *UserService) GetAll(sortKey, sortOrder string, skip, take int, filter t
 	return resultRows, resultTotal, nil
 }
 
-func (s *UserService) Insert(data *m.SysUser) error {
+func (s *UserService) Insert(data *m.SysUser) (bool, error) {
 	data.CreatedAt = time.Now()
 	data.UpdatedAt = time.Now()
 
 	users := make([]m.SysUser, 0)
 	err := h.NewDBcmd().GetBy(h.GetByParam{
 		TableName: s.TableName,
-		Clause:    dbflex.Eq("Username", data.Username),
+		Clause:    dbflex.Eq("username", data.Username),
 		Result:    &users,
 	})
 
 	if err != nil {
-		return err
+		return false, err
 	}
 	if len(users) > 0 {
-		return fmt.Errorf("The same username already exists")
+		return true, fmt.Errorf("The same username already exists")
 	}
 
 	data.Password = s.HashPassword(data.Password)
@@ -104,9 +104,69 @@ func (s *UserService) Insert(data *m.SysUser) error {
 
 	if err != nil {
 		if strings.Contains(err.Error(), "duplicate key") {
-			return fmt.Errorf("Different data with same ID already exists")
+			return true, fmt.Errorf("Different data with same ID already exists")
 		}
 	}
 
+	return true, nil
+}
+
+func (s *UserService) Update(data *m.SysUser) (bool, error) {
+	data.UpdatedAt = time.Now()
+
+	rows := make([]m.SysUser, 0)
+	err := h.NewDBcmd().GetBy(h.GetByParam{
+		TableName: s.TableName,
+		Clause:    dbflex.Eq("username", data.Username),
+		Result:    &rows,
+	})
+	if err != nil {
+		return false, nil
+	}
+	if len(rows) == 0 {
+		return true, fmt.Errorf("User not found")
+	}
+
+	if data.Password == "" {
+		// password not updated
+		data.Password = rows[0].Password
+	} else {
+		// new password used
+		data.Password = s.HashPassword(data.Password)
+	}
+
+	err = h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: s.TableName,
+		Clause:    dbflex.Eq("username", data.Username),
+	})
+
+	data.Password = s.HashPassword(data.Password)
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName: s.TableName,
+		Data:      data,
+	})
+
+	// err = h.NewDBcmd().Save(h.SaveParam{
+	// 	TableName: s.TableName,
+	// 	Data:      data,
+	// })
+	return true, err
+}
+
+func (s *UserService) DeleteByUsername(username int) error {
+	// usernames := make([]interface{}, 0)
+	// if strings.Contains(username, ",") {
+	// 	for _, username := range strings.Split(username, ",") {
+	// 		username, _ := url.PathUnescape(username)
+	// 		usernames = append(usernames, username)
+	// 	}
+	// } else {
+	// 	usernames = append(usernames, username)
+	// }
+
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: s.TableName,
+		Clause:    dbflex.Eq("username", username),
+	})
 	return err
 }

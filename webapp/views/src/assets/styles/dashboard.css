@@ -44,6 +44,15 @@
     border-color: transparent;
 }
 
+.header-filter-icon{
+
+}
+.header-filter-icon .dropdown-menu{
+    overflow: scroll;
+    max-height: 200px;
+    height: auto;
+}
+
 @media (min-width: 992px) {
     #modal-details .modal-lg{
         max-width: 80%;

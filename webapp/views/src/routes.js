@@ -15,6 +15,9 @@ import Dpo from './components/Dpo';
 import Ddo from './components/Ddo';
 import Rfo from './components/Rfo';
 
+import Access from './components/access/Access';
+import AccessUsers from './components/access/Access-users';
+
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -100,6 +103,26 @@ const router = new VueRouter({
       meta: { 
         title: "RFO - Data Catalogue" 
       } 
+    }, { // access
+      path: '/access', component: Access, 
+      meta: { 
+        title: "Access - Data Catalogue" 
+      }, 
+      children: [{ 
+        path: '', name: 'access', redirect: { name: 'access.users' }
+      }, { //access.users
+        path: 'users', name: 'access.users', component: AccessUsers, 
+        meta: { 
+          title: "Users - Data Catalogue",
+          showModal: false
+        } 
+      }, { // access.users
+        path: 'users/:id', name: 'access.users', component: AccessUsers, 
+        meta: { 
+          title: "DSC - Data Catalogue",
+          showModal: false
+        }
+      }]
     }]
   }, {
     path: '/login', name: 'login', component: Login, 

@@ -50,16 +50,20 @@ function register(user) {
         body: JSON.stringify(user)
     };
 
-    return fetch(`${config.apiUrl}/users/register`, requestOptions).then(handleResponse);
+    return fetch(`/users/register`, requestOptions).then(handleResponse).then(res => {
+        return res;
+    }, err => {
+        return Promise.reject(err);
+    });;
 }
 
 function getAll() {
     const requestOptions = {
-        method: 'GET',
+        method: 'POST',
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
+    return fetch(`/users/getall`, requestOptions).then(handleResponse);
 }
 
 
@@ -79,17 +83,18 @@ function update(user) {
         body: JSON.stringify(user)
     };
 
-    return fetch(`${config.apiUrl}/users/${user.id}`, requestOptions).then(handleResponse);
+    return fetch(`/users/update`, requestOptions).then(handleResponse);
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
-function _delete(id) {
+function _delete(username) {
     const requestOptions = {
-        method: 'DELETE',
-        headers: authHeader()
+        method: 'POST',
+        headers: authHeader(),
+        body: JSON.stringify({ Username: username })
     };
 
-    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
+    return fetch(`/users/delete`, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {
