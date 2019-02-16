@@ -8,8 +8,8 @@
             <b-col>
                 <v-tabs left class="page-tab">
                     <v-tab to="/access/users">Users</v-tab>
-                    <v-tab to="/dsc/all">All System</v-tab>
-                    <v-tab to="/dsc/interfaces">Interfaces</v-tab>
+                    <v-tab to="/access/users">Aplication Usage Detail</v-tab>
+                    <v-tab to="/access/users">User Audit Trail</v-tab>
                 </v-tabs>
             </b-col>
         </b-row>

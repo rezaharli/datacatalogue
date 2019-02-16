@@ -65,19 +65,14 @@ func (c *Users) GetAll(k *knot.WebContext) {
 func (c *Users) Register(k *knot.WebContext) {
 	res := toolkit.NewResult()
 
-	payload := toolkit.M{}
+	payload := m.NewSysUserModel()
 	err := k.GetPayload(&payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
-	user := m.NewSysUserModel()
-	user.Username = payload.GetInt("Username")
-	user.Password = payload.GetString("Password")
-	user.Name = payload.GetString("Name")
-
-	ok, err := s.NewUserService().Insert(user)
+	ok, err := s.NewUserService().Insert(payload)
 	if !ok && err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return

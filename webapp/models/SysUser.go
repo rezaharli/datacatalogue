@@ -6,9 +6,10 @@ type SysUser struct {
 	ID       int
 	Username int
 	Password string
+	Email    string
 	Name     string
-	IsActive bool
-	Role     SysRole
+	Status   bool
+	Role     string
 
 	CreatedAt time.Time
 	UpdatedAt time.Time

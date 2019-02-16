@@ -113,15 +113,8 @@ const router = new VueRouter({
       }, { //access.users
         path: 'users', name: 'access.users', component: AccessUsers, 
         meta: { 
-          title: "Users - Data Catalogue",
-          showModal: false
+          title: "Users - Data Catalogue"
         } 
-      }, { // access.users
-        path: 'users/:id', name: 'access.users', component: AccessUsers, 
-        meta: { 
-          title: "DSC - Data Catalogue",
-          showModal: false
-        }
       }]
     }]
   }, {

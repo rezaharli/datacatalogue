@@ -32,7 +32,11 @@ table.v-table thead th > div.btn-group {
                                         </v-alert>
 
                                         <v-flex xs12 sm6 md4>
-                                            <v-text-field :readonly="editedIndex > -1" v-model="editedItem.Username" label="Username"></v-text-field>
+                                            <v-text-field type="number" :readonly="editedIndex > -1" v-model="editedItem.Username" label="Username"></v-text-field>
+                                        </v-flex>
+
+                                        <v-flex xs12 sm6 md4>
+                                            <v-text-field type="email" v-model="editedItem.Email" label="Email"></v-text-field>
                                         </v-flex>
 
                                         <v-flex xs12 sm6 md4>
@@ -44,7 +48,23 @@ table.v-table thead th > div.btn-group {
                                         </v-flex>
 
                                         <v-flex xs12 sm6 md4>
-                                            <v-text-field v-model="editedItem.Role" label="Role"></v-text-field>
+                                            <v-select
+                                                v-model="editedItem.Role"
+                                                :items="rolesMaster"
+                                                label="Select"
+                                                multiple
+                                                chips
+                                                hint="What are the target regions"
+                                                persistent-hint
+                                            ></v-select>
+                                        </v-flex>
+
+                                        <v-flex xs12 sm6 md4>
+                                            <v-switch
+                                                v-model="editedItem.Status"
+                                                :label="`Status`"
+                                            ></v-switch>
+                                            <!-- <v-text-field v-model="editedItem.Status" label="Status"></v-text-field> -->
                                         </v-flex>
                                     </v-layout>
                                 </v-container>
@@ -90,8 +110,10 @@ table.v-table thead th > div.btn-group {
                         <template slot="items" slot-scope="props">
                             <tr :active="props.selected" @click="props.selected = !props.selected">
                                 <td>{{ props.item.Username }}</td>
+                                <td>{{ props.item.Email }}</td>
                                 <td>{{ props.item.Name }}</td>
                                 <td>{{ props.item.Role }}</td>
+                                <td>{{ props.item.Status }}</td>
                                 <td>{{ props.item.CreatedAt }}</td>
                                 <td>{{ props.item.UpdatedAt }}</td>
                                 <td class="justify-center layout px-0">
@@ -122,11 +144,13 @@ export default {
     data () {
         return {
             dialog: false,
-            tempPassword: '',
+            rolesMaster: ["Admin", "DSC", "DPO", "DDO", "RFO"],
             headers: [
                 { text: 'Username', align: 'left', value: 'Username', sortable: false, filter: true },
+                { text: 'Email', align: 'left', value: 'Email', sortable: false, filter: true },
                 { text: 'Name', align: 'left', value: 'Name', sortable: false, filter: true },
                 { text: 'Role', align: 'left', value: 'Role', sortable: false, filter: true },
+                { text: 'Status', align: 'left', value: 'Status', sortable: false, filter: true },
                 { text: 'Created At', align: 'left', value: 'CreatedAt', sortable: false, filter: true },
                 { text: 'Updated At', align: 'left', value: 'UpdatedAt', sortable: false, filter: true },
                 { text: 'Actions', value: 'name', sortable: false, filter: false }
@@ -136,8 +160,10 @@ export default {
             defaultItem: {
                 Username: '',
                 Password: '',
+                Email: '',
                 Name: '',
                 Role: [],
+                Status: true
             }
         }
     },
@@ -170,17 +196,15 @@ export default {
         },
         editItem (item) {
             this.editedIndex = this.users.items.indexOf(item)
-            this.tempPassword = item.Password
 
             item.Password = ''
+            item.Role = item.Role.split(",");
             this.editedItem = Object.assign({}, item)
 
             this.users.error = null
             this.dialog = true
         },
         deleteItem (item) {
-            // const index = this.users.items.indexOf(item)
-            // confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
             confirm('Are you sure you want to delete this user?') && 
                 this.deleteUser(item.Username).then(
                     res => this.getAllUsers(), 
@@ -210,8 +234,6 @@ export default {
                     this.getAllUsers()
                 }, err => this.getAllUsers());
             }
-
-            // this.getAllUsers();
         }
     }
 }

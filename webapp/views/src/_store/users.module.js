@@ -19,6 +19,9 @@ const actions = {
             );
     },
     register({ commit }, user) {
+        user.Username = parseInt(user.Username);
+        user.Role = user.Role.join();
+
         commit('registerRequest', user);
     
         return userService.register(user)
@@ -28,6 +31,9 @@ const actions = {
             );
     },
     update({ commit }, user) {
+        user.Username = parseInt(user.Username);
+        user.Role = user.Role.join();
+        
         commit('updateRequest', user);
     
         return userService.update(user)
