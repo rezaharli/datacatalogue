@@ -21,6 +21,12 @@
 			"revisionTime": "2019-02-06T10:00:04Z"
 		},
 		{
+			"checksumSHA1": "6lovUgpXoPc847ZDQwy1+mE8R1c=",
+			"path": "github.com/corpix/uarand",
+			"revision": "37c9140f52f6bf4998ff7617c456d554d6a2dc2f",
+			"revisionTime": "2018-11-20T14:04:56Z"
+		},
+		{
 			"checksumSHA1": "MU36RGkDfOxPEax93Xken7/ia1Y=",
 			"path": "github.com/eaciit/appconfig",
 			"revision": "fd7912aff1be8fd67a89a77e925b1f56209bf7fc",
@@ -37,6 +43,12 @@
 			"path": "github.com/eaciit/toolkit",
 			"revision": "f1e8cbe737d7a0d10abe4c3402d20d6a7d7db5db",
 			"revisionTime": "2019-01-15T05:28:47Z"
+		},
+		{
+			"checksumSHA1": "Yz0zzyHN8gfkFB0ShiF7JAzBgAY=",
+			"path": "github.com/icrowley/fake",
+			"revision": "4178557ae428460c3780a381c824a1f3aceb6325",
+			"revisionTime": "2018-02-03T21:58:53Z"
 		},
 		{
 			"checksumSHA1": "VMoF3pagO47x0/nx0GQyFPt9Grk=",
