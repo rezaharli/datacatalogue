@@ -1,16 +1,11 @@
 import { authHeader } from '../_helpers/auth-header';
 import router from '../routes';
 
-const config = {
-    apiUrl: 'http://0.0.0.0:9001'
-}
-
 export const userService = {
     login,
     logout,
     register,
     getAll,
-    getById,
     update,
     delete: _delete
 };
@@ -54,7 +49,7 @@ function register(user) {
         return res;
     }, err => {
         return Promise.reject(err);
-    });;
+    });
 }
 
 function getAll() {
@@ -64,16 +59,6 @@ function getAll() {
     };
 
     return fetch(`/users/getall`, requestOptions).then(handleResponse);
-}
-
-
-function getById(id) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
 }
 
 function update(user) {

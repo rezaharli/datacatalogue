@@ -78,8 +78,8 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <v-data-table
                 :headers="firstTableHeaders"
-                :items="datax"
-                :loading="true"
+                :items="dscmy.systems"
+                :loading="dscmy.loading"
                 class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
                   <template slot="no-data">
@@ -89,7 +89,7 @@ table.v-table thead th > div.btn-group {
                   </template>
 
                   <template slot="headerCell" slot-scope="props">
-                    {{ props.header.text }} ({{ distinctData(props.header.value).length }})
+                    {{ props.header.text }} ({{ distinctData(props.header.value, dscmy.systems).length }})
 
                     <b-dropdown no-caret variant="link" class="header-filter-icon">
                       <template slot="button-content">
@@ -100,15 +100,15 @@ table.v-table thead th > div.btn-group {
                         <b-form-input v-model="search" type="text" placeholder="Filter"></b-form-input>
                       </b-dropdown-header>
 
-                      <b-dropdown-item v-for="item in distinctData(props.header.value)" v-bind:key="item">
+                      <b-dropdown-item v-for="item in distinctData(props.header.value, dscmy.systems)" v-bind:key="item">
                         {{ item }}
                       </b-dropdown-item>
                     </b-dropdown>
                   </template>
 
                   <template slot="items" slot-scope="props">
-                      <td><b-link to="/dsc/my/asdf" href="#foo">{{ props.item.name }}</b-link></td>
-                      <td>{{ props.item.calories }}</td>
+                      <td><b-link :to="{ path:'/dsc/my/' + props.item.ID }" href="#foo">{{ props.item.System_Name }}</b-link></td>
+                      <td>{{ props.item.ITAM_ID }}</td>
                       <td>{{ props.item.fat }}</td>
                       <td>{{ props.item.carbs }}</td>
                   </template>
@@ -118,14 +118,39 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <v-data-table
                 :headers="secondTableHeaders"
-                :items="datax"
-                :loading="true"
+                :items="dscmy.table"
+                :loading="dscmy.loading"
                 v-if="secondtable"
                 class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+                <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+                  <template slot="no-data">
+                    <v-alert :value="true" color="error" icon="warning">
+                      Sorry, nothing to display here :(
+                    </v-alert>
+                  </template>
+
+                  <template slot="headerCell" slot-scope="props">
+                    {{ props.header.text }} ({{ distinctData(props.header.value, dscmy.table).length }})
+
+                    <b-dropdown no-caret variant="link" class="header-filter-icon">
+                      <template slot="button-content">
+                        <i class="fa fa-filter text-muted"></i>
+                      </template>
+
+                      <b-dropdown-header>
+                        <b-form-input v-model="search" type="text" placeholder="Filter"></b-form-input>
+                      </b-dropdown-header>
+
+                      <b-dropdown-item v-for="item in distinctData(props.header.value, dscmy.table)" v-bind:key="item">
+                        {{ item }}
+                      </b-dropdown-item>
+                    </b-dropdown>
+                  </template>
+
                   <template slot="items" slot-scope="props">
-                      <!-- <td><b-link v-b-modal.modallg>{{ props.item.name }}</b-link></td> -->
-                      <td><b-link to="/dsc/my/asdf/details" v-b-modal.modallg>{{ props.item.name }}</b-link></td>
+                      <td><b-link :to="{ path:'/dsc/my/' + $route.params.system + '/details' }" href="#foo" v-b-modal.modallg>{{ props.item.Name }}</b-link></td>
+                      <!-- <td><b-link :to="{ path:'/dsc/my/' + route.params.system + "/details" }" v-b-modal.modallg>{{ props.item.name }}</b-link></td> -->
                       <td>{{ props.item.calories }}</td>
                       <td>{{ props.item.fat }}</td>
                       <td>{{ props.item.carbs }}</td>
@@ -140,6 +165,8 @@ table.v-table thead th > div.btn-group {
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+
 var dummy = [
   {
     name: 'Frozen Yogurt',
@@ -218,21 +245,24 @@ export default {
           colName: '',
         },
         firstTableHeaders: [
-          { text: 'System Name', align: 'left', value: 'name', sortable: false },
-          { text: 'ITAM ID (4)', align: 'left', value: 'calories', sortable: false },
+          { text: 'System Name', align: 'left', value: 'System_Name', sortable: false },
+          { text: 'ITAM ID', align: 'left', value: 'ITAM_ID', sortable: false },
           { text: 'Dataset Custodian', align: 'left', value: 'fat', sortable: false },
           { text: 'Bank ID', align: 'left', value: 'carbs', sortable: false }
         ],
         secondTableHeaders: [
-          { text: 'Table Name (2890)', align: 'left', sortable: false, value: 'name' },
-          { text: 'Column Name (2890)', align: 'left', sortable: false, value: 'calories' },
-          { text: 'Business Alias Name (1250)', align: 'left', sortable: false, value: 'fat' },
+          { text: 'Table Name', align: 'left', sortable: false, value: 'Name' },
+          { text: 'Column Name', align: 'left', sortable: false, value: 'calories' },
+          { text: 'Business Alias Name', align: 'left', sortable: false, value: 'fat' },
           { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'carbs' }
         ],
         datax: dummy
       }
     },
     computed: {
+      ...mapState({
+        dscmy: state => state.dscmy.all
+      }),
     },
     watch: {
       $route (to){
@@ -241,16 +271,30 @@ export default {
         if (to.params != undefined) {
           this.secondtable = to.params.system; 
         }
+
+         if(this.secondtable){
+            this.getTableName(this.$route.params.system);
+          }
       },
     },
     created() {
-      this.secondtable = this.$route.params.system; 
+      this.secondtable = this.$route.params.system;
+      
+      this.getAllSystem();
+
+      if(this.secondtable){
+        this.getTableName(this.$route.params.system);
+      }
     },
     methods: {
-      distinctData (col) {
+      ...mapActions('dscmy', {
+          getAllSystem: 'getAllSystem',
+          getTableName: 'getTableName',
+      }),
+      distinctData (col, datax) {
         return this._.uniq(
                 this._.map(
-                  this._.sortBy(this.datax, col), 
+                  this._.sortBy(datax, col), 
                   col
                 )
               );

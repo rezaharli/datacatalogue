@@ -103,6 +103,7 @@
 
 <script>
 import CToolbar from './ComponentToolbar';
+import { mapState, mapActions } from 'vuex'
 
 export default {
   components: { CToolbar },
@@ -123,6 +124,9 @@ export default {
       }
     };
   },
+  computed: {
+    ...mapState('account', ['status', 'user']),
+  },
   created () {
     this.decideIsHome();
   },
@@ -136,16 +140,24 @@ export default {
       this.isHome = this.$route.name == "landingpage" ? true : false;
     },
     dscClick: function () {
-      this.$router.push('/dsc');
+      if(this.user.Role.split(",").indexOf("DSC") != -1){
+        this.$router.push('/dsc');
+      }
     },
     dpoClick: function () {
-      this.$router.push('/dpo');
+      if(this.user.Role.split(",").indexOf("DPO") != -1){
+        this.$router.push('/dpo');
+      }
     },
     ddoClick: function () {
-      this.$router.push('/ddo');
+      if(this.user.Role.split(",").indexOf("DDO") != -1){
+        this.$router.push('/ddo');
+      }
     },
     rfoClick: function () {
-      this.$router.push('/rfo');
+      if(this.user.Role.split(",").indexOf("RFO") != -1){
+        this.$router.push('/rfo');
+      }
     },
     cardMouseover: function(type){
       this.elevation[type] = 24;

@@ -169,7 +169,6 @@ export default {
     },
     computed: {
         ...mapState({
-            account: state => state.account,
             users: state => state.users.all
         }),
         formTitle () {

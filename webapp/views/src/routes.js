@@ -30,7 +30,8 @@ const router = new VueRouter({
     children: [{ // dsc
       path: '/dsc', component: Dsc, 
       meta: { 
-        title: "DSC - Data Catalogue" 
+        title: "DSC - Data Catalogue",
+        permission: "DSC"
       }, 
       children: [{ 
         path: '', name: 'dsc', redirect: { name: 'dsc.my' }
@@ -40,80 +41,100 @@ const router = new VueRouter({
         component: DscMy, 
         meta: { 
           title: "DSC - Data Catalogue",
-          showModal: false
+          showModal: false,
+          permission: "DSC"
         } 
       }, { // dsc.my.system
         path: 'my/:system', name: 'dsc.my', component: DscMy, 
         meta: { 
           title: "DSC - Data Catalogue",
-          showModal: false
+          showModal: false,
+          permission: "DSC"
         }, 
         children: [{ // dsc.my.system.details
           path: 'details', name: 'dsc.my.details', component: DscDetails, 
           meta: { 
             title: "DSC Details - Data Catalogue",
-            showModal: true
+            showModal: true,
+            permission: "DSC"
           } 
         }] 
       }, { // dsc.all
         path: 'all', name: 'dsc.all', component: DscAll, 
         meta: { 
-          title: "DSC - Data Catalogue" 
+          title: "DSC - Data Catalogue" ,
+          showModal: false,
+          permission: "DSC"
         } 
       }, { 
         path: 'all/:system', name: 'dsc.all', component: DscAll, 
         meta: { 
-          title: "DSC - Data Catalogue" 
+          title: "DSC - Data Catalogue" ,
+          showModal: false,
+          permission: "DSC"
         }, 
         children: [{ 
           path: 'details', name: 'dsc.all.details', component: DscDetails, 
           meta: { 
-            title: "DSC Details - Data Catalogue" 
+            title: "DSC Details - Data Catalogue" ,
+            showModal: true,
+            permission: "DSC"
           }
         }] 
-      }, {
+      }, { // dsc.interfaces
         path: 'interfaces', name: 'dsc.interfaces', component: DscInterfaces, 
         meta: { 
-          title: "DSC - Data Catalogue" 
+          title: "DSC - Data Catalogue" ,
+          showModal: false,
+          permission: "DSC"
         } 
       }, { 
         path: 'interfaces/:system', name: 'dsc.interfaces', component: DscInterfaces, 
         meta: { 
-          title: "DSC - Data Catalogue" 
+          title: "DSC - Data Catalogue" ,
+          showModal: false,
+          permission: "DSC"
         }, 
         children: [{ 
           path: 'details', name: 'dsc.interfaces.details', component: DscDetails, 
           meta: { 
-            title: "DSC Details - Data Catalogue" 
+            title: "DSC Details - Data Catalogue" ,
+            showModal: true,
+            permission: "DSC"
           } 
         }] 
       }]
     }, { 
       path: '/dpo', component: Dpo, 
       meta: { 
-        title: "DPO - Data Catalogue" 
+        title: "DPO - Data Catalogue" ,
+        permission: "DPO"
       } 
     }, { 
       path: '/ddo', component: Ddo, 
       meta: { 
-        title: "DDO - Data Catalogue" 
+        title: "DDO - Data Catalogue" ,
+        permission: "DDO"
       } 
     }, { 
       path: '/rfo', component: Rfo, 
       meta: { 
-        title: "RFO - Data Catalogue" 
+        title: "RFO - Data Catalogue" ,
+        permission: "RFO"
       } 
     }, { // access
       path: '/access', component: Access, 
       meta: { 
-        title: "Access - Data Catalogue" 
+        title: "Access - Data Catalogue" ,
+        permission: "Admin"
       }, 
       children: [{ 
         path: '', name: 'access', redirect: { name: 'access.users' }
       }, { //access.users
         path: 'users', name: 'access.users', component: AccessUsers, 
         meta: { 
-          title: "Users - Data Catalogue"
+          title: "Users - Data Catalogue",
+          permission: "Admin"
         } 
       }]
     }]

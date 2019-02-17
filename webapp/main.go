@@ -20,8 +20,12 @@ func main() {
 	}
 	defer clit.Close()
 
+	// s.NewDSCService().CreateSystemDummyData()
+	// s.NewDSCService().CreateMDTableDummyData()
+
 	app := knot.NewApp()
 	app.Register(c.NewUsersController(), "")
+	app.Register(c.NewDSCController(), "")
 
 	app.Static("css", filepath.Join(clit.ExeDir(), "views", "dist", "css"))
 	app.Static("js", filepath.Join(clit.ExeDir(), "views", "dist", "js"))

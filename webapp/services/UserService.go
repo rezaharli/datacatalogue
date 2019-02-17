@@ -16,12 +16,10 @@ import (
 )
 
 type UserService struct {
-	TableName string
 }
 
 func NewUserService() *UserService {
 	ret := new(UserService)
-	ret.TableName = m.NewSysUserModel().TableName()
 	return ret
 }
 
@@ -66,7 +64,7 @@ func (s *UserService) GetAll(sortKey, sortOrder string, skip, take int, filter t
 		SortOrder:   sortOrder,
 		Skip:        skip,
 		Take:        take,
-		TableName:   s.TableName,
+		TableName:   m.NewSysUserModel().TableName(),
 		ResultRows:  &resultRows,
 		ResultTotal: &resultTotal,
 	})
@@ -84,7 +82,7 @@ func (s *UserService) Insert(data *m.SysUser) (bool, error) {
 
 	users := make([]m.SysUser, 0)
 	err := h.NewDBcmd().GetBy(h.GetByParam{
-		TableName: s.TableName,
+		TableName: m.NewSysUserModel().TableName(),
 		Clause:    dbflex.Eq("username", data.Username),
 		Result:    &users,
 	})
@@ -98,7 +96,7 @@ func (s *UserService) Insert(data *m.SysUser) (bool, error) {
 
 	data.Password = s.HashPassword(data.Password)
 	err = h.NewDBcmd().Insert(h.InsertParam{
-		TableName: s.TableName,
+		TableName: m.NewSysUserModel().TableName(),
 		Data:      data,
 	})
 
@@ -116,7 +114,7 @@ func (s *UserService) Update(data *m.SysUser) (bool, error) {
 
 	rows := make([]m.SysUser, 0)
 	err := h.NewDBcmd().GetBy(h.GetByParam{
-		TableName: s.TableName,
+		TableName: m.NewSysUserModel().TableName(),
 		Clause:    dbflex.Eq("username", data.Username),
 		Result:    &rows,
 	})
@@ -136,12 +134,12 @@ func (s *UserService) Update(data *m.SysUser) (bool, error) {
 	}
 
 	err = h.NewDBcmd().Delete(h.DeleteParam{
-		TableName: s.TableName,
+		TableName: m.NewSysUserModel().TableName(),
 		Clause:    dbflex.Eq("username", data.Username),
 	})
 
 	err = h.NewDBcmd().Insert(h.InsertParam{
-		TableName: s.TableName,
+		TableName: m.NewSysUserModel().TableName(),
 		Data:      data,
 	})
 
@@ -164,7 +162,7 @@ func (s *UserService) DeleteByUsername(username int) error {
 	// }
 
 	err := h.NewDBcmd().Delete(h.DeleteParam{
-		TableName: s.TableName,
+		TableName: m.NewSysUserModel().TableName(),
 		Clause:    dbflex.Eq("username", username),
 	})
 	return err
