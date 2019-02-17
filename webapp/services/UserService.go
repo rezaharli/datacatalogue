@@ -140,7 +140,6 @@ func (s *UserService) Update(data *m.SysUser) (bool, error) {
 		Clause:    dbflex.Eq("username", data.Username),
 	})
 
-	data.Password = s.HashPassword(data.Password)
 	err = h.NewDBcmd().Insert(h.InsertParam{
 		TableName: s.TableName,
 		Data:      data,

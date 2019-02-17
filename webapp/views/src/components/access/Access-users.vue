@@ -197,9 +197,9 @@ export default {
         editItem (item) {
             this.editedIndex = this.users.items.indexOf(item)
 
-            item.Password = ''
-            item.Role = item.Role.split(",");
             this.editedItem = Object.assign({}, item)
+            this.editedItem.Role = this.editedItem.Role.split(",");
+            this.editedItem.Password = ''
 
             this.users.error = null
             this.dialog = true
