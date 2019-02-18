@@ -94,14 +94,14 @@ table.v-table thead th > div.btn-group {
                         <template slot="headers" slot-scope="props">
                             <tr>
                                 <th v-for="header in props.headers" :key="header.text">
-                                    {{ header.text }} ({{ distinctData(header.value).length }})
+                                    {{ header.text }} ({{ distinctData(header.value, users.items).length }})
 
                                     <b-dropdown v-if="header.filter"  no-caret variant="link" class="header-filter-icon">
                                         <template slot="button-content"><i class="fa fa-filter text-muted"></i></template>
 
                                         <b-dropdown-header><b-form-input type="text" placeholder="Filter"></b-form-input></b-dropdown-header>
 
-                                        <b-dropdown-item v-for="item in distinctData(header.value)" v-bind:key="item">{{ item }}</b-dropdown-item>
+                                        <b-dropdown-item v-for="item in distinctData(header.value, users.items)" v-bind:key="item">{{ item }}</b-dropdown-item>
                                     </b-dropdown>
                                 </th>
                             </tr>
@@ -185,10 +185,10 @@ export default {
             updateUser: 'update',
             registerUser: 'register'
         }),
-        distinctData (col) {
+        distinctData (col, datax) {
             return this._.uniq(
                     this._.map(
-                    this._.sortBy(this.users, col), 
+                    this._.sortBy(datax, col), 
                     col
                     )
                 );

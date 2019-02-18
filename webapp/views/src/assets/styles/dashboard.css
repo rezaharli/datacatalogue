@@ -53,6 +53,30 @@
     height: auto;
 }
 
+.scrollableasdf{
+    overflow: scroll;
+}
+
+.fixed-header table {
+    table-layout: fixed;
+}
+
+.fixed-header th {
+    background-color: #fff; /* just for LIGHT THEME, change it to #474747 for DARK */
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.fixed-header tr.datatable__progress th {
+    top: 56px;
+}
+
+.fixed-header .table__overflow {
+    overflow: auto;
+    height: 100%;
+}
+
 @media (min-width: 992px) {
     #modal-details .modal-lg{
         max-width: 80%;

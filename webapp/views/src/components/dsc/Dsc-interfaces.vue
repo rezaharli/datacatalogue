@@ -14,15 +14,11 @@ table.v-table thead th > div.btn-group {
   overflow: scroll;
   height: 200px;
 }
-
-.scrollableasdf{
-  overflow: scroll;
-}
 </style>
 
 
 <template>
-  <b-row>
+  <b-row style="margin-top: 10px;margin-bottom: 10px;">
     <b-col>
       <!-- Dsc details -->
       <router-view/>
@@ -79,7 +75,7 @@ table.v-table thead th > div.btn-group {
           </b-row>
 
           <b-row>
-            <b-col>
+            <b-col class="scrollableasdf">
               <v-data-table
                 :headers="firstTableHeaders"
                 :items="dscmy.systems"

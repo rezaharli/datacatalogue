@@ -4,7 +4,7 @@
 
 <template>
 
-  <v-content>
+  <v-content class="cok">
     <b-container fluid v-if="!isHome">
       <CToolbar></CToolbar>
       <router-view></router-view>

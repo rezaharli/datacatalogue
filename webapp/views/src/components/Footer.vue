@@ -7,7 +7,7 @@
 
 
 <template>
-  <v-footer class="pa-3 white--text" color="teal" absolute>
+  <v-footer class="pa-3 white--text" color="teal">
     <div>Eaciit &copy; {{ new Date().getFullYear() }}</div>
    
     <!-- <b-link v-if="showLogout" @click="doLogout">Logout</b-link> -->

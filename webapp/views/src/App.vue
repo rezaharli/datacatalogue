@@ -1,10 +1,10 @@
 <style>
   @import './assets/styles/style.css';
-  @import './assets/vendors/font-awesome-4.7.0/css/font-awesome.min.css';
+  @import './assets/vendors/font-awesome-4.7.0/css/font-awesome.css';
 </style>
 
 <template>
-  <v-app>
+  <v-app class="cokicoki">
     <transition name="fade" mode="out-in">
       <router-view />
     </transition>

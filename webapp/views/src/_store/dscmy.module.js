@@ -2,9 +2,12 @@ import { dscMyService } from '../_services/dscmy.service';
 
 const state = {
     all: {
-        loading: true,
-        systems: [],
-        table: [],
+        systemsLoading: true,
+        systemsSource: [],
+        systemsDisplay: [],
+        tableLoading: true,
+        tableSource: [],
+        tableDisplay: [],
         error: null
     }
 };
@@ -13,7 +16,7 @@ const actions = {
     getAllSystem({ commit }) {
         commit('getAllSystemRequest');
 
-        dscMyService.getAllSystem()
+        return dscMyService.getAllSystem()
             .then(
                 res => commit('getAllSystemSuccess', res.Data),
                 error => commit('getAllSystemFailure', error)
@@ -32,25 +35,29 @@ const actions = {
 
 const mutations = {
     getAllSystemRequest(state) {
-        state.all.loading = true;
+        state.all.systemsLoading = true;
     },
     getAllSystemSuccess(state, data) {
-        state.all.loading = false;
-        state.all.systems = data;
+        state.all.systemsSource = data;
+        state.all.systemsDisplay = data;
+
+        state.all.systemsLoading = false;
     },
     getAllSystemFailure(state, error) {
-        state.all.loading = false;
+        state.all.systemsLoading = false;
         state.all.error = error;
     },
     getAllTablenameRequest(state) {
-        state.all.loading = true;
+        state.all.tableLoading = true;
     },
     getAllTablenameSuccess(state, data) {
-        state.all.loading = false;
-        state.all.table = data;
+        state.all.tableSource = data;
+        state.all.tableDisplay = data;
+
+        state.all.tableLoading = false;
     },
     getAllTablenameFailure(state, error) {
-        state.all.loading = false;
+        state.all.tableLoading = false;
         state.all.error = error;
     },
 };
