@@ -11,40 +11,40 @@
     <b-container> -->
       <b-row>
         <b-col cols="4"> 
-          <b-card tag="article" class="mb-2">
+          <b-card tag="article" class="mb-2" v-if="selectedSystem && selectedTable.Columns.length > 0">
             <b-media>
               <h6>System Name</h6>
-              <p>SCI</p>
+              <p v-html="selectedSystem.System_Name"></p>
             </b-media>
             
             <b-media>
               <h6>ITAM ID</h6>
-              <p>14768</p>
+              <p v-html="selectedSystem.ITAM_ID"></p>
             </b-media>
             
             <b-media>
               <h6>Dataset Custodian</h6>
-              <p>Samuel Rajakumar</p>
+              <p></p>
             </b-media>
             
             <b-media>
               <h6>Bank ID</h6>
-              <p>1159683</p>
+              <p></p>
             </b-media>
             
             <b-media>
               <h6>Business Alias Name</h6>
-              <p>Actual Legal Name</p>
+              <p v-html="selectedTable.Columns[0].Alias_Name"></p>
             </b-media>
             
             <b-media>
               <h6>Table Name</h6>
-              <p>P44_LE_MAIN_PROFILE</p>
+              <p v-html="selectedTable.Name"></p>
             </b-media>
             
             <b-media>
               <h6>Column Name</h6>
-              <p>LMP_ACTUAL_LEGAL_NAME</p>
+              <p v-html="selectedTable.Columns[0].Name"></p>
             </b-media>
           </b-card>
         </b-col>
@@ -52,15 +52,16 @@
         <b-col cols="8"> 
           <b-row>
             <b-col>
-              <b-card title="Technical Metadata From System" tag="article" class="mb-2">
+              <b-card title="Technical Metadata From System" tag="article" class="mb-2" v-if="selectedColumn">
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Name" label-for="systemName">
-                      <b-form-select id="systemName" class="col-8"></b-form-select>
+                      <b-form-select id="systemName" class="col-8" v-model="ddSystem.selected" :options="ddSystemOptions">
+                      </b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnName">
-                      <b-form-select id="columnName" class="col-8"></b-form-select>
+                      <b-form-select id="columnName" class="col-8" v-model="ddColumn.selected" :options="ddColumnOptions"></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Screen Label Name*" label-for="screenLabelName">
@@ -72,43 +73,43 @@
                     </b-form-group>
                     
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="CDE (yes/no)">
-                      <p>Yes</p>
+                      <p v-html="selectedColumn.CDE"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Status*">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.Status"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Type">
-                      <p>VARCHAR2</p>
+                      <p v-html="selectedColumn.Data_Type"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Format">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.Data_Format"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Length">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.Data_Length"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Example">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.Example"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)*">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.Derived"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation logic*">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.Derivation_Logic"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sourced from Upstream (Yes/No)*">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.Sourced_from_Upstream"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Checks*">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.System_Checks"></p>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -118,27 +119,27 @@
 
           <b-row>
             <b-col>
-              <b-card title="Business Metadata From Domain" tag="article" class="mb-2">
+              <b-card title="Business Metadata From Domain" tag="article" class="mb-2" v-if="selectedColumn">
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.BusinessTerms.SubCategory.Category.Name"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Domain">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.BusinessTerms.SubCategory.Name"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain Owner">
-                      <p>Active</p>
+                      <p></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term*">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.BusinessTerms.BT_Name"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.BusinessTerms.Description"></p>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -148,39 +149,39 @@
 
           <b-row>
             <b-col>
-              <b-card title="Policy Related Information" tag="article" class="mb-2">
+              <b-card title="Policy Related Information" tag="article" class="mb-2" v-if="selectedColumn">
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Names">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.BusinessTerms.Policy.Info_Asset_Name"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Description">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.BusinessTerms.Policy.Description"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="C - Confidentiality">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.BusinessTerms.Policy.Confidentiality"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="I - Integrity">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.BusinessTerms.Policy.Integrity"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="A - Availability">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.BusinessTerms.Policy.Availability"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Overall CIA Rating">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.BusinessTerms.Policy.Overall_CIA_Rating"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Record Categories">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.BusinessTerms.Policy.Record_Category"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="PII Flag">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.BusinessTerms.Policy.PII_Flag"></p>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -194,15 +195,15 @@
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Preceding System*">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.Imm_Prec_System_ID"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Succeeding System*">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.Imm_Succ_System_ID"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards | Threshold*">
-                      <p>Active</p>
+                      <p v-html="selectedColumn.Threshold"></p>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -219,19 +220,56 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+
 export default {
   data () {
     return {
       showModal: this.$route.meta.showModal,
+      selectedSystem: null,
+      selectedTable: null,
+      selectedColumn: null,
+      ddSystem: {
+        selected: null,
+      },
+      ddColumn: {
+        selected: null,
+      }
     }
+  },
+  computed: {
+    ...mapState({
+      dscmy: state => state.dscmy.all
+    }),
+    count () {
+      return this.dscmy.tableSource.length
+    },
+    ddSystemOptions () {
+      this.ddSystem.selected = this.selectedSystem ? this.selectedSystem.System_Name : null;
+      return this.selectedSystem ? [{ value: this.selectedSystem.System_Name, text: this.selectedSystem.System_Name }] : [];
+    },
+    ddColumnOptions () {
+      return this.selectedTable ? _.map(this.selectedTable.Columns, function(v) { return { value: v.ID, text: v.Name } }) : [];
+    },
   },
   watch: {
     '$route.meta' ({showModal}) {
       this.showModal = showModal;
+    },
+    count (newCount, oldCount) {
+      this.selectedSystem = _.find(this.dscmy.systemsSource, ['ID', parseInt(this.$route.params.system)])
+      this.selectedTable = _.find(this.dscmy.tableSource, ['ID', parseInt(this.$route.params.details)])
+    },
+    selectedTable (){
+      this.ddColumn.selected = this.selectedTable ? (this.selectedTable.Columns[0] ? this.selectedTable.Columns[0].ID : null) : null;
+      this.selectedColumn = this.selectedTable ? _.find(this.selectedTable.Columns, ['ID', parseInt(this.ddColumn.selected)]) : null;
     }
   },
   mounted() {
     this.$refs.modalDetails.show();
+    
+    this.selectedSystem = _.find(this.dscmy.systemsSource, ['ID', parseInt(this.$route.params.system)])
+    this.selectedTable = _.find(this.dscmy.tableSource, ['ID', parseInt(this.$route.params.details)])
   },
   methods: {
     handleClose () {

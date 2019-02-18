@@ -12,3 +12,11 @@ type Policy struct {
 	PII_Flag           bool
 	Policy_Guidance    string
 }
+
+func NewPolicyModel() *Policy {
+	return new(Policy)
+}
+
+func (m *Policy) TableName() string {
+	return "Tbl_Policy"
+}

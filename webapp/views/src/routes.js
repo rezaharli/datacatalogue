@@ -52,7 +52,7 @@ const router = new VueRouter({
           permission: "DSC"
         }, 
         children: [{ // dsc.my.system.details
-          path: 'details', name: 'dsc.my.details', component: DscDetails, 
+          path: ':details', name: 'dsc.my.details', component: DscDetails,
           meta: { 
             title: "DSC Details - Data Catalogue",
             showModal: true,

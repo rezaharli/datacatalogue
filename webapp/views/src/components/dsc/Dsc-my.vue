@@ -154,7 +154,7 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                   <tr @click="props.expanded = !props.expanded">
-                    <td><b-link :to="{ path:'/dsc/my/' + $route.params.system + '/details' }" href="#foo" v-b-modal.modallg>{{ props.item.Name }}</b-link></td>
+                    <td><b-link :to="{ path:'/dsc/my/' + $route.params.system + '/' + props.item.ID }" href="#foo" v-b-modal.modallg>{{ props.item.Name }}</b-link></td>
                     <!-- <td><b-link :to="{ path:'/dsc/my/' + route.params.system + "/details" }" v-b-modal.modallg>{{ props.item.name }}</b-link></td> -->
                     <td>{{ _.map(props.item.Columns, "Name").join(", ") }}</td>
                     <td>{{ _.map(props.item.Columns, "Alias_Name").join(", ") }}</td>

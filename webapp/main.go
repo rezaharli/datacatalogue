@@ -11,7 +11,7 @@ import (
 	"git.eaciitapp.com/sebar/knot"
 
 	c "eaciit/datacatalogue/webapp/controllers"
-	// s "eaciit/datacatalogue/webapp/services"
+	s "eaciit/datacatalogue/webapp/services"
 )
 
 func main() {
@@ -24,6 +24,10 @@ func main() {
 	// s.NewDSCService().CreateSystemDummyData()
 	// s.NewDSCService().CreateMDTableDummyData()
 	// s.NewDSCService().CreateMDColumnDummyData()
+	// s.NewDSCService().CreateBusinessTermDummyData()
+	// s.NewDSCService().CreateSubCategoryDummyData()
+	s.NewDSCService().CreateCategoryDummyData()
+	s.NewDSCService().CreatePolicyDummyData()
 
 	app := knot.NewApp()
 	app.Register(c.NewUsersController(), "")
