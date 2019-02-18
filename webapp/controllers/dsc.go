@@ -50,7 +50,6 @@ func (c *DSC) GetTableName(k *knot.WebContext) {
 	// skip := payload.GetInt("skip")
 	// take := payload.GetInt("take")
 
-	toolkit.Println("lol", payload.GetInt("SystemID"))
 	systems, _, err := s.NewDSCService().GetTableName(payload.GetInt("SystemID"))
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())

@@ -122,7 +122,9 @@ table.v-table thead th > div.btn-group {
                 :headers="secondTableHeaders"
                 :items="dscmy.tableDisplay"
                 :loading="dscmy.tableLoading"
+                :expand="false"
                 v-if="secondtable"
+                item-key="ID"
                 class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
@@ -151,11 +153,30 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
+                  <tr @click="props.expanded = !props.expanded">
                     <td><b-link :to="{ path:'/dsc/my/' + $route.params.system + '/details' }" href="#foo" v-b-modal.modallg>{{ props.item.Name }}</b-link></td>
                     <!-- <td><b-link :to="{ path:'/dsc/my/' + route.params.system + "/details" }" v-b-modal.modallg>{{ props.item.name }}</b-link></td> -->
-                    <td>{{ props.item.calories }}</td>
-                    <td>{{ props.item.fat }}</td>
-                    <td>{{ props.item.carbs }}</td>
+                    <td>{{ _.map(props.item.Columns, "Name").join(", ") }}</td>
+                    <td>{{ _.map(props.item.Columns, "Alias_Name").join(", ") }}</td>
+                    <td>{{ _.map(props.item.Columns, "CDE").join(", ") }}</td>
+                  </tr>
+                </template>
+                
+                <template slot="expand" slot-scope="props">
+                  <v-data-table
+                    :headers="secondTableHeaders"
+                    :items="props.item.Columns"
+                    class="elevation-1"
+                    hide-actions
+                    hide-headers
+                  >
+                    <template slot="items" slot-scope="props">
+                      <td style="width: 25%">&nbsp;</td>
+                      <td style="width: 25%">{{ props.item.Name }}</td>
+                      <td style="width: 25%">{{ props.item.Alias_Name }}</td>
+                      <td style="width: 25%">{{ props.item.CDE }}</td>
+                    </template>
+                  </v-data-table>
                 </template>
               </v-data-table>
             </b-col>
@@ -194,10 +215,10 @@ export default {
           { text: 'Bank ID', align: 'left', value: 'carbs', sortable: false }
         ],
         secondTableHeaders: [
-          { text: 'Table Name', align: 'left', sortable: false, value: 'Name' },
-          { text: 'Column Name', align: 'left', sortable: false, value: 'calories' },
-          { text: 'Business Alias Name', align: 'left', sortable: false, value: 'fat' },
-          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'carbs' }
+          { text: 'Table Name', align: 'left', sortable: false, value: 'Name', width: "25%" },
+          { text: 'Column Name', align: 'left', sortable: false, value: 'calories', width: "25%" },
+          { text: 'Business Alias Name', align: 'left', sortable: false, value: 'fat', width: "25%" },
+          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'carbs', width: "25%" }
         ],
       }
     },

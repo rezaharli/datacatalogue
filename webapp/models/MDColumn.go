@@ -2,12 +2,12 @@ package models
 
 type MDColumn struct {
 	ID                    int
-	Table_ID              MDTable
+	Table_ID              int
 	Name                  string
 	UUID                  string
 	Type                  string
 	Description           string
-	Business_Term_ID      BusinessTerm
+	Business_Term_ID      int
 	Data_Type             string
 	Data_Format           string
 	Data_Length           int
@@ -20,8 +20,8 @@ type MDColumn struct {
 	CDE                   bool
 	Sourced_from_Upstream bool
 	System_Checks         string
-	Imm_Prec_System_ID    System
-	Imm_Succ_System_ID    System
+	Imm_Prec_System_ID    int
+	Imm_Succ_System_ID    int
 	Data_SLA_Signed       bool
 	Golden_Source         bool
 	DQ_Standards          string
@@ -30,4 +30,12 @@ type MDColumn struct {
 	DPO_Threshold         int
 	DDO_DQ_Standards      string
 	DDO_Threshold         int
+}
+
+func NewMDColumnModel() *MDColumn {
+	return new(MDColumn)
+}
+
+func (m *MDColumn) TableName() string {
+	return "Tbl_MD_Column"
 }

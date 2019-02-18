@@ -42,22 +42,38 @@ func (s *DSCService) GetAllSystem(sortKey, sortOrder string, skip, take int, fil
 }
 
 func (s *DSCService) GetTableName(systemID int) (interface{}, int, error) {
-	result := make([]m.MDTable, 0)
-
-	toolkit.Println("imm_prec_system_id", systemID)
+	mdTables := make([]m.MDTable, 0)
 	err := h.NewDBcmd().GetBy(h.GetByParam{
 		TableName: m.NewMDTableModel().TableName(),
 		Clause:    dbflex.Eq("imm_prec_system_id", systemID),
-		Result:    &result,
+		Result:    &mdTables,
 	})
 	if err != nil {
 		return nil, 0, err
 	}
 
-	return result, len(result), nil
+	res := []toolkit.M{}
+	for _, val := range mdTables {
+		mdColumns := make([]m.MDColumn, 0)
+		err := h.NewDBcmd().GetBy(h.GetByParam{
+			TableName: m.NewMDColumnModel().TableName(),
+			Clause:    dbflex.Eq("table_id", val.ID),
+			Result:    &mdColumns,
+		})
+		if err != nil {
+			return nil, 0, err
+		}
+
+		mdTable, _ := toolkit.ToM(val)
+		mdTable.Set("Columns", mdColumns)
+		res = append(res, mdTable)
+	}
+
+	return res, 1, nil
 }
 
 func (s *DSCService) CreateSystemDummyData() error {
+	toolkit.Println("CreateSystemDummyData")
 	err := h.NewDBcmd().Delete(h.DeleteParam{
 		TableName: m.NewSystemModel().TableName(),
 	})
@@ -67,7 +83,7 @@ func (s *DSCService) CreateSystemDummyData() error {
 	}
 
 	data := make([]*m.System, 0)
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 200; i++ {
 		system := m.NewSystemModel()
 		system.ID = i
 		system.System_Name = fake.WordsN(1)
@@ -91,6 +107,7 @@ func (s *DSCService) CreateSystemDummyData() error {
 }
 
 func (s *DSCService) CreateMDTableDummyData() error {
+	toolkit.Println("CreateMDTableDummyData")
 	err := h.NewDBcmd().Delete(h.DeleteParam{
 		TableName: m.NewMDTableModel().TableName(),
 	})
@@ -100,7 +117,7 @@ func (s *DSCService) CreateMDTableDummyData() error {
 	}
 
 	data := make([]*m.MDTable, 0)
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 200; i++ {
 		mdt := m.NewMDTableModel()
 		mdt.ID = i
 		mdt.Resource_ID = fake.Day()
@@ -126,6 +143,65 @@ func (s *DSCService) CreateMDTableDummyData() error {
 
 	err = h.NewDBcmd().Insert(h.InsertParam{
 		TableName:       m.NewMDTableModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (s *DSCService) CreateMDColumnDummyData() error {
+	toolkit.Println("CreateMDColumnDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewMDColumnModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.MDColumn, 0)
+	for i := 0; i < 200; i++ {
+		mdt := m.NewMDColumnModel()
+		mdt.ID = i
+		mdt.Table_ID = fake.Day()
+		mdt.Name = fake.WordsN(1)
+		mdt.UUID = fake.WordsN(1)
+		mdt.Type = fake.WordsN(1)
+		mdt.Description = fake.WordsN(1)
+		mdt.Business_Term_ID = fake.Day()
+		mdt.Data_Type = fake.WordsN(1)
+		mdt.Data_Format = fake.WordsN(1)
+		mdt.Data_Length = fake.Day()
+		mdt.Example = fake.WordsN(1)
+		mdt.Derived = true
+		mdt.Derivation_Logic = fake.WordsN(1)
+		mdt.Mandatory = true
+		mdt.Status = true
+		mdt.Alias_Name = fake.WordsN(1)
+		mdt.CDE = true
+		mdt.Sourced_from_Upstream = true
+		mdt.System_Checks = fake.WordsN(1)
+		mdt.Imm_Prec_System_ID = fake.Day()
+		mdt.Imm_Succ_System_ID = fake.Day()
+		mdt.Data_SLA_Signed = true
+		mdt.Golden_Source = true
+		mdt.DQ_Standards = fake.WordsN(1)
+		mdt.Threshold = fake.Day()
+		mdt.DPO_DQ_Standards = fake.WordsN(1)
+		mdt.DPO_Threshold = fake.Day()
+		mdt.DDO_DQ_Standards = fake.WordsN(1)
+		mdt.DDO_Threshold = fake.Day()
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewMDColumnModel().TableName(),
 		Data:            data,
 		ContinueOnError: true,
 	})
