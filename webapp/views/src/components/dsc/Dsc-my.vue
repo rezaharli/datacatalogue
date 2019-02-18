@@ -29,7 +29,7 @@ table.v-table thead th > div.btn-group {
           <b-row>
             <b-col>
               <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <input v-model="searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
                 <div class="input-group-append">
                   <b-dropdown right id="ddown1" text="">
                     <b-container>
@@ -80,6 +80,7 @@ table.v-table thead th > div.btn-group {
                   :headers="firstTableHeaders"
                   :items="dscmy.systemsDisplay"
                   :loading="dscmy.systemsLoading"
+                  :search="searchMain"
                   class="elevation-1 fixed-header">
 
                 <template slot="headerCell" slot-scope="props">
@@ -200,6 +201,7 @@ export default {
         secondtable: false,
         systemSource: [],
         tablenameSource: [],
+        searchMain: '',
         searchForm: {
           systemName: '',
           itamID: '',
