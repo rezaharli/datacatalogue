@@ -70,7 +70,7 @@ table.v-table thead th > div.btn-group {
             <b-col></b-col>
             <b-col>
               <download-excel
-                  :data   = "dpomy.systemsDisplay"
+                  :data   = "excelData"
                   :fields = "excelFields"
                   worksheet = "My Worksheet"
                   name    = "filename.xls">
@@ -217,7 +217,14 @@ export default {
         ],
         excelFields: {
           'Downstream Processes': 'Name',
-          'Process Owner': 'Name',
+          'Process Owner': 'Owner_ID',
+          'Bank ID': 'asdf',
+          'CDE Name': 'Business_Term_ID',
+          'Segment': 'Segment_ID',
+          'Immediate Preceding System': 'Imm_Prec_System_ID',
+          'Ultimate Source System': 'Ultimate_Source_System_ID',
+          'Business Description': 'BusinessTermDescription',
+          'CDE Rationale': 'CDE_Rationale',
         }
       }
     },
@@ -225,6 +232,35 @@ export default {
       ...mapState({
         dpomy: state => state.dpomy.all
       }),
+      excelData () {
+        var res = [];
+
+        this._.each(this.dpomy.systemsDisplay, (system, i) => {
+          var temp = {
+            Name: system.Name,
+            Owner_ID: system.Owner_ID,
+          }
+
+          var tables = this._.filter(this.dpomy.tableDisplay, (v) => v.Process_ID == system.ID)
+          if(tables.length > 0){
+            this._.each(tables, (table, i) => {
+              var tableLevel = _.cloneDeep(temp);
+              tableLevel.Business_Term_ID = table.Business_Term_ID;
+              tableLevel.Segment_ID = table.Segment_ID;
+              tableLevel.Imm_Prec_System_ID = table.Imm_Prec_System_ID;
+              tableLevel.Ultimate_Source_System_ID = table.Ultimate_Source_System_ID;
+              tableLevel.BusinessTermDescription = table.BusinessTerm.Description;
+              tableLevel.CDE_Rationale = table.CDE_Rationale;
+
+              res.push(_.cloneDeep(tableLevel));
+            })
+          } else {
+            res.push(_.cloneDeep(temp));
+          }
+        });
+
+        return res
+      }
     },
     watch: {
       $route (to){

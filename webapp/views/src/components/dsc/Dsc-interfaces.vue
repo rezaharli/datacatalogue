@@ -73,7 +73,7 @@ table.v-table thead th > div.btn-group {
             <b-col></b-col>
             <b-col>
               <download-excel
-                  :data   = "dscmy.systemsDisplay"
+                  :data   = "excelData"
                   :fields = "excelFields"
                   worksheet = "My Worksheet"
                   name    = "filename.xls">
@@ -224,8 +224,15 @@ export default {
         excelFields: {
           'System Name': 'System_Name',
           'ITAM ID': 'ITAM_ID',
-          'Dataset Custodian': 'phone.mobile',
-          'Bank ID' : 'carbs',
+          'Dataset Custodian': 'asdf',
+          'Bank ID': 'carbs',
+          'List of CDEs': 'Table_Name',
+          'Immediate Preceding System': 'Imm_Prec_System_ID',
+          'SLA (Yes / No)': 'fat',
+          'OLA (Yes / No)': 'carbs',
+          'Immediate Succeeding System': 'Imm_Succ_System_ID',
+          'List of Downstream Processes': 'carbs',
+          'Downstream Process Owner': 'carbs',
         }
       }
     },
@@ -238,6 +245,32 @@ export default {
       },
       columnNameMaster (){
         return this._.map(this._.flattenDeep(this._.map(this.dscmy.tableSource, 'Columns')), 'Name')
+      },
+      excelData () {
+        var res = [];
+
+        this._.each(this.dscmy.systemsDisplay, (system, i) => {
+          var temp = {
+            System_Name: system.System_Name,
+            ITAM_ID: system.ITAM_ID,
+          }
+
+          var tables = this._.filter(this.dscmy.tableDisplay, (v) => v.Imm_Prec_System_ID == system.ID)
+          if(tables.length > 0){
+            this._.each(tables, (table, i) => {
+              var tableLevel = _.cloneDeep(temp);
+              tableLevel.Table_Name = table.Name;
+              tableLevel.Imm_Prec_System_ID = table.Imm_Prec_System_ID;
+              tableLevel.Imm_Succ_System_ID = table.Imm_Succ_System_ID;
+
+              res.push(_.cloneDeep(tableLevel));
+            })
+          } else {
+            res.push(_.cloneDeep(temp));
+          }
+        });
+
+        return res
       }
     },
     watch: {

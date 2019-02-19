@@ -73,7 +73,7 @@ table.v-table thead th > div.btn-group {
             <b-col></b-col>
             <b-col>
               <download-excel
-                  :data   = "dscmy.systemsDisplay"
+                  :data   = "excelData"
                   :fields = "excelFields"
                   worksheet = "My Worksheet"
                   name    = "filename.xls">
@@ -237,8 +237,12 @@ export default {
         excelFields: {
           'System Name': 'System_Name',
           'ITAM ID': 'ITAM_ID',
-          'Dataset Custodian': 'phone.mobile',
-          'Bank ID' : 'carbs',
+          'Dataset Custodian': 'asdf',
+          'Bank ID': 'carbs',
+          'Table Name': 'Table_Name',
+          'Column Name': 'Column_Name',
+          'Business Alias Name': 'Alias_Name',
+          'CDE (Yes/No)': 'CDE'
         }
       }
     },
@@ -251,6 +255,41 @@ export default {
       },
       columnNameMaster (){
         return this._.map(this._.flattenDeep(this._.map(this.dscmy.tableSource, 'Columns')), 'Name')
+      },
+      excelData () {
+        var res = [];
+
+        this._.each(this.dscmy.systemsDisplay, (system, i) => {
+          var temp = {
+            System_Name: system.System_Name,
+            ITAM_ID: system.ITAM_ID,
+          }
+
+          var tables = this._.filter(this.dscmy.tableDisplay, (v) => v.Imm_Prec_System_ID == system.ID)
+          if(tables.length > 0){
+            this._.each(tables, (table, i) => {
+              var tableLevel = _.cloneDeep(temp);
+              tableLevel.Table_Name = table.Name;
+
+              if(table.Columns.length > 0){
+                this._.each(table.Columns, (column, j) => {
+                  var colLevel = _.cloneDeep(tableLevel);
+                  colLevel.Column_Name = column.Name;
+                  colLevel.Alias_Name = column.Alias_Name;
+                  colLevel.CDE = column.CDE;
+                  
+                  res.push(_.cloneDeep(colLevel));
+                })
+              } else {
+                res.push(_.cloneDeep(tableLevel));
+              }
+            })
+          } else {
+            res.push(_.cloneDeep(temp));
+          }
+        });
+
+        return res
       }
     },
     watch: {
