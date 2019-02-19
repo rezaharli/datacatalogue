@@ -71,7 +71,16 @@ table.v-table thead th > div.btn-group {
 
             <b-col></b-col>
             <b-col></b-col>
-            <b-col></b-col>
+            <b-col>
+              <download-excel
+                  :data   = "dscmy.systemsDisplay"
+                  :fields = "excelFields"
+                  worksheet = "My Worksheet"
+                  name    = "filename.xls">
+              
+                  <b-btn size="sm" class="float-right" variant="success">Export</b-btn>
+              </download-excel>
+            </b-col>
           </b-row>
 
           <b-row>
@@ -189,7 +198,11 @@ table.v-table thead th > div.btn-group {
 </template>
 
 <script>
+import Vue from 'vue'
 import { mapState, mapActions } from 'vuex'
+import JsonExcel from 'vue-json-excel'
+ 
+Vue.component('downloadExcel', JsonExcel)
 
 export default {
     data () {
@@ -222,6 +235,12 @@ export default {
           { text: 'Business Alias Name', align: 'left', sortable: false, value: 'fat', width: "25%" },
           { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'carbs', width: "25%" }
         ],
+        excelFields: {
+          'System Name': 'System_Name',
+          'ITAM ID': 'ITAM_ID',
+          'Dataset Custodian': 'phone.mobile',
+          'Bank ID' : 'carbs',
+        }
       }
     },
     computed: {

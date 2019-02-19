@@ -3,7 +3,16 @@
     <b-container fluid class="row-kasijarak">
       <b-row>
         <b-col> 
-          <b-btn size="sm" class="float-right" variant="success">Export</b-btn>
+          <b-col>
+              <download-excel
+                  :data   = "exportDatas"
+                  :fields = "excelFields"
+                  worksheet = "My Worksheet"
+                  name    = "filename.xls">
+              
+                  <b-btn size="sm" class="float-right" variant="success">Export</b-btn>
+              </download-excel>
+            </b-col>
         </b-col>
       </b-row>
     <!-- </b-container>
@@ -191,7 +200,7 @@
 
           <b-row>
             <b-col>
-              <b-card title="Interfaces" tag="article" class="mb-2">
+              <b-card title="Interfaces" tag="article" class="mb-2" v-if="selectedColumn">
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Preceding System*">
@@ -234,6 +243,42 @@ export default {
       },
       ddColumn: {
         selected: null,
+      },
+      excelFields: {
+        'System Name': "selectedSystem.System_Name",
+        'ITAM ID': "selectedSystem.ITAM_ID",
+        'Dataset Custodian': 'asdf',
+        'Bank ID' : 'asdf',
+        'Business Alias Name': "selectedColumn.Alias_Name",
+        'Table Name': 'selectedTable.Name',
+        'Column Name': 'selectedColumn.Name',
+        'Screen Label Name*': 'asdf',
+        'CDE (yes/no)': 'selectedColumn.CDE',
+        'Status*': 'selectedColumn.Status',
+        'Data Type': 'selectedColumn.Data_Type',
+        'Data Format': 'selectedColumn.Data_Format',
+        "Data Length": "selectedColumn.Data_Length",
+        "Example": "selectedColumn.Example",
+        "Derived (Yes/No)*": "selectedColumn.Derived",
+        "Derivation logic*": "selectedColumn.Derivation_Logic",
+        "Sourced from Upstream (Yes/No)*": "selectedColumn.Sourced_from_Upstream",
+        "System Checks*": "selectedColumn.System_Checks",
+        "Domain": "selectedColumn.BusinessTerms.SubCategory.Category.Name",
+        "Sub Domain": "selectedColumn.BusinessTerms.SubCategory.Name",
+        "Domain Owner": "asdf",
+        "Business Term*": "selectedColumn.BusinessTerms.BT_Name",
+        "Business Term Description": "selectedColumn.BusinessTerms.Description",
+        "Information Asset Names": "selectedColumn.BusinessTerms.Policy.Info_Asset_Name",
+        "Information Asset Description": "selectedColumn.BusinessTerms.Policy.Description",
+        "C - Confidentiality": "selectedColumn.BusinessTerms.Policy.Confidentiality",
+        "I - Integrity": "selectedColumn.BusinessTerms.Policy.Integrity",
+        "A - Availability": "selectedColumn.BusinessTerms.Policy.Availability",
+        "Overall CIA Rating": "selectedColumn.BusinessTerms.Policy.Overall_CIA_Rating",
+        "Record Categories": "selectedColumn.BusinessTerms.Policy.Record_Category",
+        "PII Flag": "selectedColumn.BusinessTerms.Policy.PII_Flag",
+        "Immediate Preceding System*": "selectedColumn.Imm_Prec_System_ID",
+        "Immediate Succeeding System*": "selectedColumn.Imm_Succ_System_ID",
+        "DQ Standards | Threshold*": "selectedColumn.Threshold"
       }
     }
   },
@@ -251,6 +296,17 @@ export default {
     ddColumnOptions () {
       return this.selectedTable ? _.map(this.selectedTable.Columns, function(v) { return { value: v.ID, text: v.Name } }) : [];
     },
+    exportDatas () {
+      if(this.selectedSystem && this.selectedTable && this.selectedColumn){
+        return [{
+          selectedSystem: this.selectedSystem,
+          selectedTable: this.selectedTable,
+          selectedColumn: this.selectedColumn
+        }]
+      } else {
+        return [];
+      }
+    }
   },
   watch: {
     '$route.meta' ({showModal}) {

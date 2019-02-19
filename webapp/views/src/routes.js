@@ -73,14 +73,14 @@ const router = new VueRouter({
           showModal: false,
           permission: "DSC"
         }, 
-        children: [{ 
-          path: 'details', name: 'dsc.all.details', component: DscDetails, 
+        children: [{ // dsc.all.system.details
+          path: ':details', name: 'dsc.all.details', component: DscDetails,
           meta: { 
-            title: "DSC Details - Data Catalogue" ,
+            title: "DSC Details - Data Catalogue",
             showModal: true,
             permission: "DSC"
-          }
-        }] 
+          } 
+        }]
       }, { // dsc.interfaces
         path: 'interfaces', name: 'dsc.interfaces', component: DscInterfaces, 
         meta: { 
@@ -95,14 +95,14 @@ const router = new VueRouter({
           showModal: false,
           permission: "DSC"
         }, 
-        children: [{ 
-          path: 'details', name: 'dsc.interfaces.details', component: DscDetails, 
+        children: [{ // dsc.interfaces.system.details
+          path: ':details', name: 'dsc.interfaces.details', component: DscDetails,
           meta: { 
-            title: "DSC Details - Data Catalogue" ,
+            title: "DSC Details - Data Catalogue",
             showModal: true,
             permission: "DSC"
           } 
-        }] 
+        }]
       }]
     }, { 
       path: '/dpo', component: Dpo, 

@@ -29,7 +29,7 @@ table.v-table thead th > div.btn-group {
           <b-row>
             <b-col>
               <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <input v-model="searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
                 <div class="input-group-append">
                   <b-dropdown right id="ddown1" text="">
                     <b-container>
@@ -71,7 +71,16 @@ table.v-table thead th > div.btn-group {
 
             <b-col></b-col>
             <b-col></b-col>
-            <b-col></b-col>
+            <b-col>
+              <download-excel
+                  :data   = "dscmy.systemsDisplay"
+                  :fields = "excelFields"
+                  worksheet = "My Worksheet"
+                  name    = "filename.xls">
+              
+                  <b-btn size="sm" class="float-right" variant="success">Export</b-btn>
+              </download-excel>
+            </b-col>
           </b-row>
 
           <b-row>
@@ -80,6 +89,7 @@ table.v-table thead th > div.btn-group {
                   :headers="firstTableHeaders"
                   :items="dscmy.systemsDisplay"
                   :loading="dscmy.systemsLoading"
+                  :search="searchMain"
                   class="elevation-1 fixed-header">
 
                 <template slot="headerCell" slot-scope="props">
@@ -117,12 +127,13 @@ table.v-table thead th > div.btn-group {
               </v-data-table>
             </b-col>
             
-            <b-col>
+            <b-col class="scrollableasdf">
               <v-data-table
                 :headers="secondTableHeaders"
                 :items="dscmy.tableDisplay"
                 :loading="dscmy.tableLoading"
                 v-if="secondtable"
+                item-key="ID"
                 class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
@@ -151,11 +162,14 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                    <td><b-link :to="{ path:'/dsc/interfaces/' + $route.params.system + '/details' }" href="#foo" v-b-modal.modallg>{{ props.item.Name }}</b-link></td>
-                    <!-- <td><b-link :to="{ path:'/dsc/interfaces/' + route.params.system + "/details" }" v-b-modal.modallg>{{ props.item.name }}</b-link></td> -->
-                    <td>{{ props.item.calories }}</td>
-                    <td>{{ props.item.fat }}</td>
-                    <td>{{ props.item.carbs }}</td>
+                  <td><b-link :to="{ path:'/dsc/interfaces/' + $route.params.system + '/' + props.item.ID }" href="#foo" v-b-modal.modallg>{{ props.item.Name }}</b-link></td>
+                  <!-- <td><b-link :to="{ path:'/dsc/interfaces/' + route.params.system + "/details" }" v-b-modal.modallg>{{ props.item.name }}</b-link></td> -->
+                  <td>{{ props.item.Imm_Prec_System_ID }}</td>
+                  <td>{{ props.item.asdf }}</td>
+                  <td>{{ props.item.asdf }}</td>
+                  <td>{{ props.item.Imm_Succ_System_ID }}</td>
+                  <td>{{ props.item.asdf }}</td>
+                  <td>{{ props.item.asdf }}</td>
                 </template>
               </v-data-table>
             </b-col>
@@ -167,7 +181,11 @@ table.v-table thead th > div.btn-group {
 </template>
 
 <script>
+import Vue from 'vue'
 import { mapState, mapActions } from 'vuex'
+import JsonExcel from 'vue-json-excel'
+ 
+Vue.component('downloadExcel', JsonExcel)
 
 export default {
     data () {
@@ -179,6 +197,7 @@ export default {
         secondtable: false,
         systemSource: [],
         tablenameSource: [],
+        searchMain: '',
         searchForm: {
           systemName: '',
           itamID: '',
@@ -194,11 +213,20 @@ export default {
           { text: 'Bank ID', align: 'left', value: 'carbs', sortable: false }
         ],
         secondTableHeaders: [
-          { text: 'Table Name', align: 'left', sortable: false, value: 'Name' },
-          { text: 'Column Name', align: 'left', sortable: false, value: 'calories' },
-          { text: 'Business Alias Name', align: 'left', sortable: false, value: 'fat' },
-          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'carbs' }
+          { text: 'List of CDEs', align: 'left', sortable: false, value: 'asdf', width: "25%" },
+          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'calories', width: "25%" },
+          { text: 'SLA(Yes/No)', align: 'left', sortable: false, value: 'fat', width: "25%" },
+          { text: 'OLA(Yes/No)', align: 'left', sortable: false, value: 'carbs', width: "25%" },
+          { text: 'Immediate Succeeding System', align: 'left', sortable: false, value: 'carbs', width: "25%" },
+          { text: 'List of Downstream Process', align: 'left', sortable: false, value: 'carbs', width: "25%" },
+          { text: 'Downstream Process Owner', align: 'left', sortable: false, value: 'carbs', width: "25%" },
         ],
+        excelFields: {
+          'System Name': 'System_Name',
+          'ITAM ID': 'ITAM_ID',
+          'Dataset Custodian': 'phone.mobile',
+          'Bank ID' : 'carbs',
+        }
       }
     },
     computed: {

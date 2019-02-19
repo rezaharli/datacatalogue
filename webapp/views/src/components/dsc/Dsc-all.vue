@@ -29,7 +29,7 @@ table.v-table thead th > div.btn-group {
           <b-row>
             <b-col>
               <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <input v-model="searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
                 <div class="input-group-append">
                   <b-dropdown right id="ddown1" text="">
                     <b-container>
@@ -71,7 +71,16 @@ table.v-table thead th > div.btn-group {
 
             <b-col></b-col>
             <b-col></b-col>
-            <b-col></b-col>
+            <b-col>
+              <download-excel
+                  :data   = "dscmy.systemsDisplay"
+                  :fields = "excelFields"
+                  worksheet = "My Worksheet"
+                  name    = "filename.xls">
+              
+                  <b-btn size="sm" class="float-right" variant="success">Export</b-btn>
+              </download-excel>
+            </b-col>
           </b-row>
 
           <b-row>
@@ -80,6 +89,7 @@ table.v-table thead th > div.btn-group {
                   :headers="firstTableHeaders"
                   :items="dscmy.systemsDisplay"
                   :loading="dscmy.systemsLoading"
+                  :search="searchMain"
                   class="elevation-1 fixed-header">
 
                 <template slot="headerCell" slot-scope="props">
@@ -122,7 +132,9 @@ table.v-table thead th > div.btn-group {
                 :headers="secondTableHeaders"
                 :items="dscmy.tableDisplay"
                 :loading="dscmy.tableLoading"
+                :expand="false"
                 v-if="secondtable"
+                item-key="ID"
                 class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
@@ -151,11 +163,30 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                    <td><b-link :to="{ path:'/dsc/all/' + $route.params.system + '/details' }" href="#foo" v-b-modal.modallg>{{ props.item.Name }}</b-link></td>
+                  <tr @click="props.expanded = !props.expanded">
+                    <td><b-link :to="{ path:'/dsc/all/' + $route.params.system + '/' + props.item.ID }" href="#foo" v-b-modal.modallg>{{ props.item.Name }}</b-link></td>
                     <!-- <td><b-link :to="{ path:'/dsc/all/' + route.params.system + "/details" }" v-b-modal.modallg>{{ props.item.name }}</b-link></td> -->
-                    <td>{{ props.item.calories }}</td>
-                    <td>{{ props.item.fat }}</td>
-                    <td>{{ props.item.carbs }}</td>
+                    <td>{{ _.map(props.item.Columns, "Name").join(", ") }}</td>
+                    <td>{{ _.map(props.item.Columns, "Alias_Name").join(", ") }}</td>
+                    <td>{{ _.map(props.item.Columns, "CDE").join(", ") }}</td>
+                  </tr>
+                </template>
+                
+                <template slot="expand" slot-scope="props">
+                  <v-data-table
+                    :headers="secondTableHeaders"
+                    :items="props.item.Columns"
+                    class="elevation-1"
+                    hide-actions
+                    hide-headers
+                  >
+                    <template slot="items" slot-scope="props">
+                      <td style="width: 25%">&nbsp;</td>
+                      <td style="width: 25%">{{ props.item.Name }}</td>
+                      <td style="width: 25%">{{ props.item.Alias_Name }}</td>
+                      <td style="width: 25%">{{ props.item.CDE }}</td>
+                    </template>
+                  </v-data-table>
                 </template>
               </v-data-table>
             </b-col>
@@ -167,7 +198,11 @@ table.v-table thead th > div.btn-group {
 </template>
 
 <script>
+import Vue from 'vue'
 import { mapState, mapActions } from 'vuex'
+import JsonExcel from 'vue-json-excel'
+ 
+Vue.component('downloadExcel', JsonExcel)
 
 export default {
     data () {
@@ -179,6 +214,7 @@ export default {
         secondtable: false,
         systemSource: [],
         tablenameSource: [],
+        searchMain: '',
         searchForm: {
           systemName: '',
           itamID: '',
@@ -194,11 +230,17 @@ export default {
           { text: 'Bank ID', align: 'left', value: 'carbs', sortable: false }
         ],
         secondTableHeaders: [
-          { text: 'Table Name', align: 'left', sortable: false, value: 'Name' },
-          { text: 'Column Name', align: 'left', sortable: false, value: 'calories' },
-          { text: 'Business Alias Name', align: 'left', sortable: false, value: 'fat' },
-          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'carbs' }
+          { text: 'Table Name', align: 'left', sortable: false, value: 'Name', width: "25%" },
+          { text: 'Column Name', align: 'left', sortable: false, value: 'calories', width: "25%" },
+          { text: 'Business Alias Name', align: 'left', sortable: false, value: 'fat', width: "25%" },
+          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'carbs', width: "25%" }
         ],
+        excelFields: {
+          'System Name': 'System_Name',
+          'ITAM ID': 'ITAM_ID',
+          'Dataset Custodian': 'phone.mobile',
+          'Bank ID' : 'carbs',
+        }
       }
     },
     computed: {
