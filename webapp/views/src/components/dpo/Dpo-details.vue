@@ -257,6 +257,10 @@
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds defined by DPO*">
                       <p v-html="selectedProcessDet.System.Columns.DPO_Threshold"></p>
                     </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds set at Business term level">
+                      <p v-html="selectedProcessDet.System.Columns.Threshold"></p>
+                    </b-form-group>
                   </b-form>
                 </p>
               </b-card>
