@@ -36,24 +36,20 @@ table.v-table thead th > div.btn-group {
                       <b-form-row class="main-table-search-dropdown-form">
                         <b-col>
                           <b-form @submit="onSubmit" @reset="onReset">
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Name" label-for="systemName">
-                              <b-form-input id="systemName" type="text" v-model="searchForm.systemName"></b-form-input>
+                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Process Name" label-for="processName">
+                              <b-form-input id="processName" type="text" v-model="searchForm.processName"></b-form-input>
                             </b-form-group>
 
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="ITAM ID" label-for="itamID">
-                              <b-form-input id="itamID" type="text" v-model="searchForm.itamID"></b-form-input>
+                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Process Owner" label-for="processOwner">
+                              <b-form-input id="processOwner" type="text" v-model="searchForm.processOwner"></b-form-input>
                             </b-form-group>
 
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="Country" label-for="country">
                               <b-form-select id="country" :options="searchForm.countryMaster" v-model="searchForm.country"></b-form-select>
                             </b-form-group>
 
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="tableName">
-                              <b-form-select id="tableName" :options="searchForm.countryMaster" v-model="searchForm.tableName"></b-form-select>
-                            </b-form-group>
-
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnName">
-                              <b-form-select id="columnName" :options="searchForm.countryMaster" v-model="searchForm.columnName"></b-form-select>
+                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="CDE Name" label-for="cdeName">
+                              <b-form-input id="cdeName" type="text" v-model="searchForm.cdeName"></b-form-input>
                             </b-form-group>
 
                             <b-button-group class="mx-1 float-right">
@@ -198,12 +194,11 @@ export default {
         tablenameSource: [],
         searchMain: '',
         searchForm: {
-          systemName: '',
-          itamID: '',
+          processName: '',
+          processOwner: '',
           country: '',
-          countryMaster: ['a', 'c', 'd'],
-          tableName: '',
-          colName: '',
+          countryMaster: [],
+          cdeName: ''
         },
         firstTableHeaders: [
           { text: 'Downstream Processes', align: 'left', value: 'Name', sortable: false },
@@ -297,16 +292,26 @@ export default {
       },
       onSubmit (evt) {
         evt.preventDefault();
-        alert(JSON.stringify(this.searchForm));
+
+        this.dpomy.systemsDisplay = this.dpomy.systemsSource;
+        this.dpomy.tableDisplay = this.dpomy.tableSource;
+
+        if(this.searchForm.processName)
+          this.dpomy.systemsDisplay = this._.filter(this.dpomy.systemsDisplay, (val) => val.Name.indexOf(this.searchForm.processName) != -1);
+        if(this.searchForm.processOwner)
+          this.dpomy.systemsDisplay = this._.filter(this.dpomy.systemsDisplay, (val) => val.Owner_ID.toString().indexOf(this.searchForm.processOwner) != -1);
+        if(this.searchForm.cdeName)
+          this.dpomy.tableDisplay = this._.filter(this.dpomy.tableDisplay, (val) => val.Business_Term_ID.toString().indexOf(this.searchForm.cdeName) != -1);
+
+        this.searchForm.show = false;
       },
       onReset (evt) {
         evt.preventDefault();
         /* Reset our form values */
-        this.searchForm.systemName = '';
-        this.searchForm.itamID = '';
+        this.searchForm.processName = '';
+        this.searchForm.processOwner = '';
         this.searchForm.country = '';
-        this.searchForm.tableName = '';
-        this.searchForm.colName = '';
+        this.searchForm.cdeName = '';
 
         // /* Trick to reset/clear native browser form validation state */
         // this.searchForm.show = false;

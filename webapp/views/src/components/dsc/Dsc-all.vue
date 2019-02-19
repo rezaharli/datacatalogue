@@ -49,11 +49,11 @@ table.v-table thead th > div.btn-group {
                             </b-form-group>
 
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="tableName">
-                              <b-form-select id="tableName" :options="searchForm.countryMaster" v-model="searchForm.tableName"></b-form-select>
+                              <b-form-select id="tableName" :options="tablenameMaster" v-model="searchForm.tableName"></b-form-select>
                             </b-form-group>
 
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnName">
-                              <b-form-select id="columnName" :options="searchForm.countryMaster" v-model="searchForm.columnName"></b-form-select>
+                              <b-form-select id="columnName" :options="columnNameMaster" v-model="searchForm.columnName"></b-form-select>
                             </b-form-group>
 
                             <b-button-group class="mx-1 float-right">
@@ -220,7 +220,7 @@ export default {
           country: '',
           countryMaster: ['a', 'c', 'd'],
           tableName: '',
-          colName: '',
+          columnName: '',
         },
         firstTableHeaders: [
           { text: 'System Name', align: 'left', value: 'System_Name', sortable: false },
@@ -246,6 +246,12 @@ export default {
       ...mapState({
         dscmy: state => state.dscmy.all
       }),
+      tablenameMaster (){
+        return this._.map(this.dscmy.tableSource, 'Name')
+      },
+      columnNameMaster (){
+        return this._.map(this._.flattenDeep(this._.map(this.dscmy.tableSource, 'Columns')), 'Name')
+      }
     },
     watch: {
       $route (to){
@@ -315,7 +321,23 @@ export default {
       },
       onSubmit (evt) {
         evt.preventDefault();
-        alert(JSON.stringify(this.searchForm));
+
+        this.dscmy.systemsDisplay = this.dscmy.systemsSource;
+        this.dscmy.tableDisplay = this.dscmy.tableSource;
+        if(this.searchForm.systemName)
+          this.dscmy.systemsDisplay = this._.filter(this.dscmy.systemsDisplay, (val) => val.System_Name.indexOf(this.searchForm.systemName) != -1);
+        if(this.searchForm.itamID)
+          this.dscmy.systemsDisplay = this._.filter(this.dscmy.systemsDisplay, (val) => val.ITAM_ID.toString().indexOf(this.searchForm.itamID) != -1);
+        if(this.searchForm.tableName)
+          this.dscmy.tableDisplay = this._.filter(this.dscmy.tableDisplay, (val) => val.Name.indexOf(this.searchForm.tableName) != -1);
+        if(this.searchForm.columnName) {
+          this._.each(this.dscmy.tableDisplay, (v, i) => {
+            this.dscmy.tableDisplay[i].Columns = this._.filter(this.dscmy.tableDisplay[i].Columns, (w) => w.Name.indexOf(this.searchForm.columnName) != -1);
+            this.dscmy.tableDisplay = this._.filter(this.dscmy.tableDisplay, (w) => w.Columns.length > 0)
+          });
+        }
+
+        this.searchForm.show = false;
       },
       onReset (evt) {
         evt.preventDefault();

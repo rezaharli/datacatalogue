@@ -8,8 +8,8 @@
             <b-row>
                 <b-col>
                     <v-tabs left class="page-tab">
-                        <v-tab to="/dpo/my">My Systems</v-tab>
-                        <v-tab to="/dpo/all">All System</v-tab>
+                        <v-tab to="/dpo/my">My Processes</v-tab>
+                        <v-tab to="/dpo/all">All Processes</v-tab>
                     </v-tabs>
                 </b-col>
             </b-row>
