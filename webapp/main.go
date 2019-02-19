@@ -28,10 +28,13 @@ func main() {
 	// s.NewDSCService().CreateSubCategoryDummyData()
 	// s.NewDSCService().CreateCategoryDummyData()
 	// s.NewDSCService().CreatePolicyDummyData()
+	// s.NewDSCService().CreateDSProcessesDummyData()
+	// s.NewDSCService().CreateDSProcessesDetailDummyData()
 
 	app := knot.NewApp()
 	app.Register(c.NewUsersController(), "")
 	app.Register(c.NewDSCController(), "")
+	app.Register(c.NewDPOController(), "")
 
 	app.Static("css", filepath.Join(clit.ExeDir(), "views", "dist", "css"))
 	app.Static("js", filepath.Join(clit.ExeDir(), "views", "dist", "js"))

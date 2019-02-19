@@ -73,7 +73,7 @@ table.v-table thead th > div.btn-group {
             <b-col></b-col>
             <b-col>
               <download-excel
-                  :data   = "dscmy.systemsDisplay"
+                  :data   = "dpomy.systemsDisplay"
                   :fields = "excelFields"
                   worksheet = "My Worksheet"
                   name    = "filename.xls">
@@ -87,13 +87,13 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <v-data-table
                   :headers="firstTableHeaders"
-                  :items="dscmy.systemsDisplay"
-                  :loading="dscmy.systemsLoading"
+                  :items="dpomy.systemsDisplay"
+                  :loading="dpomy.systemsLoading"
                   :search="searchMain"
                   class="elevation-1 fixed-header">
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dscmy.systemsSource).length }})
+                  {{ props.header.text }} ({{ distinctData(props.header.value, dpomy.systemsSource).length }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -104,7 +104,7 @@ table.v-table thead th > div.btn-group {
                       <b-form-input type="text" placeholder="Filter" v-model="search['systems'][props.header.value]" @change="filterKeyup('systems', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscmy.systemsSource)" :key="item" @click="columnFilter('systems', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, dpomy.systemsSource)" :key="item" @click="columnFilter('systems', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -119,8 +119,8 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                    <td><b-link :to="{ path:'/dpo/my/' + props.item.ID }">{{ props.item.System_Name }}</b-link></td>
-                    <td>{{ props.item.ITAM_ID }}</td>
+                    <td><b-link :to="{ path:'/dpo/my/' + props.item.ID }">{{ props.item.Name }}</b-link></td>
+                    <td>{{ props.item.Owner_ID }}</td>
                     <td>{{ props.item.fat }}</td>
                 </template>
               </v-data-table>
@@ -129,9 +129,8 @@ table.v-table thead th > div.btn-group {
             <b-col class="scrollableasdf">
               <v-data-table
                 :headers="secondTableHeaders"
-                :items="dscmy.tableDisplay"
-                :loading="dscmy.tableLoading"
-                :expand="false"
+                :items="dpomy.tableDisplay"
+                :loading="dpomy.tableLoading"
                 v-if="secondtable"
                 item-key="ID"
                 class="elevation-1">
@@ -144,7 +143,7 @@ table.v-table thead th > div.btn-group {
                   </template>
 
                   <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dscmy.tableSource).length }})
+                  {{ props.header.text }} ({{ distinctData(props.header.value, dpomy.tableSource).length }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -155,7 +154,7 @@ table.v-table thead th > div.btn-group {
                       <b-form-input type="text" placeholder="Filter" v-model="search['tablename'][props.header.value]" @change="filterKeyup('tablename', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscmy.tableSource)" :key="item" @click="columnFilter('tablename', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, dpomy.tableSource)" :key="item" @click="columnFilter('tablename', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -163,32 +162,14 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                   <tr @click="props.expanded = !props.expanded">
-                    <td><b-link :to="{ path:'/dpo/my/' + $route.params.system + '/' + props.item.ID }" href="#foo" v-b-modal.modallg>{{ props.item.Name }}</b-link></td>
+                    <td><b-link :to="{ path:'/dpo/my/' + $route.params.system + '/' + props.item.ID }" href="#foo" v-b-modal.modallg>{{ props.item.Business_Term_ID }}</b-link></td>
                     <!-- <td><b-link :to="{ path:'/dpo/my/' + route.params.system + "/details" }" v-b-modal.modallg>{{ props.item.name }}</b-link></td> -->
-                    <td>{{ _.map(props.item.Columns, "Name").join(", ") }}</td>
-                    <td>{{ _.map(props.item.Columns, "Alias_Name").join(", ") }}</td>
-                    <td>{{ _.map(props.item.Columns, "CDE").join(", ") }}</td>
-                    <td>{{ _.map(props.item.Columns, "Name").join(", ") }}</td>
-                    <td>{{ _.map(props.item.Columns, "Alias_Name").join(", ") }}</td>
-                    <td>{{ _.map(props.item.Columns, "CDE").join(", ") }}</td>
+                    <td>{{ props.item.Segment_ID }}</td>
+                    <td>{{ props.item.Imm_Prec_System_ID }}</td>
+                    <td>{{ props.item.Ultimate_Source_System_ID }}</td>
+                    <td>{{ props.item.BusinessTerm.Description }}</td>
+                    <td>{{ props.item.CDE_Rationale }}</td>
                   </tr>
-                </template>
-                
-                <template slot="expand" slot-scope="props">
-                  <v-data-table
-                    :headers="secondTableHeaders"
-                    :items="props.item.Columns"
-                    class="elevation-1"
-                    hide-actions
-                    hide-headers
-                  >
-                    <template slot="items" slot-scope="props">
-                      <td style="width: 25%">&nbsp;</td>
-                      <td style="width: 25%">{{ props.item.Name }}</td>
-                      <td style="width: 25%">{{ props.item.Alias_Name }}</td>
-                      <td style="width: 25%">{{ props.item.CDE }}</td>
-                    </template>
-                  </v-data-table>
                 </template>
               </v-data-table>
             </b-col>
@@ -226,30 +207,27 @@ export default {
           colName: '',
         },
         firstTableHeaders: [
-          { text: 'Downstream Processes', align: 'left', value: 'System_Name', sortable: false },
-          { text: 'Process Owner', align: 'left', value: 'ITAM_ID', sortable: false },
+          { text: 'Downstream Processes', align: 'left', value: 'Name', sortable: false },
+          { text: 'Process Owner', align: 'left', value: 'Owner_ID', sortable: false },
           { text: 'Bank ID', align: 'left', value: 'carbs', sortable: false }
         ],
         secondTableHeaders: [
-          { text: 'CDE Name', align: 'left', sortable: false, value: 'Name', width: "25%" },
-          { text: 'Segment', align: 'left', sortable: false, value: 'calories', width: "25%" },
-          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'fat', width: "25%" },
-          { text: 'Ultimate Source System', align: 'left', sortable: false, value: 'carbs', width: "25%" },
-          { text: 'Ultimate Source System', align: 'left', sortable: false, value: 'carbs', width: "25%" },
-          { text: 'Business Description', align: 'left', sortable: false, value: 'carbs', width: "25%" },
-          { text: 'CDE Rationale', align: 'left', sortable: false, value: 'carbs', width: "25%" },
+          { text: 'CDE Name', align: 'left', sortable: false, value: 'Business_Term_ID', width: "25%" },
+          { text: 'Segment', align: 'left', sortable: false, value: 'Segment_ID', width: "25%" },
+          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'Imm_Prec_System_ID', width: "25%" },
+          { text: 'Ultimate Source System', align: 'left', sortable: false, value: 'Ultimate_Source_System_ID', width: "25%" },
+          { text: 'Business Description', align: 'left', sortable: false, value: 'BusinessTerm.Description', width: "25%" },
+          { text: 'CDE Rationale', align: 'left', sortable: false, value: 'CDE_Rationale', width: "25%" },
         ],
         excelFields: {
-          'System Name': 'System_Name',
-          'ITAM ID': 'ITAM_ID',
-          'Dataset Custodian': 'phone.mobile',
-          'Bank ID' : 'carbs',
+          'Downstream Processes': 'Name',
+          'Process Owner': 'Name',
         }
       }
     },
     computed: {
       ...mapState({
-        dscmy: state => state.dscmy.all
+        dpomy: state => state.dpomy.all
       }),
     },
     watch: {
@@ -275,24 +253,24 @@ export default {
       }
     },
     methods: {
-      ...mapActions('dscmy', {
+      ...mapActions('dpomy', {
           getAllSystem: 'getAllSystem',
           getTableName: 'getTableName',
       }),
       columnFilter (type, keyModel, val) {
         if(val == ""){
           if(type == "systems"){
-            this.dscmy.systemsDisplay = this.dscmy.systemsSource;
+            this.dpomy.systemsDisplay = this.dpomy.systemsSource;
           } else {
-            this.dscmy.tableDisplay = this.dscmy.tableSource;
+            this.dpomy.tableDisplay = this.dpomy.tableSource;
           }
           return
         }
 
         if(type == "systems"){
-          this.dscmy.systemsDisplay = _.filter(this.dscmy.systemsSource, [keyModel.value, val]);
+          this.dpomy.systemsDisplay = _.filter(this.dpomy.systemsSource, [keyModel.value, val]);
         } else {
-          this.dscmy.tableDisplay = _.filter(this.dscmy.tableSource, [keyModel.value, val]);
+          this.dpomy.tableDisplay = _.filter(this.dpomy.tableSource, [keyModel.value, val]);
         }
       },
       filterKeyup (type, keyModel) {

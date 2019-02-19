@@ -20,20 +20,15 @@
     <b-container> -->
       <b-row>
         <b-col cols="4"> 
-          <b-card tag="article" class="mb-2" v-if="selectedSystem && selectedTable.Columns.length > 0">
+          <b-card tag="article" class="mb-2" v-if="selectedProcess">
             <b-media>
-              <h6>System Name</h6>
-              <p v-html="selectedSystem.System_Name"></p>
+              <h6>Downstream Process Name</h6>
+              <p v-html="selectedProcess.Name"></p>
             </b-media>
             
             <b-media>
-              <h6>ITAM ID</h6>
-              <p v-html="selectedSystem.ITAM_ID"></p>
-            </b-media>
-            
-            <b-media>
-              <h6>Dataset Custodian</h6>
-              <p></p>
+              <h6>Process Owner</h6>
+              <p v-html="selectedProcess.Owner_ID"></p>
             </b-media>
             
             <b-media>
@@ -42,18 +37,13 @@
             </b-media>
             
             <b-media>
-              <h6>Business Alias Name</h6>
-              <p v-html="selectedTable.Columns[0].Alias_Name"></p>
+              <h6>CDE Name</h6>
+              <p v-html="selectedProcessDet.Business_Term_ID"></p>
             </b-media>
             
             <b-media>
-              <h6>Table Name</h6>
-              <p v-html="selectedTable.Name"></p>
-            </b-media>
-            
-            <b-media>
-              <h6>Column Name</h6>
-              <p v-html="selectedTable.Columns[0].Name"></p>
+              <h6>CDE Rationale</h6>
+              <p v-html="selectedProcessDet.CDE_Rationale"></p>
             </b-media>
           </b-card>
         </b-col>
@@ -61,7 +51,7 @@
         <b-col cols="8"> 
           <b-row>
             <b-col>
-              <b-card title="Technical Metadata From System" tag="article" class="mb-2" v-if="selectedColumn">
+              <b-card title="Immediate Preceding System Details" tag="article" class="mb-2" v-if="selectedProcessDet">
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Name" label-for="systemName">
@@ -69,56 +59,44 @@
                       </b-form-select>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnName">
-                      <b-form-select id="columnName" class="col-8" v-model="ddColumn.selected" :options="ddColumnOptions"></b-form-select>
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="ITAM ID" label-for="itamid">
+                      <b-form-select id="itamid" class="col-8" v-model="ddItam.selected" :options="ddItamOptions"></b-form-select>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Screen Label Name*" label-for="screenLabelName">
-                      <b-form-select id="screenLabelName" class="col-8"></b-form-select>
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="TableName" label-for="tablename">
+                      <b-form-select id="tablename" class="col-8" v-model="ddTableName.selected" :options="ddTableOptions"></b-form-select>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Screen Label Name*">
-                      <p>This field describes the full name of the client and used for capturing lengthy names where the customer name field is unable to accommodat. It is also used for sub-funds. [more]</p>
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnname">
+                      <b-form-select id="columnname" class="col-8" v-model="ddColumnName.selected" :options="ddColumnNameOptions"></b-form-select>
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Screen Label Name" label-for="screenlabelname">
+                      <b-form-select id="screenlabelname" class="col-8"></b-form-select>
                     </b-form-group>
                     
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="CDE (yes/no)">
-                      <p v-html="selectedColumn.CDE"></p>
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Description">
+                      <p v-html="selectedProcessDet.BusinessTerm.Description"></p>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Status*">
-                      <p v-html="selectedColumn.Status"></p>
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)">
+                      <p v-html="selectedProcessDet.System.Columns.Derived"></p>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Type">
-                      <p v-html="selectedColumn.Data_Type"></p>
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation Logic">
+                      <p v-html="selectedProcessDet.System.Columns.Derivation_Logic"></p>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Format">
-                      <p v-html="selectedColumn.Data_Format"></p>
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Quality Requirements">
+                      <p v-html="selectedProcessDet.System.Columns.DQ_Standards"></p>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Length">
-                      <p v-html="selectedColumn.Data_Length"></p>
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds">
+                      <p v-html="selectedProcessDet.System.Columns.Threshold"></p>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Example">
-                      <p v-html="selectedColumn.Example"></p>
-                    </b-form-group>
-
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)*">
-                      <p v-html="selectedColumn.Derived"></p>
-                    </b-form-group>
-
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation logic*">
-                      <p v-html="selectedColumn.Derivation_Logic"></p>
-                    </b-form-group>
-
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sourced from Upstream (Yes/No)*">
-                      <p v-html="selectedColumn.Sourced_from_Upstream"></p>
-                    </b-form-group>
-
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Checks*">
-                      <p v-html="selectedColumn.System_Checks"></p>
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data SLA signed?">
+                      <p v-html="selectedProcessDet.System.Columns.Data_SLA_Signed"></p>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -128,27 +106,114 @@
 
           <b-row>
             <b-col>
-              <b-card title="Business Metadata From Domain" tag="article" class="mb-2" v-if="selectedColumn">
+              <b-card title="Ultimate Source System Details" tag="article" class="mb-2" v-if="selectedProcessDet">
+                <p class="card-text">
+                  <b-form>
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Name" label-for="systemName">
+                      <b-form-select id="systemName" class="col-8" v-model="ddSystem.selected" :options="ddSystemOptions">
+                      </b-form-select>
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="ITAM ID" label-for="itamid">
+                      <b-form-select id="itamid" class="col-8" v-model="ddItam.selected" :options="ddItamOptions"></b-form-select>
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="TableName" label-for="tablename">
+                      <b-form-select id="tablename" class="col-8" v-model="ddTableName.selected" :options="ddTableOptions"></b-form-select>
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnname">
+                      <b-form-select id="columnname" class="col-8" v-model="ddColumnName.selected" :options="ddColumnNameOptions"></b-form-select>
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Screen Label Name" label-for="screenlabelname">
+                      <b-form-select id="screenlabelname" class="col-8"></b-form-select>
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Description">
+                      <p v-html="selectedProcessDet.BusinessTerm.Description"></p>
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived?">
+                      <p v-html="selectedProcessDet.System.Columns.Derived"></p>
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation Logic">
+                      <p v-html="selectedProcessDet.System.Columns.Derivation_Logic"></p> 
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Quality requirements">
+                      <p v-html="selectedProcessDet.System.Columns.DQ_Standards"></p>
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds">
+                      <p v-html="selectedProcessDet.System.Columns.Threshold"></p>
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source (Yes/No)">
+                      <p v-html="selectedProcessDet.System.Columns.Golden_Source"></p>
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source System Name">
+                      <p v-html="selectedProcessDet.BusinessTerm.Golden_Source_ID"></p>
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source ITAM ID">
+                      <p v-html="selectedProcessDet.System.ITAM_ID"></p>
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Table Name">
+                      <p v-html="selectedProcessDet.System.Columns.MDTable.Business_Term_ID"></p>
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Column Name">
+                      <p v-html="selectedProcessDet.System.Columns.Name"></p>
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Screen Name">
+                      <p></p>
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Business Description">
+                      <p></p>
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Derived (Yes/No)">
+                      <p ></p>
+                    </b-form-group>
+
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Derivation Logic">
+                      <p></p>
+                    </b-form-group>
+                  </b-form>
+                </p>
+              </b-card>
+            </b-col>
+          </b-row>
+
+          <b-row>
+            <b-col>
+              <b-card title="Domain View" tag="article" class="mb-2" v-if="selectedProcessDet">
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain">
-                      <p v-html="selectedColumn.BusinessTerms.SubCategory.Category.Name"></p>
+                      <p v-html="selectedProcessDet.BusinessTerm.SubCategory.Category.Name"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Domain">
-                      <p v-html="selectedColumn.BusinessTerms.SubCategory.Name"></p>
+                      <p v-html="selectedProcessDet.BusinessTerm.SubCategory.Name"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain Owner">
                       <p></p>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term*">
-                      <p v-html="selectedColumn.BusinessTerms.BT_Name"></p>
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term">
+                      <p v-html="selectedProcessDet.BusinessTerm.BT_Name"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
-                      <p v-html="selectedColumn.BusinessTerms.Description"></p>
+                      <p v-html="selectedProcessDet.BusinessTerm.Description"></p>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -158,61 +223,19 @@
 
           <b-row>
             <b-col>
-              <b-card title="Policy Related Information" tag="article" class="mb-2" v-if="selectedColumn">
+              <b-card title="Data Standards" tag="article" class="mb-2" v-if="selectedProcessDet">
                 <p class="card-text">
                   <b-form>
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Names">
-                      <p v-html="selectedColumn.BusinessTerms.Policy.Info_Asset_Name"></p>
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards set by DPO">
+                      <p v-html="selectedProcessDet.System.Columns.DPO_DQ_Standards"></p>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Description">
-                      <p v-html="selectedColumn.BusinessTerms.Policy.Description"></p>
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards set at Business Term Level">
+                      <p v-html="selectedProcessDet.BusinessTerm.DQ_Standards"></p>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="C - Confidentiality">
-                      <p v-html="selectedColumn.BusinessTerms.Policy.Confidentiality"></p>
-                    </b-form-group>
-
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="I - Integrity">
-                      <p v-html="selectedColumn.BusinessTerms.Policy.Integrity"></p>
-                    </b-form-group>
-
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="A - Availability">
-                      <p v-html="selectedColumn.BusinessTerms.Policy.Availability"></p>
-                    </b-form-group>
-
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Overall CIA Rating">
-                      <p v-html="selectedColumn.BusinessTerms.Policy.Overall_CIA_Rating"></p>
-                    </b-form-group>
-
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Record Categories">
-                      <p v-html="selectedColumn.BusinessTerms.Policy.Record_Category"></p>
-                    </b-form-group>
-
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="PII Flag">
-                      <p v-html="selectedColumn.BusinessTerms.Policy.PII_Flag"></p>
-                    </b-form-group>
-                  </b-form>
-                </p>
-              </b-card>
-            </b-col>
-          </b-row>
-
-          <b-row>
-            <b-col>
-              <b-card title="Interfaces" tag="article" class="mb-2" v-if="selectedColumn">
-                <p class="card-text">
-                  <b-form>
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Preceding System*">
-                      <p v-html="selectedColumn.Imm_Prec_System_ID"></p>
-                    </b-form-group>
-
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Succeeding System*">
-                      <p v-html="selectedColumn.Imm_Succ_System_ID"></p>
-                    </b-form-group>
-
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards | Threshold*">
-                      <p v-html="selectedColumn.Threshold"></p>
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds defined by DPO*">
+                      <p v-html="selectedProcessDet.System.Columns.DPO_Threshold"></p>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -235,73 +258,99 @@ export default {
   data () {
     return {
       showModal: this.$route.meta.showModal,
-      selectedSystem: null,
-      selectedTable: null,
-      selectedColumn: null,
+      selectedProcess: null,
+      selectedProcessDet: null,
+      selectedProcessDet: null,
       ddSystem: {
         selected: null,
       },
-      ddColumn: {
+      ddItam: {
+        selected: null,
+      },
+      ddTableName: {
+        selected: null,
+      },
+      ddColumnName: {
         selected: null,
       },
       excelFields: {
-        'System Name': "selectedSystem.System_Name",
-        'ITAM ID': "selectedSystem.ITAM_ID",
-        'Dataset Custodian': 'asdf',
-        'Bank ID' : 'asdf',
-        'Business Alias Name': "selectedColumn.Alias_Name",
-        'Table Name': 'selectedTable.Name',
-        'Column Name': 'selectedColumn.Name',
-        'Screen Label Name*': 'asdf',
-        'CDE (yes/no)': 'selectedColumn.CDE',
-        'Status*': 'selectedColumn.Status',
-        'Data Type': 'selectedColumn.Data_Type',
-        'Data Format': 'selectedColumn.Data_Format',
-        "Data Length": "selectedColumn.Data_Length",
-        "Example": "selectedColumn.Example",
-        "Derived (Yes/No)*": "selectedColumn.Derived",
-        "Derivation logic*": "selectedColumn.Derivation_Logic",
-        "Sourced from Upstream (Yes/No)*": "selectedColumn.Sourced_from_Upstream",
-        "System Checks*": "selectedColumn.System_Checks",
-        "Domain": "selectedColumn.BusinessTerms.SubCategory.Category.Name",
-        "Sub Domain": "selectedColumn.BusinessTerms.SubCategory.Name",
+        'Downstream Process Name': "selectedProcess.Name",
+        'Process Owner': "selectedProcess.Owner_ID",
+        'CDE Name': 'selectedProcessDet.Business_Term_ID',
+        'CDE Rationale': 'selectedProcessDet.CDE_Rationale',
+        'System Name': 'ddSystem.selected',
+        'ITAM ID': 'ddItam.selected',
+        'TableName': 'ddTableName.selected',
+        "Column Name": "ddColumnName.selected",
+        "Screen Label Name": "asdf",
+        "Business Description": "selectedProcessDet.BusinessTerm.Description",
+        "Derived (Yes/No)": "selectedProcessDet.System.Columns.Derived",
+        "Derivation Logic": "selectedProcessDet.System.Columns.Derivation_Logic",
+        "Data Quality Requirements": "selectedProcessDet.System.Columns.DQ_Standards",
+        "Thresholds": "selectedProcessDet.System.Columns.Threshold",
+        "Data SLA signed?": "selectedProcessDet.System.Columns.Data_SLA_Signed",
+        'System Name': 'ddSystem.selected',
+        'ITAM ID': 'ddItam.selected',
+        'TableName': 'ddTableName.selected',
+        "Column Name": "ddColumnName.selected",
+        "Screen Label Name": "asdf",
+        "Business Description": "selectedProcessDet.BusinessTerm.Description",
+        "Derived?": "selectedProcessDet.System.Columns.Derived",
+        "Derivation Logic": "selectedProcessDet.System.Columns.Derivation_Logic",
+        "Data Quality requirements": "selectedProcessDet.System.Columns.DQ_Standards",
+        "Thresholds": "selectedProcessDet.System.Columns.Threshold",
+        "Golden Source (Yes/No)": "selectedProcessDet.System.Columns.Golden_Source",
+        "Golden Source System Name": "selectedProcessDet.BusinessTerm.Golden_Source_ID",
+        "Golden Source ITAM ID": "selectedProcessDet.System.ITAM_ID",
+        "Golden Source Table Name": "selectedProcessDet.System.Columns.MDTable.Business_Term_ID",
+        "Golden Source Column Name": "selectedProcessDet.System.Columns.Name",
+        "Golden Source Screen Name": "asdf",
+        "Golden Source Business Description": "asdf",
+        "Golden Source Derived (Yes/No)": "asdf",
+        "Golden Source Derivation Logic": "asdf",
+        "Domain": "selectedProcessDet.BusinessTerm.SubCategory.Category.Name",
+        "Sub Domain": "selectedProcessDet.BusinessTerm.SubCategory.Name",
         "Domain Owner": "asdf",
-        "Business Term*": "selectedColumn.BusinessTerms.BT_Name",
-        "Business Term Description": "selectedColumn.BusinessTerms.Description",
-        "Information Asset Names": "selectedColumn.BusinessTerms.Policy.Info_Asset_Name",
-        "Information Asset Description": "selectedColumn.BusinessTerms.Policy.Description",
-        "C - Confidentiality": "selectedColumn.BusinessTerms.Policy.Confidentiality",
-        "I - Integrity": "selectedColumn.BusinessTerms.Policy.Integrity",
-        "A - Availability": "selectedColumn.BusinessTerms.Policy.Availability",
-        "Overall CIA Rating": "selectedColumn.BusinessTerms.Policy.Overall_CIA_Rating",
-        "Record Categories": "selectedColumn.BusinessTerms.Policy.Record_Category",
-        "PII Flag": "selectedColumn.BusinessTerms.Policy.PII_Flag",
-        "Immediate Preceding System*": "selectedColumn.Imm_Prec_System_ID",
-        "Immediate Succeeding System*": "selectedColumn.Imm_Succ_System_ID",
-        "DQ Standards | Threshold*": "selectedColumn.Threshold"
+        "Business Term": "selectedProcessDet.BusinessTerm.BT_Name",
+        "Business Term Description": "selectedProcessDet.BusinessTerm.Description",
+        "DQ Standards set by DPO": "selectedProcessDet.System.Columns.DPO_DQ_Standards",
+        "DQ Standards set at Business Term Level": "selectedProcessDet.BusinessTerm.DQ_Standards",
+        "Thresholds defined by DPO*": "selectedProcessDet.System.Columns.DPO_Threshold"
       }
     }
   },
   computed: {
     ...mapState({
-      dscmy: state => state.dscmy.all
+      dpomy: state => state.dpomy.all
     }),
     count () {
-      return this.dscmy.tableSource.length
+      return this.dpomy.tableSource.length
     },
     ddSystemOptions () {
-      this.ddSystem.selected = this.selectedSystem ? this.selectedSystem.System_Name : null;
-      return this.selectedSystem ? [{ value: this.selectedSystem.System_Name, text: this.selectedSystem.System_Name }] : [];
+      this.ddSystem.selected = this.selectedProcess ? this.selectedProcess.Name : null;
+      return this.selectedProcess ? [{ value: this.selectedProcess.Name, text: this.selectedProcess.Name }] : [];
     },
-    ddColumnOptions () {
-      return this.selectedTable ? _.map(this.selectedTable.Columns, function(v) { return { value: v.ID, text: v.Name } }) : [];
+    ddItamOptions () {
+      this.ddItam.selected = this.selectedProcessDet ? this.selectedProcessDet.System.ITAM_ID : null;
+      return this.selectedProcessDet.System ? [{ value: this.selectedProcessDet.System.ITAM_ID, text: this.selectedProcessDet.System.ITAM_ID }] : [];
+    },
+    ddTableOptions () {
+      this.ddTableName.selected = this.selectedProcessDet ? this.selectedProcessDet.System.Columns.MDTable.Name : null;
+      return this.selectedProcessDet.System ? [{ value: this.selectedProcessDet.System.Columns.MDTable.Name, text: this.selectedProcessDet.System.Columns.MDTable.Name }] : [];
+    },
+    ddColumnNameOptions () {
+      this.ddColumnName.selected = this.selectedProcessDet ? this.selectedProcessDet.System.Columns.Name : null;
+      return this.selectedProcessDet.System ? [{ value: this.selectedProcessDet.System.Columns.Name, text: this.selectedProcessDet.System.Columns.Name }] : [];
     },
     exportDatas () {
-      if(this.selectedSystem && this.selectedTable && this.selectedColumn){
+      if(this.selectedProcess && this.selectedProcessDet && this.selectedProcessDet){
         return [{
-          selectedSystem: this.selectedSystem,
-          selectedTable: this.selectedTable,
-          selectedColumn: this.selectedColumn
+          selectedProcess: this.selectedProcess,
+          selectedProcessDet: this.selectedProcessDet,
+          ddSystem: this.ddSystem,
+          ddItam: this.ddItam,
+          ddTableName: this.ddTableName,
+          ddColumnName: this.ddColumnName
         }]
       } else {
         return [];
@@ -313,19 +362,18 @@ export default {
       this.showModal = showModal;
     },
     count (newCount, oldCount) {
-      this.selectedSystem = _.find(this.dscmy.systemsSource, ['ID', parseInt(this.$route.params.system)])
-      this.selectedTable = _.find(this.dscmy.tableSource, ['ID', parseInt(this.$route.params.details)])
+      this.selectedProcess = _.find(this.dpomy.systemsSource, ['ID', parseInt(this.$route.params.system)])
+      this.selectedProcessDet = _.find(this.dpomy.tableSource, ['ID', parseInt(this.$route.params.details)])
     },
-    selectedTable (){
-      this.ddColumn.selected = this.selectedTable ? (this.selectedTable.Columns[0] ? this.selectedTable.Columns[0].ID : null) : null;
-      this.selectedColumn = this.selectedTable ? _.find(this.selectedTable.Columns, ['ID', parseInt(this.ddColumn.selected)]) : null;
+    selectedProcessDet (){
+      this.ddItam.selected = this.selectedProcessDet ? this.selectedProcessDet.System.ITAM_ID : null;
     }
   },
   mounted() {
     this.$refs.modalDetails.show();
     
-    this.selectedSystem = _.find(this.dscmy.systemsSource, ['ID', parseInt(this.$route.params.system)])
-    this.selectedTable = _.find(this.dscmy.tableSource, ['ID', parseInt(this.$route.params.details)])
+    this.selectedProcess = _.find(this.dpomy.systemsSource, ['ID', parseInt(this.$route.params.system)])
+    this.selectedProcessDet = _.find(this.dpomy.tableSource, ['ID', parseInt(this.$route.params.details)])
   },
   methods: {
     handleClose () {

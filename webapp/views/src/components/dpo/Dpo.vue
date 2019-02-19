@@ -10,7 +10,6 @@
                     <v-tabs left class="page-tab">
                         <v-tab to="/dpo/my">My Systems</v-tab>
                         <v-tab to="/dpo/all">All System</v-tab>
-                        <v-tab to="/dpo/interfaces">Interfaces</v-tab>
                     </v-tabs>
                 </b-col>
             </b-row>

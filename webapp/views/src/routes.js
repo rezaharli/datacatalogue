@@ -15,7 +15,6 @@ import Dpo from './components/dpo/Dpo';
 import DpoDetails from './components/dpo/Dpo-details';
 import DpoMy from './components/dpo/Dpo-my';
 import DpoAll from './components/dpo/Dpo-all';
-import DpoInterfaces from './components/dpo/Dpo-interfaces';
 
 import Ddo from './components/Ddo';
 import Rfo from './components/Rfo';
@@ -157,28 +156,6 @@ const router = new VueRouter({
         }, 
         children: [{ // dpo.all.system.details
           path: ':details', name: 'dpo.all.details', component: DpoDetails,
-          meta: { 
-            title: "DPO Details - Data Catalogue",
-            showModal: true,
-            permission: "DPO"
-          } 
-        }]
-      }, { // dpo.interfaces
-        path: 'interfaces', name: 'dpo.interfaces', component: DpoInterfaces, 
-        meta: { 
-          title: "DPO - Data Catalogue" ,
-          showModal: false,
-          permission: "DPO"
-        } 
-      }, { 
-        path: 'interfaces/:system', name: 'dpo.interfaces', component: DpoInterfaces, 
-        meta: { 
-          title: "DPO - Data Catalogue" ,
-          showModal: false,
-          permission: "DPO"
-        }, 
-        children: [{ // dpo.interfaces.system.details
-          path: ':details', name: 'dpo.interfaces.details', component: DpoDetails,
           meta: { 
             title: "DPO Details - Data Catalogue",
             showModal: true,
