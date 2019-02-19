@@ -163,10 +163,9 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                  <tr @click="props.expanded = !props.expanded">
-                    <td><b-link :to="{ path:'/dsc/all/' + $route.params.system + '/' + props.item.ID }" href="#foo" v-b-modal.modallg>{{ props.item.Name }}</b-link></td>
-                    <!-- <td><b-link :to="{ path:'/dsc/all/' + route.params.system + "/details" }" v-b-modal.modallg>{{ props.item.name }}</b-link></td> -->
-                    <td>{{ _.map(props.item.Columns, "Name").join(", ") }}</td>
+                  <tr>
+                    <td><b-link @click="props.expanded = !props.expanded">{{ props.item.Name }}</b-link></td>
+                    <td><b-link @click="showDetails(props.item.ID)">{{ _.map(props.item.Columns, "Name").join(", ") }}</b-link></td>
                     <td>{{ _.map(props.item.Columns, "Alias_Name").join(", ") }}</td>
                     <td>{{ _.map(props.item.Columns, "CDE").join(", ") }}</td>
                   </tr>
@@ -182,7 +181,7 @@ table.v-table thead th > div.btn-group {
                   >
                     <template slot="items" slot-scope="props">
                       <td style="width: 25%">&nbsp;</td>
-                      <td style="width: 25%">{{ props.item.Name }}</td>
+                      <td style="width: 25%"><b-link @click="showDetails(props.item.Table_ID)">{{ props.item.Name }}</b-link></td>
                       <td style="width: 25%">{{ props.item.Alias_Name }}</td>
                       <td style="width: 25%">{{ props.item.CDE }}</td>
                     </template>
@@ -322,6 +321,9 @@ export default {
         // /* Trick to reset/clear native browser form validation state */
         // this.searchForm.show = false;
         // this.$nextTick(() => { this.searchForm.show = true });
+      },
+      showDetails (id) {
+        this.$router.push('/dsc/all/' + this.$route.params.system + '/' + id)
       }
     }
 }

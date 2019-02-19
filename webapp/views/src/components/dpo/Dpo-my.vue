@@ -162,8 +162,7 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                   <tr @click="props.expanded = !props.expanded">
-                    <td><b-link :to="{ path:'/dpo/my/' + $route.params.system + '/' + props.item.ID }" href="#foo" v-b-modal.modallg>{{ props.item.Business_Term_ID }}</b-link></td>
-                    <!-- <td><b-link :to="{ path:'/dpo/my/' + route.params.system + "/details" }" v-b-modal.modallg>{{ props.item.name }}</b-link></td> -->
+                    <td><b-link @click="showDetails(props.item.ID)">{{ props.item.Business_Term_ID }}</b-link></td>
                     <td>{{ props.item.Segment_ID }}</td>
                     <td>{{ props.item.Imm_Prec_System_ID }}</td>
                     <td>{{ props.item.Ultimate_Source_System_ID }}</td>
@@ -304,6 +303,9 @@ export default {
         // /* Trick to reset/clear native browser form validation state */
         // this.searchForm.show = false;
         // this.$nextTick(() => { this.searchForm.show = true });
+      },
+      showDetails (id) {
+        this.$router.push('/dpo/my/' + this.$route.params.system + '/' + id)
       }
     }
 }
