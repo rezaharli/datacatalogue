@@ -11,7 +11,12 @@ import DscMy from './components/dsc/Dsc-my';
 import DscAll from './components/dsc/Dsc-all';
 import DscInterfaces from './components/dsc/Dsc-interfaces';
 
-import Dpo from './components/Dpo';
+import Dpo from './components/dpo/Dpo';
+import DpoDetails from './components/dpo/Dpo-details';
+import DpoMy from './components/dpo/Dpo-my';
+import DpoAll from './components/dpo/Dpo-all';
+import DpoInterfaces from './components/dpo/Dpo-interfaces';
+
 import Ddo from './components/Ddo';
 import Rfo from './components/Rfo';
 
@@ -104,12 +109,83 @@ const router = new VueRouter({
           } 
         }]
       }]
-    }, { 
+    }, { // dpo
       path: '/dpo', component: Dpo, 
       meta: { 
-        title: "DPO - Data Catalogue" ,
+        title: "DPO - Data Catalogue",
         permission: "DPO"
-      } 
+      }, 
+      children: [{ 
+        path: '', name: 'dpo', redirect: { name: 'dpo.my' }
+      }, { //dpo.my
+        path: 'my', 
+        name: 'dpo.my', 
+        component: DpoMy, 
+        meta: { 
+          title: "DPO - Data Catalogue",
+          showModal: false,
+          permission: "DPO"
+        } 
+      }, { // dpo.my.system
+        path: 'my/:system', name: 'dpo.my', component: DpoMy, 
+        meta: { 
+          title: "DPO - Data Catalogue",
+          showModal: false,
+          permission: "DPO"
+        }, 
+        children: [{ // dpo.my.system.details
+          path: ':details', name: 'dpo.my.details', component: DpoDetails,
+          meta: { 
+            title: "DPO Details - Data Catalogue",
+            showModal: true,
+            permission: "DPO"
+          } 
+        }] 
+      }, { // dpo.all
+        path: 'all', name: 'dpo.all', component: DpoAll, 
+        meta: { 
+          title: "DPO - Data Catalogue" ,
+          showModal: false,
+          permission: "DPO"
+        } 
+      }, { 
+        path: 'all/:system', name: 'dpo.all', component: DpoAll, 
+        meta: { 
+          title: "DPO - Data Catalogue" ,
+          showModal: false,
+          permission: "DPO"
+        }, 
+        children: [{ // dpo.all.system.details
+          path: ':details', name: 'dpo.all.details', component: DpoDetails,
+          meta: { 
+            title: "DPO Details - Data Catalogue",
+            showModal: true,
+            permission: "DPO"
+          } 
+        }]
+      }, { // dpo.interfaces
+        path: 'interfaces', name: 'dpo.interfaces', component: DpoInterfaces, 
+        meta: { 
+          title: "DPO - Data Catalogue" ,
+          showModal: false,
+          permission: "DPO"
+        } 
+      }, { 
+        path: 'interfaces/:system', name: 'dpo.interfaces', component: DpoInterfaces, 
+        meta: { 
+          title: "DPO - Data Catalogue" ,
+          showModal: false,
+          permission: "DPO"
+        }, 
+        children: [{ // dpo.interfaces.system.details
+          path: ':details', name: 'dpo.interfaces.details', component: DpoDetails,
+          meta: { 
+            title: "DPO Details - Data Catalogue",
+            showModal: true,
+            permission: "DPO"
+          } 
+        }]
+      }]
     }, { 
       path: '/ddo', component: Ddo, 
       meta: { 
