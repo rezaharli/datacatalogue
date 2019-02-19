@@ -122,12 +122,11 @@ table.v-table thead th > div.btn-group {
                     <td><b-link :to="{ path:'/dpo/my/' + props.item.ID }">{{ props.item.System_Name }}</b-link></td>
                     <td>{{ props.item.ITAM_ID }}</td>
                     <td>{{ props.item.fat }}</td>
-                    <td>{{ props.item.carbs }}</td>
                 </template>
               </v-data-table>
             </b-col>
             
-            <b-col>
+            <b-col class="scrollableasdf">
               <v-data-table
                 :headers="secondTableHeaders"
                 :items="dscmy.tableDisplay"
@@ -166,6 +165,9 @@ table.v-table thead th > div.btn-group {
                   <tr @click="props.expanded = !props.expanded">
                     <td><b-link :to="{ path:'/dpo/my/' + $route.params.system + '/' + props.item.ID }" href="#foo" v-b-modal.modallg>{{ props.item.Name }}</b-link></td>
                     <!-- <td><b-link :to="{ path:'/dpo/my/' + route.params.system + "/details" }" v-b-modal.modallg>{{ props.item.name }}</b-link></td> -->
+                    <td>{{ _.map(props.item.Columns, "Name").join(", ") }}</td>
+                    <td>{{ _.map(props.item.Columns, "Alias_Name").join(", ") }}</td>
+                    <td>{{ _.map(props.item.Columns, "CDE").join(", ") }}</td>
                     <td>{{ _.map(props.item.Columns, "Name").join(", ") }}</td>
                     <td>{{ _.map(props.item.Columns, "Alias_Name").join(", ") }}</td>
                     <td>{{ _.map(props.item.Columns, "CDE").join(", ") }}</td>
@@ -224,16 +226,18 @@ export default {
           colName: '',
         },
         firstTableHeaders: [
-          { text: 'System Name', align: 'left', value: 'System_Name', sortable: false },
-          { text: 'ITAM ID', align: 'left', value: 'ITAM_ID', sortable: false },
-          { text: 'Dataset Custodian', align: 'left', value: 'fat', sortable: false },
+          { text: 'Downstream Processes', align: 'left', value: 'System_Name', sortable: false },
+          { text: 'Process Owner', align: 'left', value: 'ITAM_ID', sortable: false },
           { text: 'Bank ID', align: 'left', value: 'carbs', sortable: false }
         ],
         secondTableHeaders: [
-          { text: 'Table Name', align: 'left', sortable: false, value: 'Name', width: "25%" },
-          { text: 'Column Name', align: 'left', sortable: false, value: 'calories', width: "25%" },
-          { text: 'Business Alias Name', align: 'left', sortable: false, value: 'fat', width: "25%" },
-          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'carbs', width: "25%" }
+          { text: 'CDE Name', align: 'left', sortable: false, value: 'Name', width: "25%" },
+          { text: 'Segment', align: 'left', sortable: false, value: 'calories', width: "25%" },
+          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'fat', width: "25%" },
+          { text: 'Ultimate Source System', align: 'left', sortable: false, value: 'carbs', width: "25%" },
+          { text: 'Ultimate Source System', align: 'left', sortable: false, value: 'carbs', width: "25%" },
+          { text: 'Business Description', align: 'left', sortable: false, value: 'carbs', width: "25%" },
+          { text: 'CDE Rationale', align: 'left', sortable: false, value: 'carbs', width: "25%" },
         ],
         excelFields: {
           'System Name': 'System_Name',
