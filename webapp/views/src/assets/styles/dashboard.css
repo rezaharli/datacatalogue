@@ -77,6 +77,10 @@
     height: 100%;
 }
 
+.v-datatable th.column {
+    font-weight: bolder;
+}
+
 @media (min-width: 992px) {
     #modal-details .modal-lg{
         max-width: 80%;

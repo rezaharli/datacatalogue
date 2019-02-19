@@ -1,3 +1,23 @@
+<style>
+.left-card-media{
+  margin-bottom: 10px;
+}
+.left-card-title{
+  font-weight: bolder;
+}
+.card-title{
+  font-weight: bolder;
+  border-bottom: 1px solid #cecece;
+  padding-bottom: 9px;
+}
+.form-group {
+  margin-bottom: 10px !important;
+}
+.col-form-label {
+    font-weight: bolder;
+}
+</style>
+
 <template>
   <b-modal hide-footer header-class="modal-details-header setbackground" body-class="setbackground" v-if="showModal" id="modal-details" ref="modalDetails" size="lg" @hidden="handleClose">
     <b-container fluid class="row-kasijarak">
@@ -21,28 +41,28 @@
       <b-row>
         <b-col cols="4"> 
           <b-card tag="article" class="mb-2" v-if="selectedProcess">
-            <b-media>
-              <h6>Downstream Process Name</h6>
+            <b-media class="left-card-media" >
+              <h6 class="left-card-title">Downstream Process Name</h6>
               <p v-html="selectedProcess.Name"></p>
             </b-media>
             
-            <b-media>
-              <h6>Process Owner</h6>
+            <b-media class="left-card-media">
+              <h6 class="left-card-title">Process Owner</h6>
               <p v-html="selectedProcess.Owner_ID"></p>
             </b-media>
             
-            <b-media>
-              <h6>Bank ID</h6>
+            <b-media class="left-card-media">
+              <h6 class="left-card-title">Bank ID</h6>
               <p></p>
             </b-media>
             
-            <b-media>
-              <h6>CDE Name</h6>
+            <b-media class="left-card-media">
+              <h6 class="left-card-title">CDE Name</h6>
               <p v-html="selectedProcessDet.Business_Term_ID"></p>
             </b-media>
             
-            <b-media>
-              <h6>CDE Rationale</h6>
+            <b-media class="left-card-media">
+              <h6 class="left-card-title">CDE Rationale</h6>
               <p v-html="selectedProcessDet.CDE_Rationale"></p>
             </b-media>
           </b-card>
@@ -259,7 +279,6 @@ export default {
     return {
       showModal: this.$route.meta.showModal,
       selectedProcess: null,
-      selectedProcessDet: null,
       selectedProcessDet: null,
       ddSystem: {
         selected: null,

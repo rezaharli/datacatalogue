@@ -1,3 +1,24 @@
+<style>
+.left-card-media{
+  margin-bottom: 10px;
+}
+.left-card-title{
+  font-weight: bolder;
+}
+.card-title{
+  font-weight: bolder;
+  border-bottom: 1px solid #cecece;
+  padding-bottom: 9px;
+}
+.form-group {
+  margin-bottom: 10px !important;
+}
+.col-form-label {
+    font-weight: bolder;
+}
+</style>
+
+
 <template>
   <b-modal hide-footer header-class="modal-details-header setbackground" body-class="setbackground" v-if="showModal" id="modal-details" ref="modalDetails" size="lg" @hidden="handleClose">
     <b-container fluid class="row-kasijarak">
@@ -21,38 +42,38 @@
       <b-row>
         <b-col cols="4"> 
           <b-card tag="article" class="mb-2" v-if="selectedSystem && selectedTable.Columns.length > 0">
-            <b-media>
-              <h6>System Name</h6>
+            <b-media class="left-card-media" >
+              <h6 class="left-card-title">System Name</h6>
               <p v-html="selectedSystem.System_Name"></p>
             </b-media>
             
-            <b-media>
-              <h6>ITAM ID</h6>
+            <b-media class="left-card-media">
+              <h6 class="left-card-title">ITAM ID</h6>
               <p v-html="selectedSystem.ITAM_ID"></p>
             </b-media>
             
-            <b-media>
-              <h6>Dataset Custodian</h6>
-              <p></p>
+            <b-media class="left-card-media">
+              <h6 class="left-card-title">Dataset Custodian</h6>
+              <p>&nbsp;</p>
             </b-media>
             
-            <b-media>
-              <h6>Bank ID</h6>
-              <p></p>
+            <b-media class="left-card-media">
+              <h6 class="left-card-title">Bank ID</h6>
+              <p>&nbsp;</p>
             </b-media>
             
-            <b-media>
-              <h6>Business Alias Name</h6>
+            <b-media class="left-card-media">
+              <h6 class="left-card-title">Business Alias Name</h6>
               <p v-html="selectedTable.Columns[0].Alias_Name"></p>
             </b-media>
             
-            <b-media>
-              <h6>Table Name</h6>
+            <b-media class="left-card-media">
+              <h6 class="left-card-title">Table Name</h6>
               <p v-html="selectedTable.Name"></p>
             </b-media>
             
-            <b-media>
-              <h6>Column Name</h6>
+            <b-media class="left-card-media">
+              <h6 class="left-card-title">Column Name</h6>
               <p v-html="selectedTable.Columns[0].Name"></p>
             </b-media>
           </b-card>
@@ -77,8 +98,16 @@
                       <b-form-select id="screenLabelName" class="col-8"></b-form-select>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Screen Label Name*">
-                      <p>This field describes the full name of the client and used for capturing lengthy names where the customer name field is unable to accommodat. It is also used for sub-funds. [more]</p>
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Description*">
+                      <v-dialog v-model="dialog" width="500">
+                        <p slot="activator">This field describes the full name of the client and used for capturing lengthy names where the customer name field is unable to accommodat. It is also used for sub-funds.<b-link>[more]</b-link></p>
+
+                        <v-card>
+                          <v-card-text>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                          </v-card-text>
+                        </v-card>
+                      </v-dialog>
                     </b-form-group>
                     
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="CDE (yes/no)">
@@ -234,6 +263,7 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data () {
     return {
+      dialog: false,
       showModal: this.$route.meta.showModal,
       selectedSystem: null,
       selectedTable: null,
