@@ -27,30 +27,33 @@ table.v-table thead th > div.btn-group {
                             <v-card-text>
                                 <v-container grid-list-md>
                                     <v-layout wrap>
-                                        <v-alert :value="users.error" color="error" icon="warning">
-                                            {{ users.error }}
-                                        </v-alert>
-
-                                        <v-flex xs12 sm6 md4>
-                                            <v-text-field type="number" :readonly="editedIndex > -1" v-model="editedItem.Username" label="Username"></v-text-field>
+                                        <v-flex xs12 sm12 md12>
+                                            <v-alert :value="users.error" color="error" icon="warning">
+                                                {{ users.error }}
+                                            </v-alert>
                                         </v-flex>
 
                                         <v-flex xs12 sm6 md4>
-                                            <v-text-field type="email" v-model="editedItem.Email" label="Email"></v-text-field>
+                                            <v-text-field type="number" :readonly="editedIndex > -1" :rules="[rules.required]" v-model="editedItem.Username" label="Username" ></v-text-field>
                                         </v-flex>
 
                                         <v-flex xs12 sm6 md4>
-                                            <v-text-field type="password" v-model="editedItem.Password" label="Password"></v-text-field>
+                                            <v-text-field type="email" :rules="[rules.required]" v-model="editedItem.Email" label="Email"></v-text-field>
                                         </v-flex>
 
                                         <v-flex xs12 sm6 md4>
-                                            <v-text-field v-model="editedItem.Name" label="Name"></v-text-field>
+                                            <v-text-field type="password" :rules="[rules.required]" v-model="editedItem.Password" label="Password"></v-text-field>
+                                        </v-flex>
+
+                                        <v-flex xs12 sm6 md4>
+                                            <v-text-field :rules="[rules.required]" v-model="editedItem.Name" label="Name"></v-text-field>
                                         </v-flex>
 
                                         <v-flex xs12 sm6 md4>
                                             <v-select
                                                 v-model="editedItem.Role"
                                                 :items="rolesMaster"
+                                                :rules="[rules.required]" 
                                                 label="Select"
                                                 multiple
                                                 chips
@@ -60,10 +63,7 @@ table.v-table thead th > div.btn-group {
                                         </v-flex>
 
                                         <v-flex xs12 sm6 md4>
-                                            <v-switch
-                                                v-model="editedItem.Status"
-                                                :label="`Status`"
-                                            ></v-switch>
+                                            <v-switch :label="`Status`" v-model="editedItem.Status"></v-switch>
                                             <!-- <v-text-field v-model="editedItem.Status" label="Status"></v-text-field> -->
                                         </v-flex>
                                     </v-layout>
@@ -73,7 +73,7 @@ table.v-table thead th > div.btn-group {
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-                                <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
+                                <v-btn color="blue darken-1" flat @click="save" :disabled="!formIsValid">Save</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
@@ -143,6 +143,9 @@ import { mapState, mapActions } from 'vuex'
 export default {
     data () {
         return {
+            rules: {
+                required: value => !!value || 'Required.',
+            },
             dialog: false,
             rolesMaster: ["Admin", "DSC", "DPO", "DDO", "RFO"],
             headers: [
@@ -173,6 +176,15 @@ export default {
         }),
         formTitle () {
             return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+        },
+        formIsValid () {
+            return (
+                this.editedItem.Username &&
+                this.editedItem.Password &&
+                this.editedItem.Email &&
+                this.editedItem.Name &&
+                this.editedItem.Role
+            )
         }
     },
     created() {
@@ -218,6 +230,7 @@ export default {
             }, 300)
         },
         save () {
+            this.users.error = null;
             if (this.editedIndex > -1) { //edit
                 this.updateUser(this.editedItem).then(res => {
                     if(!this.users.error) {
@@ -231,7 +244,7 @@ export default {
                         this.close()
                     }
                     this.getAllUsers()
-                }, err => this.getAllUsers());
+                }, err => {});
             }
         }
     }

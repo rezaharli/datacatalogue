@@ -16,27 +16,27 @@
                     <v-list-tile-content><v-list-tile-title>Home</v-list-tile-title></v-list-tile-content>
                 </v-list-tile>
 
-                <v-list-tile to="/dsc">
+                <v-list-tile to="/dsc" v-if="isDSC">
                     <v-list-tile-action><v-icon>list</v-icon></v-list-tile-action>
                     <v-list-tile-content><v-list-tile-title>Dataset Custodian</v-list-tile-title></v-list-tile-content>
                 </v-list-tile>
 
-                <v-list-tile to="/dpo">
+                <v-list-tile to="/dpo" v-if="isDPO">
                     <v-list-tile-action><v-icon>list</v-icon></v-list-tile-action>
                     <v-list-tile-content><v-list-tile-title>Downstream Process Owner</v-list-tile-title></v-list-tile-content>
                 </v-list-tile>
 
-                <v-list-tile to="/ddo">
+                <v-list-tile to="/ddo" v-if="isDDO">
                     <v-list-tile-action><v-icon>list</v-icon></v-list-tile-action>
                     <v-list-tile-content><v-list-tile-title>Data Domain Owner</v-list-tile-title></v-list-tile-content>
                 </v-list-tile>
 
-                <v-list-tile to="/rfo">
+                <v-list-tile to="/rfo" v-if="isRFO">
                     <v-list-tile-action><v-icon>list</v-icon></v-list-tile-action>
                     <v-list-tile-content><v-list-tile-title>Risk Framework Owner</v-list-tile-title></v-list-tile-content>
                 </v-list-tile>
 
-                <v-list-tile to="/access">
+                <v-list-tile to="/access" v-if="isAdmin">
                     <v-list-tile-action><v-icon>list</v-icon></v-list-tile-action>
                     <v-list-tile-content><v-list-tile-title>User Access</v-list-tile-title></v-list-tile-content>
                 </v-list-tile>
@@ -87,7 +87,23 @@ export default {
     computed: {
         ...mapState({
             account: state => state.account,
-        })
+        }),
+        ...mapState('account', ['user']),
+        isAdmin () {
+            return this.user.Role.split(",").indexOf("Admin") != -1
+        },
+        isDSC () {
+            return this.user.Role.split(",").indexOf("DSC") != -1
+        },
+        isDPO () {
+            return this.user.Role.split(",").indexOf("DPO") != -1
+        },
+        isDDO () {
+            return this.user.Role.split(",").indexOf("DDO") != -1
+        },
+        isRFO () {
+            return this.user.Role.split(",").indexOf("RFO") != -1
+        }
     },
     methods: {
         ...mapActions('account', ['logout']),

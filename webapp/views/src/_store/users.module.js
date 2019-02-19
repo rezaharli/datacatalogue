@@ -19,12 +19,13 @@ const actions = {
             );
     },
     register({ commit }, user) {
-        user.Username = parseInt(user.Username);
-        user.Role = user.Role.join();
+        var tempUser = _.cloneDeep(user)
+        tempUser.Username = parseInt(tempUser.Username);
+        tempUser.Role = tempUser.Role.join();
 
-        commit('registerRequest', user);
+        commit('registerRequest', tempUser);
     
-        return userService.register(user)
+        return userService.register(tempUser)
             .then(
                 user => commit('registerSuccess', user),
                 error => commit('registerFailure', error)

@@ -21,6 +21,7 @@ import Rfo from './components/Rfo';
 
 import Access from './components/access/Access';
 import AccessUsers from './components/access/Access-users';
+import AccessRoles from './components/access/Access-roles';
 
 Vue.use(VueRouter);
 
@@ -187,6 +188,12 @@ const router = new VueRouter({
         path: 'users', name: 'access.users', component: AccessUsers, 
         meta: { 
           title: "Users - Data Catalogue",
+          permission: "Admin"
+        } 
+      }, { //access.users
+        path: 'roles', name: 'access.roles', component: AccessRoles, 
+        meta: { 
+          title: "Roles - Data Catalogue",
           permission: "Admin"
         } 
       }]
