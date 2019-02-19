@@ -27,7 +27,7 @@
               </v-flex>
 
               <v-flex xs3 sm3 md3 card-container>
-                <v-card flat class="rounded-card" 
+                <v-card flat id="tooltipButton-DSC" class="rounded-card" 
                   :class="{ [`elevation-${elevation.dsc}`]: true }" 
                   @click="dscClick()" 
                   @mouseover="cardMouseover('dsc')"
@@ -44,7 +44,7 @@
               </v-flex>
 
               <v-flex xs3 sm3 md3 card-container>
-                <v-card flat class="rounded-card" 
+                <v-card flat id="tooltipButton-DPO" class="rounded-card" 
                   :class="{ [`elevation-${elevation.dpo}`]: true }" 
                   @click="dpoClick()" 
                   @mouseover="cardMouseover('dpo')"
@@ -61,7 +61,7 @@
               </v-flex>
 
               <v-flex xs3 sm3 md3 card-container>
-                <v-card flat class="rounded-card" 
+                <v-card flat id="tooltipButton-DDO" class="rounded-card" 
                   :class="{ [`elevation-${elevation.ddo}`]: true }" 
                   @click="ddoClick()" 
                   @mouseover="cardMouseover('ddo')"
@@ -78,7 +78,7 @@
               </v-flex>
 
               <v-flex xs3 sm3 md3 card-container>
-                <v-card flat class="rounded-card" 
+                <v-card flat id="tooltipButton-RFO" class="rounded-card" 
                   :class="{ [`elevation-${elevation.rfo}`]: true }" 
                   @click="rfoClick()" 
                   @mouseover="cardMouseover('rfo')"
@@ -92,6 +92,26 @@
                     </div>
                   </v-card-title>
                 </v-card>
+              </v-flex>
+
+              <b-tooltip :show.sync="showTooltip.DSC" target="tooltipButton-DSC" placement="bottom" v-if="this.user.Role.split(',').indexOf('DSC') == -1">
+                You dont have access for RFO!
+              </b-tooltip>
+
+              <b-tooltip :show.sync="showTooltip.DPO" target="tooltipButton-DPO" placement="bottom" v-if="this.user.Role.split(',').indexOf('DPO') == -1">
+                You dont have access for RFO!
+              </b-tooltip>
+
+              <b-tooltip :show.sync="showTooltip.DDO" target="tooltipButton-DDO" placement="bottom" v-if="this.user.Role.split(',').indexOf('DDO') == -1">
+                You dont have access for RFO!
+              </b-tooltip>
+
+              <b-tooltip :show.sync="showTooltip.RFO" target="tooltipButton-RFO" placement="bottom" v-if="this.user.Role.split(',').indexOf('RFO') == -1">
+                You dont have access for RFO!
+              </b-tooltip>
+
+              <v-flex xs12 sm12 md12 card-container v-if="isAdmin">
+                <v-btn to="/access" style="margin-top: 40px">User Access Menu</v-btn>
               </v-flex>
             </v-layout>
           </v-container>
@@ -109,6 +129,12 @@ export default {
   components: { CToolbar },
   data() {
     return {
+      showTooltip: {
+        DSC: false,
+        DPO: false,
+        DDO: false,
+        RFO: false,
+      },
       isHome: this.decideIsHome(),
       elevation: {
         dsc: 12,
@@ -126,6 +152,9 @@ export default {
   },
   computed: {
     ...mapState('account', ['status', 'user']),
+    isAdmin () {
+      return this.user.Role.split(",").indexOf("Admin") != -1
+    }
   },
   created () {
     this.decideIsHome();

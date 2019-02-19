@@ -35,6 +35,11 @@
                     <v-list-tile-action><v-icon>list</v-icon></v-list-tile-action>
                     <v-list-tile-content><v-list-tile-title>Risk Framework Owner</v-list-tile-title></v-list-tile-content>
                 </v-list-tile>
+
+                <v-list-tile to="/access">
+                    <v-list-tile-action><v-icon>list</v-icon></v-list-tile-action>
+                    <v-list-tile-content><v-list-tile-title>User Access</v-list-tile-title></v-list-tile-content>
+                </v-list-tile>
             </v-list>
         </v-navigation-drawer>
 
