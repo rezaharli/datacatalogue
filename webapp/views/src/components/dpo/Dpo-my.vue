@@ -276,12 +276,20 @@ export default {
         this.columnFilter(type, keyModel, this.search[type][keyModel.value]);
       },
       distinctData (col, datax) {
+        var cols = col.split(".")
+        if(cols.length > 1){
+          var a = datax;
+
+          cols.forEach((c, i) => {
+            a = this._.flattenDeep(this._.map(this._.sortBy(a, c), c));
+          });
+
+          return this._.uniq(a).filter(Boolean);
+        }
+        
         return this._.uniq(
-                this._.map(
-                  this._.sortBy(datax, col), 
-                  col
-                )
-              );
+            this._.map(this._.sortBy(datax, col), col)
+          ).filter(Boolean);
       },
       systemRowClick (evt) {
         evt.preventDefault();

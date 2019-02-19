@@ -230,9 +230,9 @@ export default {
         ],
         secondTableHeaders: [
           { text: 'Table Name', align: 'left', sortable: false, value: 'Name', width: "25%" },
-          { text: 'Column Name', align: 'left', sortable: false, value: 'calories', width: "25%" },
-          { text: 'Business Alias Name', align: 'left', sortable: false, value: 'fat', width: "25%" },
-          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'carbs', width: "25%" }
+          { text: 'Column Name', align: 'left', sortable: false, value: 'Columns.Name', width: "25%" },
+          { text: 'Business Alias Name', align: 'left', sortable: false, value: 'Columns.Alias_Name', width: "25%" },
+          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'Columns.CDE', width: "25%" }
         ],
         excelFields: {
           'System Name': 'System_Name',
@@ -294,12 +294,20 @@ export default {
         this.columnFilter(type, keyModel, this.search[type][keyModel.value]);
       },
       distinctData (col, datax) {
+        var cols = col.split(".")
+        if(cols.length > 1){
+          var a = datax;
+
+          cols.forEach((c, i) => {
+            a = this._.flattenDeep(this._.map(this._.sortBy(a, c), c));
+          });
+
+          return this._.uniq(a).filter(Boolean);
+        }
+        
         return this._.uniq(
-                this._.map(
-                  this._.sortBy(datax, col), 
-                  col
-                )
-              );
+            this._.map(this._.sortBy(datax, col), col)
+          ).filter(Boolean);
       },
       systemRowClick (evt) {
         evt.preventDefault();

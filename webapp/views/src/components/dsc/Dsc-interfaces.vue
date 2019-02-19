@@ -213,11 +213,11 @@ export default {
           { text: 'Bank ID', align: 'left', value: 'carbs', sortable: false }
         ],
         secondTableHeaders: [
-          { text: 'List of CDEs', align: 'left', sortable: false, value: 'asdf', width: "25%" },
-          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'calories', width: "25%" },
+          { text: 'List of CDEs', align: 'left', sortable: false, value: 'Name', width: "25%" },
+          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'Imm_Prec_System_ID', width: "25%" },
           { text: 'SLA(Yes/No)', align: 'left', sortable: false, value: 'fat', width: "25%" },
           { text: 'OLA(Yes/No)', align: 'left', sortable: false, value: 'carbs', width: "25%" },
-          { text: 'Immediate Succeeding System', align: 'left', sortable: false, value: 'carbs', width: "25%" },
+          { text: 'Immediate Succeeding System', align: 'left', sortable: false, value: 'Imm_Succ_System_ID', width: "25%" },
           { text: 'List of Downstream Process', align: 'left', sortable: false, value: 'carbs', width: "25%" },
           { text: 'Downstream Process Owner', align: 'left', sortable: false, value: 'carbs', width: "25%" },
         ],
@@ -281,12 +281,20 @@ export default {
         this.columnFilter(type, keyModel, this.search[type][keyModel.value]);
       },
       distinctData (col, datax) {
+        var cols = col.split(".")
+        if(cols.length > 1){
+          var a = datax;
+
+          cols.forEach((c, i) => {
+            a = this._.flattenDeep(this._.map(this._.sortBy(a, c), c));
+          });
+
+          return this._.uniq(a).filter(Boolean);
+        }
+        
         return this._.uniq(
-                this._.map(
-                  this._.sortBy(datax, col), 
-                  col
-                )
-              );
+            this._.map(this._.sortBy(datax, col), col)
+          ).filter(Boolean);
       },
       systemRowClick (evt) {
         evt.preventDefault();

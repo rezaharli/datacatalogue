@@ -30,6 +30,7 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <div class="input-group mb-3">
                 <input v-model="searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                
                 <div class="input-group-append">
                   <b-dropdown right id="ddown1" text="">
                     <b-container>
@@ -277,12 +278,20 @@ export default {
         this.columnFilter(type, keyModel, this.search[type][keyModel.value]);
       },
       distinctData (col, datax) {
+        var cols = col.split(".")
+        if(cols.length > 1){
+          var a = datax;
+
+          cols.forEach((c, i) => {
+            a = this._.flattenDeep(this._.map(this._.sortBy(a, c), c));
+          });
+
+          return this._.uniq(a).filter(Boolean);
+        }
+        
         return this._.uniq(
-                this._.map(
-                  this._.sortBy(datax, col), 
-                  col
-                )
-              );
+            this._.map(this._.sortBy(datax, col), col)
+          ).filter(Boolean);
       },
       systemRowClick (evt) {
         evt.preventDefault();
