@@ -97,7 +97,10 @@ table.v-table thead th > div.btn-group {
                                     {{ header.text }} ({{ distinctData(header.value, users.items).length }})
 
                                     <b-dropdown v-if="header.filter"  no-caret variant="link" class="header-filter-icon">
-                                        <template slot="button-content"><i class="fa fa-filter text-muted"></i></template>
+                                        <template slot="button-content">
+                                            <!-- <i class="fa fa-filter text-muted"></i> -->
+                                            <v-icon small>filter_list</v-icon>
+                                        </template>
 
                                         <b-dropdown-header><b-form-input type="text" placeholder="Filter"></b-form-input></b-dropdown-header>
 
