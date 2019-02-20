@@ -95,24 +95,24 @@
               </v-flex>
 
               <b-tooltip :show.sync="showTooltip.DSC" target="tooltipButton-DSC" placement="bottom" v-if="this.user.Role.split(',').indexOf('DSC') == -1">
-                You dont have access for RFO!
+                You dont have access for DSC!
               </b-tooltip>
 
               <b-tooltip :show.sync="showTooltip.DPO" target="tooltipButton-DPO" placement="bottom" v-if="this.user.Role.split(',').indexOf('DPO') == -1">
-                You dont have access for RFO!
+                You dont have access for DPO!
               </b-tooltip>
 
               <b-tooltip :show.sync="showTooltip.DDO" target="tooltipButton-DDO" placement="bottom" v-if="this.user.Role.split(',').indexOf('DDO') == -1">
-                You dont have access for RFO!
+                You dont have access for DDO!
               </b-tooltip>
 
               <b-tooltip :show.sync="showTooltip.RFO" target="tooltipButton-RFO" placement="bottom" v-if="this.user.Role.split(',').indexOf('RFO') == -1">
                 You dont have access for RFO!
               </b-tooltip>
 
-              <v-flex xs12 sm12 md12 card-container v-if="isAdmin">
+              <!-- <v-flex xs12 sm12 md12 card-container v-if="isAdmin">
                 <v-btn to="/access" style="margin-top: 40px">User Access Menu</v-btn>
-              </v-flex>
+              </v-flex> -->
             </v-layout>
           </v-container>
         </v-flex>
