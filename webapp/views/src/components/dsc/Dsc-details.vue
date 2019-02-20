@@ -85,8 +85,8 @@
               <b-card title="Technical Metadata From System" tag="article" class="mb-2" v-if="selectedColumn">
                 <p class="card-text">
                   <b-form>
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Name" label-for="systemName">
-                      <b-form-select id="systemName" class="col-8" v-model="ddSystem.selected" :options="ddSystemOptions">
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="tableName">
+                      <b-form-select id="tableName" class="col-8" v-model="ddTable.selected" :options="ddTableOptions">
                       </b-form-select>
                     </b-form-group>
 
@@ -268,7 +268,7 @@ export default {
       selectedSystem: null,
       selectedTable: null,
       selectedColumn: null,
-      ddSystem: {
+      ddTable: {
         selected: null,
       },
       ddColumn: {
@@ -319,9 +319,9 @@ export default {
     count () {
       return this.dscmy.tableSource.length
     },
-    ddSystemOptions () {
-      this.ddSystem.selected = this.selectedSystem ? this.selectedSystem.System_Name : null;
-      return this.selectedSystem ? [{ value: this.selectedSystem.System_Name, text: this.selectedSystem.System_Name }] : [];
+    ddTableOptions () {
+      this.ddTable.selected = this.selectedTable ? this.selectedTable.Name : null;
+      return this.selectedTable ? [{ value: this.selectedTable.Name, text: this.selectedTable.Name }] : [];
     },
     ddColumnOptions () {
       return this.selectedTable ? _.map(this.selectedTable.Columns, function(v) { return { value: v.ID, text: v.Name } }) : [];
