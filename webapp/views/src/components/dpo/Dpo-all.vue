@@ -94,7 +94,8 @@ table.v-table thead th > div.btn-group {
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
-                      <i class="fa fa-filter text-muted"></i>
+                      <!-- <i class="fa fa-filter text-muted"></i> -->
+                      <v-icon small>filter_list</v-icon>
                     </template>
 
                     <b-dropdown-header>
@@ -144,7 +145,8 @@ table.v-table thead th > div.btn-group {
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
-                      <i class="fa fa-filter text-muted"></i>
+                      <!-- <i class="fa fa-filter text-muted"></i> -->
+                      <v-icon small>filter_list</v-icon>
                     </template>
 
                     <b-dropdown-header>
