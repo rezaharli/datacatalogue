@@ -42,7 +42,7 @@ table.v-table thead th > div.btn-group {
                                         </v-flex>
 
                                         <v-flex xs12 sm6 md4>
-                                            <v-text-field type="password" :rules="[rules.required]" v-model="editedItem.Password" label="Password"></v-text-field>
+                                            <v-text-field type="password" v-model="editedItem.Password" label="Password"></v-text-field>
                                         </v-flex>
 
                                         <v-flex xs12 sm6 md4>
@@ -183,7 +183,6 @@ export default {
         formIsValid () {
             return (
                 this.editedItem.Username &&
-                this.editedItem.Password &&
                 this.editedItem.Email &&
                 this.editedItem.Name &&
                 this.editedItem.Role
