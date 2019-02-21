@@ -1,11 +1,11 @@
 {
-    "environment": "dev",
+    "environment": "prod",
     "host": "localhost",
     "port": "9001",
     "database": {
-        "host": "127.0.0.1:27123",
-        "username": "",
-        "password": "",
-        "name": "dbdc"
+        "host": "example.com:80808",
+        "username": "example",
+        "password": "example",
+        "name": "scbdc"
     }
 }
