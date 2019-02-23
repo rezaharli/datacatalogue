@@ -22,6 +22,7 @@ import Rfo from './components/Rfo';
 import Access from './components/access/Access';
 import AccessUsers from './components/access/Access-users';
 import AccessRoles from './components/access/Access-roles';
+import AccessUsage from './components/access/Access-usage';
 
 Vue.use(VueRouter);
 
@@ -196,6 +197,12 @@ const router = new VueRouter({
           title: "Roles - Data Catalogue",
           permission: "Admin"
         } 
+      }, { //access.users
+        path: 'usage', name: 'access.usage', component: AccessUsage, 
+        meta: { 
+          title: "Usage Detail - Data Catalogue",
+          permission: "Admin"
+        } 
       }]
     }]
   }, {
@@ -208,6 +215,7 @@ router.beforeEach((to, from, next) => {
   document.title = (to.meta.title || '')
   next()
 });
+
 
 router.beforeEach((to, from, next) => {
   // redirect to login page if not logged in and trying to access a restricted page

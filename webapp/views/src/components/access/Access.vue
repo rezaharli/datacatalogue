@@ -9,7 +9,7 @@
                 <v-tabs left class="page-tab">
                     <v-tab to="/access/users">Users</v-tab>
                     <v-tab to="/access/roles">Roles</v-tab>
-                    <v-tab to="/access/users">Application Usage Detail</v-tab>
+                    <v-tab to="/access/usage">Application Usage Detail</v-tab>
                     <v-tab to="/access/users">User Audit Trail</v-tab>
                 </v-tabs>
             </b-col>

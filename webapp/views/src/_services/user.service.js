@@ -1,5 +1,4 @@
-import { authHeader } from '../_helpers/auth-header';
-import router from '../routes';
+import { fetchWHeader } from '../_helpers/auth-header';
 
 export const userService = {
     login,
@@ -11,27 +10,21 @@ export const userService = {
 };
 
 function login(username, password) {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: username, password: password })
-    };
-
-    return fetch(`/users/authenticate`, requestOptions)
-        .then(handleResponse)
-        .then(res => {
+    return fetchWHeader(`/users/authenticate`, { username: username, password: password })
+        .then(
+            res => {
             
-            // if (user.token) {
-            //     // store user details and jwt token in local storage to keep user logged in between page refreshes
-            //     localStorage.setItem('user', JSON.stringify(user));
-            // }
+                // if (user.token) {
+                //     // store user details and jwt token in local storage to keep user logged in between page refreshes
+                //     localStorage.setItem('user', JSON.stringify(user));
+                // }
 
-            localStorage.setItem('user', JSON.stringify(res.Data));
-        
-            return res.Data;
-        }, err => {
-            return Promise.reject(err);
-        });
+                localStorage.setItem('user', JSON.stringify(res.Data));
+            
+                return res.Data;
+            }, 
+            err => Promise.reject(err)
+        );
 }
 
 function logout() {
@@ -39,69 +32,22 @@ function logout() {
 }
 
 function register(user) {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
-    };
-
-    return fetch(`/users/register`, requestOptions).then(handleResponse).then(res => {
-        return res;
-    }, err => {
-        return Promise.reject(err);
-    });
+    return fetchWHeader(`/users/register`, user)
+        .then(
+            res => res, 
+            err => Promise.reject(err)
+        );
 }
 
 function getAll() {
-    const requestOptions = {
-        method: 'POST',
-        headers: authHeader()
-    };
-
-    return fetch(`/users/getall`, requestOptions).then(handleResponse);
+    return fetchWHeader(`/users/getall`, {});
 }
 
 function update(user) {
-    const requestOptions = {
-        method: 'PUT',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
-    };
-
-    return fetch(`/users/update`, requestOptions).then(handleResponse);
+    return fetchWHeader(`/users/update`, {});
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
 function _delete(username) {
-    const requestOptions = {
-        method: 'POST',
-        headers: authHeader(),
-        body: JSON.stringify({ Username: username })
-    };
-
-    return fetch(`/users/delete`, requestOptions).then(handleResponse);
-}
-
-function handleResponse(response) {
-    return response.text().then(text => {
-        const data = text && JSON.parse(text);
-        
-        if (!response.ok) {
-            if (response.status === 401) {
-                // auto logout if 401 response returned from api
-                logout();
-                router.push("/");
-            }
-            
-            const error = (data && data.Message) || response.statusText;
-            return Promise.reject(error);
-        } else {
-            if (data.Status == "NOK"){
-                const error = (data && data.Message) || response.statusText;
-                return Promise.reject(error);
-            }
-        }
-
-        return data;
-    });
+    return fetchWHeader(`/users/delete`, {});
 }
