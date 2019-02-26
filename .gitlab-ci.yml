@@ -23,6 +23,7 @@ stages:
 build:
   stage: build
   script:
+    - pwd
 
 # Create artifact and distribute
 artifact_upload:
