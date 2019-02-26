@@ -21,8 +21,10 @@ stages:
 artifact_upload:
   stage: build
   script:
+    - echo $REPO_NAME
     - pwd
     - ls
+    - cd datacatalogue
     - sh build_linux.sh
     - mkdir -p ~/.ssh
     - echo "$SERVER_SSH_KEY" | tr -d '\r' > ~/developer.pem
