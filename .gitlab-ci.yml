@@ -10,6 +10,8 @@ cache:
 # Prepare directory and prepare all dependencies
 before_script:
   - mkdir -p /go/src/eaciit/datacatalogue /go/src/_/builds
+  - pwd
+  - ls
   - cp -r datacatalogue /go/src/eaciit
   - ln -s /go/src/eaciit/datacatalogue /go/src/_/builds/datacatalogue
 
