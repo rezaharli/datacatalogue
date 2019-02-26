@@ -9,9 +9,9 @@ cache:
 
 # Prepare directory and prepare all dependencies
 before_script:
-  - mkdir -p /go/src/eaciit/datacatalogue /go/src/_/builds
+  - mkdir -p /go/src/eaciit/data-catalogue /go/src/_/builds
   - cp -r $CI_PROJECT_DIR /go/src/eaciit
-  - ln -s /go/src/eaciit/datacatalogue /go/src/_/builds/datacatalogue
+  - ln -s /go/src/eaciit/data-catalogue /go/src/_/builds/data-catalogue
 
 # Define stage flow, start from top to bottom
 stages:
