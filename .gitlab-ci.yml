@@ -10,14 +10,19 @@ cache:
 # Prepare directory and prepare all dependencies
 before_script:
   - mkdir -p /go/src/eaciit/datacatalogue /go/src/_/builds
-  - pwd
-  - ls
-  - cp -r datacatalogue /go/src/eaciit
+  - cp -r $CI_PROJECT_DIR /go/src/eaciit
   - ln -s /go/src/eaciit/datacatalogue /go/src/_/builds/datacatalogue
+  - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+  - make dep
 
 # Define stage flow, start from top to bottom
 stages:
   - build
+
+# Build the code
+build:
+  stage: build
+  script:
 
 # Create artifact and distribute
 artifact_upload:
