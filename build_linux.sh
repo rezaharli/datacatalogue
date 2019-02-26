@@ -13,7 +13,6 @@ go build -o datacatalogue
 mv datacatalogue "../builds/${foldername}/webapp"
 
 cd views
-yarn build
 cp -r dist/ "../../builds/${foldername}/"
 
 cd ..
