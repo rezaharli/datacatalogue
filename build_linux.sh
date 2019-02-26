@@ -9,6 +9,7 @@ mkdir "builds/${foldername}/webapp/config"
 mkdir "builds/${foldername}/webapp/views"
 
 cd webapp
+pwd
 go build -o datacatalogue
 mv datacatalogue "../builds/${foldername}/webapp"
 
