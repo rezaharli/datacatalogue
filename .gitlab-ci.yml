@@ -1,0 +1,42 @@
+# Select the appropriate golang image and version based on your project requirements
+image: golang:1.9
+
+cache:
+  paths:
+    - /apt-cache
+    - /go/src/github.com
+    - /go/src/golang.org
+
+# Prepare directory and prepare all dependencies
+before_script:
+  - mkdir -p /go/src/eaciit/datacatalogue /go/src/_/builds
+  - cp -r $CI_PROJECT_DIR /go/src/eaciit
+  - ln -s /go/src/eaciit/datacatalogue /go/src/_/builds/datacatalogue
+  - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+  - make dep
+
+# Define stage flow, start from top to bottom
+stages:
+  - build
+
+# Build the code
+build:
+  stage: build
+  script:
+    - make
+
+# Create artifact and distribute
+artifact_upload:
+  stage: build
+  only:
+    - tags
+  script:
+    - sh build_linux.sh
+    - mkdir -p ~/.ssh
+    - echo "$SERVER_SSH_KEY" | tr -d '\r' > ~/developer.pem
+    - chmod 600 ~/developer.pem
+    - ssh-keyscan -H 'go.eaciit.com' >> ~/.ssh/known_hosts
+    - scp -i ~/developer.pem builds/*.tar.gz $SERVER_USER@$SERVER_HOSTNAME:/data/nginx/files/datacatalogue/$CI_PROJECT_NAME/
+  artifacts:
+    paths:
+      - builds/
