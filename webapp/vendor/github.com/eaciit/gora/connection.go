@@ -1,7 +1,9 @@
-package helpers
+package gora
 
 import (
 	"database/sql"
+
+	_ "gopkg.in/goracle.v2"
 
 	"git.eaciitapp.com/sebar/dbflex"
 	"github.com/eaciit/toolkit"

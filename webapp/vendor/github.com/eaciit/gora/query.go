@@ -1,4 +1,4 @@
-package helpers
+package gora
 
 import (
 	"database/sql"
@@ -43,7 +43,7 @@ func (q *Query) Cursor(in toolkit.M) dbflex.ICursor {
 	}
 	cursor.SetCountCommand(cq)
 
-	// fmt.Println("query: " + cmdtxt)
+	//fmt.Println("query: " + cmdtxt)
 	rows, err := q.db.Query(cmdtxt)
 	if rows == nil {
 		cursor.SetError(toolkit.Errorf("%s. SQL Command: %s", err.Error(), cmdtxt))

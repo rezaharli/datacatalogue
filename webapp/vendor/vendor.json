@@ -45,6 +45,12 @@
 			"revisionTime": "2017-09-14T05:05:18Z"
 		},
 		{
+			"checksumSHA1": "KoChjUvV6IHvNy/gRkBw9iHhv0U=",
+			"path": "github.com/eaciit/gora",
+			"revision": "bdd7f6b54ab3e87626a5696c1ccb4ffa299bcf03",
+			"revisionTime": "2019-02-23T21:42:39Z"
+		},
+		{
 			"checksumSHA1": "Tsi7fuCqYuassTkdO5JYUPW4jIU=",
 			"path": "github.com/eaciit/toolkit",
 			"revision": "f1e8cbe737d7a0d10abe4c3402d20d6a7d7db5db",
@@ -55,12 +61,6 @@
 			"path": "github.com/icrowley/fake",
 			"revision": "4178557ae428460c3780a381c824a1f3aceb6325",
 			"revisionTime": "2018-02-03T21:58:53Z"
-		},
-		{
-			"checksumSHA1": "iX2wrbHWdB8xH/hbv/V7f0Cwgvs=",
-			"path": "github.com/mattn/go-oci8",
-			"revision": "2100fbe14d69e83b12060a2f0597bd822c03cb2b",
-			"revisionTime": "2019-02-05T10:29:30Z"
 		},
 		{
 			"checksumSHA1": "I7hloldMJZTqUx6hbVDp5nk9fZQ=",

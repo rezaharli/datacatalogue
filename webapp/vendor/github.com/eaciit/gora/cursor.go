@@ -1,4 +1,4 @@
-package helpers
+package gora
 
 import (
 	"git.eaciitapp.com/sebar/dbflex/drivers/rdbms"

@@ -211,3 +211,15 @@ func (DBcmd) Delete(param DeleteParam) error {
 	_, err := Database().Execute(query, nil)
 	return err
 }
+
+type SqlQueryParam struct {
+	TableName string
+	SqlQuery  string
+
+	Results interface{}
+}
+
+func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
+	err := Database().Cursor(dbflex.From(param.TableName).SQL(param.SqlQuery), nil).Fetchs(param.Results, 0)
+	return err
+}

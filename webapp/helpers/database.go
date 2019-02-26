@@ -5,9 +5,8 @@ import (
 	"log"
 	"os"
 
-	_ "github.com/mattn/go-oci8"
-
 	"github.com/eaciit/clit"
+	_ "github.com/eaciit/gora"
 
 	"git.eaciitapp.com/sebar/dbflex"
 	_ "git.eaciitapp.com/sebar/dbflex/drivers/mongodb"
