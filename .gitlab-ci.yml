@@ -17,12 +17,6 @@ before_script:
 stages:
   - build
 
-# Build the code
-build:
-  stage: build
-  script:
-    - make
-
 # Create artifact and distribute
 artifact_upload:
   stage: build
