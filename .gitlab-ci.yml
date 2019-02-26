@@ -29,4 +29,4 @@ artifact_upload:
     - echo "$SERVER_SSH_KEY" | tr -d '\r' > ~/developer.pem
     - chmod 600 ~/developer.pem
     - ssh-keyscan -H 'go.eaciit.com' >> ~/.ssh/known_hosts
-    - scp -i ~/developer.pem builds/*.tar.gz $SERVER_USER@$SERVER_HOSTNAME:/data/nginx/files/$CI_PROJECT_NAME/
+    - scp -i ~/developer.pem builds/*.zip $SERVER_USER@$SERVER_HOSTNAME:/data/nginx/files/$CI_PROJECT_NAME/
