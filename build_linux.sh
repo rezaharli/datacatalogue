@@ -1,6 +1,7 @@
 export GOOS=linux
 
-foldername="$CI_PROJECT_NAME-$CI_COMMIT_TAG"
+tanggal=`date +%Y%m%d%H%M%S`
+foldername="$CI_PROJECT_NAME-$tanggal"
 rm -r "builds"
 mkdir "builds"
 mkdir "builds/${foldername}"
@@ -14,7 +15,7 @@ go build -o datacatalogue
 mv datacatalogue "../builds/${foldername}/webapp"
 
 cd views
-cp -r dist/ "../../builds/${foldername}/"
+cp -r dist/ "../../builds/${foldername}/webapp/views"
 
 cd ..
 cp config/app.json.template "../builds/${foldername}/webapp/config/"
