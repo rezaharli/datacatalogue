@@ -5,6 +5,7 @@ type MDResource struct {
 	Name        string
 	Type        string
 	Description string
+	System_ID   int
 }
 
 func NewMDResource() *MDResource {

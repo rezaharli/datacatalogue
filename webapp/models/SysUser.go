@@ -1,18 +1,16 @@
 package models
 
-import "time"
-
 type SysUser struct {
 	ID       int
 	Username int
 	Password string
 	Email    string
 	Name     string
-	Status   bool
+	Status   int
 	Role     string
 
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	CreatedAt string
+	UpdatedAt string
 }
 
 func NewSysUserModel() *SysUser {
@@ -20,5 +18,5 @@ func NewSysUserModel() *SysUser {
 }
 
 func (m *SysUser) TableName() string {
-	return "sys_user"
+	return "tbl_users"
 }

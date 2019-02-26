@@ -19,6 +19,10 @@ function login(username, password) {
                 //     localStorage.setItem('user', JSON.stringify(user));
                 // }
 
+                if (!res.Data) {
+                    return Promise.reject(Error('I was created using a function call!'))
+                }
+                
                 localStorage.setItem('user', JSON.stringify(res.Data));
             
                 return res.Data;

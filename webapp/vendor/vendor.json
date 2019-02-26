@@ -5,14 +5,20 @@
 		{
 			"checksumSHA1": "JDb0cWencvk/LeTrPsAo5dKfKyI=",
 			"path": "git.eaciitapp.com/sebar/dbflex",
-			"revision": "32a6507d7520ff1ccc667fcbaecfc55865961672",
-			"revisionTime": "2019-02-06T23:08:02Z"
+			"revision": "668b6ad47bf8f474e8d53a339747196cb4711b01",
+			"revisionTime": "2019-02-23T21:35:56Z"
 		},
 		{
 			"checksumSHA1": "HSDPUkCsVjt7Nu0N7tZpTaS5IB4=",
 			"path": "git.eaciitapp.com/sebar/dbflex/drivers/mongodb",
-			"revision": "32a6507d7520ff1ccc667fcbaecfc55865961672",
-			"revisionTime": "2019-02-06T23:08:02Z"
+			"revision": "668b6ad47bf8f474e8d53a339747196cb4711b01",
+			"revisionTime": "2019-02-23T21:35:56Z"
+		},
+		{
+			"checksumSHA1": "z53kItXTnRcHR7TQqzNcF9+AFmc=",
+			"path": "git.eaciitapp.com/sebar/dbflex/drivers/rdbms",
+			"revision": "668b6ad47bf8f474e8d53a339747196cb4711b01",
+			"revisionTime": "2019-02-23T21:35:56Z"
 		},
 		{
 			"checksumSHA1": "Q07AlUf1wR1wNchpVj+ZkN2DMo4=",
@@ -51,16 +57,34 @@
 			"revisionTime": "2018-02-03T21:58:53Z"
 		},
 		{
-			"checksumSHA1": "VMoF3pagO47x0/nx0GQyFPt9Grk=",
+			"checksumSHA1": "iX2wrbHWdB8xH/hbv/V7f0Cwgvs=",
+			"path": "github.com/mattn/go-oci8",
+			"revision": "2100fbe14d69e83b12060a2f0597bd822c03cb2b",
+			"revisionTime": "2019-02-05T10:29:30Z"
+		},
+		{
+			"checksumSHA1": "I7hloldMJZTqUx6hbVDp5nk9fZQ=",
+			"path": "github.com/pkg/errors",
+			"revision": "856c240a51a2bf8fb8269ea7f3f9b046aadde36e",
+			"revisionTime": "2019-02-17T22:52:12Z"
+		},
+		{
+			"checksumSHA1": "qyU58wqixJNIOwqz2CXE2eMBNTk=",
 			"path": "golang.org/x/net/html",
-			"revision": "65e2d4e15006aab9813ff8769e768bbf4bb667a0",
-			"revisionTime": "2019-02-01T23:59:58Z"
+			"revision": "3a22650c66bd7f4fb6d1e8072ffd7b75c8a27898",
+			"revisionTime": "2019-02-11T12:35:32Z"
 		},
 		{
 			"checksumSHA1": "XtSbs1gpyaEsIqf6VRhJsgOQe5U=",
 			"path": "golang.org/x/net/html/atom",
-			"revision": "65e2d4e15006aab9813ff8769e768bbf4bb667a0",
-			"revisionTime": "2019-02-01T23:59:58Z"
+			"revision": "3a22650c66bd7f4fb6d1e8072ffd7b75c8a27898",
+			"revisionTime": "2019-02-11T12:35:32Z"
+		},
+		{
+			"checksumSHA1": "630l2pO7NH+wXMF7SXMGT9vTPcI=",
+			"path": "gopkg.in/goracle.v2",
+			"revision": "5dc64487709229af4a25b02e51c5b37592ce10c7",
+			"revisionTime": "2019-02-20T05:19:28Z"
 		},
 		{
 			"checksumSHA1": "1D8GzeoFGUs5FZOoyC2DpQg8c5Y=",

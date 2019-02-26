@@ -3,9 +3,15 @@
     "host": "localhost",
     "port": "9001",
     "database": {
-        "host": "example.com:80808",
-        "username": "example",
-        "password": "example",
-        "name": "scbdc"
+        "which": "oracle",
+        "oracle": {
+            "connectionString": "scbdc:Password@localhost:1521/orclcdb"
+        },
+        "mongodb": {
+            "host": "example.com:80808",
+            "username": "example",
+            "password": "example",
+            "name": "scbdc"
+        }
     }
 }

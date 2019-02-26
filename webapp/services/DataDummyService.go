@@ -2,6 +2,8 @@ package services
 
 import (
 	"log"
+	"math/rand"
+	"time"
 
 	"github.com/eaciit/toolkit"
 	"github.com/icrowley/fake"
@@ -9,6 +11,32 @@ import (
 	h "eaciit/datacatalogue/webapp/helpers"
 	m "eaciit/datacatalogue/webapp/models"
 )
+
+func (s *DSCService) CreateUserDummyData() error {
+	data := m.NewSysUserModel()
+	data.ID = 1
+	data.Username = 123
+	data.Password = "Password.1"
+	data.Email = "eaciit@eaciit.com"
+	data.Name = "eaciit"
+	data.Status = 1
+	data.Role = "Admin,DSC,DDO,DPO,RFO"
+	data.CreatedAt = time.Now().String()
+	data.UpdatedAt = time.Now().String()
+
+	data.Password = NewUserService().HashPassword(data.Password)
+
+	err := h.NewDBcmd().Insert(h.InsertParam{
+		TableName: m.NewSysUserModel().TableName(),
+		Data:      data,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
 
 func (s *DSCService) CreateSystemDummyData() error {
 	toolkit.Println("CreateSystemDummyData")
@@ -26,13 +54,47 @@ func (s *DSCService) CreateSystemDummyData() error {
 		system.ID = i
 		system.System_Name = fake.Words()
 		system.ITAM_ID = fake.Day()
-		system.MD_Resource_ID = fake.Day()
 
 		data = append(data, system)
 	}
 
 	err = h.NewDBcmd().Insert(h.InsertParam{
 		TableName:       m.NewSystemModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (s *DSCService) CreateMDResourceDummyData() error {
+	toolkit.Println("CreateMDResourceDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewMDResource().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.MDResource, 0)
+	for i := 0; i < 200; i++ {
+		mdt := m.NewMDResource()
+		mdt.ID = i
+		mdt.Name = fake.Words()
+		mdt.Type = fake.Words()
+		mdt.Description = fake.Words()
+		mdt.System_ID = fake.Day()
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewMDResource().TableName(),
 		Data:            data,
 		ContinueOnError: true,
 	})
@@ -59,28 +121,58 @@ func (s *DSCService) CreateMDTableDummyData() error {
 		mdt := m.NewMDTableModel()
 		mdt.ID = i
 		mdt.Resource_ID = fake.Day()
-		mdt.Name = fake.Company()
+		mdt.Schema_Name = fake.Words()
+		mdt.Name = fake.Words()
 		mdt.UUID = fake.Words()
 		mdt.Type = fake.Words()
 		mdt.Description = fake.Words()
 		mdt.Business_Term_ID = fake.Day()
-		mdt.Status = true
-		mdt.Imm_Prec_System_ID = fake.Day()
-		mdt.Imm_Succ_System_ID = fake.Day()
-		mdt.Golden_Source = true
-		mdt.Data_SLA_Signed = true
-		mdt.DSC_DQ_Standards = fake.Words()
-		mdt.DSC_Threshold = fake.Day()
-		mdt.DPO_DQ_Standards = fake.Words()
-		mdt.DPO_Threshold = fake.Day()
-		mdt.DDO_DQ_Standards = fake.Words()
-		mdt.DDO_Threshold = fake.Day()
+		mdt.Status = rand.Intn(9)
+		mdt.Record_Category = fake.Words()
 
 		data = append(data, mdt)
 	}
 
 	err = h.NewDBcmd().Insert(h.InsertParam{
 		TableName:       m.NewMDTableModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (s *DSCService) CreatePeopleDummyData() error {
+	toolkit.Println("CreatePeopleDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewPeopleModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.People, 0)
+	for i := 0; i < 200; i++ {
+		mdt := m.NewPeopleModel()
+		mdt.ID = i
+		mdt.First_Name = fake.Words()
+		mdt.Last_Name = fake.Words()
+		mdt.Bank_ID = fake.WordsN(7)[0:7]
+		mdt.Email_ID = fake.Words()
+		mdt.Function = fake.Words()
+		mdt.Org_Unit = fake.Words()
+		mdt.Status = fake.WordsN(25)[0:25]
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewPeopleModel().TableName(),
 		Data:            data,
 		ContinueOnError: true,
 	})
@@ -116,24 +208,29 @@ func (s *DSCService) CreateMDColumnDummyData() error {
 		mdt.Data_Format = fake.Words()
 		mdt.Data_Length = fake.Day()
 		mdt.Example = fake.Words()
-		mdt.Derived = true
+		mdt.Derived = rand.Intn(9)
 		mdt.Derivation_Logic = fake.Words()
-		mdt.Mandatory = true
-		mdt.Status = true
+		mdt.Status = rand.Intn(9)
 		mdt.Alias_Name = fake.Words()
-		mdt.CDE = true
-		mdt.Sourced_from_Upstream = true
+		mdt.CDE = rand.Intn(9)
+		mdt.Sourced_from_Upstream = rand.Intn(9)
 		mdt.System_Checks = fake.Words()
 		mdt.Imm_Prec_System_ID = fake.Day()
+		mdt.Imm_Prec_System_SLA = rand.Intn(9)
+		mdt.Imm_Prec_System_OLA = rand.Intn(9)
 		mdt.Imm_Succ_System_ID = fake.Day()
-		mdt.Data_SLA_Signed = true
-		mdt.Golden_Source = true
+		mdt.Imm_Succ_System_SLA = rand.Intn(9)
+		mdt.Imm_Succ_System_OLA = rand.Intn(9)
+		mdt.Data_SLA_Signed = rand.Intn(9)
+		mdt.Golden_Source = rand.Intn(9)
 		mdt.DQ_Standards = fake.Words()
 		mdt.Threshold = fake.Day()
 		mdt.DPO_DQ_Standards = fake.Words()
 		mdt.DPO_Threshold = fake.Day()
 		mdt.DDO_DQ_Standards = fake.Words()
 		mdt.DDO_Threshold = fake.Day()
+		mdt.PII_Flag = rand.Intn(9)
+		mdt.Record_Category = fake.Words()
 
 		data = append(data, mdt)
 	}
@@ -168,14 +265,20 @@ func (s *DSCService) CreateBusinessTermDummyData() error {
 		mdt.BT_Name = fake.Words()
 		mdt.Parent_ID = fake.Day()
 		mdt.Description = fake.Words()
-		mdt.CDE = true
+		mdt.CDE = rand.Intn(9)
 		mdt.CDE_Rationale = fake.Words()
-		mdt.Status = true
+		mdt.Mandatory = rand.Intn(9)
 		mdt.Policy_ID = fake.Day()
+		mdt.Policy_Guidance = fake.Words()
 		mdt.DQ_Standards = fake.Words()
 		mdt.Threshold = fake.Day()
-		mdt.Golden_Source_ID = fake.Day()
+		mdt.Golden_Source_System_ID = fake.Day()
+		mdt.Golden_Source_ITAM_ID = fake.Day()
+		mdt.Golden_Source_TableName_ID = fake.Day()
+		mdt.Golden_Source_Column_ID = fake.Day()
 		mdt.Target_Golden_Source_ID = fake.Day()
+		mdt.DDO_DQ_Standards = fake.Words()
+		mdt.DDO_Threshold = fake.Day()
 
 		data = append(data, mdt)
 	}
@@ -280,9 +383,6 @@ func (s *DSCService) CreatePolicyDummyData() error {
 		mdt.Integrity = fake.Day()
 		mdt.Availability = fake.Day()
 		mdt.Overall_CIA_Rating = fake.Day()
-		mdt.Record_Category = fake.Words()
-		mdt.PII_Flag = true
-		mdt.Policy_Guidance = fake.Words()
 
 		data = append(data, mdt)
 	}
@@ -316,6 +416,7 @@ func (s *DSCService) CreateDSProcessesDummyData() error {
 		mdt.ID = i
 		mdt.Name = fake.Words()
 		mdt.Owner_ID = fake.Day()
+		mdt.Owner_Name = fake.Words()
 
 		data = append(data, mdt)
 	}
@@ -352,13 +453,45 @@ func (s *DSCService) CreateDSProcessesDetailDummyData() error {
 		mdt.Segment_ID = fake.Day()
 		mdt.Imm_Prec_System_ID = fake.Day()
 		mdt.Ultimate_Source_System_ID = fake.Day()
-		mdt.CDE_Rationale = fake.Words()
 
 		data = append(data, mdt)
 	}
 
 	err = h.NewDBcmd().Insert(h.InsertParam{
 		TableName:       m.NewDSProcessesDetailModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (s *DSCService) CreateSegmentDummyData() error {
+	toolkit.Println("CreateSegmentDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewSegmentModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.Segment, 0)
+	for i := 0; i < 200; i++ {
+		mdt := m.NewSegmentModel()
+		mdt.ID = i
+		mdt.Name = fake.Words()
+		mdt.Subdomain_ID = fake.Day()
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewSegmentModel().TableName(),
 		Data:            data,
 		ContinueOnError: true,
 	})

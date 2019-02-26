@@ -12,24 +12,29 @@ type MDColumn struct {
 	Data_Format           string
 	Data_Length           int
 	Example               string
-	Derived               bool
+	Derived               int
 	Derivation_Logic      string
-	Mandatory             bool
-	Status                bool
+	Status                int
 	Alias_Name            string
-	CDE                   bool
-	Sourced_from_Upstream bool
+	CDE                   int
+	Sourced_from_Upstream int
 	System_Checks         string
 	Imm_Prec_System_ID    int
+	Imm_Prec_System_SLA   int
+	Imm_Prec_System_OLA   int
 	Imm_Succ_System_ID    int
-	Data_SLA_Signed       bool
-	Golden_Source         bool
+	Imm_Succ_System_SLA   int
+	Imm_Succ_System_OLA   int
+	Data_SLA_Signed       int
+	Golden_Source         int
 	DQ_Standards          string
 	Threshold             int
 	DPO_DQ_Standards      string
 	DPO_Threshold         int
 	DDO_DQ_Standards      string
 	DDO_Threshold         int
+	PII_Flag              int
+	Record_Category       string
 }
 
 func NewMDColumnModel() *MDColumn {

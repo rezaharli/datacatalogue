@@ -95,8 +95,7 @@ func (c *Users) Update(k *knot.WebContext) {
 		return
 	}
 
-	payload.UpdatedAt = time.Now()
-	toolkit.Println(payload)
+	payload.UpdatedAt = time.Now().String()
 	ok, err := s.NewUserService().Update(payload)
 	if !ok && err != nil {
 		h.WriteResultError(k, res, err.Error())

@@ -2,6 +2,6 @@ package models
 
 type LinkSubcategoryPeople struct {
 	ID             int
-	Subcategory_ID SubCategory
-	People_ID      People
+	Subcategory_ID int
+	People_ID      int
 }

@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 
+	_ "github.com/mattn/go-oci8"
+
 	"github.com/eaciit/clit"
 
 	"git.eaciitapp.com/sebar/dbflex"
@@ -18,20 +20,29 @@ func Database() dbflex.IConnection {
 		return dbConnection
 	}
 
-	log.Println("-> connecting to database server")
+	dbConf := clit.Config("default", "database", "").(map[string]interface{})
+	which := dbConf["which"].(string)
+	log.Println("-> connecting to", which, "database server")
+
+	var fn func(dbConf map[string]interface{}) (dbflex.IConnection, error)
+	switch which {
+	case "oracle":
+		fn = NewOracleConnection
+	case "mongodb":
+		fn = NewMongodbConnection
+	}
 
 	var err error
-	dbConnection, err = NewMongodbConnection()
+	dbConnection, err = fn(dbConf[which].(map[string]interface{}))
 	if err != nil {
-		log.Println("-> failed to connect to the database server.", err.Error())
+		log.Println("-> failed to connect to the", which, "database server.", err.Error())
 		os.Exit(0)
 	}
 
 	return dbConnection
 }
 
-func NewMongodbConnection() (dbflex.IConnection, error) {
-	dbConf := clit.Config("default", "database", "").(map[string]interface{})
+func NewMongodbConnection(dbConf map[string]interface{}) (dbflex.IConnection, error) {
 	dbHost := dbConf["host"]
 	dbUsername := dbConf["username"]
 	dbPassword := dbConf["password"]
@@ -48,6 +59,22 @@ func NewMongodbConnection() (dbflex.IConnection, error) {
 	} else {
 		return nil, fmt.Errorf("Unable to connect to the database server. Please check the configuration")
 	}
+
+	conn, err := dbflex.NewConnectionFromURI(connectionString, nil)
+	if err != nil {
+		return nil, fmt.Errorf("Unable to connect to the database server. %s", err.Error())
+	}
+
+	err = conn.Connect()
+	if err != nil {
+		return nil, fmt.Errorf("Unable to connect to the database server. %s", err.Error())
+	}
+
+	return conn, nil
+}
+
+func NewOracleConnection(dbConf map[string]interface{}) (dbflex.IConnection, error) {
+	connectionString := "oracle://" + dbConf["connectionString"].(string)
 
 	conn, err := dbflex.NewConnectionFromURI(connectionString, nil)
 	if err != nil {

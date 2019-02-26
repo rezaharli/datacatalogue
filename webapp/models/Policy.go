@@ -8,9 +8,6 @@ type Policy struct {
 	Integrity          int
 	Availability       int
 	Overall_CIA_Rating int
-	Record_Category    string
-	PII_Flag           bool
-	Policy_Guidance    string
 }
 
 func NewPolicyModel() *Policy {

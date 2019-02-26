@@ -7,7 +7,6 @@ type DSProcessDetail struct {
 	Segment_ID                int
 	Imm_Prec_System_ID        int
 	Ultimate_Source_System_ID int
-	CDE_Rationale             string
 }
 
 func NewDSProcessesDetailModel() *DSProcessDetail {

@@ -5,30 +5,37 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/eaciit/clit"
+	"github.com/eaciit/toolkit"
 
 	"git.eaciitapp.com/sebar/knot"
 
 	c "eaciit/datacatalogue/webapp/controllers"
-	// s "eaciit/datacatalogue/webapp/services"
+	s "eaciit/datacatalogue/webapp/services"
 )
 
 func main() {
+	toolkit.Println(time.Now().String())
 	clit.LoadConfigFromFlag("", "", filepath.Join(clit.ExeDir(), "..", "webapp", "config", "app.json"))
 	if err := clit.Commit(); err != nil {
 		kill(err)
 	}
 	defer clit.Close()
 
+	s.NewDSCService().CreateUserDummyData()
 	// s.NewDSCService().CreateSystemDummyData()
+	// s.NewDSCService().CreatePolicyDummyData()
+	// s.NewDSCService().CreateCategoryDummyData()
+	// s.NewDSCService().CreateSubCategoryDummyData()
+	// s.NewDSCService().CreateBusinessTermDummyData()
+	// s.NewDSCService().CreateMDResourceDummyData()
 	// s.NewDSCService().CreateMDTableDummyData()
 	// s.NewDSCService().CreateMDColumnDummyData()
-	// s.NewDSCService().CreateBusinessTermDummyData()
-	// s.NewDSCService().CreateSubCategoryDummyData()
-	// s.NewDSCService().CreateCategoryDummyData()
-	// s.NewDSCService().CreatePolicyDummyData()
+	// s.NewDSCService().CreatePeopleDummyData()
 	// s.NewDSCService().CreateDSProcessesDummyData()
+	// s.NewDSCService().CreateSegmentDummyData()
 	// s.NewDSCService().CreateDSProcessesDetailDummyData()
 
 	app := knot.NewApp()

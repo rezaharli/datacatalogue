@@ -3,8 +3,11 @@ package helpers
 import (
 	"reflect"
 
-	"git.eaciitapp.com/sebar/dbflex"
+	_ "gopkg.in/goracle.v2"
+
 	"github.com/eaciit/toolkit"
+
+	"git.eaciitapp.com/sebar/dbflex"
 )
 
 type DBcmd struct{}
@@ -51,8 +54,7 @@ func (DBcmd) GetAll(param GetAllParam) error {
 	}
 
 	err := Database().Cursor(
-		dbflex.From(param.TableName).Command("pipe"),
-		toolkit.M{"pipe": pipeRows},
+		dbflex.From(param.TableName).Select(), nil,
 	).Fetchs(param.ResultRows, 0)
 	if err != nil {
 		return err
@@ -72,8 +74,7 @@ func (DBcmd) GetAll(param GetAllParam) error {
 
 	resultTotal := make([]toolkit.M, 0)
 	err = Database().Cursor(
-		dbflex.From(param.TableName).Command("pipe"),
-		toolkit.M{"pipe": pipeTotal},
+		dbflex.From(param.TableName).Select(), nil,
 	).Fetchs(&resultTotal, 0)
 	if err != nil {
 		return err

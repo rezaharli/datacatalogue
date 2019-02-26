@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"fmt"
 	"io"
+	"log"
 	"strings"
 	"time"
 
@@ -77,8 +78,8 @@ func (s *UserService) GetAll(sortKey, sortOrder string, skip, take int, filter t
 }
 
 func (s *UserService) Insert(data *m.SysUser) (bool, error) {
-	data.CreatedAt = time.Now()
-	data.UpdatedAt = time.Now()
+	data.CreatedAt = time.Now().String()
+	data.UpdatedAt = time.Now().String()
 
 	users := make([]m.SysUser, 0)
 	err := h.NewDBcmd().GetBy(h.GetByParam{
@@ -95,9 +96,18 @@ func (s *UserService) Insert(data *m.SysUser) (bool, error) {
 	}
 
 	data.Password = s.HashPassword(data.Password)
+
+	dataM, err := toolkit.ToM(data)
+	if err != nil {
+		log.Println(err.Error())
+		return false, err
+	}
+
+	dataM.Unset("ID")
+
 	err = h.NewDBcmd().Insert(h.InsertParam{
 		TableName: m.NewSysUserModel().TableName(),
-		Data:      data,
+		Data:      dataM,
 	})
 
 	if err != nil {
@@ -110,7 +120,7 @@ func (s *UserService) Insert(data *m.SysUser) (bool, error) {
 }
 
 func (s *UserService) Update(data *m.SysUser) (bool, error) {
-	data.UpdatedAt = time.Now()
+	data.UpdatedAt = time.Now().String()
 
 	rows := make([]m.SysUser, 0)
 	err := h.NewDBcmd().GetBy(h.GetByParam{
