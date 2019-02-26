@@ -2,6 +2,7 @@ export GOOS=linux
 
 foldername="$CI_PROJECT_NAME-$CI_COMMIT_TAG"
 rm -r "builds"
+mkdir builds
 mkdir "builds/${foldername}"
 mkdir "builds/${foldername}/webapp"
 mkdir "builds/${foldername}/webapp/config"
