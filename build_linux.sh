@@ -20,7 +20,7 @@ cp -r dist/ "../../builds/${foldername}/webapp/views"
 cd ..
 cp config/app.json.template "../builds/${foldername}/webapp/config/"
 cd ../builds/
-zip -r "${foldername}.tar.gz" "${foldername}"
+zip -r "${foldername}.zip" "${foldername}"
 echo "${foldername}"
 rm -r "${foldername}"
 
