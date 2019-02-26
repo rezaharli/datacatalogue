@@ -1,5 +1,8 @@
 # Select the appropriate golang image and version based on your project requirements
-image: golang:1.9
+image: golang:lastest
+
+variables:
+  REPO_NAME: eaciit/datacatalogue
 
 cache:
   paths:
@@ -24,7 +27,6 @@ artifact_upload:
     - echo $REPO_NAME
     - pwd
     - ls
-    - cd datacatalogue
     - sh build_linux.sh
     - mkdir -p ~/.ssh
     - echo "$SERVER_SSH_KEY" | tr -d '\r' > ~/developer.pem
