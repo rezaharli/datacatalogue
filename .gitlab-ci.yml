@@ -9,19 +9,13 @@ cache:
 
 # Prepare directory and prepare all dependencies
 before_script:
-  - mkdir -p /go/src/eaciit/datacatalogue /go/src/_/builds
-  - cp -r $CI_PROJECT_DIR /go/src/eaciit
-  - ln -s /go/src/eaciit/datacatalogue /go/src/_/builds/datacatalogue
+  - mkdir -p $GOPATH/src/$(dirname $REPO_NAME)
+  - ln -svf $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
+  - cd $GOPATH/src/$REPO_NAME
 
 # Define stage flow, start from top to bottom
 stages:
   - build
-
-# Build the code
-build:
-  stage: build
-  script:
-    - pwd
 
 # Create artifact and distribute
 artifact_upload:
@@ -33,6 +27,3 @@ artifact_upload:
     - chmod 600 ~/developer.pem
     - ssh-keyscan -H 'go.eaciit.com' >> ~/.ssh/known_hosts
     - scp -i ~/developer.pem builds/*.tar.gz $SERVER_USER@$SERVER_HOSTNAME:/data/nginx/files/datacatalogue/$CI_PROJECT_NAME/
-  artifacts:
-    paths:
-      - builds/

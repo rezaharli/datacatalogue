@@ -2,16 +2,13 @@ export GOOS=linux
 
 foldername="$CI_PROJECT_NAME-$CI_COMMIT_TAG"
 rm -r "builds"
-mkdir builds
+mkdir "builds"
 mkdir "builds/${foldername}"
 mkdir "builds/${foldername}/webapp"
 mkdir "builds/${foldername}/webapp/config"
 mkdir "builds/${foldername}/webapp/views"
 
 cd webapp
-pwd
-
-ls "vendor/git.eaciitapp.com/sebar"
 
 go build -o datacatalogue
 mv datacatalogue "../builds/${foldername}/webapp"
