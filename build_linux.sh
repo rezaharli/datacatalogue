@@ -10,6 +10,9 @@ mkdir "builds/${foldername}/webapp/views"
 
 cd webapp
 pwd
+
+ls "vendor/git.eaciitapp.com/sebar"
+
 go build -o datacatalogue
 mv datacatalogue "../builds/${foldername}/webapp"
 
