@@ -1,5 +1,5 @@
 # Select the appropriate golang image and version based on your project requirements
-image: golang:lastest
+image: golang:latest
 
 variables:
   REPO_NAME: eaciit/datacatalogue
