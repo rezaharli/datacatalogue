@@ -7,6 +7,7 @@ import { users } from './users.module';
 import { dscmy } from './dscmy.module';
 import { dpomy } from './dpomy.module';
 import { ddomy } from './ddomy.module';
+import { rfomy } from './rfomy.module';
 
 Vue.use(Vuex);
 
@@ -17,6 +18,7 @@ export const store = new Vuex.Store({
         users,
         dscmy,
         dpomy,
-        ddomy
+        ddomy,
+        rfomy
     }
 });

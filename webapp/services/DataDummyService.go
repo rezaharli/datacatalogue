@@ -536,3 +536,106 @@ func (s *DSCService) CreateLinkSubcategoryPeopleDummyData() error {
 
 	return nil
 }
+
+func (s *DSCService) CreatePriorityReportsDummyData() error {
+	toolkit.Println("CreatePriorityReportsDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewPriorityReportsModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.PriorityReports, 0)
+	for i := 0; i < 200; i++ {
+		mdt := m.NewPriorityReportsModel()
+		mdt.ID = i
+		mdt.Name = fake.Words()
+		mdt.Owner_ID = fake.Day()
+		mdt.Lead_ID = fake.Day()
+		mdt.Sub_Risk_Type_ID = fake.Day()
+		mdt.Rationale = fake.Words()
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewPriorityReportsModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (s *DSCService) CreateCRMDummyData() error {
+	toolkit.Println("CreateCRMDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewCRMModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.CRM, 0)
+	for i := 0; i < 200; i++ {
+		mdt := m.NewCRMModel()
+		mdt.ID = i
+		mdt.Name = fake.Words()
+		mdt.Prority_Report_ID = fake.Day()
+		mdt.CRM_Rationale = fake.Words()
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewCRMModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (s *DSCService) CreateLinkCRMCDEDummyData() error {
+	toolkit.Println("CreateLinkCRMCDEDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewLinkCRMCDEModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.LinkCRMCDE, 0)
+	for i := 0; i < 200; i++ {
+		mdt := m.NewLinkCRMCDEModel()
+		mdt.ID = i
+		mdt.CRM_ID = fake.Day()
+		mdt.CDE_ID = fake.Day()
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewLinkCRMCDEModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}

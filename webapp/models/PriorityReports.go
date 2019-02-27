@@ -8,3 +8,11 @@ type PriorityReports struct {
 	Sub_Risk_Type_ID int
 	Rationale        string
 }
+
+func NewPriorityReportsModel() *PriorityReports {
+	return new(PriorityReports)
+}
+
+func (m *PriorityReports) TableName() string {
+	return "Tbl_Priority_Reports"
+}

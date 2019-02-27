@@ -21,7 +21,9 @@ import DdoDetails from './components/ddo/Ddo-details';
 import DdoMy from './components/ddo/Ddo-my';
 import DdoAll from './components/ddo/Ddo-all';
 
-import Rfo from './components/Rfo';
+import Rfo from './components/rfo/Rfo';
+import RfoMy from './components/rfo/Rfo-my';
+import RfoAll from './components/rfo/Rfo-all';
 
 import Access from './components/access/Access';
 import AccessUsers from './components/access/Access-users';
@@ -224,20 +226,45 @@ const router = new VueRouter({
           } 
         }]
       }]
-    },
-    // { 
-    //   path: '/ddo', component: Ddo, 
-    //   meta: { 
-    //     title: "DDO - Data Catalogue" ,
-    //     permission: "DDO"
-    //   } 
-    // }, 
-    { 
+    }, { // rfo
       path: '/rfo', component: Rfo, 
       meta: { 
-        title: "RFO - Data Catalogue" ,
+        title: "RFO - Data Catalogue",
         permission: "RFO"
-      } 
+      }, 
+      children: [{ 
+        path: '', name: 'rfo', redirect: { name: 'rfo.my' }
+      }, { //rfo.my
+        path: 'my', 
+        name: 'rfo.my', 
+        component: RfoMy, 
+        meta: { 
+          title: "RFO - Data Catalogue",
+          showModal: false,
+          permission: "RFO"
+        } 
+      }, { // rfo.my.system
+        path: 'my/:system', name: 'rfo.my', component: RfoMy, 
+        meta: { 
+          title: "RFO - Data Catalogue",
+          showModal: false,
+          permission: "RFO"
+        },
+      }, { // rfo.all
+        path: 'all', name: 'rfo.all', component: RfoAll, 
+        meta: { 
+          title: "RFO - Data Catalogue" ,
+          showModal: false,
+          permission: "RFO"
+        } 
+      }, { 
+        path: 'all/:system', name: 'rfo.all', component: RfoAll, 
+        meta: { 
+          title: "RFO - Data Catalogue" ,
+          showModal: false,
+          permission: "RFO"
+        },
+      }]
     }, { // access
       path: '/access', component: Access, 
       meta: { 

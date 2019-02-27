@@ -38,12 +38,16 @@ func main() {
 	// s.NewDSCService().CreateSegmentDummyData()
 	// s.NewDSCService().CreateDSProcessesDetailDummyData()
 	// s.NewDSCService().CreateLinkSubcategoryPeopleDummyData()
+	// s.NewDSCService().CreatePriorityReportsDummyData()
+	// s.NewDSCService().CreateCRMDummyData()
+	// s.NewDSCService().CreateLinkCRMCDEDummyData()
 
 	app := knot.NewApp()
 	app.Register(c.NewUsersController(), "")
 	app.Register(c.NewDSCController(), "")
 	app.Register(c.NewDPOController(), "")
 	app.Register(c.NewDDOController(), "")
+	app.Register(c.NewRFOController(), "")
 
 	app.Static("css", filepath.Join(clit.ExeDir(), "views", "dist", "css"))
 	app.Static("js", filepath.Join(clit.ExeDir(), "views", "dist", "js"))
