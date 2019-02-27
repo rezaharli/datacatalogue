@@ -20,7 +20,7 @@ table.v-table thead th > div.btn-group {
 <template>
   <b-row style="margin-top: 10px;margin-bottom: 10px;">
     <b-col>
-      <!-- Dsc details -->
+      <!-- Ddo details -->
       <router-view/>
 
       <!-- Main content -->
@@ -36,24 +36,20 @@ table.v-table thead th > div.btn-group {
                       <b-form-row class="main-table-search-dropdown-form">
                         <b-col>
                           <b-form @submit="onSubmit" @reset="onReset">
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Name" label-for="systemName">
-                              <b-form-input id="systemName" type="text" v-model="searchForm.systemName"></b-form-input>
+                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Domain" label-for="dataDomain">
+                              <b-form-input id="dataDomain" type="text" v-model="searchForm.dataDomain"></b-form-input>
                             </b-form-group>
 
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="ITAM ID" label-for="itamID">
-                              <b-form-input id="itamID" type="text" v-model="searchForm.itamID"></b-form-input>
+                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Data Domain" label-for="subDataDomain">
+                              <b-form-input id="subDataDomain" type="text" v-model="searchForm.subDataDomain"></b-form-input>
                             </b-form-group>
 
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Country" label-for="country">
-                              <b-form-select id="country" :options="searchForm.countryMaster" v-model="searchForm.country"></b-form-select>
+                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Data Domain Owner" label-for="subDataDomainOwner">
+                              <b-form-input id="subDataDomainOwner" type="text" v-model="searchForm.subDataDomainOwner"></b-form-input>
                             </b-form-group>
 
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="tableName">
-                              <b-form-select id="tableName" :options="tablenameMaster" v-model="searchForm.tableName"></b-form-select>
-                            </b-form-group>
-
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnName">
-                              <b-form-select id="columnName" :options="columnNameMaster" v-model="searchForm.columnName"></b-form-select>
+                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term" label-for="businessTerm">
+                              <b-form-select id="businessTerm" :options="tablenameMaster" v-model="searchForm.businessTerm"></b-form-select>
                             </b-form-group>
 
                             <b-button-group class="mx-1 float-right">
@@ -87,13 +83,13 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <v-data-table
                   :headers="firstTableHeaders"
-                  :items="dscmy.systemsDisplay"
-                  :loading="dscmy.systemsLoading"
+                  :items="ddomy.systemsDisplay"
+                  :loading="ddomy.systemsLoading"
                   :search="searchMain"
                   class="elevation-1 fixed-header">
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dscmy.systemsSource).length }})
+                  {{ props.header.text }} ({{ distinctData(props.header.value, ddomy.systemsSource).length }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -105,7 +101,7 @@ table.v-table thead th > div.btn-group {
                       <b-form-input type="text" placeholder="Filter" v-model="search['systems'][props.header.value]" @change="filterKeyup('systems', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscmy.systemsSource)" :key="item" @click="columnFilter('systems', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, ddomy.systemsSource)" :key="item" @click="columnFilter('systems', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -120,10 +116,8 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                    <td><b-link :to="{ path:'/dsc/all/' + props.item.ID }">{{ props.item.System_Name }}</b-link></td>
-                    <td>{{ props.item.ITAM_ID }}</td>
-                    <td>{{ props.item.fat }}</td>
-                    <td>{{ props.item.carbs }}</td>
+                    <td><b-link :to="{ path:'/ddo/all/' + props.item.ID }">{{ props.item.DOMAIN }}</b-link></td>
+                    <td>{{ props.item.SUB_DOMAIN }}</td>
                 </template>
               </v-data-table>
             </b-col>
@@ -131,13 +125,11 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <v-data-table
                 :headers="secondTableHeaders"
-                :items="dscmy.tableDisplay"
-                :loading="dscmy.tableLoading"
-                :expand="false"
+                :items="ddomy.tableDisplay"
+                :loading="ddomy.tableLoading"
                 v-if="secondtable"
                 item-key="ID"
                 class="elevation-1">
-                <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
                   <template slot="no-data">
                     <v-alert :value="true" color="error" icon="warning">
@@ -146,7 +138,7 @@ table.v-table thead th > div.btn-group {
                   </template>
 
                   <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dscmy.tableSource).length }})
+                  {{ props.header.text }} ({{ distinctData(props.header.value, ddomy.tableSource).length }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -158,7 +150,7 @@ table.v-table thead th > div.btn-group {
                       <b-form-input type="text" placeholder="Filter" v-model="search['tablename'][props.header.value]" @change="filterKeyup('tablename', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscmy.tableSource)" :key="item" @click="columnFilter('tablename', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, ddomy.tableSource)" :key="item" @click="columnFilter('tablename', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -166,28 +158,10 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                   <tr>
-                    <td><b-link @click="props.expanded = !props.expanded">{{ props.item.Name }}</b-link></td>
-                    <td><b-link @click="showDetails(props.item.ID)">{{ _.map(props.item.Columns, "Name").join(", ") }}</b-link></td>
-                    <td>{{ _.map(props.item.Columns, "Alias_Name").join(", ") }}</td>
-                    <td>{{ _.map(props.item.Columns, "CDE").join(", ") }}</td>
+                    <td><b-link @click="showDetails(props.item.ID)">{{ props.item.BT_NAME }}</b-link></td>
+                    <td>{{ props.item.DESCRIPTION }}</td>
+                    <td>{{ props.item.CDE }}</td>
                   </tr>
-                </template>
-                
-                <template slot="expand" slot-scope="props">
-                  <v-data-table
-                    :headers="secondTableHeaders"
-                    :items="props.item.Columns"
-                    class="elevation-1"
-                    hide-actions
-                    hide-headers
-                  >
-                    <template slot="items" slot-scope="props">
-                      <td style="width: 25%">&nbsp;</td>
-                      <td style="width: 25%"><b-link @click="showDetails(props.item.Table_ID)">{{ props.item.Name }}</b-link></td>
-                      <td style="width: 25%">{{ props.item.Alias_Name }}</td>
-                      <td style="width: 25%">{{ props.item.CDE }}</td>
-                    </template>
-                  </v-data-table>
                 </template>
               </v-data-table>
             </b-col>
@@ -217,74 +191,57 @@ export default {
         tablenameSource: [],
         searchMain: '',
         searchForm: {
-          systemName: '',
-          itamID: '',
-          country: '',
-          countryMaster: ['a', 'c', 'd'],
-          tableName: '',
-          columnName: '',
+          dataDomain: '',
+          subDataDomain: '',
+          subDataDomainOwner: '',
+          businessTerm: ''
         },
         firstTableHeaders: [
-          { text: 'System Name', align: 'left', value: 'System_Name', sortable: false },
-          { text: 'ITAM ID', align: 'left', value: 'ITAM_ID', sortable: false },
-          { text: 'Dataset Custodian', align: 'left', value: 'fat', sortable: false },
-          { text: 'Bank ID', align: 'left', value: 'carbs', sortable: false }
+          { text: 'Data Domain', align: 'left', value: 'DOMAIN', sortable: false },
+          { text: 'Sub Domains', align: 'left', value: 'SUB_DOMAIN', sortable: false },
         ],
         secondTableHeaders: [
-          { text: 'Table Name', align: 'left', sortable: false, value: 'Name', width: "25%" },
-          { text: 'Column Name', align: 'left', sortable: false, value: 'Columns.Name', width: "25%" },
-          { text: 'Business Alias Name', align: 'left', sortable: false, value: 'Columns.Alias_Name', width: "25%" },
-          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'Columns.CDE', width: "25%" }
+          { text: 'Business Term', align: 'left', sortable: false, value: 'BT_NAME', width: "25%" },
+          { text: 'Business Term Description', align: 'left', sortable: false, value: 'DESCRIPTION', width: "25%" },
+          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'CDE', width: "25%" },
         ],
         excelFields: {
-          'System Name': 'System_Name',
-          'ITAM ID': 'ITAM_ID',
-          'Dataset Custodian': 'asdf',
-          'Bank ID': 'carbs',
-          'Table Name': 'Table_Name',
-          'Column Name': 'Column_Name',
-          'Business Alias Name': 'Alias_Name',
+          'Data Domain': 'DOMAIN',
+          'Sub Domains': 'SUB_DOMAIN',
+          'Business Term': 'BT_NAME',
+          'Business Term Description': 'DESCRIPTION',
           'CDE (Yes/No)': 'CDE'
         }
       }
     },
     computed: {
       ...mapState({
-        dscmy: state => state.dscmy.all
+        ddomy: state => state.ddomy.all
       }),
       tablenameMaster (){
-        return this._.map(this.dscmy.tableSource, 'Name')
+        return this._.map(this.ddomy.tableSource, 'BT_NAME')
       },
       columnNameMaster (){
-        return this._.map(this._.flattenDeep(this._.map(this.dscmy.tableSource, 'Columns')), 'Name')
+        return this._.map(this._.flattenDeep(this._.map(this.ddomy.tableSource, 'Columns')), 'Name')
       },
       excelData () {
         var res = [];
 
-        this._.each(this.dscmy.systemsDisplay, (system, i) => {
+        this._.each(this.ddomy.systemsDisplay, (system, i) => {
           var temp = {
-            System_Name: system.System_Name,
-            ITAM_ID: system.ITAM_ID,
+            DOMAIN: system.DOMAIN,
+            SUB_DOMAIN: system.SUB_DOMAIN,
           }
-
-          var tables = this._.filter(this.dscmy.tableDisplay, (v) => v.Imm_Prec_System_ID == system.ID)
+          
+          var tables = this._.filter(this.ddomy.tableDisplay, (v) => v.TSCID == system.ID)
           if(tables.length > 0){
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
-              tableLevel.Table_Name = table.Name;
+              tableLevel.BT_NAME = table.BT_NAME;
+              tableLevel.DESCRIPTION = table.DESCRIPTION;
+              tableLevel.CDE = table.CDE;
 
-              if(table.Columns.length > 0){
-                this._.each(table.Columns, (column, j) => {
-                  var colLevel = _.cloneDeep(tableLevel);
-                  colLevel.Column_Name = column.Name;
-                  colLevel.Alias_Name = column.Alias_Name;
-                  colLevel.CDE = column.CDE;
-                  
-                  res.push(_.cloneDeep(colLevel));
-                })
-              } else {
-                res.push(_.cloneDeep(tableLevel));
-              }
+              res.push(_.cloneDeep(tableLevel));
             })
           } else {
             res.push(_.cloneDeep(temp));
@@ -317,24 +274,24 @@ export default {
       }
     },
     methods: {
-      ...mapActions('dscmy', {
+      ...mapActions('ddomy', {
           getAllSystem: 'getAllSystem',
           getTableName: 'getTableName',
       }),
       columnFilter (type, keyModel, val) {
         if(val == ""){
           if(type == "systems"){
-            this.dscmy.systemsDisplay = this.dscmy.systemsSource;
+            this.ddomy.systemsDisplay = this.ddomy.systemsSource;
           } else {
-            this.dscmy.tableDisplay = this.dscmy.tableSource;
+            this.ddomy.tableDisplay = this.ddomy.tableSource;
           }
           return
         }
 
         if(type == "systems"){
-          this.dscmy.systemsDisplay = _.filter(this.dscmy.systemsSource, [keyModel.value, val]);
+          this.ddomy.systemsDisplay = _.filter(this.ddomy.systemsSource, [keyModel.value, val]);
         } else {
-          this.dscmy.tableDisplay = _.filter(this.dscmy.tableSource, [keyModel.value, val]);
+          this.ddomy.tableDisplay = _.filter(this.ddomy.tableSource, [keyModel.value, val]);
         }
       },
       filterKeyup (type, keyModel) {
@@ -363,38 +320,38 @@ export default {
       onSubmit (evt) {
         evt.preventDefault();
 
-        this.dscmy.systemsDisplay = this.dscmy.systemsSource;
-        this.dscmy.tableDisplay = this.dscmy.tableSource;
-        if(this.searchForm.systemName)
-          this.dscmy.systemsDisplay = this._.filter(this.dscmy.systemsDisplay, (val) => val.System_Name.indexOf(this.searchForm.systemName) != -1);
-        if(this.searchForm.itamID)
-          this.dscmy.systemsDisplay = this._.filter(this.dscmy.systemsDisplay, (val) => val.ITAM_ID.toString().indexOf(this.searchForm.itamID) != -1);
-        if(this.searchForm.tableName)
-          this.dscmy.tableDisplay = this._.filter(this.dscmy.tableDisplay, (val) => val.Name.indexOf(this.searchForm.tableName) != -1);
-        if(this.searchForm.columnName) {
-          this._.each(this.dscmy.tableDisplay, (v, i) => {
-            this.dscmy.tableDisplay[i].Columns = this._.filter(this.dscmy.tableDisplay[i].Columns, (w) => w.Name.indexOf(this.searchForm.columnName) != -1);
-            this.dscmy.tableDisplay = this._.filter(this.dscmy.tableDisplay, (w) => w.Columns.length > 0)
-          });
-        }
+        this.ddomy.systemsDisplay = this.ddomy.systemsSource;
+        this.ddomy.tableDisplay = this.ddomy.tableSource;
+        if(this.searchForm.dataDomain)
+          this.ddomy.systemsDisplay = this._.filter(this.ddomy.systemsDisplay, (val) => val.DOMAIN.toString().indexOf(this.searchForm.dataDomain) != -1);
+        if(this.searchForm.subDataDomain)
+          this.ddomy.systemsDisplay = this._.filter(this.ddomy.systemsDisplay, (val) => val.SUB_DOMAIN.toString().indexOf(this.searchForm.subDataDomain) != -1);
+
+        if(this.searchForm.businessTerm)
+          this.ddomy.tableDisplay = this._.filter(this.ddomy.tableDisplay, (val) => val.BT_NAME.indexOf(this.searchForm.businessTerm) != -1);
+        // if(this.searchForm.businessTerm) {
+        //   this._.each(this.ddomy.tableDisplay, (v, i) => {
+        //     this.ddomy.tableDisplay[i].Columns = this._.filter(this.ddomy.tableDisplay[i].Columns, (w) => w.Name.indexOf(this.searchForm.businessTerm) != -1);
+        //     this.ddomy.tableDisplay = this._.filter(this.ddomy.tableDisplay, (w) => w.Columns.length > 0)
+        //   });
+        // }
 
         this.searchForm.show = false;
       },
       onReset (evt) {
         evt.preventDefault();
         /* Reset our form values */
-        this.searchForm.systemName = '';
-        this.searchForm.itamID = '';
-        this.searchForm.country = '';
-        this.searchForm.tableName = '';
-        this.searchForm.colName = '';
+        this.searchForm.dataDomain = '';
+        this.searchForm.subDataDomain = '';
+        this.searchForm.subDataDomainOwner = '';
+        this.searchForm.businessTerm = '';
 
         // /* Trick to reset/clear native browser form validation state */
         // this.searchForm.show = false;
         // this.$nextTick(() => { this.searchForm.show = true });
       },
       showDetails (id) {
-        this.$router.push('/dsc/all/' + this.$route.params.system + '/' + id)
+        this.$router.push('/ddo/all/' + this.$route.params.system + '/' + id)
       }
     }
 }

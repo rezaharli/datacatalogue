@@ -127,11 +127,9 @@ table.v-table thead th > div.btn-group {
                 :headers="secondTableHeaders"
                 :items="ddomy.tableDisplay"
                 :loading="ddomy.tableLoading"
-                :expand="false"
                 v-if="secondtable"
                 item-key="ID"
                 class="elevation-1">
-                <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
                   <template slot="no-data">
                     <v-alert :value="true" color="error" icon="warning">
@@ -160,27 +158,10 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                   <tr>
-                    <td><b-link @click="props.expanded = !props.expanded">{{ props.item.Name }}</b-link></td>
-                    <td><b-link @click="showDetails(props.item.ID)">{{ _.map(props.item.Columns, "Name").join(", ") }}</b-link></td>
-                    <td>{{ _.map(props.item.Columns, "Alias_Name").join(", ") }}</td>
+                    <td><b-link @click="showDetails(props.item.ID)">{{ props.item.BT_NAME }}</b-link></td>
+                    <td>{{ props.item.DESCRIPTION }}</td>
+                    <td>{{ props.item.CDE }}</td>
                   </tr>
-                </template>
-                
-                <template slot="expand" slot-scope="props">
-                  <v-data-table
-                    :headers="secondTableHeaders"
-                    :items="props.item.Columns"
-                    class="elevation-1"
-                    hide-actions
-                    hide-headers
-                  >
-                    <template slot="items" slot-scope="props">
-                      <td style="width: 25%">&nbsp;</td>
-                      <td style="width: 25%"><b-link @click="showDetails(props.item.Table_ID)">{{ props.item.Name }}</b-link></td>
-                      <td style="width: 25%">{{ props.item.Alias_Name }}</td>
-                      <td style="width: 25%">{{ props.item.CDE }}</td>
-                    </template>
-                  </v-data-table>
                 </template>
               </v-data-table>
             </b-col>
@@ -220,18 +201,15 @@ export default {
           { text: 'Sub Domains', align: 'left', value: 'SUB_DOMAIN', sortable: false },
         ],
         secondTableHeaders: [
-          { text: 'Business Term', align: 'left', sortable: false, value: 'Name', width: "25%" },
-          { text: 'Business Term Description', align: 'left', sortable: false, value: 'Columns.Name', width: "25%" },
-          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'Columns.Alias_Name', width: "25%" },
+          { text: 'Business Term', align: 'left', sortable: false, value: 'BT_NAME', width: "25%" },
+          { text: 'Business Term Description', align: 'left', sortable: false, value: 'DESCRIPTION', width: "25%" },
+          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'CDE', width: "25%" },
         ],
         excelFields: {
-          'System Name': 'System_Name',
-          'ITAM ID': 'ITAM_ID',
-          'Dataset Custodian': 'asdf',
-          'Bank ID': 'carbs',
-          'Table Name': 'Table_Name',
-          'Column Name': 'Column_Name',
-          'Business Alias Name': 'Alias_Name',
+          'Data Domain': 'DOMAIN',
+          'Sub Domains': 'SUB_DOMAIN',
+          'Business Term': 'BT_NAME',
+          'Business Term Description': 'DESCRIPTION',
           'CDE (Yes/No)': 'CDE'
         }
       }
@@ -241,7 +219,7 @@ export default {
         ddomy: state => state.ddomy.all
       }),
       tablenameMaster (){
-        return this._.map(this.ddomy.tableSource, 'Name')
+        return this._.map(this.ddomy.tableSource, 'BT_NAME')
       },
       columnNameMaster (){
         return this._.map(this._.flattenDeep(this._.map(this.ddomy.tableSource, 'Columns')), 'Name')
@@ -251,28 +229,19 @@ export default {
 
         this._.each(this.ddomy.systemsDisplay, (system, i) => {
           var temp = {
-            System_Name: system.System_Name,
-            ITAM_ID: system.ITAM_ID,
+            DOMAIN: system.DOMAIN,
+            SUB_DOMAIN: system.SUB_DOMAIN,
           }
-
-          var tables = this._.filter(this.ddomy.tableDisplay, (v) => v.Imm_Prec_System_ID == system.ID)
+          
+          var tables = this._.filter(this.ddomy.tableDisplay, (v) => v.TSCID == system.ID)
           if(tables.length > 0){
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
-              tableLevel.Table_Name = table.Name;
+              tableLevel.BT_NAME = table.BT_NAME;
+              tableLevel.DESCRIPTION = table.DESCRIPTION;
+              tableLevel.CDE = table.CDE;
 
-              if(table.Columns.length > 0){
-                this._.each(table.Columns, (column, j) => {
-                  var colLevel = _.cloneDeep(tableLevel);
-                  colLevel.Column_Name = column.Name;
-                  colLevel.Alias_Name = column.Alias_Name;
-                  colLevel.CDE = column.CDE;
-                  
-                  res.push(_.cloneDeep(colLevel));
-                })
-              } else {
-                res.push(_.cloneDeep(tableLevel));
-              }
+              res.push(_.cloneDeep(tableLevel));
             })
           } else {
             res.push(_.cloneDeep(temp));
@@ -353,29 +322,29 @@ export default {
 
         this.ddomy.systemsDisplay = this.ddomy.systemsSource;
         this.ddomy.tableDisplay = this.ddomy.tableSource;
-        if(this.searchForm.systemName)
-          this.ddomy.systemsDisplay = this._.filter(this.ddomy.systemsDisplay, (val) => val.System_Name.indexOf(this.searchForm.systemName) != -1);
-        if(this.searchForm.itamID)
-          this.ddomy.systemsDisplay = this._.filter(this.ddomy.systemsDisplay, (val) => val.ITAM_ID.toString().indexOf(this.searchForm.itamID) != -1);
-        if(this.searchForm.tableName)
-          this.ddomy.tableDisplay = this._.filter(this.ddomy.tableDisplay, (val) => val.Name.indexOf(this.searchForm.tableName) != -1);
-        if(this.searchForm.columnName) {
-          this._.each(this.ddomy.tableDisplay, (v, i) => {
-            this.ddomy.tableDisplay[i].Columns = this._.filter(this.ddomy.tableDisplay[i].Columns, (w) => w.Name.indexOf(this.searchForm.columnName) != -1);
-            this.ddomy.tableDisplay = this._.filter(this.ddomy.tableDisplay, (w) => w.Columns.length > 0)
-          });
-        }
+        if(this.searchForm.dataDomain)
+          this.ddomy.systemsDisplay = this._.filter(this.ddomy.systemsDisplay, (val) => val.DOMAIN.toString().indexOf(this.searchForm.dataDomain) != -1);
+        if(this.searchForm.subDataDomain)
+          this.ddomy.systemsDisplay = this._.filter(this.ddomy.systemsDisplay, (val) => val.SUB_DOMAIN.toString().indexOf(this.searchForm.subDataDomain) != -1);
+
+        if(this.searchForm.businessTerm)
+          this.ddomy.tableDisplay = this._.filter(this.ddomy.tableDisplay, (val) => val.BT_NAME.indexOf(this.searchForm.businessTerm) != -1);
+        // if(this.searchForm.businessTerm) {
+        //   this._.each(this.ddomy.tableDisplay, (v, i) => {
+        //     this.ddomy.tableDisplay[i].Columns = this._.filter(this.ddomy.tableDisplay[i].Columns, (w) => w.Name.indexOf(this.searchForm.businessTerm) != -1);
+        //     this.ddomy.tableDisplay = this._.filter(this.ddomy.tableDisplay, (w) => w.Columns.length > 0)
+        //   });
+        // }
 
         this.searchForm.show = false;
       },
       onReset (evt) {
         evt.preventDefault();
         /* Reset our form values */
-        this.searchForm.systemName = '';
-        this.searchForm.itamID = '';
-        this.searchForm.country = '';
-        this.searchForm.tableName = '';
-        this.searchForm.colName = '';
+        this.searchForm.dataDomain = '';
+        this.searchForm.subDataDomain = '';
+        this.searchForm.subDataDomainOwner = '';
+        this.searchForm.businessTerm = '';
 
         // /* Trick to reset/clear native browser form validation state */
         // this.searchForm.show = false;

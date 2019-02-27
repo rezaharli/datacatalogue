@@ -13,6 +13,7 @@ import (
 )
 
 func (s *DSCService) CreateUserDummyData() error {
+	toolkit.Println("CreateUserAdminData")
 	data := m.NewSysUserModel()
 	data.ID = 1
 	data.Username = 123
@@ -492,6 +493,39 @@ func (s *DSCService) CreateSegmentDummyData() error {
 
 	err = h.NewDBcmd().Insert(h.InsertParam{
 		TableName:       m.NewSegmentModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (s *DSCService) CreateLinkSubcategoryPeopleDummyData() error {
+	toolkit.Println("CreateLinkSubcategoryPeopleDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewLinkSubcategoryPeopleModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.LinkSubcategoryPeople, 0)
+	for i := 0; i < 200; i++ {
+		mdt := m.NewLinkSubcategoryPeopleModel()
+		mdt.ID = i
+		mdt.Subcategory_ID = fake.Day()
+		mdt.People_ID = fake.Day()
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewLinkSubcategoryPeopleModel().TableName(),
 		Data:            data,
 		ContinueOnError: true,
 	})

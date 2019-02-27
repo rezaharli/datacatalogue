@@ -50,7 +50,26 @@ func (c *DDO) GetRightTable(k *knot.WebContext) {
 	// skip := payload.GetInt("skip")
 	// take := payload.GetInt("take")
 
-	systems, _, err := s.NewDDOService().GetRightTable(payload.GetInt("SystemID"))
+	systems, _, err := s.NewDDOService().GetRightTable(payload.GetInt("ProcessID"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	h.WriteResultOK(k, res, systems)
+}
+
+func (c *DDO) GetDetails(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	systems, _, err := s.NewDDOService().GetDetails(payload.GetInt("LeftParam"), payload.GetInt("RightParam"))
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return

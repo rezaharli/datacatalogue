@@ -37,6 +37,7 @@ func main() {
 	// s.NewDSCService().CreateDSProcessesDummyData()
 	// s.NewDSCService().CreateSegmentDummyData()
 	// s.NewDSCService().CreateDSProcessesDetailDummyData()
+	// s.NewDSCService().CreateLinkSubcategoryPeopleDummyData()
 
 	app := knot.NewApp()
 	app.Register(c.NewUsersController(), "")
