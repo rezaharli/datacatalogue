@@ -25,6 +25,8 @@ stages:
 # Create artifact and distribute
 artifact_upload:
   stage: build
+  only:
+    - master
   script:
     - sh build_linux.sh
     - mkdir -p ~/.ssh
