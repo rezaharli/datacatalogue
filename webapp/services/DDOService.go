@@ -23,33 +23,22 @@ func (s *DDOService) GetLeftTable(sortKey, sortOrder string, skip, take int, fil
 			tc.id, tc.name as domain, tsc.name as sub_domain 
 		FROM 
 			tbl_category tc
-			JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
-			JOIN tbl_link_subcategory_people tlscp ON tlscp.subcategory_id = tsc.id
-			JOIN Tbl_People	tp on tlscp.people_id = tp.id
-			join tbl_business_term tbt on tbt.parent_id = tsc.id
-			join tbl_md_column tmc on tmc.business_term_id = tbt.id
-			join tbl_md_table tmt on tmc.table_id = tmt.id
-			join tbl_md_resource tmr on tmt.resource_id = tmr.id
-			join tbl_system ts on tmr.system_id = ts.id
-			join tbl_policy tpo on tbt.policy_id = tpo.id
-			join tbl_ds_process_detail tdpd on tdpd.business_term_id = tbt.id
-			join tbl_ds_processes tdp on tdpd.process_id = tdp.id`
+			INNER JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
+			INNER JOIN tbl_business_term tbt ON tbt.parent_id = tsc.id
+			LEFT JOIN tbl_link_subcategory_people tlscp ON tlscp.subcategory_id = tsc.id
+			LEFT JOIN Tbl_People	tp on tlscp.people_id = tp.id
+			LEFT join tbl_md_column tmc on tmc.business_term_id = tbt.id
+			LEFT join tbl_md_table tmt on tmc.table_id = tmt.id
+			LEFT join tbl_md_resource tmr on tmt.resource_id = tmr.id
+			LEFT join tbl_system ts on tmr.system_id = ts.id
+			LEFT join tbl_policy tpo on tbt.policy_id = tpo.id
+			LEFT join tbl_ds_process_detail tdpd on tdpd.business_term_id = tbt.id
+			LEFT join tbl_ds_processes tdp on tdpd.process_id = tdp.id`
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
 		SqlQuery:  q,
 		Results:   &resultRows,
 	})
-
-	// err := h.NewDBcmd().GetAll(h.GetAllParam{
-	// 	Filter:      filter,
-	// 	SortKey:     sortKey,
-	// 	SortOrder:   sortOrder,
-	// 	Skip:        skip,
-	// 	Take:        take,
-	// 	TableName:   m.NewCategoryModel().TableName(),
-	// 	ResultRows:  &resultRows,
-	// 	ResultTotal: &resultTotal,
-	// })
 
 	if err != nil {
 		return nil, 0, err
@@ -65,17 +54,17 @@ func (s *DDOService) GetRightTable(systemID int) (interface{}, int, error) {
 	q := `SELECT DISTINCT tsc.category_id as tscid, tbt.id, tbt.BT_Name, tbt.Description, tbt.CDE 
 		FROM
 			tbl_category tc
-			JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
-			JOIN tbl_link_subcategory_people tlscp ON tlscp.subcategory_id = tsc.id
-			JOIN Tbl_People	tp on tlscp.people_id = tp.id
-			join tbl_business_term tbt on tbt.parent_id = tsc.id
-			join tbl_md_column tmc on tmc.business_term_id = tbt.id
-			join tbl_md_table tmt on tmc.table_id = tmt.id
-			join tbl_md_resource tmr on tmt.resource_id = tmr.id
-			join tbl_system ts on tmr.system_id = ts.id
-			join tbl_policy tpo on tbt.policy_id = tpo.id
-			join tbl_ds_process_detail tdpd on tdpd.business_term_id = tbt.id
-			join tbl_ds_processes tdp on tdpd.process_id = tdp.id
+			INNER JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
+			INNER JOIN tbl_business_term tbt ON tbt.parent_id = tsc.id
+			LEFT JOIN tbl_link_subcategory_people tlscp ON tlscp.subcategory_id = tsc.id
+			LEFT JOIN Tbl_People	tp on tlscp.people_id = tp.id
+			LEFT join tbl_md_column tmc on tmc.business_term_id = tbt.id
+			LEFT join tbl_md_table tmt on tmc.table_id = tmt.id
+			LEFT join tbl_md_resource tmr on tmt.resource_id = tmr.id
+			LEFT join tbl_system ts on tmr.system_id = ts.id
+			LEFT join tbl_policy tpo on tbt.policy_id = tpo.id
+			LEFT join tbl_ds_process_detail tdpd on tdpd.business_term_id = tbt.id
+			LEFT join tbl_ds_processes tdp on tdpd.process_id = tdp.id
 		WHERE tsc.category_id = ` + toolkit.ToString(systemID)
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
@@ -125,17 +114,17 @@ func (s *DDOService) GetDetails(leftParam int, rightParam int) (interface{}, int
 			tmc.ddo_threshold
 		FROM
 			tbl_category tc
-			JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
-			JOIN tbl_link_subcategory_people tlscp ON tlscp.subcategory_id = tsc.id
-			JOIN Tbl_People	tp on tlscp.people_id = tp.id
-			join tbl_business_term tbt on tbt.parent_id = tsc.id
-			join tbl_md_column tmc on tmc.business_term_id = tbt.id
-			join tbl_md_table tmt on tmc.table_id = tmt.id
-			join tbl_md_resource tmr on tmt.resource_id = tmr.id
-			join tbl_system ts on tmr.system_id = ts.id
-			join tbl_policy tpo on tbt.policy_id = tpo.id
-			join tbl_ds_process_detail tdpd on tdpd.business_term_id = tbt.id
-			join tbl_ds_processes tdp on tdpd.process_id = tdp.id
+			INNER JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
+			INNER JOIN tbl_business_term tbt ON tbt.parent_id = tsc.id
+			LEFT JOIN tbl_link_subcategory_people tlscp ON tlscp.subcategory_id = tsc.id
+			LEFT JOIN Tbl_People	tp on tlscp.people_id = tp.id
+			LEFT join tbl_md_column tmc on tmc.business_term_id = tbt.id
+			LEFT join tbl_md_table tmt on tmc.table_id = tmt.id
+			LEFT join tbl_md_resource tmr on tmt.resource_id = tmr.id
+			LEFT join tbl_system ts on tmr.system_id = ts.id
+			LEFT join tbl_policy tpo on tbt.policy_id = tpo.id
+			LEFT join tbl_ds_process_detail tdpd on tdpd.business_term_id = tbt.id
+			LEFT join tbl_ds_processes tdp on tdpd.process_id = tdp.id
 		WHERE
 			tc.id = ` + toolkit.ToString(leftParam) + ` and tbt.id = ` + toolkit.ToString(rightParam)
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
