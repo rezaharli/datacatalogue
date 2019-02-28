@@ -349,7 +349,6 @@ export default {
       dialog: false,
       showModal: this.$route.meta.showModal,
       selectedDetails: null,
-      selectedTable: null,
       selectedColumn: null,
       ddTable: {
         selected: null
@@ -401,24 +400,6 @@ export default {
     ...mapState({
       ddomy: state => state.ddomy.all
     }),
-    // count() {
-    //   return this.ddomy.tableSource.length;
-    // },
-    ddTableOptions() {
-      this.ddTable.selected = this.selectedTable
-        ? this.selectedTable.Name
-        : null;
-      return this.selectedTable
-        ? [{ value: this.selectedTable.Name, text: this.selectedTable.Name }]
-        : [];
-    },
-    ddColumnOptions() {
-      return this.selectedTable
-        ? _.map(this.selectedTable.Columns, function(v) {
-            return { value: v.ID, text: v.Name };
-          })
-        : [];
-    },
     exportDatas() {
       if (this.selectedDetails) {
         return [
@@ -435,35 +416,12 @@ export default {
     "$route.meta"({ showModal }) {
       this.showModal = showModal;
     },
-    // count(newCount, oldCount) {
-    //   this.selectedDetails = _.find(this.ddomy.systemsSource, [
-    //     "ID",
-    //     parseInt(this.$route.params.system)
-    //   ]);
-    //   this.selectedTable = _.find(this.ddomy.tableSource, [
-    //     "ID",
-    //     parseInt(this.$route.params.details)
-    //   ]);
-    // },
     "ddomy.detailsSource"() {
       if (this.ddomy.detailsSource.length > 0)
         this.selectedDetails = this.ddomy.detailsSource[0];
       else 
         this.selectedDetails = null;
     },
-    selectedTable() {
-      this.ddColumn.selected = this.selectedTable
-        ? this.selectedTable.Columns[0]
-          ? this.selectedTable.Columns[0].ID
-          : null
-        : null;
-      this.selectedColumn = this.selectedTable
-        ? _.find(this.selectedTable.Columns, [
-            "ID",
-            parseInt(this.ddColumn.selected)
-          ])
-        : null;
-    }
   },
   mounted() {
     this.$refs.modalDetails.show();
@@ -473,8 +431,6 @@ export default {
       right: parseInt(this.$route.params.details)
     };
     this.getDetails(param);
-    // this.selectedDetails = _.find(this.ddomy.systemsSource, ['ID', parseInt(this.$route.params.system)])
-    // this.selectedTable = _.find(this.ddomy.tableSource, ['ID', parseInt(this.$route.params.details)])
   },
   methods: {
     ...mapActions("ddomy", {

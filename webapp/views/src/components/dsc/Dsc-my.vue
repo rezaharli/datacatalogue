@@ -120,10 +120,10 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                    <td><b-link :to="{ path:'/dsc/my/' + props.item.ID }">{{ props.item.System_Name }}</b-link></td>
+                    <td><b-link :to="{ path:'/dsc/my/' + props.item.ID }">{{ props.item.SYSTEM_NAME }}</b-link></td>
                     <td>{{ props.item.ITAM_ID }}</td>
-                    <td>{{ props.item.fat }}</td>
-                    <td>{{ props.item.carbs }}</td>
+                    <td>{{ props.item.FIRST_NAME }}</td>
+                    <td>{{ props.item.BANK_ID }}</td>
                 </template>
               </v-data-table>
             </b-col>
@@ -166,9 +166,9 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                   <tr>
-                    <td><b-link @click="props.expanded = !props.expanded">{{ props.item.Name }}</b-link></td>
-                    <td><b-link @click="showDetails(props.item.ID)">{{ _.map(props.item.Columns, "Name").join(", ") }}</b-link></td>
-                    <td>{{ _.map(props.item.Columns, "Alias_Name").join(", ") }}</td>
+                    <td><b-link @click="props.expanded = !props.expanded">{{ props.item.TABLE_NAME }}</b-link></td>
+                    <td><b-link @click="showDetails(props.item.ID)">{{ _.map(props.item.Columns, "COLUMN_NAME").join(", ") }}</b-link></td>
+                    <td>{{ _.map(props.item.Columns, "ALIAS_NAME").join(", ") }}</td>
                     <td>{{ _.map(props.item.Columns, "CDE").join(", ") }}</td>
                   </tr>
                 </template>
@@ -183,8 +183,8 @@ table.v-table thead th > div.btn-group {
                   >
                     <template slot="items" slot-scope="props">
                       <td style="width: 25%">&nbsp;</td>
-                      <td style="width: 25%"><b-link @click="showDetails(props.item.Table_ID)">{{ props.item.Name }}</b-link></td>
-                      <td style="width: 25%">{{ props.item.Alias_Name }}</td>
+                      <td style="width: 25%"><b-link @click="showDetails(props.item.Table_ID)">{{ props.item.COLUMN_NAME }}</b-link></td>
+                      <td style="width: 25%">{{ props.item.ALIAS_NAME }}</td>
                       <td style="width: 25%">{{ props.item.CDE }}</td>
                     </template>
                   </v-data-table>
@@ -225,25 +225,25 @@ export default {
           columnName: '',
         },
         firstTableHeaders: [
-          { text: 'System Name', align: 'left', value: 'System_Name', sortable: false },
+          { text: 'System Name', align: 'left', value: 'SYSTEM_NAME', sortable: false },
           { text: 'ITAM ID', align: 'left', value: 'ITAM_ID', sortable: false },
-          { text: 'Dataset Custodian', align: 'left', value: 'fat', sortable: false },
-          { text: 'Bank ID', align: 'left', value: 'carbs', sortable: false }
+          { text: 'Dataset Custodian', align: 'left', value: 'FIRST_NAME', sortable: false },
+          { text: 'Bank ID', align: 'left', value: 'BANK_ID', sortable: false }
         ],
         secondTableHeaders: [
-          { text: 'Table Name', align: 'left', sortable: false, value: 'Name', width: "25%" },
-          { text: 'Column Name', align: 'left', sortable: false, value: 'Columns.Name', width: "25%" },
-          { text: 'Business Alias Name', align: 'left', sortable: false, value: 'Columns.Alias_Name', width: "25%" },
+          { text: 'Table Name', align: 'left', sortable: false, value: 'TABLE_NAME', width: "25%" },
+          { text: 'Column Name', align: 'left', sortable: false, value: 'Columns.COLUMN_NAME', width: "25%" },
+          { text: 'Business Alias Name', align: 'left', sortable: false, value: 'Columns.ALIAS_NAME', width: "25%" },
           { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'Columns.CDE', width: "25%" }
         ],
         excelFields: {
-          'System Name': 'System_Name',
+          'System Name': 'SYSTEM_NAME',
           'ITAM ID': 'ITAM_ID',
-          'Dataset Custodian': 'asdf',
-          'Bank ID': 'carbs',
-          'Table Name': 'Table_Name',
-          'Column Name': 'Column_Name',
-          'Business Alias Name': 'Alias_Name',
+          'Dataset Custodian': 'FIRST_NAME',
+          'Bank ID': 'BANK_ID',
+          'Table Name': 'TABLE_NAME',
+          'Column Name': 'COLUMN_NAME',
+          'Business Alias Name': 'ALIAS_NAME',
           'CDE (Yes/No)': 'CDE'
         }
       }
@@ -263,21 +263,23 @@ export default {
 
         this._.each(this.dscmy.systemsDisplay, (system, i) => {
           var temp = {
-            System_Name: system.System_Name,
+            SYSTEM_NAME: system.SYSTEM_NAME,
             ITAM_ID: system.ITAM_ID,
+            FIRST_NAME: system.FIRST_NAME,
+            BANK_ID: system.BANK_ID,
           }
 
-          var tables = this._.filter(this.dscmy.tableDisplay, (v) => v.Imm_Prec_System_ID == system.ID)
+          var tables = this._.filter(this.dscmy.tableDisplay, (v) => v.TSID == system.ID)
           if(tables.length > 0){
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
-              tableLevel.Table_Name = table.Name;
+              tableLevel.TABLE_NAME = table.TABLE_NAME;
 
               if(table.Columns.length > 0){
                 this._.each(table.Columns, (column, j) => {
                   var colLevel = _.cloneDeep(tableLevel);
-                  colLevel.Column_Name = column.Name;
-                  colLevel.Alias_Name = column.Alias_Name;
+                  colLevel.COLUMN_NAME = column.COLUMN_NAME;
+                  colLevel.ALIAS_NAME = column.ALIAS_NAME;
                   colLevel.CDE = column.CDE;
                   
                   res.push(_.cloneDeep(colLevel));
@@ -366,14 +368,14 @@ export default {
         this.dscmy.systemsDisplay = this.dscmy.systemsSource;
         this.dscmy.tableDisplay = this.dscmy.tableSource;
         if(this.searchForm.systemName)
-          this.dscmy.systemsDisplay = this._.filter(this.dscmy.systemsDisplay, (val) => val.System_Name.indexOf(this.searchForm.systemName) != -1);
+          this.dscmy.systemsDisplay = this._.filter(this.dscmy.systemsDisplay, (val) => val.SYSTEM_NAME.indexOf(this.searchForm.systemName) != -1);
         if(this.searchForm.itamID)
           this.dscmy.systemsDisplay = this._.filter(this.dscmy.systemsDisplay, (val) => val.ITAM_ID.toString().indexOf(this.searchForm.itamID) != -1);
         if(this.searchForm.tableName)
-          this.dscmy.tableDisplay = this._.filter(this.dscmy.tableDisplay, (val) => val.Name.indexOf(this.searchForm.tableName) != -1);
+          this.dscmy.tableDisplay = this._.filter(this.dscmy.tableDisplay, (val) => val.TABLE_NAME.indexOf(this.searchForm.tableName) != -1);
         if(this.searchForm.columnName) {
           this._.each(this.dscmy.tableDisplay, (v, i) => {
-            this.dscmy.tableDisplay[i].Columns = this._.filter(this.dscmy.tableDisplay[i].Columns, (w) => w.Name.indexOf(this.searchForm.columnName) != -1);
+            this.dscmy.tableDisplay[i].Columns = this._.filter(this.dscmy.tableDisplay[i].Columns, (w) => w.TABLE_NAME.indexOf(this.searchForm.columnName) != -1);
             this.dscmy.tableDisplay = this._.filter(this.dscmy.tableDisplay, (w) => w.Columns.length > 0)
           });
         }

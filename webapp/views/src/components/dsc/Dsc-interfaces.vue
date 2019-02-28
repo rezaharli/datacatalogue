@@ -87,13 +87,13 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <v-data-table
                   :headers="firstTableHeaders"
-                  :items="dscmy.systemsDisplay"
-                  :loading="dscmy.systemsLoading"
+                  :items="dscinterfaces.systemsDisplay"
+                  :loading="dscinterfaces.systemsLoading"
                   :search="searchMain"
                   class="elevation-1 fixed-header">
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dscmy.systemsSource).length }})
+                  {{ props.header.text }} ({{ distinctData(props.header.value, dscinterfaces.systemsSource).length }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -105,7 +105,7 @@ table.v-table thead th > div.btn-group {
                       <b-form-input type="text" placeholder="Filter" v-model="search['systems'][props.header.value]" @change="filterKeyup('systems', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscmy.systemsSource)" :key="item" @click="columnFilter('systems', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscinterfaces.systemsSource)" :key="item" @click="columnFilter('systems', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -120,10 +120,10 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                    <td><b-link :to="{ path:'/dsc/interfaces/' + props.item.ID }">{{ props.item.System_Name }}</b-link></td>
+                    <td><b-link :to="{ path:'/dsc/interfaces/' + props.item.ID }">{{ props.item.SYSTEM_NAME }}</b-link></td>
                     <td>{{ props.item.ITAM_ID }}</td>
-                    <td>{{ props.item.fat }}</td>
-                    <td>{{ props.item.carbs }}</td>
+                    <td>{{ props.item.FIRST_NAME }}</td>
+                    <td>{{ props.item.BANK_ID }}</td>
                 </template>
               </v-data-table>
             </b-col>
@@ -131,8 +131,8 @@ table.v-table thead th > div.btn-group {
             <b-col class="scrollableasdf">
               <v-data-table
                 :headers="secondTableHeaders"
-                :items="dscmy.tableDisplay"
-                :loading="dscmy.tableLoading"
+                :items="dscinterfaces.tableDisplay"
+                :loading="dscinterfaces.tableLoading"
                 v-if="secondtable"
                 item-key="ID"
                 class="elevation-1">
@@ -145,7 +145,7 @@ table.v-table thead th > div.btn-group {
                   </template>
 
                   <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dscmy.tableSource).length }})
+                  {{ props.header.text }} ({{ distinctData(props.header.value, dscinterfaces.tableSource).length }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -157,21 +157,21 @@ table.v-table thead th > div.btn-group {
                       <b-form-input type="text" placeholder="Filter" v-model="search['tablename'][props.header.value]" @change="filterKeyup('tablename', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscmy.tableSource)" :key="item" @click="columnFilter('tablename', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscinterfaces.tableSource)" :key="item" @click="columnFilter('tablename', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
                 </template>
 
                 <template slot="items" slot-scope="props">
-                  <td><b-link :to="{ path:'/dsc/interfaces/' + $route.params.system + '/' + props.item.ID }" href="#foo" v-b-modal.modallg>{{ props.item.Name }}</b-link></td>
+                  <td><b-link :to="{ path:'/dsc/interfaces/' + $route.params.system + '/' + props.item.ID }" href="#foo" v-b-modal.modallg>{{ props.item.TABLE_NAME }}</b-link></td>
                   <!-- <td><b-link :to="{ path:'/dsc/interfaces/' + route.params.system + "/details" }" v-b-modal.modallg>{{ props.item.name }}</b-link></td> -->
-                  <td>{{ props.item.Imm_Prec_System_ID }}</td>
+                  <td>{{ props.item.IMM_PREC_SYSTEM_ID }}</td>
                   <td>{{ props.item.asdf }}</td>
                   <td>{{ props.item.asdf }}</td>
-                  <td>{{ props.item.Imm_Succ_System_ID }}</td>
+                  <td>{{ props.item.IMM_SUCC_SYSTEM_ID }}</td>
                   <td>{{ props.item.asdf }}</td>
-                  <td>{{ props.item.asdf }}</td>
+                  <td>{{ props.item.OWNER_ID }}</td>
                 </template>
               </v-data-table>
             </b-col>
@@ -209,61 +209,64 @@ export default {
           columnName: '',
         },
         firstTableHeaders: [
-          { text: 'System Name', align: 'left', value: 'System_Name', sortable: false },
+          { text: 'System Name', align: 'left', value: 'SYSTEM_NAME', sortable: false },
           { text: 'ITAM ID', align: 'left', value: 'ITAM_ID', sortable: false },
-          { text: 'Dataset Custodian', align: 'left', value: 'fat', sortable: false },
-          { text: 'Bank ID', align: 'left', value: 'carbs', sortable: false }
+          { text: 'Dataset Custodian', align: 'left', value: 'FIRST_NAME', sortable: false },
+          { text: 'Bank ID', align: 'left', value: 'BANK_ID', sortable: false }
         ],
         secondTableHeaders: [
           { text: 'List of CDEs', align: 'left', sortable: false, value: 'Name', width: "25%" },
-          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'Imm_Prec_System_ID', width: "25%" },
+          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'IMM_PREC_SYSTEM_ID', width: "25%" },
           { text: 'SLA(Yes/No)', align: 'left', sortable: false, value: 'fat', width: "25%" },
           { text: 'OLA(Yes/No)', align: 'left', sortable: false, value: 'carbs', width: "25%" },
-          { text: 'Immediate Succeeding System', align: 'left', sortable: false, value: 'Imm_Succ_System_ID', width: "25%" },
+          { text: 'Immediate Succeeding System', align: 'left', sortable: false, value: 'IMM_SUCC_SYSTEM_ID', width: "25%" },
           { text: 'List of Downstream Process', align: 'left', sortable: false, value: 'carbs', width: "25%" },
-          { text: 'Downstream Process Owner', align: 'left', sortable: false, value: 'carbs', width: "25%" },
+          { text: 'Downstream Process Owner', align: 'left', sortable: false, value: 'OWNER_ID', width: "25%" },
         ],
         excelFields: {
-          'System Name': 'System_Name',
+          'System Name': 'SYSTEM_NAME',
           'ITAM ID': 'ITAM_ID',
-          'Dataset Custodian': 'asdf',
-          'Bank ID': 'carbs',
+          'Dataset Custodian': 'FIRST_NAME',
+          'Bank ID': 'BANK_ID',
           'List of CDEs': 'Table_Name',
-          'Immediate Preceding System': 'Imm_Prec_System_ID',
+          'Immediate Preceding System': 'IMM_PREC_SYSTEM_ID',
           'SLA (Yes / No)': 'fat',
           'OLA (Yes / No)': 'carbs',
-          'Immediate Succeeding System': 'Imm_Succ_System_ID',
+          'Immediate Succeeding System': 'IMM_SUCC_SYSTEM_ID',
           'List of Downstream Processes': 'carbs',
-          'Downstream Process Owner': 'carbs',
+          'Downstream Process Owner': 'OWNER_ID',
         }
       }
     },
     computed: {
       ...mapState({
-        dscmy: state => state.dscmy.all
+        dscinterfaces: state => state.dscinterfaces.all
       }),
       tablenameMaster (){
-        return this._.map(this.dscmy.tableSource, 'Name')
+        return this._.map(this.dscinterfaces.tableSource, 'Name')
       },
       columnNameMaster (){
-        return this._.map(this._.flattenDeep(this._.map(this.dscmy.tableSource, 'Columns')), 'Name')
+        return this._.map(this._.flattenDeep(this._.map(this.dscinterfaces.tableSource, 'Columns')), 'Name')
       },
       excelData () {
         var res = [];
 
-        this._.each(this.dscmy.systemsDisplay, (system, i) => {
+        this._.each(this.dscinterfaces.systemsDisplay, (system, i) => {
           var temp = {
-            System_Name: system.System_Name,
+            SYSTEM_NAME: system.SYSTEM_NAME,
             ITAM_ID: system.ITAM_ID,
+            FIRST_NAME: system.FIRST_NAME,
+            BANK_ID: system.BANK_ID,
           }
 
-          var tables = this._.filter(this.dscmy.tableDisplay, (v) => v.Imm_Prec_System_ID == system.ID)
+          var tables = this._.filter(this.dscinterfaces.tableDisplay, (v) => v.TSID == system.ID)
           if(tables.length > 0){
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
               tableLevel.Table_Name = table.Name;
-              tableLevel.Imm_Prec_System_ID = table.Imm_Prec_System_ID;
-              tableLevel.Imm_Succ_System_ID = table.Imm_Succ_System_ID;
+              tableLevel.IMM_PREC_SYSTEM_ID = table.IMM_PREC_SYSTEM_ID;
+              tableLevel.IMM_SUCC_SYSTEM_ID = table.IMM_SUCC_SYSTEM_ID;
+              tableLevel.OWNER_ID = table.OWNER_ID;
 
               res.push(_.cloneDeep(tableLevel));
             })
@@ -298,24 +301,24 @@ export default {
       }
     },
     methods: {
-      ...mapActions('dscmy', {
+      ...mapActions('dscinterfaces', {
           getAllSystem: 'getAllSystem',
           getTableName: 'getTableName',
       }),
       columnFilter (type, keyModel, val) {
         if(val == ""){
           if(type == "systems"){
-            this.dscmy.systemsDisplay = this.dscmy.systemsSource;
+            this.dscinterfaces.systemsDisplay = this.dscinterfaces.systemsSource;
           } else {
-            this.dscmy.tableDisplay = this.dscmy.tableSource;
+            this.dscinterfaces.tableDisplay = this.dscinterfaces.tableSource;
           }
           return
         }
 
         if(type == "systems"){
-          this.dscmy.systemsDisplay = _.filter(this.dscmy.systemsSource, [keyModel.value, val]);
+          this.dscinterfaces.systemsDisplay = _.filter(this.dscinterfaces.systemsSource, [keyModel.value, val]);
         } else {
-          this.dscmy.tableDisplay = _.filter(this.dscmy.tableSource, [keyModel.value, val]);
+          this.dscinterfaces.tableDisplay = _.filter(this.dscinterfaces.tableSource, [keyModel.value, val]);
         }
       },
       filterKeyup (type, keyModel) {
@@ -344,18 +347,18 @@ export default {
       onSubmit (evt) {
         evt.preventDefault();
 
-        this.dscmy.systemsDisplay = this.dscmy.systemsSource;
-        this.dscmy.tableDisplay = this.dscmy.tableSource;
+        this.dscinterfaces.systemsDisplay = this.dscinterfaces.systemsSource;
+        this.dscinterfaces.tableDisplay = this.dscinterfaces.tableSource;
         if(this.searchForm.systemName)
-          this.dscmy.systemsDisplay = this._.filter(this.dscmy.systemsDisplay, (val) => val.System_Name.indexOf(this.searchForm.systemName) != -1);
+          this.dscinterfaces.systemsDisplay = this._.filter(this.dscinterfaces.systemsDisplay, (val) => val.SYSTEM_NAME.indexOf(this.searchForm.systemName) != -1);
         if(this.searchForm.itamID)
-          this.dscmy.systemsDisplay = this._.filter(this.dscmy.systemsDisplay, (val) => val.ITAM_ID.toString().indexOf(this.searchForm.itamID) != -1);
+          this.dscinterfaces.systemsDisplay = this._.filter(this.dscinterfaces.systemsDisplay, (val) => val.ITAM_ID.toString().indexOf(this.searchForm.itamID) != -1);
         if(this.searchForm.tableName)
-          this.dscmy.tableDisplay = this._.filter(this.dscmy.tableDisplay, (val) => val.Name.indexOf(this.searchForm.tableName) != -1);
+          this.dscinterfaces.tableDisplay = this._.filter(this.dscinterfaces.tableDisplay, (val) => val.Name.indexOf(this.searchForm.tableName) != -1);
         if(this.searchForm.columnName) {
-          this._.each(this.dscmy.tableDisplay, (v, i) => {
-            this.dscmy.tableDisplay[i].Columns = this._.filter(this.dscmy.tableDisplay[i].Columns, (w) => w.Name.indexOf(this.searchForm.columnName) != -1);
-            this.dscmy.tableDisplay = this._.filter(this.dscmy.tableDisplay, (w) => w.Columns.length > 0)
+          this._.each(this.dscinterfaces.tableDisplay, (v, i) => {
+            this.dscinterfaces.tableDisplay[i].Columns = this._.filter(this.dscinterfaces.tableDisplay[i].Columns, (w) => w.Name.indexOf(this.searchForm.columnName) != -1);
+            this.dscinterfaces.tableDisplay = this._.filter(this.dscinterfaces.tableDisplay, (w) => w.Columns.length > 0)
           });
         }
 

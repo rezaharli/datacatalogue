@@ -639,3 +639,36 @@ func (s *DSCService) CreateLinkCRMCDEDummyData() error {
 
 	return nil
 }
+
+func (s *DSCService) CreateLinkCategoryPeopleDummyData() error {
+	toolkit.Println("CreateLinkCategoryPeopleDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewLinkCategoryPeopleModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.LinkCategoryPeople, 0)
+	for i := 0; i < 200; i++ {
+		mdt := m.NewLinkCategoryPeopleModel()
+		mdt.ID = i
+		mdt.Category_ID = fake.Day()
+		mdt.People_ID = fake.Day()
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewLinkCategoryPeopleModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}

@@ -38,6 +38,7 @@ func main() {
 	// s.NewDSCService().CreateSegmentDummyData()
 	// s.NewDSCService().CreateDSProcessesDetailDummyData()
 	// s.NewDSCService().CreateLinkSubcategoryPeopleDummyData()
+	// s.NewDSCService().CreateLinkCategoryPeopleDummyData()
 	// s.NewDSCService().CreatePriorityReportsDummyData()
 	// s.NewDSCService().CreateCRMDummyData()
 	// s.NewDSCService().CreateLinkCRMCDEDummyData()

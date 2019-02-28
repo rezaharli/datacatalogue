@@ -41,40 +41,40 @@
     <b-container> -->
       <b-row>
         <b-col cols="4"> 
-          <b-card tag="article" class="mb-2" v-if="selectedSystem && selectedTable.Columns.length > 0">
+          <b-card tag="article" class="mb-2" v-if="selectedDetails">
             <b-media class="left-card-media" >
               <h6 class="left-card-title">System Name</h6>
-              <p v-html="selectedSystem.System_Name"></p>
+              <p v-html="selectedDetails.SYSTEM_NAME"></p>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">ITAM ID</h6>
-              <p v-html="selectedSystem.ITAM_ID"></p>
+              <p v-html="selectedDetails.ITAM_ID"></p>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Dataset Custodian</h6>
-              <p>&nbsp;</p>
+              <p v-html="selectedDetails.FIRST_NAME"></p>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Bank ID</h6>
-              <p>&nbsp;</p>
+              <p v-html="selectedDetails.BANK_ID"></p>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Business Alias Name</h6>
-              <p v-html="selectedTable.Columns[0].Alias_Name"></p>
+              <p v-html="selectedDetails.ALIAS_NAME"></p>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Table Name</h6>
-              <p v-html="selectedTable.Name"></p>
+              <p v-html="selectedDetails.TABLE_NAME"></p>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Column Name</h6>
-              <p v-html="selectedTable.Columns[0].Name"></p>
+              <p v-html="selectedDetails.COLUMN_NAME"></p>
             </b-media>
           </b-card>
         </b-col>
@@ -82,16 +82,16 @@
         <b-col cols="8"> 
           <b-row>
             <b-col>
-              <b-card title="Technical Metadata From System" tag="article" class="mb-2" v-if="selectedColumn">
+              <b-card title="Technical Metadata From System" tag="article" class="mb-2" v-if="selectedDetails">
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="tableName">
-                      <b-form-select id="tableName" class="col-8" v-model="ddTable.selected" :options="ddTableOptions">
+                      <b-form-select id="tableName" class="col-8" v-model="selectedDetails.TABLE_NAME" :options="[selectedDetails.TABLE_NAME]">
                       </b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnName">
-                      <b-form-select id="columnName" class="col-8" v-model="ddColumn.selected" :options="ddColumnOptions"></b-form-select>
+                      <b-form-select id="columnName" class="col-8" v-model="selectedDetails.COLUMN_NAME" :options="[selectedDetails.COLUMN_NAME]"></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Screen Label Name*" label-for="screenLabelName">
@@ -111,43 +111,43 @@
                     </b-form-group>
                     
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="CDE (yes/no)">
-                      <p v-html="selectedColumn.CDE"></p>
+                      <p v-html="selectedDetails.CDE"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Status*">
-                      <p v-html="selectedColumn.Status"></p>
+                      <p v-html="selectedDetails.STATUS"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Type">
-                      <p v-html="selectedColumn.Data_Type"></p>
+                      <p v-html="selectedDetails.DATA_TYPE"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Format">
-                      <p v-html="selectedColumn.Data_Format"></p>
+                      <p v-html="selectedDetails.DATA_FORMAT"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Length">
-                      <p v-html="selectedColumn.Data_Length"></p>
+                      <p v-html="selectedDetails.DATA_LENGTH"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Example">
-                      <p v-html="selectedColumn.Example"></p>
+                      <p v-html="selectedDetails.EXAMPLE"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)*">
-                      <p v-html="selectedColumn.Derived"></p>
+                      <p v-html="selectedDetails.DERIVED"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation logic*">
-                      <p v-html="selectedColumn.Derivation_Logic"></p>
+                      <p v-html="selectedDetails.DERIVATION_LOGIC"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sourced from Upstream (Yes/No)*">
-                      <p v-html="selectedColumn.Sourced_from_Upstream"></p>
+                      <p v-html="selectedDetails.SOURCED_FROM_UPSTREAM"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Checks*">
-                      <p v-html="selectedColumn.System_Checks"></p>
+                      <p v-html="selectedDetails.SYSTEM_CHECKS"></p>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -157,15 +157,15 @@
 
           <b-row>
             <b-col>
-              <b-card title="Business Metadata From Domain" tag="article" class="mb-2" v-if="selectedColumn">
+              <b-card title="Business Metadata From Domain" tag="article" class="mb-2" v-if="selectedDetails">
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain">
-                      <p v-html="selectedColumn.BusinessTerms.SubCategory.Category.Name"></p>
+                      <p v-html="selectedDetails.DOMAIN"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Domain">
-                      <p v-html="selectedColumn.BusinessTerms.SubCategory.Name"></p>
+                      <p v-html="selectedDetails.SUBDOMAIN"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain Owner">
@@ -173,11 +173,11 @@
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term*">
-                      <p v-html="selectedColumn.BusinessTerms.BT_Name"></p>
+                      <p v-html="selectedDetails.BT_NAME"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
-                      <p v-html="selectedColumn.BusinessTerms.Description"></p>
+                      <p v-html="selectedDetails.BUSINESS_DESCRIPTION"></p>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -187,39 +187,39 @@
 
           <b-row>
             <b-col>
-              <b-card title="Policy Related Information" tag="article" class="mb-2" v-if="selectedColumn">
+              <b-card title="Policy Related Information" tag="article" class="mb-2" v-if="selectedDetails">
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Names">
-                      <p v-html="selectedColumn.BusinessTerms.Policy.Info_Asset_Name"></p>
+                      <p v-html="selectedDetails.INFO_ASSET_NAME"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Description">
-                      <p v-html="selectedColumn.BusinessTerms.Policy.Description"></p>
+                      <p v-html="selectedDetails.INFO_ASSET_DESCRIPTION"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="C - Confidentiality">
-                      <p v-html="selectedColumn.BusinessTerms.Policy.Confidentiality"></p>
+                      <p v-html="selectedDetails.CONFIDENTIALITY"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="I - Integrity">
-                      <p v-html="selectedColumn.BusinessTerms.Policy.Integrity"></p>
+                      <p v-html="selectedDetails.INTEGRITY"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="A - Availability">
-                      <p v-html="selectedColumn.BusinessTerms.Policy.Availability"></p>
+                      <p v-html="selectedDetails.AVAILABILITY"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Overall CIA Rating">
-                      <p v-html="selectedColumn.BusinessTerms.Policy.Overall_CIA_Rating"></p>
+                      <p v-html="selectedDetails.OVERALL_CIA_RATING"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Record Categories">
-                      <p v-html="selectedColumn.BusinessTerms.Policy.Record_Category"></p>
+                      <p v-html="selectedDetails.RECORD_CATEGORY"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="PII Flag">
-                      <p v-html="selectedColumn.BusinessTerms.Policy.PII_Flag"></p>
+                      <p v-html="selectedDetails.PII_FLAG"></p>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -229,19 +229,19 @@
 
           <b-row>
             <b-col>
-              <b-card title="Interfaces" tag="article" class="mb-2" v-if="selectedColumn">
+              <b-card title="Interfaces" tag="article" class="mb-2" v-if="selectedDetails">
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Preceding System*">
-                      <p v-html="selectedColumn.Imm_Prec_System_ID"></p>
+                      <p v-html="selectedDetails.IMM_PREC_SYSTEM_ID"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Succeeding System*">
-                      <p v-html="selectedColumn.Imm_Succ_System_ID"></p>
+                      <p v-html="selectedDetails.IMM_SUCC_SYSTEM_ID"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards | Threshold*">
-                      <p v-html="selectedColumn.Threshold"></p>
+                      <p v-html="selectedDetails.THRESHOLD"></p>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -265,9 +265,7 @@ export default {
     return {
       dialog: false,
       showModal: this.$route.meta.showModal,
-      selectedSystem: null,
-      selectedTable: null,
-      selectedColumn: null,
+      selectedDetails: null,
       ddTable: {
         selected: null,
       },
@@ -275,40 +273,40 @@ export default {
         selected: null,
       },
       excelFields: {
-        'System Name': "selectedSystem.System_Name",
-        'ITAM ID': "selectedSystem.ITAM_ID",
-        'Dataset Custodian': 'asdf',
-        'Bank ID' : 'asdf',
-        'Business Alias Name': "selectedColumn.Alias_Name",
-        'Table Name': 'selectedTable.Name',
-        'Column Name': 'selectedColumn.Name',
+        'System Name': "selectedDetails.SYSTEM_NAME",
+        'ITAM ID': "selectedDetails.ITAM_ID",
+        'Dataset Custodian': 'selectedDetails.FIRST_NAME',
+        'Bank ID' : 'selectedDetails.BANK_ID',
+        'Business Alias Name': "selectedDetails.ALIAS_NAME",
+        'Table Name': 'selectedDetails.TABLE_NAME',
+        'Column Name': 'selectedDetails.COLUMN_NAME',
         'Screen Label Name*': 'asdf',
-        'CDE (yes/no)': 'selectedColumn.CDE',
-        'Status*': 'selectedColumn.Status',
-        'Data Type': 'selectedColumn.Data_Type',
-        'Data Format': 'selectedColumn.Data_Format',
-        "Data Length": "selectedColumn.Data_Length",
-        "Example": "selectedColumn.Example",
-        "Derived (Yes/No)*": "selectedColumn.Derived",
-        "Derivation logic*": "selectedColumn.Derivation_Logic",
-        "Sourced from Upstream (Yes/No)*": "selectedColumn.Sourced_from_Upstream",
-        "System Checks*": "selectedColumn.System_Checks",
-        "Domain": "selectedColumn.BusinessTerms.SubCategory.Category.Name",
-        "Sub Domain": "selectedColumn.BusinessTerms.SubCategory.Name",
+        'CDE (yes/no)': 'selectedDetails.CDE',
+        'Status*': 'selectedDetails.STATUS',
+        'Data Type': 'selectedDetails.DATA_TYPE',
+        'Data Format': 'selectedDetails.DATA_FORMAT',
+        "Data Length": "selectedDetails.DATA_LENGTH",
+        "Example": "selectedDetails.EXAMPLE",
+        "Derived (Yes/No)*": "selectedDetails.DERIVED",
+        "Derivation logic*": "selectedDetails.DERIVATION_LOGIC",
+        "Sourced from Upstream (Yes/No)*": "selectedDetails.SOURCED_FROM_UPSTREAM",
+        "System Checks*": "selectedDetails.SYSTEM_CHECKS",
+        "Domain": "selectedDetails.DOMAIN",
+        "Sub Domain": "selectedDetails.SUBDOMAIN",
         "Domain Owner": "asdf",
-        "Business Term*": "selectedColumn.BusinessTerms.BT_Name",
-        "Business Term Description": "selectedColumn.BusinessTerms.Description",
-        "Information Asset Names": "selectedColumn.BusinessTerms.Policy.Info_Asset_Name",
-        "Information Asset Description": "selectedColumn.BusinessTerms.Policy.Description",
-        "C - Confidentiality": "selectedColumn.BusinessTerms.Policy.Confidentiality",
-        "I - Integrity": "selectedColumn.BusinessTerms.Policy.Integrity",
-        "A - Availability": "selectedColumn.BusinessTerms.Policy.Availability",
-        "Overall CIA Rating": "selectedColumn.BusinessTerms.Policy.Overall_CIA_Rating",
-        "Record Categories": "selectedColumn.BusinessTerms.Policy.Record_Category",
-        "PII Flag": "selectedColumn.BusinessTerms.Policy.PII_Flag",
-        "Immediate Preceding System*": "selectedColumn.Imm_Prec_System_ID",
-        "Immediate Succeeding System*": "selectedColumn.Imm_Succ_System_ID",
-        "DQ Standards | Threshold*": "selectedColumn.Threshold"
+        "Business Term*": "selectedDetails.BT_NAME",
+        "Business Term Description": "selectedDetails.BUSINESS_DESCRIPTION",
+        "Information Asset Names": "selectedDetails.INFO_ASSET_NAME",
+        "Information Asset Description": "selectedDetails.INFO_ASSET_DESCRIPTION",
+        "C - Confidentiality": "selectedDetails.CONFIDENTIALITY",
+        "I - Integrity": "selectedDetails.INTEGRITY",
+        "A - Availability": "selectedDetails.AVAILABILITY",
+        "Overall CIA Rating": "selectedDetails.OVERALL_CIA_RATING",
+        "Record Categories": "selectedDetails.RECORD_CATEGORY",
+        "PII Flag": "selectedDetails.PII_FLAG",
+        "Immediate Preceding System*": "selectedDetails.IMM_PREC_SYSTEM_ID",
+        "Immediate Succeeding System*": "selectedDetails.IMM_SUCC_SYSTEM_ID",
+        "DQ Standards | Threshold*": "selectedDetails.THRESHOLD"
       }
     }
   },
@@ -316,22 +314,17 @@ export default {
     ...mapState({
       dscmy: state => state.dscmy.all
     }),
-    count () {
-      return this.dscmy.tableSource.length
-    },
     ddTableOptions () {
-      this.ddTable.selected = this.selectedTable ? this.selectedTable.Name : null;
-      return this.selectedTable ? [{ value: this.selectedTable.Name, text: this.selectedTable.Name }] : [];
+      this.ddTable.selected = this.selectedDetails ? this.selectedDetails.Name : null;
+      return this.selectedDetails ? [{ value: this.selectedDetails.Name, text: this.selectedDetails.Name }] : [];
     },
     ddColumnOptions () {
-      return this.selectedTable ? _.map(this.selectedTable.Columns, function(v) { return { value: v.ID, text: v.Name } }) : [];
+      return this.selectedDetails ? _.map(this.selectedDetails.Columns, function(v) { return { value: v.ID, text: v.Name } }) : [];
     },
     exportDatas () {
-      if(this.selectedSystem && this.selectedTable && this.selectedColumn){
+      if(this.selectedDetails){
         return [{
-          selectedSystem: this.selectedSystem,
-          selectedTable: this.selectedTable,
-          selectedColumn: this.selectedColumn
+          selectedDetails: this.selectedDetails,
         }]
       } else {
         return [];
@@ -342,22 +335,31 @@ export default {
     '$route.meta' ({showModal}) {
       this.showModal = showModal;
     },
-    count (newCount, oldCount) {
-      this.selectedSystem = _.find(this.dscmy.systemsSource, ['ID', parseInt(this.$route.params.system)])
-      this.selectedTable = _.find(this.dscmy.tableSource, ['ID', parseInt(this.$route.params.details)])
+    "dscmy.detailsSource"() {
+      console.log(this.dscmy.detailsSource);
+      
+      if (this.dscmy.detailsSource.length > 0)
+        this.selectedDetails = this.dscmy.detailsSource[0];
+      else 
+        this.selectedDetails = null;
     },
-    selectedTable (){
-      this.ddColumn.selected = this.selectedTable ? (this.selectedTable.Columns[0] ? this.selectedTable.Columns[0].ID : null) : null;
-      this.selectedColumn = this.selectedTable ? _.find(this.selectedTable.Columns, ['ID', parseInt(this.ddColumn.selected)]) : null;
-    }
   },
   mounted() {
     this.$refs.modalDetails.show();
-    
-    this.selectedSystem = _.find(this.dscmy.systemsSource, ['ID', parseInt(this.$route.params.system)])
-    this.selectedTable = _.find(this.dscmy.tableSource, ['ID', parseInt(this.$route.params.details)])
+
+    var param = {
+      left: parseInt(this.$route.params.system),
+      right: parseInt(this.$route.params.details)
+    };
+
+    this.getDetails(param);
+    // this.selectedDetails = _.find(this.dscmy.systemsSource, ['ID', parseInt(this.$route.params.system)])
+    // this.selectedDetails = _.find(this.dscmy.tableSource, ['ID', parseInt(this.$route.params.details)])
   },
   methods: {
+    ...mapActions("dscmy", {
+      getDetails: "getDetails"
+    }),
     handleClose () {
       this.$router.go(-1)
     }

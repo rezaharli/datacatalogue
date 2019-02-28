@@ -8,8 +8,6 @@ const state = {
         tableLoading: true,
         tableSource: [],
         tableDisplay: [],
-        detailsLoading: true,
-        detailsSource: [],
         error: null
     }
 };
@@ -27,19 +25,10 @@ const actions = {
     getTableName({ commit }, systemID) {
         commit('getAllTablenameRequest');
 
-        dscMyService.getTableName(systemID)
+        dscMyService.getInterfacesRightTable(systemID)
             .then(
                 res => commit('getAllTablenameSuccess', res.Data),
                 error => commit('getAllTablenameFailure', error)
-            );
-    },
-    getDetails({ commit }, param) {
-        commit('getDetailsRequest');
-
-        dscMyService.getDetails(param)
-            .then(
-                res => commit('getDetailsSuccess', res.Data),
-                error => commit('getDetailsFailure', error)
             );
     },
 };
@@ -71,21 +60,9 @@ const mutations = {
         state.all.tableLoading = false;
         state.all.error = error;
     },
-    getDetailsRequest(state) {
-        state.all.detailsLoading = true;
-    },
-    getDetailsSuccess(state, data) {
-        state.all.detailsSource = data;
-
-        state.all.tableLoading = false;
-    },
-    getDetailsFailure(state, error) {
-        state.all.detailsLoading = false;
-        state.all.error = error;
-    },
 };
 
-export const dscmy = {
+export const dscinterfaces = {
     namespaced: true,
     state,
     actions,
