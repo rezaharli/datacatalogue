@@ -95,7 +95,6 @@ func (s *DPOService) GetRightTable(processID int) (interface{}, int, error) {
 
 			busTerm, _ := toolkit.ToM(buster)
 
-			toolkit.Println(len(resCats), resCats)
 			tmpsubcat := &resCats[0]
 			busTerm.Set("SubCategory", tmpsubcat)
 			resSubCat = append(resSubCat, busTerm)

@@ -29,10 +29,15 @@ func (s *DSCService) GetAllSystem(sortKey, sortOrder string, skip, take int, fil
 		Tbl_System ts
 		JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
 		JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+		JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
 		JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
+		JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
+		JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
 		JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
+		JOIN tbl_category tc ON tsc.category_id = tc.id
 		JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
-		JOIN tbl_people tp on tlsp.people_id = tp.id`
+		JOIN tbl_people tp on tlsp.people_id = tp.id
+		JOIN tbl_policy tpol on tbt.policy_id = tpol.id`
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewSystemModel().TableName(),
 		SqlQuery:  q,
@@ -63,9 +68,13 @@ func (s *DSCService) GetTableName(systemID int) (interface{}, int, error) {
 		JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
 		JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
 		JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
+		JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
+		JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
 		JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
+		JOIN tbl_category tc ON tsc.category_id = tc.id
 		JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
 		JOIN tbl_people tp on tlsp.people_id = tp.id
+		JOIN tbl_policy tpol on tbt.policy_id = tpol.id
 	WHERE
 		ts.id = ` + toolkit.ToString(systemID)
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
@@ -100,6 +109,11 @@ func (s *DSCService) GetInterfacesRightTable(systemID int) (interface{}, int, er
 		JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
 		JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
 		JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
+		JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
+		JOIN tbl_category tc ON tsc.category_id = tc.id
+		JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
+		JOIN tbl_people tp on tlsp.people_id = tp.id
+		JOIN tbl_policy tpol on tbt.policy_id = tpol.id
 	WHERE
 		ts.id = ` + toolkit.ToString(systemID)
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{

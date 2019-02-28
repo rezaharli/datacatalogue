@@ -19,7 +19,15 @@ func (s *RFOService) GetLeftTable(sortKey, sortOrder string, skip, take int, fil
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	q := "SELECT DISTINCT tpr.id, tpr.name, tpr.owner_id FROM Tbl_Priority_Reports tpr"
+	q := `SELECT DISTINCT 
+			tpr.id, tpr.name, tpr.owner_id 
+		FROM 
+			Tbl_Priority_Reports tpr
+			JOIN tbl_subcategory tsc ON tpr.sub_risk_type_id = tsc.id
+			JOIN tbl_category tc ON tsc.category_id = tc.id
+			JOIN tbl_crm tcrm ON tcrm.prority_report_id = tpr.id
+			JOIN tbl_link_crm_cde tlcc ON tlcc.crm_id = tcrm.id
+			JOIN tbl_business_term tbt ON tlcc.cde_id = tbt.id`
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
 		SqlQuery:  q,
@@ -55,7 +63,6 @@ func (s *RFOService) GetRightTable(systemID int) (interface{}, int, error) {
 		JOIN tbl_business_term tbt ON tlcc.cde_id = tbt.id
 	WHERE
 		tpr.id = ` + toolkit.ToString(systemID)
-	toolkit.Println(q)
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
 		SqlQuery:  q,
