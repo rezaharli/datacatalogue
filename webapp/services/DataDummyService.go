@@ -672,3 +672,333 @@ func (s *DSCService) CreateLinkCategoryPeopleDummyData() error {
 
 	return nil
 }
+
+func (s *DSCService) CreateTables() error {
+	resultRows := make([]toolkit.M, 0)
+
+	q := `CREATE TABLE Tbl_System
+	( ID int NOT NULL,
+	  System_Name varchar2(200) NOT NULL,
+	  ITAM_ID int NOT NULL,
+	  CONSTRAINT tbl_system_pk PRIMARY KEY (ID)
+	);
+	
+	CREATE TABLE Tbl_People
+	( ID int NOT NULL,
+	  First_Name varchar2(200),
+	  Last_Name varchar2(200),
+	  Bank_ID varchar2(7),
+	  Email_ID varchar2(50),
+	  Function varchar2(50) NOT NULL,
+	  Org_Unit varchar2(50) NOT NULL,
+	  Status varchar2(25) NOT NULL,
+	  CONSTRAINT tbl_people_pk PRIMARY KEY (ID)
+	);
+	
+	CREATE TABLE Tbl_Role
+	( ID int NOT NULL,
+	  Role_Name varchar2(200) NOT NULL,
+	  Role_Type varchar2(50) NOT NULL,
+	  Role_Description varchar2(4000) NOT NULL,
+	  CONSTRAINT tbl_role_pk PRIMARY KEY (ID)
+	);
+	
+	CREATE TABLE Tbl_Category
+	( ID int NOT NULL,
+	  Name varchar2(200) NOT NULL,
+	  Type varchar2(50) NOT NULL,
+	  CONSTRAINT tbl_category_pk PRIMARY KEY (ID)
+	);
+	
+	CREATE TABLE Tbl_Policy
+	( ID int NOT NULL,
+	  Info_Asset_Name varchar2(200) NOT NULL,
+	  Description varchar2(4000) NOT NULL,
+	  Confidentiality int,
+	  Integrity int,
+	  Availability int,
+	  Overall_CIA_Rating int,
+	  CONSTRAINT tbl_policy_pk PRIMARY KEY (ID)
+	);
+	
+	CREATE TABLE Tbl_MD_Resource
+	( ID int NOT NULL,
+	  Name varchar2(200) NOT NULL,
+	  Type varchar2(50) NOT NULL,
+	  Description varchar2(200),
+	  System_ID int,
+	  CONSTRAINT tbl_resource_pk PRIMARY KEY (ID),
+	  CONSTRAINT fk_resource_system
+		FOREIGN KEY (System_ID)
+		REFERENCES Tbl_System(ID)
+	);
+	
+	CREATE TABLE Tbl_Link_Role_People
+	( ID int NOT NULL,
+	  Role_ID int NOT NULL,
+	  People_ID int NOT NULL,
+	  Object_Type varchar(100),
+	  Object_ID int,
+	  CONSTRAINT tbl_rolepeople_pk PRIMARY KEY (ID),
+	  CONSTRAINT fk_rolepeople_role
+		FOREIGN KEY (Role_ID)
+		REFERENCES Tbl_Role(ID) on delete cascade,
+	  CONSTRAINT fk_rolepeople_people
+		FOREIGN KEY (People_ID)
+		REFERENCES Tbl_People(ID) on delete cascade
+	);
+	
+	CREATE TABLE Tbl_Subcategory
+	( ID int NOT NULL,
+	  Name varchar(200) NOT NULL,
+	  Type VARCHAR(50) NOT NULL,
+	  Category_ID int NOT NULL,
+	  CONSTRAINT tbl_subcategory_pk PRIMARY KEY (ID),
+	  CONSTRAINT fk_subcategory_category
+		FOREIGN KEY (Category_ID)
+		REFERENCES Tbl_Category(ID) on delete cascade
+	);
+	
+	CREATE TABLE Tbl_Link_Category_People
+	( ID int NOT NULL,
+	  Category_ID int NOT NULL,
+	  People_ID int NOT NULL,
+	  CONSTRAINT tbl_categorypeople_pk PRIMARY KEY (ID),
+	  CONSTRAINT fk_categorypeople_category
+		FOREIGN KEY (Category_ID)
+		REFERENCES Tbl_Category(ID) on delete cascade,
+	  CONSTRAINT fk_categorypeople_people
+		FOREIGN KEY (People_ID)
+		REFERENCES Tbl_People(ID) on delete cascade
+	);
+	
+	CREATE TABLE Tbl_Link_Subcategory_People
+	( ID int NOT NULL,
+	  Subcategory_ID int NOT NULL,
+	  People_ID int NOT NULL,
+	  CONSTRAINT tbl_subcategorypeople_pk PRIMARY KEY (ID),
+	  CONSTRAINT fk_subcategorypeople_subcategory
+		FOREIGN KEY (Subcategory_ID)
+		REFERENCES Tbl_Subcategory(ID) on delete cascade,
+	  CONSTRAINT fk_subcategorypeople_people
+		FOREIGN KEY (People_ID)
+		REFERENCES Tbl_People(ID) on delete cascade
+	);
+	
+	CREATE TABLE Tbl_Business_Term
+	( ID int NOT NULL,
+	  BT_Name VARCHAR(200) NOT NULL,
+	  Parent_ID int NOT NULL,
+	  Description VARCHAR(4000) NOT NULL,
+	  CDE NUMBER(1,0),
+	  CDE_Rationale VARCHAR(2000),
+	  Mandatory NUMBER(1,0),
+	  Policy_ID int,
+	  Policy_Guidance VARCHAR(200),
+	  DQ_Standards VARCHAR(200),
+	  Threshold int,
+	  Golden_Source_System_ID int,
+	  Golden_Source_ITAM_ID int,
+	  Golden_Source_TableName_ID int,
+	  Golden_Source_Column_ID int,
+	  Target_Golden_Source_ID int,
+	  DDO_DQ_Standards VARCHAR(200),
+	  DDO_Threshold int,
+	  CONSTRAINT tbl_businessterm_pk PRIMARY KEY (ID),
+	  CONSTRAINT fk_businessterm_parent
+		FOREIGN KEY (Parent_ID)
+		REFERENCES Tbl_Subcategory(ID) on delete cascade,
+	  CONSTRAINT fk_businessterm_policy
+		FOREIGN KEY (Policy_ID)
+		REFERENCES Tbl_Policy(ID) on delete cascade,
+	  CONSTRAINT fk_businessterm_goldensourcesystem
+		FOREIGN KEY (Golden_Source_System_ID)
+		REFERENCES Tbl_System(ID) on delete cascade,
+	  CONSTRAINT fk_businessterm_goldensource
+		FOREIGN KEY (Target_Golden_Source_ID)
+		REFERENCES Tbl_System(ID) on delete cascade
+	);
+	
+	CREATE TABLE Tbl_MD_Table
+	( ID int NOT NULL,
+	  Resource_ID int NOT NULL,
+	  Schema_Name VARCHAR(200) NOT NULL,
+	  Name VARCHAR(200) NOT NULL,
+	  UUID VARCHAR(200),
+	  Type VARCHAR(50),
+	  Description VARCHAR(4000),
+	  Business_Term_ID int,
+	  Status NUMBER(1,0),
+	  Record_Category VARCHAR(200),
+	  CONSTRAINT tbl_table_pk PRIMARY KEY (ID),
+	  CONSTRAINT fk_table_resource
+		FOREIGN KEY (Resource_ID)
+		REFERENCES Tbl_MD_Resource(ID) on delete cascade,
+	  CONSTRAINT fk_table_businessterm
+		FOREIGN KEY (Business_Term_ID)
+		REFERENCES Tbl_Business_Term(ID) on delete cascade
+	);
+	
+	CREATE TABLE Tbl_MD_Column
+	( ID int NOT NULL,
+	  Table_ID int NOT NULL,
+	  Name VARCHAR(200) NOT NULL,
+	  UUID VARCHAR(200) NOT NULL,
+	  Type VARCHAR(50) NOT NULL,
+	  Description VARCHAR(4000) NOT NULL,
+	  Business_Term_ID int NOT NULL,
+	  Data_Type VARCHAR(50) NOT NULL,
+	  Data_Format VARCHAR(50) NOT NULL,
+	  Data_Length int NOT NULL,
+	  Example VARCHAR(50),
+	  Derived NUMBER(1,0),
+	  Derivation_Logic VARCHAR(4000),
+	  Status NUMBER(1,0),
+	  Alias_Name VARCHAR(200),
+	  CDE NUMBER(1,0),
+	  Sourced_from_Upstream NUMBER(1,0),
+	  System_Checks VARCHAR(200),
+	  Imm_Prec_System_ID int,
+	  Imm_Prec_System_SLA NUMBER(1,0),
+	  Imm_Prec_System_OLA NUMBER(1,0),
+	  Imm_Succ_System_ID int,
+	  Imm_Succ_System_SLA NUMBER(1,0),
+	  Imm_Succ_System_OLA NUMBER(1,0),
+	  Data_SLA_Signed NUMBER(1,0),
+	  Golden_Source NUMBER(1,0),
+	  DQ_Standards VARCHAR(200),
+	  Threshold int,
+	  DPO_DQ_Standards VARCHAR(200),
+	  DPO_Threshold int,
+	  DDO_DQ_Standards VARCHAR(200),
+	  DDO_Threshold int,
+	  PII_Flag NUMBER(1,0),
+	  Record_Category VARCHAR(200),
+	  CONSTRAINT tbl_column_pk PRIMARY KEY (ID),
+	  CONSTRAINT fk_column_table
+		FOREIGN KEY (Table_ID)
+		REFERENCES Tbl_MD_Table(ID) on delete cascade,
+	  CONSTRAINT fk_column_businessterm
+		FOREIGN KEY (Business_Term_ID)
+		REFERENCES Tbl_Business_Term(ID) on delete cascade,
+	  CONSTRAINT fk_column_precsystem
+		FOREIGN KEY (Imm_Prec_System_ID)
+		REFERENCES Tbl_System(ID) on delete cascade,
+	  CONSTRAINT fk_column_succsystem
+		FOREIGN KEY (Imm_Succ_System_ID)
+		REFERENCES Tbl_System(ID) on delete cascade
+	);
+	
+	CREATE TABLE Tbl_DS_Processes
+	( ID int NOT NULL,
+	  Name VARCHAR(200) NOT NULL,
+	  Owner_ID int,
+	  Owner_Name VARCHAR(200) NOT NULL,
+	  CONSTRAINT tbl_processes_pk PRIMARY KEY (ID),
+	  CONSTRAINT fk_processes_owner
+		FOREIGN KEY (Owner_ID)
+		REFERENCES Tbl_People(ID) on delete cascade
+	);
+	
+	CREATE TABLE Tbl_Segment
+	( ID int NOT NULL,
+	  Name VARCHAR(200) NOT NULL,
+	  Subdomain_ID int NOT NULL,
+	  CONSTRAINT tbl_segment_pk PRIMARY KEY (ID),
+	  CONSTRAINT fk_segment_owner
+		FOREIGN KEY (Subdomain_ID)
+		REFERENCES Tbl_Category(ID) on delete cascade
+	);
+	
+	CREATE TABLE Tbl_DS_Process_Detail
+	( ID int NOT NULL,
+	  Process_ID int NOT NULL,
+	  Business_Term_ID int NOT NULL,
+	  Segment_ID int NOT NULL,
+	  Imm_Prec_System_ID int,
+	  Ultimate_Source_System_ID int,
+	  CONSTRAINT tbl_processdetail_pk PRIMARY KEY (ID),
+	  CONSTRAINT fk_processdetail_process
+		FOREIGN KEY (Process_ID)
+		REFERENCES Tbl_DS_Processes(ID) on delete cascade,
+	  CONSTRAINT fk_processdetail_businessterm
+		FOREIGN KEY (Business_Term_ID)
+		REFERENCES Tbl_Business_Term(ID) on delete cascade,
+	  CONSTRAINT fk_processdetail_segment
+		FOREIGN KEY (Segment_ID)
+		REFERENCES Tbl_Segment(ID) on delete cascade,
+	  CONSTRAINT fk_processdetail_precsystem
+		FOREIGN KEY (Imm_Prec_System_ID)
+		REFERENCES Tbl_System(ID) on delete cascade,
+	  CONSTRAINT fk_processdetail_sourcesystem
+		FOREIGN KEY (Ultimate_Source_System_ID)
+		REFERENCES Tbl_System(ID) on delete cascade
+	);
+	
+	CREATE TABLE Tbl_Priority_Reports
+	( ID int NOT NULL,
+	  Name VARCHAR(200) NOT NULL,
+	  Owner_ID int NOT NULL,
+	  Lead_ID int NOT NULL,
+	  Sub_Risk_Type_ID int NOT NULL,
+	  Rationale VARCHAR(2000) NOT NULL,
+	  CONSTRAINT tbl_priorityreports_pk PRIMARY KEY (ID),
+	  CONSTRAINT fk_priorityreports_owner
+		FOREIGN KEY (Owner_ID)
+		REFERENCES Tbl_People(ID) on delete cascade,
+	  CONSTRAINT fk_priorityreports_lead
+		FOREIGN KEY (Lead_ID)
+		REFERENCES Tbl_People(ID) on delete cascade,
+	  CONSTRAINT fk_priorityreports_subcategory
+		FOREIGN KEY (Sub_Risk_Type_ID)
+		REFERENCES Tbl_Subcategory(ID) on delete cascade
+	);
+	
+	CREATE TABLE Tbl_CRM
+	( ID int NOT NULL,
+	  Name VARCHAR(300) NOT NULL,
+	  Prority_Report_ID int NOT NULL,
+	  CRM_Rationale VARCHAR(2000) NOT NULL,
+	  CONSTRAINT tbl_crm_pk PRIMARY KEY (ID),
+	  CONSTRAINT fk_crm_priorityreports
+		FOREIGN KEY (Prority_Report_ID)
+		REFERENCES Tbl_Priority_Reports(ID) on delete cascade
+	);
+	
+	CREATE TABLE Tbl_Link_CRM_CDE
+	( ID int NOT NULL,
+	  CRM_ID int NOT NULL,
+	  CDE_ID int NOT NULL,
+	  CONSTRAINT tbl_crmcde_pk PRIMARY KEY (ID),
+	  CONSTRAINT fk_crmcde_crm
+		FOREIGN KEY (CRM_ID)
+		REFERENCES Tbl_CRM(ID) on delete cascade,
+	  CONSTRAINT fk_crmcde_cde
+		FOREIGN KEY (CDE_ID)
+		REFERENCES Tbl_Business_Term(ID) on delete cascade
+	);
+	
+	CREATE TABLE tbl_users
+	( ID NUMBER GENERATED by default on null as IDENTITY,
+	  username int NOT NULL,
+	  password varchar(100) NOT NULL,
+	  email varchar(100) NOT NULL,
+	  name varchar(100) NOT NULL,
+	  status int NOT NULL,
+	  role varchar(100) NOT NULL,
+	  createdat varchar(100) NOT NULL,
+	  updatedat varchar(100) NOT NULL,
+	  CONSTRAINT tbl_sysuser_pk PRIMARY KEY (ID)
+	);`
+	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

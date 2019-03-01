@@ -24,6 +24,7 @@ func main() {
 	}
 	defer clit.Close()
 
+	s.NewDSCService().CreateTables()
 	s.NewDSCService().CreateUserDummyData()
 	s.NewDSCService().CreateSystemDummyData()
 	s.NewDSCService().CreatePolicyDummyData()
