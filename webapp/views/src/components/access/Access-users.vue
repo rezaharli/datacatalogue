@@ -212,6 +212,7 @@ export default {
 
             this.editedItem = Object.assign({}, item)
             this.editedItem.Role = this.editedItem.Role.split(",");
+            this.editedItem.Status = this.editedItem.Status == 1 ? true : false;
             this.editedItem.Password = ''
 
             this.users.error = null

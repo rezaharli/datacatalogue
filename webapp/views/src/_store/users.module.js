@@ -22,6 +22,7 @@ const actions = {
         var tempUser = _.cloneDeep(user)
         tempUser.Username = parseInt(tempUser.Username);
         tempUser.Role = tempUser.Role.join();
+        tempUser.Status = tempUser.Status == true ? 1 : 0;
 
         commit('registerRequest', tempUser);
     
@@ -34,6 +35,7 @@ const actions = {
     update({ commit }, user) {
         user.Username = parseInt(user.Username);
         user.Role = user.Role.join();
+        tempUser.Status = tempUser.Status == true ? 1 : 0;
         
         commit('updateRequest', user);
     
