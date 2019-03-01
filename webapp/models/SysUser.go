@@ -20,3 +20,23 @@ func NewSysUserModel() *SysUser {
 func (m *SysUser) TableName() string {
 	return "tbl_users"
 }
+
+type UserUsage struct {
+	ID          int
+	Username    string
+	Fullname    string
+	Role        string
+	Module      string
+	Action      string
+	Description string
+	Time        string
+	ResourceURL string
+}
+
+func NewUserUsageModel() *UserUsage {
+	return new(UserUsage)
+}
+
+func (m *UserUsage) TableName() string {
+	return "tbl_usage"
+}

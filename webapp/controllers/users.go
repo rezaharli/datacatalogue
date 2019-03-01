@@ -127,3 +127,22 @@ func (c *Users) Delete(k *knot.WebContext) {
 
 	h.WriteResultOK(k, res, true)
 }
+
+func (c *Users) SaveUsage(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	err = s.NewUserService().SaveUsage(payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	h.WriteResultOK(k, res, true)
+}

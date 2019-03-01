@@ -116,9 +116,9 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                    <td><b-link :to="{ path:'/dpo/my/' + props.item.ID }">{{ props.item.Name }}</b-link></td>
-                    <td>{{ props.item.Owner_ID }}</td>
-                    <td>{{ props.item.fat }}</td>
+                    <td><b-link :to="{ path:'/dpo/my/' + props.item.ID }">{{ props.item.DOWNSTREAM_PROCESS }}</b-link></td>
+                    <td>{{ props.item.PROCESS_OWNER }}</td>
+                    <td>{{ props.item.BANK_ID }}</td>
                 </template>
               </v-data-table>
             </b-col>
@@ -160,12 +160,12 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                   <tr @click="props.expanded = !props.expanded">
-                    <td><b-link @click="showDetails(props.item.ID)">{{ props.item.Business_Term_ID }}</b-link></td>
-                    <td>{{ props.item.Segment_ID }}</td>
-                    <td>{{ props.item.Imm_Prec_System_ID }}</td>
-                    <td>{{ props.item.Ultimate_Source_System_ID }}</td>
-                    <td>{{ props.item.BusinessTerm.Description }}</td>
-                    <td>{{ props.item.CDE_Rationale }}</td>
+                    <td><b-link @click="showDetails(props.item.ID)">{{ props.item.CDE_NAME }}</b-link></td>
+                    <td>{{ props.item.SEGMENT }}</td>
+                    <td>{{ props.item.IMM_PREC_SYSTEM_ID }}</td>
+                    <td>{{ props.item.ULTIMATE_SOURCE_SYSTEM_ID }}</td>
+                    <td>{{ props.item.BUSINESS_DESCRIPTION }}</td>
+                    <td>{{ props.item.CDE_RATIONALE }}</td>
                   </tr>
                 </template>
               </v-data-table>
@@ -203,28 +203,28 @@ export default {
           cdeName: ''
         },
         firstTableHeaders: [
-          { text: 'Downstream Processes', align: 'left', value: 'Name', sortable: false },
-          { text: 'Process Owner', align: 'left', value: 'Owner_ID', sortable: false },
-          { text: 'Bank ID', align: 'left', value: 'carbs', sortable: false }
+          { text: 'Downstream Processes', align: 'left', value: 'DOWNSTREAM_PROCESS', sortable: false },
+          { text: 'Process Owner', align: 'left', value: 'PROCESS_OWNER', sortable: false },
+          { text: 'Bank ID', align: 'left', value: 'BANK_ID', sortable: false }
         ],
         secondTableHeaders: [
-          { text: 'CDE Name', align: 'left', sortable: false, value: 'Business_Term_ID', width: "25%" },
-          { text: 'Segment', align: 'left', sortable: false, value: 'Segment_ID', width: "25%" },
-          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'Imm_Prec_System_ID', width: "25%" },
-          { text: 'Ultimate Source System', align: 'left', sortable: false, value: 'Ultimate_Source_System_ID', width: "25%" },
-          { text: 'Business Description', align: 'left', sortable: false, value: 'BusinessTerm.Description', width: "25%" },
-          { text: 'CDE Rationale', align: 'left', sortable: false, value: 'CDE_Rationale', width: "25%" },
+          { text: 'CDE Name', align: 'left', sortable: false, value: 'CDE_NAME', width: "25%" },
+          { text: 'Segment', align: 'left', sortable: false, value: 'SEGMENT', width: "25%" },
+          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'IMM_PREC_SYSTEM_ID', width: "25%" },
+          { text: 'Ultimate Source System', align: 'left', sortable: false, value: 'ULTIMATE_SOURCE_SYSTEM_ID', width: "25%" },
+          { text: 'Business Description', align: 'left', sortable: false, value: 'BUSINESS_DESCRIPTION', width: "25%" },
+          { text: 'CDE Rationale', align: 'left', sortable: false, value: 'CDE_RATIONALE', width: "25%" },
         ],
         excelFields: {
-          'Downstream Processes': 'Name',
-          'Process Owner': 'Owner_ID',
-          'Bank ID': 'asdf',
-          'CDE Name': 'Business_Term_ID',
-          'Segment': 'Segment_ID',
-          'Immediate Preceding System': 'Imm_Prec_System_ID',
-          'Ultimate Source System': 'Ultimate_Source_System_ID',
-          'Business Description': 'BusinessTermDescription',
-          'CDE Rationale': 'CDE_Rationale',
+          'Downstream Processes': 'DOWNSTREAM_PROCESS',
+          'Process Owner': 'PROCESS_OWNER',
+          'Bank ID': 'BANK_ID',
+          'CDE Name': 'CDE_NAME',
+          'Segment': 'SEGMENT',
+          'Immediate Preceding System': 'IMM_PREC_SYSTEM_ID',
+          'Ultimate Source System': 'ULTIMATE_SOURCE_SYSTEM_ID',
+          'Business Description': 'BUSINESS_DESCRIPTION',
+          'CDE Rationale': 'CDE_RATIONALE',
         }
       }
     },
@@ -237,20 +237,21 @@ export default {
 
         this._.each(this.dpomy.systemsDisplay, (system, i) => {
           var temp = {
-            Name: system.Name,
-            Owner_ID: system.Owner_ID,
+            DOWNSTREAM_PROCESS: system.DOWNSTREAM_PROCESS,
+            PROCESS_OWNER: system.PROCESS_OWNER,
+            BANK_ID: system.BANK_ID
           }
 
-          var tables = this._.filter(this.dpomy.tableDisplay, (v) => v.Process_ID == system.ID)
+          var tables = this._.filter(this.dpomy.tableDisplay, (v) => v.TDPID == system.ID)
           if(tables.length > 0){
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
-              tableLevel.Business_Term_ID = table.Business_Term_ID;
-              tableLevel.Segment_ID = table.Segment_ID;
-              tableLevel.Imm_Prec_System_ID = table.Imm_Prec_System_ID;
-              tableLevel.Ultimate_Source_System_ID = table.Ultimate_Source_System_ID;
-              tableLevel.BusinessTermDescription = table.BusinessTerm.Description;
-              tableLevel.CDE_Rationale = table.CDE_Rationale;
+              tableLevel.CDE_NAME = table.CDE_NAME;
+              tableLevel.SEGMENT = table.SEGMENT;
+              tableLevel.IMM_PREC_SYSTEM_ID = table.IMM_PREC_SYSTEM_ID;
+              tableLevel.ULTIMATE_SOURCE_SYSTEM_ID = table.ULTIMATE_SOURCE_SYSTEM_ID;
+              tableLevel.BUSINESS_DESCRIPTION = table.BUSINESS_DESCRIPTION;
+              tableLevel.CDE_RATIONALE = table.CDE_RATIONALE;
 
               res.push(_.cloneDeep(tableLevel));
             })
@@ -335,11 +336,12 @@ export default {
         this.dpomy.tableDisplay = this.dpomy.tableSource;
 
         if(this.searchForm.processName)
-          this.dpomy.systemsDisplay = this._.filter(this.dpomy.systemsDisplay, (val) => val.Name.indexOf(this.searchForm.processName) != -1);
+          this.dpomy.systemsDisplay = this._.filter(this.dpomy.systemsDisplay, (val) => val.DOWNSTREAM_PROCESS.indexOf(this.searchForm.processName) != -1);
         if(this.searchForm.processOwner)
-          this.dpomy.systemsDisplay = this._.filter(this.dpomy.systemsDisplay, (val) => val.Owner_ID.toString().indexOf(this.searchForm.processOwner) != -1);
+          this.dpomy.systemsDisplay = this._.filter(this.dpomy.systemsDisplay, (val) => val.PROCESS_OWNER.toString().indexOf(this.searchForm.processOwner) != -1);
+
         if(this.searchForm.cdeName)
-          this.dpomy.tableDisplay = this._.filter(this.dpomy.tableDisplay, (val) => val.Business_Term_ID.toString().indexOf(this.searchForm.cdeName) != -1);
+          this.dpomy.tableDisplay = this._.filter(this.dpomy.tableDisplay, (val) => val.CDE_NAME.toString().indexOf(this.searchForm.cdeName) != -1);
 
         this.searchForm.show = false;
       },

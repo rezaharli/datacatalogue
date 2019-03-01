@@ -304,6 +304,10 @@ router.beforeEach((to, from, next) => {
   next()
 });
 
+var saveUsage = function(isAuth, to, from, next){
+  // console.log(isAuth, to, from, next);
+  
+}
 
 router.beforeEach((to, from, next) => {
   // redirect to login page if not logged in and trying to access a restricted page
@@ -312,9 +316,11 @@ router.beforeEach((to, from, next) => {
   const loggedIn = localStorage.getItem('user');
   
   if (authRequired && !loggedIn) {
+    saveUsage(false, to, from, next);
     return next('/login');
   }
 
+  saveUsage(true, to, from, next)
   next();
 })
 

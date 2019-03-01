@@ -4,7 +4,6 @@ import (
 	"crypto/md5"
 	"fmt"
 	"io"
-	"log"
 	"strings"
 	"time"
 
@@ -99,7 +98,6 @@ func (s *UserService) Insert(data *m.SysUser) (bool, error) {
 
 	dataM, err := toolkit.ToM(data)
 	if err != nil {
-		log.Println(err.Error())
 		return false, err
 	}
 
@@ -175,5 +173,24 @@ func (s *UserService) DeleteByUsername(username int) error {
 		TableName: m.NewSysUserModel().TableName(),
 		Clause:    dbflex.Eq("username", username),
 	})
+	return err
+}
+
+func (s *UserService) SaveUsage(data toolkit.M) error {
+	data.Set("Time", time.Now().String())
+
+	data.Unset("ID")
+
+	err := h.NewDBcmd().Insert(h.InsertParam{
+		TableName: m.NewUserUsageModel().TableName(),
+		Data:      data,
+	})
+
+	if err != nil {
+		if strings.Contains(err.Error(), "duplicate key") {
+			return err
+		}
+	}
+
 	return err
 }

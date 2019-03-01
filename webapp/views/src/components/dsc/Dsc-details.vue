@@ -336,8 +336,6 @@ export default {
       this.showModal = showModal;
     },
     "dscmy.detailsSource"() {
-      console.log(this.dscmy.detailsSource);
-      
       if (this.dscmy.detailsSource.length > 0)
         this.selectedDetails = this.dscmy.detailsSource[0];
       else 

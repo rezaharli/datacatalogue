@@ -8,6 +8,8 @@ const state = {
         tableLoading: true,
         tableSource: [],
         tableDisplay: [],
+        detailsLoading: true,
+        detailsSource: [],
         error: null
     }
 };
@@ -29,6 +31,15 @@ const actions = {
             .then(
                 res => commit('getAllTablenameSuccess', res.Data),
                 error => commit('getAllTablenameFailure', error)
+            );
+    },
+    getDetails({ commit }, param) {
+        commit('getDetailsRequest');
+
+        dpoMyService.getDetails(param)
+            .then(
+                res => commit('getDetailsSuccess', res.Data),
+                error => commit('getDetailsFailure', error)
             );
     },
 };
@@ -58,6 +69,18 @@ const mutations = {
     },
     getAllTablenameFailure(state, error) {
         state.all.tableLoading = false;
+        state.all.error = error;
+    },
+    getDetailsRequest(state) {
+        state.all.detailsLoading = true;
+    },
+    getDetailsSuccess(state, data) {
+        state.all.detailsSource = data;
+
+        state.all.tableLoading = false;
+    },
+    getDetailsFailure(state, error) {
+        state.all.detailsLoading = false;
         state.all.error = error;
     },
 };
