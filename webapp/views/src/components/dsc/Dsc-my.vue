@@ -178,9 +178,9 @@ table.v-table thead th > div.btn-group {
                 <template slot="items" slot-scope="props">
                   <tr>
                     <td><b-link @click="props.expanded = !props.expanded">{{ props.item.TABLE_NAME }}</b-link></td>
-                    <td><b-link @click="showDetails(props.item.ID)">{{ _.map(props.item.Columns, "COLUMN_NAME").join(", ") }}</b-link></td>
-                    <td>{{ _.map(props.item.Columns, "ALIAS_NAME").join(", ") }}</td>
-                    <td>{{ _.map(props.item.Columns, "CDE").join(", ") }}</td>
+                    <td><b-link @click="showDetails(props.item.ID)">{{ _.map(props.item.Columns, "COLUMN_NAME").filter(Boolean).join(", ") }}</b-link></td>
+                    <td>{{ _.map(props.item.Columns, "ALIAS_NAME").filter(Boolean).join(", ") }}</td>
+                    <td>{{ _.map(props.item.Columns, "CDE").filter(Boolean).join(", ") }}</td>
                   </tr>
                 </template>
                 

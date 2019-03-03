@@ -14,6 +14,11 @@ function getLeftTable(param) {
 function getRightTable(param) {
     return fetchWHeader(`/dsc/gettablename`, param).then(
         res => {
+            res.Data = _.map(res.Data, function(v){
+                v.CDE = v.CDE == 0 ? "No" : "Yes";
+                return v;
+            });
+
             var tmp = _.groupBy(res.Data, "TABLE_NAME")
             
             res.Data = _.map(Object.keys(tmp), function(v, i){
