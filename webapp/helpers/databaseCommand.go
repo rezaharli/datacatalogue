@@ -241,6 +241,7 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 					r__ >= (((` + toolkit.ToString(param.PageNumber) + `-1) * ` + toolkit.ToString(param.RowsPerPage) + `) + 1)`
 		}
 	}
+	toolkit.Println(sqlQuery)
 
 	err := Database().Cursor(dbflex.From(param.TableName).SQL(sqlQuery), nil).Fetchs(param.Results, 0)
 	return err
