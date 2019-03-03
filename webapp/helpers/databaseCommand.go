@@ -235,10 +235,9 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 			sqlQuery = `SELECT * FROM
 				(
 					` + sqlQuery + `
-				) WHERE 
-					r__ < ((` + toolkit.ToString(param.PageNumber) + ` * ` + toolkit.ToString(param.RowsPerPage) + `) + 1 ) 
-				AND 
-					r__ >= (((` + toolkit.ToString(param.PageNumber) + `-1) * ` + toolkit.ToString(param.RowsPerPage) + `) + 1)`
+				) WHERE r__ 
+				BETWEEN ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + ` 
+				AND ` + toolkit.ToString(param.PageNumber*param.RowsPerPage)
 		}
 	}
 	toolkit.Println(sqlQuery)
