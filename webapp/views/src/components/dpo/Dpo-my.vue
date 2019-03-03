@@ -112,7 +112,7 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="no-data">
                   <v-alert :value="dpomy.left.loading" type="info">
-                    Please wait, data is loading
+                    Please wait while data is loading
                   </v-alert>
 
                   <v-alert :value="!dpomy.left.loading" type="error">
@@ -142,7 +142,7 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="no-data">
                   <v-alert :value="dpomy.right.loading" type="info">
-                    Please wait, data is loading
+                    Please wait while data is loading
                   </v-alert>
 
                   <v-alert :value="!dpomy.right.loading" type="error">

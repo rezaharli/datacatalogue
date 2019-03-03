@@ -22,7 +22,7 @@
 <template>
   <b-modal hide-footer header-class="modal-details-header setbackground" body-class="setbackground" v-if="showModal" id="modal-details" ref="modalDetails" size="lg" @hidden="handleClose">
     <b-container fluid class="row-kasijarak">
-      <b-row>
+      <b-row v-if="selectedDetails">
         <b-col> 
           <b-col>
               <download-excel
@@ -40,41 +40,48 @@
 
     <b-container> -->
       <b-row>
+        <b-col cols="12" v-if="dscmy.detailsLoading">
+          <v-progress-linear :indeterminate="true"></v-progress-linear>
+          <v-alert :value="dscmy.detailsLoading == null" type="info">
+            Please wait while data is loading
+          </v-alert>
+        </b-col>
+
         <b-col cols="4"> 
-          <b-card tag="article" class="mb-2" v-if="selectedDetails">
+          <b-card tag="article" class="mb-2">
             <b-media class="left-card-media" >
               <h6 class="left-card-title">System Name</h6>
-              <p v-html="selectedDetails.SYSTEM_NAME"></p>
+              <p v-html="selectedDetails.SYSTEM_NAME" v-if="selectedDetails"></p>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">ITAM ID</h6>
-              <p v-html="selectedDetails.ITAM_ID"></p>
+              <p v-html="selectedDetails.ITAM_ID" v-if="selectedDetails"></p>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Dataset Custodian</h6>
-              <p v-html="selectedDetails.FIRST_NAME"></p>
+              <p v-html="selectedDetails.FIRST_NAME" v-if="selectedDetails"></p>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Bank ID</h6>
-              <p v-html="selectedDetails.BANK_ID"></p>
+              <p v-html="selectedDetails.BANK_ID" v-if="selectedDetails"></p>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Business Alias Name</h6>
-              <p v-html="selectedDetails.ALIAS_NAME"></p>
+              <p v-html="selectedDetails.ALIAS_NAME" v-if="selectedDetails"></p>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Table Name</h6>
-              <p v-html="selectedDetails.TABLE_NAME"></p>
+              <p v-html="selectedDetails.TABLE_NAME" v-if="selectedDetails"></p>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Column Name</h6>
-              <p v-html="selectedDetails.COLUMN_NAME"></p>
+              <p v-html="selectedDetails.COLUMN_NAME" v-if="selectedDetails"></p>
             </b-media>
           </b-card>
         </b-col>
@@ -86,16 +93,15 @@
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="tableName">
-                      <b-form-select id="tableName" class="col-8" v-model="selectedDetails.TABLE_NAME" :options="[selectedDetails.TABLE_NAME]">
-                      </b-form-select>
+                      <b-form-select id="tableName" class="col-8" v-model="ddTable.selected" :options="ddTableOptions" @change="ddChanged"></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnName">
-                      <b-form-select id="columnName" class="col-8" v-model="selectedDetails.COLUMN_NAME" :options="[selectedDetails.COLUMN_NAME]"></b-form-select>
+                      <b-form-select id="columnName" class="col-8" v-model="ddColumn.selected" :options="ddColumnOptions" @change="ddChanged"></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Screen Label Name*" label-for="screenLabelName">
-                      <b-form-select id="screenLabelName" class="col-8"></b-form-select>
+                      <b-form-select id="columnName" class="col-8" v-model="ddScreenLabel.selected" :options="ddScreenLabelOptions" @change="ddChanged"></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Description*">
@@ -272,6 +278,9 @@ export default {
       ddColumn: {
         selected: null,
       },
+      ddScreenLabel: {
+        selected: null,
+      },
       excelFields: {
         'System Name': "selectedDetails.SYSTEM_NAME",
         'ITAM ID': "selectedDetails.ITAM_ID",
@@ -315,11 +324,13 @@ export default {
       dscmy: state => state.dscmy.all
     }),
     ddTableOptions () {
-      this.ddTable.selected = this.selectedDetails ? this.selectedDetails.Name : null;
-      return this.selectedDetails ? [{ value: this.selectedDetails.Name, text: this.selectedDetails.Name }] : [];
+      return _.uniq(_.map(this.dscmy.DDSource, "TABLE_NAME"))
     },
     ddColumnOptions () {
-      return this.selectedDetails ? _.map(this.selectedDetails.Columns, function(v) { return { value: v.ID, text: v.Name } }) : [];
+      return _.uniq(_.map(this.dscmy.DDSource, "COLUMN_NAME"))
+    },
+    ddScreenLabelOptions () {
+      return _.uniq(_.map(this.dscmy.DDSource, "ALIAS_NAME"))
     },
     exportDatas () {
       if(this.selectedDetails){
@@ -335,12 +346,6 @@ export default {
     '$route.meta' ({showModal}) {
       this.showModal = showModal;
     },
-    "dscmy.detailsSource"() {
-      if (this.dscmy.detailsSource.length > 0)
-        this.selectedDetails = this.dscmy.detailsSource[0];
-      else 
-        this.selectedDetails = null;
-    },
   },
   mounted() {
     this.$refs.modalDetails.show();
@@ -350,7 +355,29 @@ export default {
       right: parseInt(this.$route.params.details)
     };
 
-    this.getDetails(param);
+    this.getDetails(param).then(
+      res => {
+        if (this.dscmy.detailsSource.length > 0){
+          this.selectedDetails = this.dscmy.detailsSource[0];
+          this.selectedDetails.CDE = this.selectedDetails.CDE == 0 ? "Yes" : "No";
+          this.selectedDetails.STATUS = this.selectedDetails.STATUS ? this.selectedDetails.STATUS : "NA";
+          this.selectedDetails.DATA_TYPE = this.selectedDetails.DATA_TYPE ? this.selectedDetails.DATA_TYPE : "NA";
+          this.selectedDetails.DATA_FORMAT = this.selectedDetails.DATA_FORMAT ? this.selectedDetails.DATA_FORMAT : "NA";
+          this.selectedDetails.DATA_LENGTH = this.selectedDetails.DATA_LENGTH ? this.selectedDetails.DATA_LENGTH : "NA";
+          this.selectedDetails.EXAMPLE = this.selectedDetails.EXAMPLE ? this.selectedDetails.EXAMPLE : "NA";
+          this.selectedDetails.DERIVED = this.selectedDetails.DERIVED ? this.selectedDetails.DERIVED : "NA";
+          this.selectedDetails.DERIVATION_LOGIC = this.selectedDetails.DERIVATION_LOGIC ? this.selectedDetails.DERIVATION_LOGIC : "NA";
+          this.selectedDetails.SOURCED_FROM_UPSTREAM = this.selectedDetails.SOURCED_FROM_UPSTREAM ? this.selectedDetails.SOURCED_FROM_UPSTREAM : "NA";
+          this.selectedDetails.SYSTEM_CHECKS = this.selectedDetails.SYSTEM_CHECKS ? this.selectedDetails.SYSTEM_CHECKS : "NA";
+
+          this.ddTable.selected = this.selectedDetails.TABLE_NAME;
+          this.ddColumn.selected = this.selectedDetails.COLUMN_NAME;
+          this.ddScreenLabel.selected = this.selectedDetails.ALIAS_NAME;
+        } else 
+          this.selectedDetails = null;
+      },
+      err => err
+    );
     // this.selectedDetails = _.find(this.dscmy.systemsSource, ['ID', parseInt(this.$route.params.system)])
     // this.selectedDetails = _.find(this.dscmy.tableSource, ['ID', parseInt(this.$route.params.details)])
   },
@@ -360,6 +387,17 @@ export default {
     }),
     handleClose () {
       this.$router.go(-1)
+    },
+    ddChanged (val){
+        var param = {
+          left: this.$route.params.system,
+          right: this.$route.params.details,
+          ScreenLabel: this.ddScreenLabel.selected,
+          ColumnName: this.ddColumn.selected,
+          TableName: this.ddTable.selected,
+        };
+
+        this.getDetails(param);
     }
   },
 }

@@ -36,5 +36,5 @@ function getInterfacesRightTable(param) {
 }
 
 function getDetails(param) {
-    return fetchWHeader(`/dsc/getdetails`, { LeftParam: parseInt(param.left), RightParam: parseInt(param.right) })
+    return fetchWHeader(`/dsc/getdetails`, param)
 }

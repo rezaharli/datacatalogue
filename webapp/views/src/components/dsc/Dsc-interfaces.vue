@@ -116,7 +116,7 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="no-data">
                   <v-alert :value="dscinterfaces.left.loading" type="info">
-                    Please wait, data is loading
+                    Please wait while data is loading
                   </v-alert>
 
                   <v-alert :value="!dscinterfaces.left.loading" type="error">
@@ -146,7 +146,7 @@ table.v-table thead th > div.btn-group {
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
                   <template slot="no-data">
                     <v-alert :value="dscinterfaces.right.loading" type="info">
-                    Please wait, data is loading
+                    Please wait while data is loading
                   </v-alert>
 
                   <v-alert :value="!dscinterfaces.right.loading" type="error">

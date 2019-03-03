@@ -116,7 +116,7 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="no-data">
                   <v-alert :value="dscmy.left.loading" type="info">
-                    Please wait, data is loading
+                    Please wait while data is loading
                   </v-alert>
 
                   <v-alert :value="!dscmy.left.loading" type="error">
@@ -148,7 +148,7 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="no-data">
                   <v-alert :value="dscmy.right.loading" type="info">
-                    Please wait, data is loading
+                    Please wait while data is loading
                   </v-alert>
 
                   <v-alert :value="!dscmy.right.loading" type="error">

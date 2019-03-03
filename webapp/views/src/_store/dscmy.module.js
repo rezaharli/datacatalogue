@@ -6,6 +6,7 @@ const state = {
         searchMain: '',
         left: newTableObject(),
         right: newTableObject(),
+        DDSource: [],
         detailsLoading: true,
         detailsSource: [],
         error: null
@@ -45,7 +46,7 @@ const actions = {
     getDetails({ commit }, param) {
         commit('getDetailsRequest');
 
-        dscMyService.getDetails(param)
+        return dscMyService.getDetails(param)
             .then(
                 res => commit('getDetailsSuccess', res.Data),
                 error => commit('getDetailsFailure', error)
@@ -86,7 +87,8 @@ const mutations = {
         state.all.detailsLoading = true;
     },
     getDetailsSuccess(state, data) {
-        state.all.detailsSource = data;
+        state.all.detailsSource = data.Detail;
+        state.all.DDSource = data.DDSource;
         state.all.detailsLoading = false;
     },
     getDetailsFailure(state, error) {

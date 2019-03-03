@@ -115,11 +115,21 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 		return
 	}
 
-	systems, _, err := s.NewDSCService().GetDetails(payload.GetInt("LeftParam"), payload.GetInt("RightParam"))
+	detail, _, err := s.NewDSCService().GetDetails(payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
-	h.WriteResultOK(k, res, systems)
+	ddSource, _, err := s.NewDSCService().GetddSource(payload.GetString("left"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	data := toolkit.M{}
+	data.Set("Detail", detail)
+	data.Set("DDSource", ddSource)
+
+	h.WriteResultOK(k, res, data)
 }
