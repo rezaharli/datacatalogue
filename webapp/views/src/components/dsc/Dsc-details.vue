@@ -42,13 +42,13 @@
       <b-row>
         <b-col cols="12" v-if="dscmy.detailsLoading">
           <v-progress-linear :indeterminate="true"></v-progress-linear>
-          <v-alert :value="dscmy.detailsLoading == null" type="info">
+          <v-alert type="info">
             Please wait while data is loading
           </v-alert>
         </b-col>
 
         <b-col cols="4"> 
-          <b-card tag="article" class="mb-2">
+          <b-card tag="article" class="mb-2" v-if="selectedDetails">
             <b-media class="left-card-media" >
               <h6 class="left-card-title">System Name</h6>
               <p v-html="selectedDetails.SYSTEM_NAME" v-if="selectedDetails"></p>
@@ -106,11 +106,11 @@
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Description*">
                       <v-dialog v-model="dialog" width="500">
-                        <p slot="activator">This field describes the full name of the client and used for capturing lengthy names where the customer name field is unable to accommodat. It is also used for sub-funds.<b-link>[more]</b-link></p>
+                        <p slot="activator" v-html="selectedDetails.BUSINESS_DESCRIPTION"><b-link>[more]</b-link></p>
 
                         <v-card>
-                          <v-card-text>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                          <v-card-text v.html="selectedDetails.BUSINESS_DESCRIPTION">
+                            
                           </v-card-text>
                         </v-card>
                       </v-dialog>

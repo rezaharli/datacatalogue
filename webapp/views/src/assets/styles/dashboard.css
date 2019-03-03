@@ -81,25 +81,6 @@
     font-weight: bolder;
 }
 
-.v-datatable td {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    box-sizing: border-box;
-    display: block;
-    padding: 8px;
-    width: 100%;
-}
-
-.v-datatable td > a {
-    box-sizing: border-box;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
 @media (min-width: 992px) {
     #modal-details .modal-lg{
         max-width: 80%;
