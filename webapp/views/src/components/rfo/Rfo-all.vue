@@ -115,8 +115,12 @@ table.v-table thead th > div.btn-group {
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
                 <template slot="no-data">
-                  <v-alert :value="true" color="error" icon="warning">
-                    Sorry, nothing to display here :(
+                  <v-alert :value="rfomy.left.loading" type="info">
+                    Please wait, data is loading
+                  </v-alert>
+
+                  <v-alert :value="!rfomy.left.loading" type="error">
+                    Sorry, nothing to display here
                   </v-alert>
                 </template>
 
@@ -140,8 +144,12 @@ table.v-table thead th > div.btn-group {
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
                 <template slot="no-data">
-                  <v-alert :value="true" color="error" icon="warning">
-                    Sorry, nothing to display here :(
+                  <v-alert :value="rfomy.right.loading" type="info">
+                    Please wait, data is loading
+                  </v-alert>
+
+                  <v-alert :value="!rfomy.right.loading" type="error">
+                    Sorry, nothing to display here
                   </v-alert>
                 </template>
 
