@@ -1,18 +1,18 @@
 import { fetchWHeader } from '../_helpers/auth-header';
 
 export const dscMyService = {
-    getAllSystem,
-    getTableName,
+    getLeftTable,
+    getRightTable,
     getInterfacesRightTable,
     getDetails
 };
 
-function getAllSystem() {
-    return fetchWHeader(`/dsc/getallsystems`, {})
+function getLeftTable(param) {
+    return fetchWHeader(`/dsc/getallsystems`, param)
 }
 
-function getTableName(system) {
-    return fetchWHeader(`/dsc/gettablename`, { SystemID: parseInt(system) }).then(
+function getRightTable(param) {
+    return fetchWHeader(`/dsc/gettablename`, param).then(
         res => {
             var tmp = _.groupBy(res.Data, "TABLE_NAME")
             
@@ -21,7 +21,8 @@ function getTableName(system) {
                     ID: tmp[v][0].ID,
                     TSID: tmp[v][0].TSID,
                     TABLE_NAME: v,
-                    Columns: tmp[v]
+                    Columns: tmp[v],
+                    RESULT_COUNT: Object.keys(tmp).length
                 }
             });
 
@@ -30,8 +31,8 @@ function getTableName(system) {
     )
 }
 
-function getInterfacesRightTable(system) {
-    return fetchWHeader(`/dsc/getinterfacesrighttable`, { SystemID: parseInt(system) })
+function getInterfacesRightTable(param) {
+    return fetchWHeader(`/dsc/getinterfacesrighttable`, param)
 }
 
 function getDetails(param) {

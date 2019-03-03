@@ -15,12 +15,14 @@ func NewRFOService() *RFOService {
 	return ret
 }
 
-func (s *RFOService) GetLeftTable(sortKey, sortOrder string, skip, take int, filter toolkit.M) ([]toolkit.M, int, error) {
+func (s *RFOService) GetLeftTable(search string, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
 	q := `SELECT DISTINCT 
-			tpr.id, tpr.name, tpr.owner_id 
+			tpr.id, 
+			tpr.name, 
+			tpr.owner_id 
 		FROM 
 			Tbl_Priority_Reports tpr
 			JOIN tbl_subcategory tsc ON tpr.sub_risk_type_id = tsc.id
@@ -28,10 +30,20 @@ func (s *RFOService) GetLeftTable(sortKey, sortOrder string, skip, take int, fil
 			LEFT JOIN tbl_crm tcrm ON tcrm.prority_report_id = tpr.id
 			LEFT JOIN tbl_link_crm_cde tlcc ON tlcc.crm_id = tcrm.id
 			LEFT JOIN tbl_business_term tbt ON tlcc.cde_id = tbt.id`
+
+	if search != "" {
+		q += `
+			WHERE
+				upper(tpr.name) LIKE upper('%` + search + `%')
+				OR upper(tpr.owner_id) LIKE upper('%` + search + `%')`
+	}
+
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName: m.NewCategoryModel().TableName(),
-		SqlQuery:  q,
-		Results:   &resultRows,
+		TableName:   m.NewCategoryModel().TableName(),
+		SqlQuery:    q,
+		Results:     &resultRows,
+		PageNumber:  pageNumber,
+		RowsPerPage: rowsPerPage,
 	})
 
 	if err != nil {
@@ -41,7 +53,7 @@ func (s *RFOService) GetLeftTable(sortKey, sortOrder string, skip, take int, fil
 	return resultRows, resultTotal, nil
 }
 
-func (s *RFOService) GetRightTable(systemID int) (interface{}, int, error) {
+func (s *RFOService) GetRightTable(systemID int, search string, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -63,10 +75,25 @@ func (s *RFOService) GetRightTable(systemID int) (interface{}, int, error) {
 		LEFT JOIN tbl_business_term tbt ON tlcc.cde_id = tbt.id
 	WHERE
 		tpr.id = ` + toolkit.ToString(systemID)
+
+	if search != "" {
+		q += `
+			AND
+				upper(tc.name) LIKE upper('%` + search + `%')
+				OR upper(tsc.name) LIKE upper('%` + search + `%')
+				OR upper(tpr.rationale) LIKE upper('%` + search + `%')
+				OR upper(tcrm.name) LIKE upper('%` + search + `%')
+				OR upper(tcrm.crm_rationale) LIKE upper('%` + search + `%')
+				OR upper(tlcc.cde_id) LIKE upper('%` + search + `%')
+				OR upper(tbt.cde_rationale) LIKE upper('%` + search + `%')`
+	}
+
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName: m.NewCategoryModel().TableName(),
-		SqlQuery:  q,
-		Results:   &resultRows,
+		TableName:   m.NewCategoryModel().TableName(),
+		SqlQuery:    q,
+		Results:     &resultRows,
+		PageNumber:  pageNumber,
+		RowsPerPage: rowsPerPage,
 	})
 
 	if err != nil {

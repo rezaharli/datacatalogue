@@ -1,17 +1,17 @@
 import { fetchWHeader } from '../_helpers/auth-header';
 
 export const ddoMyService = {
-    getAllSystem,
-    getTableName,
+    getLeftTable,
+    getRightTable,
     getDetails
 };
 
-function getAllSystem() {
-    return fetchWHeader(`/ddo/getlefttable`, {})
+function getLeftTable(param) {
+    return fetchWHeader(`/ddo/getlefttable`, param)
 }
 
-function getTableName(processID) {
-    return fetchWHeader(`/ddo/getrighttable`, { ProcessID: parseInt(processID) })
+function getRightTable(param) {
+    return fetchWHeader(`/ddo/getrighttable`, param)
 }
 
 function getDetails(param) {

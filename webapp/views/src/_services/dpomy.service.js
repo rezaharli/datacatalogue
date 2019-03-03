@@ -1,17 +1,17 @@
 import { fetchWHeader } from '../_helpers/auth-header';
 
 export const dpoMyService = {
-    getAllSystem,
-    getTableName,
+    getLeftTable,
+    getRightTable,
     getDetails
 };
 
-function getAllSystem() {
-    return fetchWHeader(`/dpo/getlefttable`, {})
+function getLeftTable(param) {
+    return fetchWHeader(`/dpo/getlefttable`, param)
 }
 
-function getTableName(processID) {
-    return fetchWHeader(`/dpo/getrighttable`, { ProcessID: parseInt(processID) })
+function getRightTable(param) {
+    return fetchWHeader(`/dpo/getrighttable`, param)
 }
 
 function getDetails(param) {

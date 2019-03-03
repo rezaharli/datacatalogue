@@ -29,7 +29,7 @@ table.v-table thead th > div.btn-group {
           <b-row>
             <b-col>
               <div class="input-group mb-3">
-                <input v-model="searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <input v-model="dscinterfaces.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
                 <div class="input-group-append">
                   <b-dropdown right id="ddown1" text="">
                     <b-container>
@@ -87,13 +87,14 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <v-data-table
                   :headers="firstTableHeaders"
-                  :items="dscinterfaces.systemsDisplay"
-                  :loading="dscinterfaces.systemsLoading"
-                  :search="searchMain"
+                  :items="dscinterfaces.left.display"
+                  :pagination.sync="dscinterfaces.left.pagination"
+                  :total-items="dscinterfaces.left.totalItems"
+                  :loading="dscinterfaces.left.loading"
                   class="elevation-1 fixed-header">
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dscinterfaces.systemsSource).length }})
+                  {{ props.header.text }} ({{ distinctData(props.header.value, dscinterfaces.left.source).length }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -105,7 +106,7 @@ table.v-table thead th > div.btn-group {
                       <b-form-input type="text" placeholder="Filter" v-model="search['systems'][props.header.value]" @change="filterKeyup('systems', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscinterfaces.systemsSource)" :key="item" @click="columnFilter('systems', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscinterfaces.left.source)" :key="item" @click="columnFilter('systems', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -120,7 +121,7 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                    <td><b-link :to="{ path:'/dsc/interfaces/' + props.item.ID }">{{ props.item.SYSTEM_NAME }}</b-link></td>
+                    <td><b-link :to="{ path: addressPath + '/' + props.item.ID }">{{ props.item.SYSTEM_NAME }}</b-link></td>
                     <td>{{ props.item.ITAM_ID }}</td>
                     <td>{{ props.item.FIRST_NAME }}</td>
                     <td>{{ props.item.BANK_ID }}</td>
@@ -130,13 +131,14 @@ table.v-table thead th > div.btn-group {
             
             <b-col class="scrollableasdf">
               <v-data-table
-                :headers="secondTableHeaders"
-                :items="dscinterfaces.tableDisplay"
-                :loading="dscinterfaces.tableLoading"
-                v-if="secondtable"
-                item-key="ID"
-                class="elevation-1">
-                <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+                  :headers="secondTableHeaders"
+                  :items="dscinterfaces.right.display"
+                  :pagination.sync="dscinterfaces.right.pagination"
+                  :total-items="dscinterfaces.right.totalItems"
+                  :loading="dscinterfaces.right.loading"
+                  v-if="secondtable"
+                  item-key="R__"
+                  class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
                   <template slot="no-data">
                     <v-alert :value="true" color="error" icon="warning">
@@ -145,7 +147,7 @@ table.v-table thead th > div.btn-group {
                   </template>
 
                   <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dscinterfaces.tableSource).length }})
+                  {{ props.header.text }} ({{ distinctData(props.header.value, dscinterfaces.right.source).length }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -157,7 +159,7 @@ table.v-table thead th > div.btn-group {
                       <b-form-input type="text" placeholder="Filter" v-model="search['tablename'][props.header.value]" @change="filterKeyup('tablename', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscinterfaces.tableSource)" :key="item" @click="columnFilter('tablename', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscinterfaces.right.source)" :key="item" @click="columnFilter('tablename', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -242,16 +244,20 @@ export default {
       ...mapState({
         dscinterfaces: state => state.dscinterfaces.all
       }),
+      addressPath (){
+        var tmp = this.$route.path.split("/")
+        return tmp.slice(0, 3).join("/")
+      },
       tablenameMaster (){
-        return this._.map(this.dscinterfaces.tableSource, 'Name')
+        return this._.map(this.dscinterfaces.right.source, 'Name')
       },
       columnNameMaster (){
-        return this._.map(this._.flattenDeep(this._.map(this.dscinterfaces.tableSource, 'Columns')), 'Name')
+        return this._.map(this._.flattenDeep(this._.map(this.dscinterfaces.right.source, 'Columns')), 'Name')
       },
       excelData () {
         var res = [];
 
-        this._.each(this.dscinterfaces.systemsDisplay, (system, i) => {
+        this._.each(this.dscinterfaces.left.display, (system, i) => {
           var temp = {
             SYSTEM_NAME: system.SYSTEM_NAME,
             ITAM_ID: system.ITAM_ID,
@@ -259,7 +265,7 @@ export default {
             BANK_ID: system.BANK_ID,
           }
 
-          var tables = this._.filter(this.dscinterfaces.tableDisplay, (v) => v.TSID == system.ID)
+          var tables = this._.filter(this.dscinterfaces.right.display, (v) => v.TSID == system.ID)
           if(tables.length > 0){
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
@@ -287,38 +293,55 @@ export default {
         }
 
          if(this.secondtable){
-            this.getTableName(this.$route.params.system);
+            this.getRightTable(this.$route.params.system);
           }
       },
-    },
-    created() {
-      this.secondtable = this.$route.params.system;
-      
-      this.getAllSystem();
+      "dscinterfaces.left.pagination": {
+        handler () {
+          this.getLeftTable();
+        },
+        deep: true
+      },
+      "dscinterfaces.right.pagination": {
+        handler () {
+          if(this.secondtable){
+            this.getRightTable(this.$route.params.system);
+          }
+        },
+        deep: true
+      },
+      "dscinterfaces.searchMain" (val, oldVal){
+        if(val || oldVal) {
+          this.getLeftTable();
 
-      if(this.secondtable){
-        this.getTableName(this.$route.params.system);
+          if(this.secondtable){
+            this.getRightTable(this.$route.params.system);
+          }
+        }
       }
+    },
+    mounted() {
+      this.secondtable = this.$route.params.system;
     },
     methods: {
       ...mapActions('dscinterfaces', {
-          getAllSystem: 'getAllSystem',
-          getTableName: 'getTableName',
+          getLeftTable: 'getLeftTable',
+          getRightTable: 'getRightTable',
       }),
       columnFilter (type, keyModel, val) {
         if(val == ""){
           if(type == "systems"){
-            this.dscinterfaces.systemsDisplay = this.dscinterfaces.systemsSource;
+            this.dscinterfaces.left.display = this.dscinterfaces.left.source;
           } else {
-            this.dscinterfaces.tableDisplay = this.dscinterfaces.tableSource;
+            this.dscinterfaces.right.display = this.dscinterfaces.right.source;
           }
           return
         }
 
         if(type == "systems"){
-          this.dscinterfaces.systemsDisplay = _.filter(this.dscinterfaces.systemsSource, [keyModel.value, val]);
+          this.dscinterfaces.left.display = _.filter(this.dscinterfaces.left.source, [keyModel.value, val]);
         } else {
-          this.dscinterfaces.tableDisplay = _.filter(this.dscinterfaces.tableSource, [keyModel.value, val]);
+          this.dscinterfaces.right.display = _.filter(this.dscinterfaces.right.source, [keyModel.value, val]);
         }
       },
       filterKeyup (type, keyModel) {
@@ -347,18 +370,18 @@ export default {
       onSubmit (evt) {
         evt.preventDefault();
 
-        this.dscinterfaces.systemsDisplay = this.dscinterfaces.systemsSource;
-        this.dscinterfaces.tableDisplay = this.dscinterfaces.tableSource;
+        this.dscinterfaces.left.display = this.dscinterfaces.left.source;
+        this.dscinterfaces.right.display = this.dscinterfaces.right.source;
         if(this.searchForm.systemName)
-          this.dscinterfaces.systemsDisplay = this._.filter(this.dscinterfaces.systemsDisplay, (val) => val.SYSTEM_NAME.indexOf(this.searchForm.systemName) != -1);
+          this.dscinterfaces.left.display = this._.filter(this.dscinterfaces.left.display, (val) => val.SYSTEM_NAME.indexOf(this.searchForm.systemName) != -1);
         if(this.searchForm.itamID)
-          this.dscinterfaces.systemsDisplay = this._.filter(this.dscinterfaces.systemsDisplay, (val) => val.ITAM_ID.toString().indexOf(this.searchForm.itamID) != -1);
+          this.dscinterfaces.left.display = this._.filter(this.dscinterfaces.left.display, (val) => val.ITAM_ID.toString().indexOf(this.searchForm.itamID) != -1);
         if(this.searchForm.tableName)
-          this.dscinterfaces.tableDisplay = this._.filter(this.dscinterfaces.tableDisplay, (val) => val.Name.indexOf(this.searchForm.tableName) != -1);
+          this.dscinterfaces.right.display = this._.filter(this.dscinterfaces.right.display, (val) => val.Name.indexOf(this.searchForm.tableName) != -1);
         if(this.searchForm.columnName) {
-          this._.each(this.dscinterfaces.tableDisplay, (v, i) => {
-            this.dscinterfaces.tableDisplay[i].Columns = this._.filter(this.dscinterfaces.tableDisplay[i].Columns, (w) => w.Name.indexOf(this.searchForm.columnName) != -1);
-            this.dscinterfaces.tableDisplay = this._.filter(this.dscinterfaces.tableDisplay, (w) => w.Columns.length > 0)
+          this._.each(this.dscinterfaces.right.display, (v, i) => {
+            this.dscinterfaces.right.display[i].Columns = this._.filter(this.dscinterfaces.right.display[i].Columns, (w) => w.Name.indexOf(this.searchForm.columnName) != -1);
+            this.dscinterfaces.right.display = this._.filter(this.dscinterfaces.right.display, (w) => w.Columns.length > 0)
           });
         }
 
@@ -376,6 +399,9 @@ export default {
         // /* Trick to reset/clear native browser form validation state */
         // this.searchForm.show = false;
         // this.$nextTick(() => { this.searchForm.show = true });
+      },
+      showDetails (id) {
+        this.$router.push(this.addressPath + "/" + this.$route.params.system + '/' + id)
       }
     }
 }

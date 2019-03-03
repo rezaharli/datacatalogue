@@ -20,13 +20,23 @@ func (c *DPO) GetLeftTable(k *knot.WebContext) {
 	res := toolkit.NewResult()
 
 	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
 
-	sortKey := payload.GetString("sort-key")
-	sortOrder := payload.GetString("sort-order")
-	skip := payload.GetInt("skip")
-	take := payload.GetInt("take")
+	search := payload.GetString("Search")
+	pagination, err := toolkit.ToM(payload.Get("Pagination"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
 
-	systems, _, err := s.NewDPOService().GetLeftTable(sortKey, sortOrder, skip, take, toolkit.M{})
+	pageNumber := pagination.GetInt("page")
+	rowsPerPage := pagination.GetInt("rowsPerPage")
+
+	systems, _, err := s.NewDPOService().GetLeftTable(search, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -45,12 +55,18 @@ func (c *DPO) GetRightTable(k *knot.WebContext) {
 		return
 	}
 
-	// sortKey := payload.GetString("sort-key")
-	// sortOrder := payload.GetString("sort-order")
-	// skip := payload.GetInt("skip")
-	// take := payload.GetInt("take")
+	search := payload.GetString("Search")
+	processID := payload.GetInt("ProcessID")
+	pagination, err := toolkit.ToM(payload.Get("Pagination"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
 
-	systems, _, err := s.NewDPOService().GetRightTable(payload.GetInt("ProcessID"))
+	pageNumber := pagination.GetInt("page")
+	rowsPerPage := pagination.GetInt("rowsPerPage")
+
+	systems, _, err := s.NewDPOService().GetRightTable(processID, search, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return

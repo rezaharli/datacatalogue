@@ -9,11 +9,13 @@ import (
 )
 
 func WriteResultError(k *knot.WebContext, res *toolkit.Result, errorText string) {
+	toolkit.Println(errorText)
 	res.SetErrorTxt(errorText)
 	k.WriteJSON(res, http.StatusUnauthorized)
 }
 
 func WriteResultErrorOK(k *knot.WebContext, res *toolkit.Result, errorText string) {
+	toolkit.Println(errorText)
 	res.SetErrorTxt(errorText)
 	k.WriteJSON(res, http.StatusOK)
 }

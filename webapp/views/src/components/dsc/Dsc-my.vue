@@ -29,7 +29,7 @@ table.v-table thead th > div.btn-group {
           <b-row>
             <b-col>
               <div class="input-group mb-3">
-                <input v-model="searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <input v-model="dscmy.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
                 <div class="input-group-append">
                   <b-dropdown right id="ddown1" text="">
                     <b-container>
@@ -87,13 +87,14 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <v-data-table
                   :headers="firstTableHeaders"
-                  :items="dscmy.systemsDisplay"
-                  :loading="dscmy.systemsLoading"
-                  :search="searchMain"
+                  :items="dscmy.left.display"
+                  :pagination.sync="dscmy.left.pagination"
+                  :total-items="dscmy.left.totalItems"
+                  :loading="dscmy.left.loading"
                   class="elevation-1 fixed-header">
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dscmy.systemsSource).length }})
+                  {{ props.header.text }} ({{ distinctData(props.header.value, dscmy.left.source).length }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -105,7 +106,7 @@ table.v-table thead th > div.btn-group {
                       <b-form-input type="text" placeholder="Filter" v-model="search['systems'][props.header.value]" @change="filterKeyup('systems', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscmy.systemsSource)" :key="item" @click="columnFilter('systems', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscmy.left.source)" :key="item" @click="columnFilter('systems', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -120,7 +121,7 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                    <td><b-link :to="{ path:'/dsc/my/' + props.item.ID }">{{ props.item.SYSTEM_NAME }}</b-link></td>
+                    <td><b-link :to="{ path: addressPath + '/' + props.item.ID }">{{ props.item.SYSTEM_NAME }}</b-link></td>
                     <td>{{ props.item.ITAM_ID }}</td>
                     <td>{{ props.item.FIRST_NAME }}</td>
                     <td>{{ props.item.BANK_ID }}</td>
@@ -130,23 +131,25 @@ table.v-table thead th > div.btn-group {
             
             <b-col>
               <v-data-table
-                :headers="secondTableHeaders"
-                :items="dscmy.tableDisplay"
-                :loading="dscmy.tableLoading"
-                :expand="false"
-                v-if="secondtable"
-                item-key="ID"
-                class="elevation-1">
+                  :headers="secondTableHeaders"
+                  :items="dscmy.right.display"
+                  :pagination.sync="dscmy.right.pagination"
+                  :total-items="dscmy.right.totalItems"
+                  :loading="dscmy.right.loading"
+                  :expand="false"
+                  v-if="secondtable"
+                  item-key="ID"
+                  class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
-                <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
-                  <template slot="no-data">
-                    <v-alert :value="true" color="error" icon="warning">
-                      Sorry, nothing to display here :(
-                    </v-alert>
-                  </template>
+                
+                <template slot="no-data">
+                  <v-alert :value="true" color="error" icon="warning">
+                    Sorry, nothing to display here :(
+                  </v-alert>
+                </template>
 
-                  <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dscmy.tableSource).length }})
+                <template slot="headerCell" slot-scope="props">
+                  {{ props.header.text }} ({{ distinctData(props.header.value, dscmy.right.source).length }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -158,7 +161,7 @@ table.v-table thead th > div.btn-group {
                       <b-form-input type="text" placeholder="Filter" v-model="search['tablename'][props.header.value]" @change="filterKeyup('tablename', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscmy.tableSource)" :key="item" @click="columnFilter('tablename', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscmy.right.source)" :key="item" @click="columnFilter('tablename', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -183,7 +186,7 @@ table.v-table thead th > div.btn-group {
                   >
                     <template slot="items" slot-scope="props">
                       <td style="width: 25%">&nbsp;</td>
-                      <td style="width: 25%"><b-link @click="showDetails(props.item.Table_ID)">{{ props.item.COLUMN_NAME }}</b-link></td>
+                      <td style="width: 25%"><b-link @click="showDetails(props.item.ID)">{{ props.item.COLUMN_NAME }}</b-link></td>
                       <td style="width: 25%">{{ props.item.ALIAS_NAME }}</td>
                       <td style="width: 25%">{{ props.item.CDE }}</td>
                     </template>
@@ -215,7 +218,6 @@ export default {
         secondtable: false,
         systemSource: [],
         tablenameSource: [],
-        searchMain: '',
         searchForm: {
           systemName: '',
           itamID: '',
@@ -252,16 +254,20 @@ export default {
       ...mapState({
         dscmy: state => state.dscmy.all
       }),
+      addressPath (){
+        var tmp = this.$route.path.split("/")
+        return tmp.slice(0, 3).join("/")
+      },
       tablenameMaster (){
-        return this._.map(this.dscmy.tableSource, 'Name')
+        return this._.map(this.dscmy.right.source, 'Name')
       },
       columnNameMaster (){
-        return this._.map(this._.flattenDeep(this._.map(this.dscmy.tableSource, 'Columns')), 'Name')
+        return this._.map(this._.flattenDeep(this._.map(this.dscmy.right.source, 'Columns')), 'Name')
       },
       excelData () {
         var res = [];
 
-        this._.each(this.dscmy.systemsDisplay, (system, i) => {
+        this._.each(this.dscmy.left.display, (system, i) => {
           var temp = {
             SYSTEM_NAME: system.SYSTEM_NAME,
             ITAM_ID: system.ITAM_ID,
@@ -269,7 +275,7 @@ export default {
             BANK_ID: system.BANK_ID,
           }
 
-          var tables = this._.filter(this.dscmy.tableDisplay, (v) => v.TSID == system.ID)
+          var tables = this._.filter(this.dscmy.right.display, (v) => v.TSID == system.ID)
           if(tables.length > 0){
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
@@ -304,39 +310,56 @@ export default {
           this.secondtable = to.params.system; 
         }
 
-         if(this.secondtable){
-            this.getTableName(this.$route.params.system);
-          }
+        if(this.secondtable){
+          this.getRightTable(this.$route.params.system);
+        }
       },
-    },
-    created() {
-      this.secondtable = this.$route.params.system;
-      
-      this.getAllSystem();
+      "dscmy.left.pagination": {
+        handler () {
+          this.getLeftTable();
+        },
+        deep: true
+      },
+      "dscmy.right.pagination": {
+        handler () {
+          if(this.secondtable){
+            this.getRightTable(this.$route.params.system);
+          }
+        },
+        deep: true
+      },
+      "dscmy.searchMain" (val, oldVal){
+        if(val || oldVal) {
+          this.getLeftTable();
 
-      if(this.secondtable){
-        this.getTableName(this.$route.params.system);
+          if(this.secondtable){
+            this.getRightTable(this.$route.params.system);
+          }
+        }
       }
+    },
+    mounted() {
+      this.secondtable = this.$route.params.system;
     },
     methods: {
       ...mapActions('dscmy', {
-          getAllSystem: 'getAllSystem',
-          getTableName: 'getTableName',
+          getLeftTable: 'getLeftTable',
+          getRightTable: 'getRightTable',
       }),
       columnFilter (type, keyModel, val) {
         if(val == ""){
           if(type == "systems"){
-            this.dscmy.systemsDisplay = this.dscmy.systemsSource;
+            this.dscmy.left.display = this.dscmy.left.source;
           } else {
-            this.dscmy.tableDisplay = this.dscmy.tableSource;
+            this.dscmy.right.display = this.dscmy.right.source;
           }
           return
         }
 
         if(type == "systems"){
-          this.dscmy.systemsDisplay = _.filter(this.dscmy.systemsSource, [keyModel.value, val]);
+          this.dscmy.left.display = _.filter(this.dscmy.left.source, [keyModel.value, val]);
         } else {
-          this.dscmy.tableDisplay = _.filter(this.dscmy.tableSource, [keyModel.value, val]);
+          this.dscmy.right.display = _.filter(this.dscmy.right.source, [keyModel.value, val]);
         }
       },
       filterKeyup (type, keyModel) {
@@ -365,18 +388,18 @@ export default {
       onSubmit (evt) {
         evt.preventDefault();
 
-        this.dscmy.systemsDisplay = this.dscmy.systemsSource;
-        this.dscmy.tableDisplay = this.dscmy.tableSource;
+        this.dscmy.left.display = this.dscmy.left.source;
+        this.dscmy.right.display = this.dscmy.right.source;
         if(this.searchForm.systemName)
-          this.dscmy.systemsDisplay = this._.filter(this.dscmy.systemsDisplay, (val) => val.SYSTEM_NAME.indexOf(this.searchForm.systemName) != -1);
+          this.dscmy.left.display = this._.filter(this.dscmy.left.display, (val) => val.SYSTEM_NAME.indexOf(this.searchForm.systemName) != -1);
         if(this.searchForm.itamID)
-          this.dscmy.systemsDisplay = this._.filter(this.dscmy.systemsDisplay, (val) => val.ITAM_ID.toString().indexOf(this.searchForm.itamID) != -1);
+          this.dscmy.left.display = this._.filter(this.dscmy.left.display, (val) => val.ITAM_ID.toString().indexOf(this.searchForm.itamID) != -1);
         if(this.searchForm.tableName)
-          this.dscmy.tableDisplay = this._.filter(this.dscmy.tableDisplay, (val) => val.TABLE_NAME.indexOf(this.searchForm.tableName) != -1);
+          this.dscmy.right.display = this._.filter(this.dscmy.right.display, (val) => val.TABLE_NAME.indexOf(this.searchForm.tableName) != -1);
         if(this.searchForm.columnName) {
-          this._.each(this.dscmy.tableDisplay, (v, i) => {
-            this.dscmy.tableDisplay[i].Columns = this._.filter(this.dscmy.tableDisplay[i].Columns, (w) => w.TABLE_NAME.indexOf(this.searchForm.columnName) != -1);
-            this.dscmy.tableDisplay = this._.filter(this.dscmy.tableDisplay, (w) => w.Columns.length > 0)
+          this._.each(this.dscmy.right.display, (v, i) => {
+            this.dscmy.right.display[i].Columns = this._.filter(this.dscmy.right.display[i].Columns, (w) => w.TABLE_NAME.indexOf(this.searchForm.columnName) != -1);
+            this.dscmy.right.display = this._.filter(this.dscmy.right.display, (w) => w.Columns.length > 0)
           });
         }
 
@@ -396,7 +419,7 @@ export default {
         // this.$nextTick(() => { this.searchForm.show = true });
       },
       showDetails (id) {
-        this.$router.push('/dsc/my/' + this.$route.params.system + '/' + id)
+        this.$router.push(this.addressPath + "/" + this.$route.params.system + '/' + id)
       }
     }
 }

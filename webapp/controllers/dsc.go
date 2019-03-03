@@ -20,13 +20,23 @@ func (c *DSC) GetAllSystems(k *knot.WebContext) {
 	res := toolkit.NewResult()
 
 	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
 
-	sortKey := payload.GetString("sort-key")
-	sortOrder := payload.GetString("sort-order")
-	skip := payload.GetInt("skip")
-	take := payload.GetInt("take")
+	search := payload.GetString("Search")
+	pagination, err := toolkit.ToM(payload.Get("Pagination"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
 
-	systems, _, err := s.NewDSCService().GetAllSystem(sortKey, sortOrder, skip, take, toolkit.M{})
+	pageNumber := pagination.GetInt("page")
+	rowsPerPage := pagination.GetInt("rowsPerPage")
+
+	systems, _, err := s.NewDSCService().GetAllSystem(search, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -45,12 +55,18 @@ func (c *DSC) GetTableName(k *knot.WebContext) {
 		return
 	}
 
-	// sortKey := payload.GetString("sort-key")
-	// sortOrder := payload.GetString("sort-order")
-	// skip := payload.GetInt("skip")
-	// take := payload.GetInt("take")
+	search := payload.GetString("Search")
+	systemID := payload.GetInt("SystemID")
+	pagination, err := toolkit.ToM(payload.Get("Pagination"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
 
-	systems, _, err := s.NewDSCService().GetTableName(payload.GetInt("SystemID"))
+	pageNumber := pagination.GetInt("page")
+	rowsPerPage := pagination.GetInt("rowsPerPage")
+
+	systems, _, err := s.NewDSCService().GetTableName(systemID, search, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -69,12 +85,18 @@ func (c *DSC) GetInterfacesRightTable(k *knot.WebContext) {
 		return
 	}
 
-	// sortKey := payload.GetString("sort-key")
-	// sortOrder := payload.GetString("sort-order")
-	// skip := payload.GetInt("skip")
-	// take := payload.GetInt("take")
+	search := payload.GetString("Search")
+	systemID := payload.GetInt("SystemID")
+	pagination, err := toolkit.ToM(payload.Get("Pagination"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
 
-	systems, _, err := s.NewDSCService().GetInterfacesRightTable(payload.GetInt("SystemID"))
+	pageNumber := pagination.GetInt("page")
+	rowsPerPage := pagination.GetInt("rowsPerPage")
+
+	systems, _, err := s.NewDSCService().GetInterfacesRightTable(systemID, search, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return

@@ -15,33 +15,45 @@ func NewDSCService() *DSCService {
 	return ret
 }
 
-func (s *DSCService) GetAllSystem(sortKey, sortOrder string, skip, take int, filter toolkit.M) ([]toolkit.M, int, error) {
+func (s *DSCService) GetAllSystem(search string, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
 	q := `SELECT DISTINCT
-		ts.id,
-		ts.system_name,
-		ts.itam_id,
-		tp.first_name,
-		tp.bank_id
-	FROM 
-		Tbl_System ts
-		INNER JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
-		INNER JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
-		LEFT JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
-		LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
-		LEFT JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
-		LEFT JOIN tbl_people tp on tlsp.people_id = tp.id
-		LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
-		LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
-		LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
-		LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
-		LEFT JOIN tbl_policy tpol on tbt.policy_id = tpol.id`
+			ts.id,
+			ts.system_name,
+			ts.itam_id,
+			tp.first_name,
+			tp.bank_id
+		FROM 
+			Tbl_System ts
+			INNER JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
+			INNER JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			LEFT JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
+			LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
+			LEFT JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
+			LEFT JOIN tbl_people tp on tlsp.people_id = tp.id
+			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
+			LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
+			LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
+			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
+			LEFT JOIN tbl_policy tpol on tbt.policy_id = tpol.id`
+
+	if search != "" {
+		q += `
+			WHERE
+				upper(ts.system_name) LIKE upper('%` + search + `%')
+				OR upper(ts.itam_id) LIKE upper('%` + search + `%')
+				OR upper(tp.first_name) LIKE upper('%` + search + `%')
+				OR upper(tp.bank_id) LIKE upper('%` + search + `%')`
+	}
+
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName: m.NewSystemModel().TableName(),
-		SqlQuery:  q,
-		Results:   &resultRows,
+		TableName:   m.NewSystemModel().TableName(),
+		SqlQuery:    q,
+		Results:     &resultRows,
+		PageNumber:  pageNumber,
+		RowsPerPage: rowsPerPage,
 	})
 
 	if err != nil {
@@ -51,36 +63,48 @@ func (s *DSCService) GetAllSystem(sortKey, sortOrder string, skip, take int, fil
 	return resultRows, resultTotal, nil
 }
 
-func (s *DSCService) GetTableName(systemID int) (interface{}, int, error) {
+func (s *DSCService) GetTableName(systemID int, search string, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
 	q := `SELECT DISTINCT
-		tmt.id,
-		ts.id as tsid,
-		tmt.name as table_name,
-		tmc.name as column_name,
-		tmc.alias_name,
-		tmc.cde
-	FROM 
-		Tbl_System ts
-		INNER JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
-		INNER JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
-		LEFT JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
-		LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
-		LEFT JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
-		LEFT JOIN tbl_people tp on tlsp.people_id = tp.id
-		LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
-		LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
-		LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
-		LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
-		LEFT JOIN tbl_policy tpol on tbt.policy_id = tpol.id
-	WHERE
-		ts.id = ` + toolkit.ToString(systemID)
+			tmt.id,
+			ts.id as tsid,
+			tmt.name as table_name,
+			tmc.name as column_name,
+			tmc.alias_name,
+			tmc.cde
+		FROM 
+			Tbl_System ts
+			INNER JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
+			INNER JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			LEFT JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
+			LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
+			LEFT JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
+			LEFT JOIN tbl_people tp on tlsp.people_id = tp.id
+			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
+			LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
+			LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
+			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
+			LEFT JOIN tbl_policy tpol on tbt.policy_id = tpol.id
+		WHERE
+			ts.id = ` + toolkit.ToString(systemID)
+
+	if search != "" {
+		q += `
+			AND
+				upper(tmt.name) LIKE upper('%` + search + `%')
+				OR upper(tmc.name) LIKE upper('%` + search + `%')
+				OR upper(tmc.alias_name) LIKE upper('%` + search + `%')
+				OR upper(tmc.cde) LIKE upper('%` + search + `%')`
+	}
+
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName: m.NewSystemModel().TableName(),
-		SqlQuery:  q,
-		Results:   &resultRows,
+		TableName:   m.NewSystemModel().TableName(),
+		SqlQuery:    q,
+		Results:     &resultRows,
+		PageNumber:  pageNumber,
+		RowsPerPage: rowsPerPage,
 	})
 
 	if err != nil {
@@ -90,36 +114,48 @@ func (s *DSCService) GetTableName(systemID int) (interface{}, int, error) {
 	return resultRows, resultTotal, nil
 }
 
-func (s *DSCService) GetInterfacesRightTable(systemID int) (interface{}, int, error) {
+func (s *DSCService) GetInterfacesRightTable(systemID int, search string, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
 	q := `SELECT DISTINCT
-		tmt.id,
-		ts.id as tsid,
-		tmt.name as table_name,
-		tmc.imm_prec_system_id,
-		tmc.imm_succ_system_id,
-		tdp.owner_id
-	FROM 
-		Tbl_System ts
-		INNER JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
-		INNER JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
-		LEFT JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
-		LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
-		LEFT JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
-		LEFT JOIN tbl_people tp on tlsp.people_id = tp.id
-		LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
-		LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
-		LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
-		LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
-		LEFT JOIN tbl_policy tpol on tbt.policy_id = tpol.id
-	WHERE
-		ts.id = ` + toolkit.ToString(systemID)
+			tmt.id,
+			ts.id as tsid,
+			tmt.name as table_name,
+			tmc.imm_prec_system_id,
+			tmc.imm_succ_system_id,
+			tdp.owner_id
+		FROM 
+			Tbl_System ts
+			INNER JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
+			INNER JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			LEFT JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
+			LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
+			LEFT JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
+			LEFT JOIN tbl_people tp on tlsp.people_id = tp.id
+			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
+			LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
+			LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
+			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
+			LEFT JOIN tbl_policy tpol on tbt.policy_id = tpol.id
+		WHERE
+			ts.id = ` + toolkit.ToString(systemID)
+
+	if search != "" {
+		q += `
+			AND
+				upper(tmt.name) LIKE upper('%` + search + `%')
+				OR upper(tmc.imm_prec_system_id) LIKE upper('%` + search + `%')
+				OR upper(tmc.imm_succ_system_id) LIKE upper('%` + search + `%')
+				OR upper(tdp.owner_id) LIKE upper('%` + search + `%')`
+	}
+
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName: m.NewSystemModel().TableName(),
-		SqlQuery:  q,
-		Results:   &resultRows,
+		TableName:   m.NewSystemModel().TableName(),
+		SqlQuery:    q,
+		Results:     &resultRows,
+		PageNumber:  pageNumber,
+		RowsPerPage: rowsPerPage,
 	})
 
 	if err != nil {
@@ -194,105 +230,3 @@ func (s *DSCService) GetDetails(leftParam int, rightParam int) (interface{}, int
 
 	return resultRows, resultTotal, nil
 }
-
-// func (s *DSCService) GetTableName(systemID int) (interface{}, int, error) {
-// 	mdTables := make([]m.MDTable, 0)
-// 	err := h.NewDBcmd().GetBy(h.GetByParam{
-// 		TableName: m.NewMDTableModel().TableName(),
-// 		Clause:    dbflex.Eq("imm_prec_system_id", systemID),
-// 		Result:    &mdTables,
-// 	})
-// 	if err != nil {
-// 		return nil, 0, err
-// 	}
-
-// 	res := []toolkit.M{}
-// 	for _, mdTable := range mdTables {
-// 		mdColumns := make([]m.MDColumn, 0)
-// 		err := h.NewDBcmd().GetBy(h.GetByParam{
-// 			TableName: m.NewMDColumnModel().TableName(),
-// 			Clause:    dbflex.Eq("table_id", mdTable.ID),
-// 			Result:    &mdColumns,
-// 		})
-// 		if err != nil {
-// 			return nil, 0, err
-// 		}
-
-// 		resCol := []toolkit.M{}
-// 		for _, mdCol := range mdColumns {
-// 			businessTerm := make([]m.BusinessTerm, 0)
-// 			err := h.NewDBcmd().GetBy(h.GetByParam{
-// 				TableName: m.NewBusinessTermModel().TableName(),
-// 				Clause:    dbflex.Eq("id", mdCol.Business_Term_ID),
-// 				Result:    &businessTerm,
-// 			})
-// 			if err != nil {
-// 				return nil, 0, err
-// 			}
-
-// 			resBus := []toolkit.M{}
-// 			for _, buster := range businessTerm {
-// 				subCats := make([]m.SubCategory, 0)
-// 				err := h.NewDBcmd().GetBy(h.GetByParam{
-// 					TableName: m.NewSubCategoryModel().TableName(),
-// 					Clause:    dbflex.Eq("id", buster.Parent_ID),
-// 					Result:    &subCats,
-// 				})
-// 				if err != nil {
-// 					return nil, 0, err
-// 				}
-
-// 				resSubcat := []toolkit.M{}
-// 				for _, subcat := range subCats {
-// 					subCats := make([]m.Category, 0)
-// 					err := h.NewDBcmd().GetBy(h.GetByParam{
-// 						TableName: m.NewCategoryModel().TableName(),
-// 						Clause:    dbflex.Eq("id", subcat.Category_ID),
-// 						Result:    &subCats,
-// 					})
-// 					if err != nil {
-// 						return nil, 0, err
-// 					}
-
-// 					sc, _ := toolkit.ToM(subcat)
-// 					tmpSubCat := m.NewCategoryModel()
-// 					tmpSubCat = &subCats[0]
-// 					sc.Set("Category", tmpSubCat)
-// 					resSubcat = append(resSubcat, sc)
-// 				}
-
-// 				policies := make([]m.Policy, 0)
-// 				err = h.NewDBcmd().GetBy(h.GetByParam{
-// 					TableName: m.NewPolicyModel().TableName(),
-// 					Clause:    dbflex.Eq("id", buster.Policy_ID),
-// 					Result:    &policies,
-// 				})
-// 				if err != nil {
-// 					return nil, 0, err
-// 				}
-
-// 				bt, _ := toolkit.ToM(buster)
-
-// 				tmpSubCat := &resSubcat[0]
-// 				bt.Set("SubCategory", tmpSubCat)
-
-// 				tmpPol := m.NewPolicyModel()
-// 				tmpPol = &policies[0]
-// 				bt.Set("Policy", tmpPol)
-
-// 				resBus = append(resBus, bt)
-// 			}
-
-// 			mdColumn, _ := toolkit.ToM(mdCol)
-// 			tmpBusinessTerm := &resBus[0]
-// 			mdColumn.Set("BusinessTerms", tmpBusinessTerm)
-// 			resCol = append(resCol, mdColumn)
-// 		}
-
-// 		mdTable, _ := toolkit.ToM(mdTable)
-// 		mdTable.Set("Columns", resCol)
-// 		res = append(res, mdTable)
-// 	}
-
-// 	return res, 1, nil
-// }

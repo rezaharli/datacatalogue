@@ -1,31 +1,42 @@
 import { dscMyService } from '../_services/dscmy.service';
+import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
     all: {
-        systemsLoading: true,
-        systemsSource: [],
-        systemsDisplay: [],
-        tableLoading: true,
-        tableSource: [],
-        tableDisplay: [],
+        searchMain: '',
+        left: newTableObject(),
+        right: newTableObject(),
+        detailsLoading: true,
+        detailsSource: [],
         error: null
     }
 };
 
 const actions = {
-    getAllSystem({ commit }) {
+    getLeftTable({ commit }) {
         commit('getAllSystemRequest');
 
-        return dscMyService.getAllSystem()
+        var param = {
+            Search: state.all.searchMain,
+            Pagination: state.all.left.pagination
+        }
+
+        return dscMyService.getLeftTable(param)
             .then(
                 res => commit('getAllSystemSuccess', res.Data),
                 error => commit('getAllSystemFailure', error)
             );
     },
-    getTableName({ commit }, systemID) {
+    getRightTable({ commit }, systemID) {
         commit('getAllTablenameRequest');
 
-        dscMyService.getInterfacesRightTable(systemID)
+        var param = {
+            SystemID: systemID,
+            Search: state.all.searchMain,
+            Pagination: state.all.right.pagination
+        }
+
+        dscMyService.getInterfacesRightTable(param)
             .then(
                 res => commit('getAllTablenameSuccess', res.Data),
                 error => commit('getAllTablenameFailure', error)
@@ -35,29 +46,31 @@ const actions = {
 
 const mutations = {
     getAllSystemRequest(state) {
-        state.all.systemsLoading = true;
+        state.all.left.loading = true;
     },
     getAllSystemSuccess(state, data) {
-        state.all.systemsSource = data;
-        state.all.systemsDisplay = data;
+        state.all.left.source = data;
+        state.all.left.display = data;
+        state.all.left.totalItems = data[0] ? data[0].RESULT_COUNT : 0;
 
-        state.all.systemsLoading = false;
+        state.all.left.loading = false;
     },
     getAllSystemFailure(state, error) {
-        state.all.systemsLoading = false;
+        state.all.left.loading = false;
         state.all.error = error;
     },
     getAllTablenameRequest(state) {
-        state.all.tableLoading = true;
+        state.all.right.loading = true;
     },
     getAllTablenameSuccess(state, data) {
-        state.all.tableSource = data;
-        state.all.tableDisplay = data;
+        state.all.right.source = data;
+        state.all.right.display = data;
+        state.all.right.totalItems = data[0] ? data[0].RESULT_COUNT : 0;
 
-        state.all.tableLoading = false;
+        state.all.right.loading = false;
     },
     getAllTablenameFailure(state, error) {
-        state.all.tableLoading = false;
+        state.all.right.loading = false;
         state.all.error = error;
     },
 };

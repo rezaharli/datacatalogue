@@ -29,7 +29,7 @@ table.v-table thead th > div.btn-group {
           <b-row>
             <b-col>
               <div class="input-group mb-3">
-                <input v-model="searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <input v-model="rfomy.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
                 <div class="input-group-append">
                   <b-dropdown right id="ddown1" text="">
                     <b-container>
@@ -87,13 +87,14 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <v-data-table
                   :headers="firstTableHeaders"
-                  :items="rfomy.systemsDisplay"
-                  :loading="rfomy.systemsLoading"
-                  :search="searchMain"
+                  :items="rfomy.left.display"
+                  :pagination.sync="rfomy.left.pagination"
+                  :total-items="rfomy.left.totalItems"
+                  :loading="rfomy.left.loading"
                   class="elevation-1 fixed-header">
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, rfomy.systemsSource).length }})
+                  {{ props.header.text }} ({{ distinctData(props.header.value, rfomy.left.source).length }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -105,7 +106,7 @@ table.v-table thead th > div.btn-group {
                       <b-form-input type="text" placeholder="Filter" v-model="search['systems'][props.header.value]" @change="filterKeyup('systems', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, rfomy.systemsSource)" :key="item" @click="columnFilter('systems', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, rfomy.left.source)" :key="item" @click="columnFilter('systems', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -120,7 +121,7 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                    <td><b-link :to="{ path:'/rfo/all/' + props.item.ID }">{{ props.item.NAME }}</b-link></td>
+                    <td><b-link :to="{ path: addressPath + '/' + props.item.ID }">{{ props.item.NAME }}</b-link></td>
                     <td>{{ props.item.OWNER_ID }}</td>
                 </template>
               </v-data-table>
@@ -128,22 +129,24 @@ table.v-table thead th > div.btn-group {
             
             <b-col class="scrollableasdf">
               <v-data-table
-                :headers="secondTableHeaders"
-                :items="rfomy.tableDisplay"
-                :loading="rfomy.tableLoading"
-                :search="searchMain"
-                v-if="secondtable"
-                item-key="ID"
-                class="elevation-1">
+                  :headers="secondTableHeaders"
+                  :items="rfomy.right.display"
+                  :pagination.sync="rfomy.right.pagination"
+                  :total-items="rfomy.right.totalItems"
+                  :loading="rfomy.right.loading"
+                  v-if="secondtable"
+                  item-key="ID"
+                  class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
-                  <template slot="no-data">
-                    <v-alert :value="true" color="error" icon="warning">
-                      Sorry, nothing to display here :(
-                    </v-alert>
-                  </template>
 
-                  <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, rfomy.tableSource).length }})
+                <template slot="no-data">
+                  <v-alert :value="true" color="error" icon="warning">
+                    Sorry, nothing to display here :(
+                  </v-alert>
+                </template>
+
+                <template slot="headerCell" slot-scope="props">
+                  {{ props.header.text }} ({{ distinctData(props.header.value, rfomy.right.source).length }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -155,7 +158,7 @@ table.v-table thead th > div.btn-group {
                       <b-form-input type="text" placeholder="Filter" v-model="search['tablename'][props.header.value]" @change="filterKeyup('tablename', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, rfomy.tableSource)" :key="item" @click="columnFilter('tablename', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, rfomy.right.source)" :key="item" @click="columnFilter('tablename', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -198,7 +201,6 @@ export default {
         secondtable: false,
         systemSource: [],
         tablenameSource: [],
-        searchMain: '',
         searchForm: {
           priorityReport: '',
           riskReporting: '',
@@ -236,25 +238,29 @@ export default {
       ...mapState({
         rfomy: state => state.rfomy.all
       }),
+      addressPath (){
+        var tmp = this.$route.path.split("/")
+        return tmp.slice(0, 3).join("/")
+      },
       countryMaster (){
         return []
       },
       principalRiskMaster () {
-        return this._.uniq(this._.map(this.rfomy.tableSource, 'PRINCIPAL_RISK_TYPE'))
+        return this._.uniq(this._.map(this.rfomy.right.source, 'PRINCIPAL_RISK_TYPE'))
       },
       subRiskMaster () {
-        return this._.uniq(this._.map(this.rfomy.tableSource, 'RISK_SUB_TYPE'))
+        return this._.uniq(this._.map(this.rfomy.right.source, 'RISK_SUB_TYPE'))
       },
       excelData () {
         var res = [];
 
-        this._.each(this.rfomy.systemsDisplay, (system, i) => {
+        this._.each(this.rfomy.left.display, (system, i) => {
           var temp = {
             NAME: system.NAME,
             OWNER_ID: system.OWNER_ID,
           }
           
-          var tables = this._.filter(this.rfomy.tableDisplay, (v) => v.ID == system.ID)
+          var tables = this._.filter(this.rfomy.right.display, (v) => v.ID == system.ID)
           if(tables.length > 0){
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
@@ -284,39 +290,56 @@ export default {
           this.secondtable = to.params.system; 
         }
 
-         if(this.secondtable){
-            this.getTableName(this.$route.params.system);
-          }
+        if(this.secondtable){
+          this.getRightTable(this.$route.params.system);
+        }
       },
-    },
-    created() {
-      this.secondtable = this.$route.params.system;
-      
-      this.getAllSystem();
+      "rfomy.left.pagination": {
+        handler () {
+          this.getLeftTable();
+        },
+        deep: true
+      },
+      "rfomy.right.pagination": {
+        handler () {
+          if(this.secondtable){
+            this.getRightTable(this.$route.params.system);
+          }
+        },
+        deep: true
+      },
+      "rfomy.searchMain" (val, oldVal){
+        if(val || oldVal) {
+          this.getLeftTable();
 
-      if(this.secondtable){
-        this.getTableName(this.$route.params.system);
+          if(this.secondtable){
+            this.getRightTable(this.$route.params.system);
+          }
+        }
       }
+    },
+    mounted() {
+      this.secondtable = this.$route.params.system;
     },
     methods: {
       ...mapActions('rfomy', {
-          getAllSystem: 'getAllSystem',
-          getTableName: 'getTableName',
+          getLeftTable: 'getLeftTable',
+          getRightTable: 'getRightTable',
       }),
       columnFilter (type, keyModel, val) {
         if(val == ""){
           if(type == "systems"){
-            this.rfomy.systemsDisplay = this.rfomy.systemsSource;
+            this.rfomy.left.display = this.rfomy.left.source;
           } else {
-            this.rfomy.tableDisplay = this.rfomy.tableSource;
+            this.rfomy.right.display = this.rfomy.right.source;
           }
           return
         }
 
         if(type == "systems"){
-          this.rfomy.systemsDisplay = _.filter(this.rfomy.systemsSource, [keyModel.value, val]);
+          this.rfomy.left.display = _.filter(this.rfomy.left.source, [keyModel.value, val]);
         } else {
-          this.rfomy.tableDisplay = _.filter(this.rfomy.tableSource, [keyModel.value, val]);
+          this.rfomy.right.display = _.filter(this.rfomy.right.source, [keyModel.value, val]);
         }
       },
       filterKeyup (type, keyModel) {
@@ -345,17 +368,17 @@ export default {
       onSubmit (evt) {
         evt.preventDefault();
 
-        this.rfomy.systemsDisplay = this.rfomy.systemsSource;
-        this.rfomy.tableDisplay = this.rfomy.tableSource;
+        this.rfomy.left.display = this.rfomy.left.source;
+        this.rfomy.right.display = this.rfomy.right.source;
         if(this.searchForm.priorityReport)
-          this.rfomy.systemsDisplay = this._.filter(this.rfomy.systemsDisplay, (val) => val.NAME.toString().indexOf(this.searchForm.priorityReport) != -1);
+          this.rfomy.left.display = this._.filter(this.rfomy.left.display, (val) => val.NAME.toString().indexOf(this.searchForm.priorityReport) != -1);
         if(this.searchForm.riskReporting)
-          this.rfomy.systemsDisplay = this._.filter(this.rfomy.systemsDisplay, (val) => val.OWNER_ID.toString().indexOf(this.searchForm.riskReporting) != -1);
+          this.rfomy.left.display = this._.filter(this.rfomy.left.display, (val) => val.OWNER_ID.toString().indexOf(this.searchForm.riskReporting) != -1);
 
         if(this.searchForm.principalRisk)
-          this.rfomy.tableDisplay = this._.filter(this.rfomy.tableDisplay, (val) => val.PRINCIPAL_RISK_TYPE.toString().indexOf(this.searchForm.principalRisk) != -1);
+          this.rfomy.right.display = this._.filter(this.rfomy.right.display, (val) => val.PRINCIPAL_RISK_TYPE.toString().indexOf(this.searchForm.principalRisk) != -1);
         if(this.searchForm.subRisk)
-          this.rfomy.tableDisplay = this._.filter(this.rfomy.tableDisplay, (val) => val.RISK_SUB_TYPE.toString().indexOf(this.searchForm.subRisk) != -1);
+          this.rfomy.right.display = this._.filter(this.rfomy.right.display, (val) => val.RISK_SUB_TYPE.toString().indexOf(this.searchForm.subRisk) != -1);
 
         this.searchForm.show = false;
       },
@@ -373,7 +396,7 @@ export default {
         // this.$nextTick(() => { this.searchForm.show = true });
       },
       showDetails (id) {
-        this.$router.push('/rfo/all/' + this.$route.params.system + '/' + id)
+        this.$router.push(this.addressPath + "/" + this.$route.params.system + '/' + id)
       }
     }
 }

@@ -1,63 +1,76 @@
 import { ddoMyService } from '../_services/rfomy.service';
+import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
     all: {
-        systemsLoading: true,
-        systemsSource: [],
-        systemsDisplay: [],
-        tableLoading: true,
-        tableSource: [],
-        tableDisplay: [],
+        searchMain: '',
+        left: newTableObject(),
+        right: newTableObject(),
+        detailsLoading: true,
+        detailsSource: [],
         error: null
     }
 };
 
 const actions = {
-    getAllSystem({ commit }) {
-        commit('getAllSystemRequest');
+    getLeftTable({ commit }) {
+        commit('getLeftTableRequest');
 
-        return ddoMyService.getAllSystem()
+        var param = {
+            Search: state.all.searchMain,
+            Pagination: state.all.left.pagination
+        }
+
+        return ddoMyService.getLeftTable(param)
             .then(
-                res => commit('getAllSystemSuccess', res.Data),
-                error => commit('getAllSystemFailure', error)
+                res => commit('getLeftTableSuccess', res.Data),
+                error => commit('getLeftTableFailure', error)
             );
     },
-    getTableName({ commit }, systemID) {
-        commit('getAllTablenameRequest');
+    getRightTable({ commit }, systemID) {
+        commit('getRightTableRequest');
 
-        ddoMyService.getTableName(systemID)
+        var param = {
+            SystemID: systemID,
+            Search: state.all.searchMain,
+            Pagination: state.all.right.pagination
+        }
+
+        ddoMyService.getRightTable(param)
             .then(
-                res => commit('getAllTablenameSuccess', res.Data),
-                error => commit('getAllTablenameFailure', error)
+                res => commit('getRightTableSuccess', res.Data),
+                error => commit('getRightTableFailure', error)
             );
     },
 };
 
 const mutations = {
-    getAllSystemRequest(state) {
-        state.all.systemsLoading = true;
+    getLeftTableRequest(state) {
+        state.all.left.loading = true;
     },
-    getAllSystemSuccess(state, data) {
-        state.all.systemsSource = data;
-        state.all.systemsDisplay = data;
+    getLeftTableSuccess(state, data) {
+        state.all.left.source = data;
+        state.all.left.display = data;
+        state.all.left.totalItems = data[0] ? data[0].RESULT_COUNT : 0;
 
-        state.all.systemsLoading = false;
+        state.all.left.loading = false;
     },
-    getAllSystemFailure(state, error) {
-        state.all.systemsLoading = false;
+    getLeftTableFailure(state, error) {
+        state.all.left.loading = false;
         state.all.error = error;
     },
-    getAllTablenameRequest(state) {
-        state.all.tableLoading = true;
+    getRightTableRequest(state) {
+        state.all.right.loading = true;
     },
-    getAllTablenameSuccess(state, data) {
-        state.all.tableSource = data;
-        state.all.tableDisplay = data;
+    getRightTableSuccess(state, data) {
+        state.all.right.source = data;
+        state.all.right.display = data;
+        state.all.right.totalItems = data[0] ? data[0].RESULT_COUNT : 0;
 
-        state.all.tableLoading = false;
+        state.all.right.loading = false;
     },
-    getAllTablenameFailure(state, error) {
-        state.all.tableLoading = false;
+    getRightTableFailure(state, error) {
+        state.all.right.loading = false;
         state.all.error = error;
     },
 };

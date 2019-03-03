@@ -213,13 +213,35 @@ func (DBcmd) Delete(param DeleteParam) error {
 }
 
 type SqlQueryParam struct {
-	TableName string
-	SqlQuery  string
+	TableName   string
+	SqlQuery    string
+	PageNumber  int
+	RowsPerPage int
 
-	Results interface{}
+	Results     interface{}
+	ResultTotal int
 }
 
 func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
-	err := Database().Cursor(dbflex.From(param.TableName).SQL(param.SqlQuery), nil).Fetchs(param.Results, 0)
+	sqlQuery := param.SqlQuery
+	if !(param.PageNumber == 0 && param.RowsPerPage == 0) {
+		sqlQuery = `SELECT a.*, rownum r__, COUNT(*) OVER () RESULT_COUNT
+			FROM
+			(
+				` + param.SqlQuery + `
+			) a`
+
+		if param.RowsPerPage > 0 {
+			sqlQuery = `SELECT * FROM
+				(
+					` + sqlQuery + `
+				) WHERE 
+					r__ < ((` + toolkit.ToString(param.PageNumber) + ` * ` + toolkit.ToString(param.RowsPerPage) + `) + 1 ) 
+				AND 
+					r__ >= (((` + toolkit.ToString(param.PageNumber) + `-1) * ` + toolkit.ToString(param.RowsPerPage) + `) + 1)`
+		}
+	}
+
+	err := Database().Cursor(dbflex.From(param.TableName).SQL(sqlQuery), nil).Fetchs(param.Results, 0)
 	return err
 }

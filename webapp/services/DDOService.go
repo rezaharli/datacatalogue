@@ -15,12 +15,14 @@ func NewDDOService() *DDOService {
 	return ret
 }
 
-func (s *DDOService) GetLeftTable(sortKey, sortOrder string, skip, take int, filter toolkit.M) ([]toolkit.M, int, error) {
+func (s *DDOService) GetLeftTable(search string, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
 	q := `SELECT DISTINCT 
-			tc.id, tc.name as domain, tsc.name as sub_domain 
+			tc.id, 
+			tc.name as domain, 
+			tsc.name as sub_domain 
 		FROM 
 			tbl_category tc
 			INNER JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
@@ -34,10 +36,20 @@ func (s *DDOService) GetLeftTable(sortKey, sortOrder string, skip, take int, fil
 			LEFT join tbl_policy tpo on tbt.policy_id = tpo.id
 			LEFT join tbl_ds_process_detail tdpd on tdpd.business_term_id = tbt.id
 			LEFT join tbl_ds_processes tdp on tdpd.process_id = tdp.id`
+
+	if search != "" {
+		q += `
+			WHERE
+				upper(tc.name) LIKE upper('%` + search + `%')
+				OR upper(tsc.name) LIKE upper('%` + search + `%')`
+	}
+
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName: m.NewCategoryModel().TableName(),
-		SqlQuery:  q,
-		Results:   &resultRows,
+		TableName:   m.NewCategoryModel().TableName(),
+		SqlQuery:    q,
+		Results:     &resultRows,
+		PageNumber:  pageNumber,
+		RowsPerPage: rowsPerPage,
 	})
 
 	if err != nil {
@@ -47,11 +59,16 @@ func (s *DDOService) GetLeftTable(sortKey, sortOrder string, skip, take int, fil
 	return resultRows, resultTotal, nil
 }
 
-func (s *DDOService) GetRightTable(systemID int) (interface{}, int, error) {
+func (s *DDOService) GetRightTable(systemID int, search string, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	q := `SELECT DISTINCT tsc.category_id as tscid, tbt.id, tbt.BT_Name, tbt.Description, tbt.CDE 
+	q := `SELECT DISTINCT 
+			tsc.category_id as tscid, 
+			tbt.id, 
+			tbt.BT_Name, 
+			tbt.Description, 
+			tbt.CDE 
 		FROM
 			tbl_category tc
 			INNER JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
@@ -66,10 +83,21 @@ func (s *DDOService) GetRightTable(systemID int) (interface{}, int, error) {
 			LEFT join tbl_ds_process_detail tdpd on tdpd.business_term_id = tbt.id
 			LEFT join tbl_ds_processes tdp on tdpd.process_id = tdp.id
 		WHERE tsc.category_id = ` + toolkit.ToString(systemID)
+
+	if search != "" {
+		q += `
+			AND
+				upper(tbt.BT_Name) LIKE upper('%` + search + `%')
+				OR upper(tbt.Description) LIKE upper('%` + search + `%')
+				OR upper(tbt.CDE) LIKE upper('%` + search + `%')`
+	}
+
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName: m.NewCategoryModel().TableName(),
-		SqlQuery:  q,
-		Results:   &resultRows,
+		TableName:   m.NewCategoryModel().TableName(),
+		SqlQuery:    q,
+		Results:     &resultRows,
+		PageNumber:  pageNumber,
+		RowsPerPage: rowsPerPage,
 	})
 
 	if err != nil {

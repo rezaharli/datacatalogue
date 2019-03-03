@@ -29,7 +29,7 @@ table.v-table thead th > div.btn-group {
           <b-row>
             <b-col>
               <div class="input-group mb-3">
-                <input v-model="searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <input v-model="dpomy.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
                 <div class="input-group-append">
                   <b-dropdown right id="ddown1" text="">
                     <b-container>
@@ -83,13 +83,14 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <v-data-table
                   :headers="firstTableHeaders"
-                  :items="dpomy.systemsDisplay"
-                  :loading="dpomy.systemsLoading"
-                  :search="searchMain"
+                  :items="dpomy.left.display"
+                  :pagination.sync="dpomy.left.pagination"
+                  :total-items="dpomy.left.totalItems"
+                  :loading="dpomy.left.loading"
                   class="elevation-1 fixed-header">
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dpomy.systemsSource).length }})
+                  {{ props.header.text }} ({{ distinctData(props.header.value, dpomy.left.source).length }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -101,7 +102,7 @@ table.v-table thead th > div.btn-group {
                       <b-form-input type="text" placeholder="Filter" v-model="search['systems'][props.header.value]" @change="filterKeyup('systems', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, dpomy.systemsSource)" :key="item" @click="columnFilter('systems', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, dpomy.left.source)" :key="item" @click="columnFilter('systems', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -116,7 +117,7 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                    <td><b-link :to="{ path:'/dpo/all/' + props.item.ID }">{{ props.item.DOWNSTREAM_PROCESS }}</b-link></td>
+                    <td><b-link :to="{ path: addressPath + '/' + props.item.ID }">{{ props.item.DOWNSTREAM_PROCESS }}</b-link></td>
                     <td>{{ props.item.PROCESS_OWNER }}</td>
                     <td>{{ props.item.BANK_ID }}</td>
                 </template>
@@ -125,13 +126,14 @@ table.v-table thead th > div.btn-group {
             
             <b-col class="scrollableasdf">
               <v-data-table
-                :headers="secondTableHeaders"
-                :items="dpomy.tableDisplay"
-                :loading="dpomy.tableLoading"
-                v-if="secondtable"
-                item-key="ID"
-                class="elevation-1">
-                <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+                  :headers="secondTableHeaders"
+                  :items="dpomy.right.display"
+                  :pagination.sync="dpomy.right.pagination"
+                  :total-items="dpomy.right.totalItems"
+                  :loading="dpomy.right.loading"
+                  v-if="secondtable"
+                  item-key="ID"
+                  class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
                   <template slot="no-data">
                     <v-alert :value="true" color="error" icon="warning">
@@ -139,8 +141,8 @@ table.v-table thead th > div.btn-group {
                     </v-alert>
                   </template>
 
-                  <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dpomy.tableSource).length }})
+                <template slot="headerCell" slot-scope="props">
+                  {{ props.header.text }} ({{ distinctData(props.header.value, dpomy.right.source).length }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -152,7 +154,7 @@ table.v-table thead th > div.btn-group {
                       <b-form-input type="text" placeholder="Filter" v-model="search['tablename'][props.header.value]" @change="filterKeyup('tablename', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, dpomy.tableSource)" :key="item" @click="columnFilter('tablename', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, dpomy.right.source)" :key="item" @click="columnFilter('tablename', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -194,7 +196,6 @@ export default {
         secondtable: false,
         systemSource: [],
         tablenameSource: [],
-        searchMain: '',
         searchForm: {
           processName: '',
           processOwner: '',
@@ -232,17 +233,21 @@ export default {
       ...mapState({
         dpomy: state => state.dpomy.all
       }),
+      addressPath (){
+        var tmp = this.$route.path.split("/")
+        return tmp.slice(0, 3).join("/")
+      },
       excelData () {
         var res = [];
 
-        this._.each(this.dpomy.systemsDisplay, (system, i) => {
+        this._.each(this.dpomy.left.display, (system, i) => {
           var temp = {
             DOWNSTREAM_PROCESS: system.DOWNSTREAM_PROCESS,
             PROCESS_OWNER: system.PROCESS_OWNER,
             BANK_ID: system.BANK_ID
           }
 
-          var tables = this._.filter(this.dpomy.tableDisplay, (v) => v.TDPID == system.ID)
+          var tables = this._.filter(this.dpomy.right.display, (v) => v.TDPID == system.ID)
           if(tables.length > 0){
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
@@ -271,39 +276,56 @@ export default {
           this.secondtable = to.params.system; 
         }
 
-         if(this.secondtable){
-            this.getTableName(this.$route.params.system);
-          }
+        if(this.secondtable){
+          this.getRightTable(this.$route.params.system);
+        }
       },
-    },
-    created() {
-      this.secondtable = this.$route.params.system;
-      
-      this.getAllSystem();
+      "dpomy.left.pagination": {
+        handler () {
+          this.getLeftTable();
+        },
+        deep: true
+      },
+      "dpomy.right.pagination": {
+        handler () {
+          if(this.secondtable){
+            this.getRightTable(this.$route.params.system);
+          }
+        },
+        deep: true
+      },
+      "dpomy.searchMain" (val, oldVal){
+        if(val || oldVal) {
+          this.getLeftTable();
 
-      if(this.secondtable){
-        this.getTableName(this.$route.params.system);
+          if(this.secondtable){
+            this.getRightTable(this.$route.params.system);
+          }
+        }
       }
+    },
+    mounted() {
+      this.secondtable = this.$route.params.system;
     },
     methods: {
       ...mapActions('dpomy', {
-          getAllSystem: 'getAllSystem',
-          getTableName: 'getTableName',
+          getLeftTable: 'getLeftTable',
+          getRightTable: 'getRightTable',
       }),
       columnFilter (type, keyModel, val) {
         if(val == ""){
           if(type == "systems"){
-            this.dpomy.systemsDisplay = this.dpomy.systemsSource;
+            this.dpomy.left.display = this.dpomy.left.source;
           } else {
-            this.dpomy.tableDisplay = this.dpomy.tableSource;
+            this.dpomy.right.display = this.dpomy.right.source;
           }
           return
         }
 
         if(type == "systems"){
-          this.dpomy.systemsDisplay = _.filter(this.dpomy.systemsSource, [keyModel.value, val]);
+          this.dpomy.left.display = _.filter(this.dpomy.left.source, [keyModel.value, val]);
         } else {
-          this.dpomy.tableDisplay = _.filter(this.dpomy.tableSource, [keyModel.value, val]);
+          this.dpomy.right.display = _.filter(this.dpomy.right.source, [keyModel.value, val]);
         }
       },
       filterKeyup (type, keyModel) {
@@ -332,16 +354,16 @@ export default {
       onSubmit (evt) {
         evt.preventDefault();
 
-        this.dpomy.systemsDisplay = this.dpomy.systemsSource;
-        this.dpomy.tableDisplay = this.dpomy.tableSource;
+        this.dpomy.left.display = this.dpomy.left.source;
+        this.dpomy.right.display = this.dpomy.right.source;
 
         if(this.searchForm.processName)
-          this.dpomy.systemsDisplay = this._.filter(this.dpomy.systemsDisplay, (val) => val.DOWNSTREAM_PROCESS.indexOf(this.searchForm.processName) != -1);
+          this.dpomy.left.display = this._.filter(this.dpomy.left.display, (val) => val.DOWNSTREAM_PROCESS.indexOf(this.searchForm.processName) != -1);
         if(this.searchForm.processOwner)
-          this.dpomy.systemsDisplay = this._.filter(this.dpomy.systemsDisplay, (val) => val.PROCESS_OWNER.toString().indexOf(this.searchForm.processOwner) != -1);
+          this.dpomy.left.display = this._.filter(this.dpomy.left.display, (val) => val.PROCESS_OWNER.toString().indexOf(this.searchForm.processOwner) != -1);
 
         if(this.searchForm.cdeName)
-          this.dpomy.tableDisplay = this._.filter(this.dpomy.tableDisplay, (val) => val.CDE_NAME.toString().indexOf(this.searchForm.cdeName) != -1);
+          this.dpomy.right.display = this._.filter(this.dpomy.right.display, (val) => val.CDE_NAME.toString().indexOf(this.searchForm.cdeName) != -1);
 
         this.searchForm.show = false;
       },
@@ -358,7 +380,7 @@ export default {
         // this.$nextTick(() => { this.searchForm.show = true });
       },
       showDetails (id) {
-        this.$router.push('/dpo/all/' + this.$route.params.system + '/' + id)
+        this.$router.push(this.addressPath + "/" + this.$route.params.system + '/' + id)
       }
     }
 }
