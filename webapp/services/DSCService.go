@@ -27,21 +27,26 @@ func (s *DSCService) GetAllSystem(search string, pageNumber, rowsPerPage int, fi
 			tp.bank_id
 		FROM 
 			Tbl_System ts
-			INNER JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
-			INNER JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
+			JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
+			JOIN tbl_people tp ON tlrp.people_id = tp.id
 			LEFT JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
 			LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
+			LEFT JOIN tbl_link_category_people tlcp on tlcp.category_id = tsc.id
 			LEFT JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
-			LEFT JOIN tbl_people tp on tlsp.people_id = tp.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
 			LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
 			LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
 			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
-			LEFT JOIN tbl_policy tpol on tbt.policy_id = tpol.id`
+			LEFT JOIN tbl_policy tpol on tbt.policy_id = tpol.id
+		WHERE
+			upper(tlrp.object_type) = upper('system')
+			AND tmc.cde = 1 `
 
 	if search != "" {
 		q += `
-			WHERE
+			AND
 				upper(ts.system_name) LIKE upper('%` + search + `%')
 				OR upper(ts.itam_id) LIKE upper('%` + search + `%')
 				OR upper(tp.first_name) LIKE upper('%` + search + `%')
@@ -76,19 +81,23 @@ func (s *DSCService) GetTableName(systemID int, search string, pageNumber, rowsP
 			tmc.cde
 		FROM 
 			Tbl_System ts
-			INNER JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
-			INNER JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
+			JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
+			JOIN tbl_people tp ON tlrp.people_id = tp.id
 			LEFT JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
 			LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
+			LEFT JOIN tbl_link_category_people tlcp on tlcp.category_id = tsc.id
 			LEFT JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
-			LEFT JOIN tbl_people tp on tlsp.people_id = tp.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
 			LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
 			LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
 			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
 			LEFT JOIN tbl_policy tpol on tbt.policy_id = tpol.id
 		WHERE
-			ts.id = ` + toolkit.ToString(systemID)
+			upper(tlrp.object_type) = upper('system')
+			AND tmc.cde = 1 
+			AND ts.id = ` + toolkit.ToString(systemID)
 
 	if search != "" {
 		q += `
@@ -127,19 +136,23 @@ func (s *DSCService) GetInterfacesRightTable(systemID int, search string, pageNu
 			tdp.owner_id
 		FROM 
 			Tbl_System ts
-			INNER JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
-			INNER JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
+			JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
+			JOIN tbl_people tp ON tlrp.people_id = tp.id
 			LEFT JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
 			LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
+			LEFT JOIN tbl_link_category_people tlcp on tlcp.category_id = tsc.id
 			LEFT JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
-			LEFT JOIN tbl_people tp on tlsp.people_id = tp.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
 			LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
 			LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
 			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
 			LEFT JOIN tbl_policy tpol on tbt.policy_id = tpol.id
 		WHERE
-			ts.id = ` + toolkit.ToString(systemID)
+			upper(tlrp.object_type) = upper('system')
+			AND tmc.cde = 1 
+			AND ts.id = ` + toolkit.ToString(systemID)
 
 	if search != "" {
 		q += `
@@ -168,11 +181,6 @@ func (s *DSCService) GetInterfacesRightTable(systemID int, search string, pageNu
 func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
-
-	toolkit.Println(payload.GetString("left"), payload.GetString("right"))
-	toolkit.Println(payload.GetString("TableName"))
-	toolkit.Println(payload.GetString("ColumnName"))
-	toolkit.Println(payload.GetString("ScreenLabel"))
 
 	q := `SELECT 
 			ts.id,
@@ -211,20 +219,24 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 			tlcp.People_ID as domain_owner
 		FROM
 			Tbl_System ts
-			INNER JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
-			INNER JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
+			JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
+			JOIN tbl_people tp ON tlrp.people_id = tp.id
 			LEFT JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
 			LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
 			LEFT JOIN tbl_link_category_people tlcp on tlcp.category_id = tsc.id
 			LEFT JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
-			LEFT JOIN tbl_people tp on tlsp.people_id = tp.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
 			LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
 			LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
 			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
 			LEFT JOIN tbl_policy tpol on tbt.policy_id = tpol.id
-		WHERE ROWNUM = 1 
-		AND ts.id = ` + payload.GetString("left") + ` AND tmt.id = ` + payload.GetString("right") + ` `
+		WHERE
+			upper(tlrp.object_type) = upper('system')
+			AND tmc.cde = 1 
+			AND ROWNUM = 1 
+			AND ts.id = ` + payload.GetString("left") + ` AND tmt.id = ` + payload.GetString("right") + ` `
 
 	if payload.GetString("TableName") != "" {
 		q += `AND tmt.name = '` + payload.GetString("TableName") + `' `
@@ -261,17 +273,22 @@ func (s *DSCService) GetddSource(leftParam string) (interface{}, int, error) {
 			tmc.alias_name
 		FROM
 			Tbl_System ts
-			INNER JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
-			INNER JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
+			JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
+			JOIN tbl_people tp ON tlrp.people_id = tp.id
 			LEFT JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
 			LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
+			LEFT JOIN tbl_link_category_people tlcp on tlcp.category_id = tsc.id
 			LEFT JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
-			LEFT JOIN tbl_people tp on tlsp.people_id = tp.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
 			LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
 			LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
 			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
 			LEFT JOIN tbl_policy tpol on tbt.policy_id = tpol.id
+		WHERE
+			upper(tlrp.object_type) = upper('system')
+			AND tmc.cde = 1 
 		AND ts.id = ` + leftParam
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),

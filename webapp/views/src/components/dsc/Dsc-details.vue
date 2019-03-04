@@ -359,7 +359,7 @@ export default {
       res => {
         if (this.dscmy.detailsSource.length > 0){
           this.selectedDetails = this.dscmy.detailsSource[0];
-          this.selectedDetails.CDE = this.selectedDetails.CDE == 0 ? "Yes" : "No";
+          this.selectedDetails.CDE = this.selectedDetails.CDE != 0 ? "Yes" : "No";
           this.selectedDetails.STATUS = this.selectedDetails.STATUS ? this.selectedDetails.STATUS : "NA";
           this.selectedDetails.DATA_TYPE = this.selectedDetails.DATA_TYPE ? this.selectedDetails.DATA_TYPE : "NA";
           this.selectedDetails.DATA_FORMAT = this.selectedDetails.DATA_FORMAT ? this.selectedDetails.DATA_FORMAT : "NA";
