@@ -27,19 +27,16 @@ func (s *DSCService) GetAllSystem(search string, pageNumber, rowsPerPage int, fi
 			tp.bank_id
 		FROM 
 			Tbl_System ts
+			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
+			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
 			JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
 			JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
-			JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
-			JOIN tbl_people tp ON tlrp.people_id = tp.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
-			LEFT JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
-			LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
-			LEFT JOIN tbl_link_category_people tlcp on tlcp.category_id = tsc.id
-			LEFT JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
-			LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
-			LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
-			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
-			LEFT JOIN tbl_policy tpol on tbt.policy_id = tpol.id
+			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
+			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
+			left join tbl_category tc ON tsc.category_id = tc.id
+			left join tbl_link_category_people tlcp ON tlcp.category_id = tc.id
+			left join tbl_policy tpol ON tbt.policy_id = tpol.id
 		WHERE
 			upper(tlrp.object_type) = upper('system')
 			AND tmc.cde = 1 `
@@ -81,19 +78,16 @@ func (s *DSCService) GetTableName(systemID int, search string, pageNumber, rowsP
 			tmc.cde
 		FROM 
 			Tbl_System ts
+			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
+			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
 			JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
 			JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
-			JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
-			JOIN tbl_people tp ON tlrp.people_id = tp.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
-			LEFT JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
-			LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
-			LEFT JOIN tbl_link_category_people tlcp on tlcp.category_id = tsc.id
-			LEFT JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
-			LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
-			LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
-			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
-			LEFT JOIN tbl_policy tpol on tbt.policy_id = tpol.id
+			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
+			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
+			left join tbl_category tc ON tsc.category_id = tc.id
+			left join tbl_link_category_people tlcp ON tlcp.category_id = tc.id
+			left join tbl_policy tpol ON tbt.policy_id = tpol.id
 		WHERE
 			upper(tlrp.object_type) = upper('system')
 			AND tmc.cde = 1 
@@ -136,19 +130,16 @@ func (s *DSCService) GetInterfacesRightTable(systemID int, search string, pageNu
 			tdp.owner_id
 		FROM 
 			Tbl_System ts
+			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
+			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
 			JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
 			JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
-			JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
-			JOIN tbl_people tp ON tlrp.people_id = tp.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
-			LEFT JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
-			LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
-			LEFT JOIN tbl_link_category_people tlcp on tlcp.category_id = tsc.id
-			LEFT JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
-			LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
-			LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
-			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
-			LEFT JOIN tbl_policy tpol on tbt.policy_id = tpol.id
+			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
+			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
+			left join tbl_category tc ON tsc.category_id = tc.id
+			left join tbl_link_category_people tlcp ON tlcp.category_id = tc.id
+			left join tbl_policy tpol ON tbt.policy_id = tpol.id
 		WHERE
 			upper(tlrp.object_type) = upper('system')
 			AND tmc.cde = 1 
@@ -219,19 +210,16 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 			tlcp.People_ID as domain_owner
 		FROM
 			Tbl_System ts
+			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
+			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
 			JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
 			JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
-			JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
-			JOIN tbl_people tp ON tlrp.people_id = tp.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
-			LEFT JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
-			LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
-			LEFT JOIN tbl_link_category_people tlcp on tlcp.category_id = tsc.id
-			LEFT JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
-			LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
-			LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
-			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
-			LEFT JOIN tbl_policy tpol on tbt.policy_id = tpol.id
+			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
+			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
+			left join tbl_category tc ON tsc.category_id = tc.id
+			left join tbl_link_category_people tlcp ON tlcp.category_id = tc.id
+			left join tbl_policy tpol ON tbt.policy_id = tpol.id
 		WHERE
 			upper(tlrp.object_type) = upper('system')
 			AND tmc.cde = 1 
@@ -273,19 +261,16 @@ func (s *DSCService) GetddSource(leftParam string) (interface{}, int, error) {
 			tmc.alias_name
 		FROM
 			Tbl_System ts
+			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
+			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
 			JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
 			JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
-			JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
-			JOIN tbl_people tp ON tlrp.people_id = tp.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
-			LEFT JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
-			LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
-			LEFT JOIN tbl_link_category_people tlcp on tlcp.category_id = tsc.id
-			LEFT JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
-			LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
-			LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
-			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
-			LEFT JOIN tbl_policy tpol on tbt.policy_id = tpol.id
+			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
+			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
+			left join tbl_category tc ON tsc.category_id = tc.id
+			left join tbl_link_category_people tlcp ON tlcp.category_id = tc.id
+			left join tbl_policy tpol ON tbt.policy_id = tpol.id
 		WHERE
 			upper(tlrp.object_type) = upper('system')
 			AND tmc.cde = 1 
