@@ -125,9 +125,9 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                    <td><b-link :to="{ path: addressPath + '/' + props.item.ID }">{{ props.item.SYSTEM_NAME }}</b-link></td>
+                    <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.SYSTEM_NAME" :isklik="false"></tablecell></b-link></td>
                     <td>{{ props.item.ITAM_ID }}</td>
-                    <td>{{ props.item.FIRST_NAME }}</td>
+                    <td><tablecell :fulltext="props.item.FIRST_NAME" :isklik="true"></tablecell></td>
                     <td>{{ props.item.BANK_ID }}</td>
                 </template>
               </v-data-table>
@@ -177,10 +177,10 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                   <tr>
-                    <td><b-link @click="props.expanded = !props.expanded">{{ props.item.TABLE_NAME }}</b-link></td>
-                    <td><b-link @click="showDetails(props.item.ID)">{{ _.map(props.item.Columns, "COLUMN_NAME").filter(Boolean).join(", ") }}</b-link></td>
-                    <td>{{ _.map(props.item.Columns, "ALIAS_NAME").filter(Boolean).join(", ") }}</td>
-                    <td>{{ _.map(props.item.Columns, "CDE").filter(Boolean).join(", ") }}</td>
+                    <td><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.TABLE_NAME" :isklik="false"></tablecell></b-link></td>
+                    <td><tablecell :fulltext="(_.map(props.item.Columns, 'COLUMN_NAME').filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="(_.map(props.item.Columns, 'ALIAS_NAME').filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="(_.map(props.item.Columns, 'CDE').filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                   </tr>
                 </template>
                 
@@ -213,10 +213,14 @@ table.v-table thead th > div.btn-group {
 import Vue from 'vue'
 import { mapState, mapActions } from 'vuex'
 import JsonExcel from 'vue-json-excel'
+import tablecell from '../Tablecell.vue'
  
 Vue.component('downloadExcel', JsonExcel)
 
 export default {
+    components: {
+      tablecell
+    },
     data () {
       return {
         search: {
