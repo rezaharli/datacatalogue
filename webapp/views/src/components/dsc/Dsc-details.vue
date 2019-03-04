@@ -100,7 +100,7 @@
                       <b-form-select id="columnName" class="col-8" v-model="ddColumn.selected" :options="ddColumnOptions" @change="ddChanged"></b-form-select>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Screen Label Name*" label-for="screenLabelName">
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Name*" label-for="screenLabelName">
                       <b-form-select id="columnName" class="col-8" v-model="ddScreenLabel.selected" :options="ddScreenLabelOptions" @change="ddChanged"></b-form-select>
                     </b-form-group>
 
@@ -175,7 +175,7 @@
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain Owner">
-                      <p></p>
+                      <p v-html="selectedDetails.DOMAIN_OWNER"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term*">
@@ -289,7 +289,7 @@ export default {
         'Business Alias Name': "selectedDetails.ALIAS_NAME",
         'Table Name': 'selectedDetails.TABLE_NAME',
         'Column Name': 'selectedDetails.COLUMN_NAME',
-        'Screen Label Name*': 'asdf',
+        'Business Alias Name*': 'selectedDetails.ALIAS_NAME',
         'CDE (yes/no)': 'selectedDetails.CDE',
         'Status*': 'selectedDetails.STATUS',
         'Data Type': 'selectedDetails.DATA_TYPE',
@@ -302,7 +302,7 @@ export default {
         "System Checks*": "selectedDetails.SYSTEM_CHECKS",
         "Domain": "selectedDetails.DOMAIN",
         "Sub Domain": "selectedDetails.SUBDOMAIN",
-        "Domain Owner": "asdf",
+        "Domain Owner": "selectedDetails.DOMAIN_OWNER",
         "Business Term*": "selectedDetails.BT_NAME",
         "Business Term Description": "selectedDetails.BUSINESS_DESCRIPTION",
         "Information Asset Names": "selectedDetails.INFO_ASSET_NAME",

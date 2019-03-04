@@ -207,13 +207,15 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 			tmc.pii_flag,
 			tmc.imm_prec_system_id,
 			tmc.imm_succ_system_id,
-			tmc.threshold
+			tmc.threshold,
+			tlcp.People_ID as domain_owner
 		FROM
 			Tbl_System ts
 			INNER JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
 			INNER JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
 			LEFT JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
 			LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
+			LEFT JOIN tbl_link_category_people tlcp on tlcp.category_id = tsc.id
 			LEFT JOIN tbl_link_subcategory_people tlsp on tlsp.subcategory_id = tsc.id
 			LEFT JOIN tbl_people tp on tlsp.people_id = tp.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
