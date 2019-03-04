@@ -76,6 +76,25 @@ func (s *UserService) GetAll(sortKey, sortOrder string, skip, take int, filter t
 	return resultRows, resultTotal, nil
 }
 
+func (s *UserService) isUserIDRegisteredOnTblPeople(username int) (bool, error) {
+	people := make([]m.People, 0)
+
+	err := h.NewDBcmd().GetBy(h.GetByParam{
+		TableName: m.NewPeopleModel().TableName(),
+		Clause:    dbflex.Eq("ID", username),
+		Result:    &people,
+	})
+	if err != nil {
+		return false, err
+	}
+
+	if len(people) > 0 {
+		return true, nil
+	}
+
+	return false, err
+}
+
 func (s *UserService) Insert(data *m.SysUser) (bool, error) {
 	data.CreatedAt = time.Now().String()
 	data.UpdatedAt = time.Now().String()
@@ -94,27 +113,36 @@ func (s *UserService) Insert(data *m.SysUser) (bool, error) {
 		return true, fmt.Errorf("The same username already exists")
 	}
 
-	data.Password = s.HashPassword(data.Password)
-
-	dataM, err := toolkit.ToM(data)
+	isIDRegistered, err := s.isUserIDRegisteredOnTblPeople(data.Username)
 	if err != nil {
 		return false, err
 	}
 
-	dataM.Unset("ID")
+	if isIDRegistered {
+		data.Password = s.HashPassword(data.Password)
 
-	err = h.NewDBcmd().Insert(h.InsertParam{
-		TableName: m.NewSysUserModel().TableName(),
-		Data:      dataM,
-	})
-
-	if err != nil {
-		if strings.Contains(err.Error(), "duplicate key") {
-			return true, fmt.Errorf("Different data with same ID already exists")
+		dataM, err := toolkit.ToM(data)
+		if err != nil {
+			return false, err
 		}
+
+		dataM.Unset("ID")
+
+		err = h.NewDBcmd().Insert(h.InsertParam{
+			TableName: m.NewSysUserModel().TableName(),
+			Data:      dataM,
+		})
+
+		if err != nil {
+			if strings.Contains(err.Error(), "duplicate key") {
+				return true, fmt.Errorf("Different data with same ID already exists")
+			}
+		}
+
+		return true, nil
 	}
 
-	return true, nil
+	return true, fmt.Errorf("User id is not registered in tbl_people")
 }
 
 func (s *UserService) Update(data *m.SysUser) (bool, error) {
