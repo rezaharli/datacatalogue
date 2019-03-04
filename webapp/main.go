@@ -42,6 +42,8 @@ func main() {
 	// s.NewDSCService().CreatePriorityReportsDummyData()
 	// s.NewDSCService().CreateCRMDummyData()
 	// s.NewDSCService().CreateLinkCRMCDEDummyData()
+	// s.NewDSCService().CreateRoleDummyData()
+	// s.NewDSCService().CreateLinkRolePeopleDummyData()
 
 	app := knot.NewApp()
 	app.Register(c.NewUsersController(), "")

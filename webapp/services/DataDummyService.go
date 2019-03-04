@@ -672,3 +672,70 @@ func (s *DSCService) CreateLinkCategoryPeopleDummyData() error {
 
 	return nil
 }
+
+func (s *DSCService) CreateLinkRolePeopleDummyData() error {
+	toolkit.Println("CreateLinkRolePeopleDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewLinkRolePeopleModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.LinkRolePeople, 0)
+	for i := 0; i < 1000; i++ {
+		mdt := m.NewLinkRolePeopleModel()
+		mdt.ID = i
+		mdt.Object_Type = "SYSTEM"
+		mdt.Object_ID = fake.Day()
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewLinkRolePeopleModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (s *DSCService) CreateRoleDummyData() error {
+	toolkit.Println("CreateRoleDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewRoleModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.Role, 0)
+	for i := 0; i < 1000; i++ {
+		mdt := m.NewRoleModel()
+		mdt.ID = i
+		mdt.Role_Name = fake.Words()
+		mdt.Role_Type = fake.Words()
+		mdt.Role_Description = fake.Words()
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewRoleModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
