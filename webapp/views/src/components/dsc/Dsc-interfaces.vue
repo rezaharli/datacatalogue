@@ -174,14 +174,16 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                  <td><b-link :to="{ path:'/dsc/interfaces/' + $route.params.system + '/' + props.item.ID }" href="#foo" v-b-modal.modallg>{{ props.item.TABLE_NAME }}</b-link></td>
+                  <td><b-link :to="{ path:'/dsc/interfaces/' + $route.params.system + '/' + props.item.ID }" href="#foo" v-b-modal.modallg>{{ props.item.LISTOF_CDE }}</b-link></td>
                   <!-- <td><b-link :to="{ path:'/dsc/interfaces/' + route.params.system + "/details" }" v-b-modal.modallg>{{ props.item.name }}</b-link></td> -->
                   <td>{{ props.item.IMM_PREC_SYSTEM_ID }}</td>
-                  <td>{{ props.item.asdf }}</td>
-                  <td>{{ props.item.asdf }}</td>
+                  <td>{{ props.item.IMM_PREC_SYSTEM_SLA }}</td>
+                  <td>{{ props.item.IMM_PREC_SYSTEM_OLA }}</td>
                   <td>{{ props.item.IMM_SUCC_SYSTEM_ID }}</td>
-                  <td>{{ props.item.asdf }}</td>
-                  <td>{{ props.item.OWNER_ID }}</td>
+                  <td>{{ props.item.IMM_SUCC_SYSTEM_SLA }}</td>
+                  <td>{{ props.item.IMM_SUCC_SYSTEM_OLA }}</td>
+                  <td>{{ props.item.LIST_DOWNSTREAM_PROCESS }}</td>
+                  <td>{{ props.item.DOWNSTREAM_OWNER }}</td>
                 </template>
               </v-data-table>
             </b-col>
@@ -225,26 +227,30 @@ export default {
           { text: 'Bank ID', align: 'left', value: 'BANK_ID', sortable: false }
         ],
         secondTableHeaders: [
-          { text: 'List of CDEs', align: 'left', sortable: false, value: 'Name', width: "25%" },
+          { text: 'List of CDEs', align: 'left', sortable: false, value: 'LISTOF_CDE', width: "25%" },
           { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'IMM_PREC_SYSTEM_ID', width: "25%" },
-          { text: 'SLA(Yes/No)', align: 'left', sortable: false, value: 'fat', width: "25%" },
-          { text: 'OLA(Yes/No)', align: 'left', sortable: false, value: 'carbs', width: "25%" },
+          { text: 'SLA(Yes/No)', align: 'left', sortable: false, value: 'IMM_PREC_SYSTEM_SLA', width: "25%" },
+          { text: 'OLA(Yes/No)', align: 'left', sortable: false, value: 'IMM_PREC_SYSTEM_OLA', width: "25%" },
           { text: 'Immediate Succeeding System', align: 'left', sortable: false, value: 'IMM_SUCC_SYSTEM_ID', width: "25%" },
-          { text: 'List of Downstream Process', align: 'left', sortable: false, value: 'carbs', width: "25%" },
-          { text: 'Downstream Process Owner', align: 'left', sortable: false, value: 'OWNER_ID', width: "25%" },
+          { text: 'SLA(Yes/No)', align: 'left', sortable: false, value: 'IMM_SUCC_SYSTEM_SLA', width: "25%" },
+          { text: 'OLA(Yes/No)', align: 'left', sortable: false, value: 'IMM_SUCC_SYSTEM_OLA', width: "25%" },
+          { text: 'List of Downstream Process', align: 'left', sortable: false, value: 'LIST_DOWNSTREAM_PROCESS', width: "25%" },
+          { text: 'Downstream Process Owner', align: 'left', sortable: false, value: 'DOWNSTREAM_OWNER', width: "25%" },
         ],
         excelFields: {
           'System Name': 'SYSTEM_NAME',
           'ITAM ID': 'ITAM_ID',
           'Dataset Custodian': 'FIRST_NAME',
           'Bank ID': 'BANK_ID',
-          'List of CDEs': 'Table_Name',
+          'List of CDEs': 'LISTOF_CDE',
           'Immediate Preceding System': 'IMM_PREC_SYSTEM_ID',
-          'SLA (Yes / No)': 'fat',
-          'OLA (Yes / No)': 'carbs',
+          'SLA (Yes / No)': 'IMM_PREC_SYSTEM_SLA',
+          'OLA (Yes / No)': 'IMM_PREC_SYSTEM_OLA',
           'Immediate Succeeding System': 'IMM_SUCC_SYSTEM_ID',
-          'List of Downstream Processes': 'carbs',
-          'Downstream Process Owner': 'OWNER_ID',
+          'SLA (Yes / No)': 'IMM_SUCC_SYSTEM_SLA',
+          'OLA (Yes / No)': 'IMM_SUCC_SYSTEM_OLA',
+          'List of Downstream Processes': 'LIST_DOWNSTREAM_PROCESS',
+          'Downstream Process Owner': 'DOWNSTREAM_OWNER',
         }
       }
     },

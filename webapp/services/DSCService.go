@@ -124,10 +124,15 @@ func (s *DSCService) GetInterfacesRightTable(systemID int, search string, pageNu
 	q := `SELECT DISTINCT
 			tmt.id,
 			ts.id as tsid,
-			tmt.name as table_name,
+			tmc.alias_name as listof_cde,
 			tmc.imm_prec_system_id,
+			tmc.Imm_Prec_System_SLA,
+			tmc.Imm_Prec_System_OLA,
 			tmc.imm_succ_system_id,
-			tdp.owner_id
+			tmc.Imm_Succ_System_SLA,
+			tmc.Imm_Succ_System_OLA,
+			tdp.name as list_downstream_process,
+			tdp.owner_id downstream_owner
 		FROM 
 			Tbl_System ts
 			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
@@ -136,6 +141,8 @@ func (s *DSCService) GetInterfacesRightTable(systemID int, search string, pageNu
 			JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
 			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
+			left join tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
+			left join tbl_ds_processes tdp ON tdpd.process_id = tdp.id
 			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
 			left join tbl_category tc ON tsc.category_id = tc.id
 			left join tbl_link_category_people tlcp ON tlcp.category_id = tc.id
