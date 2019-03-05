@@ -48,7 +48,7 @@
         </b-col>
 
         <b-col cols="4"> 
-          <b-card tag="article" class="mb-2" v-if="selectedDetails">
+          <b-card tag="article" class="mb-2">
             <b-media class="left-card-media" >
               <h6 class="left-card-title">System Name</h6>
               <p v-html="selectedDetails.SYSTEM_NAME" v-if="selectedDetails"></p>
@@ -89,7 +89,7 @@
         <b-col cols="8"> 
           <b-row>
             <b-col>
-              <b-card title="Technical Metadata From System" tag="article" class="mb-2" v-if="selectedDetails">
+              <b-card title="Technical Metadata From System" tag="article" class="mb-2">
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="tableName">
@@ -105,7 +105,7 @@
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Description*">
-                      <v-dialog v-model="dialog" width="500">
+                      <v-dialog v-model="dialog" width="500" v-if="selectedDetails">
                         <p slot="activator" v-html="selectedDetails.BUSINESS_DESCRIPTION"><b-link>[more]</b-link></p>
 
                         <v-card>
@@ -117,43 +117,43 @@
                     </b-form-group>
                     
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="CDE (yes/no)">
-                      <p v-html="selectedDetails.CDE"></p>
+                      <p v-html="selectedDetails.CDE" v-if="selectedDetails"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Status*">
-                      <p v-html="selectedDetails.STATUS"></p>
+                      <p v-html="selectedDetails.STATUS" v-if="selectedDetails"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Type">
-                      <p v-html="selectedDetails.DATA_TYPE"></p>
+                      <p v-html="selectedDetails.DATA_TYPE" v-if="selectedDetails"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Format">
-                      <p v-html="selectedDetails.DATA_FORMAT"></p>
+                      <p v-html="selectedDetails.DATA_FORMAT" v-if="selectedDetails"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Length">
-                      <p v-html="selectedDetails.DATA_LENGTH"></p>
+                      <p v-html="selectedDetails.DATA_LENGTH" v-if="selectedDetails"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Example">
-                      <p v-html="selectedDetails.EXAMPLE"></p>
+                      <p v-html="selectedDetails.EXAMPLE" v-if="selectedDetails"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)*">
-                      <p v-html="selectedDetails.DERIVED"></p>
+                      <p v-html="selectedDetails.DERIVED" v-if="selectedDetails"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation logic*">
-                      <p v-html="selectedDetails.DERIVATION_LOGIC"></p>
+                      <p v-html="selectedDetails.DERIVATION_LOGIC" v-if="selectedDetails"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sourced from Upstream (Yes/No)*">
-                      <p v-html="selectedDetails.SOURCED_FROM_UPSTREAM"></p>
+                      <p v-html="selectedDetails.SOURCED_FROM_UPSTREAM" v-if="selectedDetails"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Checks*">
-                      <p v-html="selectedDetails.SYSTEM_CHECKS"></p>
+                      <p v-html="selectedDetails.SYSTEM_CHECKS" v-if="selectedDetails"></p>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -332,7 +332,7 @@ export default {
         return v.TABLE_NAME == self.ddTable.selected;
       });
 
-      self.ddScreenLabel.selected = filtered[0].COLUMN_NAME;
+      self.ddColumn.selected = filtered[0] ? filtered[0].COLUMN_NAME : "";
       return _.uniq(_.map(filtered, "COLUMN_NAME"));
     },
     ddScreenLabelOptions () {
@@ -341,7 +341,7 @@ export default {
         return v.TABLE_NAME == self.ddTable.selected && v.COLUMN_NAME == self.ddColumn.selected;
       });
 
-      self.ddScreenLabel.selected = filtered[0].ALIAS_NAME;
+      self.ddScreenLabel.selected = filtered[0] ? filtered[0].ALIAS_NAME : "";
       return _.uniq(_.map(filtered, "ALIAS_NAME"));
     },
     exportDatas () {
