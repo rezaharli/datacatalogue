@@ -93,15 +93,15 @@
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="tableName">
-                      <b-form-select id="tableName" class="col-8" v-model="ddTable.selected" :options="ddTableOptions" @change="ddChanged"></b-form-select>
+                      <b-form-select id="tableName" class="col-8" v-model="ddTable.selected" :options="ddTableOptions" @change="tableNameChanged"></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnName">
-                      <b-form-select id="columnName" class="col-8" v-model="ddColumn.selected" :options="ddColumnOptions" @change="ddChanged"></b-form-select>
+                      <b-form-select id="columnName" class="col-8" v-model="ddColumn.selected" :options="ddColumnOptions" @change="columnNameChanged"></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Name*" label-for="screenLabelName">
-                      <b-form-select id="columnName" class="col-8" v-model="ddScreenLabel.selected" :options="ddScreenLabelOptions" @change="ddChanged"></b-form-select>
+                      <b-form-select id="columnName" class="col-8" v-model="ddScreenLabel.selected" :options="ddScreenLabelOptions" @change="screenLabelChanged"></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Description*">
@@ -330,7 +330,13 @@ export default {
       return _.uniq(_.map(this.dscmy.DDSource, "COLUMN_NAME"))
     },
     ddScreenLabelOptions () {
-      return _.uniq(_.map(this.dscmy.DDSource, "ALIAS_NAME"))
+      var self = this;
+      var filtered = _.filter(self.dscmy.DDSource, function(v){
+        return v.TABLE_NAME == self.ddTable.selected && v.COLUMN_NAME == self.ddColumn.selected;
+      });
+
+      self.ddScreenLabel.selected = filtered[0].ALIAS_NAME;
+      return _.uniq(_.map(filtered, "ALIAS_NAME"));
     },
     exportDatas () {
       if(this.selectedDetails){
@@ -355,7 +361,48 @@ export default {
       right: parseInt(this.$route.params.details)
     };
 
-    this.getDetails(param).then(
+    this.runGetDetails(param)
+
+    // this.selectedDetails = _.find(this.dscmy.systemsSource, ['ID', parseInt(this.$route.params.system)])
+    // this.selectedDetails = _.find(this.dscmy.tableSource, ['ID', parseInt(this.$route.params.details)])
+  },
+  methods: {
+    ...mapActions("dscmy", {
+      getDetails: "getDetails"
+    }),
+    handleClose () {
+      this.$router.go(-1)
+    },
+    screenLabelChanged (val){
+      this.ddChanged("ScreenLabel", val);
+    },
+    columnNameChanged (val){
+      this.ddChanged("ColumnName", val);
+    },
+    tableNameChanged (val){
+      this.ddChanged("TableName", val);
+    },
+    ddChanged (key, val){
+        var self = this;
+
+        setTimeout(function(){
+          var param = {
+            left: self.$route.params.system,
+            right: self.$route.params.details,
+            ScreenLabel: self.ddScreenLabel.selected,
+            ColumnName: self.ddColumn.selected,
+            TableName: self.ddTable.selected,
+          };
+
+          param[key] = val;
+
+          console.log(param);
+
+          self.runGetDetails(param);
+        }, 100);
+    },
+    runGetDetails (param){
+      this.getDetails(param).then(
       res => {
         if (this.dscmy.detailsSource.length > 0){
           this.selectedDetails = this.dscmy.detailsSource[0];
@@ -378,26 +425,6 @@ export default {
       },
       err => err
     );
-    // this.selectedDetails = _.find(this.dscmy.systemsSource, ['ID', parseInt(this.$route.params.system)])
-    // this.selectedDetails = _.find(this.dscmy.tableSource, ['ID', parseInt(this.$route.params.details)])
-  },
-  methods: {
-    ...mapActions("dscmy", {
-      getDetails: "getDetails"
-    }),
-    handleClose () {
-      this.$router.go(-1)
-    },
-    ddChanged (val){
-        var param = {
-          left: this.$route.params.system,
-          right: this.$route.params.details,
-          ScreenLabel: this.ddScreenLabel.selected,
-          ColumnName: this.ddColumn.selected,
-          TableName: this.ddTable.selected,
-        };
-
-        this.getDetails(param);
     }
   },
 }
