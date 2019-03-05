@@ -138,7 +138,9 @@ func (s *DSCService) GetInterfacesRightTable(systemID int, search string, pageNu
 			tmc.Imm_Succ_System_SLA,
 			tmc.Imm_Succ_System_OLA,
 			tdp.name as list_downstream_process,
-			tdp.owner_id downstream_owner
+			tdp.owner_id downstream_owner,
+			tmt.name as table_name,
+			tmc.name as column_name
 		FROM 
 			Tbl_System ts
 			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id

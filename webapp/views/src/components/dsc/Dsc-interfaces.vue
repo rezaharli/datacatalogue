@@ -44,10 +44,6 @@ table.v-table thead th > div.btn-group {
                               <b-form-input id="itamID" type="text" v-model="searchForm.itamID"></b-form-input>
                             </b-form-group>
 
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Country" label-for="country">
-                              <b-form-select id="country" :options="searchForm.countryMaster" v-model="searchForm.country"></b-form-select>
-                            </b-form-group>
-
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="tableName">
                               <b-form-select id="tableName" :options="tablenameMaster" v-model="searchForm.tableName"></b-form-select>
                             </b-form-group>
@@ -263,10 +259,10 @@ export default {
         return tmp.slice(0, 3).join("/")
       },
       tablenameMaster (){
-        return this._.map(this.dscinterfaces.right.source, 'Name')
+        return this._.map(this.dscinterfaces.right.source, 'TABLE_NAME')
       },
       columnNameMaster (){
-        return this._.map(this._.flattenDeep(this._.map(this.dscinterfaces.right.source, 'Columns')), 'Name')
+        return this._.map(this._.flattenDeep(this._.map(this.dscinterfaces.right.source, 'Columns')), 'COLUMN_NAME')
       },
       excelData () {
         var res = [];
@@ -391,10 +387,10 @@ export default {
         if(this.searchForm.itamID)
           this.dscinterfaces.left.display = this._.filter(this.dscinterfaces.left.display, (val) => val.ITAM_ID.toString().indexOf(this.searchForm.itamID) != -1);
         if(this.searchForm.tableName)
-          this.dscinterfaces.right.display = this._.filter(this.dscinterfaces.right.display, (val) => val.Name.indexOf(this.searchForm.tableName) != -1);
+          this.dscinterfaces.right.display = this._.filter(this.dscinterfaces.right.display, (val) => val.TABLE_NAME.indexOf(this.searchForm.tableName) != -1);
         if(this.searchForm.columnName) {
           this._.each(this.dscinterfaces.right.display, (v, i) => {
-            this.dscinterfaces.right.display[i].Columns = this._.filter(this.dscinterfaces.right.display[i].Columns, (w) => w.Name.indexOf(this.searchForm.columnName) != -1);
+            this.dscinterfaces.right.display[i].Columns = this._.filter(this.dscinterfaces.right.display[i].COLUMN_NAME, (w) => w.COLUMN_NAME.indexOf(this.searchForm.columnName) != -1);
             this.dscinterfaces.right.display = this._.filter(this.dscinterfaces.right.display, (w) => w.Columns.length > 0)
           });
         }
@@ -408,7 +404,7 @@ export default {
         this.searchForm.itamID = '';
         this.searchForm.country = '';
         this.searchForm.tableName = '';
-        this.searchForm.colName = '';
+        this.searchForm.columnName = '';
 
         // /* Trick to reset/clear native browser form validation state */
         // this.searchForm.show = false;

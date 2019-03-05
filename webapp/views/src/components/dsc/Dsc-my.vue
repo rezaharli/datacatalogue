@@ -44,10 +44,6 @@ table.v-table thead th > div.btn-group {
                               <b-form-input id="itamID" type="text" v-model="searchForm.itamID"></b-form-input>
                             </b-form-group>
 
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Country" label-for="country">
-                              <b-form-select id="country" :options="searchForm.countryMaster" v-model="searchForm.country"></b-form-select>
-                            </b-form-group>
-
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="tableName">
                               <b-form-select id="tableName" :options="tablenameMaster" v-model="searchForm.tableName"></b-form-select>
                             </b-form-group>
@@ -271,10 +267,10 @@ export default {
         return tmp.slice(0, 3).join("/")
       },
       tablenameMaster (){
-        return this._.map(this.dscmy.right.source, 'Name')
+        return this._.map(this.dscmy.right.source, 'TABLE_NAME')
       },
       columnNameMaster (){
-        return this._.map(this._.flattenDeep(this._.map(this.dscmy.right.source, 'Columns')), 'Name')
+        return this._.map(this._.flattenDeep(this._.map(this.dscmy.right.source, 'Columns')), 'COLUMN_NAME')
       },
       excelData () {
         var res = [];
@@ -410,7 +406,7 @@ export default {
           this.dscmy.right.display = this._.filter(this.dscmy.right.display, (val) => val.TABLE_NAME.indexOf(this.searchForm.tableName) != -1);
         if(this.searchForm.columnName) {
           this._.each(this.dscmy.right.display, (v, i) => {
-            this.dscmy.right.display[i].Columns = this._.filter(this.dscmy.right.display[i].Columns, (w) => w.TABLE_NAME.indexOf(this.searchForm.columnName) != -1);
+            this.dscmy.right.display[i].Columns = this._.filter(this.dscmy.right.display[i].Columns, (w) => w.COLUMN_NAME.indexOf(this.searchForm.columnName) != -1);
             this.dscmy.right.display = this._.filter(this.dscmy.right.display, (w) => w.Columns.length > 0)
           });
         }
@@ -424,7 +420,7 @@ export default {
         this.searchForm.itamID = '';
         this.searchForm.country = '';
         this.searchForm.tableName = '';
-        this.searchForm.colName = '';
+        this.searchForm.columnName = '';
 
         // /* Trick to reset/clear native browser form validation state */
         // this.searchForm.show = false;
