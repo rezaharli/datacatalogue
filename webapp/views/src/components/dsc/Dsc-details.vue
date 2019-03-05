@@ -413,15 +413,10 @@ export default {
         if (this.dscmy.detailsSource.length > 0){
           this.selectedDetails = this.dscmy.detailsSource[0];
           this.selectedDetails.CDE = this.selectedDetails.CDE != 0 ? "Yes" : "No";
-          this.selectedDetails.STATUS = this.selectedDetails.STATUS ? this.selectedDetails.STATUS : "NA";
-          this.selectedDetails.DATA_TYPE = this.selectedDetails.DATA_TYPE ? this.selectedDetails.DATA_TYPE : "NA";
-          this.selectedDetails.DATA_FORMAT = this.selectedDetails.DATA_FORMAT ? this.selectedDetails.DATA_FORMAT : "NA";
-          this.selectedDetails.DATA_LENGTH = this.selectedDetails.DATA_LENGTH ? this.selectedDetails.DATA_LENGTH : "NA";
-          this.selectedDetails.EXAMPLE = this.selectedDetails.EXAMPLE ? this.selectedDetails.EXAMPLE : "NA";
-          this.selectedDetails.DERIVED = this.selectedDetails.DERIVED ? this.selectedDetails.DERIVED : "NA";
-          this.selectedDetails.DERIVATION_LOGIC = this.selectedDetails.DERIVATION_LOGIC ? this.selectedDetails.DERIVATION_LOGIC : "NA";
-          this.selectedDetails.SOURCED_FROM_UPSTREAM = this.selectedDetails.SOURCED_FROM_UPSTREAM ? this.selectedDetails.SOURCED_FROM_UPSTREAM : "NA";
-          this.selectedDetails.SYSTEM_CHECKS = this.selectedDetails.SYSTEM_CHECKS ? this.selectedDetails.SYSTEM_CHECKS : "NA";
+
+          Object.keys(this.selectedDetails).forEach((val) => {
+            this.selectedDetails[val] = !!this.selectedDetails[val] ? this.selectedDetails[val] : "NA";
+          });
 
           this.ddTable.selected = this.selectedDetails.TABLE_NAME;
           this.ddColumn.selected = this.selectedDetails.COLUMN_NAME;

@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"time"
 
+	"git.eaciitapp.com/sebar/dbflex"
 	"github.com/eaciit/toolkit"
 	"github.com/icrowley/fake"
 
@@ -14,6 +15,16 @@ import (
 
 func (s *DSCService) CreateUserDummyData() error {
 	toolkit.Println("CreateUserAdminData")
+
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewSysUserModel().TableName(),
+		Clause:    dbflex.Eq("username", 123),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
 	data := m.NewSysUserModel()
 	data.ID = 1
 	data.Username = 123
@@ -25,13 +36,12 @@ func (s *DSCService) CreateUserDummyData() error {
 	data.CreatedAt = time.Now().String()
 	data.UpdatedAt = time.Now().String()
 
-	data.Password = NewUserService().HashPassword(data.Password)
-
-	err := h.NewDBcmd().Insert(h.InsertParam{
-		TableName: m.NewSysUserModel().TableName(),
-		Data:      data,
-	})
-	if err != nil {
+	ok, err := NewUserService().Insert(data)
+	if !ok && err != nil {
+		log.Println(err.Error())
+		return err
+	}
+	if ok && err != nil {
 		log.Println(err.Error())
 		return err
 	}
@@ -54,7 +64,7 @@ func (s *DSCService) CreateSystemDummyData() error {
 		system := m.NewSystemModel()
 		system.ID = i
 		system.System_Name = fake.Words()
-		system.ITAM_ID = fake.Day()
+		system.ITAM_ID = toolkit.ToInt(fake.DigitsN(3), "")
 
 		data = append(data, system)
 	}
@@ -89,7 +99,7 @@ func (s *DSCService) CreateMDResourceDummyData() error {
 		mdt.Name = fake.Words()
 		mdt.Type = fake.Words()
 		mdt.Description = fake.Words()
-		mdt.System_ID = fake.Day()
+		mdt.System_ID = toolkit.ToInt(fake.DigitsN(3), "")
 
 		data = append(data, mdt)
 	}
@@ -121,13 +131,13 @@ func (s *DSCService) CreateMDTableDummyData() error {
 	for i := 0; i < 1000; i++ {
 		mdt := m.NewMDTableModel()
 		mdt.ID = i
-		mdt.Resource_ID = fake.Day()
+		mdt.Resource_ID = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.Schema_Name = fake.Words()
 		mdt.Name = fake.Words()
 		mdt.UUID = fake.Words()
 		mdt.Type = fake.Words()
 		mdt.Description = fake.Words()
-		mdt.Business_Term_ID = fake.Day()
+		mdt.Business_Term_ID = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.Status = rand.Intn(9)
 		mdt.Record_Category = fake.Words()
 
@@ -163,7 +173,7 @@ func (s *DSCService) CreatePeopleDummyData() error {
 		mdt.ID = i
 		mdt.First_Name = fake.Words()
 		mdt.Last_Name = fake.Words()
-		mdt.Bank_ID = fake.WordsN(7)[0:7]
+		mdt.Bank_ID = toolkit.ToString(i)
 		mdt.Email_ID = fake.Words()
 		mdt.Function = fake.Words()
 		mdt.Org_Unit = fake.Words()
@@ -199,15 +209,15 @@ func (s *DSCService) CreateMDColumnDummyData() error {
 	for i := 0; i < 1000; i++ {
 		mdt := m.NewMDColumnModel()
 		mdt.ID = i
-		mdt.Table_ID = fake.Day()
+		mdt.Table_ID = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.Name = fake.Words()
 		mdt.UUID = fake.Words()
 		mdt.Type = fake.Words()
 		mdt.Description = fake.Words()
-		mdt.Business_Term_ID = fake.Day()
+		mdt.Business_Term_ID = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.Data_Type = fake.Words()
 		mdt.Data_Format = fake.Words()
-		mdt.Data_Length = fake.Day()
+		mdt.Data_Length = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.Example = fake.Words()
 		mdt.Derived = rand.Intn(9)
 		mdt.Derivation_Logic = fake.Words()
@@ -216,20 +226,20 @@ func (s *DSCService) CreateMDColumnDummyData() error {
 		mdt.CDE = rand.Intn(9)
 		mdt.Sourced_from_Upstream = rand.Intn(9)
 		mdt.System_Checks = fake.Words()
-		mdt.Imm_Prec_System_ID = fake.Day()
+		mdt.Imm_Prec_System_ID = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.Imm_Prec_System_SLA = rand.Intn(9)
 		mdt.Imm_Prec_System_OLA = rand.Intn(9)
-		mdt.Imm_Succ_System_ID = fake.Day()
+		mdt.Imm_Succ_System_ID = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.Imm_Succ_System_SLA = rand.Intn(9)
 		mdt.Imm_Succ_System_OLA = rand.Intn(9)
 		mdt.Data_SLA_Signed = rand.Intn(9)
 		mdt.Golden_Source = rand.Intn(9)
 		mdt.DQ_Standards = fake.Words()
-		mdt.Threshold = fake.Day()
+		mdt.Threshold = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.DPO_DQ_Standards = fake.Words()
-		mdt.DPO_Threshold = fake.Day()
+		mdt.DPO_Threshold = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.DDO_DQ_Standards = fake.Words()
-		mdt.DDO_Threshold = fake.Day()
+		mdt.DDO_Threshold = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.PII_Flag = rand.Intn(9)
 		mdt.Record_Category = fake.Words()
 
@@ -264,22 +274,22 @@ func (s *DSCService) CreateBusinessTermDummyData() error {
 		mdt := m.NewBusinessTermModel()
 		mdt.ID = i
 		mdt.BT_Name = fake.Words()
-		mdt.Parent_ID = fake.Day()
+		mdt.Parent_ID = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.Description = fake.Words()
 		mdt.CDE = rand.Intn(9)
 		mdt.CDE_Rationale = fake.Words()
 		mdt.Mandatory = rand.Intn(9)
-		mdt.Policy_ID = fake.Day()
+		mdt.Policy_ID = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.Policy_Guidance = fake.Words()
 		mdt.DQ_Standards = fake.Words()
-		mdt.Threshold = fake.Day()
-		mdt.Golden_Source_System_ID = fake.Day()
-		mdt.Golden_Source_ITAM_ID = fake.Day()
-		mdt.Golden_Source_TableName_ID = fake.Day()
-		mdt.Golden_Source_Column_ID = fake.Day()
-		mdt.Target_Golden_Source_ID = fake.Day()
+		mdt.Threshold = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Golden_Source_System_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Golden_Source_ITAM_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Golden_Source_TableName_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Golden_Source_Column_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Target_Golden_Source_ID = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.DDO_DQ_Standards = fake.Words()
-		mdt.DDO_Threshold = fake.Day()
+		mdt.DDO_Threshold = toolkit.ToInt(fake.DigitsN(3), "")
 
 		data = append(data, mdt)
 	}
@@ -313,7 +323,7 @@ func (s *DSCService) CreateSubCategoryDummyData() error {
 		mdt.ID = i
 		mdt.Name = fake.Words()
 		mdt.Type = fake.Words()
-		mdt.Category_ID = fake.Day()
+		mdt.Category_ID = toolkit.ToInt(fake.DigitsN(3), "")
 
 		data = append(data, mdt)
 	}
@@ -380,10 +390,10 @@ func (s *DSCService) CreatePolicyDummyData() error {
 		mdt.ID = i
 		mdt.Info_Asset_Name = fake.Words()
 		mdt.Description = fake.Words()
-		mdt.Confidentiality = fake.Day()
-		mdt.Integrity = fake.Day()
-		mdt.Availability = fake.Day()
-		mdt.Overall_CIA_Rating = fake.Day()
+		mdt.Confidentiality = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Integrity = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Availability = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Overall_CIA_Rating = toolkit.ToInt(fake.DigitsN(3), "")
 
 		data = append(data, mdt)
 	}
@@ -416,7 +426,7 @@ func (s *DSCService) CreateDSProcessesDummyData() error {
 		mdt := m.NewDSProcessesModel()
 		mdt.ID = i
 		mdt.Name = fake.Words()
-		mdt.Owner_ID = fake.Day()
+		mdt.Owner_ID = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.Owner_Name = fake.Words()
 
 		data = append(data, mdt)
@@ -449,11 +459,11 @@ func (s *DSCService) CreateDSProcessesDetailDummyData() error {
 	for i := 0; i < 1000; i++ {
 		mdt := m.NewDSProcessesDetailModel()
 		mdt.ID = i
-		mdt.Process_ID = fake.Day()
-		mdt.Business_Term_ID = fake.Day()
-		mdt.Segment_ID = fake.Day()
-		mdt.Imm_Prec_System_ID = fake.Day()
-		mdt.Ultimate_Source_System_ID = fake.Day()
+		mdt.Process_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Business_Term_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Segment_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Imm_Prec_System_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Ultimate_Source_System_ID = toolkit.ToInt(fake.DigitsN(3), "")
 
 		data = append(data, mdt)
 	}
@@ -486,7 +496,7 @@ func (s *DSCService) CreateSegmentDummyData() error {
 		mdt := m.NewSegmentModel()
 		mdt.ID = i
 		mdt.Name = fake.Words()
-		mdt.Subdomain_ID = fake.Day()
+		mdt.Subdomain_ID = toolkit.ToInt(fake.DigitsN(3), "")
 
 		data = append(data, mdt)
 	}
@@ -518,8 +528,8 @@ func (s *DSCService) CreateLinkSubcategoryPeopleDummyData() error {
 	for i := 0; i < 1000; i++ {
 		mdt := m.NewLinkSubcategoryPeopleModel()
 		mdt.ID = i
-		mdt.Subcategory_ID = fake.Day()
-		mdt.People_ID = fake.Day()
+		mdt.Subcategory_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.People_ID = toolkit.ToInt(fake.DigitsN(3), "")
 
 		data = append(data, mdt)
 	}
@@ -552,9 +562,9 @@ func (s *DSCService) CreatePriorityReportsDummyData() error {
 		mdt := m.NewPriorityReportsModel()
 		mdt.ID = i
 		mdt.Name = fake.Words()
-		mdt.Owner_ID = fake.Day()
-		mdt.Lead_ID = fake.Day()
-		mdt.Sub_Risk_Type_ID = fake.Day()
+		mdt.Owner_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Lead_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Sub_Risk_Type_ID = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.Rationale = fake.Words()
 
 		data = append(data, mdt)
@@ -588,7 +598,7 @@ func (s *DSCService) CreateCRMDummyData() error {
 		mdt := m.NewCRMModel()
 		mdt.ID = i
 		mdt.Name = fake.Words()
-		mdt.Prority_Report_ID = fake.Day()
+		mdt.Prority_Report_ID = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.CRM_Rationale = fake.Words()
 
 		data = append(data, mdt)
@@ -621,8 +631,8 @@ func (s *DSCService) CreateLinkCRMCDEDummyData() error {
 	for i := 0; i < 1000; i++ {
 		mdt := m.NewLinkCRMCDEModel()
 		mdt.ID = i
-		mdt.CRM_ID = fake.Day()
-		mdt.CDE_ID = fake.Day()
+		mdt.CRM_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.CDE_ID = toolkit.ToInt(fake.DigitsN(3), "")
 
 		data = append(data, mdt)
 	}
@@ -654,8 +664,8 @@ func (s *DSCService) CreateLinkCategoryPeopleDummyData() error {
 	for i := 0; i < 1000; i++ {
 		mdt := m.NewLinkCategoryPeopleModel()
 		mdt.ID = i
-		mdt.Category_ID = fake.Day()
-		mdt.People_ID = fake.Day()
+		mdt.Category_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.People_ID = toolkit.ToInt(fake.DigitsN(3), "")
 
 		data = append(data, mdt)
 	}
@@ -687,8 +697,9 @@ func (s *DSCService) CreateLinkRolePeopleDummyData() error {
 	for i := 0; i < 1000; i++ {
 		mdt := m.NewLinkRolePeopleModel()
 		mdt.ID = i
+		mdt.People_ID = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.Object_Type = "SYSTEM"
-		mdt.Object_ID = fake.Day()
+		mdt.Object_ID = toolkit.ToInt(fake.DigitsN(3), "")
 
 		data = append(data, mdt)
 	}

@@ -29,7 +29,7 @@ table.v-table thead th > div.btn-group {
           <b-row>
             <b-col>
               <div class="input-group mb-3">
-                <input v-model="dscmy.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <input v-model="dscall.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
                 <div class="input-group-append">
                   <b-dropdown right id="ddown1" text="">
                     <b-container>
@@ -87,14 +87,14 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <v-data-table
                   :headers="firstTableHeaders"
-                  :items="dscmy.left.display"
-                  :pagination.sync="dscmy.left.pagination"
-                  :total-items="dscmy.left.totalItems"
-                  :loading="dscmy.left.loading"
+                  :items="dscall.left.display"
+                  :pagination.sync="dscall.left.pagination"
+                  :total-items="dscall.left.totalItems"
+                  :loading="dscall.left.loading"
                   class="elevation-1 fixed-header">
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dscmy.left.source).length }})
+                  {{ props.header.text }} ({{ distinctData(props.header.value, dscall.left.source).length }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -106,7 +106,7 @@ table.v-table thead th > div.btn-group {
                       <b-form-input type="text" placeholder="Filter" v-model="search['systems'][props.header.value]" @change="filterKeyup('systems', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscmy.left.source)" :key="item" @click="columnFilter('systems', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscall.left.source)" :key="item" @click="columnFilter('systems', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -115,11 +115,11 @@ table.v-table thead th > div.btn-group {
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
                 <template slot="no-data">
-                  <v-alert :value="dscmy.left.loading" type="info">
+                  <v-alert :value="dscall.left.loading" type="info">
                     Please wait while data is loading
                   </v-alert>
 
-                  <v-alert :value="!dscmy.left.loading" type="error">
+                  <v-alert :value="!dscall.left.loading" type="error">
                     Sorry, nothing to display here
                   </v-alert>
                 </template>
@@ -136,10 +136,10 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <v-data-table
                   :headers="secondTableHeaders"
-                  :items="dscmy.right.display"
-                  :pagination.sync="dscmy.right.pagination"
-                  :total-items="dscmy.right.totalItems"
-                  :loading="dscmy.right.loading"
+                  :items="dscall.right.display"
+                  :pagination.sync="dscall.right.pagination"
+                  :total-items="dscall.right.totalItems"
+                  :loading="dscall.right.loading"
                   :expand="false"
                   v-if="secondtable"
                   item-key="ID"
@@ -147,17 +147,17 @@ table.v-table thead th > div.btn-group {
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
                 <template slot="no-data">
-                  <v-alert :value="dscmy.right.loading" type="info">
+                  <v-alert :value="dscall.right.loading" type="info">
                     Please wait while data is loading
                   </v-alert>
 
-                  <v-alert :value="!dscmy.right.loading" type="error">
+                  <v-alert :value="!dscall.right.loading" type="error">
                     Sorry, nothing to display here
                   </v-alert>
                 </template>
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dscmy.right.source).length }})
+                  {{ props.header.text }} ({{ distinctData(props.header.value, dscall.right.source).length }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -169,7 +169,7 @@ table.v-table thead th > div.btn-group {
                       <b-form-input type="text" placeholder="Filter" v-model="search['tablename'][props.header.value]" @change="filterKeyup('tablename', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscmy.right.source)" :key="item" @click="columnFilter('tablename', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscall.right.source)" :key="item" @click="columnFilter('tablename', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -264,22 +264,22 @@ export default {
     },
     computed: {
       ...mapState({
-        dscmy: state => state.dscmy.all
+        dscall: state => state.dscall.all
       }),
       addressPath (){
         var tmp = this.$route.path.split("/")
         return tmp.slice(0, 3).join("/")
       },
       tablenameMaster (){
-        return this._.map(this.dscmy.right.source, 'Name')
+        return this._.map(this.dscall.right.source, 'Name')
       },
       columnNameMaster (){
-        return this._.map(this._.flattenDeep(this._.map(this.dscmy.right.source, 'Columns')), 'Name')
+        return this._.map(this._.flattenDeep(this._.map(this.dscall.right.source, 'Columns')), 'Name')
       },
       excelData () {
         var res = [];
 
-        this._.each(this.dscmy.left.display, (system, i) => {
+        this._.each(this.dscall.left.display, (system, i) => {
           var temp = {
             SYSTEM_NAME: system.SYSTEM_NAME,
             ITAM_ID: system.ITAM_ID,
@@ -287,7 +287,7 @@ export default {
             BANK_ID: system.BANK_ID,
           }
 
-          var tables = this._.filter(this.dscmy.right.display, (v) => v.TSID == system.ID)
+          var tables = this._.filter(this.dscall.right.display, (v) => v.TSID == system.ID)
           if(tables.length > 0){
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
@@ -326,13 +326,13 @@ export default {
           this.getRightTable(this.$route.params.system);
         }
       },
-      "dscmy.left.pagination": {
+      "dscall.left.pagination": {
         handler () {
           this.getLeftTable();
         },
         deep: true
       },
-      "dscmy.right.pagination": {
+      "dscall.right.pagination": {
         handler () {
           if(this.secondtable){
             this.getRightTable(this.$route.params.system);
@@ -340,7 +340,7 @@ export default {
         },
         deep: true
       },
-      "dscmy.searchMain" (val, oldVal){
+      "dscall.searchMain" (val, oldVal){
         if(val || oldVal) {
           this.getLeftTable();
 
@@ -354,24 +354,24 @@ export default {
       this.secondtable = this.$route.params.system;
     },
     methods: {
-      ...mapActions('dscmy', {
+      ...mapActions('dscall', {
           getLeftTable: 'getLeftTable',
           getRightTable: 'getRightTable',
       }),
       columnFilter (type, keyModel, val) {
         if(val == ""){
           if(type == "systems"){
-            this.dscmy.left.display = this.dscmy.left.source;
+            this.dscall.left.display = this.dscall.left.source;
           } else {
-            this.dscmy.right.display = this.dscmy.right.source;
+            this.dscall.right.display = this.dscall.right.source;
           }
           return
         }
 
         if(type == "systems"){
-          this.dscmy.left.display = _.filter(this.dscmy.left.source, [keyModel.value, val]);
+          this.dscall.left.display = _.filter(this.dscall.left.source, [keyModel.value, val]);
         } else {
-          this.dscmy.right.display = _.filter(this.dscmy.right.source, [keyModel.value, val]);
+          this.dscall.right.display = _.filter(this.dscall.right.source, [keyModel.value, val]);
         }
       },
       filterKeyup (type, keyModel) {
@@ -400,18 +400,18 @@ export default {
       onSubmit (evt) {
         evt.preventDefault();
 
-        this.dscmy.left.display = this.dscmy.left.source;
-        this.dscmy.right.display = this.dscmy.right.source;
+        this.dscall.left.display = this.dscall.left.source;
+        this.dscall.right.display = this.dscall.right.source;
         if(this.searchForm.systemName)
-          this.dscmy.left.display = this._.filter(this.dscmy.left.display, (val) => val.SYSTEM_NAME.indexOf(this.searchForm.systemName) != -1);
+          this.dscall.left.display = this._.filter(this.dscall.left.display, (val) => val.SYSTEM_NAME.indexOf(this.searchForm.systemName) != -1);
         if(this.searchForm.itamID)
-          this.dscmy.left.display = this._.filter(this.dscmy.left.display, (val) => val.ITAM_ID.toString().indexOf(this.searchForm.itamID) != -1);
+          this.dscall.left.display = this._.filter(this.dscall.left.display, (val) => val.ITAM_ID.toString().indexOf(this.searchForm.itamID) != -1);
         if(this.searchForm.tableName)
-          this.dscmy.right.display = this._.filter(this.dscmy.right.display, (val) => val.TABLE_NAME.indexOf(this.searchForm.tableName) != -1);
+          this.dscall.right.display = this._.filter(this.dscall.right.display, (val) => val.TABLE_NAME.indexOf(this.searchForm.tableName) != -1);
         if(this.searchForm.columnName) {
-          this._.each(this.dscmy.right.display, (v, i) => {
-            this.dscmy.right.display[i].Columns = this._.filter(this.dscmy.right.display[i].Columns, (w) => w.TABLE_NAME.indexOf(this.searchForm.columnName) != -1);
-            this.dscmy.right.display = this._.filter(this.dscmy.right.display, (w) => w.Columns.length > 0)
+          this._.each(this.dscall.right.display, (v, i) => {
+            this.dscall.right.display[i].Columns = this._.filter(this.dscall.right.display[i].Columns, (w) => w.TABLE_NAME.indexOf(this.searchForm.columnName) != -1);
+            this.dscall.right.display = this._.filter(this.dscall.right.display, (w) => w.Columns.length > 0)
           });
         }
 

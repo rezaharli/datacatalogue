@@ -17,10 +17,7 @@ const actions = {
     getLeftTable({ commit }) {
         commit('getLeftTableRequest');
 
-        var user = JSON.parse(localStorage.getItem("user"));
-
         var param = {
-            LoggedInID: user.Username,
             Search: state.all.searchMain,
             Pagination: state.all.left.pagination
         }
@@ -100,7 +97,7 @@ const mutations = {
     },
 };
 
-export const dscmy = {
+export const dscall = {
     namespaced: true,
     state,
     actions,

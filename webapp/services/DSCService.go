@@ -15,7 +15,7 @@ func NewDSCService() *DSCService {
 	return ret
 }
 
-func (s *DSCService) GetAllSystem(search string, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
+func (s *DSCService) GetAllSystem(loggedinid, search string, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -41,13 +41,19 @@ func (s *DSCService) GetAllSystem(search string, pageNumber, rowsPerPage int, fi
 			upper(tlrp.object_type) = upper('system')
 			AND tmc.cde = 1 `
 
+	if loggedinid != "" {
+		a := toolkit.ToInt(loggedinid, "")
+		toolkit.Println(a)
+		q += `AND tp.bank_id = '` + toolkit.ToString(a) + `' `
+	}
+
 	if search != "" {
 		q += `
 			AND
 				upper(ts.system_name) LIKE upper('%` + search + `%')
 				OR upper(ts.itam_id) LIKE upper('%` + search + `%')
 				OR upper(tp.first_name) LIKE upper('%` + search + `%')
-				OR upper(tp.bank_id) LIKE upper('%` + search + `%')`
+				OR upper(tp.bank_id) LIKE upper('%` + search + `%') `
 	}
 
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
