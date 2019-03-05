@@ -290,6 +290,7 @@ export default {
         'Table Name': 'selectedDetails.TABLE_NAME',
         'Column Name': 'selectedDetails.COLUMN_NAME',
         'Business Alias Name*': 'selectedDetails.ALIAS_NAME',
+        'Business Description*': 'selectedDetails.BUSINESS_DESCRIPTION',
         'CDE (yes/no)': 'selectedDetails.CDE',
         'Status*': 'selectedDetails.STATUS',
         'Data Type': 'selectedDetails.DATA_TYPE',
