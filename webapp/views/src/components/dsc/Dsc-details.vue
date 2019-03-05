@@ -327,7 +327,13 @@ export default {
       return _.uniq(_.map(this.dscmy.DDSource, "TABLE_NAME"))
     },
     ddColumnOptions () {
-      return _.uniq(_.map(this.dscmy.DDSource, "COLUMN_NAME"))
+      var self = this;
+      var filtered = _.filter(self.dscmy.DDSource, function(v){
+        return v.TABLE_NAME == self.ddTable.selected;
+      });
+
+      self.ddScreenLabel.selected = filtered[0].COLUMN_NAME;
+      return _.uniq(_.map(filtered, "COLUMN_NAME"));
     },
     ddScreenLabelOptions () {
       var self = this;
