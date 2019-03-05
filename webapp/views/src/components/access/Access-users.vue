@@ -120,7 +120,7 @@ table.v-table thead th > div.btn-group {
                                 <td>{{ props.item.CreatedAt }}</td>
                                 <td>{{ props.item.UpdatedAt }}</td>
                                 <td class="justify-center layout px-0">
-                                    <v-icon
+                                    <!-- <v-icon
                                         small
                                         class="mr-2"
                                         @click="editItem(props.item)"
@@ -129,7 +129,7 @@ table.v-table thead th > div.btn-group {
                                     <v-icon
                                         small
                                         @click="deleteItem(props.item)"
-                                    >delete</v-icon>
+                                    >delete</v-icon> -->
                                 </td>
                             </tr>
                         </template>

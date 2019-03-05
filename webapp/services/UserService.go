@@ -7,6 +7,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/icrowley/fake"
+
 	"github.com/eaciit/toolkit"
 
 	"git.eaciitapp.com/sebar/dbflex"
@@ -76,23 +78,76 @@ func (s *UserService) GetAll(sortKey, sortOrder string, skip, take int, filter t
 	return resultRows, resultTotal, nil
 }
 
-func (s *UserService) isUserIDRegisteredOnTblPeople(username int) (bool, error) {
+func (s *UserService) getRegisteredPeople(username int) ([]m.People, error) {
 	people := make([]m.People, 0)
-
 	err := h.NewDBcmd().GetBy(h.GetByParam{
 		TableName: m.NewPeopleModel().TableName(),
 		Clause:    dbflex.Eq("ID", username),
 		Result:    &people,
 	})
 	if err != nil {
-		return false, err
+		return nil, err
 	}
 
 	if len(people) > 0 {
-		return true, nil
+		return people, nil
 	}
 
-	return false, err
+	return nil, err
+}
+
+func (s *UserService) insertLinkRolePeople(people m.People, role string) (err error) {
+	roles := strings.Split(role, ",")
+	for _, role := range roles {
+		q := `SELECT max(ID)+1 as NEWID from ` + m.NewLinkRolePeopleModel().TableName()
+
+		resultRows := make([]toolkit.M, 0)
+		err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+			TableName: m.NewLinkRolePeopleModel().TableName(),
+			SqlQuery:  q,
+			Results:   &resultRows,
+		})
+		if err != nil {
+			return
+		}
+
+		toolkit.Println("role--------", role)
+		if role == "DSC" {
+			newlrp := m.NewLinkRolePeopleModel()
+			newlrp.ID = resultRows[0].GetInt("NEWID")
+			newlrp.People_ID = people.ID
+			newlrp.Role_ID = 1
+			newlrp.Object_Type = "SYSTEM"
+			newlrp.Object_ID = fake.Day() ///// WARNING !!!!!!!!!!!
+
+			toolkit.Println(newlrp)
+			err = h.NewDBcmd().Insert(h.InsertParam{
+				Data:      newlrp,
+				TableName: newlrp.TableName(),
+			})
+			if err != nil {
+				return
+			}
+		} else if role == "DPO" {
+			newlrp := m.NewLinkRolePeopleModel()
+			newlrp.ID = resultRows[0].GetInt("NEWID")
+			newlrp.People_ID = people.ID
+			newlrp.Role_ID = 2
+			newlrp.Object_Type = "PROCESSES"
+			newlrp.Object_ID = fake.Day() ///// WARNING !!!!!!!!!!!
+
+			toolkit.Println(newlrp)
+			err = h.NewDBcmd().Insert(h.InsertParam{
+				Data:      newlrp,
+				TableName: newlrp.TableName(),
+			})
+			if err != nil {
+				return
+			}
+		}
+	}
+
+	return
 }
 
 func (s *UserService) Insert(data *m.SysUser) (bool, error) {
@@ -113,12 +168,12 @@ func (s *UserService) Insert(data *m.SysUser) (bool, error) {
 		return true, fmt.Errorf("The same username already exists")
 	}
 
-	isIDRegistered, err := s.isUserIDRegisteredOnTblPeople(data.Username)
+	registeredPeople, err := s.getRegisteredPeople(data.Username)
 	if err != nil {
 		return false, err
 	}
 
-	if isIDRegistered {
+	if len(registeredPeople) > 0 {
 		data.Password = s.HashPassword(data.Password)
 
 		dataM, err := toolkit.ToM(data)
@@ -137,6 +192,11 @@ func (s *UserService) Insert(data *m.SysUser) (bool, error) {
 			if strings.Contains(err.Error(), "duplicate key") {
 				return true, fmt.Errorf("Different data with same ID already exists")
 			}
+		}
+
+		err = s.insertLinkRolePeople(registeredPeople[0], data.Role)
+		if err != nil {
+			return false, err
 		}
 
 		return true, nil
