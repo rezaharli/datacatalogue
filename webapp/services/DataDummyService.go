@@ -5,7 +5,6 @@ import (
 	"math/rand"
 	"time"
 
-	"git.eaciitapp.com/sebar/dbflex"
 	"github.com/eaciit/toolkit"
 	"github.com/icrowley/fake"
 
@@ -16,14 +15,14 @@ import (
 func (s *DSCService) CreateUserDummyData() error {
 	toolkit.Println("CreateUserAdminData")
 
-	err := h.NewDBcmd().Delete(h.DeleteParam{
-		TableName: m.NewSysUserModel().TableName(),
-		Clause:    dbflex.Eq("username", 123),
-	})
-	if err != nil {
-		log.Println(err.Error())
-		return err
-	}
+	// err := h.NewDBcmd().Delete(h.DeleteParam{
+	// 	TableName: m.NewSysUserModel().TableName(),
+	// 	Clause:    dbflex.Eq("username", 123),
+	// })
+	// if err != nil {
+	// 	log.Println(err.Error())
+	// 	return err
+	// }
 
 	data := m.NewSysUserModel()
 	data.ID = 1
