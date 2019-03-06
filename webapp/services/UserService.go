@@ -191,6 +191,8 @@ func (s *UserService) Insert(data *m.SysUser) (bool, error) {
 		if err != nil {
 			if strings.Contains(err.Error(), "duplicate key") {
 				return true, fmt.Errorf("Different data with same ID already exists")
+			} else {
+				return false, err
 			}
 		}
 
