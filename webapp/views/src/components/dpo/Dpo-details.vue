@@ -13,7 +13,7 @@
 .form-group {
   margin-bottom: 10px !important;
 }
-.col-form-label {
+legend.col-form-label, label.col-form-label {
     font-weight: bolder;
 }
 </style>

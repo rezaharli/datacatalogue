@@ -13,7 +13,7 @@
 .form-group {
   margin-bottom: 10px !important;
 }
-.col-form-label {
+legend.col-form-label, label.col-form-label {
     font-weight: bolder;
 }
 </style>
@@ -51,37 +51,37 @@
           <b-card tag="article" class="mb-2">
             <b-media class="left-card-media" >
               <h6 class="left-card-title">System Name</h6>
-              <p v-html="selectedDetails.SYSTEM_NAME" v-if="selectedDetails"></p>
+              <p class="col-form-label" v-html="selectedDetails.SYSTEM_NAME" v-if="selectedDetails"></p>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">ITAM ID</h6>
-              <p v-html="selectedDetails.ITAM_ID" v-if="selectedDetails"></p>
+              <p class="col-form-label" v-html="selectedDetails.ITAM_ID" v-if="selectedDetails"></p>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Dataset Custodian</h6>
-              <p v-html="selectedDetails.FIRST_NAME" v-if="selectedDetails"></p>
+              <p class="col-form-label" v-html="selectedDetails.FIRST_NAME" v-if="selectedDetails"></p>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Bank ID</h6>
-              <p v-html="selectedDetails.BANK_ID" v-if="selectedDetails"></p>
+              <p class="col-form-label" v-html="selectedDetails.BANK_ID" v-if="selectedDetails"></p>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Business Alias Name</h6>
-              <p v-html="selectedDetails.ALIAS_NAME" v-if="selectedDetails"></p>
+              <p class="col-form-label" v-html="selectedDetails.ALIAS_NAME" v-if="selectedDetails"></p>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Table Name</h6>
-              <p v-html="selectedDetails.TABLE_NAME" v-if="selectedDetails"></p>
+              <p class="col-form-label" v-html="selectedDetails.TABLE_NAME" v-if="selectedDetails"></p>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Column Name</h6>
-              <p v-html="selectedDetails.COLUMN_NAME" v-if="selectedDetails"></p>
+              <p class="col-form-label" v-html="selectedDetails.COLUMN_NAME" v-if="selectedDetails"></p>
             </b-media>
           </b-card>
         </b-col>
@@ -106,7 +106,7 @@
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Description*">
                       <v-dialog v-model="dialog" width="500" v-if="selectedDetails">
-                        <p slot="activator" v-html="selectedDetails.BUSINESS_DESCRIPTION"><b-link>[more]</b-link></p>
+                        <p slot="activator" class="col-form-label" v-html="selectedDetails.BUSINESS_DESCRIPTION"><b-link>[more]</b-link></p>
 
                         <v-card>
                           <v-card-text v.html="selectedDetails.BUSINESS_DESCRIPTION">
@@ -117,43 +117,43 @@
                     </b-form-group>
                     
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="CDE (yes/no)">
-                      <p v-html="selectedDetails.CDE" v-if="selectedDetails"></p>
+                      <p class="col-form-label" v-html="selectedDetails.CDE" v-if="selectedDetails"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Status*">
-                      <p v-html="selectedDetails.STATUS" v-if="selectedDetails"></p>
+                      <p class="col-form-label" v-html="selectedDetails.STATUS" v-if="selectedDetails"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Type">
-                      <p v-html="selectedDetails.DATA_TYPE" v-if="selectedDetails"></p>
+                      <p class="col-form-label" v-html="selectedDetails.DATA_TYPE" v-if="selectedDetails"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Format">
-                      <p v-html="selectedDetails.DATA_FORMAT" v-if="selectedDetails"></p>
+                      <p class="col-form-label" v-html="selectedDetails.DATA_FORMAT" v-if="selectedDetails"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Length">
-                      <p v-html="selectedDetails.DATA_LENGTH" v-if="selectedDetails"></p>
+                      <p class="col-form-label" v-html="selectedDetails.DATA_LENGTH" v-if="selectedDetails"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Example">
-                      <p v-html="selectedDetails.EXAMPLE" v-if="selectedDetails"></p>
+                      <p class="col-form-label" v-html="selectedDetails.EXAMPLE" v-if="selectedDetails"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)*">
-                      <p v-html="selectedDetails.DERIVED" v-if="selectedDetails"></p>
+                      <p class="col-form-label" v-html="selectedDetails.DERIVED" v-if="selectedDetails"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation logic*">
-                      <p v-html="selectedDetails.DERIVATION_LOGIC" v-if="selectedDetails"></p>
+                      <p class="col-form-label" v-html="selectedDetails.DERIVATION_LOGIC" v-if="selectedDetails"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sourced from Upstream (Yes/No)*">
-                      <p v-html="selectedDetails.SOURCED_FROM_UPSTREAM" v-if="selectedDetails"></p>
+                      <p class="col-form-label" v-html="selectedDetails.SOURCED_FROM_UPSTREAM" v-if="selectedDetails"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Checks*">
-                      <p v-html="selectedDetails.SYSTEM_CHECKS" v-if="selectedDetails"></p>
+                      <p class="col-form-label" v-html="selectedDetails.SYSTEM_CHECKS" v-if="selectedDetails"></p>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -167,23 +167,23 @@
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain">
-                      <p v-html="selectedDetails.DOMAIN"></p>
+                      <p class="col-form-label" v-html="selectedDetails.DOMAIN"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Domain">
-                      <p v-html="selectedDetails.SUBDOMAIN"></p>
+                      <p class="col-form-label" v-html="selectedDetails.SUBDOMAIN"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain Owner">
-                      <p v-html="selectedDetails.DOMAIN_OWNER"></p>
+                      <p class="col-form-label" v-html="selectedDetails.DOMAIN_OWNER"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term*">
-                      <p v-html="selectedDetails.BT_NAME"></p>
+                      <p class="col-form-label" v-html="selectedDetails.BT_NAME"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
-                      <p v-html="selectedDetails.BUSINESS_DESCRIPTION"></p>
+                      <p class="col-form-label" v-html="selectedDetails.BUSINESS_DESCRIPTION"></p>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -197,35 +197,35 @@
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Names">
-                      <p v-html="selectedDetails.INFO_ASSET_NAME"></p>
+                      <p class="col-form-label" v-html="selectedDetails.INFO_ASSET_NAME"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Description">
-                      <p v-html="selectedDetails.INFO_ASSET_DESCRIPTION"></p>
+                      <p class="col-form-label" v-html="selectedDetails.INFO_ASSET_DESCRIPTION"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="C - Confidentiality">
-                      <p v-html="selectedDetails.CONFIDENTIALITY"></p>
+                      <p class="col-form-label" v-html="selectedDetails.CONFIDENTIALITY"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="I - Integrity">
-                      <p v-html="selectedDetails.INTEGRITY"></p>
+                      <p class="col-form-label" v-html="selectedDetails.INTEGRITY"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="A - Availability">
-                      <p v-html="selectedDetails.AVAILABILITY"></p>
+                      <p class="col-form-label" v-html="selectedDetails.AVAILABILITY"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Overall CIA Rating">
-                      <p v-html="selectedDetails.OVERALL_CIA_RATING"></p>
+                      <p class="col-form-label" v-html="selectedDetails.OVERALL_CIA_RATING"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Record Categories">
-                      <p v-html="selectedDetails.RECORD_CATEGORY"></p>
+                      <p class="col-form-label" v-html="selectedDetails.RECORD_CATEGORY"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="PII Flag">
-                      <p v-html="selectedDetails.PII_FLAG"></p>
+                      <p class="col-form-label" v-html="selectedDetails.PII_FLAG"></p>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -239,15 +239,15 @@
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Preceding System*">
-                      <p v-html="selectedDetails.IMM_PREC_SYSTEM_ID"></p>
+                      <p class="col-form-label" v-html="selectedDetails.IMM_PREC_SYSTEM_ID"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Succeeding System*">
-                      <p v-html="selectedDetails.IMM_SUCC_SYSTEM_ID"></p>
+                      <p class="col-form-label" v-html="selectedDetails.IMM_SUCC_SYSTEM_ID"></p>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards | Threshold*">
-                      <p v-html="selectedDetails.THRESHOLD"></p>
+                      <p class="col-form-label" v-html="selectedDetails.THRESHOLD"></p>
                     </b-form-group>
                   </b-form>
                 </p>
