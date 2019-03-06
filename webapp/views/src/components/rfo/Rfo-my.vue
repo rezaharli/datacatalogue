@@ -383,14 +383,14 @@ export default {
         this.rfomy.left.display = this.rfomy.left.source;
         this.rfomy.right.display = this.rfomy.right.source;
         if(this.searchForm.priorityReport)
-          this.rfomy.left.display = this._.filter(this.rfomy.left.display, (val) => val.NAME.toString().indexOf(this.searchForm.priorityReport) != -1);
+          this.rfomy.left.display = this._.filter(this.rfomy.left.display, (val) => val.NAME.toString().toUpperCase().indexOf(this.searchForm.priorityReport.toString().toUpperCase()) != -1);
         if(this.searchForm.riskReporting)
-          this.rfomy.left.display = this._.filter(this.rfomy.left.display, (val) => val.OWNER_ID.toString().indexOf(this.searchForm.riskReporting) != -1);
+          this.rfomy.left.display = this._.filter(this.rfomy.left.display, (val) => val.OWNER_ID.toString().toUpperCase().indexOf(this.searchForm.riskReporting.toString().toUpperCase()) != -1);
 
         if(this.searchForm.principalRisk)
-          this.rfomy.right.display = this._.filter(this.rfomy.right.display, (val) => val.PRINCIPAL_RISK_TYPE.toString().indexOf(this.searchForm.principalRisk) != -1);
+          this.rfomy.right.display = this._.filter(this.rfomy.right.display, (val) => val.PRINCIPAL_RISK_TYPE.toString().toUpperCase().indexOf(this.searchForm.principalRisk.toString().toUpperCase()) != -1);
         if(this.searchForm.subRisk)
-          this.rfomy.right.display = this._.filter(this.rfomy.right.display, (val) => val.RISK_SUB_TYPE.toString().indexOf(this.searchForm.subRisk) != -1);
+          this.rfomy.right.display = this._.filter(this.rfomy.right.display, (val) => val.RISK_SUB_TYPE.toString().toUpperCase().indexOf(this.searchForm.subRisk.toString().toUpperCase()) != -1);
 
         this.searchForm.show = false;
       },

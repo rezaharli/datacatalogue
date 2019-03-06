@@ -371,12 +371,12 @@ export default {
         this.dpomy.right.display = this.dpomy.right.source;
 
         if(this.searchForm.processName)
-          this.dpomy.left.display = this._.filter(this.dpomy.left.display, (val) => val.DOWNSTREAM_PROCESS.indexOf(this.searchForm.processName) != -1);
+          this.dpomy.left.display = this._.filter(this.dpomy.left.display, (val) => val.DOWNSTREAM_PROCESS.toString().toUpperCase().indexOf(this.searchForm.processName.toString().toUpperCase()) != -1);
         if(this.searchForm.processOwner)
-          this.dpomy.left.display = this._.filter(this.dpomy.left.display, (val) => val.PROCESS_OWNER.toString().indexOf(this.searchForm.processOwner) != -1);
+          this.dpomy.left.display = this._.filter(this.dpomy.left.display, (val) => val.PROCESS_OWNER.toString().toUpperCase().indexOf(this.searchForm.processOwner.toString().toUpperCase()) != -1);
 
         if(this.searchForm.cdeName)
-          this.dpomy.right.display = this._.filter(this.dpomy.right.display, (val) => val.CDE_NAME.toString().indexOf(this.searchForm.cdeName) != -1);
+          this.dpomy.right.display = this._.filter(this.dpomy.right.display, (val) => val.CDE_NAME.toString().toUpperCase().indexOf(this.searchForm.cdeName.toString().toUpperCase()) != -1);
 
         this.searchForm.show = false;
       },

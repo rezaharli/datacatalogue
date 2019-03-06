@@ -363,12 +363,12 @@ export default {
         this.ddomy.left.display = this.ddomy.left.source;
         this.ddomy.right.display = this.ddomy.right.source;
         if(this.searchForm.dataDomain)
-          this.ddomy.left.display = this._.filter(this.ddomy.left.display, (val) => val.DOMAIN.toString().indexOf(this.searchForm.dataDomain) != -1);
+          this.ddomy.left.display = this._.filter(this.ddomy.left.display, (val) => val.DOMAIN.toString().toUpperCase().indexOf(this.searchForm.dataDomain.toString().toUpperCase()) != -1);
         if(this.searchForm.subDataDomain)
-          this.ddomy.left.display = this._.filter(this.ddomy.left.display, (val) => val.SUB_DOMAIN.toString().indexOf(this.searchForm.subDataDomain) != -1);
+          this.ddomy.left.display = this._.filter(this.ddomy.left.display, (val) => val.SUB_DOMAIN.toString().toUpperCase().indexOf(this.searchForm.subDataDomain.toString().toUpperCase()) != -1);
 
         if(this.searchForm.businessTerm)
-          this.ddomy.right.display = this._.filter(this.ddomy.right.display, (val) => val.BT_NAME.indexOf(this.searchForm.businessTerm) != -1);
+          this.ddomy.right.display = this._.filter(this.ddomy.right.display, (val) => val.BT_NAME.toString().toUpperCase().indexOf(this.searchForm.businessTerm.toString().toUpperCase()) != -1);
         // if(this.searchForm.businessTerm) {
         //   this._.each(this.ddomy.right.display, (v, i) => {
         //     this.ddomy.right.display[i].Columns = this._.filter(this.ddomy.right.display[i].Columns, (w) => w.Name.indexOf(this.searchForm.businessTerm) != -1);

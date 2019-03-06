@@ -388,14 +388,14 @@ export default {
         this.dscinterfaces.left.display = this.dscinterfaces.left.source;
         this.dscinterfaces.right.display = this.dscinterfaces.right.source;
         if(this.searchForm.systemName)
-          this.dscinterfaces.left.display = this._.filter(this.dscinterfaces.left.display, (val) => val.SYSTEM_NAME.indexOf(this.searchForm.systemName) != -1);
+          this.dscinterfaces.left.display = this._.filter(this.dscinterfaces.left.display, (val) => val.SYSTEM_NAME.toString().toUpperCase().indexOf(this.searchForm.systemName.toString().toUpperCase()) != -1);
         if(this.searchForm.itamID)
-          this.dscinterfaces.left.display = this._.filter(this.dscinterfaces.left.display, (val) => val.ITAM_ID.toString().indexOf(this.searchForm.itamID) != -1);
+          this.dscinterfaces.left.display = this._.filter(this.dscinterfaces.left.display, (val) => val.ITAM_ID.toString().toUpperCase().indexOf(this.searchForm.itamID.toString().toUpperCase()) != -1);
         if(this.searchForm.tableName)
-          this.dscinterfaces.right.display = this._.filter(this.dscinterfaces.right.display, (val) => val.TABLE_NAME.indexOf(this.searchForm.tableName) != -1);
+          this.dscinterfaces.right.display = this._.filter(this.dscinterfaces.right.display, (val) => val.TABLE_NAME.toString().toUpperCase().indexOf(this.searchForm.tableName.toString().toUpperCase()) != -1);
         if(this.searchForm.columnName) {
           this._.each(this.dscinterfaces.right.display, (v, i) => {
-            this.dscinterfaces.right.display[i].Columns = this._.filter(this.dscinterfaces.right.display[i].COLUMN_NAME, (w) => w.COLUMN_NAME.indexOf(this.searchForm.columnName) != -1);
+            this.dscinterfaces.right.display[i].Columns = this._.filter(this.dscinterfaces.right.display[i].COLUMN_NAME, (w) => w.COLUMN_NAME.toString().toUpperCase().indexOf(this.searchForm.columnName.toString().toUpperCase()) != -1);
             this.dscinterfaces.right.display = this._.filter(this.dscinterfaces.right.display, (w) => w.Columns.length > 0)
           });
         }
