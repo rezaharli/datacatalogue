@@ -53,22 +53,22 @@ legend.col-form-label, label.col-form-labell {
           <b-card tag="article" class="mb-2" v-if="selectedDetails">
             <b-media class="left-card-media">
               <h6 class="left-card-title">Data Domain</h6>
-              <p v-html="selectedDetails.DATA_DOMAIN"></p>
+              <text-wrap-dialog :fulltext="selectedDetails.DATA_DOMAIN"></text-wrap-dialog>
             </b-media>
 
             <b-media class="left-card-media">
               <h6 class="left-card-title">Sub Domain</h6>
-              <p v-html="selectedDetails.SUB_DOMAIN"></p>
+              <text-wrap-dialog :fulltext="selectedDetails.SUB_DOMAIN"></text-wrap-dialog>
             </b-media>
 
             <b-media class="left-card-media">
               <h6 class="left-card-title">Sub Domain Owner</h6>
-              <p v-html="selectedDetails.SUB_DOMAIN_OWNER"></p>
+              <text-wrap-dialog :fulltext="selectedDetails.SUB_DOMAIN_OWNER"></text-wrap-dialog>
             </b-media>
 
             <b-media class="left-card-media">
               <h6 class="left-card-title">Bank ID</h6>
-              <p v-html="selectedDetails.BANK_ID"></p>
+              <text-wrap-dialog :fulltext="selectedDetails.BANK_ID"></text-wrap-dialog>
             </b-media>
           </b-card>
         </b-col>
@@ -100,7 +100,7 @@ legend.col-form-label, label.col-form-labell {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
-                      <p v-html="selectedDetails.BUSINESS_TERM_DESCRIPTION"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.BUSINESS_TERM_DESCRIPTION"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group
@@ -119,43 +119,43 @@ legend.col-form-label, label.col-form-labell {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="CDE (Yes/No)">
-                      <p v-html="selectedDetails.CDE"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.CDE"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Quality standards | DQ Thresholds">
-                      <p v-html="selectedDetails.DQ_STANDARDS"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.DQ_STANDARDS"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Policy guidance (if any)">
-                      <p v-html="selectedDetails.POLICY_GUIDANCE"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.POLICY_GUIDANCE"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Mandatory (Yes/No)">
-                      <p v-html="selectedDetails.MANDATORY"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.MANDATORY"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source System">
-                      <p v-html="selectedDetails.GOLDEN_SOURCE_SYSTEM_ID"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.GOLDEN_SOURCE_SYSTEM_ID"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source ITAM ID">
-                      <p v-html="selectedDetails.ITAM_ID"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.ITAM_ID"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Table Name">
-                      <p v-html="selectedDetails.GOLDEN_SOURCE_TABLE_NAME"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.GOLDEN_SOURCE_TABLE_NAME"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Column Name">
-                      <p v-html="selectedDetails.GOLDEN_SOURCE_COLUMN_NAME"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.GOLDEN_SOURCE_COLUMN_NAME"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Target Golden Source">
-                      <p v-html="selectedDetails.ITAM_ID"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.ITAM_ID"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Target golden source ITAM ID">
-                      <p v-html="selectedDetails.ITAM_ID"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.ITAM_ID"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -174,35 +174,35 @@ legend.col-form-label, label.col-form-labell {
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Names">
-                      <p v-html="selectedDetails.INFO_ASSET_NAME"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.INFO_ASSET_NAME"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Descriptions">
-                      <p v-html="selectedDetails.INFO_ASSET_DESC"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.INFO_ASSET_DESC"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="C - Confidentiality">
-                      <p v-html="selectedDetails.CONFIDENTIALITY"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.CONFIDENTIALITY"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="I - Integrity">
-                      <p v-html="selectedDetails.INTEGRITY"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.INTEGRITY"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="A - Availability">
-                      <p v-html="selectedDetails.AVAILABILITY"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.AVAILABILITY"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Overall CIA Rating">
-                      <p v-html="selectedDetails.OVERALL_CIA_RATING"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.OVERALL_CIA_RATING"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Record Categories">
-                      <p v-html="selectedDetails.RECORD_CATEGORY"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.RECORD_CATEGORY"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="PII Flag (Yes/No)">
-                      <p v-html="selectedDetails.PII_FLAG"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.PII_FLAG"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -231,31 +231,31 @@ legend.col-form-label, label.col-form-labell {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Downstream Process Owner">
-                      <p v-html="selectedDetails.DOWNSTREAM_PROCESS_OWNER"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.DOWNSTREAM_PROCESS_OWNER"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Is data taken from Golden Source">
-                      <p v-html="selectedDetails.ASDF"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.ASDF"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Name">
-                      <p v-html="selectedDetails.SYSTEM_NAME"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.SYSTEM_NAME"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="ITAM ID">
-                      <p v-html="selectedDetails.ITAM_ID"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.ITAM_ID"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name">
-                      <p v-html="selectedDetails.GOLDEN_SOURCE_TABLE_NAME"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.GOLDEN_SOURCE_TABLE_NAME"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name">
-                      <p v-html="selectedDetails.COLUMN_NAME"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.COLUMN_NAME"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards | Thresholds set by DDO">
-                      <p v-html="selectedDetails.DDO_THRESHOLD"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.DDO_THRESHOLD"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -342,8 +342,12 @@ legend.col-form-label, label.col-form-labell {
 
 <script>
 import { mapState, mapActions } from "vuex";
+import textWrapDialog from '../TextWrapDialog.vue'
 
 export default {
+  components: {
+    textWrapDialog
+  },
   data() {
     return {
       dialog: false,

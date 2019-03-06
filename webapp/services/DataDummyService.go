@@ -275,7 +275,7 @@ func (s *DSCService) CreateBusinessTermDummyData() error {
 		mdt.ID = i
 		mdt.BT_Name = fake.Words()
 		mdt.Parent_ID = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Description = fake.Words()
+		mdt.Description = fake.WordsN(300)
 		mdt.CDE = rand.Intn(9)
 		mdt.CDE_Rationale = fake.Words()
 		mdt.Mandatory = rand.Intn(9)

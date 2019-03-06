@@ -51,37 +51,37 @@ legend.col-form-label, label.col-form-label {
           <b-card tag="article" class="mb-2">
             <b-media class="left-card-media" >
               <h6 class="left-card-title">System Name</h6>
-              <p class="col-form-label" v-html="selectedDetails.SYSTEM_NAME" v-if="selectedDetails"></p>
+              <text-wrap-dialog :fulltext="selectedDetails.SYSTEM_NAME" v-if="selectedDetails"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">ITAM ID</h6>
-              <p class="col-form-label" v-html="selectedDetails.ITAM_ID" v-if="selectedDetails"></p>
+              <text-wrap-dialog :fulltext="selectedDetails.ITAM_ID" v-if="selectedDetails"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Dataset Custodian</h6>
-              <p class="col-form-label" v-html="selectedDetails.FIRST_NAME" v-if="selectedDetails"></p>
+              <text-wrap-dialog :fulltext="selectedDetails.FIRST_NAME" v-if="selectedDetails"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Bank ID</h6>
-              <p class="col-form-label" v-html="selectedDetails.BANK_ID" v-if="selectedDetails"></p>
+              <text-wrap-dialog :fulltext="selectedDetails.BANK_ID" v-if="selectedDetails"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Business Alias Name</h6>
-              <p class="col-form-label" v-html="selectedDetails.ALIAS_NAME" v-if="selectedDetails"></p>
+              <text-wrap-dialog :fulltext="selectedDetails.ALIAS_NAME" v-if="selectedDetails"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Table Name</h6>
-              <p class="col-form-label" v-html="selectedDetails.TABLE_NAME" v-if="selectedDetails"></p>
+              <text-wrap-dialog :fulltext="selectedDetails.TABLE_NAME" v-if="selectedDetails"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Column Name</h6>
-              <p class="col-form-label" v-html="selectedDetails.COLUMN_NAME" v-if="selectedDetails"></p>
+              <text-wrap-dialog :fulltext="selectedDetails.COLUMN_NAME" v-if="selectedDetails"></text-wrap-dialog>
             </b-media>
           </b-card>
         </b-col>
@@ -105,55 +105,56 @@ legend.col-form-label, label.col-form-label {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Description*">
-                      <v-dialog v-model="dialog" width="500" v-if="selectedDetails">
+                      <text-wrap-dialog :fulltext="selectedDetails.BUSINESS_DESCRIPTION" v-if="selectedDetails"></text-wrap-dialog>
+                      <!-- <v-dialog v-model="dialog" width="500" v-if="selectedDetails">
                         <p slot="activator" class="col-form-label" v-html="selectedDetails.BUSINESS_DESCRIPTION"><b-link>[more]</b-link></p>
 
                         <v-card>
-                          <v-card-text v.html="selectedDetails.BUSINESS_DESCRIPTION">
+                          <v-card-text v-html="selectedDetails.BUSINESS_DESCRIPTION">
                             
                           </v-card-text>
                         </v-card>
-                      </v-dialog>
+                      </v-dialog> -->
                     </b-form-group>
                     
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="CDE (yes/no)">
-                      <p class="col-form-label" v-html="selectedDetails.CDE" v-if="selectedDetails"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.CDE" v-if="selectedDetails"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Status*">
-                      <p class="col-form-label" v-html="selectedDetails.STATUS" v-if="selectedDetails"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.STATUS" v-if="selectedDetails"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Type">
-                      <p class="col-form-label" v-html="selectedDetails.DATA_TYPE" v-if="selectedDetails"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.DATA_TYPE" v-if="selectedDetails"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Format">
-                      <p class="col-form-label" v-html="selectedDetails.DATA_FORMAT" v-if="selectedDetails"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.DATA_FORMAT" v-if="selectedDetails"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Length">
-                      <p class="col-form-label" v-html="selectedDetails.DATA_LENGTH" v-if="selectedDetails"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.DATA_LENGTH" v-if="selectedDetails"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Example">
-                      <p class="col-form-label" v-html="selectedDetails.EXAMPLE" v-if="selectedDetails"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.EXAMPLE" v-if="selectedDetails"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)*">
-                      <p class="col-form-label" v-html="selectedDetails.DERIVED" v-if="selectedDetails"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.DERIVED" v-if="selectedDetails"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation logic*">
-                      <p class="col-form-label" v-html="selectedDetails.DERIVATION_LOGIC" v-if="selectedDetails"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.DERIVATION_LOGIC" v-if="selectedDetails"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sourced from Upstream (Yes/No)*">
-                      <p class="col-form-label" v-html="selectedDetails.SOURCED_FROM_UPSTREAM" v-if="selectedDetails"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.SOURCED_FROM_UPSTREAM" v-if="selectedDetails"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Checks*">
-                      <p class="col-form-label" v-html="selectedDetails.SYSTEM_CHECKS" v-if="selectedDetails"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.SYSTEM_CHECKS" v-if="selectedDetails"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -167,23 +168,23 @@ legend.col-form-label, label.col-form-label {
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain">
-                      <p class="col-form-label" v-html="selectedDetails.DOMAIN"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.DOMAIN"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Domain">
-                      <p class="col-form-label" v-html="selectedDetails.SUBDOMAIN"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.SUBDOMAIN"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain Owner">
-                      <p class="col-form-label" v-html="selectedDetails.DOMAIN_OWNER"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.DOMAIN_OWNER"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term*">
-                      <p class="col-form-label" v-html="selectedDetails.BT_NAME"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.BT_NAME"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
-                      <p class="col-form-label" v-html="selectedDetails.BUSINESS_DESCRIPTION"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.BUSINESS_DESCRIPTION"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -197,35 +198,35 @@ legend.col-form-label, label.col-form-label {
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Names">
-                      <p class="col-form-label" v-html="selectedDetails.INFO_ASSET_NAME"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.INFO_ASSET_NAME"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Description">
-                      <p class="col-form-label" v-html="selectedDetails.INFO_ASSET_DESCRIPTION"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.INFO_ASSET_DESCRIPTION"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="C - Confidentiality">
-                      <p class="col-form-label" v-html="selectedDetails.CONFIDENTIALITY"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.CONFIDENTIALITY"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="I - Integrity">
-                      <p class="col-form-label" v-html="selectedDetails.INTEGRITY"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.INTEGRITY"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="A - Availability">
-                      <p class="col-form-label" v-html="selectedDetails.AVAILABILITY"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.AVAILABILITY"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Overall CIA Rating">
-                      <p class="col-form-label" v-html="selectedDetails.OVERALL_CIA_RATING"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.OVERALL_CIA_RATING"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Record Categories">
-                      <p class="col-form-label" v-html="selectedDetails.RECORD_CATEGORY"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.RECORD_CATEGORY"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="PII Flag">
-                      <p class="col-form-label" v-html="selectedDetails.PII_FLAG"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.PII_FLAG"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -239,15 +240,15 @@ legend.col-form-label, label.col-form-label {
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Preceding System*">
-                      <p class="col-form-label" v-html="selectedDetails.IMM_PREC_SYSTEM_ID"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.IMM_PREC_SYSTEM_ID"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Succeeding System*">
-                      <p class="col-form-label" v-html="selectedDetails.IMM_SUCC_SYSTEM_ID"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.IMM_SUCC_SYSTEM_ID"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards | Threshold*">
-                      <p class="col-form-label" v-html="selectedDetails.THRESHOLD"></p>
+                      <text-wrap-dialog :fulltext="selectedDetails.THRESHOLD"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -265,11 +266,14 @@ legend.col-form-label, label.col-form-label {
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import textWrapDialog from '../TextWrapDialog.vue'
 
 export default {
+  components: {
+    textWrapDialog
+  },
   data () {
     return {
-      dialog: false,
       showModal: this.$route.meta.showModal,
       selectedDetails: null,
       ddTable: {
