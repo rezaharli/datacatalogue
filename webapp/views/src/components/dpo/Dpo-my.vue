@@ -225,17 +225,6 @@ export default {
           { text: 'Business Description', align: 'left', sortable: false, value: 'BUSINESS_DESCRIPTION', width: "25%" },
           { text: 'CDE Rationale', align: 'left', sortable: false, value: 'CDE_RATIONALE', width: "25%" },
         ],
-        excelFields: {
-          'Downstream Processes': 'DOWNSTREAM_PROCESS',
-          'Process Owner': 'PROCESS_OWNER',
-          'Bank ID': 'BANK_ID',
-          'CDE Name': 'CDE_NAME',
-          'Segment': 'SEGMENT',
-          'Immediate Preceding System': 'IMM_PREC_SYSTEM_ID',
-          'Ultimate Source System': 'ULTIMATE_SOURCE_SYSTEM_ID',
-          'Business Description': 'BUSINESS_DESCRIPTION',
-          'CDE Rationale': 'CDE_RATIONALE',
-        }
       }
     },
     computed: {
@@ -245,6 +234,21 @@ export default {
       addressPath (){
         var tmp = this.$route.path.split("/")
         return tmp.slice(0, 3).join("/")
+      },
+      excelFields (){
+        var ret = {}
+
+        _.each(this.firstTableHeaders, function(v){
+          ret[v.text] = v.value.split(".").reverse()[0];
+        })
+
+        if(this.secondtable){
+          _.each(this.secondTableHeaders, function(v){
+            ret[v.text] = v.value.split(".").reverse()[0];
+          })
+        }
+
+        return ret
       },
       excelData () {
         var res = [];

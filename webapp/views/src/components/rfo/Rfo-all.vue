@@ -229,17 +229,6 @@ export default {
           { text: 'Associated CDEs', align: 'left', sortable: false, value: 'ASSOCIATED_CDES', width: "25%" },
           { text: 'CDE Rationale', align: 'left', sortable: false, value: 'CDE_RATIONALE', width: "25%" },
         ],
-        excelFields: {
-          'Priority Report Names': 'NAME',
-          'Risk Reporting Load': 'OWNER_ID',
-          'Principal Risk Type': 'PRINCIPAL_RISK_TYPE',
-          'Risk Sub Type': 'RISK_SUB_TYPE',
-          'Priority Report Rationale': 'PRIORITY_REPORT_RATIONALE',
-          'CRM Name': 'CRM_NAME',
-          'CRM Rationale': 'CRM_RATIONALE',
-          'Associated CDEs': 'ASSOCIATED_CDES',
-          'CDE Rationale': 'CDE_RATIONALE',
-        }
       }
     },
     computed: {
@@ -258,6 +247,21 @@ export default {
       },
       subRiskMaster () {
         return this._.uniq(this._.map(this.rfomy.right.source, 'RISK_SUB_TYPE'))
+      },
+      excelFields (){
+        var ret = {}
+
+        _.each(this.firstTableHeaders, function(v){
+          ret[v.text] = v.value.split(".").reverse()[0];
+        })
+
+        if(this.secondtable){
+          _.each(this.secondTableHeaders, function(v){
+            ret[v.text] = v.value.split(".").reverse()[0];
+          })
+        }
+
+        return ret
       },
       excelData () {
         var res = [];

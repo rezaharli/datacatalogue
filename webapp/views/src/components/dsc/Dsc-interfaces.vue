@@ -228,26 +228,11 @@ export default {
           { text: 'SLA(Yes/No)', align: 'left', sortable: false, value: 'IMM_PREC_SYSTEM_SLA', width: "25%" },
           { text: 'OLA(Yes/No)', align: 'left', sortable: false, value: 'IMM_PREC_SYSTEM_OLA', width: "25%" },
           { text: 'Immediate Succeeding System', align: 'left', sortable: false, value: 'IMM_SUCC_SYSTEM_ID', width: "25%" },
-          { text: 'SLA(Yes/No)', align: 'left', sortable: false, value: 'IMM_SUCC_SYSTEM_SLA', width: "25%" },
-          { text: 'OLA(Yes/No)', align: 'left', sortable: false, value: 'IMM_SUCC_SYSTEM_OLA', width: "25%" },
+          { text: 'SLA (Yes/No)', align: 'left', sortable: false, value: 'IMM_SUCC_SYSTEM_SLA', width: "25%" },
+          { text: 'OLA (Yes/No)', align: 'left', sortable: false, value: 'IMM_SUCC_SYSTEM_OLA', width: "25%" },
           { text: 'List of Downstream Process', align: 'left', sortable: false, value: 'LIST_DOWNSTREAM_PROCESS', width: "25%" },
           { text: 'Downstream Process Owner', align: 'left', sortable: false, value: 'DOWNSTREAM_OWNER', width: "25%" },
         ],
-        excelFields: {
-          'System Name': 'SYSTEM_NAME',
-          'ITAM ID': 'ITAM_ID',
-          'Dataset Custodian': 'FIRST_NAME',
-          'Bank ID': 'BANK_ID',
-          'List of CDEs': 'LISTOF_CDE',
-          'Immediate Preceding System': 'IMM_PREC_SYSTEM_ID',
-          'SLA (Yes / No)': 'IMM_PREC_SYSTEM_SLA',
-          'OLA (Yes / No)': 'IMM_PREC_SYSTEM_OLA',
-          'Immediate Succeeding System': 'IMM_SUCC_SYSTEM_ID',
-          'SLA (Yes / No)': 'IMM_SUCC_SYSTEM_SLA',
-          'OLA (Yes / No)': 'IMM_SUCC_SYSTEM_OLA',
-          'List of Downstream Processes': 'LIST_DOWNSTREAM_PROCESS',
-          'Downstream Process Owner': 'DOWNSTREAM_OWNER',
-        }
       }
     },
     computed: {
@@ -264,6 +249,21 @@ export default {
       columnNameMaster (){
         return this._.map(this._.flattenDeep(this._.map(this.dscinterfaces.right.source, 'Columns')), 'COLUMN_NAME')
       },
+      excelFields (){
+        var ret = {}
+
+        _.each(this.firstTableHeaders, function(v){
+          ret[v.text] = v.value.split(".").reverse()[0];
+        })
+
+        if(this.secondtable){
+          _.each(this.secondTableHeaders, function(v){
+            ret[v.text] = v.value.split(".").reverse()[0];
+          })
+        }
+
+        return ret
+      },
       excelData () {
         var res = [];
 
@@ -279,10 +279,15 @@ export default {
           if(tables.length > 0){
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
-              tableLevel.Table_Name = table.Name;
+              tableLevel.LISTOF_CDE = table.LISTOF_CDE;
               tableLevel.IMM_PREC_SYSTEM_ID = table.IMM_PREC_SYSTEM_ID;
+              tableLevel.IMM_PREC_SYSTEM_SLA = table.IMM_PREC_SYSTEM_SLA;
+              tableLevel.IMM_PREC_SYSTEM_OLA = table.IMM_PREC_SYSTEM_OLA;
               tableLevel.IMM_SUCC_SYSTEM_ID = table.IMM_SUCC_SYSTEM_ID;
-              tableLevel.OWNER_ID = table.OWNER_ID;
+              tableLevel.IMM_SUCC_SYSTEM_SLA = table.IMM_SUCC_SYSTEM_SLA;
+              tableLevel.IMM_SUCC_SYSTEM_OLA = table.IMM_SUCC_SYSTEM_OLA;
+              tableLevel.LIST_DOWNSTREAM_PROCESS = table.LIST_DOWNSTREAM_PROCESS;
+              tableLevel.DOWNSTREAM_OWNER = table.DOWNSTREAM_OWNER;
 
               res.push(_.cloneDeep(tableLevel));
             })

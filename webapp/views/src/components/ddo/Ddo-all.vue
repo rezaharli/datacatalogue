@@ -216,13 +216,6 @@ export default {
           { text: 'Business Term Description', align: 'left', sortable: false, value: 'DESCRIPTION', width: "25%" },
           { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'CDE', width: "25%" },
         ],
-        excelFields: {
-          'Data Domain': 'DOMAIN',
-          'Sub Domains': 'SUB_DOMAIN',
-          'Business Term': 'BT_NAME',
-          'Business Term Description': 'DESCRIPTION',
-          'CDE (Yes/No)': 'CDE'
-        }
       }
     },
     computed: {
@@ -238,6 +231,21 @@ export default {
       },
       columnNameMaster (){
         return this._.map(this._.flattenDeep(this._.map(this.ddomy.right.source, 'Columns')), 'Name')
+      },
+      excelFields (){
+        var ret = {}
+
+        _.each(this.firstTableHeaders, function(v){
+          ret[v.text] = v.value.split(".").reverse()[0];
+        })
+
+        if(this.secondtable){
+          _.each(this.secondTableHeaders, function(v){
+            ret[v.text] = v.value.split(".").reverse()[0];
+          })
+        }
+
+        return ret
       },
       excelData () {
         var res = [];

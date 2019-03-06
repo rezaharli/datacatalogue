@@ -246,16 +246,6 @@ export default {
           { text: 'Business Alias Name', align: 'left', sortable: false, value: 'Columns.ALIAS_NAME', width: "25%" },
           { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'Columns.CDE', width: "25%" }
         ],
-        excelFields: {
-          'System Name': 'SYSTEM_NAME',
-          'ITAM ID': 'ITAM_ID',
-          'Dataset Custodian': 'FIRST_NAME',
-          'Bank ID': 'BANK_ID',
-          'Table Name': 'TABLE_NAME',
-          'Column Name': 'COLUMN_NAME',
-          'Business Alias Name': 'ALIAS_NAME',
-          'CDE (Yes/No)': 'CDE'
-        }
       }
     },
     computed: {
@@ -271,6 +261,21 @@ export default {
       },
       columnNameMaster (){
         return this._.map(this._.flattenDeep(this._.map(this.dscmy.right.source, 'Columns')), 'COLUMN_NAME')
+      },
+      excelFields (){
+        var ret = {}
+
+        _.each(this.firstTableHeaders, function(v){
+          ret[v.text] = v.value.split(".").reverse()[0];
+        })
+
+        if(this.secondtable){
+          _.each(this.secondTableHeaders, function(v){
+            ret[v.text] = v.value.split(".").reverse()[0];
+          })
+        }
+
+        return ret
       },
       excelData () {
         var res = [];
