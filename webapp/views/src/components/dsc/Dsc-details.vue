@@ -42,12 +42,12 @@ legend.col-form-label, label.col-form-label {
       <b-row>
         <b-col cols="12" v-if="dscmy.detailsLoading">
           <v-progress-linear :indeterminate="true"></v-progress-linear>
-          <v-alert type="info">
+          <v-alert :value="true" type="info">
             Please wait while data is loading
           </v-alert>
         </b-col>
 
-        <b-col cols="4"> 
+        <b-col cols="4" v-if="!dscmy.detailsLoading"> 
           <b-card tag="article" class="mb-2">
             <b-media class="left-card-media" >
               <h6 class="left-card-title">System Name</h6>
@@ -86,7 +86,7 @@ legend.col-form-label, label.col-form-label {
           </b-card>
         </b-col>
 
-        <b-col cols="8"> 
+        <b-col cols="8" v-if="!dscmy.detailsLoading"> 
           <b-row>
             <b-col>
               <b-card title="Technical Metadata From System" tag="article" class="mb-2">
@@ -329,7 +329,7 @@ export default {
     },
     ddColumnOptions () {
       var self = this;
-      var filtered = _.filter(self.dscmy.DDSource, function(v){
+      var filtered = _.filter(self.dscmy.DDSource, (v) => {
         return v.TABLE_NAME == self.ddTable.selected;
       });
 
@@ -338,7 +338,7 @@ export default {
     },
     ddScreenLabelOptions () {
       var self = this;
-      var filtered = _.filter(self.dscmy.DDSource, function(v){
+      var filtered = _.filter(self.dscmy.DDSource, (v) => {
         return v.TABLE_NAME == self.ddTable.selected && v.COLUMN_NAME == self.ddColumn.selected;
       });
 
@@ -392,7 +392,7 @@ export default {
     ddChanged (key, val){
         var self = this;
 
-        setTimeout(function(){
+        setTimeout(() => {
           var param = {
             left: self.$route.params.system,
             right: self.$route.params.details,
@@ -403,30 +403,28 @@ export default {
 
           param[key] = val;
 
-          console.log(param);
-
           self.runGetDetails(param);
         }, 100);
     },
     runGetDetails (param){
       this.getDetails(param).then(
-      res => {
-        if (this.dscmy.detailsSource.length > 0){
-          this.selectedDetails = this.dscmy.detailsSource[0];
-          this.selectedDetails.CDE = this.selectedDetails.CDE != 0 ? "Yes" : "No";
+        res => {
+          if (this.dscmy.detailsSource.length > 0){
+            this.selectedDetails = this.dscmy.detailsSource[0];
+            this.selectedDetails.CDE = this.selectedDetails.CDE != 0 ? "Yes" : "No";
 
-          Object.keys(this.selectedDetails).forEach((val) => {
-            this.selectedDetails[val] = !!this.selectedDetails[val] ? this.selectedDetails[val] : "NA";
-          });
+            Object.keys(this.selectedDetails).forEach((val) => {
+              this.selectedDetails[val] = !!this.selectedDetails[val] ? this.selectedDetails[val] : "NA";
+            });
 
-          this.ddTable.selected = this.selectedDetails.TABLE_NAME;
-          this.ddColumn.selected = this.selectedDetails.COLUMN_NAME;
-          this.ddScreenLabel.selected = this.selectedDetails.ALIAS_NAME;
-        } else 
-          this.selectedDetails = null;
-      },
-      err => err
-    );
+            this.ddTable.selected = this.selectedDetails.TABLE_NAME;
+            this.ddColumn.selected = this.selectedDetails.COLUMN_NAME;
+            this.ddScreenLabel.selected = this.selectedDetails.ALIAS_NAME;
+          } else 
+            this.selectedDetails = null;
+        },
+        err => err
+      );
     }
   },
 }
