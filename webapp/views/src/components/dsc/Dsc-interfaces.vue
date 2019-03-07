@@ -172,10 +172,10 @@ table.v-table thead th > div.btn-group {
                 <template slot="items" slot-scope="props">
                   <td><b-link :to="{ path:'/dsc/interfaces/' + $route.params.system + '/' + props.item.ID }" href="#foo" v-b-modal.modallg>{{ props.item.LISTOF_CDE }}</b-link></td>
                   <!-- <td><b-link :to="{ path:'/dsc/interfaces/' + route.params.system + "/details" }" v-b-modal.modallg>{{ props.item.name }}</b-link></td> -->
-                  <td>{{ props.item.IMM_PREC_SYSTEM_ID }}</td>
+                  <td>{{ props.item.IMM_PREC_SYSTEM_NAME }}</td>
                   <td>{{ props.item.IMM_PREC_SYSTEM_SLA }}</td>
                   <td>{{ props.item.IMM_PREC_SYSTEM_OLA }}</td>
-                  <td>{{ props.item.IMM_SUCC_SYSTEM_ID }}</td>
+                  <td>{{ props.item.IMM_SUCC_SYSTEM_NAME }}</td>
                   <td>{{ props.item.IMM_SUCC_SYSTEM_SLA }}</td>
                   <td>{{ props.item.IMM_SUCC_SYSTEM_OLA }}</td>
                   <td>{{ props.item.LIST_DOWNSTREAM_PROCESS }}</td>
@@ -224,10 +224,10 @@ export default {
         ],
         secondTableHeaders: [
           { text: 'List of CDEs', align: 'left', sortable: false, value: 'LISTOF_CDE', width: "25%" },
-          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'IMM_PREC_SYSTEM_ID', width: "25%" },
+          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'IMM_PREC_SYSTEM_NAME', width: "25%" },
           { text: 'SLA(Yes/No)', align: 'left', sortable: false, value: 'IMM_PREC_SYSTEM_SLA', width: "25%" },
           { text: 'OLA(Yes/No)', align: 'left', sortable: false, value: 'IMM_PREC_SYSTEM_OLA', width: "25%" },
-          { text: 'Immediate Succeeding System', align: 'left', sortable: false, value: 'IMM_SUCC_SYSTEM_ID', width: "25%" },
+          { text: 'Immediate Succeeding System', align: 'left', sortable: false, value: 'IMM_SUCC_SYSTEM_NAME', width: "25%" },
           { text: 'SLA (Yes/No)', align: 'left', sortable: false, value: 'IMM_SUCC_SYSTEM_SLA', width: "25%" },
           { text: 'OLA (Yes/No)', align: 'left', sortable: false, value: 'IMM_SUCC_SYSTEM_OLA', width: "25%" },
           { text: 'List of Downstream Process', align: 'left', sortable: false, value: 'LIST_DOWNSTREAM_PROCESS', width: "25%" },
@@ -280,10 +280,10 @@ export default {
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
               tableLevel.LISTOF_CDE = table.LISTOF_CDE;
-              tableLevel.IMM_PREC_SYSTEM_ID = table.IMM_PREC_SYSTEM_ID;
+              tableLevel.IMM_PREC_SYSTEM_NAME = table.IMM_PREC_SYSTEM_NAME;
               tableLevel.IMM_PREC_SYSTEM_SLA = table.IMM_PREC_SYSTEM_SLA;
               tableLevel.IMM_PREC_SYSTEM_OLA = table.IMM_PREC_SYSTEM_OLA;
-              tableLevel.IMM_SUCC_SYSTEM_ID = table.IMM_SUCC_SYSTEM_ID;
+              tableLevel.IMM_SUCC_SYSTEM_NAME = table.IMM_SUCC_SYSTEM_NAME;
               tableLevel.IMM_SUCC_SYSTEM_SLA = table.IMM_SUCC_SYSTEM_SLA;
               tableLevel.IMM_SUCC_SYSTEM_OLA = table.IMM_SUCC_SYSTEM_OLA;
               tableLevel.LIST_DOWNSTREAM_PROCESS = table.LIST_DOWNSTREAM_PROCESS;

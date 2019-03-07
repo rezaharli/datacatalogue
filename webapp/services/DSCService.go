@@ -131,13 +131,15 @@ func (s *DSCService) GetInterfacesRightTable(systemID int, search string, pageNu
 			ts.id as tsid,
 			tmc.alias_name as listof_cde,
 			tmc.imm_prec_system_id,
+			ips.system_name as imm_prec_system_name,
 			tmc.Imm_Prec_System_SLA,
 			tmc.Imm_Prec_System_OLA,
 			tmc.imm_succ_system_id,
+			iss.system_name as imm_succ_system_name,
 			tmc.Imm_Succ_System_SLA,
 			tmc.Imm_Succ_System_OLA,
 			tdp.name as list_downstream_process,
-			tdp.owner_id downstream_owner,
+			tdp.owner_id as downstream_owner,
 			tmt.name as table_name,
 			tmc.name as column_name
 		FROM 
@@ -147,6 +149,12 @@ func (s *DSCService) GetInterfacesRightTable(systemID int, search string, pageNu
 			LEFT JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
 			LEFT JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
+			JOIN (
+					SELECT * FROM tbl_system
+				) ips ON tmc.imm_prec_system_id = ips.id
+			JOIN (
+					SELECT * FROM tbl_system
+				) iss ON tmc.imm_succ_system_id = iss.id
 			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
 			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
 			left join tbl_category tc ON tsc.category_id = tc.id
