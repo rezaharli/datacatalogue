@@ -32,6 +32,17 @@ import AccessUsage from './components/access/Access-usage';
 
 Vue.use(VueRouter);
 
+var getDetailsRoute = (page, tab) => {
+  return {
+    path: ':details', name: page + '.' + tab + '.details', component: global.DscDetails,
+    meta: { 
+      title: _.upperCase(page) + " Details - Data Catalogue",
+      showModal: true,
+      permission: _.upperCase(page)
+    } 
+  }
+}
+
 const router = new VueRouter({
   mode: 'history',
   routes: [{ // home
