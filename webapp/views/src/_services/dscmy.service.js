@@ -37,7 +37,19 @@ function getRightTable(param) {
 }
 
 function getInterfacesRightTable(param) {
-    return fetchWHeader(`/dsc/getinterfacesrighttable`, param)
+    return fetchWHeader(`/dsc/getinterfacesrighttable`, param).then(
+        res => {
+            res.Data = _.map(res.Data, function(v){
+                v.IMM_PREC_SYSTEM_SLA = v.IMM_PREC_SYSTEM_SLA == 0 ? "No" : "Yes";
+                v.IMM_PREC_SYSTEM_OLA = v.IMM_PREC_SYSTEM_OLA == 0 ? "No" : "Yes";
+                v.IMM_SUCC_SYSTEM_SLA = v.IMM_SUCC_SYSTEM_SLA == 0 ? "No" : "Yes";
+                v.IMM_SUCC_SYSTEM_OLA = v.IMM_SUCC_SYSTEM_OLA == 0 ? "No" : "Yes";
+                return v;
+            });
+
+            return res;
+        }
+    )
 }
 
 function getDetails(param) {

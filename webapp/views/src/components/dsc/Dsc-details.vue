@@ -416,6 +416,7 @@ export default {
           if (this.dscmy.detailsSource.length > 0){
             this.selectedDetails = this.dscmy.detailsSource[0];
             this.selectedDetails.CDE = this.selectedDetails.CDE != 0 ? "Yes" : "No";
+            this.selectedDetails.STATUS = this.selectedDetails.STATUS != 0 ? "ACTIVE" : "INACTIVE";
             this.selectedDetails.DERIVED = this.selectedDetails.DERIVED != 0 ? "Yes" : "No";
             this.selectedDetails.SOURCED_FROM_UPSTREAM = this.selectedDetails.SOURCED_FROM_UPSTREAM != 0 ? "Yes" : "No";
 
