@@ -696,7 +696,7 @@ func (s *DSCService) CreateLinkRolePeopleDummyData() error {
 	for i := 0; i < 1000; i++ {
 		mdt := m.NewLinkRolePeopleModel()
 		mdt.ID = i
-		mdt.People_ID = toolkit.ToInt("1000"+fake.DigitsN(3), "")
+		mdt.People_ID = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.Object_Type = "SYSTEM"
 		mdt.Object_ID = toolkit.ToInt(fake.DigitsN(3), "")
 
