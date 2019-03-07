@@ -29,14 +29,6 @@ func (s *DSCService) GetAllSystem(loggedinid, search string, pageNumber, rowsPer
 			Tbl_System ts
 			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
 			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
-			LEFT JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
-			LEFT JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
-			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
-			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
-			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
-			left join tbl_category tc ON tsc.category_id = tc.id
-			left join tbl_link_category_people tlcp ON tlcp.category_id = tc.id
-			left join tbl_policy tpol ON tbt.policy_id = tpol.id
 		WHERE
 			upper(tlrp.object_type) = upper('system') `
 
@@ -48,11 +40,12 @@ func (s *DSCService) GetAllSystem(loggedinid, search string, pageNumber, rowsPer
 
 	if search != "" {
 		q += `
-			AND
+			AND (
 				upper(ts.system_name) LIKE upper('%` + search + `%')
 				OR upper(ts.itam_id) LIKE upper('%` + search + `%')
 				OR upper(tp.first_name) LIKE upper('%` + search + `%')
-				OR upper(tp.bank_id) LIKE upper('%` + search + `%') `
+				OR upper(tp.bank_id) LIKE upper('%` + search + `%')
+			) `
 	}
 
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
@@ -75,36 +68,53 @@ func (s *DSCService) GetTableName(systemID int, search string, pageNumber, rowsP
 	resultTotal := 0
 
 	q := `SELECT DISTINCT
-			tmt.id,
 			ts.id as tsid,
+			tmt.id,
 			tmt.name as table_name,
+			tmc.id as colid,
 			tmc.name as column_name,
 			tmc.alias_name,
-			tmc.cde
+			tmc.cde,
+			tmctemp.*
 		FROM 
 			Tbl_System ts
 			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
 			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
 			LEFT JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
 			LEFT JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
-			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
+			JOIN (
+				SELECT * FROM (
+				SELECT table_id, 
+					LISTAGG(cde, ', ') WITHIN GROUP (ORDER BY id) "cdes" 
+				FROM Tbl_MD_Column GROUP BY table_id
+				) a WHERE "cdes" LIKE '%1%' 
+			) tmctemp ON tmctemp.table_id = tmt.id
+			JOIN Tbl_MD_Column tmc ON tmctemp.table_id = tmc.table_id
+			JOIN (
+					SELECT * FROM tbl_system
+				) ips ON tmc.imm_prec_system_id = ips.id
+			JOIN (
+					SELECT * FROM tbl_system
+				) iss ON tmc.imm_succ_system_id = iss.id
 			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
+			JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
+			left join tbl_ds_processes tdp ON tdpd.process_id = tdp.id
 			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
 			left join tbl_category tc ON tsc.category_id = tc.id
 			left join tbl_link_category_people tlcp ON tlcp.category_id = tc.id
 			left join tbl_policy tpol ON tbt.policy_id = tpol.id
 		WHERE
 			upper(tlrp.object_type) = upper('system')
-			AND tmc.cde = 1 
 			AND ts.id = ` + toolkit.ToString(systemID)
 
 	if search != "" {
 		q += `
-			AND
+			AND (
 				upper(tmt.name) LIKE upper('%` + search + `%')
 				OR upper(tmc.name) LIKE upper('%` + search + `%')
 				OR upper(tmc.alias_name) LIKE upper('%` + search + `%')
-				OR upper(tmc.cde) LIKE upper('%` + search + `%')`
+				OR upper(tmc.cde) LIKE upper('%` + search + `%')
+			) `
 	}
 
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
@@ -148,7 +158,14 @@ func (s *DSCService) GetInterfacesRightTable(systemID int, search string, pageNu
 			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
 			LEFT JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
 			LEFT JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
-			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
+			JOIN (
+				SELECT * FROM (
+				SELECT table_id, 
+					LISTAGG(cde, ', ') WITHIN GROUP (ORDER BY id) "cdes" 
+				FROM Tbl_MD_Column GROUP BY table_id
+				) a WHERE "cdes" LIKE '%1%' 
+			) tmctemp ON tmctemp.table_id = tmt.id
+			JOIN Tbl_MD_Column tmc ON tmctemp.table_id = tmc.table_id
 			JOIN (
 					SELECT * FROM tbl_system
 				) ips ON tmc.imm_prec_system_id = ips.id
@@ -164,16 +181,21 @@ func (s *DSCService) GetInterfacesRightTable(systemID int, search string, pageNu
 			left join tbl_policy tpol ON tbt.policy_id = tpol.id
 		WHERE
 			upper(tlrp.object_type) = upper('system')
-			AND tmc.cde = 1 
 			AND ts.id = ` + toolkit.ToString(systemID)
 
 	if search != "" {
 		q += `
-			AND
-				upper(tmt.name) LIKE upper('%` + search + `%')
-				OR upper(tmc.imm_prec_system_id) LIKE upper('%` + search + `%')
-				OR upper(tmc.imm_succ_system_id) LIKE upper('%` + search + `%')
-				OR upper(tdp.owner_id) LIKE upper('%` + search + `%')`
+			AND (
+				upper(tmc.alias_name) LIKE upper('%` + search + `%')
+				OR upper(ips.system_name) LIKE upper('%` + search + `%')
+				OR upper(tmc.Imm_Prec_System_SLA) LIKE upper('%` + search + `%')
+				OR upper(tmc.Imm_Prec_System_OLA) LIKE upper('%` + search + `%')
+				OR upper(iss.system_name) LIKE upper('%` + search + `%')
+				OR upper(tmc.Imm_Succ_System_SLA) LIKE upper('%` + search + `%')
+				OR upper(tmc.Imm_Succ_System_OLA) LIKE upper('%` + search + `%')
+				OR upper(tdp.name) LIKE upper('%` + search + `%')
+				OR upper(tdp.owner_id) LIKE upper('%` + search + `%')
+			) `
 	}
 
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
@@ -236,9 +258,16 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 			Tbl_System ts
 			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
 			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
-			JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
-			JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
-			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
+			LEFT JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
+			LEFT JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			JOIN (
+				SELECT * FROM (
+				SELECT table_id, 
+					LISTAGG(cde, ', ') WITHIN GROUP (ORDER BY id) "cdes" 
+				FROM Tbl_MD_Column GROUP BY table_id
+				) a WHERE "cdes" LIKE '%1%' 
+			) tmctemp ON tmctemp.table_id = tmt.id
+			JOIN Tbl_MD_Column tmc ON tmctemp.table_id = tmc.table_id
 			JOIN (
 					SELECT * FROM tbl_system
 				) ips ON tmc.imm_prec_system_id = ips.id
@@ -246,13 +275,14 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 					SELECT * FROM tbl_system
 				) iss ON tmc.imm_succ_system_id = iss.id
 			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
+			JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
+			left join tbl_ds_processes tdp ON tdpd.process_id = tdp.id
 			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
 			left join tbl_category tc ON tsc.category_id = tc.id
 			left join tbl_link_category_people tlcp ON tlcp.category_id = tc.id
 			left join tbl_policy tpol ON tbt.policy_id = tpol.id
 		WHERE
 			upper(tlrp.object_type) = upper('system')
-			AND tmc.cde = 1 
 			AND ROWNUM = 1 
 			AND ts.id = ` + payload.GetString("left") + ` `
 
@@ -297,7 +327,14 @@ func (s *DSCService) GetddSource(leftParam string) (interface{}, int, error) {
 			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
 			LEFT JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
 			LEFT JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
-			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
+			JOIN (
+				SELECT * FROM (
+				SELECT table_id, 
+					LISTAGG(cde, ', ') WITHIN GROUP (ORDER BY id) "cdes" 
+				FROM Tbl_MD_Column GROUP BY table_id
+				) a WHERE "cdes" LIKE '%1%' 
+			) tmctemp ON tmctemp.table_id = tmt.id
+			JOIN Tbl_MD_Column tmc ON tmctemp.table_id = tmc.table_id
 			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
 			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
 			left join tbl_category tc ON tsc.category_id = tc.id
@@ -305,7 +342,6 @@ func (s *DSCService) GetddSource(leftParam string) (interface{}, int, error) {
 			left join tbl_policy tpol ON tbt.policy_id = tpol.id
 		WHERE
 			upper(tlrp.object_type) = upper('system')
-			AND tmc.cde = 1 
 		AND ts.id = ` + leftParam
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
