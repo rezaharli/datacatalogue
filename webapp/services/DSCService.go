@@ -139,6 +139,7 @@ func (s *DSCService) GetInterfacesRightTable(systemID int, search string, pageNu
 	q := `SELECT DISTINCT
 			tmt.id,
 			ts.id as tsid,
+			tmc.id as colid,
 			tmc.alias_name as listof_cde,
 			tmc.imm_prec_system_id,
 			ips.system_name as imm_prec_system_name,
@@ -288,6 +289,7 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 
 	if payload.GetString("TableName") == "" {
 		q += `AND tmt.id = ` + payload.GetString("right") + ` `
+		q += `AND tmc.id = ` + payload.GetString("column") + ` `
 	} else {
 		q += `AND tmt.name = '` + payload.GetString("TableName") + `' `
 	}
@@ -335,7 +337,15 @@ func (s *DSCService) GetddSource(leftParam string) (interface{}, int, error) {
 				) a WHERE "cdes" LIKE '%1%' 
 			) tmctemp ON tmctemp.table_id = tmt.id
 			JOIN Tbl_MD_Column tmc ON tmctemp.table_id = tmc.table_id
+			JOIN (
+					SELECT * FROM tbl_system
+				) ips ON tmc.imm_prec_system_id = ips.id
+			JOIN (
+					SELECT * FROM tbl_system
+				) iss ON tmc.imm_succ_system_id = iss.id
 			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
+			JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
+			left join tbl_ds_processes tdp ON tdpd.process_id = tdp.id
 			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
 			left join tbl_category tc ON tsc.category_id = tc.id
 			left join tbl_link_category_people tlcp ON tlcp.category_id = tc.id

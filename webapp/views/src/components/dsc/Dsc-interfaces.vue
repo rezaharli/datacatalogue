@@ -170,7 +170,7 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                  <td><b-link :to="{ path:'/dsc/interfaces/' + props.item.TSID + '/' + props.item.ID }" href="#foo" v-b-modal.modallg>{{ props.item.LISTOF_CDE }}</b-link></td>
+                  <td><b-link :to="{ path:'/dsc/interfaces/' + props.item.TSID + '/' + props.item.ID + '/' + props.item.COLID }" href="#foo" v-b-modal.modallg>{{ props.item.LISTOF_CDE }}</b-link></td>
                   <!-- <td><b-link :to="{ path:'/dsc/interfaces/' + route.params.system + "/details" }" v-b-modal.modallg>{{ props.item.name }}</b-link></td> -->
                   <td>{{ props.item.IMM_PREC_SYSTEM_NAME }}</td>
                   <td>{{ props.item.IMM_PREC_SYSTEM_SLA }}</td>
@@ -416,9 +416,6 @@ export default {
         // /* Trick to reset/clear native browser form validation state */
         // this.searchForm.show = false;
         // this.$nextTick(() => { this.searchForm.show = true });
-      },
-      showDetails (id) {
-        this.$router.push(this.addressPath + "/" + tsid + '/' + id)
       }
     }
 }

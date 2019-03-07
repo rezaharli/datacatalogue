@@ -80,7 +80,15 @@ const router = new VueRouter({
             title: "DSC Details - Data Catalogue",
             showModal: true,
             permission: "DSC"
-          } 
+          }, 
+          children: [{ // dsc.my.system.details.col
+            path: ':column', name: 'dsc.my.details', component: DscDetails,
+            meta: { 
+              title: "DSC Details - Data Catalogue",
+              showModal: true,
+              permission: "DSC"
+            }
+          }] 
         }] 
       }, { // dsc.all
         path: 'all', name: 'dsc.all', component: DscAll, 
@@ -102,7 +110,15 @@ const router = new VueRouter({
             title: "DSC Details - Data Catalogue",
             showModal: true,
             permission: "DSC"
-          } 
+          }, 
+          children: [{ // dsc.all.system.details.col
+            path: ':column', name: 'dsc.all.details', component: DscDetails,
+            meta: { 
+              title: "DSC Details - Data Catalogue",
+              showModal: true,
+              permission: "DSC"
+            }
+          }]
         }]
       }, { // dsc.interfaces
         path: 'interfaces', name: 'dsc.interfaces', component: DscInterfaces, 
@@ -124,7 +140,15 @@ const router = new VueRouter({
             title: "DSC Details - Data Catalogue",
             showModal: true,
             permission: "DSC"
-          } 
+          }, 
+          children: [{ // dsc.interfaces.system.details.col
+            path: ':column', name: 'dsc.interfaces.details', component: DscDetails,
+            meta: { 
+              title: "DSC Details - Data Catalogue",
+              showModal: true,
+              permission: "DSC"
+            }
+          }] 
         }]
       }]
     }, { // dpo

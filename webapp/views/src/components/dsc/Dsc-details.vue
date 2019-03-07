@@ -337,7 +337,6 @@ export default {
         return v.TABLE_NAME == self.ddTable.selected;
       });
 
-      self.ddColumn.selected = filtered[0] ? filtered[0].COLUMN_NAME : "";
       return _.uniq(_.map(filtered, "COLUMN_NAME"));
     },
     ddScreenLabelOptions () {
@@ -369,7 +368,8 @@ export default {
 
     var param = {
       left: parseInt(this.$route.params.system),
-      right: parseInt(this.$route.params.details)
+      right: parseInt(this.$route.params.details),
+      column: parseInt(this.$route.params.column)
     };
 
     this.runGetDetails(param)
@@ -400,6 +400,7 @@ export default {
           var param = {
             left: self.$route.params.system,
             right: self.$route.params.details,
+            column: self.$route.params.column,
             ScreenLabel: self.ddScreenLabel.selected,
             ColumnName: self.ddColumn.selected,
             TableName: self.ddTable.selected,
