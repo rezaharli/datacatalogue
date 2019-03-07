@@ -82,7 +82,7 @@ func (s *UserService) getRegisteredPeople(username int) ([]m.People, error) {
 	people := make([]m.People, 0)
 	err := h.NewDBcmd().GetBy(h.GetByParam{
 		TableName: m.NewPeopleModel().TableName(),
-		Clause:    dbflex.Eq("ID", username),
+		Clause:    dbflex.Eq("BANK_ID", username),
 		Result:    &people,
 	})
 	if err != nil {
@@ -196,10 +196,10 @@ func (s *UserService) Insert(data *m.SysUser) (bool, error) {
 			}
 		}
 
-		err = s.insertLinkRolePeople(registeredPeople[0], data.Role)
-		if err != nil {
-			return false, err
-		}
+		// err = s.insertLinkRolePeople(registeredPeople[0], data.Role)
+		// if err != nil {
+		// 	return false, err
+		// }
 
 		return true, nil
 	}
