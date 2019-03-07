@@ -399,7 +399,7 @@ export default {
         this.secondtable = true;
       },
       onSubmit (evt) {
-        evt.preventDefault();
+        if(evt) evt.preventDefault();
 
         this.dscall.left.display = this.dscall.left.source;
         this.dscall.right.display = this.dscall.right.source;
@@ -426,6 +426,8 @@ export default {
         this.searchForm.country = '';
         this.searchForm.tableName = '';
         this.searchForm.columnName = '';
+
+        this.onSubmit();
 
         // /* Trick to reset/clear native browser form validation state */
         // this.searchForm.show = false;
