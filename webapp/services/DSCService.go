@@ -156,6 +156,8 @@ func (s *DSCService) GetInterfacesRightTable(systemID int, search string, pageNu
 					SELECT * FROM tbl_system
 				) iss ON tmc.imm_succ_system_id = iss.id
 			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
+			JOIN tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
+			left join tbl_ds_processes tdp ON tdpd.process_id = tdp.id
 			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
 			left join tbl_category tc ON tsc.category_id = tc.id
 			left join tbl_link_category_people tlcp ON tlcp.category_id = tc.id
