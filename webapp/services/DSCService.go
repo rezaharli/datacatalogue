@@ -217,16 +217,24 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 			tmt.record_category,
 			tmc.pii_flag,
 			tmc.imm_prec_system_id,
+			ips.system_name as imm_prec_system_name,
 			tmc.imm_succ_system_id,
+			iss.system_name as imm_succ_system_name,
 			tmc.threshold,
 			tlcp.People_ID as domain_owner
 		FROM
 			Tbl_System ts
 			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
 			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
-			LEFT JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
-			LEFT JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
+			JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
+			JOIN (
+					SELECT * FROM tbl_system
+				) ips ON tmc.imm_prec_system_id = ips.id
+			JOIN (
+					SELECT * FROM tbl_system
+				) iss ON tmc.imm_succ_system_id = iss.id
 			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
 			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
 			left join tbl_category tc ON tsc.category_id = tc.id

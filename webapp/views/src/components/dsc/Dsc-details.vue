@@ -240,11 +240,11 @@ legend.col-form-label, label.col-form-label {
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Preceding System*">
-                      <text-wrap-dialog :fulltext="selectedDetails.IMM_PREC_SYSTEM_ID"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.IMM_PREC_SYSTEM_NAME"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Succeeding System*">
-                      <text-wrap-dialog :fulltext="selectedDetails.IMM_SUCC_SYSTEM_ID"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.IMM_SUCC_SYSTEM_NAME"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards | Threshold*">
@@ -318,8 +318,8 @@ export default {
         "Overall CIA Rating": "selectedDetails.OVERALL_CIA_RATING",
         "Record Categories": "selectedDetails.RECORD_CATEGORY",
         "PII Flag": "selectedDetails.PII_FLAG",
-        "Immediate Preceding System*": "selectedDetails.IMM_PREC_SYSTEM_ID",
-        "Immediate Succeeding System*": "selectedDetails.IMM_SUCC_SYSTEM_ID",
+        "Immediate Preceding System*": "selectedDetails.IMM_PREC_SYSTEM_NAME",
+        "Immediate Succeeding System*": "selectedDetails.IMM_SUCC_SYSTEM_NAME",
         "DQ Standards | Threshold*": "selectedDetails.THRESHOLD"
       }
     }
