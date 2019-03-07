@@ -82,7 +82,7 @@ func (s *UserService) getRegisteredPeople(username int) ([]m.People, error) {
 	people := make([]m.People, 0)
 	err := h.NewDBcmd().GetBy(h.GetByParam{
 		TableName: m.NewPeopleModel().TableName(),
-		Clause:    dbflex.Eq("BANK_ID", username),
+		Clause:    dbflex.Eq("BANK_ID", toolkit.ToString(username)),
 		Result:    &people,
 	})
 	if err != nil {
@@ -191,9 +191,9 @@ func (s *UserService) Insert(data *m.SysUser) (bool, error) {
 		if err != nil {
 			if strings.Contains(err.Error(), "duplicate key") {
 				return true, fmt.Errorf("Different data with same ID already exists")
-			} else {
-				return false, err
 			}
+
+			return false, err
 		}
 
 		// err = s.insertLinkRolePeople(registeredPeople[0], data.Role)

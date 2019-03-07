@@ -172,7 +172,7 @@ func (s *DSCService) CreatePeopleDummyData() error {
 		mdt.ID = i
 		mdt.First_Name = fake.Words()
 		mdt.Last_Name = fake.Words()
-		mdt.Bank_ID = toolkit.ToString(i)
+		mdt.Bank_ID = "1000" + toolkit.ToString(i)
 		mdt.Email_ID = fake.Words()
 		mdt.Function = fake.Words()
 		mdt.Org_Unit = fake.Words()
@@ -696,7 +696,7 @@ func (s *DSCService) CreateLinkRolePeopleDummyData() error {
 	for i := 0; i < 1000; i++ {
 		mdt := m.NewLinkRolePeopleModel()
 		mdt.ID = i
-		mdt.People_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.People_ID = toolkit.ToInt("1000"+fake.DigitsN(3), "")
 		mdt.Object_Type = "SYSTEM"
 		mdt.Object_ID = toolkit.ToInt(fake.DigitsN(3), "")
 
