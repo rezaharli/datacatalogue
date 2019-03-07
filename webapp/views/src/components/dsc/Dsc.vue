@@ -9,7 +9,7 @@
                 <b-col>
                     <v-tabs left class="page-tab">
                         <v-tab to="/dsc/my">My Systems</v-tab>
-                        <v-tab to="/dsc/all">All System</v-tab>
+                        <v-tab to="/dsc/all">All Systems</v-tab>
                         <v-tab to="/dsc/interfaces">Interfaces</v-tab>
                     </v-tabs>
                 </b-col>
