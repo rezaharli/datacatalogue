@@ -29,8 +29,8 @@ func (s *DSCService) GetAllSystem(loggedinid, search string, pageNumber, rowsPer
 			Tbl_System ts
 			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
 			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
-			JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
-			JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			LEFT JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
+			LEFT JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
 			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
 			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
@@ -38,8 +38,7 @@ func (s *DSCService) GetAllSystem(loggedinid, search string, pageNumber, rowsPer
 			left join tbl_link_category_people tlcp ON tlcp.category_id = tc.id
 			left join tbl_policy tpol ON tbt.policy_id = tpol.id
 		WHERE
-			upper(tlrp.object_type) = upper('system')
-			AND tmc.cde = 1 `
+			upper(tlrp.object_type) = upper('system') `
 
 	if loggedinid != "" {
 		a := toolkit.ToInt(loggedinid, "")
@@ -86,8 +85,8 @@ func (s *DSCService) GetTableName(systemID int, search string, pageNumber, rowsP
 			Tbl_System ts
 			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
 			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
-			JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
-			JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			LEFT JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
+			LEFT JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
 			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
 			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
@@ -145,12 +144,10 @@ func (s *DSCService) GetInterfacesRightTable(systemID int, search string, pageNu
 			Tbl_System ts
 			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
 			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
-			JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
-			JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			LEFT JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
+			LEFT JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
 			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
-			left join tbl_ds_process_detail tdpd ON tdpd.business_term_id = tbt.id
-			left join tbl_ds_processes tdp ON tdpd.process_id = tdp.id
 			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
 			left join tbl_category tc ON tsc.category_id = tc.id
 			left join tbl_link_category_people tlcp ON tlcp.category_id = tc.id
@@ -227,8 +224,8 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 			Tbl_System ts
 			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
 			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
-			JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
-			JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			LEFT JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
+			LEFT JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
 			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
 			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
@@ -280,8 +277,8 @@ func (s *DSCService) GetddSource(leftParam string) (interface{}, int, error) {
 			Tbl_System ts
 			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
 			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
-			JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
-			JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
+			LEFT JOIN Tbl_MD_Resource tmr ON tmr.system_id = ts.id
+			LEFT JOIN Tbl_MD_Table tmt ON tmt.resource_id = tmr.id
 			LEFT JOIN Tbl_MD_Column tmc ON tmc.table_id = tmt.id
 			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
 			left join tbl_subcategory tsc ON tbt.parent_id = tsc.id
