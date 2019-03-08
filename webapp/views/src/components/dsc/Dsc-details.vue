@@ -407,7 +407,7 @@ export default {
           };
 
           param[key] = val;
-
+          
           self.runGetDetails(param);
         }, 100);
     },
@@ -428,8 +428,25 @@ export default {
             this.ddTable.selected = this.selectedDetails.TABLE_NAME;
             this.ddColumn.selected = this.selectedDetails.COLUMN_NAME;
             this.ddScreenLabel.selected = this.selectedDetails.ALIAS_NAME;
-          } else 
+          } else {
             this.selectedDetails = null;
+            
+            if(this.ddColumnOptions.indexOf(this.ddColumn.selected) == -1){
+              this.ddColumn.selected = this.ddColumnOptions[0];
+              var self = this;
+
+              var param = {
+                left: self.$route.params.system,
+                right: self.$route.params.details,
+                column: self.$route.params.column,
+                ScreenLabel: self.ddScreenLabel.selected,
+                ColumnName: self.ddColumn.selected,
+                TableName: self.ddTable.selected,
+              };
+              
+              self.runGetDetails(param);
+            }
+          }
         },
         err => err
       );
