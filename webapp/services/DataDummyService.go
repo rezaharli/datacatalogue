@@ -749,3 +749,41 @@ func (s *DSCService) CreateRoleDummyData() error {
 
 	return nil
 }
+
+func (s *DSCService) CreateLinkColumnInterfaceDummyData() error {
+	toolkit.Println("CreateLinkColumnInterfaceDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewLinkColumnInterfaceModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.LinkColumnInterface, 0)
+	for i := 0; i < 1000; i++ {
+		mdt := m.NewLinkColumnInterfaceModel()
+		mdt.ID = i
+		mdt.Column_ID = i
+		mdt.Imm_Prec_System_ID = i
+		mdt.Imm_Prec_System_SLA = rand.Intn(2)
+		mdt.Imm_Prec_System_OLA = rand.Intn(2)
+		mdt.Imm_Succ_System_ID = i
+		mdt.Imm_Succ_System_SLA = rand.Intn(2)
+		mdt.Imm_Succ_System_SLA = rand.Intn(2)
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewLinkColumnInterfaceModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
