@@ -93,15 +93,15 @@ legend.col-form-label, label.col-form-label {
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="tableName">
-                      <b-form-select id="tableName" class="col-8" v-model="ddTable.selected" :options="ddTableOptions" @change="tableNameChanged"></b-form-select>
+                      <b-form-select id="tableName" class="col-8" v-model="ddTableSelected" :options="ddTableOptions" @change="ddTableChanged"></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnName">
-                      <b-form-select id="columnName" class="col-8" v-model="ddColumn.selected" :options="ddColumnOptions" @change="columnNameChanged"></b-form-select>
+                      <b-form-select id="columnName" class="col-8" v-model="ddColumnSelected" :options="ddColumnOptions" @change="ddColumnChanged"></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Name*" label-for="screenLabelName">
-                      <b-form-select id="columnName" class="col-8" v-model="ddScreenLabel.selected" :options="ddScreenLabelOptions" @change="screenLabelChanged"></b-form-select>
+                      <b-form-select id="columnName" class="col-8" v-model="ddScreenLabelSelected" :options="ddScreenLabelOptions" @change="ddCScreenLabelChanged"></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Description*">
@@ -274,17 +274,12 @@ export default {
   },
   data () {
     return {
+      firstload: true,
       showModal: this.$route.meta.showModal,
       selectedDetails: null,
-      ddTable: {
-        selected: null,
-      },
-      ddColumn: {
-        selected: null,
-      },
-      ddScreenLabel: {
-        selected: null,
-      },
+      ddTableSelected: null,
+      ddColumnSelected: null,
+      ddScreenLabelSelected: null,
       excelFields: {
         'System Name': "selectedDetails.SYSTEM_NAME",
         'ITAM ID': "selectedDetails.ITAM_ID",
@@ -334,7 +329,7 @@ export default {
     ddColumnOptions () {
       var self = this;
       var filtered = _.filter(self.dscmy.DDSource, (v) => {
-        return v.TABLE_NAME == self.ddTable.selected;
+        return v.TABLE_NAME == self.ddTableSelected;
       });
 
       return _.uniq(_.map(filtered, "COLUMN_NAME"));
@@ -342,10 +337,9 @@ export default {
     ddScreenLabelOptions () {
       var self = this;
       var filtered = _.filter(self.dscmy.DDSource, (v) => {
-        return v.TABLE_NAME == self.ddTable.selected && v.COLUMN_NAME == self.ddColumn.selected;
+        return v.TABLE_NAME == self.ddTableSelected && v.COLUMN_NAME == self.ddColumnSelected;
       });
 
-      self.ddScreenLabel.selected = filtered[0] ? filtered[0].ALIAS_NAME : "";
       return _.uniq(_.map(filtered, "ALIAS_NAME"));
     },
     exportDatas () {
@@ -362,20 +356,41 @@ export default {
     '$route.meta' ({showModal}) {
       this.showModal = showModal;
     },
+    ddTableSelected () {
+      if( ! this.ddColumnSelected)
+        this.ddColumnSelected = this.ddColumnOptions[0];
+      else {
+        if(this.ddColumnOptions.indexOf(this.ddColumnSelected) == -1)
+          this.ddColumnSelected = this.ddColumnOptions[0];
+      }
+    },
+    ddColumnSelected () {
+      if( ! this.ddScreenLabelSelected)
+        this.ddScreenLabelSelected = this.ddScreenLabelOptions[0];
+      else {
+        if(this.ddScreenLabelOptions.indexOf(this.ddScreenLabelSelected) == -1)
+          this.ddScreenLabelSelected = this.ddScreenLabelOptions[0];
+      }
+    },
+    'ddScreenLabelSelected' (){
+      if( ! this.firstload){
+        var param = {
+          ScreenLabel: this.ddScreenLabelSelected,
+          ColumnName: this.ddColumnSelected,
+          TableName: this.ddTableSelected,
+        };
+
+        this.runGetDetails(param);
+      }
+
+      this.firstload = false;
+    }
   },
   mounted() {
     this.$refs.modalDetails.show();
 
-    var param = {
-      Left: parseInt(this.$route.params.system),
-      Right: parseInt(this.$route.params.details),
-      Column: parseInt(this.$route.params.column)
-    };
-
+    var param = {};
     this.runGetDetails(param)
-
-    // this.selectedDetails = _.find(this.dscmy.systemsSource, ['ID', parseInt(this.$route.params.system)])
-    // this.selectedDetails = _.find(this.dscmy.tableSource, ['ID', parseInt(this.$route.params.details)])
   },
   methods: {
     ...mapActions("dscmy", {
@@ -384,68 +399,48 @@ export default {
     handleClose () {
       this.$router.go(-1)
     },
-    screenLabelChanged (val){
-      this.ddChanged("ScreenLabel", val);
+    ddTableChanged () {
+      
     },
-    columnNameChanged (val){
-      this.ddChanged("ColumnName", val);
+    ddColumnChanged () {
+      console.log(this.ddColumnSelected);
+      
     },
-    tableNameChanged (val){
-      this.ddChanged("TableName", val);
-    },
-    ddChanged (key, val){
-        var self = this;
+    ddCScreenLabelChanged () {
 
-        setTimeout(() => {
-          var param = {
-            Left: self.$route.params.system,
-            Right: self.$route.params.details,
-            Column: self.$route.params.column,
-            ScreenLabel: self.ddScreenLabel.selected,
-            ColumnName: self.ddColumn.selected,
-            TableName: self.ddTable.selected,
-          };
-
-          param[key] = val;
-          
-          self.runGetDetails(param);
-        }, 100);
     },
     runGetDetails (param){
-      this.getDetails(param).then(
+      var self = this;
+
+      param.Which = self.$route.name;
+      param.Left = parseInt(self.$route.params.system);
+      param.Right = parseInt(self.$route.params.details);
+      param.Column = parseInt(self.$route.params.column);
+
+      self.getDetails(param).then(
         res => {
-          if (this.dscmy.detailsSource.length > 0){
-            this.selectedDetails = this.dscmy.detailsSource[0];
-            this.selectedDetails.CDE = this.selectedDetails.CDE != 0 ? "Yes" : "No";
-            this.selectedDetails.STATUS = this.selectedDetails.STATUS != 0 ? "ACTIVE" : "INACTIVE";
-            this.selectedDetails.DERIVED = this.selectedDetails.DERIVED != 0 ? "Yes" : "No";
-            this.selectedDetails.SOURCED_FROM_UPSTREAM = this.selectedDetails.SOURCED_FROM_UPSTREAM != 0 ? "Yes" : "No";
+          if (self.dscmy.detailsSource.length > 0){
+            self.selectedDetails = self.dscmy.detailsSource[0];
+            self.selectedDetails.CDE = self.selectedDetails.CDE != 0 ? "Yes" : "No";
+            self.selectedDetails.STATUS = self.selectedDetails.STATUS != 0 ? "ACTIVE" : "INACTIVE";
+            self.selectedDetails.DERIVED = self.selectedDetails.DERIVED != 0 ? "Yes" : "No";
+            self.selectedDetails.SOURCED_FROM_UPSTREAM = self.selectedDetails.SOURCED_FROM_UPSTREAM != 0 ? "Yes" : "No";
 
-            Object.keys(this.selectedDetails).forEach((val) => {
-              this.selectedDetails[val] = !!this.selectedDetails[val] ? this.selectedDetails[val] : "NA";
+            Object.keys(self.selectedDetails).forEach((val) => {
+              self.selectedDetails[val] = !!self.selectedDetails[val] ? self.selectedDetails[val] : "NA";
             });
+            
+            setTimeout(() => {
+              console.log(self.selectedDetails.TABLE_NAME, self.selectedDetails.COLUMN_NAME, self.selectedDetails.ALIAS_NAME);
 
-            this.ddTable.selected = this.selectedDetails.TABLE_NAME;
-            this.ddColumn.selected = this.selectedDetails.COLUMN_NAME;
-            this.ddScreenLabel.selected = this.selectedDetails.ALIAS_NAME;
+              self.ddTableSelected = self.selectedDetails.TABLE_NAME;
+              self.ddColumnSelected = self.selectedDetails.COLUMN_NAME;
+              self.ddScreenLabelSelected = self.selectedDetails.ALIAS_NAME;
+
+              console.log(self.ddTableSelected, self.ddColumnSelected, self.ddScreenLabelSelected);
+            }, 100);
           } else {
             this.selectedDetails = null;
-            
-            if(this.ddColumnOptions.indexOf(this.ddColumn.selected) == -1){
-              this.ddColumn.selected = this.ddColumnOptions[0];
-              var self = this;
-
-              var param = {
-                Left: self.$route.params.system,
-                Right: self.$route.params.details,
-                Column: self.$route.params.column,
-                ScreenLabel: self.ddScreenLabel.selected,
-                ColumnName: self.ddColumn.selected,
-                TableName: self.ddTable.selected,
-              };
-              
-              self.runGetDetails(param);
-            }
           }
         },
         err => err

@@ -190,7 +190,7 @@ table.v-table thead th > div.btn-group {
                   >
                     <template slot="items" slot-scope="props">
                       <td style="width: 25%">&nbsp;</td>
-                      <td style="width: 25%"><b-link @click="showDetails(props.item.TSID, props.item.ID, props.item.COLID)">{{ props.item.COLUMN_NAME }}</b-link></td>
+                      <td style="width: 25%"><b-link @click="showDetails(props.item)">{{ props.item.COLUMN_NAME }}</b-link></td>
                       <td style="width: 25%">{{ props.item.ALIAS_NAME }}</td>
                       <td style="width: 25%">{{ props.item.CDE }}</td>
                     </template>
@@ -433,8 +433,8 @@ export default {
         // this.searchForm.show = false;
         // this.$nextTick(() => { this.searchForm.show = true });
       },
-      showDetails (tsid, id, colid) {
-        this.$router.push(this.addressPath + "/" + tsid + '/' + id + '/' + colid)
+      showDetails (param) {
+        this.$router.push(this.addressPath + "/" + param.TSID + '/' + param.ID + '/' + param.COLID)
       }
     }
 }

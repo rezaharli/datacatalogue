@@ -59,7 +59,7 @@ func (s *DSCService) CreateSystemDummyData() error {
 	}
 
 	data := make([]*m.System, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		system := m.NewSystemModel()
 		system.ID = i
 		system.System_Name = fake.Words()
@@ -92,7 +92,7 @@ func (s *DSCService) CreateMDResourceDummyData() error {
 	}
 
 	data := make([]*m.MDResource, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewMDResource()
 		mdt.ID = i
 		mdt.Name = fake.Words()
@@ -127,7 +127,7 @@ func (s *DSCService) CreateMDTableDummyData() error {
 	}
 
 	data := make([]*m.MDTable, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewMDTableModel()
 		mdt.ID = i
 		mdt.Resource_ID = toolkit.ToInt(fake.DigitsN(3), "")
@@ -167,12 +167,12 @@ func (s *DSCService) CreatePeopleDummyData() error {
 	}
 
 	data := make([]*m.People, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewPeopleModel()
 		mdt.ID = i
 		mdt.First_Name = fake.Words()
 		mdt.Last_Name = fake.Words()
-		mdt.Bank_ID = "1000" + toolkit.ToString(i)
+		mdt.Bank_ID = "100" + toolkit.ToString(i)
 		mdt.Email_ID = fake.Words()
 		mdt.Function = fake.Words()
 		mdt.Org_Unit = fake.Words()
@@ -205,7 +205,7 @@ func (s *DSCService) CreateMDColumnDummyData() error {
 	}
 
 	data := make([]*m.MDColumn, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewMDColumnModel()
 		mdt.ID = i
 		mdt.Table_ID = toolkit.ToInt(fake.DigitsN(3), "")
@@ -269,7 +269,7 @@ func (s *DSCService) CreateBusinessTermDummyData() error {
 	}
 
 	data := make([]*m.BusinessTerm, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewBusinessTermModel()
 		mdt.ID = i
 		mdt.BT_Name = fake.Words()
@@ -317,7 +317,7 @@ func (s *DSCService) CreateSubCategoryDummyData() error {
 	}
 
 	data := make([]*m.SubCategory, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewSubCategoryModel()
 		mdt.ID = i
 		mdt.Name = fake.Words()
@@ -351,7 +351,7 @@ func (s *DSCService) CreateCategoryDummyData() error {
 	}
 
 	data := make([]*m.Category, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewCategoryModel()
 		mdt.ID = i
 		mdt.Name = fake.Words()
@@ -384,7 +384,7 @@ func (s *DSCService) CreatePolicyDummyData() error {
 	}
 
 	data := make([]*m.Policy, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewPolicyModel()
 		mdt.ID = i
 		mdt.Info_Asset_Name = fake.Words()
@@ -421,7 +421,7 @@ func (s *DSCService) CreateDSProcessesDummyData() error {
 	}
 
 	data := make([]*m.DSProcesses, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewDSProcessesModel()
 		mdt.ID = i
 		mdt.Name = fake.Words()
@@ -455,14 +455,14 @@ func (s *DSCService) CreateDSProcessesDetailDummyData() error {
 	}
 
 	data := make([]*m.DSProcessDetail, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewDSProcessesDetailModel()
 		mdt.ID = i
-		mdt.Process_ID = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Business_Term_ID = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Segment_ID = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Imm_Prec_System_ID = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Ultimate_Source_System_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Process_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Business_Term_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Segment_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Imm_Prec_System_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Ultimate_Source_System_ID = toolkit.ToInt(fake.DigitsN(4), "")
 
 		data = append(data, mdt)
 	}
@@ -491,7 +491,7 @@ func (s *DSCService) CreateSegmentDummyData() error {
 	}
 
 	data := make([]*m.Segment, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewSegmentModel()
 		mdt.ID = i
 		mdt.Name = fake.Words()
@@ -524,7 +524,7 @@ func (s *DSCService) CreateLinkSubcategoryPeopleDummyData() error {
 	}
 
 	data := make([]*m.LinkSubcategoryPeople, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewLinkSubcategoryPeopleModel()
 		mdt.ID = i
 		mdt.Subcategory_ID = toolkit.ToInt(fake.DigitsN(3), "")
@@ -557,7 +557,7 @@ func (s *DSCService) CreatePriorityReportsDummyData() error {
 	}
 
 	data := make([]*m.PriorityReports, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewPriorityReportsModel()
 		mdt.ID = i
 		mdt.Name = fake.Words()
@@ -593,7 +593,7 @@ func (s *DSCService) CreateCRMDummyData() error {
 	}
 
 	data := make([]*m.CRM, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewCRMModel()
 		mdt.ID = i
 		mdt.Name = fake.Words()
@@ -627,7 +627,7 @@ func (s *DSCService) CreateLinkCRMCDEDummyData() error {
 	}
 
 	data := make([]*m.LinkCRMCDE, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewLinkCRMCDEModel()
 		mdt.ID = i
 		mdt.CRM_ID = toolkit.ToInt(fake.DigitsN(3), "")
@@ -660,7 +660,7 @@ func (s *DSCService) CreateLinkCategoryPeopleDummyData() error {
 	}
 
 	data := make([]*m.LinkCategoryPeople, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewLinkCategoryPeopleModel()
 		mdt.ID = i
 		mdt.Category_ID = toolkit.ToInt(fake.DigitsN(3), "")
@@ -693,7 +693,7 @@ func (s *DSCService) CreateLinkRolePeopleDummyData() error {
 	}
 
 	data := make([]*m.LinkRolePeople, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewLinkRolePeopleModel()
 		mdt.ID = i
 		mdt.People_ID = toolkit.ToInt(fake.DigitsN(3), "")
@@ -727,7 +727,7 @@ func (s *DSCService) CreateRoleDummyData() error {
 	}
 
 	data := make([]*m.Role, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewRoleModel()
 		mdt.ID = i
 		mdt.Role_Name = fake.Words()
@@ -761,7 +761,7 @@ func (s *DSCService) CreateLinkColumnInterfaceDummyData() error {
 	}
 
 	data := make([]*m.LinkColumnInterface, 0)
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		mdt := m.NewLinkColumnInterfaceModel()
 		mdt.ID = i
 		mdt.Column_ID = i

@@ -51,7 +51,11 @@ const actions = {
 
         return dscMyService.getDetails(param)
             .then(
-                res => commit('getDetailsSuccess', res.Data),
+                res => {
+                    commit('getDetailsSuccess', res.Data)
+
+                    return res;
+                },
                 error => commit('getDetailsFailure', error)
             );
     },
