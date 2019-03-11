@@ -68,7 +68,7 @@ func main() {
 			ctx.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 			ctx.Writer.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 
-			http.ServeFile(ctx.Writer, ctx.Request, filepath.Join("views/dist", "/index.html"))
+			http.ServeFile(ctx.Writer, ctx.Request, filepath.Join(clit.ExeDir(), "..", "webapp", "views", "dist", "index.html"))
 		})
 	case "dev", "development":
 		s.ReverseProxy("/", "http://localhost:8080", knot.VirtualDirectory)
