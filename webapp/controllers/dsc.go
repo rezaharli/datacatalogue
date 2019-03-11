@@ -122,7 +122,7 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 		return
 	}
 
-	ddSource, _, err := s.NewDSCService().GetddSource(payload.GetString("left"))
+	ddSource, _, err := s.NewDSCService().GetddSource(payload.GetString("Left"))
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return

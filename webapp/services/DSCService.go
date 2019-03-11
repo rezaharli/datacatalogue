@@ -253,11 +253,16 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 		WHERE
 			upper(tlrp.object_type) = upper('system')
 			AND ROWNUM = 1 
-			AND ts.id = ` + payload.GetString("left") + ` `
+			AND ts.id = ` + payload.GetString("Left") + ` `
 
 	if payload.GetString("TableName") == "" {
-		q += `AND tmt.id = ` + payload.GetString("right") + ` `
-		q += `AND tmc.id = ` + payload.GetString("column") + ` `
+		if payload.GetString("Right") != "" {
+			q += `AND tmt.id = ` + payload.GetString("Right") + ` `
+		}
+
+		if payload.GetString("Column") != "" {
+			q += `AND tmc.id = ` + payload.GetString("Column") + ` `
+		}
 	} else {
 		q += `AND tmt.name = '` + payload.GetString("TableName") + `' `
 	}

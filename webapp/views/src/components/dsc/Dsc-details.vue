@@ -367,9 +367,9 @@ export default {
     this.$refs.modalDetails.show();
 
     var param = {
-      left: parseInt(this.$route.params.system),
-      right: parseInt(this.$route.params.details),
-      column: parseInt(this.$route.params.column)
+      Left: parseInt(this.$route.params.system),
+      Right: parseInt(this.$route.params.details),
+      Column: parseInt(this.$route.params.column)
     };
 
     this.runGetDetails(param)
@@ -398,9 +398,9 @@ export default {
 
         setTimeout(() => {
           var param = {
-            left: self.$route.params.system,
-            right: self.$route.params.details,
-            column: self.$route.params.column,
+            Left: self.$route.params.system,
+            Right: self.$route.params.details,
+            Column: self.$route.params.column,
             ScreenLabel: self.ddScreenLabel.selected,
             ColumnName: self.ddColumn.selected,
             TableName: self.ddTable.selected,
@@ -436,9 +436,9 @@ export default {
               var self = this;
 
               var param = {
-                left: self.$route.params.system,
-                right: self.$route.params.details,
-                column: self.$route.params.column,
+                Left: self.$route.params.system,
+                Right: self.$route.params.details,
+                Column: self.$route.params.column,
                 ScreenLabel: self.ddScreenLabel.selected,
                 ColumnName: self.ddColumn.selected,
                 TableName: self.ddTable.selected,
