@@ -20,7 +20,7 @@ table.v-table thead th > div.btn-group {
 <template>
   <b-row style="margin-top: 10px;margin-bottom: 10px;">
     <b-col>
-      <!-- Rfo details -->
+      <!-- Dsc details -->
       <router-view/>
 
       <!-- Main content -->
@@ -42,10 +42,6 @@ table.v-table thead th > div.btn-group {
 
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="Risk Reporting Load" label-for="riskReporting">
                               <b-form-input id="riskReporting" type="text" v-model="searchForm.riskReporting"></b-form-input>
-                            </b-form-group>
-
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Country" label-for="country">
-                              <b-form-select id="country" :options="countryMaster" v-model="searchForm.country"></b-form-select>
                             </b-form-group>
 
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="Principal Risk Type" label-for="principalRisk">
@@ -125,8 +121,8 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                    <td><b-link :to="{ path: addressPath + '/' + props.item.ID }">{{ props.item.NAME }}</b-link></td>
-                    <td>{{ props.item.OWNER_ID }}</td>
+                    <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.NAME" :isklik="false"></tablecell></b-link></td>
+                    <td><tablecell :fulltext="props.item.OWNER_ID" :isklik="true"></tablecell></td>
                 </template>
               </v-data-table>
             </b-col>
@@ -138,6 +134,7 @@ table.v-table thead th > div.btn-group {
                   :pagination.sync="rfomy.right.pagination"
                   :total-items="rfomy.right.totalItems"
                   :loading="rfomy.right.loading"
+                  :expand="false"
                   v-if="secondtable"
                   item-key="ID"
                   class="elevation-1">
@@ -174,14 +171,119 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                   <tr>
-                    <td>{{ props.item.PRINCIPAL_RISK_TYPE }}</td>
-                    <td>{{ props.item.RISK_SUB_TYPE }}</td>
-                    <td>{{ props.item.PRIORITY_REPORT_RATIONALE }}</td>
-                    <td>{{ props.item.CRM_NAME }}</td>
-                    <td>{{ props.item.CRM_RATIONALE }}</td>
-                    <td>{{ props.item.ASSOCIATED_CDES }}</td>
-                    <td>{{ props.item.CDE_RATIONALE }}</td>
+                    <td style="width: calc(100% / 7)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.PRINCIPAL_RISK_TYPE" :isklik="false"></tablecell></b-link></td>
+                    <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'RISK_SUB_TYPE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                    <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'PRIORITY_REPORT_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                    <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'CRM_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                    <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'CRM_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                    <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'ASSOCIATED_CDES')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                    <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'CDE_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                   </tr>
+                </template>
+                
+                <template slot="expand" slot-scope="props">
+                  <v-data-table
+                    :headers="secondTableHeaders"
+                    :items="props.item.RiskSubTypes"
+                    class="elevation-1"
+                    item-key="ID"
+                    hide-actions
+                    hide-headers
+                  >
+                    <template slot="items" slot-scope="props">
+                      <td style="width: calc(100% / 7)">&nbsp;</td>
+                      <td style="width: calc(100% / 7)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.RISK_SUB_TYPE" :isklik="false"></tablecell></b-link></td>
+                      <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'PRIORITY_REPORT_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                      <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'CRM_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                      <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'CRM_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                      <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'ASSOCIATED_CDES')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                      <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'CDE_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                    </template>
+
+                    <template slot="expand" slot-scope="props">
+                      <v-data-table
+                        :headers="secondTableHeaders"
+                        :items="props.item.PriorityReports"
+                        class="elevation-1"
+                        item-key="ID"
+                        hide-actions
+                        hide-headers
+                      >
+                        <template slot="items" slot-scope="props">
+                          <td style="width: calc(100% / 7)">&nbsp;</td>
+                          <td style="width: calc(100% / 7)">&nbsp;</td>
+                          <td style="width: calc(100% / 7)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.PRIORITY_REPORT_RATIONALE" :isklik="false"></tablecell></b-link></td>
+                          <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.CRMNamesVal, 'CRM_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                          <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.CRMNamesVal, 'CRM_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                          <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.CRMNamesVal, 'ASSOCIATED_CDES')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                          <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.CRMNamesVal, 'CDE_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                        </template>
+
+                        <template slot="expand" slot-scope="props">
+                          <v-data-table
+                            :headers="secondTableHeaders"
+                            :items="props.item.CRMNames"
+                            class="elevation-1"
+                            item-key="ID"
+                            hide-actions
+                            hide-headers
+                          >
+                            <template slot="items" slot-scope="props">
+                              <td style="width: calc(100% / 7)">&nbsp;</td>
+                              <td style="width: calc(100% / 7)">&nbsp;</td>
+                              <td style="width: calc(100% / 7)">&nbsp;</td>
+                              <td style="width: calc(100% / 7)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.CRM_NAME" :isklik="false"></tablecell></b-link></td>
+                              <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.CDEsVal, 'CRM_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                              <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.CDEsVal, 'ASSOCIATED_CDES')).join(', '))" :isklik="true"></tablecell></td>
+                              <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.CDEsVal, 'CDE_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                            </template>
+
+                            <template slot="expand" slot-scope="props">
+                              <v-data-table
+                                :headers="secondTableHeaders"
+                                :items="props.item.CDEs"
+                                class="elevation-1"
+                                item-key="ID"
+                                hide-actions
+                                hide-headers
+                              >
+                                <template slot="items" slot-scope="props">
+                                  <td style="width: calc(100% / 7)">&nbsp;</td>
+                                  <td style="width: calc(100% / 7)">&nbsp;</td>
+                                  <td style="width: calc(100% / 7)">&nbsp;</td>
+                                  <td style="width: calc(100% / 7)">&nbsp;</td>
+                                  <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.Rationales, 'CRM_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                                  <td style="width: calc(100% / 7)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.ASSOCIATED_CDES" :isklik="false"></tablecell></b-link></td>
+                                  <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.Rationales, 'CDE_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                                </template>
+
+                                <template slot="expand" slot-scope="props">
+                                  <v-data-table
+                                    :headers="secondTableHeaders"
+                                    :items="props.item.Rationales"
+                                    class="elevation-1"
+                                    item-key="ID"
+                                    hide-actions
+                                    hide-headers
+                                  >
+                                    <template slot="items" slot-scope="props">
+                                      <td style="width: calc(100% / 7)">&nbsp;</td>
+                                      <td style="width: calc(100% / 7)">&nbsp;</td>
+                                      <td style="width: calc(100% / 7)">&nbsp;</td>
+                                      <td style="width: calc(100% / 7)">&nbsp;</td>
+                                      <td style="width: calc(100% / 7)"><tablecell :fulltext="props.item.CRM_RATIONALE" :isklik="true"></tablecell></td>
+                                      <td style="width: calc(100% / 7)">&nbsp;</td>
+                                      <td style="width: calc(100% / 7)"><tablecell :fulltext="props.item.CDE_RATIONALE" :isklik="true"></tablecell></td>
+                                    </template>
+                                  </v-data-table>
+                                </template>
+                              </v-data-table>
+                            </template>
+                          </v-data-table>
+                        </template>
+                      </v-data-table>
+                    </template>
+                  </v-data-table>
                 </template>
               </v-data-table>
             </b-col>
@@ -196,10 +298,14 @@ table.v-table thead th > div.btn-group {
 import Vue from 'vue'
 import { mapState, mapActions } from 'vuex'
 import JsonExcel from 'vue-json-excel'
+import tablecell from '../Tablecell.vue'
  
 Vue.component('downloadExcel', JsonExcel)
 
 export default {
+    components: {
+      tablecell
+    },
     data () {
       return {
         search: {
@@ -222,12 +328,12 @@ export default {
         ],
         secondTableHeaders: [
           { text: 'Principal Risk Type', align: 'left', sortable: false, value: 'PRINCIPAL_RISK_TYPE', width: "25%" },
-          { text: 'Risk Sub Type', align: 'left', sortable: false, value: 'RISK_SUB_TYPE', width: "25%" },
-          { text: 'Priority Report Rationale', align: 'left', sortable: false, value: 'PRIORITY_REPORT_RATIONALE', width: "25%" },
-          { text: 'CRM Name', align: 'left', sortable: false, value: 'CRM_NAME', width: "25%" },
-          { text: 'CRM Rationale', align: 'left', sortable: false, value: 'CRM_RATIONALE', width: "25%" },
-          { text: 'Associated CDEs', align: 'left', sortable: false, value: 'ASSOCIATED_CDES', width: "25%" },
-          { text: 'CDE Rationale', align: 'left', sortable: false, value: 'CDE_RATIONALE', width: "25%" },
+          { text: 'Risk Sub Type', align: 'left', sortable: false, value: 'RiskSubTypesVal.RISK_SUB_TYPE', width: "25%" },
+          { text: 'Priority Report Rationale', align: 'left', sortable: false, value: 'RiskSubTypesVal.PRIORITY_REPORT_RATIONALE', width: "25%" },
+          { text: 'CRM Name', align: 'left', sortable: false, value: 'RiskSubTypesVal.CRM_NAME', width: "25%" },
+          { text: 'CRM Rationale', align: 'left', sortable: false, value: 'RiskSubTypesVal.CRM_RATIONALE', width: "25%" },
+          { text: 'Associated CDEs', align: 'left', sortable: false, value: 'RiskSubTypesVal.ASSOCIATED_CDES', width: "25%" },
+          { text: 'CDE Rationale', align: 'left', sortable: false, value: 'RiskSubTypesVal.CDE_RATIONALE', width: "25%" },
         ],
       }
     },
@@ -238,9 +344,6 @@ export default {
       addressPath (){
         var tmp = this.$route.path.split("/")
         return tmp.slice(0, 3).join("/")
-      },
-      countryMaster (){
-        return []
       },
       principalRiskMaster () {
         return this._.uniq(this._.map(this.rfomy.right.source, 'PRINCIPAL_RISK_TYPE'))
@@ -271,7 +374,7 @@ export default {
             NAME: system.NAME,
             OWNER_ID: system.OWNER_ID,
           }
-          
+
           var tables = this._.filter(this.rfomy.right.display, (v) => v.ID == system.ID)
           if(tables.length > 0){
             this._.each(tables, (table, i) => {
@@ -378,7 +481,7 @@ export default {
         this.secondtable = true;
       },
       onSubmit (evt) {
-        evt.preventDefault();
+        if(evt) evt.preventDefault();
 
         this.rfomy.left.display = this.rfomy.left.source;
         this.rfomy.right.display = this.rfomy.right.source;
@@ -399,16 +502,14 @@ export default {
         /* Reset our form values */
         this.searchForm.priorityReport = '';
         this.searchForm.riskReporting = '';
-        this.searchForm.country = '';
         this.searchForm.principalRisk = '';
         this.searchForm.subRisk = '';
+
+        this.onSubmit();
 
         // /* Trick to reset/clear native browser form validation state */
         // this.searchForm.show = false;
         // this.$nextTick(() => { this.searchForm.show = true });
-      },
-      showDetails (id) {
-        this.$router.push(this.addressPath + "/" + this.$route.params.system + '/' + id)
       }
     }
 }

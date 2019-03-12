@@ -58,7 +58,8 @@ func (s *RFOService) GetRightTable(systemID int, search string, pageNumber, rows
 	resultTotal := 0
 
 	q := `SELECT DISTINCT 
-		tpr.id,
+		tpr.id as tprid,
+		tc.id,
 		tc.name as Principal_Risk_Type,
 		tsc.name as Risk_Sub_Type,
 		tpr.rationale as Priority_Report_Rationale,
