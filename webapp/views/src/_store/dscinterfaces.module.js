@@ -16,7 +16,10 @@ const actions = {
     getLeftTable({ commit }) {
         commit('getAllSystemRequest');
 
+        var user = JSON.parse(localStorage.getItem("user"));
+
         var param = {
+            LoggedInID: user.Username,
             Search: state.all.searchMain,
             Pagination: state.all.left.pagination
         }
