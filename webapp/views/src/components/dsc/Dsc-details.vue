@@ -105,7 +105,7 @@ legend.col-form-label, label.col-form-label {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Description">
-                      <text-wrap-dialog :fulltext="selectedDetails.ALIAS_NAME" v-if="selectedDetails"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.ALIAS_DESCRIPTION" v-if="selectedDetails"></text-wrap-dialog>
                       <!-- <v-dialog v-model="dialog" width="500" v-if="selectedDetails">
                         <p slot="activator" class="col-form-label" v-html="selectedDetails.BUSINESS_DESCRIPTION"><b-link>[more]</b-link></p>
 
@@ -288,8 +288,8 @@ export default {
         'Business Alias Name': "selectedDetails.ALIAS_NAME",
         'Table Name': 'selectedDetails.TABLE_NAME',
         'Column Name': 'selectedDetails.COLUMN_NAME',
-        'Business Alias Description': 'selectedDetails.ALIAS_NAME',
-        'Business Description*': 'selectedDetails.BUSINESS_DESCRIPTION',
+        'Business Alias Name*': 'selectedDetails.ALIAS_NAME',
+        'Business Alias Description': 'selectedDetails.ALIAS_DESCRIPTION',
         'CDE (yes/no)': 'selectedDetails.CDE',
         'Status*': 'selectedDetails.STATUS',
         'Data Type': 'selectedDetails.DATA_TYPE',
@@ -431,13 +431,9 @@ export default {
             });
             
             setTimeout(() => {
-              console.log(self.selectedDetails.TABLE_NAME, self.selectedDetails.COLUMN_NAME, self.selectedDetails.ALIAS_NAME);
-
               self.ddTableSelected = self.selectedDetails.TABLE_NAME;
               self.ddColumnSelected = self.selectedDetails.COLUMN_NAME;
               self.ddScreenLabelSelected = self.selectedDetails.ALIAS_NAME;
-
-              console.log(self.ddTableSelected, self.ddColumnSelected, self.ddScreenLabelSelected);
             }, 100);
           } else {
             this.selectedDetails = null;

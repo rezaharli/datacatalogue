@@ -384,7 +384,7 @@ export default {
           this.getRightTable(this.$route.params.system);
         }
 
-        this.searchForm.show = false;
+        // this.searchForm.show = false;
       },
       onReset (evt) {
         evt.preventDefault();

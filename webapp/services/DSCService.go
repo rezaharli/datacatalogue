@@ -169,6 +169,7 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 			tp.first_name,
 			tp.bank_id,
 			tmc.alias_name,
+			tmc.description as alias_description,
 			tmt.name as table_name,
 			tmc.name as column_name,
 			tbt.bt_name,
