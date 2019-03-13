@@ -104,8 +104,8 @@ legend.col-form-label, label.col-form-label {
                       <b-form-select id="columnName" class="col-8" v-model="ddScreenLabelSelected" :options="ddScreenLabelOptions" @change="ddCScreenLabelChanged"></b-form-select>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Description*">
-                      <text-wrap-dialog :fulltext="selectedDetails.BUSINESS_DESCRIPTION" v-if="selectedDetails"></text-wrap-dialog>
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Description">
+                      <text-wrap-dialog :fulltext="selectedDetails.ALIAS_NAME" v-if="selectedDetails"></text-wrap-dialog>
                       <!-- <v-dialog v-model="dialog" width="500" v-if="selectedDetails">
                         <p slot="activator" class="col-form-label" v-html="selectedDetails.BUSINESS_DESCRIPTION"><b-link>[more]</b-link></p>
 
@@ -288,7 +288,7 @@ export default {
         'Business Alias Name': "selectedDetails.ALIAS_NAME",
         'Table Name': 'selectedDetails.TABLE_NAME',
         'Column Name': 'selectedDetails.COLUMN_NAME',
-        'Business Alias Name*': 'selectedDetails.ALIAS_NAME',
+        'Business Alias Description': 'selectedDetails.ALIAS_NAME',
         'Business Description*': 'selectedDetails.BUSINESS_DESCRIPTION',
         'CDE (yes/no)': 'selectedDetails.CDE',
         'Status*': 'selectedDetails.STATUS',

@@ -30,6 +30,7 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <div class="input-group mb-3">
                 <input v-model="dscinterfaces.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
+
                 <div class="input-group-append">
                   <b-dropdown right id="ddown1" text="">
                     <b-container>
@@ -37,19 +38,19 @@ table.v-table thead th > div.btn-group {
                         <b-col>
                           <b-form @submit="onSubmit" @reset="onReset">
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Name" label-for="systemName">
-                              <b-form-input id="systemName" type="text" v-model="searchForm.systemName"></b-form-input>
+                              <b-form-input id="systemName" type="text" v-model="dscinterfaces.searchDropdown.SystemName"></b-form-input>
                             </b-form-group>
 
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="ITAM ID" label-for="itamID">
-                              <b-form-input id="itamID" type="text" v-model="searchForm.itamID"></b-form-input>
+                              <b-form-input id="itamID" type="text" v-model="dscinterfaces.searchDropdown.ItamID"></b-form-input>
                             </b-form-group>
 
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="tableName">
-                              <b-form-select id="tableName" :options="tablenameMaster" v-model="searchForm.tableName"></b-form-select>
+                              <b-form-select id="tableName" :options="tablenameMaster" v-model="dscinterfaces.searchDropdown.TableName"></b-form-select>
                             </b-form-group>
 
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnName">
-                              <b-form-select id="columnName" :options="columnNameMaster" v-model="searchForm.columnName"></b-form-select>
+                              <b-form-select id="columnName" :options="columnNameMaster" v-model="dscinterfaces.searchDropdown.ColumnName"></b-form-select>
                             </b-form-group>
 
                             <b-button-group class="mx-1 float-right">
@@ -208,14 +209,6 @@ export default {
         systemSource: [],
         tablenameSource: [],
         searchMain: '',
-        searchForm: {
-          systemName: '',
-          itamID: '',
-          country: '',
-          countryMaster: ['a', 'c', 'd'],
-          tableName: '',
-          columnName: '',
-        },
         firstTableHeaders: [
           { text: 'System Name', align: 'left', value: 'SYSTEM_NAME', sortable: false },
           { text: 'ITAM ID', align: 'left', value: 'ITAM_ID', sortable: false },
@@ -385,19 +378,10 @@ export default {
       onSubmit (evt) {
         if(evt) evt.preventDefault();
 
-        this.dscinterfaces.left.display = this.dscinterfaces.left.source;
-        this.dscinterfaces.right.display = this.dscinterfaces.right.source;
-        if(this.searchForm.systemName)
-          this.dscinterfaces.left.display = this._.filter(this.dscinterfaces.left.display, (val) => val.SYSTEM_NAME.toString().toUpperCase().indexOf(this.searchForm.systemName.toString().toUpperCase()) != -1);
-        if(this.searchForm.itamID)
-          this.dscinterfaces.left.display = this._.filter(this.dscinterfaces.left.display, (val) => val.ITAM_ID.toString().toUpperCase().indexOf(this.searchForm.itamID.toString().toUpperCase()) != -1);
-        if(this.searchForm.tableName)
-          this.dscinterfaces.right.display = this._.filter(this.dscinterfaces.right.display, (val) => val.TABLE_NAME.toString().toUpperCase().indexOf(this.searchForm.tableName.toString().toUpperCase()) != -1);
-        if(this.searchForm.columnName) {
-          this._.each(this.dscinterfaces.right.display, (v, i) => {
-            this.dscinterfaces.right.display[i].Columns = this._.filter(this.dscinterfaces.right.display[i].COLUMN_NAME, (w) => w.COLUMN_NAME.toString().toUpperCase().indexOf(this.searchForm.columnName.toString().toUpperCase()) != -1);
-            this.dscinterfaces.right.display = this._.filter(this.dscinterfaces.right.display, (w) => w.Columns.length > 0)
-          });
+        this.getLeftTable();
+
+        if(this.secondtable){
+          this.getRightTable(this.$route.params.system);
         }
 
         this.searchForm.show = false;
@@ -405,11 +389,10 @@ export default {
       onReset (evt) {
         evt.preventDefault();
         /* Reset our form values */
-        this.searchForm.systemName = '';
-        this.searchForm.itamID = '';
-        this.searchForm.country = '';
-        this.searchForm.tableName = '';
-        this.searchForm.columnName = '';
+        this.dscinterfaces.searchDropdown.SystemName = '';
+        this.dscinterfaces.searchDropdown.ItamID = '';
+        this.dscinterfaces.searchDropdown.TableName = '';
+        this.dscinterfaces.searchDropdown.ColumnName = '';
 
         this.onSubmit();
 

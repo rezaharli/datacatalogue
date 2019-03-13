@@ -30,6 +30,7 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <div class="input-group mb-3">
                 <input v-model="dscmy.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                
                 <div class="input-group-append">
                   <b-dropdown right id="ddown1" text="">
                     <b-container>
