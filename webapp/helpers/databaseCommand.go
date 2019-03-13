@@ -217,6 +217,7 @@ type SqlQueryParam struct {
 	SqlQuery    string
 	PageNumber  int
 	RowsPerPage int
+	GroupCol    string
 
 	Results     interface{}
 	ResultTotal int
@@ -225,7 +226,19 @@ type SqlQueryParam struct {
 func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 	sqlQuery := param.SqlQuery
 	if !(param.PageNumber == 0 && param.RowsPerPage == 0) {
-		sqlQuery = `SELECT a.*, rownum r__, COUNT(*) OVER () RESULT_COUNT
+		sqlQuery = `SELECT a.*, `
+
+		if param.GroupCol != "" {
+			if param.GroupCol == "-" {
+				sqlQuery += `rownum r__, `
+			} else {
+				sqlQuery += `DENSE_RANK() OVER (ORDER BY ` + param.GroupCol + ` ASC ) AS r__, `
+			}
+		} else {
+			sqlQuery += `DENSE_RANK() OVER (ORDER BY id ASC ) AS r__, `
+		}
+
+		sqlQuery += `COUNT(*) OVER () RESULT_COUNT
 			FROM
 			(
 				` + param.SqlQuery + `
