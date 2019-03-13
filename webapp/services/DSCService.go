@@ -17,7 +17,7 @@ func NewDSCService() *DSCService {
 	return ret
 }
 
-func (s *DSCService) GetAllSystem(loggedinid, search string, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
+func (s *DSCService) GetAllSystem(loggedinid, search string, searchDD interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -50,7 +50,22 @@ func (s *DSCService) GetAllSystem(loggedinid, search string, pageNumber, rowsPer
 			) `
 	}
 
-	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+	searchDDM, err := toolkit.ToM(searchDD)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	if searchDDM != nil {
+		if searchDDM.GetString("SystemName") != "" {
+			q += `AND upper(ts.system_name) LIKE upper('%` + searchDDM.GetString("SystemName") + `%')`
+		}
+
+		if searchDDM.GetString("ItamID") != "" {
+			q += `AND upper(ts.itam_id) LIKE upper('%` + searchDDM.GetString("ItamID") + `%')`
+		}
+	}
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName:   m.NewSystemModel().TableName(),
 		SqlQuery:    q,
 		Results:     &resultRows,
@@ -65,7 +80,7 @@ func (s *DSCService) GetAllSystem(loggedinid, search string, pageNumber, rowsPer
 	return resultRows, resultTotal, nil
 }
 
-func (s *DSCService) GetTableName(systemID int, search string, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
+func (s *DSCService) GetTableName(systemID int, search string, searchDD interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -95,7 +110,7 @@ func (s *DSCService) GetTableName(systemID int, search string, pageNumber, rowsP
 	return resultRows, resultTotal, nil
 }
 
-func (s *DSCService) GetInterfacesRightTable(systemID int, search string, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
+func (s *DSCService) GetInterfacesRightTable(systemID int, search string, searchDD interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 

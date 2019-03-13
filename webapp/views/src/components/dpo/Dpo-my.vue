@@ -121,9 +121,9 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                    <td><b-link :to="{ path: addressPath + '/' + props.item.ID }">{{ props.item.DOWNSTREAM_PROCESS }}</b-link></td>
-                    <td>{{ props.item.PROCESS_OWNER }}</td>
-                    <td>{{ props.item.BANK_ID }}</td>
+                    <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.DOWNSTREAM_PROCESS" :isklik="false"></tablecell></b-link></td>
+                    <td><tablecell :fulltext="props.item.PROCESS_OWNER" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="props.item.BANK_ID" :isklik="true"></tablecell></td>
                 </template>
               </v-data-table>
             </b-col>
@@ -171,12 +171,12 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                   <tr @click="props.expanded = !props.expanded">
-                    <td><b-link @click="showDetails(props.item.ID)">{{ props.item.CDE_NAME }}</b-link></td>
-                    <td>{{ props.item.SEGMENT }}</td>
-                    <td>{{ props.item.IMM_PREC_SYSTEM_ID }}</td>
-                    <td>{{ props.item.ULTIMATE_SOURCE_SYSTEM_ID }}</td>
-                    <td>{{ props.item.BUSINESS_DESCRIPTION }}</td>
-                    <td>{{ props.item.CDE_RATIONALE }}</td>
+                    <td><b-link @click="showDetails(props.item.ID)"><tablecell :fulltext="props.item.CDE_NAME" :isklik="false"></tablecell></b-link></td>
+                    <td><tablecell :fulltext="props.item.SEGMENT" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="props.item.IMM_PREC_SYSTEM_ID" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="props.item.ULTIMATE_SOURCE_SYSTEM_ID" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="props.item.BUSINESS_DESCRIPTION" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="props.item.CDE_RATIONALE" :isklik="true"></tablecell></td>
                   </tr>
                 </template>
               </v-data-table>
@@ -192,10 +192,14 @@ table.v-table thead th > div.btn-group {
 import Vue from 'vue'
 import { mapState, mapActions } from 'vuex'
 import JsonExcel from 'vue-json-excel'
+import tablecell from '../Tablecell.vue'
  
 Vue.component('downloadExcel', JsonExcel)
 
 export default {
+    components: {
+      tablecell
+    },
     data () {
       return {
         search: {

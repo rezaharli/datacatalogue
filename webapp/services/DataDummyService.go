@@ -703,6 +703,16 @@ func (s *DSCService) CreateLinkRolePeopleDummyData() error {
 		data = append(data, mdt)
 	}
 
+	for i := 0; i < 10000; i++ {
+		mdt := m.NewLinkRolePeopleModel()
+		mdt.ID = i + 10000
+		mdt.People_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Object_Type = "PROCESS"
+		mdt.Object_ID = toolkit.ToInt(fake.DigitsN(3), "")
+
+		data = append(data, mdt)
+	}
+
 	err = h.NewDBcmd().Insert(h.InsertParam{
 		TableName:       m.NewLinkRolePeopleModel().TableName(),
 		Data:            data,

@@ -28,6 +28,7 @@ func (c *DSC) GetAllSystems(k *knot.WebContext) {
 
 	loggedinId := payload.GetString("LoggedInID")
 	search := payload.GetString("Search")
+	searchDD := payload.Get("SearchDD")
 	pagination, err := toolkit.ToM(payload.Get("Pagination"))
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
@@ -37,7 +38,7 @@ func (c *DSC) GetAllSystems(k *knot.WebContext) {
 	pageNumber := pagination.GetInt("page")
 	rowsPerPage := pagination.GetInt("rowsPerPage")
 
-	systems, _, err := s.NewDSCService().GetAllSystem(loggedinId, search, pageNumber, rowsPerPage, toolkit.M{})
+	systems, _, err := s.NewDSCService().GetAllSystem(loggedinId, search, searchDD, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -57,6 +58,7 @@ func (c *DSC) GetTableName(k *knot.WebContext) {
 	}
 
 	search := payload.GetString("Search")
+	searchDD := payload.Get("SearchDD")
 	systemID := payload.GetInt("SystemID")
 	pagination, err := toolkit.ToM(payload.Get("Pagination"))
 	if err != nil {
@@ -67,7 +69,7 @@ func (c *DSC) GetTableName(k *knot.WebContext) {
 	pageNumber := pagination.GetInt("page")
 	rowsPerPage := pagination.GetInt("rowsPerPage")
 
-	systems, _, err := s.NewDSCService().GetTableName(systemID, search, pageNumber, rowsPerPage, toolkit.M{})
+	systems, _, err := s.NewDSCService().GetTableName(systemID, search, searchDD, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -87,6 +89,7 @@ func (c *DSC) GetInterfacesRightTable(k *knot.WebContext) {
 	}
 
 	search := payload.GetString("Search")
+	searchDD := payload.Get("SearchDD")
 	systemID := payload.GetInt("SystemID")
 	pagination, err := toolkit.ToM(payload.Get("Pagination"))
 	if err != nil {
@@ -97,7 +100,7 @@ func (c *DSC) GetInterfacesRightTable(k *knot.WebContext) {
 	pageNumber := pagination.GetInt("page")
 	rowsPerPage := pagination.GetInt("rowsPerPage")
 
-	systems, _, err := s.NewDSCService().GetInterfacesRightTable(systemID, search, pageNumber, rowsPerPage, toolkit.M{})
+	systems, _, err := s.NewDSCService().GetInterfacesRightTable(systemID, search, searchDD, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return

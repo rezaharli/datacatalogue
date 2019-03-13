@@ -15,7 +15,7 @@ func NewDPOService() *DPOService {
 	return ret
 }
 
-func (s *DPOService) GetLeftTable(search string, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
+func (s *DPOService) GetLeftTable(loggedinid, search string, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -26,23 +26,22 @@ func (s *DPOService) GetLeftTable(search string, pageNumber, rowsPerPage int, fi
 			tp.bank_id
 		FROM 
 			tbl_ds_processes tdp
-			INNER JOIN tbl_ds_process_detail tdpd ON tdpd.process_id = tdp.id
-			LEFT JOIN tbl_people tp ON tdp.owner_id = tp.id
-			LEFT JOIN tbl_segment ts ON tdpd.segment_id = ts.id
-			LEFT JOIN tbl_business_term tbt ON tdpd.business_term_id = tbt.id
-			LEFT JOIN tbl_system tsy ON tdpd.imm_prec_system_id = tsy.id
-			LEFT JOIN tbl_md_table tmt ON tmt.business_term_id = tbt.id
-			LEFT JOIN tbl_md_column tmc ON tmc.table_id = tmt.id
-			LEFT JOIN tbl_category tc ON ts.subdomain_id = tc.id
-			LEFT JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
-			LEFT JOIN tbl_link_category_people tlcp ON tlcp.category_id = tc.id`
+			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = tdp.id
+			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
+		WHERE
+			upper(tlrp.object_type) = upper('process') `
+
+	if loggedinid != "" {
+		a := toolkit.ToInt(loggedinid, "")
+		toolkit.Println(a)
+		q += `AND tp.bank_id = '` + toolkit.ToString(a) + `' `
+	}
 
 	if search != "" {
 		q += `
-			WHERE
-				upper(tdp.Name) LIKE upper('%` + search + `%')
-				OR upper(tdp.owner_id) LIKE upper('%` + search + `%')
-				OR upper(tp.bank_id) LIKE upper('%` + search + `%')`
+			upper(tdp.Name) LIKE upper('%` + search + `%')
+			OR upper(tdp.owner_id) LIKE upper('%` + search + `%')
+			OR upper(tp.bank_id) LIKE upper('%` + search + `%') `
 	}
 
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
@@ -75,8 +74,10 @@ func (s *DPOService) GetRightTable(processID int, search string, pageNumber, row
 			tbt.cde_rationale
 		FROM 
 			tbl_ds_processes tdp
-			INNER JOIN tbl_ds_process_detail tdpd ON tdpd.process_id = tdp.id
-			LEFT JOIN tbl_people tp ON tdp.owner_id = tp.id
+			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = tdp.id
+			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
+
+            LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.process_id = tdp.id
 			LEFT JOIN tbl_segment ts ON tdpd.segment_id = ts.id
 			LEFT JOIN tbl_business_term tbt ON tdpd.business_term_id = tbt.id
 			LEFT JOIN tbl_system tsy ON tdpd.imm_prec_system_id = tsy.id
