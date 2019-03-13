@@ -8,7 +8,22 @@ export const dscMyService = {
 };
 
 function getLeftTable(param) {
-    return fetchWHeader(`/dsc/getallsystems`, param)
+    return fetchWHeader(`/dsc/getallsystems`, param).then(
+        res => {
+            var tmp = _.groupBy(res.Data, "SYSTEM_NAME")
+            
+            res.Data = _.map(Object.keys(tmp), function(v, i){
+                return {
+                    ID: tmp[v][0].ID,
+                    SYSTEM_NAME: v,
+                    Custodians: tmp[v],
+                    RESULT_COUNT: Object.keys(tmp).length
+                }
+            });
+
+            return res;
+        }
+    )
 }
 
 function getRightTable(param) {

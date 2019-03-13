@@ -88,6 +88,7 @@ table.v-table thead th > div.btn-group {
                   :pagination.sync="dscinterfaces.left.pagination"
                   :total-items="dscinterfaces.left.totalItems"
                   :loading="dscinterfaces.left.loading"
+                  item-key="ID"
                   class="elevation-1 fixed-header">
 
                 <template slot="headerCell" slot-scope="props">
@@ -122,10 +123,10 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                    <td><b-link :to="{ path: addressPath + '/' + props.item.ID }">{{ props.item.SYSTEM_NAME }}</b-link></td>
-                    <td>{{ props.item.ITAM_ID }}</td>
-                    <td>{{ props.item.FIRST_NAME }}</td>
-                    <td>{{ props.item.BANK_ID }}</td>
+                    <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.SYSTEM_NAME" :isklik="false"></tablecell></b-link></td>
+                    <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'ITAM_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'FIRST_NAME').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'BANK_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
                 </template>
               </v-data-table>
             </b-col>
@@ -195,10 +196,14 @@ table.v-table thead th > div.btn-group {
 import Vue from 'vue'
 import { mapState, mapActions } from 'vuex'
 import JsonExcel from 'vue-json-excel'
+import tablecell from '../Tablecell.vue'
  
 Vue.component('downloadExcel', JsonExcel)
 
 export default {
+    components: {
+      tablecell
+    },
     data () {
       return {
         search: {
@@ -211,9 +216,9 @@ export default {
         searchMain: '',
         firstTableHeaders: [
           { text: 'System Name', align: 'left', value: 'SYSTEM_NAME', sortable: false },
-          { text: 'ITAM ID', align: 'left', value: 'ITAM_ID', sortable: false },
-          { text: 'Dataset Custodian', align: 'left', value: 'FIRST_NAME', sortable: false },
-          { text: 'Bank ID', align: 'left', value: 'BANK_ID', sortable: false }
+          { text: 'ITAM ID', align: 'left', value: 'Custodians.ITAM_ID', sortable: false },
+          { text: 'Dataset Custodian', align: 'left', value: 'Custodians.FIRST_NAME', sortable: false },
+          { text: 'Bank ID', align: 'left', value: 'Custodians.BANK_ID', sortable: false }
         ],
         secondTableHeaders: [
           { text: 'List of CDEs', align: 'left', sortable: false, value: 'LISTOF_CDE', width: "25%" },

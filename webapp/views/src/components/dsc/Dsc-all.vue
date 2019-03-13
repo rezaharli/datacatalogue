@@ -87,6 +87,8 @@ table.v-table thead th > div.btn-group {
                   :pagination.sync="dscall.left.pagination"
                   :total-items="dscall.left.totalItems"
                   :loading="dscall.left.loading"
+                  :expand="false"
+                  item-key="ID"
                   class="elevation-1 fixed-header">
 
                 <template slot="headerCell" slot-scope="props">
@@ -122,9 +124,26 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                     <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.SYSTEM_NAME" :isklik="false"></tablecell></b-link></td>
-                    <td>{{ props.item.ITAM_ID }}</td>
-                    <td><tablecell :fulltext="props.item.FIRST_NAME" :isklik="true"></tablecell></td>
-                    <td>{{ props.item.BANK_ID }}</td>
+                    <td><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'ITAM_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell></b-link></td>
+                    <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'FIRST_NAME').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'BANK_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                </template>
+
+                <template slot="expand" slot-scope="props">
+                  <v-data-table
+                    :headers="firstTableHeaders"
+                    :items="props.item.Custodians"
+                    class="elevation-1"
+                    hide-actions
+                    hide-headers
+                  >
+                    <template slot="items" slot-scope="props">
+                      <td style="width: 25%">&nbsp;</td>
+                      <td style="width: 25%">&nbsp;</td>
+                      <td style="width: 25%">{{ props.item.FIRST_NAME }}</td>
+                      <td style="width: 25%">{{ props.item.BANK_ID }}</td>
+                    </template>
+                  </v-data-table>
                 </template>
               </v-data-table>
             </b-col>
@@ -228,9 +247,9 @@ export default {
         tablenameSource: [],
         firstTableHeaders: [
           { text: 'System Name', align: 'left', value: 'SYSTEM_NAME', sortable: false },
-          { text: 'ITAM ID', align: 'left', value: 'ITAM_ID', sortable: false },
-          { text: 'Dataset Custodian', align: 'left', value: 'FIRST_NAME', sortable: false },
-          { text: 'Bank ID', align: 'left', value: 'BANK_ID', sortable: false }
+          { text: 'ITAM ID', align: 'left', value: 'Custodians.ITAM_ID', sortable: false },
+          { text: 'Dataset Custodian', align: 'left', value: 'Custodians.FIRST_NAME', sortable: false },
+          { text: 'Bank ID', align: 'left', value: 'Custodians.BANK_ID', sortable: false }
         ],
         secondTableHeaders: [
           { text: 'Table Name', align: 'left', sortable: false, value: 'TABLE_NAME', displayCount: true, width: "25%" },

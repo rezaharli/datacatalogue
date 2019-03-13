@@ -30,7 +30,6 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <div class="input-group mb-3">
                 <input v-model="dscmy.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                
                 <div class="input-group-append">
                   <b-dropdown right id="ddown1" text="" ref="ddownSearch">
                     <b-container>
@@ -88,6 +87,7 @@ table.v-table thead th > div.btn-group {
                   :pagination.sync="dscmy.left.pagination"
                   :total-items="dscmy.left.totalItems"
                   :loading="dscmy.left.loading"
+                  item-key="ID"
                   class="elevation-1 fixed-header">
 
                 <template slot="headerCell" slot-scope="props">
@@ -123,9 +123,9 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                     <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.SYSTEM_NAME" :isklik="false"></tablecell></b-link></td>
-                    <td>{{ props.item.ITAM_ID }}</td>
-                    <td><tablecell :fulltext="props.item.FIRST_NAME" :isklik="true"></tablecell></td>
-                    <td>{{ props.item.BANK_ID }}</td>
+                    <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'ITAM_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'FIRST_NAME').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'BANK_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
                 </template>
               </v-data-table>
             </b-col>
@@ -229,9 +229,9 @@ export default {
         tablenameSource: [],
         firstTableHeaders: [
           { text: 'System Name', align: 'left', value: 'SYSTEM_NAME', sortable: false },
-          { text: 'ITAM ID', align: 'left', value: 'ITAM_ID', sortable: false },
-          { text: 'Dataset Custodian', align: 'left', value: 'FIRST_NAME', sortable: false },
-          { text: 'Bank ID', align: 'left', value: 'BANK_ID', sortable: false }
+          { text: 'ITAM ID', align: 'left', value: 'Custodians.ITAM_ID', sortable: false },
+          { text: 'Dataset Custodian', align: 'left', value: 'Custodians.FIRST_NAME', sortable: false },
+          { text: 'Bank ID', align: 'left', value: 'Custodians.BANK_ID', sortable: false }
         ],
         secondTableHeaders: [
           { text: 'Table Name', align: 'left', sortable: false, value: 'TABLE_NAME', displayCount: true, width: "25%" },
@@ -403,8 +403,8 @@ export default {
           this.getRightTable(this.$route.params.system);
         }
 
-        // this.dscmy.searchDropdown.show = false;
         this.$refs.ddownSearch.hide(true);
+        // this.dscmy.searchDropdown.show = false;
       },
       onReset (evt) {
         evt.preventDefault();
