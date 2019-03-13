@@ -154,7 +154,7 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dscmy.right.source).length }})
+                  {{ props.header.text }} {{ props.header.displayCount ? "(" + distinctData(props.header.value, dscmy.right.source).length + ")" : "" }}
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -177,7 +177,7 @@ table.v-table thead th > div.btn-group {
                     <td><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.TABLE_NAME" :isklik="false"></tablecell></b-link></td>
                     <td><tablecell :fulltext="(_.map(props.item.Columns, 'COLUMN_NAME').filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                     <td><tablecell :fulltext="(_.map(props.item.Columns, 'ALIAS_NAME').filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                    <td><tablecell :fulltext="(_.map(props.item.Columns, 'CDE').filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="getCDEConclusion(_.map(props.item.Columns, 'CDE'))" :isklik="true"></tablecell></td>
                   </tr>
                 </template>
                 
@@ -234,10 +234,10 @@ export default {
           { text: 'Bank ID', align: 'left', value: 'BANK_ID', sortable: false }
         ],
         secondTableHeaders: [
-          { text: 'Table Name', align: 'left', sortable: false, value: 'TABLE_NAME', width: "25%" },
-          { text: 'Column Name', align: 'left', sortable: false, value: 'Columns.COLUMN_NAME', width: "25%" },
-          { text: 'Business Alias Name', align: 'left', sortable: false, value: 'Columns.ALIAS_NAME', width: "25%" },
-          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'Columns.CDE', width: "25%" }
+          { text: 'Table Name', align: 'left', sortable: false, value: 'TABLE_NAME', displayCount: true, width: "25%" },
+          { text: 'Column Name', align: 'left', sortable: false, value: 'Columns.COLUMN_NAME', displayCount: true, width: "25%" },
+          { text: 'Business Alias Name', align: 'left', sortable: false, value: 'Columns.ALIAS_NAME', displayCount: true, width: "25%" },
+          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'Columns.CDE', displayCount: false, width: "25%" }
         ],
       }
     },
@@ -390,6 +390,9 @@ export default {
       systemRowClick (evt) {
         evt.preventDefault();
         this.secondtable = true;
+      },
+      getCDEConclusion (cdes) {
+        return cdes.filter(Boolean).join(', ').indexOf("Yes") != -1 ? "Yes" : "No";
       },
       onSubmit (evt) {
         if(evt) evt.preventDefault();
