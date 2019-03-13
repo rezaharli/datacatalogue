@@ -36,20 +36,20 @@ table.v-table thead th > div.btn-group {
                       <b-form-row class="main-table-search-dropdown-form">
                         <b-col>
                           <b-form @submit="onSubmit" @reset="onReset">
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Name" label-for="systemName">
-                              <b-form-input id="systemName" type="text" v-model="searchForm.systemName"></b-form-input>
+                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Name" label-for="SystemName">
+                              <b-form-input id="SystemName" type="text" v-model="dscmy.searchDropdown.SystemName"></b-form-input>
                             </b-form-group>
 
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="ITAM ID" label-for="itamID">
-                              <b-form-input id="itamID" type="text" v-model="searchForm.itamID"></b-form-input>
+                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="ITAM ID" label-for="ItamID">
+                              <b-form-input id="ItamID" type="text" v-model="dscmy.searchDropdown.ItamID"></b-form-input>
                             </b-form-group>
 
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="tableName">
-                              <b-form-select id="tableName" :options="tablenameMaster" v-model="searchForm.tableName"></b-form-select>
+                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="TableName">
+                              <b-form-select id="TableName" :options="tablenameMaster" v-model="dscmy.searchDropdown.TableName"></b-form-select>
                             </b-form-group>
 
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnName">
-                              <b-form-select id="columnName" :options="columnNameMaster" v-model="searchForm.columnName"></b-form-select>
+                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="ColumnName">
+                              <b-form-select id="ColumnName" :options="columnNameMaster" v-model="dscmy.searchDropdown.ColumnName"></b-form-select>
                             </b-form-group>
 
                             <b-button-group class="mx-1 float-right">
@@ -226,14 +226,6 @@ export default {
         secondtable: false,
         systemSource: [],
         tablenameSource: [],
-        searchForm: {
-          systemName: '',
-          itamID: '',
-          country: '',
-          countryMaster: ['a', 'c', 'd'],
-          tableName: '',
-          columnName: '',
-        },
         firstTableHeaders: [
           { text: 'System Name', align: 'left', value: 'SYSTEM_NAME', sortable: false },
           { text: 'ITAM ID', align: 'left', value: 'ITAM_ID', sortable: false },
@@ -401,37 +393,27 @@ export default {
       onSubmit (evt) {
         if(evt) evt.preventDefault();
 
-        this.dscmy.left.display = this.dscmy.left.source;
-        this.dscmy.right.display = this.dscmy.right.source;
-        if(this.searchForm.systemName)
-          this.dscmy.left.display = this._.filter(this.dscmy.left.display, (val) => val.SYSTEM_NAME.toString().toUpperCase().indexOf(this.searchForm.systemName.toString().toUpperCase()) != -1);
-        if(this.searchForm.itamID)
-          this.dscmy.left.display = this._.filter(this.dscmy.left.display, (val) => val.ITAM_ID.toString().toUpperCase().indexOf(this.searchForm.itamID.toString().toUpperCase()) != -1);
-        if(this.searchForm.tableName)
-          this.dscmy.right.display = this._.filter(this.dscmy.right.display, (val) => val.TABLE_NAME.toString().toUpperCase().indexOf(this.searchForm.tableName.toString().toUpperCase()) != -1);
-        if(this.searchForm.columnName) {
-          this._.each(this.dscmy.right.display, (v, i) => {
-            this.dscmy.right.display[i].Columns = this._.filter(this.dscmy.right.display[i].Columns, (w) => w.COLUMN_NAME.toString().toUpperCase().indexOf(this.searchForm.columnName.toString().toUpperCase()) != -1);
-            this.dscmy.right.display = this._.filter(this.dscmy.right.display, (w) => w.Columns.length > 0)
-          });
+        this.getLeftTable();
+
+        if(this.secondtable){
+          this.getRightTable(this.$route.params.system);
         }
 
-        this.searchForm.show = false;
+        // this.dscmy.searchDropdown.show = false;
       },
       onReset (evt) {
         evt.preventDefault();
         /* Reset our form values */
-        this.searchForm.systemName = '';
-        this.searchForm.itamID = '';
-        this.searchForm.country = '';
-        this.searchForm.tableName = '';
-        this.searchForm.columnName = '';
+        this.dscmy.searchDropdown.SystemName = '';
+        this.dscmy.searchDropdown.ItamID = '';
+        this.dscmy.searchDropdown.TableName = '';
+        this.dscmy.searchDropdown.ColumnName = '';
 
         this.onSubmit();
 
         // /* Trick to reset/clear native browser form validation state */
-        // this.searchForm.show = false;
-        // this.$nextTick(() => { this.searchForm.show = true });
+        // this.dscmy.searchDropdown.show = false;
+        // this.$nextTick(() => { this.dscmy.searchDropdown.show = true });
       },
       showDetails (param) {
         this.$router.push(this.addressPath + "/" + param.TSID + '/' + param.ID + '/' + param.COLID)

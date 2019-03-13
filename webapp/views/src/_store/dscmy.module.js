@@ -4,6 +4,12 @@ import { newTableObject } from '../_helpers/table-helper';
 const state = {
     all: {
         searchMain: '',
+        searchDropdown: {
+            SystemName: '',
+            ItamID: '',
+            TableName: '',
+            ColumnName: '',
+        },
         left: newTableObject(),
         right: newTableObject(),
         DDSource: [],
@@ -22,6 +28,7 @@ const actions = {
         var param = {
             LoggedInID: user.Username,
             Search: state.all.searchMain,
+            SearchDD: state.all.searchDropdown,
             Pagination: state.all.left.pagination
         }
 
@@ -37,6 +44,7 @@ const actions = {
         var param = {
             SystemID: systemID,
             Search: state.all.searchMain,
+            SearchDD: state.all.searchDropdown,
             Pagination: state.all.right.pagination
         }
 

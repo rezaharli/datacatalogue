@@ -93,9 +93,14 @@ func (s *DSCService) GetTableName(systemID int, search string, searchDD interfac
 			tmc.alias_name,
 			tmc.cde `
 
-	q += s.getSystemRightTableFROMandWHERE(systemID, search, nil)
+	searchDDM, err := toolkit.ToM(searchDD)
+	if err != nil {
+		return nil, 0, err
+	}
 
-	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+	q += s.getSystemRightTableFROMandWHERE(systemID, search, searchDDM, nil)
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName:   m.NewSystemModel().TableName(),
 		SqlQuery:    q,
 		Results:     &resultRows,
@@ -130,9 +135,14 @@ func (s *DSCService) GetInterfacesRightTable(systemID int, search string, search
 			tdp.name as list_downstream_process,
 			tdp.owner_id as downstream_owner `
 
-	q += s.getInterfacesRightTableFROMandWHERE(systemID, search, nil)
+	searchDDM, err := toolkit.ToM(searchDD)
+	if err != nil {
+		return nil, 0, err
+	}
 
-	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+	q += s.getInterfacesRightTableFROMandWHERE(systemID, search, searchDDM, nil)
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName:   m.NewSystemModel().TableName(),
 		SqlQuery:    q,
 		Results:     &resultRows,
@@ -192,10 +202,10 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 
 	if strings.Contains(payload.GetString("Which"), "interfaces") == true {
 		toolkit.Println("interfaces")
-		q += s.getInterfacesRightTableFROMandWHERE(payload.GetInt("Left"), "", payload)
+		q += s.getInterfacesRightTableFROMandWHERE(payload.GetInt("Left"), "", nil, payload)
 	} else {
 		toolkit.Println("system")
-		q += s.getSystemRightTableFROMandWHERE(payload.GetInt("Left"), "", payload)
+		q += s.getSystemRightTableFROMandWHERE(payload.GetInt("Left"), "", nil, payload)
 	}
 
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
@@ -222,10 +232,10 @@ func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 
 	if strings.Contains(payload.GetString("Which"), "interfaces") == true {
 		toolkit.Println("interfaces")
-		q += s.getInterfacesRightTableFROMandWHERE(payload.GetInt("Left"), "", nil)
+		q += s.getInterfacesRightTableFROMandWHERE(payload.GetInt("Left"), "", nil, nil)
 	} else {
 		toolkit.Println("system")
-		q += s.getSystemRightTableFROMandWHERE(payload.GetInt("Left"), "", nil)
+		q += s.getSystemRightTableFROMandWHERE(payload.GetInt("Left"), "", nil, nil)
 	}
 
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
@@ -241,7 +251,7 @@ func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 	return resultRows, resultTotal, nil
 }
 
-func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, search string, payload toolkit.M) string {
+func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, search string, searchDDM, payload toolkit.M) string {
 	q := `FROM tbl_system ts
 			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
 			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
@@ -276,6 +286,16 @@ func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, search string
 				) `
 	}
 
+	if searchDDM != nil {
+		if searchDDM.GetString("TableName") != "" {
+			q += `AND upper(tmt.name) LIKE upper('%` + searchDDM.GetString("SystemName") + `%')`
+		}
+
+		if searchDDM.GetString("ColumnName") != "" {
+			q += `AND upper(tmc.name) LIKE upper('%` + searchDDM.GetString("ColumnName") + `%')`
+		}
+	}
+
 	q += `		AND CDE = 1
 			) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id and tmt.id = cde.tab_id `
 
@@ -306,7 +326,7 @@ func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, search string
 	return q
 }
 
-func (s *DSCService) getInterfacesRightTableFROMandWHERE(systemID int, search string, payload toolkit.M) string {
+func (s *DSCService) getInterfacesRightTableFROMandWHERE(systemID int, search string, searchDDM, payload toolkit.M) string {
 	q := `FROM tbl_system ts
 			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
 			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
@@ -358,6 +378,16 @@ func (s *DSCService) getInterfacesRightTableFROMandWHERE(systemID int, search st
 			OR upper(tdp.name) LIKE upper('%` + search + `%')
 			OR upper(tdp.owner_id) LIKE upper('%` + search + `%')
 		) `
+	}
+
+	if searchDDM != nil {
+		if searchDDM.GetString("TableName") != "" {
+			q += `AND upper(tmt.name) LIKE upper('%` + searchDDM.GetString("SystemName") + `%')`
+		}
+
+		if searchDDM.GetString("ColumnName") != "" {
+			q += `AND upper(tmc.name) LIKE upper('%` + searchDDM.GetString("ColumnName") + `%')`
+		}
 	}
 
 	q += `AND (ips.system_name is not null or iss.system_name is not null)
