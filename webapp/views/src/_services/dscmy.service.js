@@ -62,6 +62,18 @@ function getInterfacesRightTable(param) {
                 return v;
             });
 
+            var tmp = _.groupBy(res.Data, "LISTOF_CDE")
+            
+            res.Data = _.map(Object.keys(tmp), function(v, i){
+                return {
+                    ID: tmp[v][0].ID,
+                    TSID: tmp[v][0].TSID,
+                    LISTOF_CDE: v,
+                    Values: tmp[v],
+                    RESULT_COUNT: Object.keys(tmp).length
+                }
+            });
+
             return res;
         }
     )

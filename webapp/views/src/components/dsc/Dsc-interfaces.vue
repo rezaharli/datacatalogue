@@ -174,14 +174,14 @@ table.v-table thead th > div.btn-group {
                 <template slot="items" slot-scope="props">
                   <td><b-link :to="{ path:'/dsc/interfaces/' + props.item.TSID + '/' + props.item.ID + '/' + props.item.COLID }" href="#foo" v-b-modal.modallg>{{ props.item.LISTOF_CDE }}</b-link></td>
                   <!-- <td><b-link :to="{ path:'/dsc/interfaces/' + route.params.system + "/details" }" v-b-modal.modallg>{{ props.item.name }}</b-link></td> -->
-                  <td>{{ props.item.IMM_PREC_SYSTEM_NAME }}</td>
-                  <td>{{ props.item.IMM_PREC_SYSTEM_SLA }}</td>
-                  <td>{{ props.item.IMM_PREC_SYSTEM_OLA }}</td>
-                  <td>{{ props.item.IMM_SUCC_SYSTEM_NAME }}</td>
-                  <td>{{ props.item.IMM_SUCC_SYSTEM_SLA }}</td>
-                  <td>{{ props.item.IMM_SUCC_SYSTEM_OLA }}</td>
-                  <td>{{ props.item.LIST_DOWNSTREAM_PROCESS }}</td>
-                  <td>{{ props.item.DOWNSTREAM_OWNER }}</td>
+                  <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'IMM_PREC_SYSTEM_NAME').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                  <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'IMM_PREC_SYSTEM_SLA').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                  <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'IMM_PREC_SYSTEM_OLA').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                  <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'IMM_SUCC_SYSTEM_NAME').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                  <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'IMM_SUCC_SYSTEM_SLA').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                  <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'IMM_SUCC_SYSTEM_OLA').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                  <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'LIST_DOWNSTREAM_PROCESS').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                  <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'DOWNSTREAM_OWNER').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
                 </template>
               </v-data-table>
             </b-col>

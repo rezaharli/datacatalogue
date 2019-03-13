@@ -145,7 +145,7 @@ func (s *DSCService) GetInterfacesRightTable(systemID int, search string, search
 		Results:     &resultRows,
 		PageNumber:  pageNumber,
 		RowsPerPage: rowsPerPage,
-		GroupCol:    "-",
+		GroupCol:    "listof_cde",
 	})
 
 	if err != nil {
