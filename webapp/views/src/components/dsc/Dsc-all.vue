@@ -31,7 +31,7 @@ table.v-table thead th > div.btn-group {
               <div class="input-group mb-3">
                 <input v-model="dscall.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
                 <div class="input-group-append">
-                  <b-dropdown right id="ddown1" text="">
+                  <b-dropdown right id="ddown1" text="" ref="ddownSearch">
                     <b-container>
                       <b-form-row class="main-table-search-dropdown-form">
                         <b-col>
@@ -399,6 +399,7 @@ export default {
           this.getRightTable(this.$route.params.system);
         }
 
+        this.$refs.ddownSearch.hide(true);
         // this.dscall.searchDropdown.show = false;
       },
       onReset (evt) {
