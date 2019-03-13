@@ -44,9 +44,6 @@ func (s *DSCService) GetAllSystem(loggedinid, search string, searchDD interface{
 		q += `
 			AND (
 				upper(ts.system_name) LIKE upper('%` + search + `%')
-				OR upper(ts.itam_id) LIKE upper('%` + search + `%')
-				OR upper(tp.first_name) LIKE upper('%` + search + `%')
-				OR upper(tp.bank_id) LIKE upper('%` + search + `%')
 			) `
 	}
 
@@ -98,7 +95,7 @@ func (s *DSCService) GetTableName(systemID int, search string, searchDD interfac
 		return nil, 0, err
 	}
 
-	q += s.getSystemRightTableFROMandWHERE(systemID, search, searchDDM, nil)
+	q += s.getSystemRightTableFROMandWHERE(systemID, searchDDM, nil)
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName:   m.NewSystemModel().TableName(),
@@ -140,7 +137,7 @@ func (s *DSCService) GetInterfacesRightTable(systemID int, search string, search
 		return nil, 0, err
 	}
 
-	q += s.getInterfacesRightTableFROMandWHERE(systemID, search, searchDDM, nil)
+	q += s.getInterfacesRightTableFROMandWHERE(systemID, searchDDM, nil)
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName:   m.NewSystemModel().TableName(),
@@ -203,10 +200,10 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 
 	if strings.Contains(payload.GetString("Which"), "interfaces") == true {
 		toolkit.Println("interfaces")
-		q += s.getInterfacesRightTableFROMandWHERE(payload.GetInt("Left"), "", nil, payload)
+		q += s.getInterfacesRightTableFROMandWHERE(payload.GetInt("Left"), nil, payload)
 	} else {
 		toolkit.Println("system")
-		q += s.getSystemRightTableFROMandWHERE(payload.GetInt("Left"), "", nil, payload)
+		q += s.getSystemRightTableFROMandWHERE(payload.GetInt("Left"), nil, payload)
 	}
 
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
@@ -233,10 +230,10 @@ func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 
 	if strings.Contains(payload.GetString("Which"), "interfaces") == true {
 		toolkit.Println("interfaces")
-		q += s.getInterfacesRightTableFROMandWHERE(payload.GetInt("Left"), "", nil, nil)
+		q += s.getInterfacesRightTableFROMandWHERE(payload.GetInt("Left"), nil, nil)
 	} else {
 		toolkit.Println("system")
-		q += s.getSystemRightTableFROMandWHERE(payload.GetInt("Left"), "", nil, nil)
+		q += s.getSystemRightTableFROMandWHERE(payload.GetInt("Left"), nil, nil)
 	}
 
 	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
@@ -252,7 +249,7 @@ func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 	return resultRows, resultTotal, nil
 }
 
-func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, search string, searchDDM, payload toolkit.M) string {
+func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, searchDDM, payload toolkit.M) string {
 	q := `FROM tbl_system ts
 			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
 			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
@@ -276,16 +273,6 @@ func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, search string
 					inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
 					inner join tbl_md_column tmc ON tmt.id = tmc.table_id
 				WHERE ts.id = ` + toolkit.ToString(systemID) + ` `
-
-	if search != "" {
-		q += `
-				AND (
-					upper(tmt.name) LIKE upper('%` + search + `%')
-					OR upper(tmc.name) LIKE upper('%` + search + `%')
-					OR upper(tmc.alias_name) LIKE upper('%` + search + `%')
-					OR upper(tmc.cde) LIKE upper('%` + search + `%')
-				) `
-	}
 
 	if searchDDM != nil {
 		if searchDDM.GetString("TableName") != "" {
@@ -327,7 +314,7 @@ func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, search string
 	return q
 }
 
-func (s *DSCService) getInterfacesRightTableFROMandWHERE(systemID int, search string, searchDDM, payload toolkit.M) string {
+func (s *DSCService) getInterfacesRightTableFROMandWHERE(systemID int, searchDDM, payload toolkit.M) string {
 	q := `FROM tbl_system ts
 			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
 			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
@@ -364,21 +351,6 @@ func (s *DSCService) getInterfacesRightTableFROMandWHERE(systemID int, search st
 
 	if payload.GetString("ScreenLabel") != "" {
 		q += ` AND tmc.alias_name = '` + payload.GetString("ScreenLabel") + `' `
-	}
-
-	if search != "" {
-		q += `
-		AND (
-			upper(tmc.alias_name) LIKE upper('%` + search + `%')
-			OR upper(ips.system_name) LIKE upper('%` + search + `%')
-			OR upper(tmc.Imm_Prec_System_SLA) LIKE upper('%` + search + `%')
-			OR upper(tmc.Imm_Prec_System_OLA) LIKE upper('%` + search + `%')
-			OR upper(iss.system_name) LIKE upper('%` + search + `%')
-			OR upper(tmc.Imm_Succ_System_SLA) LIKE upper('%` + search + `%')
-			OR upper(tmc.Imm_Succ_System_OLA) LIKE upper('%` + search + `%')
-			OR upper(tdp.name) LIKE upper('%` + search + `%')
-			OR upper(tdp.owner_id) LIKE upper('%` + search + `%')
-		) `
 	}
 
 	if searchDDM != nil {
