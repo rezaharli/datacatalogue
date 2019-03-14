@@ -231,14 +231,17 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 		if param.GroupCol != "" {
 			if param.GroupCol == "-" {
 				sqlQuery += `rownum r__, `
+				sqlQuery += `COUNT(*) OVER () RESULT_COUNT `
 			} else {
 				sqlQuery += `DENSE_RANK() OVER (ORDER BY ` + param.GroupCol + ` ASC ) AS r__, `
+				sqlQuery += `COUNT(DISTINCT  ` + param.GroupCol + `) OVER () RESULT_COUNT `
 			}
 		} else {
 			sqlQuery += `DENSE_RANK() OVER (ORDER BY id ASC ) AS r__, `
+			sqlQuery += `COUNT(DISTINCT  id) OVER () RESULT_COUNT `
 		}
 
-		sqlQuery += `COUNT(*) OVER () RESULT_COUNT
+		sqlQuery += `
 			FROM
 			(
 				` + param.SqlQuery + `

@@ -17,7 +17,7 @@ function getLeftTable(param) {
                     ID: tmp[v][0].ID,
                     SYSTEM_NAME: v,
                     Custodians: tmp[v],
-                    RESULT_COUNT: Object.keys(tmp).length
+                    RESULT_COUNT: tmp[v][0].RESULT_COUNT
                 }
             });
 
@@ -42,7 +42,7 @@ function getRightTable(param) {
                     TSID: tmp[v][0].TSID,
                     TABLE_NAME: v,
                     Columns: tmp[v],
-                    RESULT_COUNT: Object.keys(tmp).length
+                    RESULT_COUNT: tmp[v][0].RESULT_COUNT
                 }
             });
 
@@ -71,7 +71,7 @@ function getInterfacesRightTable(param) {
                     COLID: tmp[v][0].COLID,
                     LISTOF_CDE: v,
                     Values: tmp[v],
-                    RESULT_COUNT: Object.keys(tmp).length
+                    RESULT_COUNT: tmp[v][0].RESULT_COUNT
                 }
             });
 
@@ -92,7 +92,7 @@ function getDetails(param) {
                     COLID: tmp[v][0].COLID,
                     ID: v,
                     Values: tmp[v],
-                    RESULT_COUNT: Object.keys(tmp).length
+                    RESULT_COUNT: tmp[v][0].RESULT_COUNT
                 }
             });
 
