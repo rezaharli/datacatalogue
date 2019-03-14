@@ -36,7 +36,6 @@ func (s *DSCService) GetAllSystem(loggedinid, search string, searchDD interface{
 
 	if loggedinid != "" {
 		a := toolkit.ToInt(loggedinid, "")
-		toolkit.Println(a)
 		q += `AND tp.bank_id = '` + toolkit.ToString(a) + `' `
 	}
 

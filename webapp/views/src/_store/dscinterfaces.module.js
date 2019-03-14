@@ -25,7 +25,7 @@ const actions = {
         var user = JSON.parse(localStorage.getItem("user"));
 
         var param = {
-            LoggedInID: user.Username,
+            // LoggedInID: user.Username,
             Search: state.all.searchMain,
             SearchDD: state.all.searchDropdown,
             Pagination: state.all.left.pagination
