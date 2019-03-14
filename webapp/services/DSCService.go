@@ -54,11 +54,11 @@ func (s *DSCService) GetAllSystem(loggedinid, search string, searchDD interface{
 
 	if searchDDM != nil {
 		if searchDDM.GetString("SystemName") != "" {
-			q += `AND upper(ts.system_name) LIKE upper('%` + searchDDM.GetString("SystemName") + `%') `
+			q += `AND upper(ts.system_name) LIKE upper('%` + searchDDM.GetString("SystemName") + `%')`
 		}
 
 		if searchDDM.GetString("ItamID") != "" {
-			q += `AND upper(ts.itam_id) LIKE upper('%` + searchDDM.GetString("ItamID") + `%') `
+			q += `AND upper(ts.itam_id) LIKE upper('%` + searchDDM.GetString("ItamID") + `%')`
 		}
 	}
 
@@ -184,7 +184,6 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 			tmc.System_Checks,
 			tc.Name as domain,
 			tsc.name as subdomain,
-			ppl.first_name as domain_owner,
 			tpol.info_asset_name,
 			tpol.description as info_asset_description,
 			tpol.confidentiality,
@@ -197,7 +196,8 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 			ips.system_name as imm_prec_system_name,
 			tmc.imm_succ_system_id,
 			iss.system_name as imm_succ_system_name,
-			tmc.threshold `
+			tmc.threshold,
+			tlcp.People_ID as domain_owner `
 
 	if strings.Contains(payload.GetString("Which"), "interfaces") == true {
 		toolkit.Println("interfaces")
@@ -251,25 +251,27 @@ func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 }
 
 func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, searchDDM, payload toolkit.M) string {
-	q := `FROM tbl_system ts 
-			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
-			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id 
-			
-			INNER JOIN Tbl_Subcategory tsc ON tlrp.object_id = tsc.id AND tsc.type = 'Sub Data Domain' AND tlrp.object_type = 'SUBCATEGORY'
-			INNER JOIN Tbl_People ppl ON tlrp.people_id = ppl.id
-			INNER JOIN Tbl_Role rl ON tlrp.role_id = rl.id and rl.role_name = 'Data Domain Owner'
-			
-			inner join tbl_md_resource tmr ON ts.id = tmr.system_id
+	q := `FROM tbl_system ts `
+
+	if payload != nil {
+		q += `LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
+				LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id `
+	}
+
+	q += `inner join tbl_md_resource tmr ON ts.id = tmr.system_id
 			inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
 			inner join tbl_md_column tmc ON tmt.id = tmc.table_id
-			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
-			LEFT JOIN tbl_policy tpol ON tbt.policy_id = tpol.id
-			
-			left join tbl_link_column_interface ci on tmc.id = ci.column_id
-			left join tbl_system ips on ci.imm_prec_system_id = ips.id
-			left join tbl_system iss on ci.imm_succ_system_id = iss.id
-			
-			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id `
+			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id `
+
+	if payload != nil {
+		q += `LEFT JOIN tbl_subcategory tsc ON tbt.parent_id = tsc.id
+		LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
+		LEFT JOIN tbl_link_category_people tlcp ON tlcp.category_id = tc.id
+		LEFT JOIN tbl_policy tpol ON tbt.policy_id = tpol.id
+		left join tbl_link_column_interface ci on tmc.id = ci.column_id
+		left join tbl_system ips on ci.imm_prec_system_id = ips.id
+		left join tbl_system iss on ci.imm_succ_system_id = iss.id `
+	}
 
 	q += `inner join
 			(
@@ -283,11 +285,11 @@ func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, searchDDM, pa
 
 	if searchDDM != nil {
 		if searchDDM.GetString("TableName") != "" {
-			q += `AND upper(tmt.name) LIKE upper('%` + searchDDM.GetString("SystemName") + `%') `
+			q += `AND upper(tmt.name) LIKE upper('%` + searchDDM.GetString("SystemName") + `%')`
 		}
 
 		if searchDDM.GetString("ColumnName") != "" {
-			q += `AND upper(tmc.name) LIKE upper('%` + searchDDM.GetString("ColumnName") + `%') `
+			q += `AND upper(tmc.name) LIKE upper('%` + searchDDM.GetString("ColumnName") + `%')`
 		}
 	}
 
@@ -321,14 +323,14 @@ func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, searchDDM, pa
 }
 
 func (s *DSCService) getInterfacesRightTableFROMandWHERE(systemID int, searchDDM, payload toolkit.M) string {
-	q := `FROM tbl_system ts
-			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
-			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
-			
-			INNER JOIN Tbl_Subcategory tsc ON tlrp.object_id = tsc.id AND tsc.type = 'Sub Data Domain' AND tlrp.object_type = 'SUBCATEGORY'
-			INNER JOIN Tbl_People ppl ON tlrp.people_id = ppl.id
-			INNER JOIN Tbl_Role rl ON tlrp.role_id = rl.id and rl.role_name = 'Data Domain Owner'inner join tbl_md_resource res ON ts.id = res.system_id
+	q := `FROM tbl_system ts `
 
+	if payload != nil {
+		q += `LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
+				LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id `
+	}
+
+	q += `inner join tbl_md_resource res ON ts.id = res.system_id
 			inner join tbl_md_table tmt ON res.id = tmt.resource_id
 			inner join tbl_md_column tmc ON tmt.id = tmc.table_id
 			inner join tbl_link_column_interface ci on tmc.id = ci.column_id
@@ -369,11 +371,11 @@ func (s *DSCService) getInterfacesRightTableFROMandWHERE(systemID int, searchDDM
 
 	if searchDDM != nil {
 		if searchDDM.GetString("TableName") != "" {
-			q += `AND upper(tmt.name) LIKE upper('%` + searchDDM.GetString("SystemName") + `%') `
+			q += `AND upper(tmt.name) LIKE upper('%` + searchDDM.GetString("SystemName") + `%')`
 		}
 
 		if searchDDM.GetString("ColumnName") != "" {
-			q += `AND upper(tmc.name) LIKE upper('%` + searchDDM.GetString("ColumnName") + `%') `
+			q += `AND upper(tmc.name) LIKE upper('%` + searchDDM.GetString("ColumnName") + `%')`
 		}
 	}
 
