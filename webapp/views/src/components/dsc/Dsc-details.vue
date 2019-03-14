@@ -420,7 +420,14 @@ export default {
       self.getDetails(param).then(
         res => {
           if (self.dscmy.detailsSource.length > 0){
-            self.selectedDetails = self.dscmy.detailsSource[0];
+            // self.selectedDetails = self.dscmy.detailsSource[0];
+            var tmp = self.dscmy.detailsSource[0].Values[0];
+
+            self.selectedDetails = {}
+            _.each(Object.keys(tmp), function(v, i){
+                self.selectedDetails[v] = _.uniq(_.map(self.dscmy.detailsSource[0].Values, v).filter(Boolean)).join(', ')
+            });
+            
             self.selectedDetails.CDE = self.selectedDetails.CDE != 0 ? "Yes" : "No";
             self.selectedDetails.STATUS = self.selectedDetails.STATUS != 0 ? "ACTIVE" : "INACTIVE";
             self.selectedDetails.DERIVED = self.selectedDetails.DERIVED != 0 ? "Yes" : "No";

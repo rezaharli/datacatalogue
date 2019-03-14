@@ -297,7 +297,6 @@ func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, searchDDM, pa
 			) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id and tmt.id = cde.tab_id `
 
 	if payload != nil {
-		q += `WHERE ROWNUM = 1 `
 		if payload.GetString("TableName") == "" {
 			if payload.GetString("Right") != "" {
 				q += `AND tmt.id = ` + payload.GetString("Right") + ` `
@@ -324,23 +323,31 @@ func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, searchDDM, pa
 }
 
 func (s *DSCService) getInterfacesRightTableFROMandWHERE(systemID int, searchDDM, payload toolkit.M) string {
-	q := `FROM tbl_system ts
-			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
-			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
-			inner join tbl_md_resource res ON ts.id = res.system_id
+	q := `FROM tbl_system ts `
+
+	if payload != nil {
+		q += `LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
+				LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id `
+	}
+
+	q += `inner join tbl_md_resource res ON ts.id = res.system_id
 			inner join tbl_md_table tmt ON res.id = tmt.resource_id
 			inner join tbl_md_column tmc ON tmt.id = tmc.table_id
 			inner join tbl_link_column_interface ci on tmc.id = ci.column_id
-			left outer join tbl_system ips on ci.imm_prec_system_id = ips.id
-			left outer join tbl_system iss on ci.imm_succ_system_id = iss.id
+			left join tbl_system ips on ci.imm_prec_system_id = ips.id
+			left join tbl_system iss on ci.imm_succ_system_id = iss.id
 			LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.imm_prec_system_id = ips.id
-			LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id
-			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
+			LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id `
+
+	if payload != nil {
+		q += `LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
 			LEFT JOIN tbl_subcategory tsc ON tbt.parent_id = tsc.id
 			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
 			LEFT JOIN tbl_link_category_people tlcp ON tlcp.category_id = tc.id
-			LEFT JOIN tbl_policy tpol ON tbt.policy_id = tpol.id
-		WHERE ts.id = ` + toolkit.ToString(systemID) + ` `
+			LEFT JOIN tbl_policy tpol ON tbt.policy_id = tpol.id `
+	}
+
+	q += `WHERE ts.id = ` + toolkit.ToString(systemID) + ` `
 
 	if payload.GetString("TableName") == "" {
 		if payload.GetString("Right") != "" {

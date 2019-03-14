@@ -68,6 +68,7 @@ function getInterfacesRightTable(param) {
                 return {
                     ID: tmp[v][0].ID,
                     TSID: tmp[v][0].TSID,
+                    COLID: tmp[v][0].COLID,
                     LISTOF_CDE: v,
                     Values: tmp[v],
                     RESULT_COUNT: Object.keys(tmp).length
@@ -80,5 +81,22 @@ function getInterfacesRightTable(param) {
 }
 
 function getDetails(param) {
-    return fetchWHeader(`/dsc/getdetails`, param)
+    return fetchWHeader(`/dsc/getdetails`, param).then(
+        res => {
+            var tmp = _.groupBy(res.Data.Detail, "ID")
+            
+            res.Data.Detail = _.map(Object.keys(tmp), function(v, i){
+                return {
+                    ID: tmp[v][0].ID,
+                    TSID: tmp[v][0].TSID,
+                    COLID: tmp[v][0].COLID,
+                    ID: v,
+                    Values: tmp[v],
+                    RESULT_COUNT: Object.keys(tmp).length
+                }
+            });
+
+            return res;
+        }
+    )
 }
