@@ -27,12 +27,19 @@ func (s *DSCService) GetAllSystem(loggedinid, search string, searchDD interface{
 			ts.itam_id,
 			tp.first_name,
 			tp.bank_id
-		FROM 
-			Tbl_System ts
-			INNER JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
-			INNER JOIN tbl_people tp ON tlrp.people_id = tp.id
-		WHERE
-			upper(tlrp.object_type) = upper('system') `
+		FROM tbl_system ts 
+		LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
+		LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id inner join tbl_md_resource tmr ON ts.id = tmr.system_id
+		inner join
+			(
+				SELECT
+				DISTINCT ts.id as sys_id, tmr.id as res_id, tmt.id as tab_id 
+				FROM tbl_system ts
+					inner join tbl_md_resource tmr ON ts.id = tmr.system_id
+					inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
+					inner join tbl_md_column tmc ON tmt.id = tmc.table_id
+				WHERE CDE = 1
+			) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id `
 
 	if loggedinid != "" {
 		a := toolkit.ToInt(loggedinid, "")
@@ -53,11 +60,11 @@ func (s *DSCService) GetAllSystem(loggedinid, search string, searchDD interface{
 
 	if searchDDM != nil {
 		if searchDDM.GetString("SystemName") != "" {
-			q += `AND upper(ts.system_name) LIKE upper('%` + searchDDM.GetString("SystemName") + `%')`
+			q += `AND upper(ts.system_name) LIKE upper('%` + searchDDM.GetString("SystemName") + `%') `
 		}
 
 		if searchDDM.GetString("ItamID") != "" {
-			q += `AND upper(ts.itam_id) LIKE upper('%` + searchDDM.GetString("ItamID") + `%')`
+			q += `AND upper(ts.itam_id) LIKE upper('%` + searchDDM.GetString("ItamID") + `%') `
 		}
 	}
 
@@ -158,8 +165,7 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	q := `
-		SELECT DISTINCT
+	q := `SELECT DISTINCT
 			ts.id,
 			ts.system_name,
 			ts.itam_id,
@@ -284,11 +290,11 @@ func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, searchDDM, pa
 
 	if searchDDM != nil {
 		if searchDDM.GetString("TableName") != "" {
-			q += `AND upper(tmt.name) LIKE upper('%` + searchDDM.GetString("SystemName") + `%')`
+			q += `AND upper(tmt.name) LIKE upper('%` + searchDDM.GetString("TableName") + `%') `
 		}
 
 		if searchDDM.GetString("ColumnName") != "" {
-			q += `AND upper(tmc.name) LIKE upper('%` + searchDDM.GetString("ColumnName") + `%')`
+			q += `AND upper(tmc.name) LIKE upper('%` + searchDDM.GetString("ColumnName") + `%') `
 		}
 	}
 
@@ -370,11 +376,11 @@ func (s *DSCService) getInterfacesRightTableFROMandWHERE(systemID int, searchDDM
 
 	if searchDDM != nil {
 		if searchDDM.GetString("TableName") != "" {
-			q += `AND upper(tmt.name) LIKE upper('%` + searchDDM.GetString("SystemName") + `%')`
+			q += `AND upper(tmt.name) LIKE upper('%` + searchDDM.GetString("SystemName") + `%') `
 		}
 
 		if searchDDM.GetString("ColumnName") != "" {
-			q += `AND upper(tmc.name) LIKE upper('%` + searchDDM.GetString("ColumnName") + `%')`
+			q += `AND upper(tmc.name) LIKE upper('%` + searchDDM.GetString("ColumnName") + `%') `
 		}
 	}
 
