@@ -63,7 +63,7 @@ func (s *DSCService) CreateSystemDummyData() error {
 		system := m.NewSystemModel()
 		system.ID = i
 		system.System_Name = fake.Words()
-		system.ITAM_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		system.ITAM_ID = toolkit.ToInt(fake.DigitsN(4), "")
 
 		data = append(data, system)
 	}
@@ -98,7 +98,7 @@ func (s *DSCService) CreateMDResourceDummyData() error {
 		mdt.Name = fake.Words()
 		mdt.Type = fake.Words()
 		mdt.Description = fake.Words()
-		mdt.System_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.System_ID = toolkit.ToInt(fake.DigitsN(4), "")
 
 		data = append(data, mdt)
 	}
@@ -130,13 +130,13 @@ func (s *DSCService) CreateMDTableDummyData() error {
 	for i := 0; i < 10000; i++ {
 		mdt := m.NewMDTableModel()
 		mdt.ID = i
-		mdt.Resource_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Resource_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.Schema_Name = fake.Words()
 		mdt.Name = fake.Words()
 		mdt.UUID = fake.Words()
 		mdt.Type = fake.Words()
 		mdt.Description = fake.Words()
-		mdt.Business_Term_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Business_Term_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.Status = rand.Intn(2)
 		mdt.Record_Category = fake.Words()
 
@@ -172,11 +172,15 @@ func (s *DSCService) CreatePeopleDummyData() error {
 		mdt.ID = i
 		mdt.First_Name = fake.Words()
 		mdt.Last_Name = fake.Words()
-		mdt.Bank_ID = "100" + toolkit.ToString(i)
+		mdt.Bank_ID = "1" + toolkit.ToString(i)
 		mdt.Email_ID = fake.Words()
 		mdt.Function = fake.Words()
 		mdt.Org_Unit = fake.Words()
 		mdt.Status = fake.WordsN(25)[0:25]
+
+		if i == 123 {
+			mdt.Bank_ID = "123"
+		}
 
 		data = append(data, mdt)
 	}
@@ -208,15 +212,15 @@ func (s *DSCService) CreateMDColumnDummyData() error {
 	for i := 0; i < 10000; i++ {
 		mdt := m.NewMDColumnModel()
 		mdt.ID = i
-		mdt.Table_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Table_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.Name = fake.Words()
 		mdt.UUID = fake.Words()
 		mdt.Type = fake.Words()
 		mdt.Description = fake.Words()
-		mdt.Business_Term_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Business_Term_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.Data_Type = fake.Words()
 		mdt.Data_Format = fake.Words()
-		mdt.Data_Length = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Data_Length = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.Example = fake.Words()
 		mdt.Derived = rand.Intn(2)
 		mdt.Derivation_Logic = fake.Words()
@@ -225,20 +229,20 @@ func (s *DSCService) CreateMDColumnDummyData() error {
 		mdt.CDE = rand.Intn(2)
 		mdt.Sourced_from_Upstream = rand.Intn(2)
 		mdt.System_Checks = fake.Words()
-		mdt.Imm_Prec_System_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Imm_Prec_System_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.Imm_Prec_System_SLA = rand.Intn(2)
 		mdt.Imm_Prec_System_OLA = rand.Intn(2)
-		mdt.Imm_Succ_System_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Imm_Succ_System_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.Imm_Succ_System_SLA = rand.Intn(2)
 		mdt.Imm_Succ_System_OLA = rand.Intn(2)
 		mdt.Data_SLA_Signed = rand.Intn(2)
 		mdt.Golden_Source = rand.Intn(2)
 		mdt.DQ_Standards = fake.Words()
-		mdt.Threshold = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Threshold = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.DPO_DQ_Standards = fake.Words()
-		mdt.DPO_Threshold = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.DPO_Threshold = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.DDO_DQ_Standards = fake.Words()
-		mdt.DDO_Threshold = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.DDO_Threshold = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.PII_Flag = rand.Intn(2)
 		mdt.Record_Category = fake.Words()
 
@@ -273,22 +277,22 @@ func (s *DSCService) CreateBusinessTermDummyData() error {
 		mdt := m.NewBusinessTermModel()
 		mdt.ID = i
 		mdt.BT_Name = fake.Words()
-		mdt.Parent_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Parent_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.Description = fake.WordsN(300)
 		mdt.CDE = rand.Intn(2)
 		mdt.CDE_Rationale = fake.Words()
 		mdt.Mandatory = rand.Intn(2)
-		mdt.Policy_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Policy_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.Policy_Guidance = fake.Words()
 		mdt.DQ_Standards = fake.Words()
-		mdt.Threshold = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Golden_Source_System_ID = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Golden_Source_ITAM_ID = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Golden_Source_TableName_ID = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Golden_Source_Column_ID = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Target_Golden_Source_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Threshold = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Golden_Source_System_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Golden_Source_ITAM_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Golden_Source_TableName_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Golden_Source_Column_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Target_Golden_Source_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.DDO_DQ_Standards = fake.Words()
-		mdt.DDO_Threshold = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.DDO_Threshold = toolkit.ToInt(fake.DigitsN(4), "")
 
 		data = append(data, mdt)
 	}
@@ -321,8 +325,8 @@ func (s *DSCService) CreateSubCategoryDummyData() error {
 		mdt := m.NewSubCategoryModel()
 		mdt.ID = i
 		mdt.Name = fake.Words()
-		mdt.Type = fake.Words()
-		mdt.Category_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Type = "Sub Data Domain"
+		mdt.Category_ID = toolkit.ToInt(fake.DigitsN(4), "")
 
 		data = append(data, mdt)
 	}
@@ -389,10 +393,10 @@ func (s *DSCService) CreatePolicyDummyData() error {
 		mdt.ID = i
 		mdt.Info_Asset_Name = fake.Words()
 		mdt.Description = fake.Words()
-		mdt.Confidentiality = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Integrity = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Availability = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Overall_CIA_Rating = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Confidentiality = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Integrity = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Availability = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Overall_CIA_Rating = toolkit.ToInt(fake.DigitsN(4), "")
 
 		data = append(data, mdt)
 	}
@@ -425,7 +429,7 @@ func (s *DSCService) CreateDSProcessesDummyData() error {
 		mdt := m.NewDSProcessesModel()
 		mdt.ID = i
 		mdt.Name = fake.Words()
-		mdt.Owner_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Owner_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.Owner_Name = fake.Words()
 
 		data = append(data, mdt)
@@ -495,7 +499,7 @@ func (s *DSCService) CreateSegmentDummyData() error {
 		mdt := m.NewSegmentModel()
 		mdt.ID = i
 		mdt.Name = fake.Words()
-		mdt.Subdomain_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Subdomain_ID = toolkit.ToInt(fake.DigitsN(4), "")
 
 		data = append(data, mdt)
 	}
@@ -527,8 +531,8 @@ func (s *DSCService) CreateLinkSubcategoryPeopleDummyData() error {
 	for i := 0; i < 10000; i++ {
 		mdt := m.NewLinkSubcategoryPeopleModel()
 		mdt.ID = i
-		mdt.Subcategory_ID = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.People_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Subcategory_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.People_ID = toolkit.ToInt(fake.DigitsN(4), "")
 
 		data = append(data, mdt)
 	}
@@ -561,9 +565,9 @@ func (s *DSCService) CreatePriorityReportsDummyData() error {
 		mdt := m.NewPriorityReportsModel()
 		mdt.ID = i
 		mdt.Name = fake.Words()
-		mdt.Owner_ID = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Lead_ID = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Sub_Risk_Type_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Owner_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Lead_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Sub_Risk_Type_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.Rationale = fake.Words()
 
 		data = append(data, mdt)
@@ -597,7 +601,7 @@ func (s *DSCService) CreateCRMDummyData() error {
 		mdt := m.NewCRMModel()
 		mdt.ID = i
 		mdt.Name = fake.Words()
-		mdt.Prority_Report_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Prority_Report_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.CRM_Rationale = fake.Words()
 
 		data = append(data, mdt)
@@ -630,8 +634,8 @@ func (s *DSCService) CreateLinkCRMCDEDummyData() error {
 	for i := 0; i < 10000; i++ {
 		mdt := m.NewLinkCRMCDEModel()
 		mdt.ID = i
-		mdt.CRM_ID = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.CDE_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.CRM_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.CDE_ID = toolkit.ToInt(fake.DigitsN(4), "")
 
 		data = append(data, mdt)
 	}
@@ -663,8 +667,8 @@ func (s *DSCService) CreateLinkCategoryPeopleDummyData() error {
 	for i := 0; i < 10000; i++ {
 		mdt := m.NewLinkCategoryPeopleModel()
 		mdt.ID = i
-		mdt.Category_ID = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.People_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Category_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.People_ID = toolkit.ToInt(fake.DigitsN(4), "")
 
 		data = append(data, mdt)
 	}
@@ -696,9 +700,9 @@ func (s *DSCService) CreateLinkRolePeopleDummyData() error {
 	for i := 0; i < 10000; i++ {
 		mdt := m.NewLinkRolePeopleModel()
 		mdt.ID = i
-		mdt.People_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.People_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.Object_Type = "SYSTEM"
-		mdt.Object_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Object_ID = toolkit.ToInt(fake.DigitsN(4), "")
 
 		data = append(data, mdt)
 	}
@@ -706,9 +710,19 @@ func (s *DSCService) CreateLinkRolePeopleDummyData() error {
 	for i := 0; i < 10000; i++ {
 		mdt := m.NewLinkRolePeopleModel()
 		mdt.ID = i + 10000
-		mdt.People_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.People_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.Object_Type = "PROCESS"
-		mdt.Object_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Object_ID = toolkit.ToInt(fake.DigitsN(4), "")
+
+		data = append(data, mdt)
+	}
+
+	for i := 0; i < 10000; i++ {
+		mdt := m.NewLinkRolePeopleModel()
+		mdt.ID = i + 10000 + 10000
+		mdt.People_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Object_Type = "SUBCATEGORY"
+		mdt.Object_ID = toolkit.ToInt(fake.DigitsN(4), "")
 
 		data = append(data, mdt)
 	}
@@ -740,7 +754,7 @@ func (s *DSCService) CreateRoleDummyData() error {
 	for i := 0; i < 10000; i++ {
 		mdt := m.NewRoleModel()
 		mdt.ID = i
-		mdt.Role_Name = fake.Words()
+		mdt.Role_Name = "Data Domain Owner"
 		mdt.Role_Type = fake.Words()
 		mdt.Role_Description = fake.Words()
 
