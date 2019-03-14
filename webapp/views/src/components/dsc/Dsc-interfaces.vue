@@ -88,6 +88,7 @@ table.v-table thead th > div.btn-group {
                   :pagination.sync="dscinterfaces.left.pagination"
                   :total-items="dscinterfaces.left.totalItems"
                   :loading="dscinterfaces.left.loading"
+                  :expand="false"
                   item-key="ID"
                   class="elevation-1 fixed-header">
 
@@ -124,9 +125,26 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                     <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.SYSTEM_NAME" :isklik="false"></tablecell></b-link></td>
-                    <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'ITAM_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                    <td><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'ITAM_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell></b-link></td>
                     <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'FIRST_NAME').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
                     <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'BANK_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                </template>
+
+                <template slot="expand" slot-scope="props">
+                  <v-data-table
+                    :headers="firstTableHeaders"
+                    :items="props.item.Custodians"
+                    class="elevation-1"
+                    hide-actions
+                    hide-headers
+                  >
+                    <template slot="items" slot-scope="props">
+                      <td style="width: 25%">&nbsp;</td>
+                      <td style="width: 25%">&nbsp;</td>
+                      <td style="width: 25%">{{ props.item.FIRST_NAME }}</td>
+                      <td style="width: 25%">{{ props.item.BANK_ID }}</td>
+                    </template>
+                  </v-data-table>
                 </template>
               </v-data-table>
             </b-col>
