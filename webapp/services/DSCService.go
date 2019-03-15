@@ -277,7 +277,8 @@ func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, searchDDM, pa
 			left join tbl_link_column_interface ci on tmc.id = ci.column_id
 			left join tbl_system ips on ci.imm_prec_system_id = ips.id
 			left join tbl_system iss on ci.imm_succ_system_id = iss.id
-			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id `
+			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
+			LEFT JOIN tbl_link_category_people tlcp ON tlcp.category_id = tc.id `
 
 	q += `inner join
 			(
