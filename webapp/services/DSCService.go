@@ -337,10 +337,10 @@ func (s *DSCService) getInterfacesRightTableFROMandWHERE(systemID int, searchDDM
 			inner join tbl_md_table tmt ON res.id = tmt.resource_id
 			inner join tbl_md_column tmc ON tmt.id = tmc.table_id
 			
-			inner join tbl_link_column_interface ci on tmc.id = ci.column_id
+			left join tbl_link_column_interface ci on tmc.id = ci.column_id
 			left join tbl_system ips on ci.imm_prec_system_id = ips.id
 			left join tbl_system iss on ci.imm_succ_system_id = iss.id
-			LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.imm_prec_system_id = ips.id
+			LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.column_id = tmc.id
 			LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id 
 			
 			LEFT JOIN Tbl_Link_Role_People tlrp_sdo ON tlrp_sdo.Object_ID = tdp.id and tlrp_sdo.object_type = 'PROCESSES'
