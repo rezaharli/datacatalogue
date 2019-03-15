@@ -23,18 +23,20 @@ legend.col-form-label, label.col-form-label {
   <b-modal hide-footer header-class="modal-details-header setbackground" body-class="setbackground" v-if="showModal" id="modal-details" ref="modalDetails" size="lg" @hidden="handleClose">
     <b-container fluid class="row-kasijarak">
       <b-row v-if="selectedDetails">
-        <b-col> 
-          <b-col>
-              <download-excel
-                  :data   = "exportDatas"
-                  :fields = "excelFields"
-                  worksheet = "My Worksheet"
-                  name    = "filename.xls">
-              
-                  <b-btn size="sm" class="float-right" variant="success">Export</b-btn>
-              </download-excel>
-            </b-col>
-        </b-col>
+          <b-col cols="4">
+          </b-col>
+          <b-col cols="8">
+            <span class="float-left" style="margin-top: 5px;">*Must be available for CDEs</span>
+
+            <download-excel
+              :data   = "exportDatas"
+              :fields = "excelFields"
+              worksheet = "My Worksheet"
+              name    = "filename.xls">
+          
+              <b-btn size="sm" class="float-right" variant="success">Export</b-btn>
+            </download-excel>
+          </b-col>
       </b-row>
     <!-- </b-container>
 
