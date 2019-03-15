@@ -139,7 +139,7 @@ func (s *DSCService) GetInterfacesRightTable(systemID int, search string, search
 			tmc.Imm_Succ_System_SLA,
 			tmc.Imm_Succ_System_OLA,
 			tdp.name as list_downstream_process,
-			tdp.owner_id as downstream_owner `
+			ppl.first_name as downstream_owner `
 
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {
@@ -205,7 +205,7 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 			tmc.imm_succ_system_id,
 			iss.system_name as imm_succ_system_name,
 			tmc.threshold,
-			tlcp.People_ID as domain_owner `
+			ppl.first_name||' '||ppl.last_name as domain_owner `
 
 	if strings.Contains(payload.GetString("Which"), "interfaces") == true {
 		toolkit.Println("interfaces")
@@ -281,9 +281,8 @@ func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, searchDDM, pa
 			left join tbl_system ips on ci.imm_prec_system_id = ips.id
 			left join tbl_system iss on ci.imm_succ_system_id = iss.id
 			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
-			LEFT JOIN tbl_link_category_people tlcp ON tlcp.category_id = tc.id `
-
-	q += `inner join
+			LEFT JOIN tbl_link_category_people tlcp ON tlcp.category_id = tc.id
+			inner join
 			(
 				SELECT
 				DISTINCT ts.id as sys_id, tmr.id as res_id, tmt.id as tab_id
@@ -333,51 +332,37 @@ func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, searchDDM, pa
 }
 
 func (s *DSCService) getInterfacesRightTableFROMandWHERE(systemID int, searchDDM, payload toolkit.M) string {
-	q := `FROM tbl_system ts `
-
-	if payload != nil {
-		q += `LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
-				LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id `
-	}
-
-	q += `inner join tbl_md_resource res ON ts.id = res.system_id
+	q := `FROM tbl_system ts
+			inner join tbl_md_resource res ON ts.id = res.system_id
 			inner join tbl_md_table tmt ON res.id = tmt.resource_id
 			inner join tbl_md_column tmc ON tmt.id = tmc.table_id
+			
 			inner join tbl_link_column_interface ci on tmc.id = ci.column_id
 			left join tbl_system ips on ci.imm_prec_system_id = ips.id
 			left join tbl_system iss on ci.imm_succ_system_id = iss.id
 			LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.imm_prec_system_id = ips.id
-			LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id `
+			LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id 
+			
+			LEFT JOIN Tbl_Link_Role_People tlrp_sdo ON tlrp_sdo.Object_ID = tdp.id
+			LEFT JOIN Tbl_Role rl ON tlrp_sdo.role_id = rl.id and rl.role_name = 'Downstream Process Owner'
+			LEFT JOIN Tbl_People ppl ON tlrp_sdo.people_id = ppl.id `
 
 	if payload != nil {
-		q += `LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
-			LEFT JOIN tbl_subcategory tsc ON tbt.parent_id = tsc.id
+		q += `
+			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
+			LEFT JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
+			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id 
+			
+			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
+			LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
 			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
-			LEFT JOIN tbl_link_category_people tlcp ON tlcp.category_id = tc.id
-			LEFT JOIN tbl_policy tpol ON tbt.policy_id = tpol.id `
+			LEFT JOIN tbl_policy tpol ON tbt.policy_id = tpol.id
+			
+			LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id `
 	}
 
-	q += `WHERE ts.id = ` + toolkit.ToString(systemID) + ` `
-
-	if payload.GetString("TableName") == "" {
-		if payload.GetString("Right") != "" {
-			q += `AND tmt.id = ` + payload.GetString("Right") + ` `
-		}
-
-		if payload.GetString("Column") != "" {
-			q += `AND tmc.id = ` + payload.GetString("Column") + ` `
-		}
-	} else {
-		q += `AND tmt.name = '` + payload.GetString("TableName") + `' `
-	}
-
-	if payload.GetString("ColumnName") != "" {
-		q += ` AND tmc.name = '` + payload.GetString("ColumnName") + `' `
-	}
-
-	if payload.GetString("ScreenLabel") != "" {
-		q += ` AND tmc.alias_name = '` + payload.GetString("ScreenLabel") + `' `
-	}
+	q += `WHERE ts.id = ` + toolkit.ToString(systemID) + `
+			AND (ips.system_name is not null or iss.system_name is not null or ppl.first_name is not null) `
 
 	if searchDDM != nil {
 		if searchDDM.GetString("TableName") != "" {
@@ -389,8 +374,27 @@ func (s *DSCService) getInterfacesRightTableFROMandWHERE(systemID int, searchDDM
 		}
 	}
 
-	q += `AND (ips.system_name is not null or iss.system_name is not null)
-		AND tmc.cde = 1 `
+	if payload != nil {
+		if payload.GetString("TableName") == "" {
+			if payload.GetString("Right") != "" {
+				q += `AND tmt.id = ` + payload.GetString("Right") + ` `
+			}
+
+			if payload.GetString("Column") != "" {
+				q += `AND tmc.id = ` + payload.GetString("Column") + ` `
+			}
+		} else {
+			q += `AND tmt.name = '` + payload.GetString("TableName") + `' `
+		}
+
+		if payload.GetString("ColumnName") != "" {
+			q += ` AND tmc.name = '` + payload.GetString("ColumnName") + `' `
+		}
+
+		if payload.GetString("ScreenLabel") != "" {
+			q += ` AND tmc.alias_name = '` + payload.GetString("ScreenLabel") + `' `
+		}
+	}
 
 	return q
 }
