@@ -256,36 +256,37 @@ func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 }
 
 func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, searchDDM, payload toolkit.M) string {
-	q := `FROM tbl_system ts `
+	q := `FROM tbl_system ts
+			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
+			LEFT JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
+			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
 
-	if payload != nil {
-		q += `LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id
-				LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id `
-	}
-
-	q += `inner join tbl_md_resource tmr ON ts.id = tmr.system_id
+			inner join tbl_md_resource tmr ON ts.id = tmr.system_id
 			inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
 			inner join tbl_md_column tmc ON tmt.id = tmc.table_id
-			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id `
-
-	if payload != nil {
-		q += `LEFT JOIN tbl_subcategory tsc ON tbt.parent_id = tsc.id
-		LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
-		LEFT JOIN tbl_link_category_people tlcp ON tlcp.category_id = tc.id
-		LEFT JOIN tbl_policy tpol ON tbt.policy_id = tpol.id
-		left join tbl_link_column_interface ci on tmc.id = ci.column_id
-		left join tbl_system ips on ci.imm_prec_system_id = ips.id
-		left join tbl_system iss on ci.imm_succ_system_id = iss.id `
-	}
+			
+			LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
+			
+			LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
+			LEFT JOIN Tbl_Link_Role_People tlrp_sdo ON tlrp_sdo.Object_ID = tsc.id AND tlrp_sdo.object_type = 'SUBCATEGORY'
+			LEFT JOIN Tbl_Role rl ON tlrp_sdo.role_id = rl.id and rl.role_name = 'Data Domain Owner'
+			LEFT JOIN Tbl_People ppl ON tlrp_sdo.people_id = ppl.id
+			
+			LEFT JOIN tbl_policy tpol ON tbt.policy_id = tpol.id
+			
+			left join tbl_link_column_interface ci on tmc.id = ci.column_id
+			left join tbl_system ips on ci.imm_prec_system_id = ips.id
+			left join tbl_system iss on ci.imm_succ_system_id = iss.id
+			LEFT JOIN tbl_category tc ON tsc.category_id = tc.id `
 
 	q += `inner join
 			(
 				SELECT
-				DISTINCT ts.id as sys_id, tmr.id as res_id, tmt.id as tab_id 
+				DISTINCT ts.id as sys_id, tmr.id as res_id, tmt.id as tab_id
 				FROM tbl_system ts
-					inner join tbl_md_resource tmr ON ts.id = tmr.system_id
-					inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
-					inner join tbl_md_column tmc ON tmt.id = tmc.table_id
+						inner join tbl_md_resource tmr ON ts.id = tmr.system_id
+						inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
+						inner join tbl_md_column tmc ON tmt.id = tmc.table_id
 				WHERE ts.id = ` + toolkit.ToString(systemID) + ` `
 
 	if searchDDM != nil {
