@@ -428,13 +428,15 @@ export default {
                 self.selectedDetails[v] = _.uniq(_.map(self.dscmy.detailsSource[0].Values, v).filter(Boolean)).join(', ')
             });
             
+            // interrupt
             self.selectedDetails.CDE = self.selectedDetails.CDE != 0 ? "Yes" : "No";
             self.selectedDetails.STATUS = self.selectedDetails.STATUS != 0 ? "ACTIVE" : "INACTIVE";
             self.selectedDetails.DERIVED = self.selectedDetails.DERIVED != 0 ? "Yes" : "No";
             self.selectedDetails.SOURCED_FROM_UPSTREAM = self.selectedDetails.SOURCED_FROM_UPSTREAM != 0 ? "Yes" : "No";
 
+            // make falsy NA
             Object.keys(self.selectedDetails).forEach((val) => {
-              self.selectedDetails[val] = !!self.selectedDetails[val] ? self.selectedDetails[val] : "NA";
+              self.selectedDetails[val] = !!self.selectedDetails[val].trim() ? self.selectedDetails[val] : "NA";
             });
             
             setTimeout(() => {
