@@ -90,7 +90,7 @@ table.v-table thead th > div.btn-group {
                   :loading="dscinterfaces.left.loading"
                   :expand="false"
                   item-key="ID"
-                  class="elevation-1 fixed-header">
+                  class="elevation-1">
 
                 <template slot="headerCell" slot-scope="props">
                   {{ props.header.text }} ({{ distinctData(props.header.value, dscinterfaces.left.source).length }})
@@ -126,7 +126,7 @@ table.v-table thead th > div.btn-group {
                 <template slot="items" slot-scope="props">
                     <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.SYSTEM_NAME" :isklik="false"></tablecell></b-link></td>
                     <td><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'ITAM_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell></b-link></td>
-                    <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'FIRST_NAME').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'DATASET_CUSTODIAN').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
                     <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'BANK_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
                 </template>
 
@@ -141,7 +141,7 @@ table.v-table thead th > div.btn-group {
                     <template slot="items" slot-scope="props">
                       <td style="width: 25%">&nbsp;</td>
                       <td style="width: 25%">&nbsp;</td>
-                      <td style="width: 25%">{{ props.item.FIRST_NAME }}</td>
+                      <td style="width: 25%">{{ props.item.DATASET_CUSTODIAN }}</td>
                       <td style="width: 25%">{{ props.item.BANK_ID }}</td>
                     </template>
                   </v-data-table>
@@ -235,7 +235,7 @@ export default {
         firstTableHeaders: [
           { text: 'System Name', align: 'left', value: 'SYSTEM_NAME', sortable: false },
           { text: 'ITAM ID', align: 'left', value: 'Custodians.ITAM_ID', sortable: false },
-          { text: 'Dataset Custodian', align: 'left', value: 'Custodians.FIRST_NAME', sortable: false },
+          { text: 'Dataset Custodian', align: 'left', value: 'Custodians.DATASET_CUSTODIAN', sortable: false },
           { text: 'Bank ID', align: 'left', value: 'Custodians.BANK_ID', sortable: false }
         ],
         secondTableHeaders: [
@@ -287,7 +287,7 @@ export default {
           var temp = {
             SYSTEM_NAME: system.SYSTEM_NAME,
             ITAM_ID: system.ITAM_ID,
-            FIRST_NAME: system.FIRST_NAME,
+            DATASET_CUSTODIAN: system.DATASET_CUSTODIAN,
             BANK_ID: system.BANK_ID,
           }
 

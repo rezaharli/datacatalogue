@@ -3,6 +3,7 @@ import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
     all: {
+        Tabs: "dscmy",
         searchMain: '',
         searchDropdown: {
             SystemName: '',
@@ -26,6 +27,7 @@ const actions = {
         var user = JSON.parse(localStorage.getItem("user"));
 
         var param = {
+            Tabs: state.all.tabs,
             LoggedInID: user.Username,
             Search: state.all.searchMain,
             SearchDD: state.all.searchDropdown,

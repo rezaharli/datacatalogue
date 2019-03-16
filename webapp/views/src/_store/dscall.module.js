@@ -3,6 +3,7 @@ import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
     all: {
+        tabs: "dscall",
         searchMain: '',
         searchDropdown: {
             SystemName: '',
@@ -24,6 +25,7 @@ const actions = {
         commit('getLeftTableRequest');
 
         var param = {
+            Tabs: state.all.tabs,
             Search: state.all.searchMain,
             SearchDD: state.all.searchDropdown,
             Pagination: state.all.left.pagination

@@ -1,8 +1,10 @@
 package services
 
 import (
+	"path/filepath"
 	"strings"
 
+	"github.com/eaciit/clit"
 	"github.com/eaciit/toolkit"
 
 	h "eaciit/datacatalogue/webapp/helpers"
@@ -17,43 +19,15 @@ func NewDSCService() *DSCService {
 	return ret
 }
 
-func (s *DSCService) GetAllSystem(loggedinid, search string, searchDD interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
+func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	q := `SELECT DISTINCT
-			ts.id,
-			ts.system_name,
-			ts.itam_id,
-			tp.first_name,
-			tp.bank_id
-		FROM tbl_system ts 
-			LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
-			LEFT JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
-			LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id 
-			
-			inner join tbl_md_resource tmr ON ts.id = tmr.system_id
-			inner join
-				(
-					SELECT
-					DISTINCT ts.id as sys_id, tmr.id as res_id, tmt.id as tab_id 
-					FROM tbl_system ts
-						inner join tbl_md_resource tmr ON ts.id = tmr.system_id
-						inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
-						inner join tbl_md_column tmc ON tmt.id = tmc.table_id
-					WHERE CDE = 1
-				) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id `
+	q := ""
+	args := make([]interface{}, 0)
 
 	if loggedinid != "" {
-		a := toolkit.ToInt(loggedinid, "")
-		q += `AND tp.bank_id = '` + toolkit.ToString(a) + `' `
-	}
-
-	if search != "" {
-		q += `
-			AND (
-				upper(ts.system_name) LIKE upper('%` + search + `%')
-			) `
+		args = append(args, loggedinid)
 	}
 
 	searchDDM, err := toolkit.ToM(searchDD)
@@ -61,14 +35,16 @@ func (s *DSCService) GetAllSystem(loggedinid, search string, searchDD interface{
 		return nil, 0, err
 	}
 
-	if searchDDM != nil {
-		if searchDDM.GetString("SystemName") != "" {
-			q += `AND upper(ts.system_name) LIKE upper('%` + searchDDM.GetString("SystemName") + `%') `
-		}
+	if search != "" {
+		args = append(args, search, searchDDM.GetString("ItamID"))
+	} else {
+		args = append(args, searchDDM.GetString("SystemName"), searchDDM.GetString("ItamID"))
+	}
 
-		if searchDDM.GetString("ItamID") != "" {
-			q += `AND upper(ts.itam_id) LIKE upper('%` + searchDDM.GetString("ItamID") + `%') `
-		}
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err = h.BuildQueryFromFile(filePath, "left-grid", args...)
+	if err != nil {
+		return nil, 0, err
 	}
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
@@ -91,13 +67,13 @@ func (s *DSCService) GetTableName(systemID int, search string, searchDD interfac
 	resultTotal := 0
 
 	q := `SELECT DISTINCT
-			ts.id as tsid,
 			tmt.id,
-			tmt.name as table_name,
-			tmc.id as colid,
-			tmc.name as column_name,
-			tmc.alias_name,
-			tmc.cde `
+			ts.id 			as tsid,
+			tmt.name 		as table_name,
+			tmc.id 			as colid,
+			tmc.name 		as column_name,
+			tmc.alias_name	as alias_name,
+			tmc.cde			as cde `
 
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {

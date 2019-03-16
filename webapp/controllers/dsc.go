@@ -26,6 +26,7 @@ func (c *DSC) GetAllSystems(k *knot.WebContext) {
 		return
 	}
 
+	tabs := payload.GetString("Tabs")
 	loggedinId := payload.GetString("LoggedInID")
 	search := payload.GetString("Search")
 	searchDD := payload.Get("SearchDD")
@@ -38,7 +39,7 @@ func (c *DSC) GetAllSystems(k *knot.WebContext) {
 	pageNumber := pagination.GetInt("page")
 	rowsPerPage := pagination.GetInt("rowsPerPage")
 
-	systems, _, err := s.NewDSCService().GetAllSystem(loggedinId, search, searchDD, pageNumber, rowsPerPage, toolkit.M{})
+	systems, _, err := s.NewDSCService().GetAllSystem(tabs, loggedinId, search, searchDD, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
