@@ -66,16 +66,15 @@ func (s *DSCService) GetTableName(tabs string, systemID int, search string, sear
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	q := ""
-	args := make([]interface{}, 0)
-
-	args = append(args, toolkit.ToString(systemID))
-
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {
 		return nil, 0, err
 	}
 
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, toolkit.ToString(systemID))
 	args = append(args, searchDDM.GetString("TableName"))
 	args = append(args, searchDDM.GetString("ColumnName"))
 
@@ -100,32 +99,27 @@ func (s *DSCService) GetTableName(tabs string, systemID int, search string, sear
 	return resultRows, resultTotal, nil
 }
 
-func (s *DSCService) GetInterfacesRightTable(systemID int, search string, searchDD interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
+func (s *DSCService) GetInterfacesRightTable(tabs string, systemID int, search string, searchDD interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
-
-	q := `SELECT DISTINCT
-			tmt.id,
-			ts.id as tsid,
-			tmc.id as colid,
-			tmc.alias_name as listof_cde,
-			tmc.imm_prec_system_id,
-			ips.system_name as imm_prec_system_name,
-			tmc.Imm_Prec_System_SLA,
-			tmc.Imm_Prec_System_OLA,
-			tmc.imm_succ_system_id,
-			iss.system_name as imm_succ_system_name,
-			tmc.Imm_Succ_System_SLA,
-			tmc.Imm_Succ_System_OLA,
-			tdp.name as list_downstream_process,
-			ppl.first_name as downstream_owner `
 
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	q += s.getInterfacesRightTableFROMandWHERE(systemID, searchDDM, nil)
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, toolkit.ToString(systemID))
+	args = append(args, searchDDM.GetString("TableName"))
+	args = append(args, searchDDM.GetString("ColumnName"))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err = h.BuildQueryFromFile(filePath, "right-grid", args...)
+	if err != nil {
+		return nil, 0, err
+	}
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName:   m.NewSystemModel().TableName(),
