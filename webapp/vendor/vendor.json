@@ -57,6 +57,12 @@
 			"revisionTime": "2019-01-15T05:28:47Z"
 		},
 		{
+			"checksumSHA1": "y2/wlPsexgYRaTmGgkEWBGNodJM=",
+			"path": "github.com/gchaincl/dotsql",
+			"revision": "f8e452f37f648d9ffee122eeb50bd986dff3c4ca",
+			"revisionTime": "2018-10-22T06:31:18Z"
+		},
+		{
 			"checksumSHA1": "Yz0zzyHN8gfkFB0ShiF7JAzBgAY=",
 			"path": "github.com/icrowley/fake",
 			"revision": "4178557ae428460c3780a381c824a1f3aceb6325",

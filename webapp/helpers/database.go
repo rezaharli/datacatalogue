@@ -1,12 +1,16 @@
 package helpers
 
 import (
-	"fmt"
+	"errors"
 	"log"
 	"os"
+	"strings"
+
+	"github.com/eaciit/toolkit"
 
 	"github.com/eaciit/clit"
 	_ "github.com/eaciit/gora"
+	"github.com/gchaincl/dotsql"
 
 	"git.eaciitapp.com/sebar/dbflex"
 	_ "git.eaciitapp.com/sebar/dbflex/drivers/mongodb"
@@ -50,23 +54,23 @@ func NewMongodbConnection(dbConf map[string]interface{}) (dbflex.IConnection, er
 	connectionString := "mongodb://"
 
 	if dbHost != "" && dbName != "" && dbUsername != "" && dbPassword != "" {
-		connectionString = fmt.Sprintf("%s%s:%s@%s/%s", connectionString, dbUsername, dbPassword, dbHost, dbName)
+		connectionString = toolkit.Sprintf("%s%s:%s@%s/%s", connectionString, dbUsername, dbPassword, dbHost, dbName)
 	} else if dbHost != "" && dbName != "" && dbUsername != "" {
-		connectionString = fmt.Sprintf("%s%s@%s/%s", connectionString, dbUsername, dbHost, dbName)
+		connectionString = toolkit.Sprintf("%s%s@%s/%s", connectionString, dbUsername, dbHost, dbName)
 	} else if dbHost != "" && dbName != "" {
-		connectionString = fmt.Sprintf("%s%s/%s", connectionString, dbHost, dbName)
+		connectionString = toolkit.Sprintf("%s%s/%s", connectionString, dbHost, dbName)
 	} else {
-		return nil, fmt.Errorf("Unable to connect to the database server. Please check the configuration")
+		return nil, toolkit.Errorf("Unable to connect to the database server. Please check the configuration")
 	}
 
 	conn, err := dbflex.NewConnectionFromURI(connectionString, nil)
 	if err != nil {
-		return nil, fmt.Errorf("Unable to connect to the database server. %s", err.Error())
+		return nil, toolkit.Errorf("Unable to connect to the database server. %s", err.Error())
 	}
 
 	err = conn.Connect()
 	if err != nil {
-		return nil, fmt.Errorf("Unable to connect to the database server. %s", err.Error())
+		return nil, toolkit.Errorf("Unable to connect to the database server. %s", err.Error())
 	}
 
 	return conn, nil
@@ -77,13 +81,38 @@ func NewOracleConnection(dbConf map[string]interface{}) (dbflex.IConnection, err
 
 	conn, err := dbflex.NewConnectionFromURI(connectionString, nil)
 	if err != nil {
-		return nil, fmt.Errorf("Unable to connect to the database server. %s", err.Error())
+		return nil, toolkit.Errorf("Unable to connect to the database server. %s", err.Error())
 	}
 
 	err = conn.Connect()
 	if err != nil {
-		return nil, fmt.Errorf("Unable to connect to the database server. %s", err.Error())
+		return nil, toolkit.Errorf("Unable to connect to the database server. %s", err.Error())
 	}
 
 	return conn, nil
+}
+
+func TruncateSprintf(str string, args ...interface{}) (string, error) {
+	n := strings.Count(str, "%s")
+	if n > len(args) {
+		return "", errors.New("Unexpected string:" + str)
+	}
+	return toolkit.Sprintf(str, args[:n]...), nil
+}
+
+func BuildQueryFromFile(filePath, queryName string, args ...interface{}) (string, error) {
+	dot, err := dotsql.LoadFromFile(filePath)
+	if err != nil {
+		return "", err
+	}
+
+	raw, err := dot.Raw(queryName)
+	if err != nil {
+		return "", err
+	}
+
+	replaced := strings.ReplaceAll(raw, "%", "%%")
+	replaced = strings.ReplaceAll(replaced, "?", "%s")
+
+	return TruncateSprintf(replaced, args...)
 }

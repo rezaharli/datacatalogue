@@ -8,17 +8,19 @@ mkdir "builds/${foldername}"
 mkdir "builds/${foldername}/webapp"
 mkdir "builds/${foldername}/webapp/config"
 mkdir "builds/${foldername}/webapp/views"
+mkdir "builds/${foldername}/webapp/queryfiles"
 
 cd webapp
 
 go build -o datacatalogue
 mv datacatalogue "../builds/${foldername}/webapp"
 
-cd views
-cp -r dist/ "../../builds/${foldername}/webapp/views"
+cp -r views/dist/ "../../builds/${foldername}/webapp/views"
 
-cd ..
 cp config/app.json.template "../builds/${foldername}/webapp/config/"
+
+cp "queryfiles/*" "../builds/${foldername}/webapp/queryfiles/"
+
 cd ../builds/
 zip -r "${foldername}.zip" "${foldername}"
 echo "${foldername}"
