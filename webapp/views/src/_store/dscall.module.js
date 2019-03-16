@@ -41,6 +41,7 @@ const actions = {
         commit('getRightTableRequest');
 
         var param = {
+            Tabs: state.all.tabs,
             SystemID: systemID,
             Search: state.all.searchMain,
             SearchDD: state.all.searchDropdown,

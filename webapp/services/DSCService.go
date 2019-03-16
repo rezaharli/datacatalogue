@@ -62,25 +62,28 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD inte
 	return resultRows, resultTotal, nil
 }
 
-func (s *DSCService) GetTableName(systemID int, search string, searchDD interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
+func (s *DSCService) GetTableName(tabs string, systemID int, search string, searchDD interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	q := `SELECT DISTINCT
-			tmt.id,
-			ts.id 			as tsid,
-			tmt.name 		as table_name,
-			tmc.id 			as colid,
-			tmc.name 		as column_name,
-			tmc.alias_name	as alias_name,
-			tmc.cde			as cde `
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, toolkit.ToString(systemID))
 
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	q += s.getSystemRightTableFROMandWHERE(systemID, searchDDM, nil)
+	args = append(args, searchDDM.GetString("TableName"))
+	args = append(args, searchDDM.GetString("ColumnName"))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err = h.BuildQueryFromFile(filePath, "right-grid", args...)
+	if err != nil {
+		return nil, 0, err
+	}
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName:   m.NewSystemModel().TableName(),
@@ -263,10 +266,11 @@ func (s *DSCService) getSystemRightTableFROMandWHERE(systemID int, searchDDM, pa
 				SELECT
 				DISTINCT ts.id as sys_id, tmr.id as res_id, tmt.id as tab_id
 				FROM tbl_system ts
-						inner join tbl_md_resource tmr ON ts.id = tmr.system_id
-						inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
-						inner join tbl_md_column tmc ON tmt.id = tmc.table_id
-				WHERE ts.id = ` + toolkit.ToString(systemID) + ` `
+					inner join tbl_md_resource tmr ON ts.id = tmr.system_id
+					inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
+					inner join tbl_md_column tmc ON tmt.id = tmc.table_id
+				WHERE 
+					ts.id = ` + toolkit.ToString(systemID) + ` `
 
 	if searchDDM != nil {
 		if searchDDM.GetString("TableName") != "" {

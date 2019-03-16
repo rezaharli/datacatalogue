@@ -58,6 +58,7 @@ func (c *DSC) GetTableName(k *knot.WebContext) {
 		return
 	}
 
+	tabs := payload.GetString("Tabs")
 	search := payload.GetString("Search")
 	searchDD := payload.Get("SearchDD")
 	systemID := payload.GetInt("SystemID")
@@ -70,7 +71,7 @@ func (c *DSC) GetTableName(k *knot.WebContext) {
 	pageNumber := pagination.GetInt("page")
 	rowsPerPage := pagination.GetInt("rowsPerPage")
 
-	systems, _, err := s.NewDSCService().GetTableName(systemID, search, searchDD, pageNumber, rowsPerPage, toolkit.M{})
+	systems, _, err := s.NewDSCService().GetTableName(tabs, systemID, search, searchDD, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
