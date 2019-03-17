@@ -3,8 +3,8 @@ package models
 type DSProcessDetail struct {
 	ID                        int
 	Process_ID                int
-	Business_Term_ID          int
-	Segment_ID                int
+	Column_ID                 int
+	Segment_Name              string
 	Imm_Prec_System_ID        int
 	Ultimate_Source_System_ID int
 }
