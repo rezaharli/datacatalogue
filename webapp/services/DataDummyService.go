@@ -711,7 +711,7 @@ func (s *DSCService) CreateLinkRolePeopleDummyData() error {
 		mdt := m.NewLinkRolePeopleModel()
 		mdt.ID = i + 10000
 		mdt.People_ID = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Object_Type = "PROCESS"
+		mdt.Object_Type = "PROCESSES"
 		mdt.Object_ID = toolkit.ToInt(fake.DigitsN(3), "")
 
 		data = append(data, mdt)
@@ -744,7 +744,7 @@ func (s *DSCService) CreateRoleDummyData() error {
 	for i := 0; i < 10000; i++ {
 		mdt := m.NewRoleModel()
 		mdt.ID = i
-		mdt.Role_Name = fake.Words()
+		mdt.Role_Name = "Downstream Process Owner"
 		mdt.Role_Type = fake.Words()
 		mdt.Role_Description = fake.Words()
 

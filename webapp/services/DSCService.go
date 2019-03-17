@@ -127,7 +127,7 @@ func (s *DSCService) GetInterfacesRightTable(tabs string, systemID int, search s
 		Results:     &resultRows,
 		PageNumber:  pageNumber,
 		RowsPerPage: rowsPerPage,
-		GroupCol:    "listof_cde",
+		GroupCol:    "list_of_cde",
 	})
 
 	if err != nil {
@@ -141,54 +141,36 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	q := `SELECT DISTINCT
-			ts.id,
-			ts.system_name,
-			ts.itam_id,
-			tp.first_name,
-			tp.bank_id,
-			tmc.alias_name,
-			tmc.description as alias_description,
-			tmt.name as table_name,
-			tmc.name as column_name,
-			tbt.bt_name,
-			tbt.description as business_description,
-			tmc.cde,
-			tmc.status,
-			tmc.data_type,
-			tmc.data_format,
-			tmc.data_length,
-			tmc.example,
-			tmc.derived,
-			tmc.Derivation_Logic,
-			tmc.Sourced_from_Upstream,
-			tmc.System_Checks,
-			tc.Name as domain,
-			tsc.name as subdomain,
-			tpol.info_asset_name,
-			tpol.description as info_asset_description,
-			tpol.confidentiality,
-			tpol.integrity,
-			tpol.availability,
-			tpol.overall_cia_rating,
-			tmt.record_category,
-			tmc.pii_flag,
-			tmc.imm_prec_system_id,
-			ips.system_name as imm_prec_system_name,
-			tmc.imm_succ_system_id,
-			iss.system_name as imm_succ_system_name,
-			tmc.threshold,
-			ppl.first_name||' '||ppl.last_name as domain_owner `
+	tabs := ""
 
-	if strings.Contains(payload.GetString("Which"), "interfaces") == true {
-		toolkit.Println("interfaces")
-		q += s.getInterfacesRightTableFROMandWHERE(payload.GetInt("Left"), nil, payload)
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, toolkit.ToString(payload.GetInt("Left")))
+
+	if payload.GetString("TableName") != "" && payload.GetString("ColumnName") != "" && payload.GetString("ScreenLabel") != "" {
+		args = append(args, "", "")
 	} else {
-		toolkit.Println("system")
-		q += s.getSystemRightTableFROMandWHERE(payload.GetInt("Left"), nil, payload)
+		args = append(args, payload.GetString("Right"), payload.GetString("Column"))
 	}
 
-	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+	args = append(args, payload.GetString("TableName"), payload.GetString("ColumnName"), payload.GetString("ScreenLabel"))
+
+	if strings.Contains(payload.GetString("Which"), "interfaces") == true {
+		tabs = "dscinterfaces"
+	} else if strings.Contains(payload.GetString("Which"), "my") == true {
+		tabs = "dscmy"
+	} else {
+		tabs = "dscall"
+	}
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err := h.BuildQueryFromFile(filePath, "details", args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
 		SqlQuery:  q,
 		Results:   &resultRows,
@@ -205,20 +187,28 @@ func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	q := `SELECT DISTINCT
-			tmt.name as table_name,
-			tmc.name as column_name,
-			tmc.alias_name `
+	tabs := ""
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
 	if strings.Contains(payload.GetString("Which"), "interfaces") == true {
-		toolkit.Println("interfaces")
-		q += s.getInterfacesRightTableFROMandWHERE(payload.GetInt("Left"), nil, nil)
+		tabs = "dscinterfaces"
+	} else if strings.Contains(payload.GetString("Which"), "my") == true {
+		tabs = "dscmy"
 	} else {
-		toolkit.Println("system")
-		q += s.getSystemRightTableFROMandWHERE(payload.GetInt("Left"), nil, nil)
+		tabs = "dscall"
 	}
 
-	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err := h.BuildQueryFromFile(filePath, "details-dropdown", args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
 		SqlQuery:  q,
 		Results:   &resultRows,

@@ -190,7 +190,7 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                  <td><b-link :to="{ path:'/dsc/interfaces/' + props.item.TSID + '/' + props.item.ID + '/' + props.item.COLID }" href="#foo" v-b-modal.modallg>{{ props.item.LISTOF_CDE }}</b-link></td>
+                  <td><b-link :to="{ path:'/dsc/interfaces/' + props.item.TSID + '/' + props.item.ID + '/' + props.item.COLID }" href="#foo" v-b-modal.modallg>{{ props.item.LIST_OF_CDE }}</b-link></td>
                   <!-- <td><b-link :to="{ path:'/dsc/interfaces/' + route.params.system + "/details" }" v-b-modal.modallg>{{ props.item.name }}</b-link></td> -->
                   <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'IMM_PREC_SYSTEM_NAME').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
                   <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'IMM_PREC_SYSTEM_SLA').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
@@ -199,7 +199,7 @@ table.v-table thead th > div.btn-group {
                   <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'IMM_SUCC_SYSTEM_SLA').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
                   <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'IMM_SUCC_SYSTEM_OLA').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
                   <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'LIST_DOWNSTREAM_PROCESS').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
-                  <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'DOWNSTREAM_OWNER').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                  <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'DOWNSTREAM_PROCESS_OWNER').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
                 </template>
               </v-data-table>
             </b-col>
@@ -239,7 +239,7 @@ export default {
           { text: 'Bank ID', align: 'left', value: 'Custodians.BANK_ID', sortable: false }
         ],
         secondTableHeaders: [
-          { text: 'List of CDEs', align: 'left', sortable: false, value: 'LISTOF_CDE', width: "25%" },
+          { text: 'List of CDEs', align: 'left', sortable: false, value: 'LIST_OF_CDE', width: "25%" },
           { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'Values.IMM_PREC_SYSTEM_NAME', width: "25%" },
           { text: 'SLA(Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_PREC_SYSTEM_SLA', width: "25%" },
           { text: 'OLA(Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_PREC_SYSTEM_OLA', width: "25%" },
@@ -247,7 +247,7 @@ export default {
           { text: 'SLA (Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_SUCC_SYSTEM_SLA', width: "25%" },
           { text: 'OLA (Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_SUCC_SYSTEM_OLA', width: "25%" },
           { text: 'List of Downstream Process', align: 'left', sortable: false, value: 'Values.LIST_DOWNSTREAM_PROCESS', width: "25%" },
-          { text: 'Downstream Process Owner', align: 'left', sortable: false, value: 'Values.DOWNSTREAM_OWNER', width: "25%" },
+          { text: 'Downstream Process Owner', align: 'left', sortable: false, value: 'Values.DOWNSTREAM_PROCESS_OWNER', width: "25%" },
         ],
       }
     },
@@ -295,7 +295,7 @@ export default {
           if(tables.length > 0){
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
-              tableLevel.LISTOF_CDE = table.LISTOF_CDE;
+              tableLevel.LIST_OF_CDE = table.LIST_OF_CDE;
               tableLevel.IMM_PREC_SYSTEM_NAME = table.IMM_PREC_SYSTEM_NAME;
               tableLevel.IMM_PREC_SYSTEM_SLA = table.IMM_PREC_SYSTEM_SLA;
               tableLevel.IMM_PREC_SYSTEM_OLA = table.IMM_PREC_SYSTEM_OLA;
@@ -303,7 +303,7 @@ export default {
               tableLevel.IMM_SUCC_SYSTEM_SLA = table.IMM_SUCC_SYSTEM_SLA;
               tableLevel.IMM_SUCC_SYSTEM_OLA = table.IMM_SUCC_SYSTEM_OLA;
               tableLevel.LIST_DOWNSTREAM_PROCESS = table.LIST_DOWNSTREAM_PROCESS;
-              tableLevel.DOWNSTREAM_OWNER = table.DOWNSTREAM_OWNER;
+              tableLevel.DOWNSTREAM_PROCESS_OWNER = table.DOWNSTREAM_PROCESS_OWNER;
 
               res.push(_.cloneDeep(tableLevel));
             })

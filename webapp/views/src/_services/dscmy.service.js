@@ -30,7 +30,7 @@ function getRightTable(param) {
     return fetchWHeader(`/dsc/gettablename`, param).then(
         res => {
             res.Data = _.map(res.Data, function(v){
-                v.CDE = v.CDE == 0 ? "No" : "Yes";
+                v.CDE_YES_NO = v.CDE_YES_NO == 0 ? "No" : "Yes";
                 return v;
             });
 
@@ -62,14 +62,14 @@ function getInterfacesRightTable(param) {
                 return v;
             });
 
-            var tmp = _.groupBy(res.Data, "LISTOF_CDE")
+            var tmp = _.groupBy(res.Data, "LIST_OF_CDE")
             
             res.Data = _.map(Object.keys(tmp), function(v, i){
                 return {
                     ID: tmp[v][0].ID,
                     TSID: tmp[v][0].TSID,
                     COLID: tmp[v][0].COLID,
-                    LISTOF_CDE: v,
+                    LIST_OF_CDE: v,
                     Values: tmp[v],
                     RESULT_COUNT: tmp[v][0].RESULT_COUNT
                 }

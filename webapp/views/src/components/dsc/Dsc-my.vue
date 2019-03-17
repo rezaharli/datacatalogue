@@ -176,8 +176,8 @@ table.v-table thead th > div.btn-group {
                   <tr>
                     <td><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.TABLE_NAME" :isklik="false"></tablecell></b-link></td>
                     <td><tablecell :fulltext="(_.map(props.item.Columns, 'COLUMN_NAME').filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                    <td><tablecell :fulltext="(_.map(props.item.Columns, 'ALIAS_NAME').filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                    <td><tablecell :fulltext="getCDEConclusion(_.map(props.item.Columns, 'CDE'))" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="(_.map(props.item.Columns, 'BUSINESS_ALIAS_NAME').filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="getCDEConclusion(_.map(props.item.Columns, 'CDE_YES_NO'))" :isklik="true"></tablecell></td>
                   </tr>
                 </template>
                 
@@ -192,8 +192,8 @@ table.v-table thead th > div.btn-group {
                     <template slot="items" slot-scope="props">
                       <td style="width: 25%">&nbsp;</td>
                       <td style="width: 25%"><b-link @click="showDetails(props.item)">{{ props.item.COLUMN_NAME }}</b-link></td>
-                      <td style="width: 25%">{{ props.item.ALIAS_NAME }}</td>
-                      <td style="width: 25%">{{ props.item.CDE }}</td>
+                      <td style="width: 25%">{{ props.item.BUSINESS_ALIAS_NAME }}</td>
+                      <td style="width: 25%">{{ props.item.CDE_YES_NO }}</td>
                     </template>
                   </v-data-table>
                 </template>
@@ -236,8 +236,8 @@ export default {
         secondTableHeaders: [
           { text: 'Table Name', align: 'left', sortable: false, value: 'TABLE_NAME', displayCount: true, width: "25%" },
           { text: 'Column Name', align: 'left', sortable: false, value: 'Columns.COLUMN_NAME', displayCount: true, width: "25%" },
-          { text: 'Business Alias Name', align: 'left', sortable: false, value: 'Columns.ALIAS_NAME', displayCount: true, width: "25%" },
-          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'Columns.CDE', displayCount: false, width: "25%" }
+          { text: 'Business Alias Name', align: 'left', sortable: false, value: 'Columns.BUSINESS_ALIAS_NAME', displayCount: true, width: "25%" },
+          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'Columns.CDE_YES_NO', displayCount: false, width: "25%" }
         ],
       }
     },
@@ -291,8 +291,8 @@ export default {
                 this._.each(table.Columns, (column, j) => {
                   var colLevel = _.cloneDeep(tableLevel);
                   colLevel.COLUMN_NAME = column.COLUMN_NAME;
-                  colLevel.ALIAS_NAME = column.ALIAS_NAME;
-                  colLevel.CDE = column.CDE;
+                  colLevel.BUSINESS_ALIAS_NAME = column.BUSINESS_ALIAS_NAME;
+                  colLevel.CDE_YES_NO = column.CDE_YES_NO;
                   
                   res.push(_.cloneDeep(colLevel));
                 })

@@ -57,6 +57,8 @@ const actions = {
     getDetails({ commit }, param) {
         commit('getDetailsRequest');
 
+        param.Tabs = state.all.tabs;
+        
         return dscMyService.getDetails(param)
             .then(
                 res => commit('getDetailsSuccess', res.Data),

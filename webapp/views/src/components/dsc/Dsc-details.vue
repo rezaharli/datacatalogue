@@ -63,7 +63,7 @@ legend.col-form-label, label.col-form-label {
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Dataset Custodian</h6>
-              <text-wrap-dialog :fulltext="selectedDetails.FIRST_NAME" v-if="selectedDetails"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="selectedDetails.DATASET_CUSTODIAN" v-if="selectedDetails"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
@@ -73,7 +73,7 @@ legend.col-form-label, label.col-form-label {
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Business Alias Name</h6>
-              <text-wrap-dialog :fulltext="selectedDetails.ALIAS_NAME" v-if="selectedDetails"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="selectedDetails.BUSINESS_ALIAS_NAME" v-if="selectedDetails"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
@@ -107,20 +107,11 @@ legend.col-form-label, label.col-form-label {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Description">
-                      <text-wrap-dialog :fulltext="selectedDetails.ALIAS_DESCRIPTION" v-if="selectedDetails"></text-wrap-dialog>
-                      <!-- <v-dialog v-model="dialog" width="500" v-if="selectedDetails">
-                        <p slot="activator" class="col-form-label" v-html="selectedDetails.BUSINESS_DESCRIPTION"><b-link>[more]</b-link></p>
-
-                        <v-card>
-                          <v-card-text v-html="selectedDetails.BUSINESS_DESCRIPTION">
-                            
-                          </v-card-text>
-                        </v-card>
-                      </v-dialog> -->
+                      <text-wrap-dialog :fulltext="selectedDetails.BUSINESS_ALIAS_DESCRIPTION" v-if="selectedDetails"></text-wrap-dialog>
                     </b-form-group>
                     
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="CDE (yes/no)">
-                      <text-wrap-dialog :fulltext="selectedDetails.CDE" v-if="selectedDetails"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.CDE_YES_NO" v-if="selectedDetails"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Status*">
@@ -144,7 +135,7 @@ legend.col-form-label, label.col-form-label {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)*">
-                      <text-wrap-dialog :fulltext="selectedDetails.DERIVED" v-if="selectedDetails"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.DERIVED_YES_NO" v-if="selectedDetails"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation logic*">
@@ -152,7 +143,7 @@ legend.col-form-label, label.col-form-label {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sourced from Upstream (Yes/No)*">
-                      <text-wrap-dialog :fulltext="selectedDetails.SOURCED_FROM_UPSTREAM" v-if="selectedDetails"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.SOURCED_FROM_UPSTREAM_YES_NO" v-if="selectedDetails"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Checks*">
@@ -182,11 +173,11 @@ legend.col-form-label, label.col-form-label {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term*">
-                      <text-wrap-dialog :fulltext="selectedDetails.BT_NAME"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.BUSINESS_TERM"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
-                      <text-wrap-dialog :fulltext="selectedDetails.BUSINESS_DESCRIPTION"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.BUSINESS_TERM_DESCRIPTION"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -200,11 +191,11 @@ legend.col-form-label, label.col-form-label {
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Names">
-                      <text-wrap-dialog :fulltext="selectedDetails.INFO_ASSET_NAME"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.INFORMATION_ASSET_NAMES"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Description">
-                      <text-wrap-dialog :fulltext="selectedDetails.INFO_ASSET_DESCRIPTION"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.INFORMATION_ASSET_DESCRIPTION"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="C - Confidentiality">
@@ -224,7 +215,7 @@ legend.col-form-label, label.col-form-label {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Record Categories">
-                      <text-wrap-dialog :fulltext="selectedDetails.RECORD_CATEGORY"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.RECORD_CATEGORIES"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="PII Flag">
@@ -242,11 +233,11 @@ legend.col-form-label, label.col-form-label {
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Preceding System*">
-                      <text-wrap-dialog :fulltext="selectedDetails.IMM_PREC_SYSTEM_NAME"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.IMM_PRECEEDING_SYSTEM"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Succeeding System*">
-                      <text-wrap-dialog :fulltext="selectedDetails.IMM_SUCC_SYSTEM_NAME"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.IMM_SUCCEEDING_SYSTEM"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards | Threshold*">
@@ -285,38 +276,38 @@ export default {
       excelFields: {
         'System Name': "selectedDetails.SYSTEM_NAME",
         'ITAM ID': "selectedDetails.ITAM_ID",
-        'Dataset Custodian': 'selectedDetails.FIRST_NAME',
+        'Dataset Custodian': 'selectedDetails.DATASET_CUSTODIAN',
         'Bank ID' : 'selectedDetails.BANK_ID',
-        'Business Alias Name': "selectedDetails.ALIAS_NAME",
+        'Business Alias Name': "selectedDetails.BUSINESS_ALIAS_NAME",
         'Table Name': 'selectedDetails.TABLE_NAME',
         'Column Name': 'selectedDetails.COLUMN_NAME',
-        'Business Alias Name*': 'selectedDetails.ALIAS_NAME',
-        'Business Alias Description': 'selectedDetails.ALIAS_DESCRIPTION',
-        'CDE (yes/no)': 'selectedDetails.CDE',
+        'Business Alias Name*': 'selectedDetails.BUSINESS_ALIAS_NAME',
+        'Business Alias Description': 'selectedDetails.BUSINESS_ALIAS_DESCRIPTION',
+        'CDE (yes/no)': 'selectedDetails.CDE_YES_NO',
         'Status*': 'selectedDetails.STATUS',
         'Data Type': 'selectedDetails.DATA_TYPE',
         'Data Format': 'selectedDetails.DATA_FORMAT',
         "Data Length": "selectedDetails.DATA_LENGTH",
         "Example": "selectedDetails.EXAMPLE",
-        "Derived (Yes/No)*": "selectedDetails.DERIVED",
+        "Derived (Yes/No)*": "selectedDetails.DERIVED_YES_NO",
         "Derivation logic*": "selectedDetails.DERIVATION_LOGIC",
-        "Sourced from Upstream (Yes/No)*": "selectedDetails.SOURCED_FROM_UPSTREAM",
+        "Sourced from Upstream (Yes/No)*": "selectedDetails.SOURCED_FROM_UPSTREAM_YES_NO",
         "System Checks*": "selectedDetails.SYSTEM_CHECKS",
         "Domain": "selectedDetails.DOMAIN",
         "Sub Domain": "selectedDetails.SUBDOMAIN",
         "Domain Owner": "selectedDetails.DOMAIN_OWNER",
-        "Business Term*": "selectedDetails.BT_NAME",
-        "Business Term Description": "selectedDetails.BUSINESS_DESCRIPTION",
-        "Information Asset Names": "selectedDetails.INFO_ASSET_NAME",
-        "Information Asset Description": "selectedDetails.INFO_ASSET_DESCRIPTION",
+        "Business Term*": "selectedDetails.BUSINESS_TERM",
+        "Business Term Description": "selectedDetails.BUSINESS_TERM_DESCRIPTION",
+        "Information Asset Names": "selectedDetails.INFORMATION_ASSET_NAMES",
+        "Information Asset Description": "selectedDetails.INFORMATION_ASSET_DESCRIPTION",
         "C - Confidentiality": "selectedDetails.CONFIDENTIALITY",
         "I - Integrity": "selectedDetails.INTEGRITY",
         "A - Availability": "selectedDetails.AVAILABILITY",
         "Overall CIA Rating": "selectedDetails.OVERALL_CIA_RATING",
-        "Record Categories": "selectedDetails.RECORD_CATEGORY",
+        "Record Categories": "selectedDetails.RECORD_CATEGORIES",
         "PII Flag": "selectedDetails.PII_FLAG",
-        "Immediate Preceding System*": "selectedDetails.IMM_PREC_SYSTEM_NAME",
-        "Immediate Succeeding System*": "selectedDetails.IMM_SUCC_SYSTEM_NAME",
+        "Immediate Preceeding System*": "selectedDetails.IMM_PRECEEDING_SYSTEM",
+        "Immediate Succeeding System*": "selectedDetails.IMM_SUCCEEDING_SYSTEM",
         "DQ Standards | Threshold*": "selectedDetails.THRESHOLD"
       }
     }
@@ -341,8 +332,8 @@ export default {
       var filtered = _.filter(self.dscmy.DDSource, (v) => {
         return v.TABLE_NAME == self.ddTableSelected && v.COLUMN_NAME == self.ddColumnSelected;
       });
-
-      return _.uniq(_.map(filtered, "ALIAS_NAME"));
+      
+      return _.uniq(_.map(filtered, "BUSINESS_ALIAS_NAME"));
     },
     exportDatas () {
       if(this.selectedDetails){
@@ -374,7 +365,7 @@ export default {
           this.ddScreenLabelSelected = this.ddScreenLabelOptions[0];
       }
     },
-    'ddScreenLabelSelected' (){
+    ddScreenLabelSelected (){
       if( ! this.firstload){
         var param = {
           ScreenLabel: this.ddScreenLabelSelected,
@@ -432,10 +423,10 @@ export default {
             });
             
             // interrupt
-            self.selectedDetails.CDE = self.selectedDetails.CDE != 0 ? "Yes" : "No";
+            self.selectedDetails.CDE_YES_NO = self.selectedDetails.CDE_YES_NO != 0 ? "Yes" : "No";
             self.selectedDetails.STATUS = self.selectedDetails.STATUS != 0 ? "ACTIVE" : "INACTIVE";
-            self.selectedDetails.DERIVED = self.selectedDetails.DERIVED != 0 ? "Yes" : "No";
-            self.selectedDetails.SOURCED_FROM_UPSTREAM = self.selectedDetails.SOURCED_FROM_UPSTREAM != 0 ? "Yes" : "No";
+            self.selectedDetails.DERIVED_YES_NO = self.selectedDetails.DERIVED_YES_NO != 0 ? "Yes" : "No";
+            self.selectedDetails.SOURCED_FROM_UPSTREAM_YES_NO = self.selectedDetails.SOURCED_FROM_UPSTREAM_YES_NO != 0 ? "Yes" : "No";
 
             // make falsy NA
             Object.keys(self.selectedDetails).forEach((val) => {
@@ -445,7 +436,7 @@ export default {
             setTimeout(() => {
               self.ddTableSelected = self.selectedDetails.TABLE_NAME;
               self.ddColumnSelected = self.selectedDetails.COLUMN_NAME;
-              self.ddScreenLabelSelected = self.selectedDetails.ALIAS_NAME;
+              self.ddScreenLabelSelected = self.selectedDetails.BUSINESS_ALIAS_NAME;
             }, 100);
           } else {
             this.selectedDetails = null;

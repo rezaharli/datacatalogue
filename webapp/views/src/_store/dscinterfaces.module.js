@@ -13,6 +13,7 @@ const state = {
         },
         left: newTableObject(),
         right: newTableObject(),
+        DDSource: [],
         detailsLoading: true,
         detailsSource: [],
         error: null
@@ -56,6 +57,17 @@ const actions = {
                 error => commit('getAllTablenameFailure', error)
             );
     },
+    getDetails({ commit }, param) {
+        commit('getDetailsRequest');
+
+        param.Tabs = state.all.tabs;
+        
+        return dscMyService.getDetails(param)
+            .then(
+                res => commit('getDetailsSuccess', res.Data),
+                error => commit('getDetailsFailure', error)
+            );
+    },
 };
 
 const mutations = {
@@ -85,6 +97,18 @@ const mutations = {
     },
     getAllTablenameFailure(state, error) {
         state.all.right.loading = false;
+        state.all.error = error;
+    },
+    getDetailsRequest(state) {
+        state.all.detailsLoading = true;
+    },
+    getDetailsSuccess(state, data) {
+        state.all.detailsSource = data.Detail;
+        state.all.DDSource = data.DDSource;
+        state.all.detailsLoading = false;
+    },
+    getDetailsFailure(state, error) {
+        state.all.detailsLoading = false;
         state.all.error = error;
     },
 };
