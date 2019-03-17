@@ -87,8 +87,9 @@ table.v-table thead th > div.btn-group {
                   :pagination.sync="dscall.left.pagination"
                   :total-items="dscall.left.totalItems"
                   :loading="dscall.left.loading"
+                  :expand="false"
                   item-key="ID"
-                  class="elevation-1 fixed-header">
+                  class="elevation-1">
 
                 <template slot="headerCell" slot-scope="props">
                   {{ props.header.text }} ({{ distinctData(props.header.value, dscall.left.source).length }})
@@ -123,9 +124,26 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                     <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.SYSTEM_NAME" :isklik="false"></tablecell></b-link></td>
-                    <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'ITAM_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                    <td><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'ITAM_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell></b-link></td>
                     <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'DATASET_CUSTODIAN').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
                     <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'BANK_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                </template>
+
+                <template slot="expand" slot-scope="props">
+                  <v-data-table
+                    :headers="firstTableHeaders"
+                    :items="props.item.Custodians"
+                    class="elevation-1"
+                    hide-actions
+                    hide-headers
+                  >
+                    <template slot="items" slot-scope="props">
+                      <td style="width: 25%">&nbsp;</td>
+                      <td style="width: 25%">&nbsp;</td>
+                      <td style="width: 25%">{{ props.item.DATASET_CUSTODIAN }}</td>
+                      <td style="width: 25%">{{ props.item.BANK_ID }}</td>
+                    </template>
+                  </v-data-table>
                 </template>
               </v-data-table>
             </b-col>
@@ -363,9 +381,25 @@ export default {
         }
 
         if(type == "systems"){
-          this.dscall.left.display = _.filter(this.dscall.left.source, [keyModel.value, val]);
+          if(keyModel.value.split(".")[1]){
+            this.dscall.left.display = _.filter(this.dscall.left.source, (v) => {
+              return v[keyModel.value.split(".")[0]].find((w) => {
+                return w[keyModel.value.split(".")[1]] == val
+              })
+            });
+          } else {
+            this.dscall.left.display = _.filter(this.dscall.left.source, [keyModel.value, val]);
+          }
         } else {
-          this.dscall.right.display = _.filter(this.dscall.right.source, [keyModel.value, val]);
+          if(keyModel.value.split(".")[1]){
+            this.dscall.right.display = _.filter(this.dscall.right.source, (v) => {
+              return v[keyModel.value.split(".")[0]].find((w) => {
+                return w[keyModel.value.split(".")[1]] == val
+              })
+            });
+          } else {
+            this.dscall.right.display = _.filter(this.dscall.right.source, [keyModel.value, val]);
+          }
         }
       },
       filterKeyup (type, keyModel) {

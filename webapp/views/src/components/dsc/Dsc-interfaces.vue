@@ -370,9 +370,25 @@ export default {
         }
 
         if(type == "systems"){
-          this.dscinterfaces.left.display = _.filter(this.dscinterfaces.left.source, [keyModel.value, val]);
+          if(keyModel.value.split(".")[1]){
+            this.dscinterfaces.left.display = _.filter(this.dscinterfaces.left.source, (v) => {
+              return v[keyModel.value.split(".")[0]].find((w) => {
+                return w[keyModel.value.split(".")[1]] == val
+              })
+            });
+          } else {
+            this.dscinterfaces.left.display = _.filter(this.dscinterfaces.left.source, [keyModel.value, val]);
+          }
         } else {
-          this.dscinterfaces.right.display = _.filter(this.dscinterfaces.right.source, [keyModel.value, val]);
+          if(keyModel.value.split(".")[1]){
+            this.dscinterfaces.right.display = _.filter(this.dscinterfaces.right.source, (v) => {
+              return v[keyModel.value.split(".")[0]].find((w) => {
+                return w[keyModel.value.split(".")[1]] == val
+              })
+            });
+          } else {
+            this.dscinterfaces.right.display = _.filter(this.dscinterfaces.right.source, [keyModel.value, val]);
+          }
         }
       },
       filterKeyup (type, keyModel) {
