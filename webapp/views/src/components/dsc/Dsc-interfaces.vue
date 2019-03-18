@@ -286,9 +286,9 @@ export default {
         this._.each(this.dscinterfaces.left.display, (system, i) => {
           var temp = {
             SYSTEM_NAME: system.SYSTEM_NAME,
-            ITAM_ID: system.ITAM_ID,
-            DATASET_CUSTODIAN: system.DATASET_CUSTODIAN,
-            BANK_ID: system.BANK_ID,
+            ITAM_ID: _.uniq(_.map(system.Custodians, "ITAM_ID").filter(Boolean)).join(', '),
+            DATASET_CUSTODIAN: _.uniq(_.map(system.Custodians, "DATASET_CUSTODIAN").filter(Boolean)).join(', '),
+            BANK_ID: _.uniq(_.map(system.Custodians, "BANK_ID").filter(Boolean)).join(', '),
           }
 
           var tables = this._.filter(this.dscinterfaces.right.display, (v) => v.TSID == system.ID)
@@ -296,14 +296,24 @@ export default {
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
               tableLevel.LIST_OF_CDE = table.LIST_OF_CDE;
-              tableLevel.IMM_PREC_SYSTEM_NAME = table.IMM_PREC_SYSTEM_NAME;
-              tableLevel.IMM_PREC_SYSTEM_SLA = table.IMM_PREC_SYSTEM_SLA;
-              tableLevel.IMM_PREC_SYSTEM_OLA = table.IMM_PREC_SYSTEM_OLA;
-              tableLevel.IMM_SUCC_SYSTEM_NAME = table.IMM_SUCC_SYSTEM_NAME;
-              tableLevel.IMM_SUCC_SYSTEM_SLA = table.IMM_SUCC_SYSTEM_SLA;
-              tableLevel.IMM_SUCC_SYSTEM_OLA = table.IMM_SUCC_SYSTEM_OLA;
-              tableLevel.LIST_DOWNSTREAM_PROCESS = table.LIST_DOWNSTREAM_PROCESS;
-              tableLevel.DOWNSTREAM_PROCESS_OWNER = table.DOWNSTREAM_PROCESS_OWNER;
+
+              if(table.Values.length > 0){
+                this._.each(table.Values, (column, j) => {
+                  var colLevel = _.cloneDeep(tableLevel);
+                  colLevel.IMM_PREC_SYSTEM_NAME = column.IMM_PREC_SYSTEM_NAME;
+                  colLevel.IMM_PREC_SYSTEM_SLA = column.IMM_PREC_SYSTEM_SLA;
+                  colLevel.IMM_PREC_SYSTEM_OLA = column.IMM_PREC_SYSTEM_OLA;
+                  colLevel.IMM_SUCC_SYSTEM_NAME = column.IMM_SUCC_SYSTEM_NAME;
+                  colLevel.IMM_SUCC_SYSTEM_SLA = column.IMM_SUCC_SYSTEM_SLA;
+                  colLevel.IMM_SUCC_SYSTEM_OLA = column.IMM_SUCC_SYSTEM_OLA;
+                  colLevel.LIST_DOWNSTREAM_PROCESS = column.LIST_DOWNSTREAM_PROCESS;
+                  colLevel.DOWNSTREAM_PROCESS_OWNER = column.DOWNSTREAM_PROCESS_OWNER;
+                  
+                  res.push(_.cloneDeep(colLevel));
+                })
+              } else {
+                res.push(_.cloneDeep(tableLevel));
+              }
 
               res.push(_.cloneDeep(tableLevel));
             })

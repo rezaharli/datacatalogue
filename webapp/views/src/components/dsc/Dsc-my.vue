@@ -276,9 +276,9 @@ export default {
         this._.each(this.dscmy.left.display, (system, i) => {
           var temp = {
             SYSTEM_NAME: system.SYSTEM_NAME,
-            ITAM_ID: system.ITAM_ID,
-            DATASET_CUSTODIAN: system.DATASET_CUSTODIAN,
-            BANK_ID: system.BANK_ID,
+            ITAM_ID: _.uniq(_.map(system.Custodians, "ITAM_ID").filter(Boolean)).join(', '),
+            DATASET_CUSTODIAN: _.uniq(_.map(system.Custodians, "DATASET_CUSTODIAN").filter(Boolean)).join(', '),
+            BANK_ID: _.uniq(_.map(system.Custodians, "BANK_ID").filter(Boolean)).join(', '),
           }
 
           var tables = this._.filter(this.dscmy.right.display, (v) => v.TSID == system.ID)
