@@ -36,13 +36,11 @@ function getRightTable(param) {
             var tmp = _.groupBy(res.Data, "TABLE_NAME")
             
             res.Data = _.map(Object.keys(tmp), function(v, i){
-                return {
-                    ID: tmp[v][0].ID,
-                    TSID: tmp[v][0].TSID,
-                    TABLE_NAME: v,
-                    Columns: tmp[v],
-                    RESULT_COUNT: tmp[v][0].RESULT_COUNT
-                }
+                var ret = tmp[v][0];
+                ret.TABLE_NAME = v;
+                ret.Columns = tmp[v];
+
+                return ret;
             });
 
             return res;

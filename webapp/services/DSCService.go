@@ -91,6 +91,13 @@ func (s *DSCService) GetTableName(tabs string, systemID int, search string, sear
 		return nil, 0, err
 	}
 
+	q = `SELECT res.*, 
+			COUNT(DISTINCT table_name) OVER () COUNT_table_name,
+			COUNT(DISTINCT column_name) OVER () COUNT_column_name,
+			COUNT(DISTINCT business_alias_name) OVER () COUNT_business_alias_name,
+			COUNT(DISTINCT cde_yes_no) OVER () COUNT_cde_yes_no
+		FROM ( ` + q + `) res `
+
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName:   m.NewSystemModel().TableName(),
 		SqlQuery:    q,
