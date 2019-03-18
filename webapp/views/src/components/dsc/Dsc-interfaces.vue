@@ -171,7 +171,7 @@ table.v-table thead th > div.btn-group {
                   </template>
 
                   <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dscinterfaces.right.source).length }})
+                  {{ props.header.text }} ({{ dscinterfaces.right.source[0] ? dscinterfaces.right.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0 }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">

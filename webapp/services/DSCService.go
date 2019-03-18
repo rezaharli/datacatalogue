@@ -135,6 +135,18 @@ func (s *DSCService) GetInterfacesRightTable(tabs string, systemID int, search s
 		return nil, 0, err
 	}
 
+	q = `SELECT res.*, 
+			COUNT(DISTINCT list_of_cde) OVER () COUNT_list_of_cde,
+			COUNT(DISTINCT imm_prec_system_name) OVER () COUNT_imm_prec_system_name,
+			COUNT(DISTINCT Imm_Prec_System_SLA) OVER () COUNT_Imm_Prec_System_SLA,
+			COUNT(DISTINCT Imm_Prec_System_OLA) OVER () COUNT_Imm_Prec_System_OLA,
+			COUNT(DISTINCT imm_succ_system_name) OVER () COUNT_imm_succ_system_name,
+			COUNT(DISTINCT Imm_Succ_System_SLA) OVER () COUNT_Imm_Succ_System_SLA,
+			COUNT(DISTINCT Imm_Succ_System_OLA) OVER () COUNT_Imm_Succ_System_OLA,
+			COUNT(DISTINCT list_downstream_process) OVER () COUNT_list_downstream_process,
+			COUNT(DISTINCT downstream_process_owner) OVER () COUNT_downstream_process_owner
+		FROM ( ` + q + `) res `
+
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName:   m.NewSystemModel().TableName(),
 		SqlQuery:    q,

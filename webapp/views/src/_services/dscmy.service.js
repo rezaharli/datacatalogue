@@ -62,14 +62,11 @@ function getInterfacesRightTable(param) {
             var tmp = _.groupBy(res.Data, "LIST_OF_CDE")
             
             res.Data = _.map(Object.keys(tmp), function(v, i){
-                return {
-                    ID: tmp[v][0].ID,
-                    TSID: tmp[v][0].TSID,
-                    COLID: tmp[v][0].COLID,
-                    LIST_OF_CDE: v,
-                    Values: tmp[v],
-                    RESULT_COUNT: tmp[v][0].RESULT_COUNT
-                }
+                var ret = tmp[v][0];
+                ret.LIST_OF_CDE = v;
+                ret.Values = tmp[v];
+
+                return ret;
             });
 
             return res;
