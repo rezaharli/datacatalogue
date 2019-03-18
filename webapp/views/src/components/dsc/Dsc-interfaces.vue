@@ -93,7 +93,7 @@ table.v-table thead th > div.btn-group {
                   class="elevation-1">
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dscinterfaces.left.source).length }})
+                  {{ props.header.text }} ({{ dscinterfaces.left.source[0] ? dscinterfaces.left.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0 }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">

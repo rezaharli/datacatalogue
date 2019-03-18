@@ -47,6 +47,13 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD inte
 		return nil, 0, err
 	}
 
+	q = `SELECT res.*, 
+			COUNT(DISTINCT system_name) OVER () COUNT_SYSTEM_NAME,
+			COUNT(DISTINCT itam_id) OVER () COUNT_ITAM_ID,
+			COUNT(DISTINCT dataset_custodian) OVER () COUNT_DATASET_CUSTODIAN,
+			COUNT(DISTINCT bank_id) OVER () COUNT_BANK_ID
+		FROM ( ` + q + `) res `
+
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName:   m.NewSystemModel().TableName(),
 		SqlQuery:    q,

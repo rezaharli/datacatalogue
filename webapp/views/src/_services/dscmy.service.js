@@ -13,12 +13,11 @@ function getLeftTable(param) {
             var tmp = _.groupBy(res.Data, "SYSTEM_NAME")
             
             res.Data = _.map(Object.keys(tmp), function(v, i){
-                return {
-                    ID: tmp[v][0].ID,
-                    SYSTEM_NAME: v,
-                    Custodians: tmp[v],
-                    RESULT_COUNT: tmp[v][0].RESULT_COUNT
-                }
+                var ret = tmp[v][0];
+                ret.SYSTEM_NAME = v;
+                ret.Custodians = tmp[v];
+
+                return ret;
             });
 
             return res;
