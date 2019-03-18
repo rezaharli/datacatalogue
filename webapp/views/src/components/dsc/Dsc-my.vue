@@ -130,7 +130,7 @@ table.v-table thead th > div.btn-group {
               </v-data-table>
             </b-col>
             
-            <b-col>
+            <b-col class="scrollableasdf">
               <v-data-table
                   :headers="secondTableHeaders"
                   :items="dscmy.right.display"

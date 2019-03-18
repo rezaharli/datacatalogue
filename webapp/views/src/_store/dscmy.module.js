@@ -28,8 +28,8 @@ const actions = {
 
         var param = {
             Tabs: state.all.tabs,
-            LoggedInID: user.Username,
-            Search: state.all.searchMain,
+            LoggedInID: user.Username.toString(),
+            Search: state.all.searchMain.toString(),
             SearchDD: state.all.searchDropdown,
             Pagination: state.all.left.pagination
         }

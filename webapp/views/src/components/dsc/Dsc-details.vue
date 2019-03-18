@@ -368,9 +368,9 @@ export default {
     ddScreenLabelSelected (){
       if( ! this.firstload){
         var param = {
-          ScreenLabel: this.ddScreenLabelSelected,
-          ColumnName: this.ddColumnSelected,
-          TableName: this.ddTableSelected,
+          ScreenLabel: this.ddScreenLabelSelected.toString(),
+          ColumnName: this.ddColumnSelected.toString(),
+          TableName: this.ddTableSelected.toString(),
         };
 
         this.runGetDetails(param);
@@ -406,9 +406,9 @@ export default {
       var self = this;
 
       param.Which = self.$route.name;
-      param.Left = parseInt(self.$route.params.system);
-      param.Right = parseInt(self.$route.params.details);
-      param.Column = parseInt(self.$route.params.column);
+      param.Left = parseInt(self.$route.params.system).toString();
+      param.Right = parseInt(self.$route.params.details).toString();
+      param.Column = parseInt(self.$route.params.column).toString();
 
       self.getDetails(param).then(
         res => {
