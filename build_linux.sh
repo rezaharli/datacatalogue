@@ -15,7 +15,7 @@ cd webapp
 go build -o datacatalogue
 mv datacatalogue "../builds/${foldername}/webapp"
 
-cp -r views/dist/ "../../builds/${foldername}/webapp/views"
+cp -r views/dist/ "../builds/${foldername}/webapp/views"
 
 cp config/app.json.template "../builds/${foldername}/webapp/config/"
 
