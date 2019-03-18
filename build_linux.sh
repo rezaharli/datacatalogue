@@ -19,7 +19,7 @@ cp -r views/dist/ "../../builds/${foldername}/webapp/views"
 
 cp config/app.json.template "../builds/${foldername}/webapp/config/"
 
-cp "queryfiles/*" "../builds/${foldername}/webapp/queryfiles/"
+cp -a "queryfiles/." "../builds/${foldername}/webapp/queryfiles/"
 
 cd ../builds/
 zip -r "${foldername}.zip" "${foldername}"
