@@ -377,28 +377,47 @@ export default {
           } else {
             this.dscall.right.display = this.dscall.right.source;
           }
+          
           return
         }
 
         if(type == "systems"){
           if(keyModel.value.split(".")[1]){
-            this.dscall.left.display = _.filter(this.dscall.left.source, (v) => {
-              return v[keyModel.value.split(".")[0]].find((w) => {
-                return w[keyModel.value.split(".")[1]] == val
-              })
-            });
+            this.dscall.left.display = _.cloneDeep(this.dscall.left.source);
+            this.dscall.left.display = this.dscall.left.display.filter(
+              v => {
+                var key = keyModel.value.split(".")[0];
+                
+                v[key] = v[key].filter(
+                  w => w[keyModel.value.split(".")[1]].toString().toUpperCase() == val.toString().toUpperCase()
+                )
+
+                return v[key].length > 0;
+              }
+            );
           } else {
-            this.dscall.left.display = _.filter(this.dscall.left.source, [keyModel.value, val]);
+            this.dscall.left.display = _.filter(this.dscall.left.source, (v) => {
+              return v[keymodel.value].toString().toUpperCase() == val.toString().toUpperCase();
+            });
           }
         } else {
           if(keyModel.value.split(".")[1]){
-            this.dscall.right.display = _.filter(this.dscall.right.source, (v) => {
-              return v[keyModel.value.split(".")[0]].find((w) => {
-                return w[keyModel.value.split(".")[1]] == val
-              })
-            });
+            this.dscall.right.display = _.cloneDeep(this.dscall.right.source);
+            this.dscall.right.display = this.dscall.right.display.filter(
+              v => {
+                var key = keyModel.value.split(".")[0];
+                
+                v[key] = v[key].filter(
+                  w => w[keyModel.value.split(".")[1]].toString().toUpperCase() == val.toString().toUpperCase()
+                )
+
+                return v[key].length > 0;
+              }
+            );
           } else {
-            this.dscall.right.display = _.filter(this.dscall.right.source, [keyModel.value, val]);
+            this.dscall.right.display = _.filter(this.dscall.right.source, (v) => {
+              return v[keymodel.value].toString().toUpperCase() == val.toString().toUpperCase();
+            });
           }
         }
       },
