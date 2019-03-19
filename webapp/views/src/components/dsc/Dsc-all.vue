@@ -388,9 +388,7 @@ export default {
               v => {
                 var key = keyModel.value.split(".")[0];
                 
-                v[key] = v[key].filter(
-                  w => w[keyModel.value.split(".")[1]].toString().toUpperCase() == val.toString().toUpperCase()
-                )
+                v[key] = v[key].filter(w => w[keyModel.value.split(".")[1]].toString().toUpperCase().includes(val.toString().toUpperCase()))
 
                 return v[key].length > 0;
               }
@@ -398,7 +396,7 @@ export default {
           } else {
             this.dscall.left.display = _.cloneDeep(this.dscall.left.source);
             this.dscall.left.display = _.filter(this.dscall.left.display, (v) => {
-              return v[keyModel.value].toString().toUpperCase() == val.toString().toUpperCase();
+              return v[keyModel.value].toString().toUpperCase().includes(val.toString().toUpperCase());
             });
           }
         } else {
@@ -408,9 +406,7 @@ export default {
               v => {
                 var key = keyModel.value.split(".")[0];
                 
-                v[key] = v[key].filter(
-                  w => w[keyModel.value.split(".")[1]].toString().toUpperCase() == val.toString().toUpperCase()
-                )
+                v[key] = v[key].filter(w => w[keyModel.value.split(".")[1]].toString().toUpperCase().includes(val.toString().toUpperCase()))
 
                 return v[key].length > 0;
               }
@@ -418,7 +414,7 @@ export default {
           } else {
             this.dscall.right.display = _.cloneDeep(this.dscall.right.source);
             this.dscall.right.display = _.filter(this.dscall.right.display, (v) => {
-              return v[keyModel.value].toString().toUpperCase() == val.toString().toUpperCase();
+              return v[keyModel.value].toString().toUpperCase().includes(val.toString().toUpperCase());
             });
           }
         }

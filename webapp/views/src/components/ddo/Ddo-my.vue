@@ -339,9 +339,7 @@ export default {
               v => {
                 var key = keyModel.value.split(".")[0];
                 
-                v[key] = v[key].filter(
-                  w => w[keyModel.value.split(".")[1]].toString().toUpperCase() == val.toString().toUpperCase()
-                )
+                v[key] = v[key].filter(w => w[keyModel.value.split(".")[1]].toString().toUpperCase().includes(val.toString().toUpperCase()))
 
                 return v[key].length > 0;
               }
@@ -349,7 +347,7 @@ export default {
           } else {
             this.ddomy.left.display = _.cloneDeep(this.ddomy.left.source);
             this.ddomy.left.display = _.filter(this.ddomy.left.display, (v) => {
-              return v[keyModel.value].toString().toUpperCase() == val.toString().toUpperCase();
+              return v[keyModel.value].toString().toUpperCase().includes(val.toString().toUpperCase());
             });
           }
         } else {
@@ -359,9 +357,7 @@ export default {
               v => {
                 var key = keyModel.value.split(".")[0];
                 
-                v[key] = v[key].filter(
-                  w => w[keyModel.value.split(".")[1]].toString().toUpperCase() == val.toString().toUpperCase()
-                )
+                v[key] = v[key].filter(w => w[keyModel.value.split(".")[1]].toString().toUpperCase().includes(val.toString().toUpperCase()))
 
                 return v[key].length > 0;
               }
@@ -369,7 +365,7 @@ export default {
           } else {
             this.ddomy.right.display = _.cloneDeep(this.ddomy.right.source);
             this.ddomy.right.display = _.filter(this.ddomy.right.display, (v) => {
-              return v[keyModel.value].toString().toUpperCase() == val.toString().toUpperCase();
+              return v[keyModel.value].toString().toUpperCase().includes(val.toString().toUpperCase());
             });
           }
         }

@@ -377,9 +377,7 @@ export default {
               v => {
                 var key = keyModel.value.split(".")[0];
                 
-                v[key] = v[key].filter(
-                  w => w[keyModel.value.split(".")[1]].toString().toUpperCase() == val.toString().toUpperCase()
-                )
+                v[key] = v[key].filter(w => w[keyModel.value.split(".")[1]].toString().toUpperCase().includes(val.toString().toUpperCase()))
 
                 return v[key].length > 0;
               }
@@ -387,7 +385,7 @@ export default {
           } else {
             this.dscinterfaces.left.display= _.cloneDeep(this.dscinterfaces.left.source);
             this.dscinterfaces.left.display = _.filter(this.dscinterfaces.left.source, (v) => {
-              return v[keyModel.value].toString().toUpperCase() == val.toString().toUpperCase();
+              return v[keyModel.value].toString().toUpperCase().includes(val.toString().toUpperCase());
             });
           }
         } else {
@@ -397,9 +395,7 @@ export default {
               v => {
                 var key = keyModel.value.split(".")[0];
                 
-                v[key] = v[key].filter(
-                  w => w[keyModel.value.split(".")[1]].toString().toUpperCase() == val.toString().toUpperCase()
-                )
+                v[key] = v[key].filter(w => w[keyModel.value.split(".")[1]].toString().toUpperCase().includes(val.toString().toUpperCase()))
 
                 return v[key].length > 0;
               }
@@ -407,7 +403,7 @@ export default {
           } else {
             this.dscinterfaces.right.display= _.cloneDeep(this.dscinterfaces.right.source);
             this.dscinterfaces.right.display = _.filter(this.dscinterfaces.right.source, (v) => {
-              return v[keyModel.value].toString().toUpperCase() == val.toString().toUpperCase();
+              return v[keyModel.value].toString().toUpperCase().includes(val.toString().toUpperCase());
             });
           }
         }
