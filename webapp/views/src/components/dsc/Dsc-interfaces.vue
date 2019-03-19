@@ -171,7 +171,7 @@ table.v-table thead th > div.btn-group {
                   </template>
 
                   <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ dscinterfaces.right.source[0] ? dscinterfaces.right.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0 }})
+                  {{ props.header.text }} {{ props.header.displayCount ? "(" + (dscinterfaces.right.source[0] ? dscinterfaces.right.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0) + ")" : "" }}
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -239,15 +239,15 @@ export default {
           { text: 'Bank ID', align: 'left', value: 'Custodians.BANK_ID', sortable: false }
         ],
         secondTableHeaders: [
-          { text: 'List of CDEs', align: 'left', sortable: false, value: 'LIST_OF_CDE', width: "25%" },
-          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'Values.IMM_PREC_SYSTEM_NAME', width: "25%" },
-          { text: 'SLA(Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_PREC_SYSTEM_SLA', width: "25%" },
-          { text: 'OLA(Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_PREC_SYSTEM_OLA', width: "25%" },
-          { text: 'Immediate Succeeding System', align: 'left', sortable: false, value: 'Values.IMM_SUCC_SYSTEM_NAME', width: "25%" },
-          { text: 'SLA (Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_SUCC_SYSTEM_SLA', width: "25%" },
-          { text: 'OLA (Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_SUCC_SYSTEM_OLA', width: "25%" },
-          { text: 'List of Downstream Process', align: 'left', sortable: false, value: 'Values.LIST_DOWNSTREAM_PROCESS', width: "25%" },
-          { text: 'Downstream Process Owner', align: 'left', sortable: false, value: 'Values.DOWNSTREAM_PROCESS_OWNER', width: "25%" },
+          { text: 'List of CDEs', align: 'left', sortable: false, value: 'LIST_OF_CDE', displayCount: true, width: "25%" },
+          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'Values.IMM_PREC_SYSTEM_NAME', displayCount: true, width: "25%" },
+          { text: 'SLA(Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_PREC_SYSTEM_SLA', displayCount: false, width: "25%" },
+          { text: 'OLA(Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_PREC_SYSTEM_OLA', displayCount: false, width: "25%" },
+          { text: 'Immediate Succeeding System', align: 'left', sortable: false, value: 'Values.IMM_SUCC_SYSTEM_NAME', displayCount: true, width: "25%" },
+          { text: 'SLA (Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_SUCC_SYSTEM_SLA', displayCount: false, width: "25%" },
+          { text: 'OLA (Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_SUCC_SYSTEM_OLA', displayCount: false, width: "25%" },
+          { text: 'List of Downstream Process', align: 'left', sortable: false, value: 'Values.LIST_DOWNSTREAM_PROCESS', displayCount: true, width: "25%" },
+          { text: 'Downstream Process Owner', align: 'left', sortable: false, value: 'Values.DOWNSTREAM_PROCESS_OWNER', displayCount: true, width: "25%" },
         ],
       }
     },
