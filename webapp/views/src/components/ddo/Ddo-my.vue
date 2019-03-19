@@ -260,7 +260,7 @@ export default {
           }
           
           var tables = this._.filter(this.ddomy.right.display, (v) => v.TSCID == system.ID)
-          if(tables.length > 0){
+          if(this.secondtable && tables.length > 0){
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
               tableLevel.BUSINESS_TERM = table.BUSINESS_TERM;

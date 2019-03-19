@@ -292,7 +292,7 @@ export default {
           }
 
           var tables = this._.filter(this.dscinterfaces.right.display, (v) => v.TSID == system.ID)
-          if(tables.length > 0){
+          if(this.secondtable && tables.length > 0){
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
               tableLevel.LIST_OF_CDE = table.LIST_OF_CDE;
