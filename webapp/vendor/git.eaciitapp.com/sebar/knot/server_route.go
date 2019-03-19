@@ -204,6 +204,32 @@ func (s *Server) prepareRoutes() error {
 
 	//-- regex route, applicable only if no handle for /
 	_, found := s.routes["/"]
+
+	// if not found search for / handle in apps
+	if !found {
+		for _, app := range s.apps {
+			for _, route := range app.routes {
+				if route.Pattern == "/" {
+					found = true
+					break
+				}
+			}
+
+			if !found {
+				_, foundStatic := app.statics["/"]
+				if foundStatic {
+					found = true
+					break
+				}
+			}
+
+			if found {
+				break
+			}
+		}
+	}
+
+	// If still not found add handle for /
 	if !found {
 		s.handleFunc(&RouteItem{Pattern: "/", Name: "/", Handler: func(ctx *WebContext) {
 			for _, rei := range regexs {
