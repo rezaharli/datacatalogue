@@ -80,7 +80,7 @@ table.v-table thead th > div.btn-group {
           </b-row>
 
           <b-row>
-            <b-col>
+            <b-col cols="6">
               <v-data-table
                   :headers="firstTableHeaders"
                   :items="dscmy.left.display"
@@ -130,7 +130,7 @@ table.v-table thead th > div.btn-group {
               </v-data-table>
             </b-col>
             
-            <b-col class="scrollableasdf">
+            <b-col cols="6">
               <v-data-table
                   :headers="secondTableHeaders"
                   :items="dscmy.right.display"
@@ -237,7 +237,7 @@ export default {
           { text: 'Table Name', align: 'left', sortable: false, value: 'TABLE_NAME', displayCount: true, width: "25%" },
           { text: 'Column Name', align: 'left', sortable: false, value: 'Columns.COLUMN_NAME', displayCount: true, width: "25%" },
           { text: 'Business Alias Name', align: 'left', sortable: false, value: 'Columns.BUSINESS_ALIAS_NAME', displayCount: true, width: "25%" },
-          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'Columns.CDE_YES_NO', displayCount: false, width: "25%" }
+          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'Columns.CDE_YES_NO', displayCount: true, width: "25%" }
         ],
       }
     },
@@ -359,28 +359,49 @@ export default {
           } else {
             this.dscmy.right.display = this.dscmy.right.source;
           }
+          
           return
         }
 
         if(type == "systems"){
           if(keyModel.value.split(".")[1]){
-            this.dscmy.left.display = _.filter(this.dscmy.left.source, (v) => {
-              return v[keyModel.value.split(".")[0]].find((w) => {
-                return w[keyModel.value.split(".")[1]] == val
-              })
-            });
+            this.dscmy.left.display = _.cloneDeep(this.dscmy.left.source);
+            this.dscmy.left.display = this.dscmy.left.display.filter(
+              v => {
+                var key = keyModel.value.split(".")[0];
+                
+                v[key] = v[key].filter(
+                  w => w[keyModel.value.split(".")[1]].toString().toUpperCase() == val.toString().toUpperCase()
+                )
+
+                return v[key].length > 0;
+              }
+            );
           } else {
-            this.dscmy.left.display = _.filter(this.dscmy.left.source, [keyModel.value, val]);
+            this.dscmy.left.display= _.cloneDeep(this.dscmy.left.source);
+            this.dscmy.left.display = _.filter(this.dscmy.left.display, (v) => {
+              return v[keyModel.value].toString().toUpperCase() == val.toString().toUpperCase();
+            });
           }
         } else {
           if(keyModel.value.split(".")[1]){
-            this.dscmy.right.display = _.filter(this.dscmy.right.source, (v) => {
-              return v[keyModel.value.split(".")[0]].find((w) => {
-                return w[keyModel.value.split(".")[1]] == val
-              })
-            });
+            this.dscmy.right.display = _.cloneDeep(this.dscmy.right.source);
+            this.dscmy.right.display = this.dscmy.right.display.filter(
+              v => {
+                var key = keyModel.value.split(".")[0];
+                
+                v[key] = v[key].filter(
+                  w => w[keyModel.value.split(".")[1]].toString().toUpperCase() == val.toString().toUpperCase()
+                )
+
+                return v[key].length > 0;
+              }
+            );
           } else {
-            this.dscmy.right.display = _.filter(this.dscmy.right.source, [keyModel.value, val]);
+            this.dscmy.right.display= _.cloneDeep(this.dscmy.right.source);
+            this.dscmy.right.display = _.filter(this.dscmy.right.source, (v) => {
+              return v[keyModel.value].toString().toUpperCase() == val.toString().toUpperCase();
+            });
           }
         }
       },

@@ -95,15 +95,15 @@ legend.col-form-label, label.col-form-label {
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="tableName">
-                      <b-form-select id="tableName" class="col-8" v-model="ddTableSelected" :options="ddTableOptions" @change="ddTableChanged"></b-form-select>
+                      <b-form-select id="tableName" class="col-8" v-model="ddTableSelected" :options="ddTableOptions"></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnName">
-                      <b-form-select id="columnName" class="col-8" v-model="ddColumnSelected" :options="ddColumnOptions" @change="ddColumnChanged"></b-form-select>
+                      <b-form-select id="columnName" class="col-8" v-model="ddColumnSelected" :options="ddColumnOptions"></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Name*" label-for="screenLabelName">
-                      <b-form-select id="columnName" class="col-8" v-model="ddScreenLabelSelected" :options="ddScreenLabelOptions" @change="ddCScreenLabelChanged"></b-form-select>
+                      <b-form-select id="columnName" class="col-8" v-model="ddScreenLabelSelected" :options="ddScreenLabelOptions"></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Description">
@@ -391,16 +391,6 @@ export default {
     }),
     handleClose () {
       this.$router.go(-1)
-    },
-    ddTableChanged () {
-      
-    },
-    ddColumnChanged () {
-      console.log(this.ddColumnSelected);
-      
-    },
-    ddCScreenLabelChanged () {
-
     },
     runGetDetails (param){
       var self = this;

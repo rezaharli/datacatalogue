@@ -81,7 +81,7 @@ table.v-table thead th > div.btn-group {
           </b-row>
 
           <b-row>
-            <b-col>
+            <b-col cols=6>
               <v-data-table
                   :headers="firstTableHeaders"
                   :items="dscinterfaces.left.display"
@@ -149,7 +149,7 @@ table.v-table thead th > div.btn-group {
               </v-data-table>
             </b-col>
             
-            <b-col class="scrollableasdf">
+            <b-col cols=6 class="scrollableasdf">
               <v-data-table
                   :headers="secondTableHeaders"
                   :items="dscinterfaces.right.display"
@@ -171,7 +171,7 @@ table.v-table thead th > div.btn-group {
                   </template>
 
                   <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ dscinterfaces.right.source[0] ? dscinterfaces.right.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0 }})
+                  {{ props.header.text }} {{ props.header.displayCount ? "(" + (dscinterfaces.right.source[0] ? dscinterfaces.right.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0) + ")" : "" }}
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -239,15 +239,15 @@ export default {
           { text: 'Bank ID', align: 'left', value: 'Custodians.BANK_ID', sortable: false }
         ],
         secondTableHeaders: [
-          { text: 'List of CDEs', align: 'left', sortable: false, value: 'LIST_OF_CDE', width: "25%" },
-          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'Values.IMM_PREC_SYSTEM_NAME', width: "25%" },
-          { text: 'SLA(Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_PREC_SYSTEM_SLA', width: "25%" },
-          { text: 'OLA(Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_PREC_SYSTEM_OLA', width: "25%" },
-          { text: 'Immediate Succeeding System', align: 'left', sortable: false, value: 'Values.IMM_SUCC_SYSTEM_NAME', width: "25%" },
-          { text: 'SLA (Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_SUCC_SYSTEM_SLA', width: "25%" },
-          { text: 'OLA (Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_SUCC_SYSTEM_OLA', width: "25%" },
-          { text: 'List of Downstream Process', align: 'left', sortable: false, value: 'Values.LIST_DOWNSTREAM_PROCESS', width: "25%" },
-          { text: 'Downstream Process Owner', align: 'left', sortable: false, value: 'Values.DOWNSTREAM_PROCESS_OWNER', width: "25%" },
+          { text: 'List of CDEs', align: 'left', sortable: false, value: 'LIST_OF_CDE', displayCount: true, width: "25%" },
+          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'Values.IMM_PREC_SYSTEM_NAME', displayCount: true, width: "25%" },
+          { text: 'SLA(Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_PREC_SYSTEM_SLA', displayCount: false, width: "25%" },
+          { text: 'OLA(Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_PREC_SYSTEM_OLA', displayCount: false, width: "25%" },
+          { text: 'Immediate Succeeding System', align: 'left', sortable: false, value: 'Values.IMM_SUCC_SYSTEM_NAME', displayCount: true, width: "25%" },
+          { text: 'SLA (Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_SUCC_SYSTEM_SLA', displayCount: false, width: "25%" },
+          { text: 'OLA (Yes/No)', align: 'left', sortable: false, value: 'Values.IMM_SUCC_SYSTEM_OLA', displayCount: false, width: "25%" },
+          { text: 'List of Downstream Process', align: 'left', sortable: false, value: 'Values.LIST_DOWNSTREAM_PROCESS', displayCount: true, width: "25%" },
+          { text: 'Downstream Process Owner', align: 'left', sortable: false, value: 'Values.DOWNSTREAM_PROCESS_OWNER', displayCount: true, width: "25%" },
         ],
       }
     },
@@ -296,24 +296,14 @@ export default {
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
               tableLevel.LIST_OF_CDE = table.LIST_OF_CDE;
-
-              if(table.Values.length > 0){
-                this._.each(table.Values, (column, j) => {
-                  var colLevel = _.cloneDeep(tableLevel);
-                  colLevel.IMM_PREC_SYSTEM_NAME = column.IMM_PREC_SYSTEM_NAME;
-                  colLevel.IMM_PREC_SYSTEM_SLA = column.IMM_PREC_SYSTEM_SLA;
-                  colLevel.IMM_PREC_SYSTEM_OLA = column.IMM_PREC_SYSTEM_OLA;
-                  colLevel.IMM_SUCC_SYSTEM_NAME = column.IMM_SUCC_SYSTEM_NAME;
-                  colLevel.IMM_SUCC_SYSTEM_SLA = column.IMM_SUCC_SYSTEM_SLA;
-                  colLevel.IMM_SUCC_SYSTEM_OLA = column.IMM_SUCC_SYSTEM_OLA;
-                  colLevel.LIST_DOWNSTREAM_PROCESS = column.LIST_DOWNSTREAM_PROCESS;
-                  colLevel.DOWNSTREAM_PROCESS_OWNER = column.DOWNSTREAM_PROCESS_OWNER;
-                  
-                  res.push(_.cloneDeep(colLevel));
-                })
-              } else {
-                res.push(_.cloneDeep(tableLevel));
-              }
+              tableLevel.IMM_PREC_SYSTEM_NAME = _.uniq(_.map(table.Values, "IMM_PREC_SYSTEM_NAME").filter(Boolean)).join(', ');
+              tableLevel.IMM_PREC_SYSTEM_SLA = _.uniq(_.map(table.Values, "IMM_PREC_SYSTEM_SLA").filter(Boolean)).join(', ');
+              tableLevel.IMM_PREC_SYSTEM_OLA = _.uniq(_.map(table.Values, "IMM_PREC_SYSTEM_OLA").filter(Boolean)).join(', ');
+              tableLevel.IMM_SUCC_SYSTEM_NAME = _.uniq(_.map(table.Values, "IMM_SUCC_SYSTEM_NAME").filter(Boolean)).join(', ');
+              tableLevel.IMM_SUCC_SYSTEM_SLA = _.uniq(_.map(table.Values, "IMM_SUCC_SYSTEM_SLA").filter(Boolean)).join(', ');
+              tableLevel.IMM_SUCC_SYSTEM_OLA = _.uniq(_.map(table.Values, "IMM_SUCC_SYSTEM_OLA").filter(Boolean)).join(', ');
+              tableLevel.LIST_DOWNSTREAM_PROCESS = _.uniq(_.map(table.Values, "LIST_DOWNSTREAM_PROCESS").filter(Boolean)).join(', ');
+              tableLevel.DOWNSTREAM_PROCESS_OWNER = _.uniq(_.map(table.Values, "DOWNSTREAM_PROCESS_OWNER").filter(Boolean)).join(', ');
 
               res.push(_.cloneDeep(tableLevel));
             })
@@ -376,28 +366,49 @@ export default {
           } else {
             this.dscinterfaces.right.display = this.dscinterfaces.right.source;
           }
+          
           return
         }
 
         if(type == "systems"){
           if(keyModel.value.split(".")[1]){
-            this.dscinterfaces.left.display = _.filter(this.dscinterfaces.left.source, (v) => {
-              return v[keyModel.value.split(".")[0]].find((w) => {
-                return w[keyModel.value.split(".")[1]] == val
-              })
-            });
+            this.dscinterfaces.left.display = _.cloneDeep(this.dscinterfaces.left.source);
+            this.dscinterfaces.left.display = this.dscinterfaces.left.display.filter(
+              v => {
+                var key = keyModel.value.split(".")[0];
+                
+                v[key] = v[key].filter(
+                  w => w[keyModel.value.split(".")[1]].toString().toUpperCase() == val.toString().toUpperCase()
+                )
+
+                return v[key].length > 0;
+              }
+            );
           } else {
-            this.dscinterfaces.left.display = _.filter(this.dscinterfaces.left.source, [keyModel.value, val]);
+            this.dscinterfaces.left.display= _.cloneDeep(this.dscinterfaces.left.source);
+            this.dscinterfaces.left.display = _.filter(this.dscinterfaces.left.source, (v) => {
+              return v[keyModel.value].toString().toUpperCase() == val.toString().toUpperCase();
+            });
           }
         } else {
           if(keyModel.value.split(".")[1]){
-            this.dscinterfaces.right.display = _.filter(this.dscinterfaces.right.source, (v) => {
-              return v[keyModel.value.split(".")[0]].find((w) => {
-                return w[keyModel.value.split(".")[1]] == val
-              })
-            });
+            this.dscinterfaces.right.display = _.cloneDeep(this.dscinterfaces.right.source);
+            this.dscinterfaces.right.display = this.dscinterfaces.right.display.filter(
+              v => {
+                var key = keyModel.value.split(".")[0];
+                
+                v[key] = v[key].filter(
+                  w => w[keyModel.value.split(".")[1]].toString().toUpperCase() == val.toString().toUpperCase()
+                )
+
+                return v[key].length > 0;
+              }
+            );
           } else {
-            this.dscinterfaces.right.display = _.filter(this.dscinterfaces.right.source, [keyModel.value, val]);
+            this.dscinterfaces.right.display= _.cloneDeep(this.dscinterfaces.right.source);
+            this.dscinterfaces.right.display = _.filter(this.dscinterfaces.right.source, (v) => {
+              return v[keyModel.value].toString().toUpperCase() == val.toString().toUpperCase();
+            });
           }
         }
       },
