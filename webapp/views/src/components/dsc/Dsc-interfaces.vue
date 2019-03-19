@@ -296,24 +296,14 @@ export default {
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
               tableLevel.LIST_OF_CDE = table.LIST_OF_CDE;
-
-              if(table.Values.length > 0){
-                this._.each(table.Values, (column, j) => {
-                  var colLevel = _.cloneDeep(tableLevel);
-                  colLevel.IMM_PREC_SYSTEM_NAME = column.IMM_PREC_SYSTEM_NAME;
-                  colLevel.IMM_PREC_SYSTEM_SLA = column.IMM_PREC_SYSTEM_SLA;
-                  colLevel.IMM_PREC_SYSTEM_OLA = column.IMM_PREC_SYSTEM_OLA;
-                  colLevel.IMM_SUCC_SYSTEM_NAME = column.IMM_SUCC_SYSTEM_NAME;
-                  colLevel.IMM_SUCC_SYSTEM_SLA = column.IMM_SUCC_SYSTEM_SLA;
-                  colLevel.IMM_SUCC_SYSTEM_OLA = column.IMM_SUCC_SYSTEM_OLA;
-                  colLevel.LIST_DOWNSTREAM_PROCESS = column.LIST_DOWNSTREAM_PROCESS;
-                  colLevel.DOWNSTREAM_PROCESS_OWNER = column.DOWNSTREAM_PROCESS_OWNER;
-                  
-                  res.push(_.cloneDeep(colLevel));
-                })
-              } else {
-                res.push(_.cloneDeep(tableLevel));
-              }
+              tableLevel.IMM_PREC_SYSTEM_NAME = _.uniq(_.map(table.Values, "IMM_PREC_SYSTEM_NAME").filter(Boolean)).join(', ');
+              tableLevel.IMM_PREC_SYSTEM_SLA = _.uniq(_.map(table.Values, "IMM_PREC_SYSTEM_SLA").filter(Boolean)).join(', ');
+              tableLevel.IMM_PREC_SYSTEM_OLA = _.uniq(_.map(table.Values, "IMM_PREC_SYSTEM_OLA").filter(Boolean)).join(', ');
+              tableLevel.IMM_SUCC_SYSTEM_NAME = _.uniq(_.map(table.Values, "IMM_SUCC_SYSTEM_NAME").filter(Boolean)).join(', ');
+              tableLevel.IMM_SUCC_SYSTEM_SLA = _.uniq(_.map(table.Values, "IMM_SUCC_SYSTEM_SLA").filter(Boolean)).join(', ');
+              tableLevel.IMM_SUCC_SYSTEM_OLA = _.uniq(_.map(table.Values, "IMM_SUCC_SYSTEM_OLA").filter(Boolean)).join(', ');
+              tableLevel.LIST_DOWNSTREAM_PROCESS = _.uniq(_.map(table.Values, "LIST_DOWNSTREAM_PROCESS").filter(Boolean)).join(', ');
+              tableLevel.DOWNSTREAM_PROCESS_OWNER = _.uniq(_.map(table.Values, "DOWNSTREAM_PROCESS_OWNER").filter(Boolean)).join(', ');
 
               res.push(_.cloneDeep(tableLevel));
             })
