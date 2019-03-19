@@ -396,8 +396,9 @@ export default {
               }
             );
           } else {
-            this.dscall.left.display = _.filter(this.dscall.left.source, (v) => {
-              return v[keymodel.value].toString().toUpperCase() == val.toString().toUpperCase();
+            this.dscall.left.display = _.cloneDeep(this.dscall.left.source);
+            this.dscall.left.display = _.filter(this.dscall.left.display, (v) => {
+              return v[keyModel.value].toString().toUpperCase() == val.toString().toUpperCase();
             });
           }
         } else {
@@ -415,8 +416,9 @@ export default {
               }
             );
           } else {
-            this.dscall.right.display = _.filter(this.dscall.right.source, (v) => {
-              return v[keymodel.value].toString().toUpperCase() == val.toString().toUpperCase();
+            this.dscall.right.display = _.cloneDeep(this.dscall.right.source);
+            this.dscall.right.display = _.filter(this.dscall.right.display, (v) => {
+              return v[keyModel.value].toString().toUpperCase() == val.toString().toUpperCase();
             });
           }
         }
