@@ -331,6 +331,16 @@ func (s *DSCService) CreateSubCategoryDummyData() error {
 		data = append(data, mdt)
 	}
 
+	for i := 0; i < 10000; i++ {
+		mdt := m.NewSubCategoryModel()
+		mdt.ID = i + 10000
+		mdt.Name = fake.Words()
+		mdt.Type = "Sub Data Domain"
+		mdt.Category_ID = toolkit.ToInt(fake.DigitsN(3), "")
+
+		data = append(data, mdt)
+	}
+
 	err = h.NewDBcmd().Insert(h.InsertParam{
 		TableName:       m.NewSubCategoryModel().TableName(),
 		Data:            data,
@@ -712,6 +722,16 @@ func (s *DSCService) CreateLinkRolePeopleDummyData() error {
 		mdt.ID = i + 10000
 		mdt.People_ID = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.Object_Type = "PROCESSES"
+		mdt.Object_ID = toolkit.ToInt(fake.DigitsN(3), "")
+
+		data = append(data, mdt)
+	}
+
+	for i := 0; i < 10000; i++ {
+		mdt := m.NewLinkRolePeopleModel()
+		mdt.ID = i + 10000 + 10000
+		mdt.People_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Object_Type = "SUBCATEGORY"
 		mdt.Object_ID = toolkit.ToInt(fake.DigitsN(3), "")
 
 		data = append(data, mdt)

@@ -29,27 +29,28 @@ table.v-table thead th > div.btn-group {
           <b-row>
             <b-col>
               <div class="input-group mb-3">
-                <input v-model="ddomy.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <input v-model="ddoall.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
+
                 <div class="input-group-append">
-                  <b-dropdown right id="ddown1" text="">
+                  <b-dropdown right id="ddown1" text="" ref="ddownSearch">
                     <b-container>
                       <b-form-row class="main-table-search-dropdown-form">
                         <b-col>
                           <b-form @submit="onSubmit" @reset="onReset">
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Domain" label-for="dataDomain">
-                              <b-form-input id="dataDomain" type="text" v-model="searchForm.dataDomain"></b-form-input>
+                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Domain" label-for="DataDomain">
+                              <b-form-input id="DataDomain" type="text" v-model="ddoall.searchDropdown.DataDomain"></b-form-input>
                             </b-form-group>
 
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Data Domain" label-for="subDataDomain">
-                              <b-form-input id="subDataDomain" type="text" v-model="searchForm.subDataDomain"></b-form-input>
+                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Data Domain" label-for="SubDataDomain">
+                              <b-form-input id="SubDataDomain" type="text" v-model="ddoall.searchDropdown.SubDataDomain"></b-form-input>
                             </b-form-group>
 
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Data Domain Owner" label-for="subDataDomainOwner">
-                              <b-form-input id="subDataDomainOwner" type="text" v-model="searchForm.subDataDomainOwner"></b-form-input>
+                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Data Domain Owner" label-for="SubDataDomainOwner">
+                              <b-form-input id="SubDataDomainOwner" type="text" v-model="ddoall.searchDropdown.SubDataDomainOwner"></b-form-input>
                             </b-form-group>
 
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term" label-for="businessTerm">
-                              <b-form-select id="businessTerm" :options="tablenameMaster" v-model="searchForm.businessTerm"></b-form-select>
+                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term" label-for="BusinessTerm">
+                              <b-form-select id="BusinessTerm" :options="businessTermMaster" v-model="ddoall.searchDropdown.BusinessTerm"></b-form-select>
                             </b-form-group>
 
                             <b-button-group class="mx-1 float-right">
@@ -83,14 +84,15 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <v-data-table
                   :headers="firstTableHeaders"
-                  :items="ddomy.left.display"
-                  :pagination.sync="ddomy.left.pagination"
-                  :total-items="ddomy.left.totalItems"
-                  :loading="ddomy.left.loading"
+                  :items="ddoall.left.display"
+                  :pagination.sync="ddoall.left.pagination"
+                  :total-items="ddoall.left.totalItems"
+                  :loading="ddoall.left.loading"
+                  item-key="ID"
                   class="elevation-1 fixed-header">
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, ddomy.left.source).length }})
+                  {{ props.header.text }} ({{ ddoall.left.source[0] ? ddoall.left.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0 }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -102,7 +104,7 @@ table.v-table thead th > div.btn-group {
                       <b-form-input type="text" placeholder="Filter" v-model="search['systems'][props.header.value]" @change="filterKeyup('systems', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, ddomy.left.source)" :key="item" @click="columnFilter('systems', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, ddoall.left.source)" :key="item" @click="columnFilter('systems', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -111,46 +113,48 @@ table.v-table thead th > div.btn-group {
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
                 <template slot="no-data">
-                  <v-alert :value="ddomy.left.loading" type="info">
+                  <v-alert :value="ddoall.left.loading" type="info">
                     Please wait while data is loading
                   </v-alert>
 
-                  <v-alert :value="!ddomy.left.loading" type="error">
+                  <v-alert :value="!ddoall.left.loading" type="error">
                     Sorry, nothing to display here
                   </v-alert>
                 </template>
 
                 <template slot="items" slot-scope="props">
-                    <td><b-link :to="{ path: addressPath + '/' + props.item.ID }">{{ props.item.DOMAIN }}</b-link></td>
-                    <td>{{ props.item.SUB_DOMAIN }}</td>
+                  <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.DATA_DOMAIN" :isklik="false"></tablecell></b-link></td>
+                  <td><tablecell :fulltext="props.item.SUB_DOMAINS" :isklik="true"></tablecell></td>
+                  <td><tablecell :fulltext="props.item.SUB_DOMAIN_OWNER" :isklik="true"></tablecell></td>
+                  <td><tablecell :fulltext="props.item.BANK_ID" :isklik="true"></tablecell></td>
                 </template>
               </v-data-table>
             </b-col>
             
-            <b-col>
+            <b-col class="scrollableasdf">
               <v-data-table
                   :headers="secondTableHeaders"
-                  :items="ddomy.right.display"
-                  :pagination.sync="ddomy.right.pagination"
-                  :total-items="ddomy.right.totalItems"
-                  :loading="ddomy.right.loading"
+                  :items="ddoall.right.display"
+                  :pagination.sync="ddoall.right.pagination"
+                  :total-items="ddoall.right.totalItems"
+                  :loading="ddoall.right.loading"
                   v-if="secondtable"
                   item-key="ID"
                   class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
                 <template slot="no-data">
-                  <v-alert :value="ddomy.right.loading" type="info">
+                  <v-alert :value="ddoall.right.loading" type="info">
                     Please wait while data is loading
                   </v-alert>
 
-                  <v-alert :value="!ddomy.right.loading" type="error">
+                  <v-alert :value="!ddoall.right.loading" type="error">
                     Sorry, nothing to display here
                   </v-alert>
                 </template>
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, ddomy.right.source).length }})
+                  {{ props.header.text }} {{ props.header.displayCount ? "(" + (ddoall.right.source[0] ? ddoall.right.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0) + ")" : "" }}
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -162,7 +166,7 @@ table.v-table thead th > div.btn-group {
                       <b-form-input type="text" placeholder="Filter" v-model="search['tablename'][props.header.value]" @change="filterKeyup('tablename', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, ddomy.right.source)" :key="item" @click="columnFilter('tablename', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, ddoall.right.source)" :key="item" @click="columnFilter('tablename', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -170,9 +174,9 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                   <tr>
-                    <td><b-link @click="showDetails(props.item.ID)">{{ props.item.BT_NAME }}</b-link></td>
-                    <td>{{ props.item.DESCRIPTION }}</td>
-                    <td>{{ props.item.CDE }}</td>
+                    <td><b-link @click="showDetails(props.item)"><tablecell :fulltext="props.item.BUSINESS_TERM" :isklik="false"></tablecell></b-link></td>
+                    <td><tablecell :fulltext="props.item.BUSINESS_TERM_DESCRIPTION" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="props.item.CDE_YES_NO" :isklik="true"></tablecell></td>
                   </tr>
                 </template>
               </v-data-table>
@@ -188,10 +192,14 @@ table.v-table thead th > div.btn-group {
 import Vue from 'vue'
 import { mapState, mapActions } from 'vuex'
 import JsonExcel from 'vue-json-excel'
+import tablecell from '../Tablecell.vue'
  
 Vue.component('downloadExcel', JsonExcel)
 
 export default {
+    components: {
+      tablecell
+    },
     data () {
       return {
         search: {
@@ -201,36 +209,29 @@ export default {
         secondtable: false,
         systemSource: [],
         tablenameSource: [],
-        searchForm: {
-          dataDomain: '',
-          subDataDomain: '',
-          subDataDomainOwner: '',
-          businessTerm: ''
-        },
         firstTableHeaders: [
-          { text: 'Data Domain', align: 'left', value: 'DOMAIN', sortable: false },
-          { text: 'Sub Domains', align: 'left', value: 'SUB_DOMAIN', sortable: false },
+          { text: 'Data Domain', align: 'left', value: 'DATA_DOMAIN', sortable: false },
+          { text: 'Sub Domains', align: 'left', value: 'SUB_DOMAINS', sortable: false },
+          { text: 'Sub Domain Owner', align: 'left', value: 'SUB_DOMAIN_OWNER', sortable: false },
+          { text: 'Bank ID', align: 'left', value: 'BANK_ID', sortable: false },
         ],
         secondTableHeaders: [
-          { text: 'Business Term', align: 'left', sortable: false, value: 'BT_NAME', width: "25%" },
-          { text: 'Business Term Description', align: 'left', sortable: false, value: 'DESCRIPTION', width: "25%" },
-          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'CDE', width: "25%" },
+          { text: 'Business Term', align: 'left', sortable: false, value: 'BUSINESS_TERM', displayCount: true, width: "25%" },
+          { text: 'Business Term Description', align: 'left', sortable: false, value: 'BUSINESS_TERM_DESCRIPTION', displayCount: true, width: "25%" },
+          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'CDE_YES_NO', displayCount: true, width: "25%" },
         ],
       }
     },
     computed: {
       ...mapState({
-        ddomy: state => state.ddomy.all
+        ddoall: state => state.ddoall.all
       }),
       addressPath (){
         var tmp = this.$route.path.split("/")
         return tmp.slice(0, 3).join("/")
       },
-      tablenameMaster (){
-        return this._.map(this.ddomy.right.source, 'BT_NAME')
-      },
-      columnNameMaster (){
-        return this._.map(this._.flattenDeep(this._.map(this.ddomy.right.source, 'Columns')), 'Name')
+      businessTermMaster (){
+        return this._.map(this.ddoall.right.source, 'BUSINESS_TERM')
       },
       excelFields (){
         var ret = {}
@@ -250,19 +251,21 @@ export default {
       excelData () {
         var res = [];
 
-        this._.each(this.ddomy.left.display, (system, i) => {
+        this._.each(this.ddoall.left.display, (system, i) => {
           var temp = {
-            DOMAIN: system.DOMAIN,
-            SUB_DOMAIN: system.SUB_DOMAIN,
+            DATA_DOMAIN: system.DATA_DOMAIN,
+            SUB_DOMAINS: system.SUB_DOMAINS,
+            SUB_DOMAIN_OWNER: system.SUB_DOMAIN_OWNER,
+            BANK_ID: system.BANK_ID,
           }
           
-          var tables = this._.filter(this.ddomy.right.display, (v) => v.TSCID == system.ID)
+          var tables = this._.filter(this.ddoall.right.display, (v) => v.TSCID == system.ID)
           if(tables.length > 0){
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
-              tableLevel.BT_NAME = table.BT_NAME;
-              tableLevel.DESCRIPTION = table.DESCRIPTION;
-              tableLevel.CDE = table.CDE;
+              tableLevel.BUSINESS_TERM = table.BUSINESS_TERM;
+              tableLevel.BUSINESS_TERM_DESCRIPTION = table.BUSINESS_TERM_DESCRIPTION;
+              tableLevel.CDE_YES_NO = table.CDE_YES_NO;
 
               res.push(_.cloneDeep(tableLevel));
             })
@@ -286,13 +289,13 @@ export default {
           this.getRightTable(this.$route.params.system);
         }
       },
-      "ddomy.left.pagination": {
+      "ddoall.left.pagination": {
         handler () {
           this.getLeftTable();
         },
         deep: true
       },
-      "ddomy.right.pagination": {
+      "ddoall.right.pagination": {
         handler () {
           if(this.secondtable){
             this.getRightTable(this.$route.params.system);
@@ -300,7 +303,7 @@ export default {
         },
         deep: true
       },
-      "ddomy.searchMain" (val, oldVal){
+      "ddoall.searchMain" (val, oldVal){
         if(val || oldVal) {
           this.getLeftTable();
 
@@ -314,24 +317,61 @@ export default {
       this.secondtable = this.$route.params.system;
     },
     methods: {
-      ...mapActions('ddomy', {
+      ...mapActions('ddoall', {
           getLeftTable: 'getLeftTable',
           getRightTable: 'getRightTable',
       }),
       columnFilter (type, keyModel, val) {
         if(val == ""){
           if(type == "systems"){
-            this.ddomy.left.display = this.ddomy.left.source;
+            this.ddoall.left.display = this.ddoall.left.source;
           } else {
-            this.ddomy.right.display = this.ddomy.right.source;
+            this.ddoall.right.display = this.ddoall.right.source;
           }
+          
           return
         }
 
         if(type == "systems"){
-          this.ddomy.left.display = _.filter(this.ddomy.left.source, [keyModel.value, val]);
+          if(keyModel.value.split(".")[1]){
+            this.ddoall.left.display = _.cloneDeep(this.ddoall.left.source);
+            this.ddoall.left.display = this.ddoall.left.display.filter(
+              v => {
+                var key = keyModel.value.split(".")[0];
+                
+                v[key] = v[key].filter(
+                  w => w[keyModel.value.split(".")[1]].toString().toUpperCase() == val.toString().toUpperCase()
+                )
+
+                return v[key].length > 0;
+              }
+            );
+          } else {
+            this.ddoall.left.display = _.cloneDeep(this.ddoall.left.source);
+            this.ddoall.left.display = _.filter(this.ddoall.left.display, (v) => {
+              return v[keyModel.value].toString().toUpperCase() == val.toString().toUpperCase();
+            });
+          }
         } else {
-          this.ddomy.right.display = _.filter(this.ddomy.right.source, [keyModel.value, val]);
+          if(keyModel.value.split(".")[1]){
+            this.ddoall.right.display = _.cloneDeep(this.ddoall.right.source);
+            this.ddoall.right.display = this.ddoall.right.display.filter(
+              v => {
+                var key = keyModel.value.split(".")[0];
+                
+                v[key] = v[key].filter(
+                  w => w[keyModel.value.split(".")[1]].toString().toUpperCase() == val.toString().toUpperCase()
+                )
+
+                return v[key].length > 0;
+              }
+            );
+          } else {
+            this.ddoall.right.display = _.cloneDeep(this.ddoall.right.source);
+            this.ddoall.right.display = _.filter(this.ddoall.right.display, (v) => {
+              return v[keyModel.value].toString().toUpperCase() == val.toString().toUpperCase();
+            });
+          }
         }
       },
       filterKeyup (type, keyModel) {
@@ -358,25 +398,16 @@ export default {
         this.secondtable = true;
       },
       onSubmit (evt) {
-        evt.preventDefault();
+        if(evt) evt.preventDefault();
 
-        this.ddomy.left.display = this.ddomy.left.source;
-        this.ddomy.right.display = this.ddomy.right.source;
-        if(this.searchForm.dataDomain)
-          this.ddomy.left.display = this._.filter(this.ddomy.left.display, (val) => val.DOMAIN.toString().toUpperCase().indexOf(this.searchForm.dataDomain.toString().toUpperCase()) != -1);
-        if(this.searchForm.subDataDomain)
-          this.ddomy.left.display = this._.filter(this.ddomy.left.display, (val) => val.SUB_DOMAIN.toString().toUpperCase().indexOf(this.searchForm.subDataDomain.toString().toUpperCase()) != -1);
+        this.getLeftTable();
 
-        if(this.searchForm.businessTerm)
-          this.ddomy.right.display = this._.filter(this.ddomy.right.display, (val) => val.BT_NAME.toString().toUpperCase().indexOf(this.searchForm.businessTerm.toString().toUpperCase()) != -1);
-        // if(this.searchForm.businessTerm) {
-        //   this._.each(this.ddomy.right.display, (v, i) => {
-        //     this.ddomy.right.display[i].Columns = this._.filter(this.ddomy.right.display[i].Columns, (w) => w.Name.indexOf(this.searchForm.businessTerm) != -1);
-        //     this.ddomy.right.display = this._.filter(this.ddomy.right.display, (w) => w.Columns.length > 0)
-        //   });
-        // }
+        if(this.secondtable){
+          this.getRightTable(this.$route.params.system);
+        }
 
-        this.searchForm.show = false;
+        this.$refs.ddownSearch.hide(true);
+        // this.ddoall.searchDropdown.show = false;
       },
       onReset (evt) {
         evt.preventDefault();
@@ -386,12 +417,14 @@ export default {
         this.searchForm.subDataDomainOwner = '';
         this.searchForm.businessTerm = '';
 
+        this.onSubmit();
+
         // /* Trick to reset/clear native browser form validation state */
         // this.searchForm.show = false;
         // this.$nextTick(() => { this.searchForm.show = true });
       },
-      showDetails (id) {
-        this.$router.push(this.addressPath + "/" + this.$route.params.system + '/' + id)
+      showDetails (param) {
+        this.$router.push(this.addressPath + "/" + param.TSCID + '/' + param.ID)
       }
     }
 }

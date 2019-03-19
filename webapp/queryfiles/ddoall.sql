@@ -11,8 +11,7 @@ SELECT DISTINCT
         inner JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = tsc.id and tlrp.Object_type = 'SUBCATEGORY' and tsc.type = 'Sub Data Domain'
         inner JOIN Tbl_Role rl ON tlrp.role_id = rl.id and rl.role_name = 'Data Domain Owner'
         inner JOIN tbl_people tp ON tlrp.people_id = tp.id
-    WHERE tp.bank_id = '?'
-        AND upper(tc.name) LIKE upper('%?%')
+    WHERE upper(tc.name) LIKE upper('%?%')
         AND upper(tsc.name) LIKE upper('%?%')
         AND upper(tp.first_name||' '||tp.last_name) LIKE upper('%?%')
 

@@ -11,7 +11,16 @@ function getLeftTable(param) {
 }
 
 function getRightTable(param) {
-    return fetchWHeader(`/ddo/getrighttable`, param)
+    return fetchWHeader(`/ddo/getrighttable`, param).then(
+        res => {
+            res.Data = _.map(res.Data, function(v){
+                v.CDE_YES_NO = v.CDE_YES_NO == 0 ? "No" : "Yes";
+                return v;
+            });
+
+            return res;
+        }
+    )
 }
 
 function getDetails(param) {

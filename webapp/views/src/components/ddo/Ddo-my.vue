@@ -125,6 +125,8 @@ table.v-table thead th > div.btn-group {
                 <template slot="items" slot-scope="props">
                   <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.DATA_DOMAIN" :isklik="false"></tablecell></b-link></td>
                   <td><tablecell :fulltext="props.item.SUB_DOMAINS" :isklik="true"></tablecell></td>
+                  <td><tablecell :fulltext="props.item.SUB_DOMAIN_OWNER" :isklik="true"></tablecell></td>
+                  <td><tablecell :fulltext="props.item.BANK_ID" :isklik="true"></tablecell></td>
                 </template>
               </v-data-table>
             </b-col>
@@ -173,8 +175,8 @@ table.v-table thead th > div.btn-group {
                 <template slot="items" slot-scope="props">
                   <tr>
                     <td><b-link @click="showDetails(props.item)"><tablecell :fulltext="props.item.BUSINESS_TERM" :isklik="false"></tablecell></b-link></td>
-                    <td>{{ props.item.BUSINESS_TERM_DESCRIPTION }}</td>
-                    <td>{{ props.item.CDE_YES_NO }}</td>
+                    <td><tablecell :fulltext="props.item.BUSINESS_TERM_DESCRIPTION" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="props.item.CDE_YES_NO" :isklik="true"></tablecell></td>
                   </tr>
                 </template>
               </v-data-table>
@@ -210,11 +212,13 @@ export default {
         firstTableHeaders: [
           { text: 'Data Domain', align: 'left', value: 'DATA_DOMAIN', sortable: false },
           { text: 'Sub Domains', align: 'left', value: 'SUB_DOMAINS', sortable: false },
+          { text: 'Sub Domain Owner', align: 'left', value: 'SUB_DOMAIN_OWNER', sortable: false },
+          { text: 'Bank ID', align: 'left', value: 'BANK_ID', sortable: false },
         ],
         secondTableHeaders: [
-          { text: 'Business Term', align: 'left', sortable: false, value: 'BUSINESS_TERM', width: "25%" },
-          { text: 'Business Term Description', align: 'left', sortable: false, value: 'BUSINESS_TERM_DESCRIPTION', width: "25%" },
-          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'CDE_YES_NO', width: "25%" },
+          { text: 'Business Term', align: 'left', sortable: false, value: 'BUSINESS_TERM', displayCount: true, width: "25%" },
+          { text: 'Business Term Description', align: 'left', sortable: false, value: 'BUSINESS_TERM_DESCRIPTION', displayCount: true, width: "25%" },
+          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'CDE_YES_NO', displayCount: true, width: "25%" },
         ],
       }
     },
@@ -227,7 +231,7 @@ export default {
         return tmp.slice(0, 3).join("/")
       },
       businessTermMaster (){
-        return this._.map(this._.flattenDeep(this._.map(this.ddomy.right.source, 'Columns')), 'Name')
+        return this._.map(this.ddomy.right.source, 'BUSINESS_TERM')
       },
       excelFields (){
         var ret = {}
@@ -251,6 +255,8 @@ export default {
           var temp = {
             DATA_DOMAIN: system.DATA_DOMAIN,
             SUB_DOMAINS: system.SUB_DOMAINS,
+            SUB_DOMAIN_OWNER: system.SUB_DOMAIN_OWNER,
+            BANK_ID: system.BANK_ID,
           }
           
           var tables = this._.filter(this.ddomy.right.display, (v) => v.TSCID == system.ID)
@@ -322,28 +328,49 @@ export default {
           } else {
             this.ddomy.right.display = this.ddomy.right.source;
           }
+          
           return
         }
 
         if(type == "systems"){
           if(keyModel.value.split(".")[1]){
-            this.ddomy.left.display = _.filter(this.ddomy.left.source, (v) => {
-              return v[keyModel.value.split(".")[0]].find((w) => {
-                return w[keyModel.value.split(".")[1]] == val
-              })
-            });
+            this.ddomy.left.display = _.cloneDeep(this.ddomy.left.source);
+            this.ddomy.left.display = this.ddomy.left.display.filter(
+              v => {
+                var key = keyModel.value.split(".")[0];
+                
+                v[key] = v[key].filter(
+                  w => w[keyModel.value.split(".")[1]].toString().toUpperCase() == val.toString().toUpperCase()
+                )
+
+                return v[key].length > 0;
+              }
+            );
           } else {
-            this.ddomy.left.display = _.filter(this.ddomy.left.source, [keyModel.value, val]);
+            this.ddomy.left.display = _.cloneDeep(this.ddomy.left.source);
+            this.ddomy.left.display = _.filter(this.ddomy.left.display, (v) => {
+              return v[keyModel.value].toString().toUpperCase() == val.toString().toUpperCase();
+            });
           }
         } else {
           if(keyModel.value.split(".")[1]){
-            this.ddomy.right.display = _.filter(this.ddomy.right.source, (v) => {
-              return v[keyModel.value.split(".")[0]].find((w) => {
-                return w[keyModel.value.split(".")[1]] == val
-              })
-            });
+            this.ddomy.right.display = _.cloneDeep(this.ddomy.right.source);
+            this.ddomy.right.display = this.ddomy.right.display.filter(
+              v => {
+                var key = keyModel.value.split(".")[0];
+                
+                v[key] = v[key].filter(
+                  w => w[keyModel.value.split(".")[1]].toString().toUpperCase() == val.toString().toUpperCase()
+                )
+
+                return v[key].length > 0;
+              }
+            );
           } else {
-            this.ddomy.right.display = _.filter(this.ddomy.right.source, [keyModel.value, val]);
+            this.ddomy.right.display = _.cloneDeep(this.ddomy.right.source);
+            this.ddomy.right.display = _.filter(this.ddomy.right.display, (v) => {
+              return v[keyModel.value].toString().toUpperCase() == val.toString().toUpperCase();
+            });
           }
         }
       },

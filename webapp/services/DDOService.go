@@ -36,9 +36,9 @@ func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD inte
 	}
 
 	if search != "" {
-		args = append(args, search, searchDDM.GetString("SubDataDomain"))
+		args = append(args, search, searchDDM.GetString("SubDataDomain"), searchDDM.GetString("SubDataDomainOwner"))
 	} else {
-		args = append(args, searchDDM.GetString("DataDomain"), searchDDM.GetString("SubDataDomain"))
+		args = append(args, searchDDM.GetString("DataDomain"), searchDDM.GetString("SubDataDomain"), searchDDM.GetString("SubDataDomainOwner"))
 	}
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
@@ -49,7 +49,9 @@ func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD inte
 
 	q = `SELECT res.*, 
 			COUNT(DISTINCT data_domain) OVER () COUNT_data_domain,
-			COUNT(DISTINCT sub_domains) OVER () COUNT_sub_domains
+			COUNT(DISTINCT sub_domains) OVER () COUNT_sub_domains,
+			COUNT(DISTINCT sub_domain_owner) OVER () COUNT_sub_domain_owner,
+			COUNT(DISTINCT bank_id) OVER () COUNT_bank_id
 		FROM ( ` + q + `) res `
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
@@ -81,7 +83,6 @@ func (s *DDOService) GetRightTable(tabs string, systemID int, search string, sea
 	args := make([]interface{}, 0)
 
 	args = append(args, toolkit.ToString(systemID))
-	args = append(args, searchDDM.GetString("SubDataDomainOwner"))
 	args = append(args, searchDDM.GetString("BusinessTerm"))
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
