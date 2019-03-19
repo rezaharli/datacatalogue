@@ -80,7 +80,7 @@ table.v-table thead th > div.btn-group {
           </b-row>
 
           <b-row>
-            <b-col>
+            <b-col cols="6">
               <v-data-table
                   :headers="firstTableHeaders"
                   :items="dscmy.left.display"
@@ -130,7 +130,7 @@ table.v-table thead th > div.btn-group {
               </v-data-table>
             </b-col>
             
-            <b-col class="scrollableasdf">
+            <b-col cols="6">
               <v-data-table
                   :headers="secondTableHeaders"
                   :items="dscmy.right.display"
