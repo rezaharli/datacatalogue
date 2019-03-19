@@ -1,11 +1,11 @@
 <style>
-.left-card-media {
+.left-card-media{
   margin-bottom: 10px;
 }
-.left-card-title {
+.left-card-title{
   font-weight: bolder;
 }
-.card-title {
+.card-title{
   font-weight: bolder;
   border-bottom: 1px solid #cecece;
   padding-bottom: 9px;
@@ -13,8 +13,8 @@
 .form-group {
   margin-bottom: 10px !important;
 }
-legend.col-form-label, label.col-form-labell {
-  font-weight: bolder;
+legend.col-form-label, label.col-form-label {
+    font-weight: bolder;
 }
 </style>
 
@@ -350,16 +350,11 @@ export default {
   },
   data() {
     return {
-      dialog: false,
+      firstload: true,
       showModal: this.$route.meta.showModal,
       selectedDetails: null,
-      selectedColumn: null,
-      ddTable: {
-        selected: null
-      },
-      ddColumn: {
-        selected: null
-      },
+      ddTableSelected: null,
+      ddColumnSelected: null,
       excelFields: {
         "Data Domain": "selectedDetails.DATA_DOMAIN",
         "Sub Domain": "selectedDetails.SUB_DOMAIN",
@@ -404,13 +399,14 @@ export default {
     ...mapState({
       ddomy: state => state.ddomy.all
     }),
-    exportDatas() {
-      if (this.selectedDetails) {
-        return [
-          {
-            selectedDetails: this.selectedDetails,
-          }
-        ];
+    ddTableOptions () {
+      return _.uniq(_.map(this.ddomy.DDSource, "TABLE_NAME"))
+    },
+    exportDatas () {
+      if(this.selectedDetails){
+        return [{
+          selectedDetails: this.selectedDetails,
+        }]
       } else {
         return [];
       }
@@ -420,21 +416,41 @@ export default {
     "$route.meta"({ showModal }) {
       this.showModal = showModal;
     },
-    "ddomy.detailsSource"() {
-      if (this.ddomy.detailsSource.length > 0)
-        this.selectedDetails = this.ddomy.detailsSource[0];
-      else 
-        this.selectedDetails = null;
+    ddTableSelected () {
+      if( ! this.ddColumnSelected)
+        this.ddColumnSelected = this.ddColumnOptions[0];
+      else {
+        if(this.ddColumnOptions.indexOf(this.ddColumnSelected) == -1)
+          this.ddColumnSelected = this.ddColumnOptions[0];
+      }
     },
+    ddColumnSelected () {
+      if( ! this.ddScreenLabelSelected)
+        this.ddScreenLabelSelected = this.ddScreenLabelOptions[0];
+      else {
+        if(this.ddScreenLabelOptions.indexOf(this.ddScreenLabelSelected) == -1)
+          this.ddScreenLabelSelected = this.ddScreenLabelOptions[0];
+      }
+    },
+    ddScreenLabelSelected (){
+      if( ! this.firstload){
+        var param = {
+          ScreenLabel: this.ddScreenLabelSelected.toString(),
+          ColumnName: this.ddColumnSelected.toString(),
+          TableName: this.ddTableSelected.toString(),
+        };
+
+        this.runGetDetails(param);
+      }
+
+      this.firstload = false;
+    }
   },
   mounted() {
     this.$refs.modalDetails.show();
 
-    var param = {
-      left: parseInt(this.$route.params.system),
-      right: parseInt(this.$route.params.details)
-    };
-    this.getDetails(param);
+    var param = {};
+    this.runGetDetails(param)
   },
   methods: {
     ...mapActions("ddomy", {
@@ -442,6 +458,42 @@ export default {
     }),
     handleClose() {
       this.$router.go(-1);
+    },
+    runGetDetails(param){
+      var self = this;
+
+      param.Which = self.$route.name;
+      param.Left = parseInt(self.$route.params.system).toString();
+      param.Right = parseInt(self.$route.params.details).toString();
+
+      self.getDetails(param).then(
+        res => {
+          if (self.ddomy.detailsSource.length > 0){
+            // self.selectedDetails = self.ddomy.detailsSource[0];
+            var tmp = self.ddomy.detailsSource[0].Values[0];
+
+            self.selectedDetails = {}
+            _.each(Object.keys(tmp), function(v, i){
+                self.selectedDetails[v] = _.uniq(
+                  _.map(self.ddomy.detailsSource[0].Values, (val) => val[v].toString().trim()).filter(Boolean)).join(', ');
+            });
+
+            // make falsy NA
+            Object.keys(self.selectedDetails).forEach((val) => {
+              self.selectedDetails[val] = !!self.selectedDetails[val].trim() ? self.selectedDetails[val] : "NA";
+            });
+            
+            setTimeout(() => {
+              self.ddTableSelected = self.selectedDetails.TABLE_NAME;
+              self.ddColumnSelected = self.selectedDetails.COLUMN_NAME;
+              self.ddScreenLabelSelected = self.selectedDetails.BUSINESS_ALIAS_NAME;
+            }, 100);
+          } else {
+            this.selectedDetails = null;
+          }
+        },
+        err => err
+      );
     }
   }
 };

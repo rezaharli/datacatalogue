@@ -3,9 +3,17 @@ import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
     all: {
+        tabs: "ddomy",
         searchMain: '',
+        searchDropdown: {
+            DataDomain: '',
+            SubDataDomain: '',
+            SubDataDomainOwner: '',
+            BusinessTerm: '',
+        },
         left: newTableObject(),
         right: newTableObject(),
+        DDSource: [],
         detailsLoading: true,
         detailsSource: [],
         error: null
@@ -16,8 +24,13 @@ const actions = {
     getLeftTable({ commit }) {
         commit('getLeftTableRequest');
 
+        var user = JSON.parse(localStorage.getItem("user"));
+
         var param = {
-            Search: state.all.searchMain,
+            Tabs: state.all.tabs,
+            LoggedInID: user.Username.toString(),
+            Search: state.all.searchMain.toString(),
+            SearchDD: state.all.searchDropdown,
             Pagination: state.all.left.pagination
         }
 
@@ -31,8 +44,10 @@ const actions = {
         commit('getRightTableRequest');
 
         var param = {
+            Tabs: state.all.tabs,
             SystemID: systemID,
             Search: state.all.searchMain,
+            SearchDD: state.all.searchDropdown,
             Pagination: state.all.right.pagination
         }
 
@@ -45,9 +60,13 @@ const actions = {
     getDetails({ commit }, param) {
         commit('getDetailsRequest');
 
-        ddoMyService.getDetails(param)
+        return ddoMyService.getDetails(param)
             .then(
-                res => commit('getDetailsSuccess', res.Data),
+                res => {
+                    commit('getDetailsSuccess', res.Data)
+
+                    return res;
+                },
                 error => commit('getDetailsFailure', error)
             );
     },
@@ -86,8 +105,8 @@ const mutations = {
         state.all.detailsLoading = true;
     },
     getDetailsSuccess(state, data) {
-        state.all.detailsSource = data;
-
+        state.all.detailsSource = data.Detail;
+        state.all.DDSource = data.DDSource;
         state.all.detailsLoading = false;
     },
     getDetailsFailure(state, error) {

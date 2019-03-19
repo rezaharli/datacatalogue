@@ -26,7 +26,10 @@ func (c *DDO) GetLeftTable(k *knot.WebContext) {
 		return
 	}
 
+	tabs := payload.GetString("Tabs")
+	loggedinId := payload.GetString("LoggedInID")
 	search := payload.GetString("Search")
+	searchDD := payload.Get("SearchDD")
 	pagination, err := toolkit.ToM(payload.Get("Pagination"))
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
@@ -36,7 +39,7 @@ func (c *DDO) GetLeftTable(k *knot.WebContext) {
 	pageNumber := pagination.GetInt("page")
 	rowsPerPage := pagination.GetInt("rowsPerPage")
 
-	systems, _, err := s.NewDDOService().GetLeftTable(search, pageNumber, rowsPerPage, toolkit.M{})
+	systems, _, err := s.NewDDOService().GetLeftTable(tabs, loggedinId, search, searchDD, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -55,7 +58,9 @@ func (c *DDO) GetRightTable(k *knot.WebContext) {
 		return
 	}
 
+	tabs := payload.GetString("Tabs")
 	search := payload.GetString("Search")
+	searchDD := payload.Get("SearchDD")
 	systemID := payload.GetInt("SystemID")
 	pagination, err := toolkit.ToM(payload.Get("Pagination"))
 	if err != nil {
@@ -66,7 +71,7 @@ func (c *DDO) GetRightTable(k *knot.WebContext) {
 	pageNumber := pagination.GetInt("page")
 	rowsPerPage := pagination.GetInt("rowsPerPage")
 
-	systems, _, err := s.NewDDOService().GetRightTable(systemID, search, pageNumber, rowsPerPage, toolkit.M{})
+	systems, _, err := s.NewDDOService().GetRightTable(tabs, systemID, search, searchDD, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -85,11 +90,14 @@ func (c *DDO) GetDetails(k *knot.WebContext) {
 		return
 	}
 
-	systems, _, err := s.NewDDOService().GetDetails(payload.GetInt("LeftParam"), payload.GetInt("RightParam"))
+	detail, _, err := s.NewDDOService().GetDetails(payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
-	h.WriteResultOK(k, res, systems)
+	data := toolkit.M{}
+	data.Set("Detail", detail)
+
+	h.WriteResultOK(k, res, data)
 }
