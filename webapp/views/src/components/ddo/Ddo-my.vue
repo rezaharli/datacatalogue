@@ -123,8 +123,8 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                  <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.DATA_DOMAIN" :isklik="false"></tablecell></b-link></td>
-                  <td><tablecell :fulltext="props.item.SUB_DOMAINS" :isklik="true"></tablecell></td>
+                  <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.SUB_DOMAINS" :isklik="false"></tablecell></b-link></td>
+                  <td><tablecell :fulltext="props.item.DATA_DOMAIN" :isklik="false"></tablecell></td>
                   <td><tablecell :fulltext="props.item.SUB_DOMAIN_OWNER" :isklik="true"></tablecell></td>
                   <td><tablecell :fulltext="props.item.BANK_ID" :isklik="true"></tablecell></td>
                 </template>
@@ -210,8 +210,8 @@ export default {
         systemSource: [],
         tablenameSource: [],
         firstTableHeaders: [
-          { text: 'Data Domain', align: 'left', value: 'DATA_DOMAIN', sortable: false },
           { text: 'Sub Domains', align: 'left', value: 'SUB_DOMAINS', sortable: false },
+          { text: 'Data Domain', align: 'left', value: 'DATA_DOMAIN', sortable: false },
           { text: 'Sub Domain Owner', align: 'left', value: 'SUB_DOMAIN_OWNER', sortable: false },
           { text: 'Bank ID', align: 'left', value: 'BANK_ID', sortable: false },
         ],

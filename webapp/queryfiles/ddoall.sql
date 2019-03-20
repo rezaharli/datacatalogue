@@ -1,6 +1,6 @@
 -- name: left-grid
 SELECT DISTINCT
-        tc.id,
+        tsc.id,
         tsc.name                            as sub_domains,
         tc.name                             as data_domain,
         tp.first_name||' '||tp.last_name    as sub_domain_owner,
@@ -18,7 +18,7 @@ SELECT DISTINCT
 -- name: right-grid
 SELECT DISTINCT
         tbt.id,
-        tsc.category_id as tscid,
+        tsc.id as tscid,
         tbt.BT_Name	as business_term,
         tbt.Description	as bt_description,
         tbt.CDE		as cde_yes_no
@@ -35,7 +35,7 @@ SELECT DISTINCT
         LEFT join tbl_policy tpo on tbt.policy_id = tpo.id
         LEFT join tbl_ds_process_detail tdpd on tdpd.column_id = tmc.id
         LEFT join tbl_ds_processes tdp on tdpd.process_id = tdp.id
-    WHERE tsc.category_id = '?'
+    WHERE tsc.id = '?'
         AND upper(tbt.BT_Name) LIKE upper('%?%')
 
 -- name: details
@@ -92,5 +92,5 @@ SELECT DISTINCT
         LEFT join tbl_ds_process_detail tdpd on tdpd.column_id = tmc.id
         LEFT join tbl_ds_processes tdp on tdpd.process_id = tdp.id
     WHERE
-        tc.id = '?' 
+        tsc.id = '?' 
         AND tbt.id = '?'
