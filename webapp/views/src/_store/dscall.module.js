@@ -5,6 +5,10 @@ const state = {
     all: {
         tabs: "dscall",
         searchMain: '',
+        filters: {
+            left: {},
+            right: {}
+        },
         searchDropdown: {
             SystemName: '',
             ItamID: '',
@@ -24,10 +28,15 @@ const actions = {
     getLeftTable({ commit }) {
         commit('getLeftTableRequest');
 
+        Object.keys(state.all.filters.left).map(function(key, index) {
+            state.all.filters.left[key] = state.all.filters.left[key].toString();
+        });
+
         var param = {
             Tabs: state.all.tabs,
             Search: state.all.searchMain,
             SearchDD: state.all.searchDropdown,
+            Filters: state.all.filters.left,
             Pagination: state.all.left.pagination
         }
 
@@ -40,15 +49,20 @@ const actions = {
     getRightTable({ commit }, systemID) {
         commit('getRightTableRequest');
 
+        Object.keys(state.all.filters.right).map(function(key, index) {
+            state.all.filters.right[key] = state.all.filters.right[key].toString();
+        });
+
         var param = {
             Tabs: state.all.tabs,
             SystemID: systemID,
             Search: state.all.searchMain,
             SearchDD: state.all.searchDropdown,
+            Filters: state.all.filters.right,
             Pagination: state.all.right.pagination
         }
 
-        dscMyService.getRightTable(param)
+        return dscMyService.getRightTable(param)
             .then(
                 res => commit('getRightTableSuccess', res.Data),
                 error => commit('getRightTableFailure', error)

@@ -19,7 +19,7 @@ func NewDSCService() *DSCService {
 	return ret
 }
 
-func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
+func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -30,29 +30,55 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD inte
 		args = append(args, loggedinid)
 	}
 
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err := h.BuildQueryFromFile(filePath, "left-grid", args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {
 		return nil, 0, err
 	}
 
+	filterSystemName := ""
 	if search != "" {
-		args = append(args, search, searchDDM.GetString("ItamID"))
+		filterSystemName = search
 	} else {
-		args = append(args, searchDDM.GetString("SystemName"), searchDDM.GetString("ItamID"))
+		filterSystemName = searchDDM.GetString("SystemName")
 	}
+	filterItamID := searchDDM.GetString("ItamID")
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err = h.BuildQueryFromFile(filePath, "left-grid", args...)
+	colFilterM, err := toolkit.ToM(colFilter)
+	cf := make([]string, 0)
 	if err != nil {
-		return nil, 0, err
+		cf = append(cf, "", "", "", "")
+	} else {
+		cf = append(cf, colFilterM.GetString("SYSTEM_NAME"), colFilterM.GetString("ITAM_ID"), colFilterM.GetString("DATASET_CUSTODIAN"), colFilterM.GetString("BANK_ID"))
 	}
 
+	///////// FILTER
+	q = `SELECT * FROM (
+		` + q + `
+	) WHERE (
+		upper(system_name) LIKE upper('%` + filterSystemName + `%')
+		AND upper(itam_id) LIKE upper('%` + filterItamID + `%')
+	) AND (
+		upper(system_name) LIKE upper('%` + cf[0] + `%')
+		AND upper(itam_id) LIKE upper('%` + cf[1] + `%')
+		AND upper(dataset_custodian) LIKE upper('%` + cf[2] + `%')
+		AND upper(bank_id) LIKE upper('%` + cf[3] + `%')
+	)`
+
+	///////// COUNT
 	q = `SELECT res.*, 
 			COUNT(DISTINCT system_name) OVER () COUNT_SYSTEM_NAME,
 			COUNT(DISTINCT itam_id) OVER () COUNT_ITAM_ID,
 			COUNT(DISTINCT dataset_custodian) OVER () COUNT_DATASET_CUSTODIAN,
 			COUNT(DISTINCT bank_id) OVER () COUNT_BANK_ID
-		FROM ( ` + q + `) res `
+		FROM (
+			` + q + `
+		) res `
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName:   m.NewSystemModel().TableName(),
@@ -69,34 +95,59 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD inte
 	return resultRows, resultTotal, nil
 }
 
-func (s *DSCService) GetTableName(tabs string, systemID int, search string, searchDD interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
+func (s *DSCService) GetTableName(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, toolkit.ToString(systemID))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err := h.BuildQueryFromFile(filePath, "right-grid", args...)
+	if err != nil {
+		return nil, 0, err
+	}
 
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	q := ""
-	args := make([]interface{}, 0)
+	filterTableName := searchDDM.GetString("TableName")
+	filterColumnName := searchDDM.GetString("ColumnName")
 
-	args = append(args, toolkit.ToString(systemID))
-	args = append(args, searchDDM.GetString("TableName"))
-	args = append(args, searchDDM.GetString("ColumnName"))
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err = h.BuildQueryFromFile(filePath, "right-grid", args...)
+	colFilterM, err := toolkit.ToM(colFilter)
+	cf := make([]string, 0)
 	if err != nil {
-		return nil, 0, err
+		cf = append(cf, "", "", "", "")
+	} else {
+		cf = append(cf, colFilterM.GetString("TABLE_NAME"), colFilterM.GetString("COLUMN_NAME"), colFilterM.GetString("BUSINESS_ALIAS_NAME"), colFilterM.GetString("CDE_YES_NO"))
 	}
 
+	///////// FILTER
+	q = `SELECT * FROM (
+		` + q + `
+	) WHERE (
+		upper(table_name) LIKE upper('%` + filterTableName + `%')
+		AND upper(column_name) LIKE upper('%` + filterColumnName + `%')
+	) AND (
+		upper(table_name) LIKE upper('%` + cf[0] + `%')
+		AND upper(column_name) LIKE upper('%` + cf[1] + `%')
+		AND upper(business_alias_name) LIKE upper('%` + cf[2] + `%')
+		AND upper(cde_yes_no) LIKE upper('%` + cf[3] + `%')
+	)`
+
+	///////// COUNT
 	q = `SELECT res.*, 
 			COUNT(DISTINCT table_name) OVER () COUNT_table_name,
 			COUNT(DISTINCT column_name) OVER () COUNT_column_name,
 			COUNT(DISTINCT business_alias_name) OVER () COUNT_business_alias_name,
 			(SELECT COUNT (cde_yes_no) FROM ( ` + q + `) res2 WHERE cde_yes_no = 1) COUNT_cde_yes_no
-		FROM ( ` + q + `) res `
+		FROM (
+			` + q + `
+		) res `
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName:   m.NewSystemModel().TableName(),
@@ -113,28 +164,66 @@ func (s *DSCService) GetTableName(tabs string, systemID int, search string, sear
 	return resultRows, resultTotal, nil
 }
 
-func (s *DSCService) GetInterfacesRightTable(tabs string, systemID int, search string, searchDD interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
+func (s *DSCService) GetInterfacesRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, toolkit.ToString(systemID))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err := h.BuildQueryFromFile(filePath, "right-grid", args...)
+	if err != nil {
+		return nil, 0, err
+	}
 
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	q := ""
-	args := make([]interface{}, 0)
+	filterTableName := searchDDM.GetString("TableName")
+	filterColumnName := searchDDM.GetString("ColumnName")
 
-	args = append(args, toolkit.ToString(systemID))
-	args = append(args, searchDDM.GetString("TableName"))
-	args = append(args, searchDDM.GetString("ColumnName"))
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err = h.BuildQueryFromFile(filePath, "right-grid", args...)
+	colFilterM, err := toolkit.ToM(colFilter)
+	cf := make([]string, 0)
 	if err != nil {
-		return nil, 0, err
+		cf = append(cf, "", "", "", "", "", "", "", "", "")
+	} else {
+		cf = append(cf,
+			colFilterM.GetString("LIST_OF_CDE"),
+			colFilterM.GetString("IMM_PREC_SYSTEM_NAME"),
+			colFilterM.GetString("IMM_PREC_SYSTEM_SLA"),
+			colFilterM.GetString("IMM_PREC_SYSTEM_OLA"),
+			colFilterM.GetString("IMM_SUCC_SYSTEM_NAME"),
+			colFilterM.GetString("IMM_SUCC_SYSTEM_SLA"),
+			colFilterM.GetString("IMM_SUCC_SYSTEM_OLA"),
+			colFilterM.GetString("LIST_DOWNSTREAM_PROCESS"),
+			colFilterM.GetString("DOWNSTREAM_PROCESS_OWNER"),
+		)
 	}
 
+	///////// FILTER
+	q = `SELECT * FROM (
+		` + q + `
+	) WHERE (
+		upper(table_name) LIKE upper('%` + filterTableName + `%')
+		AND upper(column_name) LIKE upper('%` + filterColumnName + `%')
+	) AND (
+		upper(list_of_cde) LIKE upper('%` + cf[0] + `%')
+		AND upper(imm_prec_system_name) LIKE upper('%` + cf[1] + `%')
+		AND upper(Imm_Prec_System_SLA) LIKE upper('%` + cf[2] + `%')
+		AND upper(Imm_Prec_System_OLA) LIKE upper('%` + cf[3] + `%')
+		AND upper(imm_succ_system_name) LIKE upper('%` + cf[4] + `%')
+		AND upper(Imm_Succ_System_SLA) LIKE upper('%` + cf[5] + `%')
+		AND upper(Imm_Succ_System_OLA) LIKE upper('%` + cf[6] + `%')
+		AND upper(list_downstream_process) LIKE upper('%` + cf[7] + `%')
+		AND upper(downstream_process_owner) LIKE upper('%` + cf[8] + `%')
+	)`
+
+	///////// COUNT
 	q = `SELECT res.*, 
 			COUNT(DISTINCT list_of_cde) OVER () COUNT_list_of_cde,
 			COUNT(DISTINCT imm_prec_system_name) OVER () COUNT_imm_prec_system_name,

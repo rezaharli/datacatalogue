@@ -21,8 +21,6 @@ SELECT DISTINCT
 					inner join tbl_md_column tmc ON tmt.id = tmc.table_id
 				WHERE CDE = 1
 			) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id
-	WHERE upper(ts.system_name) LIKE upper('%?%')
-	AND upper(ts.itam_id) LIKE upper('%?%')
 
 -- name: right-grid
 SELECT DISTINCT
@@ -65,8 +63,6 @@ SELECT DISTINCT
 				inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
 				inner join tbl_md_column tmc ON tmt.id = tmc.table_id
 			WHERE ts.id = '?'
-				AND upper(tmt.name) LIKE upper('%?%')
-				AND upper(tmc.name) LIKE upper('%?%')
 				AND CDE = 1
 		) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id and tmt.id = cde.tab_id
 	ORDER BY tmt.name, tmc.name

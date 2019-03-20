@@ -30,6 +30,7 @@ func (c *DSC) GetAllSystems(k *knot.WebContext) {
 	loggedinId := payload.GetString("LoggedInID")
 	search := payload.GetString("Search")
 	searchDD := payload.Get("SearchDD")
+	colFilter := payload.Get("Filters")
 	pagination, err := toolkit.ToM(payload.Get("Pagination"))
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
@@ -39,7 +40,7 @@ func (c *DSC) GetAllSystems(k *knot.WebContext) {
 	pageNumber := pagination.GetInt("page")
 	rowsPerPage := pagination.GetInt("rowsPerPage")
 
-	systems, _, err := s.NewDSCService().GetAllSystem(tabs, loggedinId, search, searchDD, pageNumber, rowsPerPage, toolkit.M{})
+	systems, _, err := s.NewDSCService().GetAllSystem(tabs, loggedinId, search, searchDD, colFilter, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -61,6 +62,7 @@ func (c *DSC) GetTableName(k *knot.WebContext) {
 	tabs := payload.GetString("Tabs")
 	search := payload.GetString("Search")
 	searchDD := payload.Get("SearchDD")
+	colFilter := payload.Get("Filters")
 	systemID := payload.GetInt("SystemID")
 	pagination, err := toolkit.ToM(payload.Get("Pagination"))
 	if err != nil {
@@ -71,7 +73,7 @@ func (c *DSC) GetTableName(k *knot.WebContext) {
 	pageNumber := pagination.GetInt("page")
 	rowsPerPage := pagination.GetInt("rowsPerPage")
 
-	systems, _, err := s.NewDSCService().GetTableName(tabs, systemID, search, searchDD, pageNumber, rowsPerPage, toolkit.M{})
+	systems, _, err := s.NewDSCService().GetTableName(tabs, systemID, search, searchDD, colFilter, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -93,6 +95,7 @@ func (c *DSC) GetInterfacesRightTable(k *knot.WebContext) {
 	tabs := payload.GetString("Tabs")
 	search := payload.GetString("Search")
 	searchDD := payload.Get("SearchDD")
+	colFilter := payload.Get("Filters")
 	systemID := payload.GetInt("SystemID")
 	pagination, err := toolkit.ToM(payload.Get("Pagination"))
 	if err != nil {
@@ -103,7 +106,7 @@ func (c *DSC) GetInterfacesRightTable(k *knot.WebContext) {
 	pageNumber := pagination.GetInt("page")
 	rowsPerPage := pagination.GetInt("rowsPerPage")
 
-	systems, _, err := s.NewDSCService().GetInterfacesRightTable(tabs, systemID, search, searchDD, pageNumber, rowsPerPage, toolkit.M{})
+	systems, _, err := s.NewDSCService().GetInterfacesRightTable(tabs, systemID, search, searchDD, colFilter, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return

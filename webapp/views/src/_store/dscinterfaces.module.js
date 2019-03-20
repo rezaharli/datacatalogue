@@ -5,6 +5,10 @@ const state = {
     all: {
         tabs: "dscinterfaces",
         searchMain: '',
+        filters: {
+            left: {},
+            right: {}
+        },
         searchDropdown: {
             SystemName: '',
             ItamID: '',
@@ -26,11 +30,16 @@ const actions = {
 
         var user = JSON.parse(localStorage.getItem("user"));
 
+        Object.keys(state.all.filters.left).map(function(key, index) {
+            state.all.filters.left[key] = state.all.filters.left[key].toString();
+        });
+
         var param = {
             Tabs: state.all.tabs,
             // LoggedInID: user.Username,
             Search: state.all.searchMain,
             SearchDD: state.all.searchDropdown,
+            Filters: state.all.filters.left,
             Pagination: state.all.left.pagination
         }
 
@@ -43,15 +52,20 @@ const actions = {
     getRightTable({ commit }, systemID) {
         commit('getAllTablenameRequest');
 
+        Object.keys(state.all.filters.right).map(function(key, index) {
+            state.all.filters.right[key] = state.all.filters.right[key].toString();
+        });
+
         var param = {
             Tabs: state.all.tabs,
             SystemID: systemID,
             Search: state.all.searchMain,
             SearchDD: state.all.searchDropdown,
+            Filters: state.all.filters.right,
             Pagination: state.all.right.pagination
         }
 
-        dscMyService.getInterfacesRightTable(param)
+        return dscMyService.getInterfacesRightTable(param)
             .then(
                 res => commit('getAllTablenameSuccess', res.Data),
                 error => commit('getAllTablenameFailure', error)

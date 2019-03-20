@@ -21,14 +21,14 @@ SELECT DISTINCT
                     inner join tbl_md_column tmc ON tmt.id = tmc.table_id
                 WHERE CDE = 1
             ) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id
-    WHERE upper(ts.system_name) LIKE upper('%?%')
-    AND upper(ts.itam_id) LIKE upper('%?%')
 
 -- name: right-grid
 SELECT DISTINCT
         tmt.id,
         ts.id                               as tsid,
         tmc.id                              as colid,
+        tmt.name                            as table_name,
+        tmc.name                            as column_name,
         tmc.alias_name                      as list_of_cde,
         ips.system_name                     as imm_prec_system_name,
         tmc.Imm_Prec_System_SLA             as Imm_Prec_System_SLA,
@@ -54,8 +54,6 @@ SELECT DISTINCT
         LEFT JOIN Tbl_People ppl ON tlrp_sdo.people_id = ppl.id
     WHERE ts.id = '?'
         AND (ips.system_name is not null or iss.system_name is not null) AND tmc.cde = 1
-        AND upper(tmt.name) LIKE upper('%?%')
-        AND upper(tmc.name) LIKE upper('%?%')
 
 -- name: details
 SELECT DISTINCT
