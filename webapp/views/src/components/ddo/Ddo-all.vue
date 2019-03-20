@@ -175,7 +175,7 @@ table.v-table thead th > div.btn-group {
                 <template slot="items" slot-scope="props">
                   <tr>
                     <td><b-link @click="showDetails(props.item)"><tablecell :fulltext="props.item.BUSINESS_TERM" :isklik="false"></tablecell></b-link></td>
-                    <td><tablecell :fulltext="props.item.BUSINESS_TERM_DESCRIPTION" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="props.item.BT_DESCRIPTION" :isklik="true"></tablecell></td>
                     <td><tablecell :fulltext="props.item.CDE_YES_NO" :isklik="true"></tablecell></td>
                   </tr>
                 </template>
@@ -217,7 +217,7 @@ export default {
         ],
         secondTableHeaders: [
           { text: 'Business Term', align: 'left', sortable: false, value: 'BUSINESS_TERM', displayCount: true, width: "25%" },
-          { text: 'Business Term Description', align: 'left', sortable: false, value: 'BUSINESS_TERM_DESCRIPTION', displayCount: true, width: "25%" },
+          { text: 'Business Term Description', align: 'left', sortable: false, value: 'BT_DESCRIPTION', displayCount: true, width: "25%" },
           { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'CDE_YES_NO', displayCount: true, width: "25%" },
         ],
       }
@@ -264,7 +264,7 @@ export default {
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
               tableLevel.BUSINESS_TERM = table.BUSINESS_TERM;
-              tableLevel.BUSINESS_TERM_DESCRIPTION = table.BUSINESS_TERM_DESCRIPTION;
+              tableLevel.BT_DESCRIPTION = table.BT_DESCRIPTION;
               tableLevel.CDE_YES_NO = table.CDE_YES_NO;
 
               res.push(_.cloneDeep(tableLevel));

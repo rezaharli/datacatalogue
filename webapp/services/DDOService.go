@@ -93,7 +93,7 @@ func (s *DDOService) GetRightTable(tabs string, systemID int, search string, sea
 
 	q = `SELECT res.*, 
 			COUNT(DISTINCT business_term) OVER () COUNT_business_term,
-			COUNT(DISTINCT business_term_description) OVER () COUNT_business_term_description,
+			COUNT(DISTINCT bt_description) OVER () COUNT_bt_description,
 			COUNT(DISTINCT cde_yes_no) OVER () COUNT_cde_yes_no
 		FROM ( ` + q + `) res `
 

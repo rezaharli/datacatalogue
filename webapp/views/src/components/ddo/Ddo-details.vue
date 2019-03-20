@@ -94,13 +94,13 @@ legend.col-form-label, label.col-form-label {
                       <b-form-select
                         id="businessterm"
                         class="col-8"
-                        v-model="selectedDetails.BT_NAME"
-                        :options="[selectedDetails.BT_NAME]"
+                        v-model="selectedDetails.BUSINESS_TERM"
+                        :options="[selectedDetails.BUSINESS_TERM]"
                       ></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
-                      <text-wrap-dialog :fulltext="selectedDetails.BUSINESS_TERM_DESCRIPTION"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.BT_DESCRIPTION"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group
@@ -113,13 +113,13 @@ legend.col-form-label, label.col-form-label {
                       <b-form-select
                         id="businessalias"
                         class="col-8"
-                        v-model="selectedDetails.ALIAS_NAME"
-                        :options="[selectedDetails.ALIAS_NAME]"
+                        v-model="selectedDetails.BUSINESS_ALIAS"
+                        :options="[selectedDetails.BUSINESS_ALIAS]"
                       ></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="CDE (Yes/No)">
-                      <text-wrap-dialog :fulltext="selectedDetails.CDE"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.CDE_YES_NO"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Quality standards | DQ Thresholds">
@@ -135,27 +135,27 @@ legend.col-form-label, label.col-form-label {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source System">
-                      <text-wrap-dialog :fulltext="selectedDetails.GOLDEN_SOURCE_SYSTEM_ID"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.GOLDEN_SYSTEM"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source ITAM ID">
-                      <text-wrap-dialog :fulltext="selectedDetails.ITAM_ID"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.GOLDEN_ITAM_ID"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Table Name">
-                      <text-wrap-dialog :fulltext="selectedDetails.GOLDEN_SOURCE_TABLE_NAME"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.GOLDEN_TABLE_NAME"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Column Name">
-                      <text-wrap-dialog :fulltext="selectedDetails.GOLDEN_SOURCE_COLUMN_NAME"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.GOLDEN_COLUMN_NAME"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Target Golden Source">
-                      <text-wrap-dialog :fulltext="selectedDetails.ITAM_ID"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.TARGET_GOLDEN"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Target golden source ITAM ID">
-                      <text-wrap-dialog :fulltext="selectedDetails.ITAM_ID"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.TARGET_GOLDEN_ITAM_ID"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -174,7 +174,7 @@ legend.col-form-label, label.col-form-label {
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Names">
-                      <text-wrap-dialog :fulltext="selectedDetails.INFO_ASSET_NAME"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.INFO_ASSET_NAMES"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Descriptions">
@@ -198,7 +198,7 @@ legend.col-form-label, label.col-form-label {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Record Categories">
-                      <text-wrap-dialog :fulltext="selectedDetails.RECORD_CATEGORY"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.RECORD_CATEGORIES"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="PII Flag (Yes/No)">
@@ -235,7 +235,7 @@ legend.col-form-label, label.col-form-label {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Is data taken from Golden Source">
-                      <text-wrap-dialog :fulltext="selectedDetails.ASDF"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.TAKEN_FROM_GOLDEN"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Name">
@@ -247,7 +247,7 @@ legend.col-form-label, label.col-form-label {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name">
-                      <text-wrap-dialog :fulltext="selectedDetails.GOLDEN_SOURCE_TABLE_NAME"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.TABLE_NAME"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name">
@@ -255,7 +255,7 @@ legend.col-form-label, label.col-form-label {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards | Thresholds set by DDO">
-                      <text-wrap-dialog :fulltext="selectedDetails.DDO_THRESHOLD"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails.DQ_STANDARDS_BY_DDO"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -278,8 +278,8 @@ legend.col-form-label, label.col-form-label {
                       <b-form-select
                         id="systemname"
                         class="col-8"
-                        v-model="selectedDetails.SYSTEM_NAME"
-                        :options="[selectedDetails.SYSTEM_NAME]"
+                        v-model="selectedDetails.SYSTEM_NAME_DD"
+                        :options="[selectedDetails.SYSTEM_NAME_DD]"
                       ></b-form-select>
                     </b-form-group>
 
@@ -293,8 +293,8 @@ legend.col-form-label, label.col-form-label {
                       <b-form-select
                         id="ITAMID"
                         class="col-8"
-                        v-model="selectedDetails.ITAM_ID"
-                        :options="[selectedDetails.ITAM_ID]"
+                        v-model="selectedDetails.ITAM_ID_DD"
+                        :options="[selectedDetails.ITAM_ID_DD]"
                       ></b-form-select>
                     </b-form-group>
 
@@ -308,8 +308,8 @@ legend.col-form-label, label.col-form-label {
                       <b-form-select
                         id="tablename"
                         class="col-8"
-                        v-model="selectedDetails.GOLDEN_SOURCE_TABLE_NAME"
-                        :options="[selectedDetails.GOLDEN_SOURCE_TABLE_NAME]"
+                        v-model="selectedDetails.TABLE_NAME_DD"
+                        :options="[selectedDetails.TABLE_NAME_DD]"
                       ></b-form-select>
                     </b-form-group>
 
@@ -323,8 +323,8 @@ legend.col-form-label, label.col-form-label {
                       <b-form-select
                         id="colname"
                         class="col-8"
-                        v-model="selectedDetails.COLUMN_NAME"
-                        :options="[selectedDetails.COLUMN_NAME]"
+                        v-model="selectedDetails.COLUMN_NAME_DD"
+                        :options="[selectedDetails.COLUMN_NAME_DD]"
                       ></b-form-select>
                     </b-form-group>
                   </b-form>
@@ -360,38 +360,39 @@ export default {
         "Sub Domain": "selectedDetails.SUB_DOMAIN",
         "Sub Domain Owner": "selectedDetails.SUB_DOMAIN_OWNER",
         "Bank ID": "selectedDetails.BANK_ID",
-        "Business Term": "selectedDetails.BT_NAME",
-        "Business Alias": "selectedDetails.ALIAS_NAME",
-        "CDE (Yes/No)": "selectedDetails.CDE",
+        "Business Term": "selectedDetails.BUSINESS_TERM",
+        "Business Term Description": "selectedDetails.BT_DESCRIPTION",
+        "Business Alias": "selectedDetails.BUSINESS_ALIAS",
+        "CDE (Yes/No)": "selectedDetails.CDE_YES_NO",
         "Data Quality standards | DQ Thresholds": "selectedDetails.DQ_STANDARDS",
         "Policy guidance (if any)": "selectedDetails.POLICY_GUIDANCE",
         "Mandatory (Yes/No)": "selectedDetails.MANDATORY",
-        "Golden Source System": "selectedDetails.GOLDEN_SOURCE_SYSTEM_ID",
-        "Golden Source ITAM ID": "selectedDetails.ITAM_ID",
-        "Golden Source Table Name": "selectedDetails.GOLDEN_SOURCE_TABLE_NAME",
-        "Golden Source Column Name": "selectedDetails.GOLDEN_SOURCE_COLUMN_NAME",
+        "Golden Source System": "selectedDetails.GOLDEN_SYSTEM",
+        "Golden Source ITAM ID": "selectedDetails.GOLDEN_ITAM_ID",
+        "Golden Source Table Name": "selectedDetails.GOLDEN_TABLE_NAME",
+        "Golden Source Column Name": "selectedDetails.GOLDEN_COLUMN_NAME",
         "Target Golden Source": "selectedDetails.ITAM_ID",
         "Target golden source ITAM ID": "selectedDetails.ITAM_ID",
-        "Information Asset Names": "selectedDetails.INFO_ASSET_NAME",
+        "Information Asset Names": "selectedDetails.INFO_ASSET_NAMES",
         "Information Asset Descriptions": "selectedDetails.INFO_ASSET_DESC",
         "C - Confidentiality": "selectedDetails.CONFIDENTIALITY",
         "I - Integrity": "selectedDetails.INTEGRITY",
         "A - Availability": "selectedDetails.AVAILABILITY",
         "Overall CIA Rating": "selectedDetails.OVERALL_CIA_RATING",
-        "Record Categories": "selectedDetails.RECORD_CATEGORY",
+        "Record Categories": "selectedDetails.RECORD_CATEGORIES",
         "PII Flag (Yes/No)": "selectedDetails.PII_FLAG",
         "Downstream Process Name": "selectedDetails.DOWNSTREAM_PROCESS_NAME",
         "Downstream Process Owner": "selectedDetails.DOWNSTREAM_PROCESS_OWNER",
         "Is data taken from Golden Source": "selectedDetails.ASDF",
         "System Name": "selectedDetails.SYSTEM_NAME",
         "ITAM ID": "selectedDetails.ITAM_ID",
-        "Table Name": "selectedDetails.GOLDEN_SOURCE_TABLE_NAME",
+        "Table Name": "selectedDetails.TABLE_NAME",
         "Column Name": "selectedDetails.COLUMN_NAME",
-        "DQ Standards | Thresholds set by DDO": "selectedDetails.DDO_THRESHOLD",
-        "System Name": "selectedDetails.SYSTEM_NAME",
-        "ITAM ID": "selectedDetails.ITAM_ID",
-        "Table Name": "selectedDetails.GOLDEN_SOURCE_TABLE_NAME",
-        "Column Name": "selectedDetails.COLUMN_NAME"
+        "DQ Standards | Thresholds set by DDO": "selectedDetails.DQ_STANDARDS_BY_DDO",
+        "System Name": "selectedDetails.SYSTEM_NAME_DD",
+        "ITAM ID": "selectedDetails.ITAM_ID_DD",
+        "Table Name": "selectedDetails.TABLE_NAME_DD",
+        "Column Name": "selectedDetails.COLUMN_NAME_DD"
       }
     };
   },
@@ -475,7 +476,7 @@ export default {
             self.selectedDetails = {}
             _.each(Object.keys(tmp), function(v, i){
                 self.selectedDetails[v] = _.uniq(
-                  _.map(self.ddomy.detailsSource[0].Values, (val) => val[v].toString().trim()).filter(Boolean)).join(', ');
+                  _.map(self.ddomy.detailsSource[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)).join(', ');
             });
 
             // make falsy NA
