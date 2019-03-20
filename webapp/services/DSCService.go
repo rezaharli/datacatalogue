@@ -49,6 +49,14 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, col
 	}
 	filterItamID := searchDDM.GetString("ItamID")
 
+	///////// DROPDOWN FILTER
+	q = `SELECT * FROM (
+		` + q + `
+	) WHERE (
+		upper(system_name) LIKE upper('%` + filterSystemName + `%')
+		AND upper(itam_id) LIKE upper('%` + filterItamID + `%')
+	) `
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	cf := make([]string, 0)
 	if err != nil {
@@ -57,18 +65,15 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, col
 		cf = append(cf, colFilterM.GetString("SYSTEM_NAME"), colFilterM.GetString("ITAM_ID"), colFilterM.GetString("DATASET_CUSTODIAN"), colFilterM.GetString("BANK_ID"))
 	}
 
-	///////// FILTER
-	q = `SELECT * FROM (
-		` + q + `
-	) WHERE (
-		upper(system_name) LIKE upper('%` + filterSystemName + `%')
-		AND upper(itam_id) LIKE upper('%` + filterItamID + `%')
-	) AND (
-		upper(system_name) LIKE upper('%` + cf[0] + `%')
-		AND upper(itam_id) LIKE upper('%` + cf[1] + `%')
-		AND upper(dataset_custodian) LIKE upper('%` + cf[2] + `%')
-		AND upper(bank_id) LIKE upper('%` + cf[3] + `%')
-	)`
+	///////// COLUMN FILTER
+	if cf[0] != "" || cf[1] != "" || cf[2] != "" || cf[3] != "" {
+		q += `AND (
+			upper(system_name) LIKE upper('%` + cf[0] + `%')
+			AND upper(itam_id) LIKE upper('%` + cf[1] + `%')
+			AND upper(dataset_custodian) LIKE upper('%` + cf[2] + `%')
+			AND upper(bank_id) LIKE upper('%` + cf[3] + `%')
+		) `
+	}
 
 	///////// COUNT
 	q = `SELECT res.*, 
@@ -118,6 +123,14 @@ func (s *DSCService) GetTableName(tabs string, systemID int, search string, sear
 	filterTableName := searchDDM.GetString("TableName")
 	filterColumnName := searchDDM.GetString("ColumnName")
 
+	///////// DROPDOWN FILTER
+	q = `SELECT * FROM (
+		` + q + `
+	) WHERE (
+		upper(table_name) LIKE upper('%` + filterTableName + `%')
+		AND upper(column_name) LIKE upper('%` + filterColumnName + `%')
+	) `
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	cf := make([]string, 0)
 	if err != nil {
@@ -126,18 +139,15 @@ func (s *DSCService) GetTableName(tabs string, systemID int, search string, sear
 		cf = append(cf, colFilterM.GetString("TABLE_NAME"), colFilterM.GetString("COLUMN_NAME"), colFilterM.GetString("BUSINESS_ALIAS_NAME"), colFilterM.GetString("CDE_YES_NO"))
 	}
 
-	///////// FILTER
-	q = `SELECT * FROM (
-		` + q + `
-	) WHERE (
-		upper(table_name) LIKE upper('%` + filterTableName + `%')
-		AND upper(column_name) LIKE upper('%` + filterColumnName + `%')
-	) AND (
-		upper(table_name) LIKE upper('%` + cf[0] + `%')
-		AND upper(column_name) LIKE upper('%` + cf[1] + `%')
-		AND upper(business_alias_name) LIKE upper('%` + cf[2] + `%')
-		AND upper(cde_yes_no) LIKE upper('%` + cf[3] + `%')
-	)`
+	///////// COLUMN FILTER
+	if cf[0] != "" || cf[1] != "" || cf[2] != "" || cf[3] != "" {
+		q += `AND (
+			upper(table_name) LIKE upper('%` + cf[0] + `%')
+			AND upper(column_name) LIKE upper('%` + cf[1] + `%')
+			AND upper(business_alias_name) LIKE upper('%` + cf[2] + `%')
+			AND upper(cde_yes_no) LIKE upper('%` + cf[3] + `%')
+		) `
+	}
 
 	///////// COUNT
 	q = `SELECT res.*, 
@@ -187,6 +197,14 @@ func (s *DSCService) GetInterfacesRightTable(tabs string, systemID int, search s
 	filterTableName := searchDDM.GetString("TableName")
 	filterColumnName := searchDDM.GetString("ColumnName")
 
+	///////// FILTER
+	q = `SELECT * FROM (
+		` + q + `
+	) WHERE (
+		upper(table_name) LIKE upper('%` + filterTableName + `%')
+		AND upper(column_name) LIKE upper('%` + filterColumnName + `%')
+	) `
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	cf := make([]string, 0)
 	if err != nil {
@@ -205,23 +223,19 @@ func (s *DSCService) GetInterfacesRightTable(tabs string, systemID int, search s
 		)
 	}
 
-	///////// FILTER
-	q = `SELECT * FROM (
-		` + q + `
-	) WHERE (
-		upper(table_name) LIKE upper('%` + filterTableName + `%')
-		AND upper(column_name) LIKE upper('%` + filterColumnName + `%')
-	) AND (
-		upper(list_of_cde) LIKE upper('%` + cf[0] + `%')
-		AND upper(imm_prec_system_name) LIKE upper('%` + cf[1] + `%')
-		AND upper(Imm_Prec_System_SLA) LIKE upper('%` + cf[2] + `%')
-		AND upper(Imm_Prec_System_OLA) LIKE upper('%` + cf[3] + `%')
-		AND upper(imm_succ_system_name) LIKE upper('%` + cf[4] + `%')
-		AND upper(Imm_Succ_System_SLA) LIKE upper('%` + cf[5] + `%')
-		AND upper(Imm_Succ_System_OLA) LIKE upper('%` + cf[6] + `%')
-		AND upper(list_downstream_process) LIKE upper('%` + cf[7] + `%')
-		AND upper(downstream_process_owner) LIKE upper('%` + cf[8] + `%')
-	)`
+	if cf[0] != "" || cf[1] != "" || cf[2] != "" || cf[3] != "" || cf[4] != "" || cf[5] != "" || cf[6] != "" || cf[7] != "" || cf[8] != "" {
+		q += `AND (
+			upper(list_of_cde) LIKE upper('%` + cf[0] + `%')
+			AND upper(imm_prec_system_name) LIKE upper('%` + cf[1] + `%')
+			AND upper(Imm_Prec_System_SLA) LIKE upper('%` + cf[2] + `%')
+			AND upper(Imm_Prec_System_OLA) LIKE upper('%` + cf[3] + `%')
+			AND upper(imm_succ_system_name) LIKE upper('%` + cf[4] + `%')
+			AND upper(Imm_Succ_System_SLA) LIKE upper('%` + cf[5] + `%')
+			AND upper(Imm_Succ_System_OLA) LIKE upper('%` + cf[6] + `%')
+			AND upper(list_downstream_process) LIKE upper('%` + cf[7] + `%')
+			AND upper(downstream_process_owner) LIKE upper('%` + cf[8] + `%')
+		) `
+	}
 
 	///////// COUNT
 	q = `SELECT res.*, 
