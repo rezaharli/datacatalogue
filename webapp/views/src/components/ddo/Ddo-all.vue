@@ -123,7 +123,7 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                  <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.SUB_DOMAINS" :isklik="true"></tablecell></b-link></td>
+                  <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.SUB_DOMAINS" :isklik="false"></tablecell></b-link></td>
                   <td><tablecell :fulltext="props.item.DATA_DOMAIN" :isklik="false"></tablecell></td>
                   <td><tablecell :fulltext="props.item.SUB_DOMAIN_OWNER" :isklik="true"></tablecell></td>
                   <td><tablecell :fulltext="props.item.BANK_ID" :isklik="true"></tablecell></td>
