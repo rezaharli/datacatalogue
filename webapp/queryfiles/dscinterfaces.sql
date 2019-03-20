@@ -27,8 +27,6 @@ SELECT DISTINCT
         tmt.id,
         ts.id                               as tsid,
         tmc.id                              as colid,
-        tmt.name                            as table_name,
-        tmc.name                            as column_name,
         tmc.alias_name                      as list_of_cde,
         ips.system_name                     as imm_prec_system_name,
         tmc.Imm_Prec_System_SLA             as Imm_Prec_System_SLA,
@@ -53,7 +51,7 @@ SELECT DISTINCT
         LEFT JOIN Tbl_Role rl ON tlrp_sdo.role_id = rl.id and rl.role_name = 'Downstream Process Owner'
         LEFT JOIN Tbl_People ppl ON tlrp_sdo.people_id = ppl.id
     WHERE ts.id = '?'
-        AND (ips.system_name is not null or iss.system_name is not null) AND tmc.cde = 1
+        AND tmc.cde = 1
 
 -- name: details
 SELECT DISTINCT
@@ -103,8 +101,8 @@ SELECT DISTINCT
         LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.column_id = tmc.id
         LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id 
         
-        LEFT JOIN Tbl_Link_Role_People tlrp_sdo ON tlrp_sdo.Object_ID = tdp.id and tlrp_sdo.object_type = 'SUBCATEGORY'
-        LEFT JOIN Tbl_Role rl ON tlrp_sdo.role_id = rl.id and rl.role_name = 'Data Domain Owner'
+        LEFT JOIN Tbl_Link_Role_People tlrp_sdo ON tlrp_sdo.Object_ID = tdp.id and tlrp_sdo.object_type = 'PROCESSES'
+        LEFT JOIN Tbl_Role rl ON tlrp_sdo.role_id = rl.id and rl.role_name = 'Downstream Process Owner'
         LEFT JOIN Tbl_People ppl ON tlrp_sdo.people_id = ppl.id
         LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
         LEFT JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
@@ -146,8 +144,8 @@ SELECT DISTINCT
         LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.column_id = tmc.id
         LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id 
         
-        LEFT JOIN Tbl_Link_Role_People tlrp_sdo ON tlrp_sdo.Object_ID = tdp.id and tlrp_sdo.object_type = 'SUBCATEGORY'
-        LEFT JOIN Tbl_Role rl ON tlrp_sdo.role_id = rl.id and rl.role_name = 'Data Domain Owner'
+        LEFT JOIN Tbl_Link_Role_People tlrp_sdo ON tlrp_sdo.Object_ID = tdp.id and tlrp_sdo.object_type = 'PROCESSES'
+        LEFT JOIN Tbl_Role rl ON tlrp_sdo.role_id = rl.id and rl.role_name = 'Downstream Process Owner'
         LEFT JOIN Tbl_People ppl ON tlrp_sdo.people_id = ppl.id
     WHERE ts.id = '?'
 		AND (ips.system_name is not null or iss.system_name is not null) AND tmc.cde = 1

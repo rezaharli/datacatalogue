@@ -1,13 +1,13 @@
 -- name: left-grid
 SELECT DISTINCT
         tc.id,
-        tc.name                             as data_domain,
         tsc.name                            as sub_domains,
+        tc.name                             as data_domain,
         tp.first_name||' '||tp.last_name    as sub_domain_owner,
         tp.bank_id                          as bank_id
     FROM
         tbl_category tc
-        LEFT JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
+        inner JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
         inner JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = tsc.id and tlrp.Object_type = 'SUBCATEGORY' and tsc.type = 'Sub Data Domain'
         inner JOIN Tbl_Role rl ON tlrp.role_id = rl.id and rl.role_name = 'Data Domain Owner'
         inner JOIN tbl_people tp ON tlrp.people_id = tp.id
@@ -19,9 +19,9 @@ SELECT DISTINCT
 SELECT DISTINCT
         tbt.id,
         tsc.category_id as tscid,
-        tbt.BT_Name		as business_term,
+        tbt.BT_Name	as business_term,
         tbt.Description	as bt_description,
-        tbt.CDE			as cde_yes_no
+        tbt.CDE		as cde_yes_no
     FROM
         tbl_category tc
         INNER JOIN tbl_subcategory tsc ON tsc.category_id = tc.id

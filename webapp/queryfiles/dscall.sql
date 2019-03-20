@@ -3,7 +3,7 @@ SELECT DISTINCT
 		ts.id,
 		ts.system_name 	as system_name,
 		ts.itam_id		as itam_id,
-		tp.first_name	as dataset_custodian,
+		tp.first_name||' '||tp.last_name as dataset_custodian,
 		tp.bank_id		as bank_id
 	FROM tbl_system ts 
 		LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
@@ -72,7 +72,7 @@ SELECT DISTINCT
 		ts.id,
 		ts.system_name						as system_name,
 		ts.itam_id							as itam_id,
-		tp.first_name						as dataset_custodian,
+		tp.first_name||' '||tp.last_name	as dataset_custodian,
 		tp.bank_id							as bank_id,
 		tmc.alias_name						as business_alias_name,
 		tmt.name 							as table_name,
@@ -103,7 +103,7 @@ SELECT DISTINCT
 		tmc.pii_flag						as pii_flag,
 		ips.system_name 					as imm_preceeding_system,
 		iss.system_name 					as imm_succeeding_system,
-		tmc.threshold						as threshold
+		tmc.DQ_STANDARDS||' '||tmc.threshold			as threshold
 	FROM tbl_system ts
 		LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
 		LEFT JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
