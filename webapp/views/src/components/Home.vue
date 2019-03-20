@@ -20,7 +20,7 @@
                   <v-card-title primary-title class="justify-center white--text">
                     <div>
                       <h1 class="mb-0">Welcome To</h1>
-                      <h1 class="mb-0">Data Catalogue</h1>
+                      <h1 class="mb-0">Metadata UI</h1>
                     </div>
                   </v-card-title>
                 </v-card>
