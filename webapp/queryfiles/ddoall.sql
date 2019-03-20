@@ -26,17 +26,8 @@ SELECT DISTINCT
         tbl_category tc
         INNER JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
         INNER JOIN tbl_business_term tbt ON tbt.parent_id = tsc.id
-        LEFT JOIN tbl_link_subcategory_people tlscp ON tlscp.subcategory_id = tsc.id
-        LEFT JOIN Tbl_People tp on tlscp.people_id = tp.id
-        LEFT join tbl_md_column tmc on tmc.business_term_id = tbt.id
-        LEFT join tbl_md_table tmt on tmc.table_id = tmt.id
-        LEFT join tbl_md_resource tmr on tmt.resource_id = tmr.id
-        LEFT join tbl_system ts on tmr.system_id = ts.id
-        LEFT join tbl_policy tpo on tbt.policy_id = tpo.id
-        LEFT join tbl_ds_process_detail tdpd on tdpd.column_id = tmc.id
-        LEFT join tbl_ds_processes tdp on tdpd.process_id = tdp.id
     WHERE tsc.id = '?'
-        AND upper(tbt.BT_Name) LIKE upper('%?%')
+        AND upper(tsc.Name) LIKE upper('%?%')
 
 -- name: details
 SELECT DISTINCT
