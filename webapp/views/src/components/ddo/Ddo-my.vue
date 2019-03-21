@@ -253,8 +253,8 @@ export default {
 
         this._.each(this.ddomy.left.display, (system, i) => {
           var temp = {
-            DATA_DOMAIN: system.DATA_DOMAIN,
             SUB_DOMAINS: system.SUB_DOMAINS,
+            DATA_DOMAIN: system.DATA_DOMAIN,
             SUB_DOMAIN_OWNER: system.SUB_DOMAIN_OWNER,
             BANK_ID: system.BANK_ID,
           }
@@ -408,10 +408,10 @@ export default {
       onReset (evt) {
         evt.preventDefault();
         /* Reset our form values */
-        this.searchForm.dataDomain = '';
-        this.searchForm.subDataDomain = '';
-        this.searchForm.subDataDomainOwner = '';
-        this.searchForm.businessTerm = '';
+        this.ddomy.searchDropdown.SubDataDomain = '';
+        this.ddomy.searchDropdown.DataDomain = '';
+        this.ddomy.searchDropdown.SubDataDomainOwner = '';
+        this.ddomy.searchDropdown.BusinessTerm = '';
 
         this.onSubmit();
 

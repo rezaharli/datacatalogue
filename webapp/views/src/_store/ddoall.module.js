@@ -6,8 +6,8 @@ const state = {
         tabs: "ddoall",
         searchMain: '',
         searchDropdown: {
-            DataDomain: '',
             SubDataDomain: '',
+            DataDomain: '',
             SubDataDomainOwner: '',
             BusinessTerm: '',
         },

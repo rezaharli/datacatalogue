@@ -6,8 +6,8 @@ const state = {
         tabs: "ddomy",
         searchMain: '',
         searchDropdown: {
-            DataDomain: '',
             SubDataDomain: '',
+            DataDomain: '',
             SubDataDomainOwner: '',
             BusinessTerm: '',
         },
