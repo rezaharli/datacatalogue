@@ -96,8 +96,15 @@ func (c *DDO) GetDetails(k *knot.WebContext) {
 		return
 	}
 
+	ddSource, _, err := s.NewDDOService().GetddSource(payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
 	data := toolkit.M{}
 	data.Set("Detail", detail)
+	data.Set("DDSource", ddSource)
 
 	h.WriteResultOK(k, res, data)
 }

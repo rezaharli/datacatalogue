@@ -94,8 +94,8 @@ legend.col-form-label, label.col-form-label {
                       <b-form-select
                         id="businessterm"
                         class="col-8"
-                        v-model="selectedDetails.BUSINESS_TERM"
-                        :options="[selectedDetails.BUSINESS_TERM]"
+                        v-model="ddBusinessTermSelected"
+                        :options="ddBusinessTermOptions"
                       ></b-form-select>
                     </b-form-group>
 
@@ -113,8 +113,8 @@ legend.col-form-label, label.col-form-label {
                       <b-form-select
                         id="businessalias"
                         class="col-8"
-                        v-model="selectedDetails.BUSINESS_ALIAS"
-                        :options="[selectedDetails.BUSINESS_ALIAS]"
+                        v-model="ddBusinessAliasSelected"
+                        :options="ddBusinessAliasOptions"
                       ></b-form-select>
                     </b-form-group>
 
@@ -225,8 +225,8 @@ legend.col-form-label, label.col-form-label {
                       <b-form-select
                         id="downstreamprocessname"
                         class="col-8"
-                        v-model="selectedDetails.DOWNSTREAM_PROCESS_NAME"
-                        :options="[selectedDetails.DOWNSTREAM_PROCESS_NAME]"
+                        v-model="ddDownstreamProcessNameSelected"
+                        :options="ddDownstreamProcessNameOptions"
                       ></b-form-select>
                     </b-form-group>
 
@@ -278,8 +278,8 @@ legend.col-form-label, label.col-form-label {
                       <b-form-select
                         id="systemname"
                         class="col-8"
-                        v-model="selectedDetails.SYSTEM_NAME_DD"
-                        :options="[selectedDetails.SYSTEM_NAME_DD]"
+                        v-model="ddSystemNameSelected"
+                        :options="ddSystemNameOptions"
                       ></b-form-select>
                     </b-form-group>
 
@@ -293,8 +293,8 @@ legend.col-form-label, label.col-form-label {
                       <b-form-select
                         id="ITAMID"
                         class="col-8"
-                        v-model="selectedDetails.ITAM_ID_DD"
-                        :options="[selectedDetails.ITAM_ID_DD]"
+                        v-model="ddItamIdSelected"
+                        :options="ddItamIdOptions"
                       ></b-form-select>
                     </b-form-group>
 
@@ -308,8 +308,8 @@ legend.col-form-label, label.col-form-label {
                       <b-form-select
                         id="tablename"
                         class="col-8"
-                        v-model="selectedDetails.TABLE_NAME_DD"
-                        :options="[selectedDetails.TABLE_NAME_DD]"
+                        v-model="ddTableNameSelected"
+                        :options="ddTableNameOptions"
                       ></b-form-select>
                     </b-form-group>
 
@@ -323,8 +323,8 @@ legend.col-form-label, label.col-form-label {
                       <b-form-select
                         id="colname"
                         class="col-8"
-                        v-model="selectedDetails.COLUMN_NAME_DD"
-                        :options="[selectedDetails.COLUMN_NAME_DD]"
+                        v-model="ddColumnNameSelected"
+                        :options="ddColumnNameOptions"
                       ></b-form-select>
                     </b-form-group>
                   </b-form>
@@ -353,8 +353,13 @@ export default {
       firstload: true,
       showModal: this.$route.meta.showModal,
       selectedDetails: null,
-      ddTableSelected: null,
-      ddColumnSelected: null,
+      ddBusinessTermSelected: null,
+      ddBusinessAliasSelected: null,
+      ddDownstreamProcessNameSelected: null,
+      ddSystemNameSelected: null,
+      ddItamIdSelected: null,
+      ddTableNameSelected: null,
+      ddColumnNameSelected: null,
       excelFields: {
         "Data Domain": "selectedDetails.DATA_DOMAIN",
         "Sub Domain": "selectedDetails.SUB_DOMAIN",
@@ -400,8 +405,71 @@ export default {
     ...mapState({
       ddomy: state => state.ddomy.all
     }),
-    ddTableOptions () {
-      return _.uniq(_.map(this.ddomy.DDSource, "TABLE_NAME"))
+    ddBusinessTermOptions () {
+      return _.uniq(_.map(this.ddomy.DDSource, "BUSINESS_TERM"))
+    },
+    ddBusinessAliasOptions () {
+      var self = this;
+      var filtered = _.filter(self.ddomy.DDSource, (v) => {
+        return v.BUSINESS_TERM == self.ddBusinessTermSelected;
+      });
+
+      return _.uniq(_.map(filtered, "BUSINESS_ALIAS"));
+    },
+    ddDownstreamProcessNameOptions () {
+      var self = this;
+      var filtered = _.filter(self.ddomy.DDSource, (v) => {
+        return v.BUSINESS_TERM == self.ddBusinessTermSelected 
+          && v.BUSINESS_ALIAS == self.ddBusinessAliasSelected;
+      });
+      
+      return _.uniq(_.map(filtered, "DOWNSTREAM_PROCESS_NAME"));
+    },
+    ddSystemNameOptions () {
+      var self = this;
+      var filtered = _.filter(self.ddomy.DDSource, (v) => {
+        return v.BUSINESS_TERM == self.ddBusinessTermSelected 
+          && v.BUSINESS_ALIAS == self.ddBusinessAliasSelected
+          && v.DOWNSTREAM_PROCESS_NAME == self.ddDownstreamProcessNameSelected;
+      });
+      
+      return _.uniq(_.map(filtered, "SYSTEM_NAME_DD"));
+    },
+    ddItamIdOptions () {
+      var self = this;
+      var filtered = _.filter(self.ddomy.DDSource, (v) => {
+        return v.BUSINESS_TERM == self.ddBusinessTermSelected 
+          && v.BUSINESS_ALIAS == self.ddBusinessAliasSelected
+          && v.DOWNSTREAM_PROCESS_NAME == self.ddDownstreamProcessNameSelected
+          && v.SYSTEM_NAME_DD == self.ddSystemNameSelected;
+      });
+      
+      return _.uniq(_.map(filtered, "ITAM_ID_DD"));
+    },
+    ddTableNameOptions () {
+      var self = this;
+      var filtered = _.filter(self.ddomy.DDSource, (v) => {
+        return v.BUSINESS_TERM == self.ddBusinessTermSelected 
+          && v.BUSINESS_ALIAS == self.ddBusinessAliasSelected
+          && v.DOWNSTREAM_PROCESS_NAME == self.ddDownstreamProcessNameSelected
+          && v.SYSTEM_NAME_DD == self.ddSystemNameSelected
+          && v.ITAM_ID_DD == self.ddItamIdSelected;
+      });
+      
+      return _.uniq(_.map(filtered, "TABLE_NAME_DD"));
+    },
+    ddColumnNameOptions () {
+      var self = this;
+      var filtered = _.filter(self.ddomy.DDSource, (v) => {
+        return v.BUSINESS_TERM == self.ddBusinessTermSelected 
+          && v.BUSINESS_ALIAS == self.ddBusinessAliasSelected
+          && v.DOWNSTREAM_PROCESS_NAME == self.ddDownstreamProcessNameSelected
+          && v.SYSTEM_NAME_DD == self.ddSystemNameSelected
+          && v.ITAM_ID_DD == self.ddItamIdSelected
+          && v.TABLE_NAME_DD == self.ddTableNameSelected;
+      });
+      
+      return _.uniq(_.map(filtered, "COLUMN_NAME_DD"));
     },
     exportDatas () {
       if(this.selectedDetails){
@@ -417,34 +485,70 @@ export default {
     "$route.meta"({ showModal }) {
       this.showModal = showModal;
     },
-    ddTableSelected () {
-      if( ! this.ddColumnSelected)
-        this.ddColumnSelected = this.ddColumnOptions[0];
-      else {
-        if(this.ddColumnOptions.indexOf(this.ddColumnSelected) == -1)
-          this.ddColumnSelected = this.ddColumnOptions[0];
-      }
+    ddBusinessTermSelected () {
+      if(this.firstload) return;
+
+      if(this.ddBusinessAliasOptions[0]) this.ddBusinessAliasSelected = this.ddBusinessAliasOptions[0];
+      else this.ddBusinessAliasSelected = "";
     },
-    ddColumnSelected () {
-      if( ! this.ddScreenLabelSelected)
-        this.ddScreenLabelSelected = this.ddScreenLabelOptions[0];
-      else {
-        if(this.ddScreenLabelOptions.indexOf(this.ddScreenLabelSelected) == -1)
-          this.ddScreenLabelSelected = this.ddScreenLabelOptions[0];
-      }
+    ddBusinessAliasSelected () {
+      if(this.firstload) return;
+      
+      if(this.ddDownstreamProcessNameOptions[0]) this.ddDownstreamProcessNameSelected = this.ddDownstreamProcessNameOptions[0];
+      else this.ddDownstreamProcessNameSelected = "";
     },
-    ddScreenLabelSelected (){
+    ddDownstreamProcessNameSelected () {
+      if(this.firstload) return;
+      
+      if(this.ddSystemNameOptions[0]) this.ddSystemNameSelected = this.ddSystemNameOptions[0];
+      else this.ddSystemNameSelected = "";
+    },
+    ddSystemNameSelected () {
+      if(this.firstload) return;
+      
+      if(this.ddItamIdOptions[0]) this.ddItamIdSelected = this.ddItamIdOptions[0];
+      else this.ddItamIdSelected = "";
+    },
+    ddItamIdSelected () {
+      if(this.firstload) return;
+      
+      if(this.ddTableNameOptions[0]) this.ddTableNameSelected = this.ddTableNameOptions[0];
+      else this.ddTableNameSelected = "";
+    },
+    ddTableNameSelected () {
+      if(this.firstload) return;
+      
+      if(this.ddColumnNameOptions[0]) this.ddColumnNameSelected = this.ddColumnNameOptions[0];
+      else this.ddColumnNameSelected = "";
+    },
+    ddColumnNameSelected (){
+      if(this.firstload) return;
       if( ! this.firstload){
         var param = {
-          ScreenLabel: this.ddScreenLabelSelected.toString(),
-          ColumnName: this.ddColumnSelected.toString(),
-          TableName: this.ddTableSelected.toString(),
+          BusinessTerm: this.ddBusinessTermSelected.toString(),
         };
 
+        if(this.ddBusinessAliasSelected && this.ddBusinessAliasSelected != "NA"){
+          param.BusinessAlias = this.ddBusinessAliasSelected.toString();
+        } 
+        if(this.ddDownstreamProcessNameSelected && this.ddDownstreamProcessNameSelected != "NA"){
+          param.DownstreamProcessName = this.ddDownstreamProcessNameSelected.toString();
+        } 
+        if(this.ddSystemNameSelected && this.ddSystemNameSelected != "NA"){
+          param.SystemName = this.ddSystemNameSelected.toString();
+        } 
+        if(this.ddItamIdSelected && this.ddItamIdSelected != "NA"){
+          param.ItamId = this.ddItamIdSelected.toString();
+        } 
+        if(this.ddTableNameSelected && this.ddTableNameSelected != "NA"){
+          param.TableName = this.ddTableNameSelected.toString();
+        } 
+        if(this.ddColumnNameSelected && this.ddColumnNameSelected != "NA"){
+          param.ColumnName = this.ddColumnNameSelected.toString();
+        } 
+        
         this.runGetDetails(param);
       }
-
-      this.firstload = false;
     }
   },
   mounted() {
@@ -467,10 +571,11 @@ export default {
       param.Left = parseInt(self.$route.params.system).toString();
       param.Right = parseInt(self.$route.params.details).toString();
 
-      self.getDetails(param).then(
+      return self.getDetails(param).then(
         res => {
+          this.firstload = true;
+
           if (self.ddomy.detailsSource.length > 0){
-            // self.selectedDetails = self.ddomy.detailsSource[0];
             var tmp = self.ddomy.detailsSource[0].Values[0];
 
             self.selectedDetails = {}
@@ -485,9 +590,17 @@ export default {
             });
             
             setTimeout(() => {
-              self.ddTableSelected = self.selectedDetails.TABLE_NAME;
-              self.ddColumnSelected = self.selectedDetails.COLUMN_NAME;
-              self.ddScreenLabelSelected = self.selectedDetails.BUSINESS_ALIAS_NAME;
+              self.ddBusinessTermSelected = self.selectedDetails.BUSINESS_TERM;
+              self.ddBusinessAliasSelected = self.selectedDetails.BUSINESS_ALIAS;
+              self.ddDownstreamProcessNameSelected = self.selectedDetails.DOWNSTREAM_PROCESS_NAME;
+              self.ddSystemNameSelected = self.selectedDetails.SYSTEM_NAME_DD;
+              self.ddItamIdSelected = self.selectedDetails.ITAM_ID_DD;
+              self.ddTableNameSelected = self.selectedDetails.TABLE_NAME_DD;
+              self.ddColumnNameSelected = self.selectedDetails.COLUMN_NAME_DD;
+
+              setTimeout(() => {
+                this.firstload = false;
+              }, 100);
             }, 100);
           } else {
             this.selectedDetails = null;

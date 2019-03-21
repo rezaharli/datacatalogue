@@ -123,7 +123,6 @@ func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	args := make([]interface{}, 0)
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
-	args = append(args, payload.GetString("Right"))
 
 	if strings.Contains(payload.GetString("Which"), "my") == true {
 		tabs = "ddomy"
@@ -137,50 +136,92 @@ func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 		return nil, 0, err
 	}
 
-	// q := `SELECT
-	// 		tc.name as data_domain,
-	// 		tsc.name as sub_domain,
-	// 		tlscp.people_id as sub_domain_owner,
-	// 		tp.bank_id,
-	// 		tbt.bt_name,
-	// 		tbt.description as business_term_description,
-	// 		tmc.alias_name,
-	// 		tbt.cde,
-	// 		tbt.dq_standards,
-	// 		tbt.policy_guidance,
-	// 		tbt.mandatory,
-	// 		tbt.golden_source_system_id,
-	// 		ts.itam_id,
-	// 		tmt.name as golden_source_table_name,
-	// 		tmc.name as golden_source_column_name,
-	// 		tpo.info_asset_name,
-	// 		tpo.description as info_asset_desc,
-	// 		tpo.confidentiality,
-	// 		tpo.integrity,
-	// 		tpo.availability,
-	// 		tpo.overall_cia_rating,
-	// 		tmc.record_category,
-	// 		tmc.pii_flag,
-	// 		tdp.name as downstream_process_name,
-	// 		tdp.owner_name as downstream_process_owner,
-	// 		ts.system_name,
-	// 		tmc.name as column_name,
-	// 		tmc.ddo_threshold
-	// 	FROM
-	// 		tbl_category tc
-	// 		INNER JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
-	// 		INNER JOIN tbl_business_term tbt ON tbt.parent_id = tsc.id
-	// 		LEFT JOIN tbl_link_subcategory_people tlscp ON tlscp.subcategory_id = tsc.id
-	// 		LEFT JOIN Tbl_People	tp on tlscp.people_id = tp.id
-	// 		LEFT join tbl_md_column tmc on tmc.business_term_id = tbt.id
-	// 		LEFT join tbl_md_table tmt on tmc.table_id = tmt.id
-	// 		LEFT join tbl_md_resource tmr on tmt.resource_id = tmr.id
-	// 		LEFT join tbl_system ts on tmr.system_id = ts.id
-	// 		LEFT join tbl_policy tpo on tbt.policy_id = tpo.id
-	// 		LEFT join tbl_ds_process_detail tdpd on tdpd.business_term_id = tbt.id
-	// 		LEFT join tbl_ds_processes tdp on tdpd.process_id = tdp.id
-	// 	WHERE
-	// 		tc.id = ` + toolkit.ToString(leftParam) + ` and tbt.id = ` + toolkit.ToString(rightParam)
+	otherArgs := make([]string, 0)
+	if payload.GetString("BusinessTerm") != "" {
+		otherArgs = append(otherArgs, "")
+	} else {
+		otherArgs = append(otherArgs, payload.GetString("Right"))
+	}
+
+	otherArgs = append(otherArgs,
+		payload.GetString("BusinessTerm"),
+		payload.GetString("BusinessAlias"),
+		payload.GetString("DownstreamProcessName"),
+		payload.GetString("SystemName"),
+		payload.GetString("ItamId"),
+		payload.GetString("TableName"),
+		payload.GetString("ColumnName"),
+	)
+
+	///////// FILTER
+	q = `SELECT * FROM (
+		` + q + `
+	) 
+	WHERE (
+			tbtid = '` + otherArgs[0] + `'
+		) OR (
+			business_term = '` + otherArgs[1] + `' `
+	if otherArgs[2] != "" {
+		q += `AND business_alias = '` + otherArgs[2] + `' `
+	}
+	if otherArgs[3] != "" {
+		q += `AND downstream_process_name = '` + otherArgs[3] + `' `
+	}
+	if otherArgs[4] != "" {
+		q += `AND system_name_dd = '` + otherArgs[4] + `' `
+	}
+	if otherArgs[5] != "" {
+		q += `AND itam_id_dd = '` + otherArgs[5] + `' `
+	}
+	if otherArgs[6] != "" {
+		q += `AND table_name_dd = '` + otherArgs[6] + `' `
+	}
+	if otherArgs[7] != "" {
+		q += `AND column_name_dd = '` + otherArgs[7] + `' `
+	}
+	q += `) `
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DDOService) GetddSource(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	tabs := ""
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, toolkit.ToString(payload.GetInt("Left")))
+
+	if strings.Contains(payload.GetString("Which"), "my") == true {
+		tabs = "ddomy"
+	} else {
+		tabs = "ddoall"
+	}
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err := h.BuildQueryFromFile(filePath, "details", args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	///////// FILTER
+	q = `SELECT DISTINCT business_term, business_alias, downstream_process_name, system_name_dd, itam_id_dd, table_name_dd, column_name_dd 
+		FROM (
+		` + q + `
+	) `
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),

@@ -32,6 +32,7 @@ SELECT DISTINCT
 -- name: details
 SELECT DISTINCT
         tc.id,
+        tbt.id                          as tbtid,
         tc.name                         as data_domain,
         tsc.name                        as sub_domain,
         tlscp.people_id                 as sub_domain_owner,
@@ -83,5 +84,4 @@ SELECT DISTINCT
         LEFT join tbl_ds_process_detail tdpd on tdpd.column_id = tmc.id
         LEFT join tbl_ds_processes tdp on tdpd.process_id = tdp.id
     WHERE
-        tsc.id = '?' 
-        AND tbt.id = '?'
+        tsc.id = '?'
