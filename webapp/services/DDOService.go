@@ -47,6 +47,7 @@ func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD inte
 		return nil, 0, err
 	}
 
+	///////// COUNT
 	q = `SELECT res.*, 
 			COUNT(DISTINCT data_domain) OVER () COUNT_data_domain,
 			COUNT(DISTINCT sub_domains) OVER () COUNT_sub_domains,
@@ -91,10 +92,11 @@ func (s *DDOService) GetRightTable(tabs string, systemID int, search string, sea
 		return nil, 0, err
 	}
 
+	///////// COUNT
 	q = `SELECT res.*, 
 			COUNT(DISTINCT business_term) OVER () COUNT_business_term,
 			COUNT(DISTINCT bt_description) OVER () COUNT_bt_description,
-			COUNT(DISTINCT cde_yes_no) OVER () COUNT_cde_yes_no
+			(SELECT COUNT (cde_yes_no) FROM ( ` + q + `) res2 WHERE cde_yes_no = 1) COUNT_cde_yes_no
 		FROM ( ` + q + `) res `
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
