@@ -30,6 +30,7 @@ func (c *DDO) GetLeftTable(k *knot.WebContext) {
 	loggedinId := payload.GetString("LoggedInID")
 	search := payload.GetString("Search")
 	searchDD := payload.Get("SearchDD")
+	colFilter := payload.Get("Filters")
 	pagination, err := toolkit.ToM(payload.Get("Pagination"))
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
@@ -39,7 +40,7 @@ func (c *DDO) GetLeftTable(k *knot.WebContext) {
 	pageNumber := pagination.GetInt("page")
 	rowsPerPage := pagination.GetInt("rowsPerPage")
 
-	systems, _, err := s.NewDDOService().GetLeftTable(tabs, loggedinId, search, searchDD, pageNumber, rowsPerPage, toolkit.M{})
+	systems, _, err := s.NewDDOService().GetLeftTable(tabs, loggedinId, search, searchDD, colFilter, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -61,6 +62,7 @@ func (c *DDO) GetRightTable(k *knot.WebContext) {
 	tabs := payload.GetString("Tabs")
 	search := payload.GetString("Search")
 	searchDD := payload.Get("SearchDD")
+	colFilter := payload.Get("Filters")
 	systemID := payload.GetInt("SystemID")
 	pagination, err := toolkit.ToM(payload.Get("Pagination"))
 	if err != nil {
@@ -71,7 +73,7 @@ func (c *DDO) GetRightTable(k *knot.WebContext) {
 	pageNumber := pagination.GetInt("page")
 	rowsPerPage := pagination.GetInt("rowsPerPage")
 
-	systems, _, err := s.NewDDOService().GetRightTable(tabs, systemID, search, searchDD, pageNumber, rowsPerPage, toolkit.M{})
+	systems, _, err := s.NewDDOService().GetRightTable(tabs, systemID, search, searchDD, colFilter, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return

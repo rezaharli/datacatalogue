@@ -261,3 +261,72 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 	err := Database().Cursor(dbflex.From(param.TableName).SQL(sqlQuery), nil).Fetchs(param.Results, 0)
 	return err
 }
+
+type PrepareQueryParam struct {
+	q                            string
+	Cols                         []string
+	ColsFilteredBySearchDropdown map[string]string
+	ColumnFilters                []string
+	SpecialCountCols             []string
+	SpecialCountQueries          []string
+}
+
+func (DBcmd) PrepareQueryForGrids(p PrepareQueryParam) string {
+	checkNotEmpty := func(s []string) bool {
+		for _, v := range s {
+			if v != "" {
+				return true
+			}
+		}
+		return false
+	}
+
+	///////// DROPDOWN FILTER
+	p.q = `SELECT * FROM (
+		` + p.q + `
+	) WHERE ( `
+	i := 0
+	for key, val := range p.ColsFilteredBySearchDropdown {
+		if i != 0 {
+			p.q += `AND `
+		}
+		p.q += `upper(` + key + `) LIKE upper('%` + val + `%') `
+	}
+	p.q += `) `
+
+	if checkNotEmpty(p.ColumnFilters) == true {
+		///////// COLUMN FILTER
+		p.q += `AND ( `
+		for i, col := range p.Cols {
+			if i != 0 {
+				p.q += `AND `
+			}
+			p.q += `upper(` + col + `) LIKE upper('%` + p.ColumnFilters[i] + `%') `
+		}
+		p.q += `) `
+	}
+
+	return p.q
+}
+
+func (DBcmd) PrepareCountQueryForGrids(p PrepareQueryParam) string {
+	ret := p.q
+
+	///////// COUNT
+	ret = `SELECT res.*, `
+	for i, col := range p.Cols {
+		ret += `COUNT(DISTINCT ` + col + `) OVER () COUNT_` + col
+		if i != len(p.Cols)-1 {
+			ret += `, `
+		}
+	}
+	ret = `COUNT(DISTINCT table_name) OVER () COUNT_table_name,
+			COUNT(DISTINCT column_name) OVER () COUNT_column_name,
+			COUNT(DISTINCT business_alias_name) OVER () COUNT_business_alias_name,
+			(SELECT COUNT (cde_yes_no) FROM ( ` + p.q + `) res2 WHERE cde_yes_no = 1) COUNT_cde_yes_no
+		FROM (
+			` + p.q + `
+		) res `
+
+	return ret
+}

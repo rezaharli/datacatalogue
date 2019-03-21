@@ -19,7 +19,7 @@ func NewDDOService() *DDOService {
 	return ret
 }
 
-func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
+func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -30,27 +30,57 @@ func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD inte
 		args = append(args, loggedinid)
 	}
 
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err := h.BuildQueryFromFile(filePath, "left-grid", args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {
 		return nil, 0, err
 	}
 
+	filterSubDomains := ""
 	if search != "" {
-		args = append(args, search, searchDDM.GetString("SubDataDomain"), searchDDM.GetString("SubDataDomainOwner"))
+		filterSubDomains = search
 	} else {
-		args = append(args, searchDDM.GetString("DataDomain"), searchDDM.GetString("SubDataDomain"), searchDDM.GetString("SubDataDomainOwner"))
+		filterSubDomains = searchDDM.GetString("SubDataDomain")
+	}
+	filterDataDomain := searchDDM.GetString("DataDomain")
+	filterSubDomainOwner := searchDDM.GetString("SubDataDomainOwner")
+
+	///////// DROPDOWN FILTER
+	q = `SELECT * FROM (
+		` + q + `
+	) WHERE (
+		upper(sub_domains) LIKE upper('%` + filterSubDomains + `%')
+		AND upper(data_domain) LIKE upper('%` + filterDataDomain + `%')
+		AND upper(sub_domain_owner) LIKE upper('%` + filterSubDomainOwner + `%')
+	) `
+
+	colFilterM, err := toolkit.ToM(colFilter)
+	cf := make([]string, 0)
+	if err != nil {
+		cf = append(cf, "", "", "", "")
+	} else {
+		cf = append(cf, colFilterM.GetString("SUB_DOMAINS"), colFilterM.GetString("DATA_DOMAIN"), colFilterM.GetString("SUB_DOMAIN_OWNER"), colFilterM.GetString("BANK_ID"))
 	}
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err = h.BuildQueryFromFile(filePath, "left-grid", args...)
-	if err != nil {
-		return nil, 0, err
+	///////// COLUMN FILTER
+	if cf[0] != "" || cf[1] != "" || cf[2] != "" || cf[3] != "" {
+		q += `AND (
+			upper(sub_domains) LIKE upper('%` + cf[0] + `%')
+			AND upper(data_domain) LIKE upper('%` + cf[1] + `%')
+			AND upper(sub_domain_owner) LIKE upper('%` + cf[2] + `%')
+			AND upper(bank_id) LIKE upper('%` + cf[3] + `%')
+		) `
 	}
 
 	///////// COUNT
 	q = `SELECT res.*, 
-			COUNT(DISTINCT data_domain) OVER () COUNT_data_domain,
 			COUNT(DISTINCT sub_domains) OVER () COUNT_sub_domains,
+			COUNT(DISTINCT data_domain) OVER () COUNT_data_domain,
 			COUNT(DISTINCT sub_domain_owner) OVER () COUNT_sub_domain_owner,
 			COUNT(DISTINCT bank_id) OVER () COUNT_bank_id
 		FROM ( ` + q + `) res `
@@ -71,25 +101,50 @@ func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD inte
 	return resultRows, resultTotal, nil
 }
 
-func (s *DDOService) GetRightTable(tabs string, systemID int, search string, searchDD interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
+func (s *DDOService) GetRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, toolkit.ToString(systemID))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err := h.BuildQueryFromFile(filePath, "right-grid", args...)
+	if err != nil {
+		return nil, 0, err
+	}
 
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	q := ""
-	args := make([]interface{}, 0)
+	filterBusinessTerm := searchDDM.GetString("BusinessTerm")
 
-	args = append(args, toolkit.ToString(systemID))
-	args = append(args, searchDDM.GetString("BusinessTerm"))
+	///////// DROPDOWN FILTER
+	q = `SELECT * FROM (
+		` + q + `
+	) WHERE (
+		upper(business_term) LIKE upper('%` + filterBusinessTerm + `%')
+	) `
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err = h.BuildQueryFromFile(filePath, "right-grid", args...)
+	colFilterM, err := toolkit.ToM(colFilter)
+	cf := make([]string, 0)
 	if err != nil {
-		return nil, 0, err
+		cf = append(cf, "", "", "")
+	} else {
+		cf = append(cf, colFilterM.GetString("BUSINESS_TERM"), colFilterM.GetString("BT_DESCRIPTION"), colFilterM.GetString("BUSINESS_ALIAS_NAME"), colFilterM.GetString("CDE_YES_NO"))
+	}
+
+	///////// COLUMN FILTER
+	if cf[0] != "" || cf[1] != "" || cf[2] != "" {
+		q += `AND (
+			upper(business_term) LIKE upper('%` + cf[0] + `%')
+			AND upper(bt_description) LIKE upper('%` + cf[1] + `%')
+			AND upper(cde_yes_no) LIKE upper('%` + cf[2] + `%')
+		) `
 	}
 
 	///////// COUNT

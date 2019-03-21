@@ -101,10 +101,10 @@ table.v-table thead th > div.btn-group {
                     </template>
 
                     <b-dropdown-header>
-                      <b-form-input type="text" placeholder="Filter" v-model="search['systems'][props.header.value]" @change="filterKeyup('systems', props.header)"></b-form-input>
+                      <b-form-input type="text" placeholder="Filter" v-model="ddomy.filters['left'][props.header.value.split('.').reverse()[0]]" @change="filterKeyup('left', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, ddomy.left.source)" :key="item" @click="columnFilter('systems', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, ddomy.left.source)" :key="item" @click="filterClick('left', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -163,10 +163,10 @@ table.v-table thead th > div.btn-group {
                     </template>
 
                     <b-dropdown-header>
-                      <b-form-input type="text" placeholder="Filter" v-model="search['tablename'][props.header.value]" @change="filterKeyup('tablename', props.header)"></b-form-input>
+                      <b-form-input type="text" placeholder="Filter" v-model="ddomy.filters['right'][props.header.value.split('.').reverse()[0]]" @change="filterKeyup('right', props.header)"></b-form-input>
                     </b-dropdown-header>
-
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, ddomy.right.source)" :key="item" @click="columnFilter('tablename', props.header, item)">
+                    
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, ddomy.right.source)" :key="item" @click="filterClick('right', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -202,10 +202,6 @@ export default {
     },
     data () {
       return {
-        search: {
-          systems: {},
-          tablename: {}
-        },
         secondtable: false,
         systemSource: [],
         tablenameSource: [],
@@ -286,29 +282,29 @@ export default {
         }
 
         if(this.secondtable){
-          this.getRightTable(this.$route.params.system);
+          this.doGetRightTable(this.$route.params.system);
         }
       },
       "ddomy.left.pagination": {
         handler () {
-          this.getLeftTable();
+          this.doGetLeftTable();
         },
         deep: true
       },
       "ddomy.right.pagination": {
         handler () {
           if(this.secondtable){
-            this.getRightTable(this.$route.params.system);
+            this.doGetRightTable(this.$route.params.system);
           }
         },
         deep: true
       },
       "ddomy.searchMain" (val, oldVal){
         if(val || oldVal) {
-          this.getLeftTable();
+          this.doGetLeftTable();
 
           if(this.secondtable){
-            this.getRightTable(this.$route.params.system);
+            this.doGetRightTable(this.$route.params.system);
           }
         }
       }
@@ -321,57 +317,23 @@ export default {
           getLeftTable: 'getLeftTable',
           getRightTable: 'getRightTable',
       }),
-      columnFilter (type, keyModel, val) {
-        if(val == ""){
-          if(type == "systems"){
-            this.ddomy.left.display = this.ddomy.left.source;
-          } else {
-            this.ddomy.right.display = this.ddomy.right.source;
-          }
-          
-          return
-        }
-
-        if(type == "systems"){
-          if(keyModel.value.split(".")[1]){
-            this.ddomy.left.display = _.cloneDeep(this.ddomy.left.source);
-            this.ddomy.left.display = this.ddomy.left.display.filter(
-              v => {
-                var key = keyModel.value.split(".")[0];
-                
-                v[key] = v[key].filter(w => w[keyModel.value.split(".")[1]].toString().toUpperCase().includes(val.toString().toUpperCase()))
-
-                return v[key].length > 0;
-              }
-            );
-          } else {
-            this.ddomy.left.display = _.cloneDeep(this.ddomy.left.source);
-            this.ddomy.left.display = _.filter(this.ddomy.left.display, (v) => {
-              return v[keyModel.value].toString().toUpperCase().includes(val.toString().toUpperCase());
-            });
-          }
-        } else {
-          if(keyModel.value.split(".")[1]){
-            this.ddomy.right.display = _.cloneDeep(this.ddomy.right.source);
-            this.ddomy.right.display = this.ddomy.right.display.filter(
-              v => {
-                var key = keyModel.value.split(".")[0];
-                
-                v[key] = v[key].filter(w => w[keyModel.value.split(".")[1]].toString().toUpperCase().includes(val.toString().toUpperCase()))
-
-                return v[key].length > 0;
-              }
-            );
-          } else {
-            this.ddomy.right.display = _.cloneDeep(this.ddomy.right.source);
-            this.ddomy.right.display = _.filter(this.ddomy.right.display, (v) => {
-              return v[keyModel.value].toString().toUpperCase().includes(val.toString().toUpperCase());
-            });
-          }
-        }
+      doGetLeftTable () {
+        this.getLeftTable();
+      },
+      doGetRightTable (id) {
+        this.getRightTable(id);
       },
       filterKeyup (type, keyModel) {
-        this.columnFilter(type, keyModel, this.search[type][keyModel.value]);
+        // this.columnFilter(type, keyModel);
+        if(type == "left") this.doGetLeftTable()
+        else this.doGetRightTable(this.$route.params.system)
+      },
+      filterClick (type, keyModel, val) {
+        this.ddomy.filters[type][keyModel.value.split('.').reverse()[0]] = val;
+
+        // this.columnFilter(type, keyModel);
+        if(type == "left") this.doGetLeftTable()
+        else this.doGetRightTable(this.$route.params.system)
       },
       distinctData (col, datax) {
         var cols = col.split(".")
@@ -396,10 +358,10 @@ export default {
       onSubmit (evt) {
         if(evt) evt.preventDefault();
 
-        this.getLeftTable();
+        this.doGetLeftTable();
 
         if(this.secondtable){
-          this.getRightTable(this.$route.params.system);
+          this.doGetRightTable(this.$route.params.system);
         }
 
         this.$refs.ddownSearch.hide(true);
