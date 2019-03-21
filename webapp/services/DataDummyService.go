@@ -220,7 +220,7 @@ func (s *DSCService) CreateMDColumnDummyData() error {
 		mdt.Business_Term_ID = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.Data_Type = fake.Words()
 		mdt.Data_Format = fake.Words()
-		mdt.Data_Length = toolkit.ToInt(fake.DigitsN(3), "")
+		mdt.Data_Length = fake.DigitsN(3)
 		mdt.Example = fake.Words()
 		mdt.Derived = rand.Intn(2)
 		mdt.Derivation_Logic = fake.Words()

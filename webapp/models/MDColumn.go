@@ -10,7 +10,7 @@ type MDColumn struct {
 	Business_Term_ID      int
 	Data_Type             string
 	Data_Format           string
-	Data_Length           int
+	Data_Length           string
 	Example               string
 	Derived               int
 	Derivation_Logic      string
