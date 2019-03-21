@@ -409,7 +409,13 @@ export default {
             self.selectedDetails = {}
             _.each(Object.keys(tmp), function(v, i){
                 self.selectedDetails[v] = _.uniq(
-                  _.map(self.dscmy.detailsSource[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)).join(', ');
+                  _.map(self.dscmy.detailsSource[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)
+                );
+                if(v == "DATASET_CUSTODIAN" || v == "BANK_ID"){
+                  self.selectedDetails[v] = self.selectedDetails[v].join('; ');
+                } else {
+                  self.selectedDetails[v] = self.selectedDetails[v].join(', ');
+                }
             });
             
             // interrupt
