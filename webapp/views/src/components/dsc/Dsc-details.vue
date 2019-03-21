@@ -350,16 +350,10 @@ export default {
       this.showModal = showModal;
     },
     ddTableSelected () {
-      if(this.firstload) {
-        return;
-      }
+      if(this.firstload) return;
 
-      if( ! this.ddColumnSelected)
-        this.ddColumnSelected = this.ddColumnOptions[0];
-      else {
-        if(this.ddColumnOptions.indexOf(this.ddColumnSelected) == -1)
-          this.ddColumnSelected = this.ddColumnOptions[0];
-      }
+      if(this.ddColumnOptions[0]) this.ddColumnSelected = this.ddColumnOptions[0];
+      else this.ddColumnSelected = "";
     },
     ddColumnSelected () {
       if(this.firstload) return;

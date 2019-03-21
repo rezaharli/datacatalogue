@@ -292,7 +292,7 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	}
 
 	otherArgs := make([]string, 0)
-	if payload.GetString("TableName") != "" && payload.GetString("ColumnName") != "" && payload.GetString("ScreenLabel") != "" {
+	if payload.GetString("TableName") != "" && payload.GetString("ColumnName") != "" {
 		otherArgs = append(otherArgs, "", "")
 	} else {
 		otherArgs = append(otherArgs, payload.GetString("Right"), payload.GetString("Column"))
