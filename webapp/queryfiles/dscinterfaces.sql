@@ -56,6 +56,8 @@ SELECT DISTINCT
 -- name: details
 SELECT DISTINCT
 		ts.id,
+		tmt.id								as tmtid,
+		tmc.id								as tmcid,
 		ts.system_name						as system_name,
 		ts.itam_id							as itam_id,
 		tp.first_name						as dataset_custodian,
@@ -114,38 +116,5 @@ SELECT DISTINCT
         LEFT JOIN tbl_policy tpol ON tbt.policy_id = tpol.id
         
         LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
-    WHERE ts.id = '?'
-		AND (ips.system_name is not null or iss.system_name is not null) AND tmc.cde = 1
-        AND 
-        (
-            (
-                tmt.id = '?'
-                AND tmc.id = '?'
-            ) OR (
-                tmt.name = '?'
-                AND tmc.name = '?'
-                AND tmc.alias_name = '?'
-            )
-        )
-
--- name: details-dropdown
-SELECT DISTINCT
-		tmt.name 	    as table_name,
-		tmc.name 	    as column_name,
-		tmc.alias_name  as business_alias_name
-    FROM tbl_system ts
-        inner join tbl_md_resource res ON ts.id = res.system_id
-        inner join tbl_md_table tmt ON res.id = tmt.resource_id
-        inner join tbl_md_column tmc ON tmt.id = tmc.table_id
-        
-        left join tbl_link_column_interface ci on tmc.id = ci.column_id
-        left join tbl_system ips on ci.imm_prec_system_id = ips.id
-        left join tbl_system iss on ci.imm_succ_system_id = iss.id
-        LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.column_id = tmc.id
-        LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id 
-        
-        LEFT JOIN Tbl_Link_Role_People tlrp_sdo ON tlrp_sdo.Object_ID = tdp.id and tlrp_sdo.object_type = 'PROCESSES'
-        LEFT JOIN Tbl_Role rl ON tlrp_sdo.role_id = rl.id and rl.role_name = 'Downstream Process Owner'
-        LEFT JOIN Tbl_People ppl ON tlrp_sdo.people_id = ppl.id
     WHERE ts.id = '?'
 		AND (ips.system_name is not null or iss.system_name is not null) AND tmc.cde = 1

@@ -277,14 +277,6 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	if payload.GetString("TableName") != "" && payload.GetString("ColumnName") != "" && payload.GetString("ScreenLabel") != "" {
-		args = append(args, "", "")
-	} else {
-		args = append(args, payload.GetString("Right"), payload.GetString("Column"))
-	}
-
-	args = append(args, payload.GetString("TableName"), payload.GetString("ColumnName"), payload.GetString("ScreenLabel"))
-
 	if strings.Contains(payload.GetString("Which"), "interfaces") == true {
 		tabs = "dscinterfaces"
 	} else if strings.Contains(payload.GetString("Which"), "my") == true {
@@ -298,6 +290,30 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	if err != nil {
 		return nil, 0, err
 	}
+
+	otherArgs := make([]string, 0)
+	if payload.GetString("TableName") != "" && payload.GetString("ColumnName") != "" && payload.GetString("ScreenLabel") != "" {
+		otherArgs = append(otherArgs, "", "")
+	} else {
+		otherArgs = append(otherArgs, payload.GetString("Right"), payload.GetString("Column"))
+	}
+
+	otherArgs = append(otherArgs, payload.GetString("TableName"), payload.GetString("ColumnName"), payload.GetString("ScreenLabel"))
+
+	///////// FILTER
+	q = `SELECT * FROM (
+		` + q + `
+	) 
+	WHERE (
+			tmtid = '` + otherArgs[0] + `'
+			AND tmcid = '` + otherArgs[1] + `'
+		) OR (
+			table_name = '` + otherArgs[2] + `'
+			AND column_name = '` + otherArgs[3] + `' `
+	if otherArgs[4] != "" {
+		q += `AND business_alias_name = '` + otherArgs[4] + `' `
+	}
+	q += `) `
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
@@ -332,10 +348,16 @@ func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 	}
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-dropdown", args...)
+	q, err := h.BuildQueryFromFile(filePath, "details", args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	///////// FILTER
+	q = `SELECT DISTINCT table_name, column_name, business_alias_name 
+		FROM (
+		` + q + `
+	) `
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),

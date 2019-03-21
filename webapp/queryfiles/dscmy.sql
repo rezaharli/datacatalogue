@@ -71,9 +71,11 @@ SELECT DISTINCT
 -- name: details
 SELECT DISTINCT
 		ts.id,
+		tmt.id								as tmtid,
+		tmc.id								as tmcid,
 		ts.system_name						as system_name,
 		ts.itam_id							as itam_id,
-		tp.first_name||' '||tp.last_name					as dataset_custodian,
+		tp.first_name||' '||tp.last_name	as dataset_custodian,
 		tp.bank_id							as bank_id,
 		tmc.alias_name						as business_alias_name,
 		tmt.name 							as table_name,
@@ -105,56 +107,6 @@ SELECT DISTINCT
 		ips.system_name 					as imm_preceeding_system,
 		iss.system_name 					as imm_succeeding_system,
 		tmc.DQ_STANDARDS||' '||tmc.threshold			as threshold
-	FROM tbl_system ts
-		LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
-		LEFT JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
-		LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
-
-		inner join tbl_md_resource tmr ON ts.id = tmr.system_id
-		inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
-		inner join tbl_md_column tmc ON tmt.id = tmc.table_id
-		
-		LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
-		
-		LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
-		LEFT JOIN Tbl_Link_Role_People tlrp_sdo ON tlrp_sdo.Object_ID = tsc.id AND tlrp_sdo.object_type = 'SUBCATEGORY'
-		LEFT JOIN Tbl_Role rl ON tlrp_sdo.role_id = rl.id and rl.role_name = 'Data Domain Owner'
-		LEFT JOIN Tbl_People ppl ON tlrp_sdo.people_id = ppl.id
-		
-		LEFT JOIN tbl_policy tpol ON tbt.policy_id = tpol.id
-		
-		left join tbl_link_column_interface ci on tmc.id = ci.column_id
-		left join tbl_system ips on ci.imm_prec_system_id = ips.id
-		left join tbl_system iss on ci.imm_succ_system_id = iss.id
-		LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
-		LEFT JOIN tbl_link_category_people tlcp ON tlcp.category_id = tc.id
-		inner join
-		(
-			SELECT
-			DISTINCT ts.id as sys_id, tmr.id as res_id, tmt.id as tab_id
-			FROM tbl_system ts
-				inner join tbl_md_resource tmr ON ts.id = tmr.system_id
-				inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
-				inner join tbl_md_column tmc ON tmt.id = tmc.table_id
-			WHERE 
-				ts.id = '?'
-				AND CDE = 1
-		) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id and tmt.id = cde.tab_id
-	WHERE (
-			tmt.id = '?'
-			AND tmc.id = '?'
-		) OR (
-			tmt.name = '?'
-			AND tmc.name = '?'
-			AND tmc.alias_name = '?'
-		)
-	ORDER BY tmt.name, tmc.name
-
--- name: details-dropdown
-SELECT DISTINCT
-		tmt.name 	    as table_name,
-		tmc.name 	    as column_name,
-		tmc.alias_name  as business_alias_name
 	FROM tbl_system ts
 		LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
 		LEFT JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'

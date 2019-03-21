@@ -350,6 +350,10 @@ export default {
       this.showModal = showModal;
     },
     ddTableSelected () {
+      if(this.firstload) {
+        return;
+      }
+
       if( ! this.ddColumnSelected)
         this.ddColumnSelected = this.ddColumnOptions[0];
       else {
@@ -358,25 +362,25 @@ export default {
       }
     },
     ddColumnSelected () {
-      if( ! this.ddScreenLabelSelected)
-        this.ddScreenLabelSelected = this.ddScreenLabelOptions[0];
-      else {
-        if(this.ddScreenLabelOptions.indexOf(this.ddScreenLabelSelected) == -1)
-          this.ddScreenLabelSelected = this.ddScreenLabelOptions[0];
-      }
+      if(this.firstload) return;
+      
+      if(this.ddScreenLabelOptions[0]) this.ddScreenLabelSelected = this.ddScreenLabelOptions[0];
+      else this.ddScreenLabelSelected = "";
     },
     ddScreenLabelSelected (){
+      if(this.firstload) return;
       if( ! this.firstload){
         var param = {
-          ScreenLabel: this.ddScreenLabelSelected.toString(),
           ColumnName: this.ddColumnSelected.toString(),
           TableName: this.ddTableSelected.toString(),
         };
 
+        if(this.ddScreenLabelSelected && this.ddScreenLabelSelected != "NA"){
+          param.ScreenLabel = this.ddScreenLabelSelected.toString();
+        } 
+        
         this.runGetDetails(param);
       }
-
-      this.firstload = false;
     }
   },
   mounted() {
@@ -400,10 +404,11 @@ export default {
       param.Right = parseInt(self.$route.params.details).toString();
       param.Column = parseInt(self.$route.params.column).toString();
 
-      self.getDetails(param).then(
+      return self.getDetails(param).then(
         res => {
+          this.firstload = true;
+
           if (self.dscmy.detailsSource.length > 0){
-            // self.selectedDetails = self.dscmy.detailsSource[0];
             var tmp = self.dscmy.detailsSource[0].Values[0];
 
             self.selectedDetails = {}
@@ -433,6 +438,10 @@ export default {
               self.ddTableSelected = self.selectedDetails.TABLE_NAME;
               self.ddColumnSelected = self.selectedDetails.COLUMN_NAME;
               self.ddScreenLabelSelected = self.selectedDetails.BUSINESS_ALIAS_NAME;
+
+              setTimeout(() => {
+                this.firstload = false;
+              }, 100);
             }, 100);
           } else {
             this.selectedDetails = null;
