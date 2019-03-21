@@ -27,6 +27,8 @@ SELECT DISTINCT
         tmt.id,
         ts.id                               as tsid,
         tmc.id                              as colid,
+        tmt.name                            as table_name,
+        tmc.name                            as column_name,
         tmc.alias_name                      as list_of_cde,
         ips.system_name                     as imm_prec_system_name,
         tmc.Imm_Prec_System_SLA             as Imm_Prec_System_SLA,
