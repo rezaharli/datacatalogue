@@ -72,6 +72,7 @@ func (c *Users) Register(k *knot.WebContext) {
 		return
 	}
 
+	payload.ID = payload.Username
 	ok, err := s.NewUserService().Insert(payload)
 	if !ok && err != nil {
 		h.WriteResultError(k, res, err.Error())

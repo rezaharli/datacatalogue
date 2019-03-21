@@ -181,8 +181,6 @@ func (s *UserService) Insert(data *m.SysUser) (bool, error) {
 			return false, err
 		}
 
-		dataM.Unset("ID")
-
 		err = h.NewDBcmd().Insert(h.InsertParam{
 			TableName: m.NewSysUserModel().TableName(),
 			Data:      dataM,
