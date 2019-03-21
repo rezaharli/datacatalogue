@@ -7,7 +7,21 @@ export const ddoMyService = {
 };
 
 function getLeftTable(param) {
-    return fetchWHeader(`/ddo/getlefttable`, param)
+    return fetchWHeader(`/ddo/getlefttable`, param).then(
+        res => {
+            var tmp = _.groupBy(res.Data, "SUB_DOMAINS")
+            
+            res.Data = _.map(Object.keys(tmp), function(v, i){
+                var ret = tmp[v][0];
+                ret.SUB_DOMAINS = v;
+                ret.Values = tmp[v];
+
+                return ret;
+            });
+
+            return res;
+        }
+    )
 }
 
 function getRightTable(param) {
