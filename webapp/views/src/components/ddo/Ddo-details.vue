@@ -265,7 +265,7 @@ legend.col-form-label, label.col-form-label {
 
           <b-row>
             <b-col>
-              <b-card title="Business Term Residing In Other Systems" tag="article" class="mb-2" v-if="selectedDetailsBTResiding">
+              <b-card title="Business Term Residing In Other Systems" tag="article" class="mb-2">
                 <p class="card-text">
                   <b-form>
                     <b-form-group
@@ -490,36 +490,112 @@ export default {
     },
     ddBusinessAliasSelected () {
       if(this.firstload) return;
-      
-      if(this.ddDownstreamProcessNameOptions[0]) this.ddDownstreamProcessNameSelected = this.ddDownstreamProcessNameOptions[0];
-      else this.ddDownstreamProcessNameSelected = "";
+
+      if( ! this.firstload){
+        var param = {
+          BusinessTerm: this.ddBusinessTermSelected.toString(),
+        };
+
+        if(this.ddBusinessAliasSelected && this.ddBusinessAliasSelected != "NA"){
+          param.BusinessAlias = this.ddBusinessAliasSelected.toString();
+        }
+        
+        this.runGetDetails(param);
+      }
     },
     ddDownstreamProcessNameSelected () {
       if(this.firstload) return;
       
-      if(this.ddSystemNameOptions[0]) this.ddSystemNameSelected = this.ddSystemNameOptions[0];
-      else this.ddSystemNameSelected = "";
+      if( ! this.firstload){
+        var param = {
+          BusinessTerm: this.ddBusinessTermSelected.toString(),
+        };
+
+        if(this.ddBusinessAliasSelected && this.ddBusinessAliasSelected != "NA"){
+          param.BusinessAlias = this.ddBusinessAliasSelected.toString();
+        } 
+        if(this.ddDownstreamProcessNameSelected && this.ddDownstreamProcessNameSelected != "NA"){
+          param.DownstreamProcessName = this.ddDownstreamProcessNameSelected.toString();
+        }
+        
+        this.runGetDetails(param);
+      }
     },
     ddSystemNameSelected () {
       if(this.firstload) return;
       
-      if(this.ddItamIdOptions[0]) this.ddItamIdSelected = this.ddItamIdOptions[0];
-      else this.ddItamIdSelected = "";
+      if( ! this.firstload){
+        var param = {
+          BusinessTerm: this.ddBusinessTermSelected.toString(),
+        };
+
+        if(this.ddBusinessAliasSelected && this.ddBusinessAliasSelected != "NA"){
+          param.BusinessAlias = this.ddBusinessAliasSelected.toString();
+        } 
+        if(this.ddDownstreamProcessNameSelected && this.ddDownstreamProcessNameSelected != "NA"){
+          param.DownstreamProcessName = this.ddDownstreamProcessNameSelected.toString();
+        } 
+        if(this.ddSystemNameSelected && this.ddSystemNameSelected != "NA"){
+          param.SystemName = this.ddSystemNameSelected.toString();
+        }
+        
+        this.runGetDetails(param);
+      }
     },
     ddItamIdSelected () {
       if(this.firstload) return;
       
-      if(this.ddTableNameOptions[0]) this.ddTableNameSelected = this.ddTableNameOptions[0];
-      else this.ddTableNameSelected = "";
+      if( ! this.firstload){
+        var param = {
+          BusinessTerm: this.ddBusinessTermSelected.toString(),
+        };
+
+        if(this.ddBusinessAliasSelected && this.ddBusinessAliasSelected != "NA"){
+          param.BusinessAlias = this.ddBusinessAliasSelected.toString();
+        } 
+        if(this.ddDownstreamProcessNameSelected && this.ddDownstreamProcessNameSelected != "NA"){
+          param.DownstreamProcessName = this.ddDownstreamProcessNameSelected.toString();
+        } 
+        if(this.ddSystemNameSelected && this.ddSystemNameSelected != "NA"){
+          param.SystemName = this.ddSystemNameSelected.toString();
+        } 
+        if(this.ddItamIdSelected && this.ddItamIdSelected != "NA"){
+          param.ItamId = this.ddItamIdSelected.toString();
+        }
+        
+        this.runGetDetails(param);
+      }
     },
     ddTableNameSelected () {
       if(this.firstload) return;
       
-      if(this.ddColumnNameOptions[0]) this.ddColumnNameSelected = this.ddColumnNameOptions[0];
-      else this.ddColumnNameSelected = "";
+      if( ! this.firstload){
+        var param = {
+          BusinessTerm: this.ddBusinessTermSelected.toString(),
+        };
+
+        if(this.ddBusinessAliasSelected && this.ddBusinessAliasSelected != "NA"){
+          param.BusinessAlias = this.ddBusinessAliasSelected.toString();
+        } 
+        if(this.ddDownstreamProcessNameSelected && this.ddDownstreamProcessNameSelected != "NA"){
+          param.DownstreamProcessName = this.ddDownstreamProcessNameSelected.toString();
+        } 
+        if(this.ddSystemNameSelected && this.ddSystemNameSelected != "NA"){
+          param.SystemName = this.ddSystemNameSelected.toString();
+        } 
+        if(this.ddItamIdSelected && this.ddItamIdSelected != "NA"){
+          param.ItamId = this.ddItamIdSelected.toString();
+        } 
+        if(this.ddTableNameSelected && this.ddTableNameSelected != "NA"){
+          param.TableName = this.ddTableNameSelected.toString();
+        }
+        
+        this.runGetDetails(param);
+      }
     },
     ddColumnNameSelected (){
       if(this.firstload) return;
+      
       if( ! this.firstload){
         var param = {
           BusinessTerm: this.ddBusinessTermSelected.toString(),
@@ -542,7 +618,7 @@ export default {
         } 
         if(this.ddColumnNameSelected && this.ddColumnNameSelected != "NA"){
           param.ColumnName = this.ddColumnNameSelected.toString();
-        } 
+        }
         
         this.runGetDetails(param);
       }
@@ -578,7 +654,8 @@ export default {
             self.selectedDetailsBusinessMetadata = {}
             _.each(Object.keys(tmp), function(v, i){
                 self.selectedDetailsBusinessMetadata[v] = _.uniq(
-                  _.map(self.ddomy.DetailsBusinessMetadata[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)).join(', ');
+                  _.map(self.ddomy.DetailsBusinessMetadata[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)
+                ).join(', ');
             });
 
             // make falsy NA
