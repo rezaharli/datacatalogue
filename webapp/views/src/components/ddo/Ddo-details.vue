@@ -50,25 +50,25 @@ legend.col-form-label, label.col-form-label {
       <b-container>-->
       <b-row>
         <b-col cols="4">
-          <b-card tag="article" class="mb-2" v-if="selectedDetails">
+          <b-card tag="article" class="mb-2" v-if="selectedDetailsBusinessMetadata">
             <b-media class="left-card-media">
               <h6 class="left-card-title">Data Domain</h6>
-              <text-wrap-dialog :fulltext="selectedDetails.DATA_DOMAIN"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.DATA_DOMAIN"></text-wrap-dialog>
             </b-media>
 
             <b-media class="left-card-media">
               <h6 class="left-card-title">Sub Domain</h6>
-              <text-wrap-dialog :fulltext="selectedDetails.SUB_DOMAIN"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.SUB_DOMAIN"></text-wrap-dialog>
             </b-media>
 
             <b-media class="left-card-media">
               <h6 class="left-card-title">Sub Domain Owner</h6>
-              <text-wrap-dialog :fulltext="selectedDetails.SUB_DOMAIN_OWNER"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.SUBDOMAIN_OWNER"></text-wrap-dialog>
             </b-media>
 
             <b-media class="left-card-media">
               <h6 class="left-card-title">Bank ID</h6>
-              <text-wrap-dialog :fulltext="selectedDetails.BANK_ID"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.BANK_ID"></text-wrap-dialog>
             </b-media>
           </b-card>
         </b-col>
@@ -80,7 +80,7 @@ legend.col-form-label, label.col-form-label {
                 title="Technical Metadata From System"
                 tag="article"
                 class="mb-2"
-                v-if="selectedDetails"
+                v-if="selectedDetailsBusinessMetadata"
               >
                 <p class="card-text">
                   <b-form>
@@ -100,7 +100,7 @@ legend.col-form-label, label.col-form-label {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
-                      <text-wrap-dialog :fulltext="selectedDetails.BT_DESCRIPTION"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.BT_DESCRIPTION"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group
@@ -119,43 +119,43 @@ legend.col-form-label, label.col-form-label {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="CDE (Yes/No)">
-                      <text-wrap-dialog :fulltext="selectedDetails.CDE_YES_NO"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.CDE_YES_NO"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Quality standards | DQ Thresholds">
-                      <text-wrap-dialog :fulltext="selectedDetails.DQ_STANDARDS"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.DQ_STANDARDS"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Policy guidance (if any)">
-                      <text-wrap-dialog :fulltext="selectedDetails.POLICY_GUIDANCE"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.POLICY_GUIDANCE"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Mandatory (Yes/No)">
-                      <text-wrap-dialog :fulltext="selectedDetails.MANDATORY"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.MANDATORY"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source System">
-                      <text-wrap-dialog :fulltext="selectedDetails.GOLDEN_SYSTEM"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.GS_SYSTEM"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source ITAM ID">
-                      <text-wrap-dialog :fulltext="selectedDetails.GOLDEN_ITAM_ID"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.GS_ITAM_ID"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Table Name">
-                      <text-wrap-dialog :fulltext="selectedDetails.GOLDEN_TABLE_NAME"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.GS_TABLE_NAME"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Column Name">
-                      <text-wrap-dialog :fulltext="selectedDetails.GOLDEN_COLUMN_NAME"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.GS_COLUMN_NAME"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Target Golden Source">
-                      <text-wrap-dialog :fulltext="selectedDetails.TARGET_GOLDEN"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.TGS_SYSTEM"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Target golden source ITAM ID">
-                      <text-wrap-dialog :fulltext="selectedDetails.TARGET_GOLDEN_ITAM_ID"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.TGS_ITAM_ID"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -169,40 +169,40 @@ legend.col-form-label, label.col-form-label {
                 title="Policy Related Information"
                 tag="article"
                 class="mb-2"
-                v-if="selectedDetails"
+                v-if="selectedDetailsBusinessMetadata"
               >
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Names">
-                      <text-wrap-dialog :fulltext="selectedDetails.INFO_ASSET_NAMES"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.INFO_ASSET_NAMES"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Descriptions">
-                      <text-wrap-dialog :fulltext="selectedDetails.INFO_ASSET_DESC"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.INFO_ASSET_DESC"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="C - Confidentiality">
-                      <text-wrap-dialog :fulltext="selectedDetails.CONFIDENTIALITY"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.CONFIDENTIALITY"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="I - Integrity">
-                      <text-wrap-dialog :fulltext="selectedDetails.INTEGRITY"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.INTEGRITY"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="A - Availability">
-                      <text-wrap-dialog :fulltext="selectedDetails.AVAILABILITY"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.AVAILABILITY"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Overall CIA Rating">
-                      <text-wrap-dialog :fulltext="selectedDetails.OVERALL_CIA_RATING"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.OVERALL_CIA_RATING"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Record Categories">
-                      <text-wrap-dialog :fulltext="selectedDetails.RECORD_CATEGORIES"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.RECORD_CATEGORIES"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="PII Flag (Yes/No)">
-                      <text-wrap-dialog :fulltext="selectedDetails.PII_FLAG"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsBusinessMetadata.PII_FLAG"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -212,7 +212,7 @@ legend.col-form-label, label.col-form-label {
 
           <b-row>
             <b-col>
-              <b-card title="Downstream Usage of Business Term" tag="article" class="mb-2" v-if="selectedDetails">
+              <b-card title="Downstream Usage of Business Term" tag="article" class="mb-2" v-if="selectedDetailsDownstreamUsage">
                 <p class="card-text">
                   <b-form>
                     <b-form-group
@@ -231,31 +231,31 @@ legend.col-form-label, label.col-form-label {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Downstream Process Owner">
-                      <text-wrap-dialog :fulltext="selectedDetails.DOWNSTREAM_PROCESS_OWNER"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsDownstreamUsage.DOWNSTREAM_PROCESS_OWNER"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Is data taken from Golden Source">
-                      <text-wrap-dialog :fulltext="selectedDetails.TAKEN_FROM_GOLDEN"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsDownstreamUsage.DATA_FROM_GS"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Name">
-                      <text-wrap-dialog :fulltext="selectedDetails.SYSTEM_NAME"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsDownstreamUsage.SYSTEM_NAME"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="ITAM ID">
-                      <text-wrap-dialog :fulltext="selectedDetails.ITAM_ID"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsDownstreamUsage.ITAM_ID"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name">
-                      <text-wrap-dialog :fulltext="selectedDetails.TABLE_NAME"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsDownstreamUsage.TABLE_NAME"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name">
-                      <text-wrap-dialog :fulltext="selectedDetails.COLUMN_NAME"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsDownstreamUsage.COLUMN_NAME"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards | Thresholds set by DDO">
-                      <text-wrap-dialog :fulltext="selectedDetails.DQ_STANDARDS_BY_DDO"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsDownstreamUsage.DQ_STANDARDS"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -265,7 +265,7 @@ legend.col-form-label, label.col-form-label {
 
           <b-row>
             <b-col>
-              <b-card title="Business Term Residing In Other Systems" tag="article" class="mb-2" v-if="selectedDetails">
+              <b-card title="Business Term Residing In Other Systems" tag="article" class="mb-2" v-if="selectedDetailsBTResiding">
                 <p class="card-text">
                   <b-form>
                     <b-form-group
@@ -352,7 +352,9 @@ export default {
     return {
       firstload: true,
       showModal: this.$route.meta.showModal,
-      selectedDetails: null,
+      selectedDetailsBusinessMetadata: null,
+      selectedDetailsDownstreamUsage: null,
+      selectedDetailsBTResiding: null,
       ddBusinessTermSelected: null,
       ddBusinessAliasSelected: null,
       ddDownstreamProcessNameSelected: null,
@@ -406,75 +408,70 @@ export default {
       ddomy: state => state.ddomy.all
     }),
     ddBusinessTermOptions () {
-      return _.uniq(_.map(this.ddomy.DDSource, "BUSINESS_TERM"))
+      return _.uniq(_.map(this.ddomy.DDSourceBusinessMetadata, "BUSINESS_TERM"))
     },
     ddBusinessAliasOptions () {
       var self = this;
-      var filtered = _.filter(self.ddomy.DDSource, (v) => {
+      var filtered = _.filter(self.ddomy.DDSourceBusinessMetadata, (v) => {
         return v.BUSINESS_TERM == self.ddBusinessTermSelected;
       });
 
       return _.uniq(_.map(filtered, "BUSINESS_ALIAS"));
     },
     ddDownstreamProcessNameOptions () {
-      var self = this;
-      var filtered = _.filter(self.ddomy.DDSource, (v) => {
-        return v.BUSINESS_TERM == self.ddBusinessTermSelected 
-          && v.BUSINESS_ALIAS == self.ddBusinessAliasSelected;
-      });
+      return _.uniq(_.map(this.ddomy.DetailsDownstreamUsage, "DOWNSTREAM_PROCESS_NAME"))
+      // var self = this;
+      // var filtered = _.filter(self.ddomy.DetailsDownstreamUsage, (v) => {
+      //   return v.BUSINESS_TERM == self.ddBusinessTermSelected 
+      //     && v.BUSINESS_ALIAS == self.ddBusinessAliasSelected;
+      // });
       
-      return _.uniq(_.map(filtered, "DOWNSTREAM_PROCESS_NAME"));
+      // return _.uniq(_.map(filtered, "DOWNSTREAM_PROCESS_NAME"));
     },
     ddSystemNameOptions () {
-      var self = this;
-      var filtered = _.filter(self.ddomy.DDSource, (v) => {
-        return v.BUSINESS_TERM == self.ddBusinessTermSelected 
-          && v.BUSINESS_ALIAS == self.ddBusinessAliasSelected
-          && v.DOWNSTREAM_PROCESS_NAME == self.ddDownstreamProcessNameSelected;
-      });
+      return _.uniq(_.map(this.ddomy.DetailsBTResiding, "SYSTEM_NAME"))
+      // var self = this;
+      // var filtered = _.filter(self.ddomy.DDSource, (v) => {
+      //   return v.BUSINESS_TERM == self.ddBusinessTermSelected 
+      //     && v.BUSINESS_ALIAS == self.ddBusinessAliasSelected
+      //     && v.DOWNSTREAM_PROCESS_NAME == self.ddDownstreamProcessNameSelected;
+      // });
       
-      return _.uniq(_.map(filtered, "SYSTEM_NAME_DD"));
+      // return _.uniq(_.map(filtered, "SYSTEM_NAME_DD"));
     },
     ddItamIdOptions () {
       var self = this;
-      var filtered = _.filter(self.ddomy.DDSource, (v) => {
-        return v.BUSINESS_TERM == self.ddBusinessTermSelected 
-          && v.BUSINESS_ALIAS == self.ddBusinessAliasSelected
-          && v.DOWNSTREAM_PROCESS_NAME == self.ddDownstreamProcessNameSelected
-          && v.SYSTEM_NAME_DD == self.ddSystemNameSelected;
+      var filtered = _.filter(self.ddomy.DetailsBTResiding, (v) => {
+        return v.SYSTEM_NAME == self.ddSystemNameSelected;
       });
       
-      return _.uniq(_.map(filtered, "ITAM_ID_DD"));
+      return _.uniq(_.map(filtered, "ITAM_ID"));
     },
     ddTableNameOptions () {
       var self = this;
-      var filtered = _.filter(self.ddomy.DDSource, (v) => {
-        return v.BUSINESS_TERM == self.ddBusinessTermSelected 
-          && v.BUSINESS_ALIAS == self.ddBusinessAliasSelected
-          && v.DOWNSTREAM_PROCESS_NAME == self.ddDownstreamProcessNameSelected
-          && v.SYSTEM_NAME_DD == self.ddSystemNameSelected
-          && v.ITAM_ID_DD == self.ddItamIdSelected;
+      var filtered = _.filter(self.ddomy.DetailsBTResiding, (v) => {
+        return v.SYSTEM_NAME == self.ddSystemNameSelected
+          && v.ITAM_ID == self.ddItamIdSelected;
       });
       
-      return _.uniq(_.map(filtered, "TABLE_NAME_DD"));
+      return _.uniq(_.map(filtered, "TABLE_NAME"));
     },
     ddColumnNameOptions () {
       var self = this;
       var filtered = _.filter(self.ddomy.DDSource, (v) => {
-        return v.BUSINESS_TERM == self.ddBusinessTermSelected 
-          && v.BUSINESS_ALIAS == self.ddBusinessAliasSelected
-          && v.DOWNSTREAM_PROCESS_NAME == self.ddDownstreamProcessNameSelected
-          && v.SYSTEM_NAME_DD == self.ddSystemNameSelected
-          && v.ITAM_ID_DD == self.ddItamIdSelected
-          && v.TABLE_NAME_DD == self.ddTableNameSelected;
+        return v.SYSTEM_NAME == self.ddSystemNameSelected
+          && v.ITAM_ID == self.ddItamIdSelected
+          && v.TABLE_NAME == self.ddTableNameSelected;
       });
       
-      return _.uniq(_.map(filtered, "COLUMN_NAME_DD"));
+      return _.uniq(_.map(filtered, "COLUMN_NAME"));
     },
     exportDatas () {
-      if(this.selectedDetails){
+      if(this.selectedDetailsBusinessMetadata && this.selectedDetailsDownstreamUsage && this.selectedDetailsBTResiding){
         return [{
-          selectedDetails: this.selectedDetails,
+          selectedDetailsBusinessMetadata: this.selectedDetailsBusinessMetadata,
+          selectedDetailsDownstreamUsage: this.selectedDetailsDownstreamUsage,
+          selectedDetailsBTResiding: this.selectedDetailsBTResiding,
         }]
       } else {
         return [];
@@ -575,35 +572,83 @@ export default {
         res => {
           this.firstload = true;
 
-          if (self.ddomy.detailsSource.length > 0){
-            var tmp = self.ddomy.detailsSource[0].Values[0];
+          if (self.ddomy.DetailsBusinessMetadata.length > 0){
+            var tmp = self.ddomy.DetailsBusinessMetadata[0].Values[0];
 
-            self.selectedDetails = {}
+            self.selectedDetailsBusinessMetadata = {}
             _.each(Object.keys(tmp), function(v, i){
-                self.selectedDetails[v] = _.uniq(
-                  _.map(self.ddomy.detailsSource[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)).join(', ');
+                self.selectedDetailsBusinessMetadata[v] = _.uniq(
+                  _.map(self.ddomy.DetailsBusinessMetadata[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)).join(', ');
             });
 
             // make falsy NA
-            Object.keys(self.selectedDetails).forEach((val) => {
-              self.selectedDetails[val] = !!self.selectedDetails[val].trim() ? self.selectedDetails[val] : "NA";
+            Object.keys(self.selectedDetailsBusinessMetadata).forEach((val) => {
+              self.selectedDetailsBusinessMetadata[val] = !!self.selectedDetailsBusinessMetadata[val].trim() ? self.selectedDetailsBusinessMetadata[val] : "NA";
             });
             
             setTimeout(() => {
-              self.ddBusinessTermSelected = self.selectedDetails.BUSINESS_TERM;
-              self.ddBusinessAliasSelected = self.selectedDetails.BUSINESS_ALIAS;
-              self.ddDownstreamProcessNameSelected = self.selectedDetails.DOWNSTREAM_PROCESS_NAME;
-              self.ddSystemNameSelected = self.selectedDetails.SYSTEM_NAME_DD;
-              self.ddItamIdSelected = self.selectedDetails.ITAM_ID_DD;
-              self.ddTableNameSelected = self.selectedDetails.TABLE_NAME_DD;
-              self.ddColumnNameSelected = self.selectedDetails.COLUMN_NAME_DD;
+              self.ddBusinessTermSelected = self.selectedDetailsBusinessMetadata.BUSINESS_TERM;
+              self.ddBusinessAliasSelected = self.selectedDetailsBusinessMetadata.BUSINESS_ALIAS;
 
               setTimeout(() => {
                 this.firstload = false;
               }, 100);
             }, 100);
           } else {
-            this.selectedDetails = null;
+            this.selectedDetailsBusinessMetadata = null;
+          }
+          
+          if (self.ddomy.DetailsDownstreamUsage.length > 0){
+            var tmp = self.ddomy.DetailsDownstreamUsage[0].Values[0];
+
+            self.selectedDetailsDownstreamUsage = {}
+            _.each(Object.keys(tmp), function(v, i){
+                self.selectedDetailsDownstreamUsage[v] = _.uniq(
+                  _.map(self.ddomy.DetailsDownstreamUsage[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)).join(', ');
+            });
+
+            // make falsy NA
+            Object.keys(self.selectedDetailsDownstreamUsage).forEach((val) => {
+              self.selectedDetailsDownstreamUsage[val] = !!self.selectedDetailsDownstreamUsage[val].trim() ? self.selectedDetailsDownstreamUsage[val] : "NA";
+            });
+            
+            setTimeout(() => {
+              self.ddDownstreamProcessNameSelected = self.selectedDetailsDownstreamUsage.DOWNSTREAM_PROCESS_NAME;
+
+              setTimeout(() => {
+                this.firstload = false;
+              }, 100);
+            }, 100);
+          } else {
+            this.selectedDetailsDownstreamUsage = null;
+          }
+
+          if (self.ddomy.DetailsBTResiding.length > 0){
+            var tmp = self.ddomy.DetailsBTResiding[0].Values[0];
+
+            self.selectedDetailsBTResiding = {}
+            _.each(Object.keys(tmp), function(v, i){
+                self.selectedDetailsBTResiding[v] = _.uniq(
+                  _.map(self.ddomy.DetailsBTResiding[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)).join(', ');
+            });
+
+            // make falsy NA
+            Object.keys(self.selectedDetailsBTResiding).forEach((val) => {
+              self.selectedDetailsBTResiding[val] = !!self.selectedDetailsBTResiding[val].trim() ? self.selectedDetailsBTResiding[val] : "NA";
+            });
+            
+            setTimeout(() => {
+              self.ddSystemNameSelected = self.selectedDetailsBTResiding.SYSTEM_NAME;
+              self.ddItamIdSelected = self.selectedDetailsBTResiding.ITAM_ID;
+              self.ddTableNameSelected = self.selectedDetailsBTResiding.TABLE_NAME;
+              self.ddColumnNameSelected = self.selectedDetailsBTResiding.COLUMN_NAME;
+
+              setTimeout(() => {
+                this.firstload = false;
+              }, 100);
+            }, 100);
+          } else {
+            this.selectedDetailsBTResiding = null;
           }
         },
         err => err

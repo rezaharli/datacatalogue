@@ -222,6 +222,8 @@ func (s *DSCService) CreateMDColumnDummyData() error {
 		mdt.Data_Format = fake.Words()
 		mdt.Data_Length = fake.DigitsN(3)
 		mdt.Example = fake.Words()
+		mdt.Primary_Key = rand.Intn(2)
+		mdt.Mandatory = rand.Intn(2)
 		mdt.Derived = rand.Intn(2)
 		mdt.Derivation_Logic = fake.Words()
 		mdt.Status = rand.Intn(2)
@@ -324,16 +326,6 @@ func (s *DSCService) CreateSubCategoryDummyData() error {
 	for i := 0; i < 10000; i++ {
 		mdt := m.NewSubCategoryModel()
 		mdt.ID = i
-		mdt.Name = fake.Words()
-		mdt.Type = fake.Words()
-		mdt.Category_ID = toolkit.ToInt(fake.DigitsN(3), "")
-
-		data = append(data, mdt)
-	}
-
-	for i := 0; i < 10000; i++ {
-		mdt := m.NewSubCategoryModel()
-		mdt.ID = i + 10000
 		mdt.Name = fake.Words()
 		mdt.Type = "Sub Data Domain"
 		mdt.Category_ID = toolkit.ToInt(fake.DigitsN(3), "")
@@ -710,29 +702,19 @@ func (s *DSCService) CreateLinkRolePeopleDummyData() error {
 	for i := 0; i < 10000; i++ {
 		mdt := m.NewLinkRolePeopleModel()
 		mdt.ID = i
+		mdt.Role_ID = toolkit.ToInt(fake.DigitsN(3), "")
 		mdt.People_ID = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Object_Type = "SYSTEM"
 		mdt.Object_ID = toolkit.ToInt(fake.DigitsN(3), "")
 
-		data = append(data, mdt)
-	}
-
-	for i := 0; i < 10000; i++ {
-		mdt := m.NewLinkRolePeopleModel()
-		mdt.ID = i + 10000
-		mdt.People_ID = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Object_Type = "PROCESSES"
-		mdt.Object_ID = toolkit.ToInt(fake.DigitsN(3), "")
-
-		data = append(data, mdt)
-	}
-
-	for i := 0; i < 10000; i++ {
-		mdt := m.NewLinkRolePeopleModel()
-		mdt.ID = i + 10000 + 10000
-		mdt.People_ID = toolkit.ToInt(fake.DigitsN(3), "")
-		mdt.Object_Type = "SUBCATEGORY"
-		mdt.Object_ID = toolkit.ToInt(fake.DigitsN(3), "")
+		if i%1 == 0 {
+			mdt.Object_Type = "SYSTEM"
+		}
+		if i%2 == 0 {
+			mdt.Object_Type = "PROCESSES"
+		}
+		if i%3 == 0 {
+			mdt.Object_Type = "SUBCATEGORY"
+		}
 
 		data = append(data, mdt)
 	}
@@ -764,9 +746,18 @@ func (s *DSCService) CreateRoleDummyData() error {
 	for i := 0; i < 10000; i++ {
 		mdt := m.NewRoleModel()
 		mdt.ID = i
-		mdt.Role_Name = "Downstream Process Owner"
 		mdt.Role_Type = fake.Words()
 		mdt.Role_Description = fake.Words()
+
+		if i%1 == 0 {
+			mdt.Role_Name = "Downstream Process Owner"
+		}
+		if i%2 == 0 {
+			mdt.Role_Name = "Data Domain Owner"
+		}
+		if i%3 == 0 {
+			mdt.Role_Name = "Dataset Custodian"
+		}
 
 		data = append(data, mdt)
 	}

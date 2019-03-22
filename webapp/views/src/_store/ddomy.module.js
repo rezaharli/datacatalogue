@@ -17,9 +17,13 @@ const state = {
         },
         left: newTableObject(),
         right: newTableObject(),
-        DDSource: [],
         detailsLoading: true,
-        detailsSource: [],
+        DetailsBusinessMetadata: [],
+        DDSourceBusinessMetadata: [],
+        DetailsDownstreamUsage: [],
+        DDSourceDownstreamUsage: [],
+        DetailsBTResiding: [],
+        DDSourceBTResiding: [],
         error: null
     }
 };
@@ -119,8 +123,12 @@ const mutations = {
         state.all.detailsLoading = true;
     },
     getDetailsSuccess(state, data) {
-        state.all.detailsSource = data.Detail;
-        state.all.DDSource = data.DDSource;
+        state.all.DetailsBusinessMetadata = data.DetailsBusinessMetadata;
+        state.all.DDSourceBusinessMetadata = data.DDSourceBusinessMetadata;
+        state.all.DetailsDownstreamUsage = data.DetailsDownstreamUsage;
+        state.all.DDSourceDownstreamUsage = data.DDSourceDownstreamUsage;
+        state.all.DetailsBTResiding = data.DetailsBTResiding;
+        state.all.DDSourceBTResiding = data.DDSourceBTResiding;
         state.all.detailsLoading = false;
     },
     getDetailsFailure(state, error) {

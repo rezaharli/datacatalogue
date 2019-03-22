@@ -170,7 +170,7 @@ func (s *DDOService) GetRightTable(tabs string, systemID int, search string, sea
 	return resultRows, resultTotal, nil
 }
 
-func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
+func (s *DDOService) GetDetailsBusinessMetadataFromDomain(payload toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -188,7 +188,7 @@ func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	}
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "details", args...)
+	q, err := h.BuildQueryFromFile(filePath, "details-business-metadata-from-domain", args...)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -203,11 +203,8 @@ func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	otherArgs = append(otherArgs,
 		payload.GetString("BusinessTerm"),
 		payload.GetString("BusinessAlias"),
-		payload.GetString("DownstreamProcessName"),
-		payload.GetString("SystemName"),
-		payload.GetString("ItamId"),
-		payload.GetString("TableName"),
-		payload.GetString("ColumnName"),
+		payload.GetString("GSTableName"),
+		payload.GetString("GSColumnName"),
 	)
 
 	///////// FILTER
@@ -222,19 +219,10 @@ func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 		q += `AND business_alias = '` + otherArgs[2] + `' `
 	}
 	if otherArgs[3] != "" {
-		q += `AND downstream_process_name = '` + otherArgs[3] + `' `
+		q += `AND GS_TABLE_NAME = '` + otherArgs[3] + `' `
 	}
-	if otherArgs[4] != "" {
-		q += `AND system_name_dd = '` + otherArgs[4] + `' `
-	}
-	if otherArgs[5] != "" {
-		q += `AND itam_id_dd = '` + otherArgs[5] + `' `
-	}
-	if otherArgs[6] != "" {
-		q += `AND table_name_dd = '` + otherArgs[6] + `' `
-	}
-	if otherArgs[7] != "" {
-		q += `AND column_name_dd = '` + otherArgs[7] + `' `
+	if otherArgs[3] != "" {
+		q += `AND GS_COLUMN_NAME = '` + otherArgs[3] + `' `
 	}
 	q += `) `
 
@@ -251,7 +239,7 @@ func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	return resultRows, resultTotal, nil
 }
 
-func (s *DDOService) GetddSource(payload toolkit.M) (interface{}, int, error) {
+func (s *DDOService) GetddSourceBusinessMetadataFromDomain(payload toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -269,13 +257,231 @@ func (s *DDOService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 	}
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "details", args...)
+	q, err := h.BuildQueryFromFile(filePath, "details-business-metadata-from-domain", args...)
 	if err != nil {
 		return nil, 0, err
 	}
 
 	///////// FILTER
-	q = `SELECT DISTINCT business_term, business_alias, downstream_process_name, system_name_dd, itam_id_dd, table_name_dd, column_name_dd 
+	q = `SELECT DISTINCT business_term, business_alias, GS_TABLE_NAME, GS_COLUMN_NAME
+		FROM (
+		` + q + `
+	) `
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DDOService) GetDetailsDownstreamUsageOfBusinessTerm(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	tabs := ""
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, toolkit.ToString(payload.GetInt("Left")))
+
+	if strings.Contains(payload.GetString("Which"), "my") == true {
+		tabs = "ddomy"
+	} else {
+		tabs = "ddoall"
+	}
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err := h.BuildQueryFromFile(filePath, "details-downstream-usage-of-business-term", args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	otherArgs := make([]string, 0)
+	if payload.GetString("BusinessTerm") != "" {
+		otherArgs = append(otherArgs, "")
+	} else {
+		otherArgs = append(otherArgs, payload.GetString("Right"))
+	}
+
+	otherArgs = append(otherArgs,
+		payload.GetString("BusinessTerm"),
+		payload.GetString("DownstreamProcessName"),
+	)
+
+	///////// FILTER
+	q = `SELECT * FROM (
+		` + q + `
+	) 
+	WHERE (
+			tbtid = '` + otherArgs[0] + `'
+		) OR (
+			business_term = '` + otherArgs[1] + `' `
+	if otherArgs[2] != "" {
+		q += `AND DOWNSTREAM_PROCESS_NAME = '` + otherArgs[2] + `' `
+	}
+	q += `) `
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DDOService) GetddSourceDownstreamUsageOfBusinessTerm(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	tabs := ""
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, toolkit.ToString(payload.GetInt("Left")))
+
+	if strings.Contains(payload.GetString("Which"), "my") == true {
+		tabs = "ddomy"
+	} else {
+		tabs = "ddoall"
+	}
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err := h.BuildQueryFromFile(filePath, "details-downstream-usage-of-business-term", args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	///////// FILTER
+	q = `SELECT DISTINCT DOWNSTREAM_PROCESS_NAME
+		FROM (
+		` + q + `
+	) `
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DDOService) GetDetailsBTResiding(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	tabs := ""
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, toolkit.ToString(payload.GetInt("Left")))
+
+	if strings.Contains(payload.GetString("Which"), "my") == true {
+		tabs = "ddomy"
+	} else {
+		tabs = "ddoall"
+	}
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err := h.BuildQueryFromFile(filePath, "details-business-term-residing", args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	otherArgs := make([]string, 0)
+	if payload.GetString("BusinessTerm") != "" {
+		otherArgs = append(otherArgs, "")
+	} else {
+		otherArgs = append(otherArgs, payload.GetString("Right"))
+	}
+
+	otherArgs = append(otherArgs,
+		payload.GetString("BusinessTerm"),
+		payload.GetString("SystemName"),
+		payload.GetString("ItamId"),
+		payload.GetString("TableName"),
+		payload.GetString("ColumnName"),
+	)
+
+	///////// FILTER
+	q = `SELECT * FROM (
+		` + q + `
+	) 
+	WHERE (
+		tbtid = '` + otherArgs[0] + `'
+	) OR (
+		business_term = '` + otherArgs[1] + `' `
+	if otherArgs[2] != "" {
+		q += `AND SYSTEM_NAME = '` + otherArgs[2] + `' `
+	}
+	if otherArgs[3] != "" {
+		q += `AND ITAM_ID = '` + otherArgs[3] + `' `
+	}
+	if otherArgs[4] != "" {
+		q += `AND TABLE_NAME = '` + otherArgs[4] + `' `
+	}
+	if otherArgs[5] != "" {
+		q += `AND COLUMN_NAME = '` + otherArgs[5] + `' `
+	}
+	q += `) `
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DDOService) GetddSourceBTResiding(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	tabs := ""
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, toolkit.ToString(payload.GetInt("Left")))
+
+	if strings.Contains(payload.GetString("Which"), "my") == true {
+		tabs = "ddomy"
+	} else {
+		tabs = "ddoall"
+	}
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err := h.BuildQueryFromFile(filePath, "details-business-term-residing", args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	///////// FILTER
+	q = `SELECT DISTINCT SYSTEM_NAME, ITAM_ID, TABLE_NAME, COLUMN_NAME
 		FROM (
 		` + q + `
 	) `

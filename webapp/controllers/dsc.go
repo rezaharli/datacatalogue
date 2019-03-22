@@ -10,6 +10,7 @@ import (
 )
 
 type DSC struct {
+	*Base
 }
 
 func NewDSCController() *DSC {
@@ -125,13 +126,7 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 		return
 	}
 
-	detail, _, err := s.NewDSCService().GetDetails(payload)
-	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
-	}
-
-	ddSource, _, err := s.NewDSCService().GetddSource(payload)
+	detail, ddSource, err := c.Base.GetDetails(payload, s.NewDSCService().GetDetails, s.NewDSCService().GetddSource)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return

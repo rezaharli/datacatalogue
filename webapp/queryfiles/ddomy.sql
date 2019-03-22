@@ -26,59 +26,110 @@ SELECT DISTINCT
         INNER JOIN tbl_business_term tbt ON tbt.parent_id = tsc.id
     WHERE tsc.id = '?'
 
--- name: details
-SELECT DISTINCT
-        tc.id,
-        tbt.id                          as tbtid,
-        tc.name                         as data_domain,
-        tsc.name                        as sub_domain,
-        tlscp.people_id                 as sub_domain_owner,
-        tp.bank_id                      as bank_id,
-        tbt.bt_name                     as business_term,
-        tbt.description                 as bt_description,
-        tmc.alias_name                  as business_alias,
-        tbt.cde                         as cde_yes_no,
-        tbt.dq_standards                as dq_standards,
-        tbt.policy_guidance             as policy_guidance,
-        tbt.mandatory                   as mandatory,
-        tbt.golden_source_system_id     as golden_system,
-        ts.itam_id                      as golden_itam_id,
-        tmt.name                        as golden_table_name,
-        tmc.name                        as golden_column_name,
-        tbt.target_golden_source_id     as target_golden,
-        ts.itam_id                      as target_golden_itam_id,
-        tpo.info_asset_name             as info_asset_names,
-        tpo.description                 as info_asset_desc,
-        tpo.confidentiality             as confidentiality,
-        tpo.integrity                   as integrity,
-        tpo.availability                as availability,
-        tpo.overall_cia_rating          as overall_cia_rating,
-        tmc.record_category             as record_categories,
-        tmc.pii_flag                    as pii_flag,
-        tdp.name                        as downstream_process_name,
-        tdp.owner_name                  as downstream_process_owner,
-        ''                              as taken_from_golden,
-        ts.system_name                  as system_name,
-        ts.itam_id                      as itam_id,
-        tmt.name                        as table_name,
-        tmc.name                        as column_name,
-        tmc.ddo_threshold               as dq_standards_by_ddo,
-        ts.system_name                  as system_name_dd,
-        ts.itam_id                      as itam_id_dd,
-        tmt.name                        as table_name_dd,
-        tmc.name                        as column_name_dd
+-- name: details-business-metadata-from-domain
+SELECT DISTINCT 
+        tsc.id,
+        tbt.id                                as tbtid,
+        TSC.NAME                              AS SUB_DOMAIN,
+        TC.NAME                               AS DATA_DOMAIN, 
+        TP.FIRST_NAME||' '|| TP.LAST_NAME     AS SUBDOMAIN_OWNER,
+        TP.BANK_ID                            AS BANK_ID,
+        TBT.BT_NAME                           AS BUSINESS_TERM,
+        TBT.DESCRIPTION                       AS BT_DESCRIPTION,
+        TMC.ALIAS_NAME                        AS BUSINESS_ALIAS,
+        TBT.CDE                               AS CDE_YES_NO,
+        TMC.DQ_STANDARDS||' '||TMC.THRESHOLD  AS DQ_STANDARDS,
+        TBT.POLICY_GUIDANCE                   AS POLICY_GUIDANCE,
+        TMC.MANDATORY                         AS MANDATORY,
+        GS_SYS.SYSTEM_NAME                    AS GS_SYSTEM,
+        GS_SYS.ITAM_ID                        AS GS_ITAM_ID,
+        TMT_GS.NAME                           AS GS_TABLE_NAME,
+        TMC_GS.NAME                           AS GS_COLUMN_NAME,
+        TGS_SYS.SYSTEM_NAME                   AS TGS_SYSTEM,
+        TGS_SYS.ITAM_ID                       AS TGS_ITAM_ID,
+        TPOL.INFO_ASSET_NAME                  AS INFO_ASSET_NAMES,
+        TPOL.DESCRIPTION                      AS INFO_ASSET_DESC,
+        TPOL.CONFIDENTIALITY                  AS CONFIDENTIALITY,
+        TPOL.INTEGRITY                        AS INTEGRITY,
+        TPOL.AVAILABILITY                     AS AVAILABILITY,
+        TPOL.OVERALL_CIA_RATING               AS OVERALL_CIA_RATING,
+        TMC.RECORD_CATEGORY                   AS RECORD_CATEGORIES,
+        TMC.PII_FLAG                          AS PII_FLAG
     FROM
-        tbl_category tc
-        INNER JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
-        INNER JOIN tbl_business_term tbt ON tbt.parent_id = tsc.id
-        LEFT JOIN tbl_link_subcategory_people tlscp ON tlscp.subcategory_id = tsc.id
-        LEFT JOIN Tbl_People	tp on tlscp.people_id = tp.id
-        LEFT join tbl_md_column tmc on tmc.business_term_id = tbt.id
-        LEFT join tbl_md_table tmt on tmc.table_id = tmt.id
-        LEFT join tbl_md_resource tmr on tmt.resource_id = tmr.id
-        LEFT join tbl_system ts on tmr.system_id = ts.id
-        LEFT join tbl_policy tpo on tbt.policy_id = tpo.id
-        LEFT join tbl_ds_process_detail tdpd on tdpd.column_id = tmc.id
-        LEFT join tbl_ds_processes tdp on tdpd.process_id = tdp.id
+        TBL_CATEGORY TC
+        INNER JOIN TBL_SUBCATEGORY TSC ON TSC.CATEGORY_ID = TC.ID
+        INNER JOIN TBL_BUSINESS_TERM TBT ON TBT.PARENT_ID = TSC.ID
+        INNER JOIN TBL_LINK_ROLE_PEOPLE TLRP ON TLRP.OBJECT_ID = TSC.ID AND TLRP.OBJECT_TYPE = 'SUBCATEGORY'
+        INNER JOIN TBL_ROLE RL ON TLRP.ROLE_ID = RL.ID AND UPPER(RL.ROLE_NAME) = 'DATA DOMAIN OWNER'
+        INNER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID -- SUBDOMAIN OWNER
+        INNER JOIN TBL_MD_COLUMN TMC ON TMC.BUSINESS_TERM_ID = TBT.ID
+        INNER JOIN TBL_MD_TABLE TMT ON TMC.TABLE_ID = TMT.ID
+        INNER JOIN TBL_MD_RESOURCE TMR ON TMT.RESOURCE_ID = TMR.ID
+        INNER JOIN TBL_SYSTEM TS ON TMR.SYSTEM_ID = TS.ID
+        LEFT JOIN TBL_POLICY TPOL ON TBT.POLICY_ID = TPOL.ID
+        LEFT JOIN TBL_SYSTEM TGS_SYS ON TBT.TARGET_GOLDEN_SOURCE_ID = TGS_SYS.ID
+        LEFT JOIN TBL_SYSTEM GS_SYS ON TBT.GOLDEN_SOURCE_SYSTEM_ID = GS_SYS.ID
+        LEFT JOIN TBL_MD_RESOURCE TMR_GS ON TMR_GS.SYSTEM_ID = GS_SYS.ID
+        INNER JOIN TBL_MD_TABLE TMT_GS ON TMT_GS.RESOURCE_ID = TMR_GS.ID
+        INNER JOIN TBL_MD_COLUMN TMC_GS ON TMC_GS.TABLE_ID = TMT_GS.ID AND TMC_GS.BUSINESS_TERM_ID = TBT.ID
     WHERE
         tsc.id = '?'
+
+-- name: details-downstream-usage-of-business-term
+SELECT DISTINCT
+        tsc.id,
+        tbt.id                                  as tbtid,
+        TBT.BT_NAME                             AS BUSINESS_TERM,
+        TDP.NAME                                AS DOWNSTREAM_PROCESS_NAME, 
+        PPL.FIRST_NAME||' '|| PPL.LAST_NAME     AS DOWNSTREAM_PROCESS_OWNER,
+        'NO'                                    AS DATA_FROM_GS,
+        ' '                                     AS SYSTEM_NAME,
+        ' '                                     AS ITAM_ID,
+        ' '                                     AS TABLE_NAME,
+        ' '                                     AS COLUMN_NAME, 
+        ' '                                     AS DQ_STANDARDS
+    FROM
+        TBL_CATEGORY TC
+        INNER JOIN TBL_SUBCATEGORY TSC ON TSC.CATEGORY_ID = TC.ID
+        INNER JOIN TBL_BUSINESS_TERM TBT ON TBT.PARENT_ID = TSC.ID
+
+        INNER JOIN TBL_MD_COLUMN TMC ON TMC.BUSINESS_TERM_ID = TBT.ID
+        INNER JOIN TBL_MD_TABLE TMT ON TMC.TABLE_ID = TMT.ID
+        INNER JOIN TBL_MD_RESOURCE TMR ON TMT.RESOURCE_ID = TMR.ID
+        INNER JOIN TBL_SYSTEM TS ON TMR.SYSTEM_ID = TS.ID
+        
+        LEFT JOIN TBL_LINK_COLUMN_INTERFACE CI ON TMC.ID = CI.COLUMN_ID
+        LEFT JOIN TBL_DS_PROCESS_DETAIL TDPD ON TDPD.COLUMN_ID = TMC.ID
+        LEFT JOIN TBL_DS_PROCESSES TDP ON TDPD.PROCESS_ID = TDP.ID
+        
+        LEFT JOIN TBL_LINK_ROLE_PEOPLE TLRP_SDO ON TLRP_SDO.OBJECT_ID = TDP.ID AND TLRP_SDO.OBJECT_TYPE = 'PROCESSES'
+        LEFT JOIN TBL_ROLE RL ON TLRP_SDO.ROLE_ID = RL.ID AND RL.ROLE_NAME = 'DOWNSTREAM PROCESS OWNER'
+        LEFT JOIN TBL_PEOPLE PPL ON TLRP_SDO.PEOPLE_ID = PPL.ID
+        
+        LEFT JOIN TBL_POLICY TPOL ON TBT.POLICY_ID = TPOL.ID
+        LEFT JOIN TBL_SYSTEM GS_SYS ON TBT.GOLDEN_SOURCE_SYSTEM_ID = GS_SYS.ID
+        LEFT JOIN TBL_SYSTEM TGS_SYS ON TBT.TARGET_GOLDEN_SOURCE_ID = TGS_SYS.ID
+    WHERE 
+        tsc.id = '?'
+
+-- name: details-business-term-residing
+SELECT DISTINCT 
+        tsc.id,
+        tbt.id                            as tbtid,
+        TBT.BT_NAME                       AS BUSINESS_TERM,
+        TS.SYSTEM_NAME                    AS SYSTEM_NAME,
+        TS.ITAM_ID                        AS ITAM_ID,
+        TMT.NAME                          AS TABLE_NAME,
+        TMC.NAME                          AS COLUMN_NAME     
+    FROM
+        TBL_CATEGORY TC
+        INNER JOIN TBL_SUBCATEGORY TSC ON TSC.CATEGORY_ID = TC.ID
+        INNER JOIN TBL_BUSINESS_TERM TBT ON TBT.PARENT_ID = TSC.ID
+
+        INNER JOIN TBL_MD_COLUMN TMC ON TMC.BUSINESS_TERM_ID = TBT.ID
+        INNER JOIN TBL_MD_TABLE TMT ON TMC.TABLE_ID = TMT.ID
+        INNER JOIN TBL_MD_RESOURCE TMR ON TMT.RESOURCE_ID = TMR.ID
+        INNER JOIN TBL_SYSTEM TS ON TMR.SYSTEM_ID = TS.ID
+    WHERE 
+        tsc.id = '?'
+    ORDER BY TS.SYSTEM_NAME, TMT.NAME, TMC.NAME

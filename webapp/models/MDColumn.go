@@ -12,6 +12,8 @@ type MDColumn struct {
 	Data_Format           string
 	Data_Length           string
 	Example               string
+	Primary_Key           int
+	Mandatory             int
 	Derived               int
 	Derivation_Logic      string
 	Status                int

@@ -40,9 +40,26 @@ function getRightTable(param) {
 function getDetails(param) {
     return fetchWHeader(`/ddo/getdetails`, param).then(
         res => {
-            var tmp = _.groupBy(res.Data.Detail, "ID")
-            
-            res.Data.Detail = _.map(Object.keys(tmp), function(v, i){
+            var tmp = _.groupBy(res.Data.DetailsBusinessMetadata, "ID")
+            res.Data.DetailsBusinessMetadata = _.map(Object.keys(tmp), function(v, i){
+                var ret = tmp[v][0];
+                ret.ID = v;
+                ret.Values = tmp[v];
+
+                return ret;
+            });
+
+            var tmp = _.groupBy(res.Data.DetailsDownstreamUsage, "ID")
+            res.Data.DetailsDownstreamUsage = _.map(Object.keys(tmp), function(v, i){
+                var ret = tmp[v][0];
+                ret.ID = v;
+                ret.Values = tmp[v];
+
+                return ret;
+            });
+
+            var tmp = _.groupBy(res.Data.DetailsBTResiding, "ID")
+            res.Data.DetailsBTResiding = _.map(Object.keys(tmp), function(v, i){
                 var ret = tmp[v][0];
                 ret.ID = v;
                 ret.Values = tmp[v];
