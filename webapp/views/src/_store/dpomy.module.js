@@ -55,31 +55,31 @@ const actions = {
 
 const mutations = {
     getLeftTableRequest(state) {
-        state.all.left.loading = true;
+        state.all.left.isLoading = true;
     },
     getLeftTableSuccess(state, data) {
         state.all.left.source = data;
         state.all.left.display = data;
         state.all.left.totalItems = data[0] ? data[0].RESULT_COUNT : 0;
 
-        state.all.left.loading = false;
+        state.all.left.isLoading = false;
     },
     getLeftTableFailure(state, error) {
-        state.all.left.loading = false;
+        state.all.left.isLoading = false;
         state.all.error = error;
     },
     getRightTableRequest(state) {
-        state.all.right.loading = true;
+        state.all.right.isLoading = true;
     },
     getRightTableSuccess(state, data) {
         state.all.right.source = data;
         state.all.right.display = data;
         state.all.right.totalItems = data[0] ? data[0].RESULT_COUNT : 0;
 
-        state.all.right.loading = false;
+        state.all.right.isLoading = false;
     },
     getRightTableFailure(state, error) {
-        state.all.right.loading = false;
+        state.all.right.isLoading = false;
         state.all.error = error;
     },
     getDetailsRequest(state) {
@@ -88,7 +88,7 @@ const mutations = {
     getDetailsSuccess(state, data) {
         state.all.detailsSource = data;
 
-        state.all.right.loading = false;
+        state.all.right.isLoading = false;
     },
     getDetailsFailure(state, error) {
         state.all.detailsLoading = false;

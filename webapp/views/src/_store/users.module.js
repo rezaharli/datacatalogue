@@ -58,39 +58,39 @@ const actions = {
 
 const mutations = {
     getAllRequest(state) {
-        state.all.loading = true;
+        state.all.isLoading = true;
     },
     getAllSuccess(state, users) {
-        state.all.loading = false;
+        state.all.isLoading = false;
         state.all.items = users;
     },
     getAllFailure(state, error) {
-        state.all.loading = false;
+        state.all.isLoading = false;
         state.all.error = error;
     },
     registerRequest(state) {
-        state.all.loading = true;
+        state.all.isLoading = true;
     },
     registerSuccess(state) {
-        state.all.loading = false;
+        state.all.isLoading = false;
     },
     registerFailure(state, error) {
-        state.all.loading = false;
+        state.all.isLoading = false;
         state.all.error = error;
     },
     updateRequest(state) {
-        state.all.loading = true;
+        state.all.isLoading = true;
     },
     updateSuccess(state) {
-        state.all.loading = false;
+        state.all.isLoading = false;
     },
     updateFailure(state, error) {
-        state.all.loading = false;
+        state.all.isLoading = false;
         state.all.error = error;
     },
     deleteRequest(state, id) {
         // add 'deleting:true' property to user being deleted
-        state.all.loading = true;
+        state.all.isLoading = true;
         state.all.items = state.all.items.map(user =>
             user.id === id
                 ? { ...user, deleting: true }
@@ -99,12 +99,12 @@ const mutations = {
     },
     deleteSuccess(state, id) {
         // remove deleted user from state
-        state.all.loading = false;
+        state.all.isLoading = false;
         state.all.items = state.all.items.filter(user => user.id !== id)
     },
     deleteFailure(state, { id, error }) {
         // remove 'deleting:true' property and add 'deleteError:[error]' property to user 
-        state.all.loading = false;
+        state.all.isLoading = false;
         state.all.items = state.items.map(user => {
             if (user.id === id) {
                 // make copy of user without 'deleting:true' property

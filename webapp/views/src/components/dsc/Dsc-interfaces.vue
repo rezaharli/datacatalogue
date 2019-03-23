@@ -26,6 +26,8 @@ table.v-table thead th > div.btn-group {
       <!-- Main content -->
       <b-row>
         <b-col>
+          <page-loader v-if="dscinterfaces.left.isLoading || (secondtable && dscinterfaces.right.isLoading)" />
+          
           <b-row>
             <b-col>
               <div class="input-group mb-3">
@@ -87,7 +89,7 @@ table.v-table thead th > div.btn-group {
                   :items="dscinterfaces.left.display"
                   :pagination.sync="dscinterfaces.left.pagination"
                   :total-items="dscinterfaces.left.totalItems"
-                  :loading="dscinterfaces.left.loading"
+                  :loading="dscinterfaces.left.isLoading"
                   :expand="false"
                   item-key="ID"
                   class="elevation-1">
@@ -114,11 +116,11 @@ table.v-table thead th > div.btn-group {
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
                 <template slot="no-data">
-                  <v-alert :value="dscinterfaces.left.loading" type="info">
+                  <v-alert :value="dscinterfaces.left.isLoading" type="info">
                     Please wait while data is loading
                   </v-alert>
 
-                  <v-alert :value="!dscinterfaces.left.loading" type="error">
+                  <v-alert :value="!dscinterfaces.left.isLoading" type="error">
                     Sorry, nothing to display here
                   </v-alert>
                 </template>
@@ -155,17 +157,17 @@ table.v-table thead th > div.btn-group {
                   :items="dscinterfaces.right.display"
                   :pagination.sync="dscinterfaces.right.pagination"
                   :total-items="dscinterfaces.right.totalItems"
-                  :loading="dscinterfaces.right.loading"
+                  :loading="dscinterfaces.right.isLoading"
                   v-if="secondtable"
                   item-key="R__"
                   class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
                   <template slot="no-data">
-                    <v-alert :value="dscinterfaces.right.loading" type="info">
+                    <v-alert :value="dscinterfaces.right.isLoading" type="info">
                     Please wait while data is loading
                   </v-alert>
 
-                  <v-alert :value="!dscinterfaces.right.loading" type="error">
+                  <v-alert :value="!dscinterfaces.right.isLoading" type="error">
                     Sorry, nothing to display here
                   </v-alert>
                   </template>
@@ -215,12 +217,13 @@ import Vue from 'vue'
 import { mapState, mapActions } from 'vuex'
 import JsonExcel from 'vue-json-excel'
 import tablecell from '../Tablecell.vue'
+import pageLoader from '../PageLoader.vue'
  
 Vue.component('downloadExcel', JsonExcel)
 
 export default {
     components: {
-      tablecell
+      tablecell, pageLoader
     },
     data () {
       return {

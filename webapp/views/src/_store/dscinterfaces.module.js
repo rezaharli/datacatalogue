@@ -86,31 +86,31 @@ const actions = {
 
 const mutations = {
     getAllSystemRequest(state) {
-        state.all.left.loading = true;
+        state.all.left.isLoading = true;
     },
     getAllSystemSuccess(state, data) {
         state.all.left.source = data;
         state.all.left.display = data;
         state.all.left.totalItems = data[0] ? data[0].RESULT_COUNT : 0;
 
-        state.all.left.loading = false;
+        state.all.left.isLoading = false;
     },
     getAllSystemFailure(state, error) {
-        state.all.left.loading = false;
+        state.all.left.isLoading = false;
         state.all.error = error;
     },
     getAllTablenameRequest(state) {
-        state.all.right.loading = true;
+        state.all.right.isLoading = true;
     },
     getAllTablenameSuccess(state, data) {
         state.all.right.source = data;
         state.all.right.display = data;
         state.all.right.totalItems = data[0] ? data[0].RESULT_COUNT : 0;
 
-        state.all.right.loading = false;
+        state.all.right.isLoading = false;
     },
     getAllTablenameFailure(state, error) {
-        state.all.right.loading = false;
+        state.all.right.isLoading = false;
         state.all.error = error;
     },
     getDetailsRequest(state) {
