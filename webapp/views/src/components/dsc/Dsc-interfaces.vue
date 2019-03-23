@@ -26,12 +26,12 @@ table.v-table thead th > div.btn-group {
       <!-- Main content -->
       <b-row>
         <b-col>
-          <page-loader v-if="dscinterfaces.left.isLoading || (secondtable && dscinterfaces.right.isLoading)" />
+          <page-loader v-if="store.left.isLoading || (secondtable && store.right.isLoading)" />
           
           <b-row>
             <b-col>
               <div class="input-group mb-3">
-                <input v-model="dscinterfaces.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <input v-model="store.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
 
                 <div class="input-group-append">
                   <b-dropdown right id="ddown1" text="" ref="ddownSearch">
@@ -40,19 +40,19 @@ table.v-table thead th > div.btn-group {
                         <b-col>
                           <b-form @submit="onSubmit" @reset="onReset">
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Name" label-for="systemName">
-                              <b-form-input id="systemName" type="text" v-model="dscinterfaces.searchDropdown.SystemName"></b-form-input>
+                              <b-form-input id="systemName" type="text" v-model="store.searchDropdown.SystemName"></b-form-input>
                             </b-form-group>
 
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="ITAM ID" label-for="itamID">
-                              <b-form-input id="itamID" type="text" v-model="dscinterfaces.searchDropdown.ItamID"></b-form-input>
+                              <b-form-input id="itamID" type="text" v-model="store.searchDropdown.ItamID"></b-form-input>
                             </b-form-group>
 
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="tableName">
-                              <b-form-select id="tableName" :options="tablenameMaster" v-model="dscinterfaces.searchDropdown.TableName"></b-form-select>
+                              <b-form-select id="tableName" :options="tablenameMaster" v-model="store.searchDropdown.TableName"></b-form-select>
                             </b-form-group>
 
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnName">
-                              <b-form-select id="columnName" :options="columnNameMaster" v-model="dscinterfaces.searchDropdown.ColumnName"></b-form-select>
+                              <b-form-select id="columnName" :options="columnNameMaster" v-model="store.searchDropdown.ColumnName"></b-form-select>
                             </b-form-group>
 
                             <b-button-group class="mx-1 float-right">
@@ -86,16 +86,16 @@ table.v-table thead th > div.btn-group {
             <b-col cols=6>
               <v-data-table
                   :headers="firstTableHeaders"
-                  :items="dscinterfaces.left.display"
-                  :pagination.sync="dscinterfaces.left.pagination"
-                  :total-items="dscinterfaces.left.totalItems"
-                  :loading="dscinterfaces.left.isLoading"
+                  :items="store.left.display"
+                  :pagination.sync="store.left.pagination"
+                  :total-items="store.left.totalItems"
+                  :loading="store.left.isLoading"
                   :expand="false"
                   item-key="ID"
                   class="elevation-1">
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ dscinterfaces.left.source[0] ? dscinterfaces.left.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0 }})
+                  {{ props.header.text }} ({{ store.left.source[0] ? store.left.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0 }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -104,10 +104,10 @@ table.v-table thead th > div.btn-group {
                     </template>
 
                     <b-dropdown-header>
-                      <b-form-input type="text" placeholder="Filter" v-model="dscinterfaces.filters['left'][props.header.value.split('.').reverse()[0]]" @change="filterKeyup('left', props.header)"></b-form-input>
+                      <b-form-input type="text" placeholder="Filter" v-model="store.filters['left'][props.header.value.split('.').reverse()[0]]" @change="filterKeyup('left', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscinterfaces.left.source)" :key="item" @click="filterClick('left', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, store.left.source)" :key="item" @click="filterClick('left', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -116,11 +116,11 @@ table.v-table thead th > div.btn-group {
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
                 <template slot="no-data">
-                  <v-alert :value="dscinterfaces.left.isLoading" type="info">
+                  <v-alert :value="store.left.isLoading" type="info">
                     Please wait while data is loading
                   </v-alert>
 
-                  <v-alert :value="!dscinterfaces.left.isLoading" type="error">
+                  <v-alert :value="!store.left.isLoading" type="error">
                     Sorry, nothing to display here
                   </v-alert>
                 </template>
@@ -154,26 +154,26 @@ table.v-table thead th > div.btn-group {
             <b-col cols=6 class="scrollableasdf">
               <v-data-table
                   :headers="secondTableHeaders"
-                  :items="dscinterfaces.right.display"
-                  :pagination.sync="dscinterfaces.right.pagination"
-                  :total-items="dscinterfaces.right.totalItems"
-                  :loading="dscinterfaces.right.isLoading"
+                  :items="store.right.display"
+                  :pagination.sync="store.right.pagination"
+                  :total-items="store.right.totalItems"
+                  :loading="store.right.isLoading"
                   v-if="secondtable"
                   item-key="R__"
                   class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
                   <template slot="no-data">
-                    <v-alert :value="dscinterfaces.right.isLoading" type="info">
+                    <v-alert :value="store.right.isLoading" type="info">
                     Please wait while data is loading
                   </v-alert>
 
-                  <v-alert :value="!dscinterfaces.right.isLoading" type="error">
+                  <v-alert :value="!store.right.isLoading" type="error">
                     Sorry, nothing to display here
                   </v-alert>
                   </template>
 
                   <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} {{ props.header.displayCount ? "(" + (dscinterfaces.right.source[0] ? dscinterfaces.right.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0) + ")" : "" }}
+                  {{ props.header.text }} {{ props.header.displayCount ? "(" + (store.right.source[0] ? store.right.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0) + ")" : "" }}
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -182,10 +182,10 @@ table.v-table thead th > div.btn-group {
                     </template>
 
                     <b-dropdown-header>
-                      <b-form-input type="text" placeholder="Filter" v-model="dscinterfaces.filters['right'][props.header.value.split('.').reverse()[0]]" @change="filterKeyup('right', props.header)"></b-form-input>
+                      <b-form-input type="text" placeholder="Filter" v-model="store.filters['right'][props.header.value.split('.').reverse()[0]]" @change="filterKeyup('right', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, dscinterfaces.right.source)" :key="item" @click="filterClick('right', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, store.right.source)" :key="item" @click="filterClick('right', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -252,17 +252,17 @@ export default {
     },
     computed: {
       ...mapState({
-        dscinterfaces: state => state.dscinterfaces.all
+        store: state => state.dscinterfaces.all
       }),
       addressPath (){
         var tmp = this.$route.path.split("/")
         return tmp.slice(0, 3).join("/")
       },
       tablenameMaster (){
-        return this._.map(this.dscinterfaces.right.source, 'TABLE_NAME')
+        return this._.map(this.store.right.source, 'TABLE_NAME')
       },
       columnNameMaster (){
-        return this._.map(this._.flattenDeep(this._.map(this.dscinterfaces.right.source, 'Columns')), 'COLUMN_NAME')
+        return this._.map(this._.flattenDeep(this._.map(this.store.right.source, 'Columns')), 'COLUMN_NAME')
       },
       excelFields (){
         var ret = {}
@@ -282,7 +282,7 @@ export default {
       excelData () {
         var res = [];
 
-        this._.each(this.dscinterfaces.left.display, (system, i) => {
+        this._.each(this.store.left.display, (system, i) => {
           var temp = {
             SYSTEM_NAME: system.SYSTEM_NAME,
             ITAM_ID: _.uniq(_.map(system.Custodians, "ITAM_ID").filter(Boolean)).join(', '),
@@ -290,7 +290,7 @@ export default {
             BANK_ID: _.uniq(_.map(system.Custodians, "BANK_ID").filter(Boolean)).join(', '),
           }
 
-          var tables = this._.filter(this.dscinterfaces.right.display, (v) => v.TSID == system.ID)
+          var tables = this._.filter(this.store.right.display, (v) => v.TSID == system.ID)
           if(this.secondtable && tables.length > 0){
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
@@ -326,13 +326,13 @@ export default {
           this.doGetRightTable(this.$route.params.system);
         }
       },
-      "dscinterfaces.left.pagination": {
+      "store.left.pagination": {
         handler () {
           this.doGetLeftTable();
         },
         deep: true
       },
-      "dscinterfaces.right.pagination": {
+      "store.right.pagination": {
         handler () {
           if(this.secondtable){
             this.doGetRightTable(this.$route.params.system);
@@ -340,7 +340,7 @@ export default {
         },
         deep: true
       },
-      "dscinterfaces.searchMain" (val, oldVal){
+      "store.searchMain" (val, oldVal){
         if(val || oldVal) {
           this.doGetLeftTable();
 
@@ -370,7 +370,7 @@ export default {
         else this.doGetRightTable(this.$route.params.system)
       },
       filterClick (type, keyModel, val) {
-        this.dscinterfaces.filters[type][keyModel.value.split('.').reverse()[0]] = val;
+        this.store.filters[type][keyModel.value.split('.').reverse()[0]] = val;
 
         // this.columnFilter(type, keyModel);
         if(type == "left") this.doGetLeftTable()
@@ -411,10 +411,10 @@ export default {
       onReset (evt) {
         evt.preventDefault();
         /* Reset our form values */
-        this.dscinterfaces.searchDropdown.SystemName = '';
-        this.dscinterfaces.searchDropdown.ItamID = '';
-        this.dscinterfaces.searchDropdown.TableName = '';
-        this.dscinterfaces.searchDropdown.ColumnName = '';
+        this.store.searchDropdown.SystemName = '';
+        this.store.searchDropdown.ItamID = '';
+        this.store.searchDropdown.TableName = '';
+        this.store.searchDropdown.ColumnName = '';
 
         this.onSubmit();
 

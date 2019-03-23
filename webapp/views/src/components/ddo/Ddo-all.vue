@@ -26,12 +26,12 @@ table.v-table thead th > div.btn-group {
       <!-- Main content -->
       <b-row>
         <b-col>
-          <page-loader v-if="ddoall.left.isLoading || (secondtable && ddoall.right.isLoading)" />
+          <page-loader v-if="store.left.isLoading || (secondtable && store.right.isLoading)" />
 
           <b-row>
             <b-col>
               <div class="input-group mb-3">
-                <input v-model="ddoall.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <input v-model="store.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
 
                 <div class="input-group-append">
                   <b-dropdown right id="ddown1" text="" ref="ddownSearch">
@@ -40,19 +40,19 @@ table.v-table thead th > div.btn-group {
                         <b-col>
                           <b-form @submit="onSubmit" @reset="onReset">
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Domain" label-for="DataDomain">
-                              <b-form-input id="DataDomain" type="text" v-model="ddoall.searchDropdown.DataDomain"></b-form-input>
+                              <b-form-input id="DataDomain" type="text" v-model="store.searchDropdown.DataDomain"></b-form-input>
                             </b-form-group>
 
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Data Domain" label-for="SubDataDomain">
-                              <b-form-input id="SubDataDomain" type="text" v-model="ddoall.searchDropdown.SubDataDomain"></b-form-input>
+                              <b-form-input id="SubDataDomain" type="text" v-model="store.searchDropdown.SubDataDomain"></b-form-input>
                             </b-form-group>
 
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Data Domain Owner" label-for="SubDataDomainOwner">
-                              <b-form-input id="SubDataDomainOwner" type="text" v-model="ddoall.searchDropdown.SubDataDomainOwner"></b-form-input>
+                              <b-form-input id="SubDataDomainOwner" type="text" v-model="store.searchDropdown.SubDataDomainOwner"></b-form-input>
                             </b-form-group>
 
                             <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term" label-for="BusinessTerm">
-                              <b-form-select id="BusinessTerm" :options="businessTermMaster" v-model="ddoall.searchDropdown.BusinessTerm"></b-form-select>
+                              <b-form-select id="BusinessTerm" :options="businessTermMaster" v-model="store.searchDropdown.BusinessTerm"></b-form-select>
                             </b-form-group>
 
                             <b-button-group class="mx-1 float-right">
@@ -86,16 +86,16 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <v-data-table
                   :headers="firstTableHeaders"
-                  :items="ddoall.left.display"
-                  :pagination.sync="ddoall.left.pagination"
-                  :total-items="ddoall.left.totalItems"
-                  :loading="ddoall.left.isLoading"
+                  :items="store.left.display"
+                  :pagination.sync="store.left.pagination"
+                  :total-items="store.left.totalItems"
+                  :loading="store.left.isLoading"
                   :expand="false"
                   item-key="ID"
                   class="elevation-1 fixed-header">
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ ddoall.left.source[0] ? ddoall.left.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0 }})
+                  {{ props.header.text }} ({{ store.left.source[0] ? store.left.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0 }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -104,10 +104,10 @@ table.v-table thead th > div.btn-group {
                     </template>
 
                     <b-dropdown-header>
-                      <b-form-input type="text" placeholder="Filter" v-model="ddoall.filters['left'][props.header.value.split('.').reverse()[0]]" @change="filterKeyup('left', props.header)"></b-form-input>
+                      <b-form-input type="text" placeholder="Filter" v-model="store.filters['left'][props.header.value.split('.').reverse()[0]]" @change="filterKeyup('left', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, ddoall.left.source)" :key="item" @click="filterClick('left', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, store.left.source)" :key="item" @click="filterClick('left', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -116,11 +116,11 @@ table.v-table thead th > div.btn-group {
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
                 <template slot="no-data">
-                  <v-alert :value="ddoall.left.isLoading" type="info">
+                  <v-alert :value="store.left.isLoading" type="info">
                     Please wait while data is loading
                   </v-alert>
 
-                  <v-alert :value="!ddoall.left.isLoading" type="error">
+                  <v-alert :value="!store.left.isLoading" type="error">
                     Sorry, nothing to display here
                   </v-alert>
                 </template>
@@ -154,27 +154,27 @@ table.v-table thead th > div.btn-group {
             <b-col class="scrollableasdf">
               <v-data-table
                   :headers="secondTableHeaders"
-                  :items="ddoall.right.display"
-                  :pagination.sync="ddoall.right.pagination"
-                  :total-items="ddoall.right.totalItems"
-                  :loading="ddoall.right.isLoading"
+                  :items="store.right.display"
+                  :pagination.sync="store.right.pagination"
+                  :total-items="store.right.totalItems"
+                  :loading="store.right.isLoading"
                   v-if="secondtable"
                   item-key="ID"
                   class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
                 <template slot="no-data">
-                  <v-alert :value="ddoall.right.isLoading" type="info">
+                  <v-alert :value="store.right.isLoading" type="info">
                     Please wait while data is loading
                   </v-alert>
 
-                  <v-alert :value="!ddoall.right.isLoading" type="error">
+                  <v-alert :value="!store.right.isLoading" type="error">
                     Sorry, nothing to display here
                   </v-alert>
                 </template>
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} {{ props.header.displayCount ? "(" + (ddoall.right.source[0] ? ddoall.right.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0) + ")" : "" }}
+                  {{ props.header.text }} {{ props.header.displayCount ? "(" + (store.right.source[0] ? store.right.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0) + ")" : "" }}
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -183,10 +183,10 @@ table.v-table thead th > div.btn-group {
                     </template>
 
                     <b-dropdown-header>
-                      <b-form-input type="text" placeholder="Filter" v-model="ddoall.filters['right'][props.header.value.split('.').reverse()[0]]" @change="filterKeyup('right', props.header)"></b-form-input>
+                      <b-form-input type="text" placeholder="Filter" v-model="store.filters['right'][props.header.value.split('.').reverse()[0]]" @change="filterKeyup('right', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, ddoall.right.source)" :key="item" @click="filterClick('right', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, store.right.source)" :key="item" @click="filterClick('right', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -241,14 +241,14 @@ export default {
     },
     computed: {
       ...mapState({
-        ddoall: state => state.ddoall.all
+        store: state => state.ddoall.all
       }),
       addressPath (){
         var tmp = this.$route.path.split("/")
         return tmp.slice(0, 3).join("/")
       },
       businessTermMaster (){
-        return this._.map(this.ddoall.right.source, 'BUSINESS_TERM')
+        return this._.map(this.store.right.source, 'BUSINESS_TERM')
       },
       excelFields (){
         var ret = {}
@@ -268,7 +268,7 @@ export default {
       excelData () {
         var res = [];
 
-        this._.each(this.ddoall.left.display, (system, i) => {
+        this._.each(this.store.left.display, (system, i) => {
           var temp = {
             SUB_DOMAINS: system.SUB_DOMAINS,
             DATA_DOMAIN: system.DATA_DOMAIN,
@@ -276,7 +276,7 @@ export default {
             BANK_ID: system.BANK_ID,
           }
           
-          var tables = this._.filter(this.ddoall.right.display, (v) => v.TSCID == system.ID)
+          var tables = this._.filter(this.store.right.display, (v) => v.TSCID == system.ID)
           if(this.secondtable && tables.length > 0){
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
@@ -306,13 +306,13 @@ export default {
           this.doGetRightTable(this.$route.params.system);
         }
       },
-      "ddoall.left.pagination": {
+      "store.left.pagination": {
         handler () {
           this.doGetLeftTable();
         },
         deep: true
       },
-      "ddoall.right.pagination": {
+      "store.right.pagination": {
         handler () {
           if(this.secondtable){
             this.doGetRightTable(this.$route.params.system);
@@ -320,7 +320,7 @@ export default {
         },
         deep: true
       },
-      "ddoall.searchMain" (val, oldVal){
+      "store.searchMain" (val, oldVal){
         if(val || oldVal) {
           this.doGetLeftTable();
 
@@ -350,7 +350,7 @@ export default {
         else this.doGetRightTable(this.$route.params.system)
       },
       filterClick (type, keyModel, val) {
-        this.ddoall.filters[type][keyModel.value.split('.').reverse()[0]] = val;
+        this.store.filters[type][keyModel.value.split('.').reverse()[0]] = val;
 
         // this.columnFilter(type, keyModel);
         if(type == "left") this.doGetLeftTable()
@@ -386,15 +386,15 @@ export default {
         }
 
         this.$refs.ddownSearch.hide(true);
-        // this.ddoall.searchDropdown.show = false;
+        // this.store.searchDropdown.show = false;
       },
       onReset (evt) {
         evt.preventDefault();
         /* Reset our form values */
-        this.ddoall.searchDropdown.SubDataDomain = '';
-        this.ddoall.searchDropdown.DataDomain = '';
-        this.ddoall.searchDropdown.SubDataDomainOwner = '';
-        this.ddoall.searchDropdown.BusinessTerm = '';
+        this.store.searchDropdown.SubDataDomain = '';
+        this.store.searchDropdown.DataDomain = '';
+        this.store.searchDropdown.SubDataDomainOwner = '';
+        this.store.searchDropdown.BusinessTerm = '';
 
         this.onSubmit();
 
