@@ -30,6 +30,8 @@ function getRightTable(param) {
         res => {
             res.Data = _.map(res.Data, function(v){
                 v.CDE_YES_NO = v.CDE_YES_NO == 0 ? "No" : "Yes";
+                
+                v.LEFTID = v.TSID;
                 return v;
             });
 
@@ -56,6 +58,8 @@ function getInterfacesRightTable(param) {
                 v.IMM_PREC_SYSTEM_OLA = v.IMM_PREC_SYSTEM_OLA == 0 ? "No" : "Yes";
                 v.IMM_SUCC_SYSTEM_SLA = v.IMM_SUCC_SYSTEM_SLA == 0 ? "No" : "Yes";
                 v.IMM_SUCC_SYSTEM_OLA = v.IMM_SUCC_SYSTEM_OLA == 0 ? "No" : "Yes";
+                
+                v.LEFTID = v.TSID;
                 return v;
             });
 

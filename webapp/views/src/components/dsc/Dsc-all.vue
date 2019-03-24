@@ -36,14 +36,7 @@ table.v-table thead th > div.btn-group {
             <b-col></b-col>
             <b-col></b-col>
             <b-col>
-              <download-excel
-                  :data   = "excelData"
-                  :fields = "excelFields"
-                  worksheet = "My Worksheet"
-                  name    = "filename.xls">
-              
-                  <b-btn size="sm" class="float-right" variant="success">Export</b-btn>
-              </download-excel>
+              <page-export :storeName="storeName" :leftTableCols="firstTableHeaders" :rightTableCols="secondTableHeaders"/>
             </b-col>
           </b-row>
 
@@ -197,6 +190,7 @@ import Vue from 'vue'
 import { mapState, mapActions } from 'vuex'
 import JsonExcel from 'vue-json-excel'
 import pageSearch from '../PageSearch.vue'
+import pageExport from '../PageExport.vue'
 import tablecell from '../Tablecell.vue'
 import pageLoader from '../PageLoader.vue'
  
@@ -204,7 +198,7 @@ Vue.component('downloadExcel', JsonExcel)
 
 export default {
     components: {
-      pageSearch, tablecell, pageLoader
+      pageSearch, pageExport, tablecell, pageLoader
     },
     data () {
       return {
@@ -241,58 +235,6 @@ export default {
           { type: "dropdown", label: "Column Name", source: "ColumnName", options: this._.map(this._.flattenDeep(this._.map(this.store.right.source, 'Columns')), 'COLUMN_NAME') },
         ]
       },
-      excelFields (){
-        var ret = {}
-
-        _.each(this.firstTableHeaders, function(v){
-          ret[v.text] = v.value.split(".").reverse()[0];
-        })
-
-        if(this.store.isRightTable){
-          _.each(this.secondTableHeaders, function(v){
-            ret[v.text] = v.value.split(".").reverse()[0];
-          })
-        }
-
-        return ret
-      },
-      excelData () {
-        var res = [];
-
-        this._.each(this.store.left.display, (system, i) => {
-          var temp = {
-            SYSTEM_NAME: system.SYSTEM_NAME,
-            ITAM_ID: _.uniq(_.map(system.Custodians, "ITAM_ID").filter(Boolean)).join(', '),
-            DATASET_CUSTODIAN: _.uniq(_.map(system.Custodians, "DATASET_CUSTODIAN").filter(Boolean)).join(', '),
-            BANK_ID: _.uniq(_.map(system.Custodians, "BANK_ID").filter(Boolean)).join(', '),
-          }
-
-          var tables = this._.filter(this.store.right.display, (v) => v.TSID == system.ID)
-          if(this.store.isRightTable && tables.length > 0){
-            this._.each(tables, (table, i) => {
-              var tableLevel = _.cloneDeep(temp);
-              tableLevel.TABLE_NAME = table.TABLE_NAME;
-
-              if(table.Columns.length > 0){
-                this._.each(table.Columns, (column, j) => {
-                  var colLevel = _.cloneDeep(tableLevel);
-                  colLevel.COLUMN_NAME = column.COLUMN_NAME;
-                  colLevel.BUSINESS_ALIAS_NAME = column.BUSINESS_ALIAS_NAME;
-                  colLevel.CDE_YES_NO = column.CDE_YES_NO;
-                  
-                  res.push(_.cloneDeep(colLevel));
-                })
-              } else {
-                res.push(_.cloneDeep(tableLevel));
-              }
-            })
-          } else {
-            res.push(_.cloneDeep(temp));
-          }
-        });
-
-        return res
-      }
     },
     watch: {
       $route (to){
