@@ -202,9 +202,9 @@ export default {
       }
     },
     computed: {
-      ...mapState({
-        store: state => state.dscmy.all
-      }),
+      store () {
+        return this.$store.state[this.storeName].all
+      },
       addressPath (){
         var tmp = this.$route.path.split("/")
         return tmp.slice(0, 3).join("/")

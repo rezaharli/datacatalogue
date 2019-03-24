@@ -20,77 +20,39 @@ table.v-table thead th > div.btn-group {
 <template>
   <b-row style="margin-top: 10px;margin-bottom: 10px;">
     <b-col>
-      <!-- Dpo details -->
+      <!-- Dsc details -->
       <router-view/>
 
       <!-- Main content -->
       <b-row>
         <b-col>
+          <page-loader v-if="store.left.isLoading || (store.isRightTable && store.right.isLoading)" />
+          
           <b-row>
             <b-col>
-              <div class="input-group mb-3">
-                <input v-model="dpomy.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                <div class="input-group-append">
-                  <b-dropdown right id="ddown1" text="">
-                    <b-container>
-                      <b-form-row class="main-table-search-dropdown-form">
-                        <b-col>
-                          <b-form @submit="onSubmit" @reset="onReset">
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Process Name" label-for="processName">
-                              <b-form-input id="processName" type="text" v-model="searchForm.processName"></b-form-input>
-                            </b-form-group>
-
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Process Owner" label-for="processOwner">
-                              <b-form-input id="processOwner" type="text" v-model="searchForm.processOwner"></b-form-input>
-                            </b-form-group>
-
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Country" label-for="country">
-                              <b-form-select id="country" :options="searchForm.countryMaster" v-model="searchForm.country"></b-form-select>
-                            </b-form-group>
-
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="CDE Name" label-for="cdeName">
-                              <b-form-input id="cdeName" type="text" v-model="searchForm.cdeName"></b-form-input>
-                            </b-form-group>
-
-                            <b-button-group class="mx-1 float-right">
-                              <b-button type="reset" variant="danger">Reset</b-button>
-                              <b-button type="submit" variant="primary">Submit</b-button>
-                            </b-button-group>
-                          </b-form>
-                        </b-col>
-                      </b-form-row>
-                    </b-container>
-                  </b-dropdown>
-                </div>
-              </div>
+              <page-search :storeName="storeName" :searchDDInputs="searchDropdownInputs"/>
             </b-col>
 
             <b-col></b-col>
             <b-col></b-col>
             <b-col>
-              <download-excel
-                  :data   = "excelData"
-                  :fields = "excelFields"
-                  worksheet = "My Worksheet"
-                  name    = "filename.xls">
-              
-                  <b-btn size="sm" class="float-right" variant="success">Export</b-btn>
-              </download-excel>
+              <page-export :storeName="storeName" :leftTableCols="firstTableHeaders" :rightTableCols="secondTableHeaders"/>
             </b-col>
           </b-row>
 
           <b-row>
-            <b-col>
+            <b-col cols="6">
               <v-data-table
                   :headers="firstTableHeaders"
-                  :items="dpomy.left.display"
-                  :pagination.sync="dpomy.left.pagination"
-                  :total-items="dpomy.left.totalItems"
-                  :loading="dpomy.left.loading"
+                  :items="store.left.display"
+                  :pagination.sync="store.left.pagination"
+                  :total-items="store.left.totalItems"
+                  :loading="store.left.isLoading"
+                  item-key="ID"
                   class="elevation-1 fixed-header">
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dpomy.left.source).length }})
+                  {{ props.header.text }} ({{ store.left.source[0] ? store.left.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0 }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -99,10 +61,10 @@ table.v-table thead th > div.btn-group {
                     </template>
 
                     <b-dropdown-header>
-                      <b-form-input type="text" placeholder="Filter" v-model="search['systems'][props.header.value]" @change="filterKeyup('systems', props.header)"></b-form-input>
+                      <b-form-input type="text" placeholder="Filter" v-model="store.filters['left'][props.header.value.split('.').reverse()[0]]" @change="filterKeyup('left', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, dpomy.left.source)" :key="item" @click="columnFilter('systems', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, store.left.source)" :key="item" @click="filterClick('left', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -111,47 +73,48 @@ table.v-table thead th > div.btn-group {
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
                 <template slot="no-data">
-                  <v-alert :value="dpomy.left.loading" type="info">
+                  <v-alert :value="store.left.isLoading" type="info">
                     Please wait while data is loading
                   </v-alert>
 
-                  <v-alert :value="!dpomy.left.loading" type="error">
+                  <v-alert :value="!store.left.isLoading" type="error">
                     Sorry, nothing to display here
                   </v-alert>
                 </template>
 
                 <template slot="items" slot-scope="props">
-                    <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.DOWNSTREAM_PROCESS" :isklik="false"></tablecell></b-link></td>
-                    <td><tablecell :fulltext="props.item.PROCESS_OWNER" :isklik="true"></tablecell></td>
-                    <td><tablecell :fulltext="props.item.BANK_ID" :isklik="true"></tablecell></td>
+                  <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.DOWNSTREAM_PROCESS" :isklik="false"></tablecell></b-link></td>
+                  <td><tablecell :fulltext="props.item.PROCESS_OWNER" :isklik="true"></tablecell></td>
+                  <td><tablecell :fulltext="props.item.BANK_ID" :isklik="true"></tablecell></td>
                 </template>
               </v-data-table>
             </b-col>
             
-            <b-col class="scrollableasdf">
+            <b-col cols="6">
               <v-data-table
                   :headers="secondTableHeaders"
-                  :items="dpomy.right.display"
-                  :pagination.sync="dpomy.right.pagination"
-                  :total-items="dpomy.right.totalItems"
-                  :loading="dpomy.right.loading"
-                  v-if="secondtable"
+                  :items="store.right.display"
+                  :pagination.sync="store.right.pagination"
+                  :total-items="store.right.totalItems"
+                  :loading="store.right.isLoading"
+                  :expand="false"
+                  v-if="store.isRightTable"
                   item-key="ID"
                   class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
                 <template slot="no-data">
-                  <v-alert :value="dpomy.right.loading" type="info">
+                  <v-alert :value="store.right.isLoading" type="info">
                     Please wait while data is loading
                   </v-alert>
 
-                  <v-alert :value="!dpomy.right.loading" type="error">
+                  <v-alert :value="!store.right.isLoading" type="error">
                     Sorry, nothing to display here
                   </v-alert>
                 </template>
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, dpomy.right.source).length }})
+                  {{ props.header.text }} {{ props.header.displayCount ? "(" + (store.right.source[0] ? store.right.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0) + ")" : "" }}
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -160,21 +123,21 @@ table.v-table thead th > div.btn-group {
                     </template>
 
                     <b-dropdown-header>
-                      <b-form-input type="text" placeholder="Filter" v-model="search['tablename'][props.header.value]" @change="filterKeyup('tablename', props.header)"></b-form-input>
+                      <b-form-input type="text" placeholder="Filter" v-model="store.filters['right'][props.header.value.split('.').reverse()[0]]" @change="filterKeyup('right', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, dpomy.right.source)" :key="item" @click="columnFilter('tablename', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, store.right.source)" :key="item" @click="filterClick('right', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
                 </template>
 
                 <template slot="items" slot-scope="props">
-                  <tr @click="props.expanded = !props.expanded">
+                  <tr>
                     <td><b-link @click="showDetails(props.item.ID)"><tablecell :fulltext="props.item.CDE_NAME" :isklik="false"></tablecell></b-link></td>
                     <td><tablecell :fulltext="props.item.SEGMENT" :isklik="true"></tablecell></td>
-                    <td><tablecell :fulltext="props.item.IMM_PREC_SYSTEM_ID" :isklik="true"></tablecell></td>
-                    <td><tablecell :fulltext="props.item.ULTIMATE_SOURCE_SYSTEM_ID" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="props.item.IMM_PREC_SYSTEM" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="props.item.ULT_SOURCE_SYSTEM" :isklik="true"></tablecell></td>
                     <td><tablecell :fulltext="props.item.BUSINESS_DESCRIPTION" :isklik="true"></tablecell></td>
                     <td><tablecell :fulltext="props.item.CDE_RATIONALE" :isklik="true"></tablecell></td>
                   </tr>
@@ -192,161 +155,113 @@ table.v-table thead th > div.btn-group {
 import Vue from 'vue'
 import { mapState, mapActions } from 'vuex'
 import JsonExcel from 'vue-json-excel'
+import pageSearch from '../PageSearch.vue'
+import pageExport from '../PageExport.vue'
 import tablecell from '../Tablecell.vue'
+import pageLoader from '../PageLoader.vue'
  
 Vue.component('downloadExcel', JsonExcel)
 
 export default {
     components: {
-      tablecell
+      pageSearch, pageExport, tablecell, pageLoader
     },
     data () {
       return {
-        search: {
-          systems: {},
-          tablename: {}
-        },
-        secondtable: false,
+        storeName: "dpomy",
         systemSource: [],
         tablenameSource: [],
-        searchForm: {
-          processName: '',
-          processOwner: '',
-          country: '',
-          countryMaster: [],
-          cdeName: ''
-        },
         firstTableHeaders: [
           { text: 'Downstream Processes', align: 'left', value: 'DOWNSTREAM_PROCESS', sortable: false },
           { text: 'Process Owner', align: 'left', value: 'PROCESS_OWNER', sortable: false },
           { text: 'Bank ID', align: 'left', value: 'BANK_ID', sortable: false }
         ],
         secondTableHeaders: [
-          { text: 'CDE Name', align: 'left', sortable: false, value: 'CDE_NAME', width: "25%" },
-          { text: 'Segment', align: 'left', sortable: false, value: 'SEGMENT', width: "25%" },
-          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'IMM_PREC_SYSTEM_ID', width: "25%" },
-          { text: 'Ultimate Source System', align: 'left', sortable: false, value: 'ULTIMATE_SOURCE_SYSTEM_ID', width: "25%" },
-          { text: 'Business Description', align: 'left', sortable: false, value: 'BUSINESS_DESCRIPTION', width: "25%" },
-          { text: 'CDE Rationale', align: 'left', sortable: false, value: 'CDE_RATIONALE', width: "25%" },
+          { text: 'CDE Name', align: 'left', sortable: false, value: 'CDE_NAME', displayCount: true, width: "25%" },
+          { text: 'Segment', align: 'left', sortable: false, value: 'SEGMENT', displayCount: true, width: "25%" },
+          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'IMM_PREC_SYSTEM', displayCount: true, width: "25%" },
+          { text: 'Ultimate Source System', align: 'left', sortable: false, value: 'ULT_SOURCE_SYSTEM', displayCount: true, width: "25%" },
+          { text: 'Business Description', align: 'left', sortable: false, value: 'BUSINESS_DESCRIPTION', displayCount: true, width: "25%" },
+          { text: 'CDE Rationale', align: 'left', sortable: false, value: 'CDE_RATIONALE', displayCount: true, width: "25%" },
         ],
       }
     },
     computed: {
-      ...mapState({
-        dpomy: state => state.dpomy.all
-      }),
+      store () {
+        return this.$store.state[this.storeName].all
+      },
       addressPath (){
         var tmp = this.$route.path.split("/")
         return tmp.slice(0, 3).join("/")
       },
-      excelFields (){
-        var ret = {}
-
-        _.each(this.firstTableHeaders, function(v){
-          ret[v.text] = v.value.split(".").reverse()[0];
-        })
-
-        if(this.secondtable){
-          _.each(this.secondTableHeaders, function(v){
-            ret[v.text] = v.value.split(".").reverse()[0];
-          })
-        }
-
-        return ret
+      searchDropdownInputs () {
+        return [
+          { type: "text", label: "Process Name", source: "ProcessName" },
+          { type: "text", label: "Process Owner", source: "ProcessOwner" },
+          { type: "text", label: "CDE Name", source: "CDEName" },
+        ]
       },
-      excelData () {
-        var res = [];
-
-        this._.each(this.dpomy.left.display, (system, i) => {
-          var temp = {
-            DOWNSTREAM_PROCESS: system.DOWNSTREAM_PROCESS,
-            PROCESS_OWNER: system.PROCESS_OWNER,
-            BANK_ID: system.BANK_ID
-          }
-
-          var tables = this._.filter(this.dpomy.right.display, (v) => v.TDPID == system.ID)
-          if(tables.length > 0){
-            this._.each(tables, (table, i) => {
-              var tableLevel = _.cloneDeep(temp);
-              tableLevel.CDE_NAME = table.CDE_NAME;
-              tableLevel.SEGMENT = table.SEGMENT;
-              tableLevel.IMM_PREC_SYSTEM_ID = table.IMM_PREC_SYSTEM_ID;
-              tableLevel.ULTIMATE_SOURCE_SYSTEM_ID = table.ULTIMATE_SOURCE_SYSTEM_ID;
-              tableLevel.BUSINESS_DESCRIPTION = table.BUSINESS_DESCRIPTION;
-              tableLevel.CDE_RATIONALE = table.CDE_RATIONALE;
-
-              res.push(_.cloneDeep(tableLevel));
-            })
-          } else {
-            res.push(_.cloneDeep(temp));
-          }
-        });
-
-        return res
-      }
     },
     watch: {
       $route (to){
-        this.secondtable = false;
+        this.store.isRightTable = false;
 
         if (to.params != undefined) {
-          this.secondtable = to.params.system; 
-        }
-
-        if(this.secondtable){
-          this.getRightTable(this.$route.params.system);
+          this.store.isRightTable = to.params.system; 
         }
       },
-      "dpomy.left.pagination": {
+      "store.left.pagination": {
         handler () {
-          this.getLeftTable();
+          this.doGetLeftTable();
         },
         deep: true
       },
-      "dpomy.right.pagination": {
+      "store.right.pagination": {
         handler () {
-          if(this.secondtable){
-            this.getRightTable(this.$route.params.system);
+          if(this.store.isRightTable){
+            this.doGetRightTable(this.$route.params.system);
           }
         },
         deep: true
       },
-      "dpomy.searchMain" (val, oldVal){
+      "store.searchMain" (val, oldVal){
         if(val || oldVal) {
-          this.getLeftTable();
+          this.doGetLeftTable();
 
-          if(this.secondtable){
-            this.getRightTable(this.$route.params.system);
+          if(this.store.isRightTable){
+            this.doGetRightTable(this.$route.params.system);
           }
         }
       }
     },
     mounted() {
-      this.secondtable = this.$route.params.system;
+      this.store.tabName = this.storeName;
+      this.store.isRightTable = this.$route.params.system;
     },
     methods: {
-      ...mapActions('dpomy', {
-          getLeftTable: 'getLeftTable',
-          getRightTable: 'getRightTable',
-      }),
-      columnFilter (type, keyModel, val) {
-        if(val == ""){
-          if(type == "systems"){
-            this.dpomy.left.display = this.dpomy.left.source;
-          } else {
-            this.dpomy.right.display = this.dpomy.right.source;
-          }
-          return
-        }
-
-        if(type == "systems"){
-          this.dpomy.left.display = _.filter(this.dpomy.left.source, [keyModel.value, val]);
-        } else {
-          this.dpomy.right.display = _.filter(this.dpomy.right.source, [keyModel.value, val]);
-        }
+      getLeftTable () {
+        this.$store.dispatch(`${this.storeName}/getLeftTable`)
+      },
+      getRightTable (id) {
+        this.$store.dispatch(`${this.storeName}/getRightTable`, id)
+      },
+      doGetLeftTable () {
+        this.getLeftTable();
+      },
+      doGetRightTable (id) {
+        this.getRightTable(id);
       },
       filterKeyup (type, keyModel) {
-        this.columnFilter(type, keyModel, this.search[type][keyModel.value]);
+        // this.columnFilter(type, keyModel);
+        if(type == "left") this.doGetLeftTable()
+        else this.doGetRightTable(this.$route.params.system)
+      },
+      filterClick (type, keyModel, val) {
+        this.store.filters[type][keyModel.value.split('.').reverse()[0]] = val;
+
+        // this.columnFilter(type, keyModel);
+        if(type == "left") this.doGetLeftTable()
+        else this.doGetRightTable(this.$route.params.system)
       },
       distinctData (col, datax) {
         var cols = col.split(".")
@@ -366,38 +281,13 @@ export default {
       },
       systemRowClick (evt) {
         evt.preventDefault();
-        this.secondtable = true;
+        this.store.isRightTable = true;
       },
-      onSubmit (evt) {
-        evt.preventDefault();
-
-        this.dpomy.left.display = this.dpomy.left.source;
-        this.dpomy.right.display = this.dpomy.right.source;
-
-        if(this.searchForm.processName)
-          this.dpomy.left.display = this._.filter(this.dpomy.left.display, (val) => val.DOWNSTREAM_PROCESS.toString().toUpperCase().indexOf(this.searchForm.processName.toString().toUpperCase()) != -1);
-        if(this.searchForm.processOwner)
-          this.dpomy.left.display = this._.filter(this.dpomy.left.display, (val) => val.PROCESS_OWNER.toString().toUpperCase().indexOf(this.searchForm.processOwner.toString().toUpperCase()) != -1);
-
-        if(this.searchForm.cdeName)
-          this.dpomy.right.display = this._.filter(this.dpomy.right.display, (val) => val.CDE_NAME.toString().toUpperCase().indexOf(this.searchForm.cdeName.toString().toUpperCase()) != -1);
-
-        this.searchForm.show = false;
+      getCDEConclusion (cdes) {
+        return cdes.filter(Boolean).join(', ').indexOf("Yes") != -1 ? "Yes" : "No";
       },
-      onReset (evt) {
-        evt.preventDefault();
-        /* Reset our form values */
-        this.searchForm.processName = '';
-        this.searchForm.processOwner = '';
-        this.searchForm.country = '';
-        this.searchForm.cdeName = '';
-
-        // /* Trick to reset/clear native browser form validation state */
-        // this.searchForm.show = false;
-        // this.$nextTick(() => { this.searchForm.show = true });
-      },
-      showDetails (id) {
-        this.$router.push(this.addressPath + "/" + this.$route.params.system + '/' + id)
+      showDetails (param) {
+        this.$router.push(this.addressPath + "/" + param.TSID + '/' + param.ID + '/' + param.COLID)
       }
     }
 }

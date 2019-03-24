@@ -10,6 +10,7 @@ import (
 )
 
 type DPO struct {
+	*Base
 }
 
 func NewDPOController() *DPO {
@@ -26,8 +27,11 @@ func (c *DPO) GetLeftTable(k *knot.WebContext) {
 		return
 	}
 
+	tabs := payload.GetString("Tabs")
 	loggedinId := payload.GetString("LoggedInID")
 	search := payload.GetString("Search")
+	searchDD := payload.Get("SearchDD")
+	colFilter := payload.Get("Filters")
 	pagination, err := toolkit.ToM(payload.Get("Pagination"))
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
@@ -37,7 +41,7 @@ func (c *DPO) GetLeftTable(k *knot.WebContext) {
 	pageNumber := pagination.GetInt("page")
 	rowsPerPage := pagination.GetInt("rowsPerPage")
 
-	systems, _, err := s.NewDPOService().GetLeftTable(loggedinId, search, pageNumber, rowsPerPage, toolkit.M{})
+	systems, _, err := s.NewDPOService().GetLeftTable(tabs, loggedinId, search, searchDD, colFilter, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -56,8 +60,11 @@ func (c *DPO) GetRightTable(k *knot.WebContext) {
 		return
 	}
 
+	tabs := payload.GetString("Tabs")
 	search := payload.GetString("Search")
-	processID := payload.GetInt("ProcessID")
+	searchDD := payload.Get("SearchDD")
+	colFilter := payload.Get("Filters")
+	systemID := payload.GetInt("SystemID")
 	pagination, err := toolkit.ToM(payload.Get("Pagination"))
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
@@ -67,7 +74,7 @@ func (c *DPO) GetRightTable(k *knot.WebContext) {
 	pageNumber := pagination.GetInt("page")
 	rowsPerPage := pagination.GetInt("rowsPerPage")
 
-	systems, _, err := s.NewDPOService().GetRightTable(processID, search, pageNumber, rowsPerPage, toolkit.M{})
+	systems, _, err := s.NewDPOService().GetRightTable(tabs, systemID, search, searchDD, colFilter, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -86,11 +93,15 @@ func (c *DPO) GetDetails(k *knot.WebContext) {
 		return
 	}
 
-	systems, _, err := s.NewDPOService().GetDetails(payload.GetInt("LeftParam"), payload.GetInt("RightParam"))
+	detail, ddSource, err := c.Base.GetDetails(payload, s.NewDSCService().GetDetails, s.NewDSCService().GetddSource)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
-	h.WriteResultOK(k, res, systems)
+	data := toolkit.M{}
+	data.Set("Detail", detail)
+	data.Set("DDSource", ddSource)
+
+	h.WriteResultOK(k, res, data)
 }

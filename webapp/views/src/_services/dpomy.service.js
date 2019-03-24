@@ -11,7 +11,16 @@ function getLeftTable(param) {
 }
 
 function getRightTable(param) {
-    return fetchWHeader(`/dpo/getrighttable`, param)
+    return fetchWHeader(`/dpo/getrighttable`, param).then(
+        res => {
+            res.Data = _.map(res.Data, function(v){
+                v.LEFTID = v.TDPID;
+                return v;
+            });
+
+            return res;
+        }
+    )
 }
 
 function getDetails(param) {
