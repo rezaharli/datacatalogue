@@ -26,71 +26,33 @@ table.v-table thead th > div.btn-group {
       <!-- Main content -->
       <b-row>
         <b-col>
+          <page-loader v-if="store.left.isLoading || (store.isRightTable && store.right.isLoading)" />
+          
           <b-row>
             <b-col>
-              <div class="input-group mb-3">
-                <input v-model="rfomy.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                <div class="input-group-append">
-                  <b-dropdown right id="ddown1" text="">
-                    <b-container>
-                      <b-form-row class="main-table-search-dropdown-form">
-                        <b-col>
-                          <b-form @submit="onSubmit" @reset="onReset">
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Priority Report Name" label-for="priorityReport">
-                              <b-form-input id="priorityReport" type="text" v-model="searchForm.priorityReport"></b-form-input>
-                            </b-form-group>
-
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Risk Reporting Load" label-for="riskReporting">
-                              <b-form-input id="riskReporting" type="text" v-model="searchForm.riskReporting"></b-form-input>
-                            </b-form-group>
-
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Principal Risk Type" label-for="principalRisk">
-                              <b-form-select id="principalRisk" :options="principalRiskMaster" v-model="searchForm.principalRisk"></b-form-select>
-                            </b-form-group>
-
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Risk Type" label-for="subRisk">
-                              <b-form-select id="subRisk" :options="subRiskMaster" v-model="searchForm.subRisk"></b-form-select>
-                            </b-form-group>
-
-                            <b-button-group class="mx-1 float-right">
-                              <b-button type="reset" variant="danger">Reset</b-button>
-                              <b-button type="submit" variant="primary">Submit</b-button>
-                            </b-button-group>
-                          </b-form>
-                        </b-col>
-                      </b-form-row>
-                    </b-container>
-                  </b-dropdown>
-                </div>
-              </div>
+              <page-search :storeName="storeName" :searchDDInputs="searchDropdownInputs"/>
             </b-col>
 
             <b-col></b-col>
             <b-col></b-col>
             <b-col>
-              <download-excel
-                  :data   = "excelData"
-                  :fields = "excelFields"
-                  worksheet = "My Worksheet"
-                  name    = "filename.xls">
-              
-                  <b-btn size="sm" class="float-right" variant="success">Export</b-btn>
-              </download-excel>
+              <page-export :storeName="storeName" :leftTableCols="firstTableHeaders" :rightTableCols="secondTableHeaders"/>
             </b-col>
           </b-row>
 
           <b-row>
-            <b-col>
+            <b-col cols="6">
               <v-data-table
                   :headers="firstTableHeaders"
-                  :items="rfomy.left.display"
-                  :pagination.sync="rfomy.left.pagination"
-                  :total-items="rfomy.left.totalItems"
-                  :loading="rfomy.left.loading"
+                  :items="store.left.display"
+                  :pagination.sync="store.left.pagination"
+                  :total-items="store.left.totalItems"
+                  :loading="store.left.isLoading"
+                  item-key="ID"
                   class="elevation-1 fixed-header">
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, rfomy.left.source).length }})
+                  {{ props.header.text }} ({{ store.left.source[0] ? store.left.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0 }})
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -99,10 +61,10 @@ table.v-table thead th > div.btn-group {
                     </template>
 
                     <b-dropdown-header>
-                      <b-form-input type="text" placeholder="Filter" v-model="search['systems'][props.header.value]" @change="filterKeyup('systems', props.header)"></b-form-input>
+                      <b-form-input type="text" placeholder="Filter" v-model="store.filters['left'][props.header.value.split('.').reverse()[0]]" @change="filterKeyup('left', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, rfomy.left.source)" :key="item" @click="columnFilter('systems', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, store.left.source)" :key="item" @click="filterClick('left', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -111,47 +73,48 @@ table.v-table thead th > div.btn-group {
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
                 <template slot="no-data">
-                  <v-alert :value="rfomy.left.loading" type="info">
+                  <v-alert :value="store.left.isLoading" type="info">
                     Please wait while data is loading
                   </v-alert>
 
-                  <v-alert :value="!rfomy.left.loading" type="error">
+                  <v-alert :value="!store.left.isLoading" type="error">
                     Sorry, nothing to display here
                   </v-alert>
                 </template>
 
                 <template slot="items" slot-scope="props">
-                    <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.NAME" :isklik="false"></tablecell></b-link></td>
-                    <td><tablecell :fulltext="props.item.OWNER_ID" :isklik="true"></tablecell></td>
+                    <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.PRIORITY_REPORT" :isklik="false"></tablecell></b-link></td>
+                    <td><tablecell :fulltext="props.item.RR_LEAD" :isklik="true"></tablecell></td>
+                    <td><tablecell :fulltext="props.item.BANK_ID" :isklik="true"></tablecell></td>
                 </template>
               </v-data-table>
             </b-col>
             
-            <b-col class="scrollableasdf">
+            <b-col cols="6">
               <v-data-table
                   :headers="secondTableHeaders"
-                  :items="rfomy.right.display"
-                  :pagination.sync="rfomy.right.pagination"
-                  :total-items="rfomy.right.totalItems"
-                  :loading="rfomy.right.loading"
+                  :items="store.right.display"
+                  :pagination.sync="store.right.pagination"
+                  :total-items="store.right.totalItems"
+                  :loading="store.right.isLoading"
                   :expand="false"
-                  v-if="secondtable"
+                  v-if="store.isRightTable"
                   item-key="ID"
                   class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
                 <template slot="no-data">
-                  <v-alert :value="rfomy.right.loading" type="info">
+                  <v-alert :value="store.right.isLoading" type="info">
                     Please wait while data is loading
                   </v-alert>
 
-                  <v-alert :value="!rfomy.right.loading" type="error">
+                  <v-alert :value="!store.right.isLoading" type="error">
                     Sorry, nothing to display here
                   </v-alert>
                 </template>
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ distinctData(props.header.value, rfomy.right.source).length }})
+                  {{ props.header.text }} {{ props.header.displayCount ? "(" + (store.right.source[0] ? store.right.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0) + ")" : "" }}
 
                   <b-dropdown no-caret variant="link" class="header-filter-icon">
                     <template slot="button-content">
@@ -160,10 +123,10 @@ table.v-table thead th > div.btn-group {
                     </template>
 
                     <b-dropdown-header>
-                      <b-form-input type="text" placeholder="Filter" v-model="search['tablename'][props.header.value]" @change="filterKeyup('tablename', props.header)"></b-form-input>
+                      <b-form-input type="text" placeholder="Filter" v-model="store.filters['right'][props.header.value.split('.').reverse()[0]]" @change="filterKeyup('right', props.header)"></b-form-input>
                     </b-dropdown-header>
 
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, rfomy.right.source)" :key="item" @click="columnFilter('tablename', props.header, item)">
+                    <b-dropdown-item v-for="item in distinctData(props.header.value, store.right.source)" :key="item" @click="filterClick('right', props.header, item)">
                       {{ item }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -171,12 +134,12 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                   <tr>
-                    <td style="width: calc(100% / 7)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.PRINCIPAL_RISK_TYPE" :isklik="false"></tablecell></b-link></td>
-                    <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'RISK_SUB_TYPE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                    <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'PRIORITY_REPORT_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                    <td style="width: calc(100% / 7)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.PRINCIPAL_RISK" :isklik="false"></tablecell></b-link></td>
+                    <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'RISK_SUB')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                    <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'PR_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                     <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'CRM_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                     <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'CRM_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                    <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'ASSOCIATED_CDES')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                    <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'ASSOC_CDES')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                     <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'CDE_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                   </tr>
                 </template>
@@ -192,11 +155,11 @@ table.v-table thead th > div.btn-group {
                   >
                     <template slot="items" slot-scope="props">
                       <td style="width: calc(100% / 7)">&nbsp;</td>
-                      <td style="width: calc(100% / 7)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.RISK_SUB_TYPE" :isklik="false"></tablecell></b-link></td>
-                      <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'PRIORITY_REPORT_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                      <td style="width: calc(100% / 7)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.RISK_SUB" :isklik="false"></tablecell></b-link></td>
+                      <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'PR_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                       <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'CRM_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                       <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'CRM_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                      <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'ASSOCIATED_CDES')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                      <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'ASSOC_CDES')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                       <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'CDE_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                     </template>
 
@@ -212,10 +175,10 @@ table.v-table thead th > div.btn-group {
                         <template slot="items" slot-scope="props">
                           <td style="width: calc(100% / 7)">&nbsp;</td>
                           <td style="width: calc(100% / 7)">&nbsp;</td>
-                          <td style="width: calc(100% / 7)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.PRIORITY_REPORT_RATIONALE" :isklik="false"></tablecell></b-link></td>
+                          <td style="width: calc(100% / 7)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.PR_RATIONALE" :isklik="false"></tablecell></b-link></td>
                           <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.CRMNamesVal, 'CRM_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                           <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.CRMNamesVal, 'CRM_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                          <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.CRMNamesVal, 'ASSOCIATED_CDES')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                          <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.CRMNamesVal, 'ASSOC_CDES')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                           <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.CRMNamesVal, 'CDE_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                         </template>
 
@@ -234,7 +197,7 @@ table.v-table thead th > div.btn-group {
                               <td style="width: calc(100% / 7)">&nbsp;</td>
                               <td style="width: calc(100% / 7)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.CRM_NAME" :isklik="false"></tablecell></b-link></td>
                               <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.CDEsVal, 'CRM_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                              <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.CDEsVal, 'ASSOCIATED_CDES')).join(', '))" :isklik="true"></tablecell></td>
+                              <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.CDEsVal, 'ASSOC_CDES')).join(', '))" :isklik="true"></tablecell></td>
                               <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.CDEsVal, 'CDE_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                             </template>
 
@@ -253,7 +216,7 @@ table.v-table thead th > div.btn-group {
                                   <td style="width: calc(100% / 7)">&nbsp;</td>
                                   <td style="width: calc(100% / 7)">&nbsp;</td>
                                   <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.Rationales, 'CRM_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                                  <td style="width: calc(100% / 7)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.ASSOCIATED_CDES" :isklik="false"></tablecell></b-link></td>
+                                  <td style="width: calc(100% / 7)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.ASSOC_CDES" :isklik="false"></tablecell></b-link></td>
                                   <td style="width: calc(100% / 7)"><tablecell :fulltext="(_.uniq(_.map(props.item.Rationales, 'CDE_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                                 </template>
 
@@ -298,167 +261,125 @@ table.v-table thead th > div.btn-group {
 import Vue from 'vue'
 import { mapState, mapActions } from 'vuex'
 import JsonExcel from 'vue-json-excel'
+import pageSearch from '../PageSearch.vue'
+import pageExport from '../PageExport.vue'
 import tablecell from '../Tablecell.vue'
+import pageLoader from '../PageLoader.vue'
  
 Vue.component('downloadExcel', JsonExcel)
 
 export default {
     components: {
-      tablecell
+      pageSearch, pageExport, tablecell, pageLoader
     },
     data () {
       return {
-        search: {
-          systems: {},
-          tablename: {}
-        },
-        secondtable: false,
+        storeName: "rfoall",
         systemSource: [],
         tablenameSource: [],
-        searchForm: {
-          priorityReport: '',
-          riskReporting: '',
-          country: '',
-          principalRisk: '',
-          subRisk: ''
-        },
         firstTableHeaders: [
-          { text: 'Priority Report Names', align: 'left', value: 'NAME', sortable: false },
-          { text: 'Risk Reporting Load', align: 'left', value: 'OWNER_ID', sortable: false },
+          { text: 'Priority Report Names', align: 'left', value: 'PRIORITY_REPORT', sortable: false },
+          { text: 'Risk Reporting Load', align: 'left', value: 'RR_LEAD', sortable: false },
+          { text: 'Bank ID', align: 'left', value: 'BANK_ID', sortable: false },
         ],
         secondTableHeaders: [
-          { text: 'Principal Risk Type', align: 'left', sortable: false, value: 'PRINCIPAL_RISK_TYPE', width: "25%" },
-          { text: 'Risk Sub Type', align: 'left', sortable: false, value: 'RiskSubTypesVal.RISK_SUB_TYPE', width: "25%" },
-          { text: 'Priority Report Rationale', align: 'left', sortable: false, value: 'RiskSubTypesVal.PRIORITY_REPORT_RATIONALE', width: "25%" },
+          { text: 'Principal Risk Type', align: 'left', sortable: false, value: 'PRINCIPAL_RISK', width: "25%" },
+          { text: 'Risk Sub Type', align: 'left', sortable: false, value: 'RiskSubTypesVal.RISK_SUB', width: "25%" },
+          { text: 'Priority Report Rationale', align: 'left', sortable: false, value: 'RiskSubTypesVal.PR_RATIONALE', width: "25%" },
           { text: 'CRM Name', align: 'left', sortable: false, value: 'RiskSubTypesVal.CRM_NAME', width: "25%" },
           { text: 'CRM Rationale', align: 'left', sortable: false, value: 'RiskSubTypesVal.CRM_RATIONALE', width: "25%" },
-          { text: 'Associated CDEs', align: 'left', sortable: false, value: 'RiskSubTypesVal.ASSOCIATED_CDES', width: "25%" },
+          { text: 'Associated CDEs', align: 'left', sortable: false, value: 'RiskSubTypesVal.ASSOC_CDES', width: "25%" },
           { text: 'CDE Rationale', align: 'left', sortable: false, value: 'RiskSubTypesVal.CDE_RATIONALE', width: "25%" },
         ],
       }
     },
     computed: {
-      ...mapState({
-        rfomy: state => state.rfomy.all
-      }),
+      store () {
+        return this.$store.state[this.storeName].all
+      },
       addressPath (){
         var tmp = this.$route.path.split("/")
         return tmp.slice(0, 3).join("/")
       },
       principalRiskMaster () {
-        return this._.uniq(this._.map(this.rfomy.right.source, 'PRINCIPAL_RISK_TYPE'))
+        return this._.uniq(this._.map(this.rfomy.right.source, 'PRINCIPAL_RISK'))
       },
       subRiskMaster () {
-        return this._.uniq(this._.map(this.rfomy.right.source, 'RISK_SUB_TYPE'))
+        return this._.uniq(this._.map(this.rfomy.right.source, 'RISK_SUB'))
       },
-      excelFields (){
-        var ret = {}
-
-        _.each(this.firstTableHeaders, function(v){
-          ret[v.text] = v.value.split(".").reverse()[0];
-        })
-
-        if(this.secondtable){
-          _.each(this.secondTableHeaders, function(v){
-            ret[v.text] = v.value.split(".").reverse()[0];
-          })
-        }
-
-        return ret
+      searchDropdownInputs () {
+        return [
+          { type: "text", label: "Priority Report Name", source: "PriorityReportName" },
+          { type: "text", label: "Risk Reporting Lead", source: "RiskReportingLead" },
+          { type: "dropdown", label: "Principal Risk Type", source: "PrincipalRiskType", options: this._.map(this.store.right.source, 'PRINCIPAL_RISK') },
+          { type: "dropdown", label: "Sub Risk Type", source: "SubRiskType", options: this._.map(this.store.right.source, 'RISK_SUB') },
+        ]
       },
-      excelData () {
-        var res = [];
-
-        this._.each(this.rfomy.left.display, (system, i) => {
-          var temp = {
-            NAME: system.NAME,
-            OWNER_ID: system.OWNER_ID,
-          }
-
-          var tables = this._.filter(this.rfomy.right.display, (v) => v.ID == system.ID)
-          if(tables.length > 0){
-            this._.each(tables, (table, i) => {
-              var tableLevel = _.cloneDeep(temp);
-              tableLevel.PRINCIPAL_RISK_TYPE = table.PRINCIPAL_RISK_TYPE;
-              tableLevel.RISK_SUB_TYPE = table.RISK_SUB_TYPE;
-              tableLevel.PRIORITY_REPORT_RATIONALE = table.PRIORITY_REPORT_RATIONALE;
-              tableLevel.CRM_NAME = table.CRM_NAME;
-              tableLevel.CRM_RATIONALE = table.CRM_RATIONALE;
-              tableLevel.ASSOCIATED_CDES = table.ASSOCIATED_CDES;
-              tableLevel.CDE_RATIONALE = table.CDE_RATIONALE;
-
-              res.push(_.cloneDeep(tableLevel));
-            })
-          } else {
-            res.push(_.cloneDeep(temp));
-          }
-        });
-
-        return res
-      }
     },
     watch: {
       $route (to){
-        this.secondtable = false;
+        this.store.isRightTable = false;
 
         if (to.params != undefined) {
-          this.secondtable = to.params.system; 
+          this.store.isRightTable = to.params.system; 
         }
 
-        if(this.secondtable){
-          this.getRightTable(this.$route.params.system);
+        if(this.store.isRightTable){
+          this.doGetRightTable(this.$route.params.system);
         }
       },
-      "rfomy.left.pagination": {
+      "store.left.pagination": {
         handler () {
-          this.getLeftTable();
+          this.doGetLeftTable();
         },
         deep: true
       },
-      "rfomy.right.pagination": {
+      "store.right.pagination": {
         handler () {
-          if(this.secondtable){
-            this.getRightTable(this.$route.params.system);
+          if(this.store.isRightTable){
+            this.doGetRightTable(this.$route.params.system);
           }
         },
         deep: true
       },
-      "rfomy.searchMain" (val, oldVal){
+      "store.searchMain" (val, oldVal){
         if(val || oldVal) {
-          this.getLeftTable();
+          this.doGetLeftTable();
 
-          if(this.secondtable){
-            this.getRightTable(this.$route.params.system);
+          if(this.store.isRightTable){
+            this.doGetRightTable(this.$route.params.system);
           }
         }
       }
     },
     mounted() {
-      this.secondtable = this.$route.params.system;
+      this.store.tabName = this.storeName;
+      this.store.isRightTable = this.$route.params.system;
     },
     methods: {
-      ...mapActions('rfomy', {
-          getLeftTable: 'getLeftTable',
-          getRightTable: 'getRightTable',
-      }),
-      columnFilter (type, keyModel, val) {
-        if(val == ""){
-          if(type == "systems"){
-            this.rfomy.left.display = this.rfomy.left.source;
-          } else {
-            this.rfomy.right.display = this.rfomy.right.source;
-          }
-          return
-        }
-
-        if(type == "systems"){
-          this.rfomy.left.display = _.filter(this.rfomy.left.source, [keyModel.value, val]);
-        } else {
-          this.rfomy.right.display = _.filter(this.rfomy.right.source, [keyModel.value, val]);
-        }
+      getLeftTable () {
+        this.$store.dispatch(`${this.storeName}/getLeftTable`)
+      },
+      getRightTable (id) {
+        this.$store.dispatch(`${this.storeName}/getRightTable`, id)
+      },
+      doGetLeftTable () {
+        this.getLeftTable();
+      },
+      doGetRightTable (id) {
+        this.getRightTable(id);
       },
       filterKeyup (type, keyModel) {
-        this.columnFilter(type, keyModel, this.search[type][keyModel.value]);
+        // this.columnFilter(type, keyModel);
+        if(type == "left") this.doGetLeftTable()
+        else this.doGetRightTable(this.$route.params.system)
+      },
+      filterClick (type, keyModel, val) {
+        this.store.filters[type][keyModel.value.split('.').reverse()[0]] = val;
+
+        // this.columnFilter(type, keyModel);
+        if(type == "left") this.doGetLeftTable()
+        else this.doGetRightTable(this.$route.params.system)
       },
       distinctData (col, datax) {
         var cols = col.split(".")
@@ -478,39 +399,11 @@ export default {
       },
       systemRowClick (evt) {
         evt.preventDefault();
-        this.secondtable = true;
+        this.store.isRightTable = true;
       },
-      onSubmit (evt) {
-        if(evt) evt.preventDefault();
-
-        this.rfomy.left.display = this.rfomy.left.source;
-        this.rfomy.right.display = this.rfomy.right.source;
-        if(this.searchForm.priorityReport)
-          this.rfomy.left.display = this._.filter(this.rfomy.left.display, (val) => val.NAME.toString().toUpperCase().indexOf(this.searchForm.priorityReport.toString().toUpperCase()) != -1);
-        if(this.searchForm.riskReporting)
-          this.rfomy.left.display = this._.filter(this.rfomy.left.display, (val) => val.OWNER_ID.toString().toUpperCase().indexOf(this.searchForm.riskReporting.toString().toUpperCase()) != -1);
-
-        if(this.searchForm.principalRisk)
-          this.rfomy.right.display = this._.filter(this.rfomy.right.display, (val) => val.PRINCIPAL_RISK_TYPE.toString().toUpperCase().indexOf(this.searchForm.principalRisk.toString().toUpperCase()) != -1);
-        if(this.searchForm.subRisk)
-          this.rfomy.right.display = this._.filter(this.rfomy.right.display, (val) => val.RISK_SUB_TYPE.toString().toUpperCase().indexOf(this.searchForm.subRisk.toString().toUpperCase()) != -1);
-
-        this.searchForm.show = false;
+      getCDEConclusion (cdes) {
+        return cdes.filter(Boolean).join(', ').indexOf("Yes") != -1 ? "Yes" : "No";
       },
-      onReset (evt) {
-        evt.preventDefault();
-        /* Reset our form values */
-        this.searchForm.priorityReport = '';
-        this.searchForm.riskReporting = '';
-        this.searchForm.principalRisk = '';
-        this.searchForm.subRisk = '';
-
-        this.onSubmit();
-
-        // /* Trick to reset/clear native browser form validation state */
-        // this.searchForm.show = false;
-        // this.$nextTick(() => { this.searchForm.show = true });
-      }
     }
 }
 </script>

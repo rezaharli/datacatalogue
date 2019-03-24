@@ -29,15 +29,12 @@ const actions = {
     getLeftTable({ commit }) {
         commit('getLeftTableRequest');
 
-        var user = JSON.parse(localStorage.getItem("user"));
-
         Object.keys(state.all.filters.left).map(function(key, index) {
             state.all.filters.left[key] = state.all.filters.left[key].toString();
         });
 
         var param = {
             Tabs: state.all.tabName,
-            LoggedInID: user.Username.toString(),
             Search: state.all.searchMain.toString(),
             SearchDD: state.all.searchDropdown,
             Filters: state.all.filters.left,
@@ -105,7 +102,7 @@ const mutations = {
     },
 };
 
-export const rfomy = {
+export const rfoall = {
     namespaced: true,
     state,
     actions,

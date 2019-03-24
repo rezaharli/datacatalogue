@@ -12,6 +12,7 @@ import { dpoall } from './dpoall.module';
 import { ddomy } from './ddomy.module';
 import { ddoall } from './ddoall.module';
 import { rfomy } from './rfomy.module';
+import { rfoall } from './rfoall.module';
 
 Vue.use(Vuex);
 
@@ -25,6 +26,7 @@ export const store = new Vuex.Store({
         dpoall,
         ddomy,
         ddoall,
-        rfomy
+        rfomy,
+        rfoall
     }
 });

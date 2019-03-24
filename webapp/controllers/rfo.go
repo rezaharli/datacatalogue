@@ -26,7 +26,11 @@ func (c *RFO) GetLeftTable(k *knot.WebContext) {
 		return
 	}
 
+	tabs := payload.GetString("Tabs")
+	loggedinId := payload.GetString("LoggedInID")
 	search := payload.GetString("Search")
+	searchDD := payload.Get("SearchDD")
+	colFilter := payload.Get("Filters")
 	pagination, err := toolkit.ToM(payload.Get("Pagination"))
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
@@ -36,7 +40,7 @@ func (c *RFO) GetLeftTable(k *knot.WebContext) {
 	pageNumber := pagination.GetInt("page")
 	rowsPerPage := pagination.GetInt("rowsPerPage")
 
-	systems, _, err := s.NewRFOService().GetLeftTable(search, pageNumber, rowsPerPage, toolkit.M{})
+	systems, _, err := s.NewRFOService().GetLeftTable(tabs, loggedinId, search, searchDD, colFilter, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -55,7 +59,10 @@ func (c *RFO) GetRightTable(k *knot.WebContext) {
 		return
 	}
 
+	tabs := payload.GetString("Tabs")
 	search := payload.GetString("Search")
+	searchDD := payload.Get("SearchDD")
+	colFilter := payload.Get("Filters")
 	systemID := payload.GetInt("SystemID")
 	pagination, err := toolkit.ToM(payload.Get("Pagination"))
 	if err != nil {
@@ -66,7 +73,7 @@ func (c *RFO) GetRightTable(k *knot.WebContext) {
 	pageNumber := pagination.GetInt("page")
 	rowsPerPage := pagination.GetInt("rowsPerPage")
 
-	systems, _, err := s.NewRFOService().GetRightTable(systemID, search, pageNumber, rowsPerPage, toolkit.M{})
+	systems, _, err := s.NewRFOService().GetRightTable(tabs, systemID, search, searchDD, colFilter, pageNumber, rowsPerPage, toolkit.M{})
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
