@@ -3,20 +3,21 @@ import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
     all: {
-        tabs: "ddomy",
+        tabName: '',
         searchMain: '',
-        filters: {
-          left: {},
-          right: {}
-        },
         searchDropdown: {
             SubDataDomain: '',
             DataDomain: '',
             SubDataDomainOwner: '',
             BusinessTerm: '',
         },
+        filters: {
+          left: {},
+          right: {}
+        },
         left: newTableObject(),
         right: newTableObject(),
+        isRightTable: false,
         detailsLoading: true,
         DetailsBusinessMetadata: [],
         DDSourceBusinessMetadata: [],
@@ -39,7 +40,7 @@ const actions = {
         });
 
         var param = {
-            Tabs: state.all.tabs,
+            Tabs: state.all.tabName,
             LoggedInID: user.Username.toString(),
             Search: state.all.searchMain.toString(),
             SearchDD: state.all.searchDropdown,
@@ -61,7 +62,7 @@ const actions = {
         });
 
         var param = {
-            Tabs: state.all.tabs,
+            Tabs: state.all.tabName,
             SystemID: systemID,
             Search: state.all.searchMain,
             SearchDD: state.all.searchDropdown,
@@ -129,6 +130,7 @@ const mutations = {
         state.all.DDSourceDownstreamUsage = data.DDSourceDownstreamUsage;
         state.all.DetailsBTResiding = data.DetailsBTResiding;
         state.all.DDSourceBTResiding = data.DDSourceBTResiding;
+        
         state.all.detailsLoading = false;
     },
     getDetailsFailure(state, error) {

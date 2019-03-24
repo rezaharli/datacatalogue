@@ -3,20 +3,21 @@ import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
     all: {
-        tabs: "dscall",
+        tabName: '',
         searchMain: '',
-        filters: {
-            left: {},
-            right: {}
-        },
         searchDropdown: {
             SystemName: '',
             ItamID: '',
             TableName: '',
             ColumnName: '',
         },
+        filters: {
+            left: {},
+            right: {}
+        },
         left: newTableObject(),
         right: newTableObject(),
+        isRightTable: false,
         DDSource: [],
         detailsLoading: true,
         detailsSource: [],
@@ -33,7 +34,7 @@ const actions = {
         });
 
         var param = {
-            Tabs: state.all.tabs,
+            Tabs: state.all.tabName,
             Search: state.all.searchMain,
             SearchDD: state.all.searchDropdown,
             Filters: state.all.filters.left,
@@ -54,7 +55,7 @@ const actions = {
         });
 
         var param = {
-            Tabs: state.all.tabs,
+            Tabs: state.all.tabName,
             SystemID: systemID,
             Search: state.all.searchMain,
             SearchDD: state.all.searchDropdown,
@@ -71,7 +72,7 @@ const actions = {
     getDetails({ commit }, param) {
         commit('getDetailsRequest');
 
-        param.Tabs = state.all.tabs;
+        param.Tabs = state.all.tabName;
         
         return dscMyService.getDetails(param)
             .then(
@@ -116,6 +117,7 @@ const mutations = {
     getDetailsSuccess(state, data) {
         state.all.detailsSource = data.Detail;
         state.all.DDSource = data.DDSource;
+        
         state.all.detailsLoading = false;
     },
     getDetailsFailure(state, error) {

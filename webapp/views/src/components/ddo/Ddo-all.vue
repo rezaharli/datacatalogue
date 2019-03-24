@@ -26,46 +26,11 @@ table.v-table thead th > div.btn-group {
       <!-- Main content -->
       <b-row>
         <b-col>
-          <page-loader v-if="store.left.isLoading || (secondtable && store.right.isLoading)" />
+          <page-loader v-if="store.left.isLoading || (store.isRightTable && store.right.isLoading)" />
 
           <b-row>
             <b-col>
-              <div class="input-group mb-3">
-                <input v-model="store.searchMain" type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
-
-                <div class="input-group-append">
-                  <b-dropdown right id="ddown1" text="" ref="ddownSearch">
-                    <b-container>
-                      <b-form-row class="main-table-search-dropdown-form">
-                        <b-col>
-                          <b-form @submit="onSubmit" @reset="onReset">
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Domain" label-for="DataDomain">
-                              <b-form-input id="DataDomain" type="text" v-model="store.searchDropdown.DataDomain"></b-form-input>
-                            </b-form-group>
-
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Data Domain" label-for="SubDataDomain">
-                              <b-form-input id="SubDataDomain" type="text" v-model="store.searchDropdown.SubDataDomain"></b-form-input>
-                            </b-form-group>
-
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Data Domain Owner" label-for="SubDataDomainOwner">
-                              <b-form-input id="SubDataDomainOwner" type="text" v-model="store.searchDropdown.SubDataDomainOwner"></b-form-input>
-                            </b-form-group>
-
-                            <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term" label-for="BusinessTerm">
-                              <b-form-select id="BusinessTerm" :options="businessTermMaster" v-model="store.searchDropdown.BusinessTerm"></b-form-select>
-                            </b-form-group>
-
-                            <b-button-group class="mx-1 float-right">
-                              <b-button type="reset" variant="danger">Reset</b-button>
-                              <b-button type="submit" variant="primary">Submit</b-button>
-                            </b-button-group>
-                          </b-form>
-                        </b-col>
-                      </b-form-row>
-                    </b-container>
-                  </b-dropdown>
-                </div>
-              </div>
+              <page-search :storeName="storeName" :searchDDInputs="searchDropdownInputs"/>
             </b-col>
 
             <b-col></b-col>
@@ -158,7 +123,7 @@ table.v-table thead th > div.btn-group {
                   :pagination.sync="store.right.pagination"
                   :total-items="store.right.totalItems"
                   :loading="store.right.isLoading"
-                  v-if="secondtable"
+                  v-if="store.isRightTable"
                   item-key="ID"
                   class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
@@ -212,6 +177,7 @@ table.v-table thead th > div.btn-group {
 import Vue from 'vue'
 import { mapState, mapActions } from 'vuex'
 import JsonExcel from 'vue-json-excel'
+import pageSearch from '../PageSearch.vue'
 import tablecell from '../Tablecell.vue'
 import pageLoader from '../PageLoader.vue'
  
@@ -219,11 +185,11 @@ Vue.component('downloadExcel', JsonExcel)
 
 export default {
     components: {
-      tablecell, pageLoader
+      pageSearch, tablecell, pageLoader
     },
     data () {
       return {
-        secondtable: false,
+        storeName: "ddoall",
         systemSource: [],
         tablenameSource: [],
         firstTableHeaders: [
@@ -240,15 +206,20 @@ export default {
       }
     },
     computed: {
-      ...mapState({
-        store: state => state.ddoall.all
-      }),
+      store () {
+        return this.$store.state[this.storeName].all
+      },
       addressPath (){
         var tmp = this.$route.path.split("/")
         return tmp.slice(0, 3).join("/")
       },
-      businessTermMaster (){
-        return this._.map(this.store.right.source, 'BUSINESS_TERM')
+      searchDropdownInputs () {
+        return [
+          { type: "text", label: "Data Domain", source: "DataDomain" },
+          { type: "text", label: "Sub Data Domain", source: "SubDataDomain" },
+          { type: "text", label: "Sub Data Domain Owner", source: "SubDataDomainOwner" },
+          { type: "dropdown", label: "Business Term", source: "BusinessTerm", options: this._.map(this.store.right.source, 'BUSINESS_TERM') },
+        ]
       },
       excelFields (){
         var ret = {}
@@ -257,7 +228,7 @@ export default {
           ret[v.text] = v.value.split(".").reverse()[0];
         })
 
-        if(this.secondtable){
+        if(this.store.isRightTable){
           _.each(this.secondTableHeaders, function(v){
             ret[v.text] = v.value.split(".").reverse()[0];
           })
@@ -277,7 +248,7 @@ export default {
           }
           
           var tables = this._.filter(this.store.right.display, (v) => v.TSCID == system.ID)
-          if(this.secondtable && tables.length > 0){
+          if(this.store.isRightTable && tables.length > 0){
             this._.each(tables, (table, i) => {
               var tableLevel = _.cloneDeep(temp);
               tableLevel.BUSINESS_TERM = table.BUSINESS_TERM;
@@ -296,13 +267,13 @@ export default {
     },
     watch: {
       $route (to){
-        this.secondtable = false;
+        this.store.isRightTable = false;
 
         if (to.params != undefined) {
-          this.secondtable = to.params.system; 
+          this.store.isRightTable = to.params.system; 
         }
 
-        if(this.secondtable){
+        if(this.store.isRightTable){
           this.doGetRightTable(this.$route.params.system);
         }
       },
@@ -314,7 +285,7 @@ export default {
       },
       "store.right.pagination": {
         handler () {
-          if(this.secondtable){
+          if(this.store.isRightTable){
             this.doGetRightTable(this.$route.params.system);
           }
         },
@@ -324,20 +295,23 @@ export default {
         if(val || oldVal) {
           this.doGetLeftTable();
 
-          if(this.secondtable){
+          if(this.store.isRightTable){
             this.doGetRightTable(this.$route.params.system);
           }
         }
       }
     },
     mounted() {
-      this.secondtable = this.$route.params.system;
+      this.store.tabName = this.storeName;
+      this.store.isRightTable = this.$route.params.system;
     },
     methods: {
-      ...mapActions('ddoall', {
-          getLeftTable: 'getLeftTable',
-          getRightTable: 'getRightTable',
-      }),
+      getLeftTable () {
+        this.$store.dispatch(`${this.storeName}/getLeftTable`)
+      },
+      getRightTable (id) {
+        this.$store.dispatch(`${this.storeName}/getRightTable`, id)
+      },
       doGetLeftTable () {
         this.getLeftTable();
       },
@@ -374,33 +348,7 @@ export default {
       },
       systemRowClick (evt) {
         evt.preventDefault();
-        this.secondtable = true;
-      },
-      onSubmit (evt) {
-        if(evt) evt.preventDefault();
-
-        this.doGetLeftTable();
-
-        if(this.secondtable){
-          this.doGetRightTable(this.$route.params.system);
-        }
-
-        this.$refs.ddownSearch.hide(true);
-        // this.store.searchDropdown.show = false;
-      },
-      onReset (evt) {
-        evt.preventDefault();
-        /* Reset our form values */
-        this.store.searchDropdown.SubDataDomain = '';
-        this.store.searchDropdown.DataDomain = '';
-        this.store.searchDropdown.SubDataDomainOwner = '';
-        this.store.searchDropdown.BusinessTerm = '';
-
-        this.onSubmit();
-
-        // /* Trick to reset/clear native browser form validation state */
-        // this.searchForm.show = false;
-        // this.$nextTick(() => { this.searchForm.show = true });
+        this.store.isRightTable = true;
       },
       showDetails (param) {
         this.$router.push(this.addressPath + "/" + param.TSCID + '/' + param.ID)
