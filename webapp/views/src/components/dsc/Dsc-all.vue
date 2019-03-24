@@ -243,10 +243,6 @@ export default {
         if (to.params != undefined) {
           this.store.isRightTable = to.params.system; 
         }
-
-        if(this.store.isRightTable){
-          this.doGetRightTable(this.$route.params.system);
-        }
       },
       "store.left.pagination": {
         handler () {
