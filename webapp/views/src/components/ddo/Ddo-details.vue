@@ -32,6 +32,7 @@ label.col-form-label {
     @hidden="handleClose"
   >
     <page-loader v-if="ddomy.detailsLoading" />
+    
     <b-container fluid class="row-kasijarak">
       <b-row>
         <b-col>
@@ -42,7 +43,7 @@ label.col-form-label {
               worksheet="My Worksheet"
               name="filename.xls"
             >
-              <b-btn size="sm" class="float-right" variant="success">Export</b-btn>
+              <v-btn small color="success" class="float-right">Export</v-btn>
             </download-excel>
           </b-col>
         </b-col>

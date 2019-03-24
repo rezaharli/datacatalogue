@@ -21,6 +21,7 @@ legend.col-form-label, label.col-form-label {
 <template>
   <b-modal hide-footer header-class="modal-details-header setbackground" body-class="setbackground" v-if="showModal" id="modal-details" ref="modalDetails" size="lg" @hidden="handleClose">
     <page-loader v-if="dscmy.detailsLoading" />
+    
     <b-container fluid class="row-kasijarak">
       <b-row>
           <b-col cols="4">
@@ -34,7 +35,7 @@ legend.col-form-label, label.col-form-label {
               worksheet = "My Worksheet"
               name    = "filename.xls">
           
-              <b-btn size="sm" class="float-right" variant="success">Export</b-btn>
+              <v-btn small color="success" class="float-right">Export</v-btn>
             </download-excel>
           </b-col>
       </b-row>
