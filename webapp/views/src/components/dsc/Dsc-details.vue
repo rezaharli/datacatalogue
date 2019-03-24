@@ -18,11 +18,11 @@ legend.col-form-label, label.col-form-label {
 }
 </style>
 
-
 <template>
   <b-modal hide-footer header-class="modal-details-header setbackground" body-class="setbackground" v-if="showModal" id="modal-details" ref="modalDetails" size="lg" @hidden="handleClose">
+    <page-loader v-if="dscmy.detailsLoading" />
     <b-container fluid class="row-kasijarak">
-      <b-row v-if="selectedDetails">
+      <b-row>
           <b-col cols="4">
           </b-col>
           <b-col cols="8">
@@ -42,53 +42,46 @@ legend.col-form-label, label.col-form-label {
 
     <b-container> -->
       <b-row>
-        <b-col cols="12" v-if="dscmy.detailsLoading">
-          <v-progress-linear :indeterminate="true"></v-progress-linear>
-          <v-alert :value="true" type="info">
-            Please wait while data is loading
-          </v-alert>
-        </b-col>
-
-        <b-col cols="4" v-if="!dscmy.detailsLoading"> 
+        <b-col cols="4"> 
           <b-card tag="article" class="mb-2">
             <b-media class="left-card-media" >
               <h6 class="left-card-title">System Name</h6>
-              <text-wrap-dialog :fulltext="selectedDetails.SYSTEM_NAME" v-if="selectedDetails"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.SYSTEM_NAME: ''"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">ITAM ID</h6>
-              <text-wrap-dialog :fulltext="selectedDetails.ITAM_ID" v-if="selectedDetails"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.ITAM_ID: ''"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Dataset Custodian</h6>
-              <text-wrap-dialog :fulltext="selectedDetails.DATASET_CUSTODIAN" v-if="selectedDetails"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DATASET_CUSTODIAN: ''"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Bank ID</h6>
-              <text-wrap-dialog :fulltext="selectedDetails.BANK_ID" v-if="selectedDetails"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BANK_ID: ''" ></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Business Alias Name</h6>
-              <text-wrap-dialog :fulltext="selectedDetails.BUSINESS_ALIAS_NAME" v-if="selectedDetails"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BUSINESS_ALIAS_NAME: ''"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Table Name</h6>
-              <text-wrap-dialog :fulltext="selectedDetails.TABLE_NAME" v-if="selectedDetails"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.TABLE_NAME: ''"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Column Name</h6>
-              <text-wrap-dialog :fulltext="selectedDetails.COLUMN_NAME" v-if="selectedDetails"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.COLUMN_NAME: ''"></text-wrap-dialog>
             </b-media>
           </b-card>
         </b-col>
 
-        <b-col cols="8" v-if="!dscmy.detailsLoading"> 
+        <b-col cols="8"> 
           <b-row>
             <b-col>
               <b-card title="Technical Metadata From System" tag="article" class="mb-2">
@@ -107,47 +100,47 @@ legend.col-form-label, label.col-form-label {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Description">
-                      <text-wrap-dialog :fulltext="selectedDetails.BUSINESS_ALIAS_DESCRIPTION" v-if="selectedDetails"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BUSINESS_ALIAS_DESCRIPTION : ''"></text-wrap-dialog>
                     </b-form-group>
                     
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="CDE (yes/no)">
-                      <text-wrap-dialog :fulltext="selectedDetails.CDE_YES_NO" v-if="selectedDetails"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.CDE_YES_NO : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Status*">
-                      <text-wrap-dialog :fulltext="selectedDetails.STATUS" v-if="selectedDetails"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.STATUS : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Type">
-                      <text-wrap-dialog :fulltext="selectedDetails.DATA_TYPE" v-if="selectedDetails"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DATA_TYPE : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Format">
-                      <text-wrap-dialog :fulltext="selectedDetails.DATA_FORMAT" v-if="selectedDetails"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DATA_FORMAT : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Length">
-                      <text-wrap-dialog :fulltext="selectedDetails.DATA_LENGTH" v-if="selectedDetails"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DATA_LENGTH : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Example">
-                      <text-wrap-dialog :fulltext="selectedDetails.EXAMPLE" v-if="selectedDetails"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.EXAMPLE : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)*">
-                      <text-wrap-dialog :fulltext="selectedDetails.DERIVED_YES_NO" v-if="selectedDetails"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DERIVED_YES_NO : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation logic*">
-                      <text-wrap-dialog :fulltext="selectedDetails.DERIVATION_LOGIC" v-if="selectedDetails"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DERIVATION_LOGIC : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sourced from Upstream (Yes/No)*">
-                      <text-wrap-dialog :fulltext="selectedDetails.SOURCED_FROM_UPSTREAM_YES_NO" v-if="selectedDetails"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.SOURCED_FROM_UPSTREAM_YES_NO : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Checks*">
-                      <text-wrap-dialog :fulltext="selectedDetails.SYSTEM_CHECKS" v-if="selectedDetails"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.SYSTEM_CHECKS : ''"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -157,27 +150,27 @@ legend.col-form-label, label.col-form-label {
 
           <b-row>
             <b-col>
-              <b-card title="Business Metadata From Domain" tag="article" class="mb-2" v-if="selectedDetails">
+              <b-card title="Business Metadata From Domain" tag="article" class="mb-2">
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain">
-                      <text-wrap-dialog :fulltext="selectedDetails.DOMAIN"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DOMAIN : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Domain">
-                      <text-wrap-dialog :fulltext="selectedDetails.SUBDOMAIN"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.SUBDOMAIN : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain Owner">
-                      <text-wrap-dialog :fulltext="selectedDetails.DOMAIN_OWNER"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DOMAIN_OWNER : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term*">
-                      <text-wrap-dialog :fulltext="selectedDetails.BUSINESS_TERM"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BUSINESS_TERM : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
-                      <text-wrap-dialog :fulltext="selectedDetails.BUSINESS_TERM_DESCRIPTION"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BUSINESS_TERM_DESCRIPTION : ''"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -187,39 +180,39 @@ legend.col-form-label, label.col-form-label {
 
           <b-row>
             <b-col>
-              <b-card title="Policy Related Information" tag="article" class="mb-2" v-if="selectedDetails">
+              <b-card title="Policy Related Information" tag="article" class="mb-2">
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Names">
-                      <text-wrap-dialog :fulltext="selectedDetails.INFORMATION_ASSET_NAMES"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.INFORMATION_ASSET_NAMES : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Description">
-                      <text-wrap-dialog :fulltext="selectedDetails.INFORMATION_ASSET_DESCRIPTION"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.INFORMATION_ASSET_DESCRIPTION : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="C - Confidentiality">
-                      <text-wrap-dialog :fulltext="selectedDetails.CONFIDENTIALITY"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.CONFIDENTIALITY : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="I - Integrity">
-                      <text-wrap-dialog :fulltext="selectedDetails.INTEGRITY"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.INTEGRITY : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="A - Availability">
-                      <text-wrap-dialog :fulltext="selectedDetails.AVAILABILITY"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.AVAILABILITY : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Overall CIA Rating">
-                      <text-wrap-dialog :fulltext="selectedDetails.OVERALL_CIA_RATING"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.OVERALL_CIA_RATING : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Record Categories">
-                      <text-wrap-dialog :fulltext="selectedDetails.RECORD_CATEGORIES"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.RECORD_CATEGORIES : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="PII Flag">
-                      <text-wrap-dialog :fulltext="selectedDetails.PII_FLAG"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.PII_FLAG : ''"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -229,19 +222,19 @@ legend.col-form-label, label.col-form-label {
 
           <b-row>
             <b-col>
-              <b-card title="Interfaces" tag="article" class="mb-2" v-if="selectedDetails">
+              <b-card title="Interfaces" tag="article" class="mb-2">
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Preceding System*">
-                      <text-wrap-dialog :fulltext="selectedDetails.IMM_PRECEEDING_SYSTEM"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_PRECEEDING_SYSTEM : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Succeeding System*">
-                      <text-wrap-dialog :fulltext="selectedDetails.IMM_SUCCEEDING_SYSTEM"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_SUCCEEDING_SYSTEM : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards | Threshold*">
-                      <text-wrap-dialog :fulltext="selectedDetails.THRESHOLD"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.THRESHOLD : ''"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -259,11 +252,12 @@ legend.col-form-label, label.col-form-label {
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import pageLoader from '../PageLoader.vue'
 import textWrapDialog from '../TextWrapDialog.vue'
 
 export default {
   components: {
-    textWrapDialog
+    pageLoader, textWrapDialog
   },
   data () {
     return {

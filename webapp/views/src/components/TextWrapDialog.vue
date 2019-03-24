@@ -1,7 +1,8 @@
 <template>
   <p slot="activator" class="col-form-label">
     <span v-html="truncatedText"></span>
-    <v-dialog v-model="dialog" width="500" style="margin-top: -4px;" v-if="truncatedText != fulltext">
+
+    <v-dialog v-model="dialog" width="500" style="margin-top: -4px;" v-if="isTruncated">
       <b-link slot="activator" style="margin-top: -4px;">[more]</b-link>
 
       <v-card>
@@ -18,17 +19,27 @@ export default {
   data() {
     return {
       dialog: false,
+      isTruncated: false
     };
   },
   computed: {
     truncatedText () {
+      if( ! this.fulltext) return "";
+      
       return this.truncateDiz(this.fulltext)
     }
   },
   methods: {
     truncateDiz(text) {
       var n = 100;
-      return text.length > n ? text.slice(0, n) + " " : text;
+
+      if (text.length > n){
+        this.isTruncated = true;
+        return text.slice(0, n) + "... ";
+      } else {
+        this.isTruncated = false;
+        return text;
+      }
     }
   }
 };
