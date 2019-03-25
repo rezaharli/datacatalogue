@@ -227,9 +227,12 @@ func (s *DDOService) GetDetailsBusinessMetadataFromDomain(payload toolkit.M) (in
 	q += `) `
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName: m.NewCategoryModel().TableName(),
-		SqlQuery:  q,
-		Results:   &resultRows,
+		TableName:   m.NewCategoryModel().TableName(),
+		SqlQuery:    q,
+		Results:     &resultRows,
+		PageNumber:  1,
+		RowsPerPage: 1,
+		GroupCol:    "business_alias",
 	})
 
 	if err != nil {
