@@ -260,7 +260,11 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 		}
 	}
 
-	err := Database().Cursor(dbflex.From(param.TableName).SQL(sqlQuery), nil).Fetchs(param.Results, 0)
+	conn := Database()
+	cursor := conn.Cursor(dbflex.From(param.TableName).SQL(sqlQuery), nil)
+	defer cursor.Close()
+
+	err := cursor.Fetchs(param.Results, 0)
 
 	toolkit.Println(sqlQuery, "\nqueryTime:", time.Since(queryTime).Seconds(), "\n--------------------------------------------------------------")
 	return err
