@@ -839,7 +839,13 @@ export default {
             _.each(Object.keys(tmp), function(v, i) {
               self.selectedDetailsBusinessMetadata[v] = _.uniq(
                 _.map(self.ddomy.DetailsBusinessMetadata[0].Values, val => val[v] ? val[v].toString().trim() : "").filter(Boolean)
-              ).join(", ");
+              );
+              
+              if(v == "SUBDOMAIN_OWNER" || v == "BANK_ID"){
+                self.selectedDetailsBusinessMetadata[v] = self.selectedDetailsBusinessMetadata[v].join('; ');
+              } else {
+                self.selectedDetailsBusinessMetadata[v] = self.selectedDetailsBusinessMetadata[v].join(', ');
+              }
             });
 
             // make falsy NA
