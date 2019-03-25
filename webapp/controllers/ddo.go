@@ -83,7 +83,7 @@ func (c *DDO) GetRightTable(k *knot.WebContext) {
 	h.WriteResultOK(k, res, systems)
 }
 
-func (c *DDO) GetDetails(k *knot.WebContext) {
+func (c *DDO) GetDetailsBusinessMetadataFromDomain(k *knot.WebContext) {
 	res := toolkit.NewResult()
 
 	payload := toolkit.M{}
@@ -93,31 +93,106 @@ func (c *DDO) GetDetails(k *knot.WebContext) {
 		return
 	}
 
-	detailsBusinessMetadata, ddSourceBusinessMetadata, err := c.Base.GetDetails(payload, s.NewDDOService().GetDetailsBusinessMetadataFromDomain, s.NewDDOService().GetddSourceBusinessMetadataFromDomain)
+	data, _, err := s.NewDDOService().GetDetailsBusinessMetadataFromDomain(payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
-	detailsDownstreamUsage, ddSourceDownstreamUsage, err := c.Base.GetDetails(payload, s.NewDDOService().GetDetailsDownstreamUsageOfBusinessTerm, s.NewDDOService().GetddSourceDownstreamUsageOfBusinessTerm)
+	h.WriteResultOK(k, res, data)
+}
+
+func (c *DDO) GetddSourceBusinessMetadataFromDomain(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
-	detailsBTResiding, ddSourceBTResiding, err := c.Base.GetDetails(payload, s.NewDDOService().GetDetailsBTResiding, s.NewDDOService().GetddSourceBTResiding)
+	data, _, err := s.NewDDOService().GetddSourceBusinessMetadataFromDomain(payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
-	data := toolkit.M{}
-	data.Set("DetailsBusinessMetadata", detailsBusinessMetadata)
-	data.Set("DDSourceBusinessMetadata", ddSourceBusinessMetadata)
-	data.Set("DetailsDownstreamUsage", detailsDownstreamUsage)
-	data.Set("DDSourceDownstreamUsage", ddSourceDownstreamUsage)
-	data.Set("DetailsBTResiding", detailsBTResiding)
-	data.Set("DDSourceBTResiding", ddSourceBTResiding)
+	h.WriteResultOK(k, res, data)
+}
+
+func (c *DDO) GetDetailsDownstreamUsageOfBusinessTerm(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	data, _, err := s.NewDDOService().GetDetailsDownstreamUsageOfBusinessTerm(payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	h.WriteResultOK(k, res, data)
+}
+
+func (c *DDO) GetddSourceDownstreamUsageOfBusinessTerm(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	data, _, err := s.NewDDOService().GetddSourceDownstreamUsageOfBusinessTerm(payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	h.WriteResultOK(k, res, data)
+}
+
+func (c *DDO) GetDetailsBTResiding(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	data, _, err := s.NewDDOService().GetDetailsBTResiding(payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	h.WriteResultOK(k, res, data)
+}
+
+func (c *DDO) GetddSourceBTResiding(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	data, _, err := s.NewDDOService().GetddSourceBTResiding(payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
 
 	h.WriteResultOK(k, res, data)
 }
