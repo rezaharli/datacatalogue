@@ -2,6 +2,7 @@ package services
 
 import (
 	"path/filepath"
+	"strings"
 
 	"github.com/eaciit/clit"
 	"github.com/eaciit/toolkit"
@@ -242,55 +243,142 @@ func (s *DPOService) GetRightTable(tabs string, systemID int, search string, sea
 	return resultRows, resultTotal, nil
 }
 
-func (s *DPOService) GetDetails(leftParam int, rightParam int) (interface{}, int, error) {
+func (s *DPOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	q := `SELECT DISTINCT
-			tdp.id,
-			tdp.Name as downstream_process,
-			tdp.owner_id as process_owner,
-			tp.bank_id,
-			tdpd.business_term_id,
-			tdpd.business_term_id as cde_name,
-			ts.name as Segment,
-			tdpd.imm_prec_system_id,
-			tdpd.ultimate_source_system_id,
-			tbt.description as business_description,
-			tbt.cde_rationale,
-			tsy.system_name,
-			tsy.itam_id,
-			tmt.name as table_name,
-			tmc.name as column_name,
-			tmc.derived,
-			tmc.derivation_logic,
-			tmc.dq_standards as dq_requirements,
-			tmc.threshold,
-			tmc.data_sla_signed,
-			tmc.golden_source,
-			tbt.golden_source_system_id,
-			tc.name as domain,
-			tsc.name as subdomain,
-			tlcp.people_id as domain_owner,
-			tbt.bt_name as business_term,
-			tmc.dpo_dq_standards,
-			tbt.dq_standards,
-			tmc.dpo_threshold
-		FROM 
-			tbl_ds_processes tdp
-			INNER JOIN tbl_ds_process_detail tdpd ON tdpd.process_id = tdp.id
-			LEFT JOIN tbl_people tp ON tdp.owner_id = tp.id
-			LEFT JOIN tbl_segment ts ON tdpd.segment_id = ts.id
-			LEFT JOIN tbl_business_term tbt ON tdpd.business_term_id = tbt.id
-			LEFT JOIN tbl_system tsy ON tdpd.imm_prec_system_id = tsy.id
-			LEFT JOIN tbl_md_table tmt ON tmt.business_term_id = tbt.id
-			LEFT JOIN tbl_md_column tmc ON tmc.table_id = tmt.id
-			LEFT JOIN tbl_category tc ON ts.subdomain_id = tc.id
-			LEFT JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
-			LEFT JOIN tbl_link_category_people tlcp ON tlcp.category_id = tc.id
-		WHERE
-			tdp.id = ` + toolkit.ToString(leftParam) + ` and tbt.id = ` + toolkit.ToString(rightParam)
-	err := h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+	tabs := ""
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, toolkit.ToString(payload.GetInt("Left")), payload.GetString("Right"))
+
+	if strings.Contains(payload.GetString("Which"), "my") == true {
+		tabs = "dpomy"
+	} else {
+		tabs = "dpoall"
+	}
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err := h.BuildQueryFromFile(filePath, "details", args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	otherArgs := make([]string, 0)
+	otherArgs = append(otherArgs,
+		payload.GetString("Imm_System"),
+		payload.GetString("Imm_Itam_ID"),
+		payload.GetString("Imm_Table_Name"),
+		payload.GetString("Imm_Column_Name"),
+		payload.GetString("Imm_Screen_Label_name"),
+		payload.GetString("Ult_System"),
+		payload.GetString("Ult_Itam_ID"),
+		payload.GetString("Ult_Table_Name"),
+		payload.GetString("Ult_Column_Name"),
+		payload.GetString("Ult_Screen_Label_name"),
+	)
+
+	checkNotEmpty := func(s []string) bool {
+		for _, v := range s {
+			if v != "" {
+				return true
+			}
+		}
+		return false
+	}
+
+	q = `SELECT * FROM (
+		` + q + `
+	) `
+
+	if checkNotEmpty(otherArgs) == true && payload.GetString("Imm_System") != "" {
+		q += `WHERE (
+			IMM_SYSTEM = '` + otherArgs[0] + `' `
+		if otherArgs[1] != "" {
+			q += `AND IMM_ITAM_ID = '` + otherArgs[1] + `' `
+		}
+		if otherArgs[2] != "" {
+			q += `AND IMM_TABLE_NAME = '` + otherArgs[2] + `' `
+		}
+		if otherArgs[3] != "" {
+			q += `AND IMM_COLUMN_NAME = '` + otherArgs[3] + `' `
+		}
+		if otherArgs[4] != "" {
+			q += `AND IMM_SCREEN_LABEL_NAME = '` + otherArgs[4] + `' `
+		}
+		if otherArgs[5] != "" {
+			q += `AND ULT_SYSTEM = '` + otherArgs[5] + `' `
+		}
+		if otherArgs[6] != "" {
+			q += `AND ULT_ITAM_ID = '` + otherArgs[6] + `' `
+		}
+		if otherArgs[7] != "" {
+			q += `AND ULT_TABLE_NAME = '` + otherArgs[7] + `' `
+		}
+		if otherArgs[8] != "" {
+			q += `AND ULT_COLUMN_NAME = '` + otherArgs[8] + `' `
+		}
+		if otherArgs[9] != "" {
+			q += `AND ULT_SCREEN_LABEL_NAME = '` + otherArgs[9] + `' `
+		}
+		q += `) `
+	}
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DPOService) GetddSource(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	tabs := ""
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, toolkit.ToString(payload.GetInt("Left")), payload.GetString("Right"))
+
+	if strings.Contains(payload.GetString("Which"), "my") == true {
+		tabs = "dpomy"
+	} else {
+		tabs = "dpoall"
+	}
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err := h.BuildQueryFromFile(filePath, "details", args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	///////// FILTER
+	q = `SELECT DISTINCT 
+			Imm_System, 
+			Imm_Itam_ID, 
+			Imm_Table_Name, 
+			Imm_Column_Name, 
+			Imm_Screen_Label_name, 
+			Ult_System, 
+			Ult_Itam_ID, 
+			Ult_Table_Name, 
+			Ult_Column_Name, 
+			Ult_Screen_Label_name
+		FROM (
+		` + q + `
+	) `
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
 		SqlQuery:  q,
 		Results:   &resultRows,

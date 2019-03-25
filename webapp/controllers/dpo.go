@@ -93,7 +93,7 @@ func (c *DPO) GetDetails(k *knot.WebContext) {
 		return
 	}
 
-	detail, ddSource, err := c.Base.GetDetails(payload, s.NewDSCService().GetDetails, s.NewDSCService().GetddSource)
+	detail, ddSource, err := c.Base.GetDetails(payload, s.NewDPOService().GetDetails, s.NewDPOService().GetddSource)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return

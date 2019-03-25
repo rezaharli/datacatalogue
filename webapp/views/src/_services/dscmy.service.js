@@ -84,14 +84,11 @@ function getDetails(param) {
             var tmp = _.groupBy(res.Data.Detail, "ID")
             
             res.Data.Detail = _.map(Object.keys(tmp), function(v, i){
-                return {
-                    ID: tmp[v][0].ID,
-                    TSID: tmp[v][0].TSID,
-                    COLID: tmp[v][0].COLID,
-                    ID: v,
-                    Values: tmp[v],
-                    RESULT_COUNT: tmp[v][0].RESULT_COUNT
-                }
+                var ret = tmp[v][0];
+                ret.ID = v;
+                ret.Values = tmp[v];
+
+                return ret
             });
 
             return res;
