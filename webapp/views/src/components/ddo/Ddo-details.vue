@@ -848,6 +848,10 @@ export default {
               }
             });
 
+            // interrupt
+            self.selectedDetailsBusinessMetadata.CDE_YES_NO = self.selectedDetailsBusinessMetadata.CDE_YES_NO != 0 ? "Yes" : "No";
+            self.selectedDetailsBusinessMetadata.MANDATORY = self.selectedDetailsBusinessMetadata.MANDATORY != 0 ? "Yes" : "No";
+
             // make falsy NA
             Object.keys(self.selectedDetailsBusinessMetadata).forEach(val => {
               self.selectedDetailsBusinessMetadata[val] = !!self.selectedDetailsBusinessMetadata[val].trim()
