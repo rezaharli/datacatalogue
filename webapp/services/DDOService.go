@@ -317,17 +317,17 @@ func (s *DDOService) GetDetailsDownstreamUsageOfBusinessTerm(payload toolkit.M) 
 	)
 
 	///////// FILTER
-	q = `SELECT * FROM (
+	q = `SELECT rownum, a.* FROM (
 		` + q + `
-	) 
-	WHERE (
+	) a
+	WHERE ((
 			tbtid = '` + otherArgs[0] + `'
 		) OR (
 			business_term = '` + otherArgs[1] + `' `
 	if otherArgs[2] != "" {
 		q += `AND DOWNSTREAM_PROCESS_NAME = '` + otherArgs[2] + `' `
 	}
-	q += `) `
+	q += `)) AND ROWNUM = 1 `
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
@@ -365,11 +365,27 @@ func (s *DDOService) GetddSourceDownstreamUsageOfBusinessTerm(payload toolkit.M)
 		return nil, 0, err
 	}
 
+	otherArgs := make([]string, 0)
+	if payload.GetString("BusinessTerm") != "" {
+		otherArgs = append(otherArgs, "")
+	} else {
+		otherArgs = append(otherArgs, payload.GetString("Right"))
+	}
+
+	otherArgs = append(otherArgs,
+		payload.GetString("BusinessTerm"),
+	)
+
 	///////// FILTER
 	q = `SELECT DISTINCT DOWNSTREAM_PROCESS_NAME
 		FROM (
 		` + q + `
-	) `
+	) 
+	WHERE (
+			tbtid = '` + otherArgs[0] + `'
+		) OR (
+			business_term = '` + otherArgs[1] + `' `
+	q += `) `
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
