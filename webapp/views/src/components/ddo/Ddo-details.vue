@@ -836,20 +836,34 @@ export default {
             var tmp = self.ddomy.DetailsBusinessMetadata[0].Values[0];
 
             self.selectedDetailsBusinessMetadata = {};
+
+            var isTableMultiple = false;
+            var isColumnMultiple = false;
+
             _.each(Object.keys(tmp), function(v, i) {
               self.selectedDetailsBusinessMetadata[v] = _.uniq(
                 _.map(self.ddomy.DetailsBusinessMetadata[0].Values, val => val[v] ? val[v].toString().trim() : "").filter(Boolean)
               );
-              
+
+              if(v == "GS_COLUMN_NAME"){
+                isColumnMultiple = self.selectedDetailsBusinessMetadata[v].length > 1;
+              }
+
+              if(v == "GS_TABLE_NAME"){
+                isTableMultiple = self.selectedDetailsBusinessMetadata[v].length > 1;
+              }
+            });
+
+            _.each(Object.keys(tmp), function(v, i) {
               if(v == "SUBDOMAIN_OWNER" || v == "BANK_ID"){
                 self.selectedDetailsBusinessMetadata[v] = self.selectedDetailsBusinessMetadata[v].join('; ');
-              } else if(v == "GS_TABLE_NAME"){
-                self.selectedDetailsBusinessMetadata[v] = self.selectedDetailsBusinessMetadata[v].length > 1 
-                  ? "Refer Table Name in Business Term Residing In Other Systems"
-                  : self.selectedDetailsBusinessMetadata[v].join(', ');
               } else if(v == "GS_COLUMN_NAME"){
-                self.selectedDetailsBusinessMetadata[v] = self.selectedDetailsBusinessMetadata[v].length > 1 
-                  ? "Refer Column Name in Business Term Residing In Other Systems"
+                self.selectedDetailsBusinessMetadata[v] = (isTableMultiple || isColumnMultiple) 
+                    ? "Refer Column Name in Business Term Residing In Other Systems"
+                    : self.selectedDetailsBusinessMetadata[v].join(', ');
+              } else if(v == "GS_TABLE_NAME"){
+                self.selectedDetailsBusinessMetadata[v] = isTableMultiple
+                  ? "Refer Table Name in Business Term Residing In Other Systems"
                   : self.selectedDetailsBusinessMetadata[v].join(', ');
               } else {
                 self.selectedDetailsBusinessMetadata[v] = self.selectedDetailsBusinessMetadata[v].join(', ');
