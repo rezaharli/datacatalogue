@@ -110,9 +110,9 @@
                 You dont have access for RFO!
               </b-tooltip>
 
-              <!-- <v-flex xs12 sm12 md12 card-container v-if="isAdmin">
-                <v-btn to="/access" style="margin-top: 40px">User Access Menu</v-btn>
-              </v-flex> -->
+              <v-flex xs12 sm12 md12 card-container v-if="isAdmin">
+                <v-btn to="/access" style="margin-top: 40px; background-color: #ffffff; text-decoration: none;">User Access Menu</v-btn>
+              </v-flex>
             </v-layout>
           </v-container>
         </v-flex>
