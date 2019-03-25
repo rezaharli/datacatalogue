@@ -618,7 +618,7 @@ export default {
     },
     ddColumnNameOptions() {
       var self = this;
-      var filtered = _.filter(self.ddomy.DDSource, v => {
+      var filtered = _.filter(self.ddomy.DetailsBTResiding, v => {
         return (
           v.SYSTEM_NAME == self.ddSystemNameSelected &&
           v.ITAM_ID == self.ddItamIdSelected &&
