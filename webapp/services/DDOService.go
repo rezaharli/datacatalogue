@@ -442,10 +442,10 @@ func (s *DDOService) GetDetailsBTResiding(payload toolkit.M) (interface{}, int, 
 	)
 
 	///////// FILTER
-	q = `SELECT * FROM (
+	q = `SELECT rownum, a.* FROM (
 		` + q + `
-	) 
-	WHERE (
+	) a
+	WHERE ((
 		tbtid = '` + otherArgs[0] + `'
 	) OR (
 		business_term = '` + otherArgs[1] + `' `
@@ -461,7 +461,7 @@ func (s *DDOService) GetDetailsBTResiding(payload toolkit.M) (interface{}, int, 
 	if otherArgs[5] != "" {
 		q += `AND COLUMN_NAME = '` + otherArgs[5] + `' `
 	}
-	q += `) `
+	q += `)) AND rownum = 1 `
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
@@ -506,6 +506,8 @@ func (s *DDOService) GetddSourceBTResiding(payload toolkit.M) (interface{}, int,
 		otherArgs = append(otherArgs, payload.GetString("Right"))
 	}
 
+	otherArgs = append(otherArgs, payload.GetString("BusinessTerm"))
+
 	///////// FILTER
 	q = `SELECT DISTINCT SYSTEM_NAME, ITAM_ID, TABLE_NAME, COLUMN_NAME
 		FROM (
@@ -513,7 +515,9 @@ func (s *DDOService) GetddSourceBTResiding(payload toolkit.M) (interface{}, int,
 	)
 	WHERE (
 		tbtid = '` + otherArgs[0] + `'
-		) `
+	) OR (
+		business_term = '` + otherArgs[1] + `'
+	) `
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
