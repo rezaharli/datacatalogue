@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"reflect"
+	"time"
 
 	_ "gopkg.in/goracle.v2"
 
@@ -224,6 +225,8 @@ type SqlQueryParam struct {
 }
 
 func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
+	queryTime := time.Now()
+
 	sqlQuery := param.SqlQuery
 	if !(param.PageNumber == 0 && param.RowsPerPage == 0) {
 		sqlQuery = `SELECT a.*, `
@@ -259,6 +262,8 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 	toolkit.Println(sqlQuery)
 
 	err := Database().Cursor(dbflex.From(param.TableName).SQL(sqlQuery), nil).Fetchs(param.Results, 0)
+	toolkit.Println("queryTime:", time.Since(queryTime))
+	toolkit.Println("--------------------------------------------------------------")
 	return err
 }
 
