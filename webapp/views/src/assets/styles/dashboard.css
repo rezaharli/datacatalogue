@@ -86,6 +86,10 @@ table.v-table thead th, .v-datatable th.column {
     font-weight: 900;
 }
 
+.dropdown-menu.show{
+    max-width: 300px;
+}
+
 @media (min-width: 992px) {
     #modal-details .modal-lg{
         max-width: 80%;

@@ -49,7 +49,7 @@ table.v-table thead th > div.btn-group {
                   :total-items="store.left.totalItems"
                   :loading="store.left.isLoading"
                   item-key="ID"
-                  class="elevation-1 fixed-header">
+                  class="elevation-1 ">
 
                 <template slot="headerCell" slot-scope="props">
                   {{ props.header.text }} ({{ store.left.source[0] ? store.left.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0 }})
