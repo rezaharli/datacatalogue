@@ -496,11 +496,21 @@ func (s *DDOService) GetddSourceBTResiding(payload toolkit.M) (interface{}, int,
 		return nil, 0, err
 	}
 
+	otherArgs := make([]string, 0)
+	if payload.GetString("BusinessTerm") != "" {
+		otherArgs = append(otherArgs, "")
+	} else {
+		otherArgs = append(otherArgs, payload.GetString("Right"))
+	}
+
 	///////// FILTER
 	q = `SELECT DISTINCT SYSTEM_NAME, ITAM_ID, TABLE_NAME, COLUMN_NAME
 		FROM (
 		` + q + `
-	) `
+	)
+	WHERE (
+		tbtid = '` + otherArgs[0] + `'
+		) `
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
