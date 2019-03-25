@@ -576,7 +576,7 @@ export default {
     },
     ddDownstreamProcessNameOptions() {
       return _.uniq(
-        _.map(this.ddomy.DetailsDownstreamUsage, "DOWNSTREAM_PROCESS_NAME")
+        _.map(this.ddomy.DDSourceDownstreamUsage, "DOWNSTREAM_PROCESS_NAME")
       );
       // var self = this;
       // var filtered = _.filter(self.ddomy.DetailsDownstreamUsage, (v) => {
@@ -587,7 +587,7 @@ export default {
       // return _.uniq(_.map(filtered, "DOWNSTREAM_PROCESS_NAME"));
     },
     ddSystemNameOptions() {
-      return _.uniq(_.map(this.ddomy.DetailsBTResiding, "SYSTEM_NAME"));
+      return _.uniq(_.map(this.ddomy.DDSourceBTResiding, "SYSTEM_NAME"));
       // var self = this;
       // var filtered = _.filter(self.ddomy.DDSource, (v) => {
       //   return v.BUSINESS_TERM == self.ddBusinessTermSelected
@@ -599,7 +599,7 @@ export default {
     },
     ddItamIdOptions() {
       var self = this;
-      var filtered = _.filter(self.ddomy.DetailsBTResiding, v => {
+      var filtered = _.filter(self.ddomy.DDSourceBTResiding, v => {
         return v.SYSTEM_NAME == self.ddSystemNameSelected;
       });
 
@@ -607,7 +607,7 @@ export default {
     },
     ddTableNameOptions() {
       var self = this;
-      var filtered = _.filter(self.ddomy.DetailsBTResiding, v => {
+      var filtered = _.filter(self.ddomy.DDSourceBTResiding, v => {
         return (
           v.SYSTEM_NAME == self.ddSystemNameSelected &&
           v.ITAM_ID == self.ddItamIdSelected
@@ -618,7 +618,7 @@ export default {
     },
     ddColumnNameOptions() {
       var self = this;
-      var filtered = _.filter(self.ddomy.DetailsBTResiding, v => {
+      var filtered = _.filter(self.ddomy.DDSourceBTResiding, v => {
         return (
           v.SYSTEM_NAME == self.ddSystemNameSelected &&
           v.ITAM_ID == self.ddItamIdSelected &&
