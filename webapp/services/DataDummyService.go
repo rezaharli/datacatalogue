@@ -465,8 +465,8 @@ func (s *DSCService) CreateDSProcessesDetailDummyData() error {
 		mdt := m.NewDSProcessesDetailModel()
 		mdt.ID = i
 		mdt.Process_ID = toolkit.ToInt(fake.DigitsN(4), "")
-		mdt.Business_Term_ID = toolkit.ToInt(fake.DigitsN(4), "")
-		mdt.Segment_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Column_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Segment_Name = fake.Words()
 		mdt.Imm_Prec_System_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.Ultimate_Source_System_ID = toolkit.ToInt(fake.DigitsN(4), "")
 
