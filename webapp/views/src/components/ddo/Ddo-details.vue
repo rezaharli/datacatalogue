@@ -843,6 +843,14 @@ export default {
               
               if(v == "SUBDOMAIN_OWNER" || v == "BANK_ID"){
                 self.selectedDetailsBusinessMetadata[v] = self.selectedDetailsBusinessMetadata[v].join('; ');
+              } else if(v == "GS_TABLE_NAME"){
+                self.selectedDetailsBusinessMetadata[v] = self.selectedDetailsBusinessMetadata[v].length > 1 
+                  ? "Refer Table Name in Business Term Residing In Other Systems"
+                  : self.selectedDetailsBusinessMetadata[v].join(', ');
+              } else if(v == "GS_COLUMN_NAME"){
+                self.selectedDetailsBusinessMetadata[v] = self.selectedDetailsBusinessMetadata[v].length > 1 
+                  ? "Refer Column Name in Business Term Residing In Other Systems"
+                  : self.selectedDetailsBusinessMetadata[v].join(', ');
               } else {
                 self.selectedDetailsBusinessMetadata[v] = self.selectedDetailsBusinessMetadata[v].join(', ');
               }
