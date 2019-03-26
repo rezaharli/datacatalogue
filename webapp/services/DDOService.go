@@ -144,7 +144,7 @@ func (s *DDOService) GetRightTable(tabs string, systemID int, search string, sea
 		cdeYesNo := ""
 
 		if cf[2] != "" {
-			if cf[2] == "Yes" {
+			if strings.EqualFold(cf[2], "yes") {
 				cdeYesNo = "1"
 			} else {
 				cdeYesNo = "0"
