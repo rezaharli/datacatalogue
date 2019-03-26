@@ -1,17 +1,39 @@
 -- name: left-grid
-SELECT DISTINCT
-        tsc.id,
-        tsc.name                            as sub_domains,
-        tc.name                             as data_domain,
-        tp.first_name||' '||tp.last_name    as sub_domain_owner,
-        tp.bank_id                          as bank_id
-    FROM
-        tbl_category tc
-        inner JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
-        inner JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = tsc.id and tlrp.Object_type = 'SUBCATEGORY' and tsc.type = 'Sub Data Domain'
-        inner JOIN Tbl_Role rl ON tlrp.role_id = rl.id and rl.role_name = 'Data Domain Owner'
-        inner JOIN tbl_people tp ON tlrp.people_id = tp.id
-    WHERE tp.bank_id = '?'
+SELECT * 
+    FROM (
+        SELECT * 
+            FROM (
+                SELECT res.*, 
+                        COUNT(DISTINCT sub_domains) OVER () COUNT_sub_domains,
+                        COUNT(DISTINCT data_domain) OVER () COUNT_data_domain,
+                        COUNT(DISTINCT sub_domain_owner) OVER () COUNT_sub_domain_owner,
+                        COUNT(DISTINCT bank_id) OVER () COUNT_bank_id
+                    FROM (
+                        SELECT DISTINCT
+                                tsc.id,
+                                tsc.name                            as sub_domains,
+                                tc.name                             as data_domain,
+                                tp.first_name||' '||tp.last_name    as sub_domain_owner,
+                                tp.bank_id                          as bank_id
+                            FROM
+                                tbl_category tc
+                                inner JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
+                                inner JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = tsc.id and tlrp.Object_type = 'SUBCATEGORY' and tsc.type = 'Sub Data Domain'
+                                inner JOIN Tbl_Role rl ON tlrp.role_id = rl.id and rl.role_name = 'Data Domain Owner'
+                                inner JOIN tbl_people tp ON tlrp.people_id = tp.id
+                            WHERE tp.bank_id = '?'
+                    ) res
+            ) WHERE ( -- Main and dropdown search
+                upper(sub_domains) LIKE upper('%?%')
+                AND upper(data_domain) LIKE upper('%?%')
+                AND upper(sub_domain_owner) LIKE upper('%?%')
+            )
+    ) WHERE ( -- Column filter
+        upper(sub_domains) LIKE upper('%?%')
+        AND upper(data_domain) LIKE upper('%?%')
+        AND upper(sub_domain_owner) LIKE upper('%?%')
+        AND upper(bank_id) LIKE upper('%?%')
+    )
 
 -- name: right-grid
 SELECT DISTINCT

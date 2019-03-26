@@ -12,6 +12,7 @@ import (
 )
 
 type DDOService struct {
+	*Base
 }
 
 func NewDDOService() *DDOService {
@@ -20,22 +21,17 @@ func NewDDOService() *DDOService {
 }
 
 func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
-	resultRows := make([]toolkit.M, 0)
-	resultTotal := 0
-
-	q := ""
-	args := make([]interface{}, 0)
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	gridArgs.QueryName = "left-grid"
+	gridArgs.PageNumber = pageNumber
+	gridArgs.RowsPerPage = rowsPerPage
 
 	if loggedinid != "" {
-		args = append(args, loggedinid)
+		gridArgs.MainArgs = append(gridArgs.MainArgs, loggedinid)
 	}
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "left-grid", args...)
-	if err != nil {
-		return nil, 0, err
-	}
-
+	///////// --------------------------------------------------DROPDOWN FILTER
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {
 		return nil, 0, err
@@ -47,58 +43,28 @@ func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 	} else {
 		filterSubDomains = searchDDM.GetString("SubDataDomain")
 	}
-	filterDataDomain := searchDDM.GetString("DataDomain")
-	filterSubDomainOwner := searchDDM.GetString("SubDataDomainOwner")
 
-	///////// DROPDOWN FILTER
-	q = `SELECT * FROM (
-		` + q + `
-	) WHERE (
-		upper(sub_domains) LIKE upper('%` + filterSubDomains + `%')
-		AND upper(data_domain) LIKE upper('%` + filterDataDomain + `%')
-		AND upper(sub_domain_owner) LIKE upper('%` + filterSubDomainOwner + `%')
-	) `
+	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter,
+		filterSubDomains,
+		searchDDM.GetString("DataDomain"),
+		searchDDM.GetString("SubDataDomainOwner"),
+	)
 
+	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
-	cf := make([]string, 0)
 	if err != nil {
-		cf = append(cf, "", "", "", "")
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "")
 	} else {
-		cf = append(cf, colFilterM.GetString("SUB_DOMAINS"), colFilterM.GetString("DATA_DOMAIN"), colFilterM.GetString("SUB_DOMAIN_OWNER"), colFilterM.GetString("BANK_ID"))
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
+			colFilterM.GetString("SUB_DOMAINS"),
+			colFilterM.GetString("DATA_DOMAIN"),
+			colFilterM.GetString("SUB_DOMAIN_OWNER"),
+			colFilterM.GetString("BANK_ID"),
+		)
 	}
 
-	///////// COLUMN FILTER
-	if cf[0] != "" || cf[1] != "" || cf[2] != "" || cf[3] != "" {
-		q += `AND (
-			upper(sub_domains) LIKE upper('%` + cf[0] + `%')
-			AND upper(data_domain) LIKE upper('%` + cf[1] + `%')
-			AND upper(sub_domain_owner) LIKE upper('%` + cf[2] + `%')
-			AND upper(bank_id) LIKE upper('%` + cf[3] + `%')
-		) `
-	}
-
-	///////// COUNT
-	q = `SELECT res.*, 
-			COUNT(DISTINCT sub_domains) OVER () COUNT_sub_domains,
-			COUNT(DISTINCT data_domain) OVER () COUNT_data_domain,
-			COUNT(DISTINCT sub_domain_owner) OVER () COUNT_sub_domain_owner,
-			COUNT(DISTINCT bank_id) OVER () COUNT_bank_id
-		FROM ( ` + q + `) res `
-
-	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName:   m.NewCategoryModel().TableName(),
-		SqlQuery:    q,
-		Results:     &resultRows,
-		PageNumber:  pageNumber,
-		RowsPerPage: rowsPerPage,
-		GroupCol:    "-",
-	})
-
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return resultRows, resultTotal, nil
+	gridArgs.GroupCol = "-"
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
 func (s *DDOService) GetRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
