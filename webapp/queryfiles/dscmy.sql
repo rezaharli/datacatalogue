@@ -1,27 +1,47 @@
 -- name: left-grid
-SELECT DISTINCT
-		ts.id,
-		ts.system_name 	as system_name,
-		ts.itam_id		as itam_id,
-		tp.first_name||' '||tp.last_name as dataset_custodian,
-		tp.bank_id		as bank_id
-	FROM tbl_system ts 
-		LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
-		LEFT JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
-		LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id 
-		
-		inner join tbl_md_resource tmr ON ts.id = tmr.system_id
-		inner join
-			(
-				SELECT
-				DISTINCT ts.id as sys_id, tmr.id as res_id, tmt.id as tab_id 
-				FROM tbl_system ts
-					inner join tbl_md_resource tmr ON ts.id = tmr.system_id
-					inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
-					inner join tbl_md_column tmc ON tmt.id = tmc.table_id
-				WHERE CDE = 1
-			) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id
-	WHERE tp.bank_id = '?'
+SELECT * 
+	FROM (
+		SELECT * 
+			FROM (
+				SELECT res.*, 
+						COUNT(DISTINCT system_name) OVER ()			as COUNT_SYSTEM_NAME,
+						COUNT(DISTINCT itam_id) OVER ()				as COUNT_ITAM_ID,
+						COUNT(DISTINCT dataset_custodian) OVER ()	as COUNT_DATASET_CUSTODIAN,
+						COUNT(DISTINCT bank_id) OVER ()				as COUNT_BANK_ID
+					FROM (
+						SELECT DISTINCT
+								ts.id,
+								ts.system_name 						as system_name,
+								ts.itam_id							as itam_id,
+								tp.first_name||' '||tp.last_name 	as dataset_custodian,
+								tp.bank_id							as bank_id
+							FROM tbl_system ts 
+								LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
+								LEFT JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
+								LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id 
+								
+								inner join tbl_md_resource tmr ON ts.id = tmr.system_id
+								inner join (
+									SELECT DISTINCT 
+											ts.id as sys_id, tmr.id as res_id, tmt.id as tab_id 
+										FROM tbl_system ts
+											inner join tbl_md_resource tmr ON ts.id = tmr.system_id
+											inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
+											inner join tbl_md_column tmc ON tmt.id = tmc.table_id
+										WHERE CDE = 1
+								) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id
+							WHERE tp.bank_id = '?'
+					) res
+			) WHERE ( -- Main filter and dropdown filter
+				upper(system_name) LIKE upper('%?%')
+				AND upper(itam_id) LIKE upper('%?%')
+			)
+	) WHERE ( -- Column filter
+		upper(system_name) LIKE upper('%?%')
+		AND upper(itam_id) LIKE upper('%?%')
+		AND upper(dataset_custodian) LIKE upper('%?%')
+		AND upper(bank_id) LIKE upper('%?%')
+	)
 
 -- name: right-grid
 SELECT DISTINCT

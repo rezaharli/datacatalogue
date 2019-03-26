@@ -30,12 +30,7 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, col
 		args = append(args, loggedinid)
 	}
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "left-grid", args...)
-	if err != nil {
-		return nil, 0, err
-	}
-
+	///////// --------------------------------------------------DROPDOWN FILTER
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {
 		return nil, 0, err
@@ -47,44 +42,31 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, col
 	} else {
 		filterSystemName = searchDDM.GetString("SystemName")
 	}
-	filterItamID := searchDDM.GetString("ItamID")
 
-	///////// DROPDOWN FILTER
-	q = `SELECT * FROM (
-		` + q + `
-	) WHERE (
-		upper(system_name) LIKE upper('%` + filterSystemName + `%')
-		AND upper(itam_id) LIKE upper('%` + filterItamID + `%')
-	) `
+	args = append(args, filterSystemName)
+	args = append(args, searchDDM.GetString("ItamID"))
 
+	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
-	cf := make([]string, 0)
 	if err != nil {
-		cf = append(cf, "", "", "", "")
+		args = append(args, "", "", "", "")
 	} else {
-		cf = append(cf, colFilterM.GetString("SYSTEM_NAME"), colFilterM.GetString("ITAM_ID"), colFilterM.GetString("DATASET_CUSTODIAN"), colFilterM.GetString("BANK_ID"))
+		args = append(args,
+			colFilterM.GetString("SYSTEM_NAME"),
+			colFilterM.GetString("ITAM_ID"),
+			colFilterM.GetString("DATASET_CUSTODIAN"),
+			colFilterM.GetString("BANK_ID"),
+		)
 	}
 
-	///////// COLUMN FILTER
-	if cf[0] != "" || cf[1] != "" || cf[2] != "" || cf[3] != "" {
-		q += `AND (
-			upper(system_name) LIKE upper('%` + cf[0] + `%')
-			AND upper(itam_id) LIKE upper('%` + cf[1] + `%')
-			AND upper(dataset_custodian) LIKE upper('%` + cf[2] + `%')
-			AND upper(bank_id) LIKE upper('%` + cf[3] + `%')
-		) `
+	///////// --------------------------------------------------BUILD QUERY FROM ARGS
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err = h.BuildQueryFromFile(filePath, "left-grid", args...)
+	if err != nil {
+		return nil, 0, err
 	}
 
-	///////// COUNT
-	q = `SELECT res.*, 
-			COUNT(DISTINCT system_name) OVER () COUNT_SYSTEM_NAME,
-			COUNT(DISTINCT itam_id) OVER () COUNT_ITAM_ID,
-			COUNT(DISTINCT dataset_custodian) OVER () COUNT_DATASET_CUSTODIAN,
-			COUNT(DISTINCT bank_id) OVER () COUNT_BANK_ID
-		FROM (
-			` + q + `
-		) res `
-
+	///////// --------------------------------------------------EXECUTE
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName:   m.NewSystemModel().TableName(),
 		SqlQuery:    q,
