@@ -36,17 +36,50 @@ SELECT *
     )
 
 -- name: right-grid
-SELECT DISTINCT
-        tbt.id,
-        tsc.id as tscid,
-        tbt.BT_Name	as business_term,
-        tbt.Description	as bt_description,
-        tbt.CDE		as cde_yes_no
-    FROM
-        tbl_category tc
-        INNER JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
-        INNER JOIN tbl_business_term tbt ON tbt.parent_id = tsc.id
-    WHERE tsc.id = '?'
+SELECT * 
+    FROM (
+        SELECT * 
+            FROM (
+                SELECT res.*, 
+                        COUNT(DISTINCT business_term) OVER ()   as COUNT_business_term,
+                        COUNT(DISTINCT bt_description) OVER ()  as COUNT_bt_description,
+                        (SELECT 
+                                COUNT (cde_yes_no) 
+                            FROM ( 
+                                SELECT DISTINCT
+                                        tbt.id,
+                                        tsc.id          as tscid,
+                                        tbt.BT_Name	    as business_term,
+                                        tbt.Description	as bt_description,
+                                        tbt.CDE		    as cde_yes_no
+                                    FROM
+                                        tbl_category tc
+                                        INNER JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
+                                        INNER JOIN tbl_business_term tbt ON tbt.parent_id = tsc.id
+                                    WHERE tsc.id = '?'
+                            ) res2 
+                        WHERE cde_yes_no = 1)                   as COUNT_cde_yes_no
+                    FROM (
+                        SELECT DISTINCT
+                                tbt.id,
+                                tsc.id          as tscid,
+                                tbt.BT_Name	    as business_term,
+                                tbt.Description	as bt_description,
+                                tbt.CDE		    as cde_yes_no
+                            FROM
+                                tbl_category tc
+                                INNER JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
+                                INNER JOIN tbl_business_term tbt ON tbt.parent_id = tsc.id
+                            WHERE tsc.id = '?'
+                    ) res
+            ) WHERE (
+                upper(business_term) LIKE upper('%?%')
+            ) 
+    ) WHERE (
+        upper(business_term) LIKE upper('%?%')
+        AND upper(bt_description) LIKE upper('%?%')
+        AND upper(cde_yes_no) LIKE upper('%?%')
+    ) 
 
 -- name: details-business-metadata-from-domain
 SELECT DISTINCT 

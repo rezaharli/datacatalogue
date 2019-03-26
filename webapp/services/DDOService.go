@@ -68,83 +68,49 @@ func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 }
 
 func (s *DDOService) GetRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
-	resultRows := make([]toolkit.M, 0)
-	resultTotal := 0
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	gridArgs.QueryName = "right-grid"
+	gridArgs.PageNumber = pageNumber
+	gridArgs.RowsPerPage = rowsPerPage
 
-	q := ""
-	args := make([]interface{}, 0)
+	gridArgs.MainArgs = append(gridArgs.MainArgs, toolkit.ToString(systemID))
+	gridArgs.MainArgs = append(gridArgs.MainArgs, toolkit.ToString(systemID))
 
-	args = append(args, toolkit.ToString(systemID))
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "right-grid", args...)
-	if err != nil {
-		return nil, 0, err
-	}
-
+	///////// --------------------------------------------------DROPDOWN FILTER
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	filterBusinessTerm := searchDDM.GetString("BusinessTerm")
+	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter,
+		searchDDM.GetString("BusinessTerm"),
+	)
 
-	///////// DROPDOWN FILTER
-	q = `SELECT * FROM (
-		` + q + `
-	) WHERE (
-		upper(business_term) LIKE upper('%` + filterBusinessTerm + `%')
-	) `
-
+	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
-	cf := make([]string, 0)
 	if err != nil {
-		cf = append(cf, "", "", "")
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "")
 	} else {
-		cf = append(cf, colFilterM.GetString("BUSINESS_TERM"), colFilterM.GetString("BT_DESCRIPTION"), colFilterM.GetString("CDE_YES_NO"))
-	}
+		cdeYesNo := colFilterM.GetString("CDE_YES_NO")
 
-	///////// COLUMN FILTER
-	if cf[0] != "" || cf[1] != "" || cf[2] != "" {
-
-		cdeYesNo := ""
-
-		if cf[2] != "" {
-			if strings.EqualFold(cf[2], "yes") {
+		if cdeYesNo != "" {
+			if strings.EqualFold(cdeYesNo, "yes") {
 				cdeYesNo = "1"
 			} else {
 				cdeYesNo = "0"
 			}
 		}
 
-		q += `AND (
-			upper(business_term) LIKE upper('%` + cf[0] + `%')
-			AND upper(bt_description) LIKE upper('%` + cf[1] + `%')
-			AND upper(cde_yes_no) LIKE upper('%` + cdeYesNo + `%')
-		) `
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
+			colFilterM.GetString("BUSINESS_TERM"),
+			colFilterM.GetString("BT_DESCRIPTION"),
+			cdeYesNo,
+		)
 	}
 
-	///////// COUNT
-	q = `SELECT res.*, 
-			COUNT(DISTINCT business_term) OVER () COUNT_business_term,
-			COUNT(DISTINCT bt_description) OVER () COUNT_bt_description,
-			(SELECT COUNT (cde_yes_no) FROM ( ` + q + `) res2 WHERE cde_yes_no = 1) COUNT_cde_yes_no
-		FROM ( ` + q + `) res `
-
-	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName:   m.NewCategoryModel().TableName(),
-		SqlQuery:    q,
-		Results:     &resultRows,
-		PageNumber:  pageNumber,
-		RowsPerPage: rowsPerPage,
-		GroupCol:    "-",
-	})
-
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return resultRows, resultTotal, nil
+	gridArgs.GroupCol = "-"
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
 func (s *DDOService) GetDetailsBusinessMetadataFromDomain(payload toolkit.M) (interface{}, int, error) {
