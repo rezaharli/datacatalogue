@@ -40,51 +40,84 @@ function getRightTable(param) {
 }
 
 function getDetails(param) {
-    var urls = [
-        { name: 'DetailsBusinessMetadata', url: `/ddo/getdetailsbusinessmetadatafromdomain` },
-        { name: 'DDSourceBusinessMetadata', url: `/ddo/getddsourcebusinessmetadatafromdomain` },
-        { name: 'DetailsDownstreamUsage', url: `/ddo/getdetailsdownstreamusageofbusinessterm` }, 
-        { name: 'DDSourceDownstreamUsage', url: `/ddo/getddsourcedownstreamusageofbusinessterm` },
-        { name: 'DetailsBTResiding', url: `/ddo/getdetailsbtresiding` },
-        { name: 'DDSourceBTResiding', url: `/ddo/getddsourcebtresiding` },
-    ]
+    // var urls = [
+    //     { name: 'DetailsBusinessMetadata', url: `/ddo/getdetailsbusinessmetadatafromdomain` },
+    //     { name: 'DDSourceBusinessMetadata', url: `/ddo/getddsourcebusinessmetadatafromdomain` },
+    //     { name: 'DetailsDownstreamUsage', url: `/ddo/getdetailsdownstreamusageofbusinessterm` }, 
+    //     { name: 'DDSourceDownstreamUsage', url: `/ddo/getddsourcedownstreamusageofbusinessterm` },
+    //     { name: 'DetailsBTResiding', url: `/ddo/getdetailsbtresiding` },
+    //     { name: 'DDSourceBTResiding', url: `/ddo/getddsourcebtresiding` },
+    // ]
 
-    return Promise.all(
-        urls.map(v => fetchWHeader(v.url, param).then(resp => resp.Data))
-    ).then(results => {
-        var res = {}
-        res.Data = {}
+    // return Promise.all(
+    //     urls.map(v => fetchWHeader(v.url, param).then(resp => resp.Data))
+    // ).then(results => {
+    //     var res = {}
+    //     res.Data = {}
 
-        urls.forEach((v, i) => { res.Data[v.name] = results[i] });
+    //     urls.forEach((v, i) => { res.Data[v.name] = results[i] });
 
-        var tmp = _.groupBy(res.Data.DetailsBusinessMetadata, "ID")
-        res.Data.DetailsBusinessMetadata = _.map(Object.keys(tmp), (v, i) => {
-            var ret = tmp[v][0];
-            ret.ID = v;
-            ret.Values = tmp[v];
+    //     var tmp = _.groupBy(res.Data.DetailsBusinessMetadata, "ID")
+    //     res.Data.DetailsBusinessMetadata = _.map(Object.keys(tmp), (v, i) => {
+    //         var ret = tmp[v][0];
+    //         ret.ID = v;
+    //         ret.Values = tmp[v];
 
-            return ret;
-        });
+    //         return ret;
+    //     });
 
-        var tmp = _.groupBy(res.Data.DetailsDownstreamUsage, "ID")
-        res.Data.DetailsDownstreamUsage = _.map(Object.keys(tmp), (v, i) => {
-            var ret = tmp[v][0];
-            ret.ID = v;
-            ret.Values = tmp[v];
+    //     var tmp = _.groupBy(res.Data.DetailsDownstreamUsage, "ID")
+    //     res.Data.DetailsDownstreamUsage = _.map(Object.keys(tmp), (v, i) => {
+    //         var ret = tmp[v][0];
+    //         ret.ID = v;
+    //         ret.Values = tmp[v];
 
-            return ret;
-        });
+    //         return ret;
+    //     });
 
-        var tmp = _.groupBy(res.Data.DetailsBTResiding, "ID")
-        res.Data.DetailsBTResiding = _.map(Object.keys(tmp), (v, i) => {
-            var ret = tmp[v][0];
-            ret.ID = v;
-            ret.Values = tmp[v];
+    //     var tmp = _.groupBy(res.Data.DetailsBTResiding, "ID")
+    //     res.Data.DetailsBTResiding = _.map(Object.keys(tmp), (v, i) => {
+    //         var ret = tmp[v][0];
+    //         ret.ID = v;
+    //         ret.Values = tmp[v];
 
-            return ret;
-        });
+    //         return ret;
+    //     });
 
-        console.log(res);
-        return res;
-    });
+    //     return res;
+    // });
+
+    return fetchWHeader(`/ddo/getdetails`, param).then(
+        res => {
+            var tmp = _.groupBy(res.Data.DetailsBusinessMetadata, "ID")
+            res.Data.DetailsBusinessMetadata = _.map(Object.keys(tmp), function(v, i){
+                var ret = tmp[v][0];
+                ret.ID = v;
+                ret.Values = tmp[v];
+
+                return ret;
+            });
+
+            var tmp = _.groupBy(res.Data.DetailsDownstreamUsage, "ID")
+            res.Data.DetailsDownstreamUsage = _.map(Object.keys(tmp), function(v, i){
+                var ret = tmp[v][0];
+                ret.ID = v;
+                ret.Values = tmp[v];
+
+                return ret;
+            });
+
+            var tmp = _.groupBy(res.Data.DetailsBTResiding, "ID")
+            res.Data.DetailsBTResiding = _.map(Object.keys(tmp), function(v, i){
+                var ret = tmp[v][0];
+                ret.ID = v;
+                ret.Values = tmp[v];
+
+                return ret;
+            });
+
+            return res;
+        }
+    )
+
 }
