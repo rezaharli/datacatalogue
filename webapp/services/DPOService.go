@@ -12,6 +12,7 @@ import (
 )
 
 type DPOService struct {
+	*Base
 }
 
 func NewDPOService() *DPOService {
@@ -20,22 +21,17 @@ func NewDPOService() *DPOService {
 }
 
 func (s *DPOService) GetLeftTable(tabs, loggedinid, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
-	resultRows := make([]toolkit.M, 0)
-	resultTotal := 0
-
-	q := ""
-	args := make([]interface{}, 0)
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	gridArgs.QueryName = "left-grid"
+	gridArgs.PageNumber = pageNumber
+	gridArgs.RowsPerPage = rowsPerPage
 
 	if loggedinid != "" {
-		args = append(args, loggedinid)
+		gridArgs.MainArgs = append(gridArgs.MainArgs, loggedinid)
 	}
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "left-grid", args...)
-	if err != nil {
-		return nil, 0, err
-	}
-
+	///////// --------------------------------------------------DROPDOWN FILTER
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {
 		return nil, 0, err
@@ -47,80 +43,26 @@ func (s *DPOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 	} else {
 		filterProcessName = searchDDM.GetString("ProcessName")
 	}
-	filterProcessOwner := searchDDM.GetString("ProcessOwner")
 
-	///////// DROPDOWN FILTER
-	q = `SELECT * FROM (
-		` + q + `
-	) WHERE (
-		upper(downstream_process) LIKE upper('%` + filterProcessName + `%')
-		AND upper(process_owner) LIKE upper('%` + filterProcessOwner + `%')
-	) `
+	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter,
+		filterProcessName,
+		searchDDM.GetString("ProcessOwner"),
+	)
 
+	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
-	cf := make([]string, 0)
 	if err != nil {
-		cf = append(cf, "", "", "")
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "")
 	} else {
-		cf = append(cf, colFilterM.GetString("DOWNSTREAM_PROCESS"), colFilterM.GetString("PROCESS_OWNER"), colFilterM.GetString("BANK_ID"))
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
+			colFilterM.GetString("DOWNSTREAM_PROCESS"),
+			colFilterM.GetString("PROCESS_OWNER"),
+			colFilterM.GetString("BANK_ID"),
+		)
 	}
 
-	///////// COLUMN FILTER
-	if cf[0] != "" || cf[1] != "" || cf[2] != "" {
-		q += `AND (
-			upper(DOWNSTREAM_PROCESS) LIKE upper('%` + cf[0] + `%')
-			AND upper(PROCESS_OWNER) LIKE upper('%` + cf[1] + `%')
-			AND upper(BANK_ID) LIKE upper('%` + cf[2] + `%')
-		) `
-	}
-
-	///////// COUNT
-	q = `SELECT res.*, 
-			COUNT(DISTINCT DOWNSTREAM_PROCESS) OVER () COUNT_DOWNSTREAM_PROCESS,
-			COUNT(DISTINCT PROCESS_OWNER) OVER () COUNT_PROCESS_OWNER,
-			COUNT(DISTINCT BANK_ID) OVER () COUNT_BANK_ID
-		FROM (
-			` + q + `
-		) res `
-
-	// q := `SELECT DISTINCT
-	// 		tdp.id,
-	// 		tdp.Name as downstream_process,
-	// 		tdp.owner_id as process_owner,
-	// 		tp.bank_id
-	// 	FROM
-	// 		tbl_ds_processes tdp
-	// 		LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = tdp.id
-	// 		LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
-	// 	WHERE
-	// 		upper(tlrp.object_type) = upper('process') `
-
-	// if loggedinid != "" {
-	// 	a := toolkit.ToInt(loggedinid, "")
-	// 	q += `AND tp.bank_id = '` + toolkit.ToString(a) + `' `
-	// }
-
-	// if search != "" {
-	// 	q += `
-	// 		upper(tdp.Name) LIKE upper('%` + search + `%')
-	// 		OR upper(tdp.owner_id) LIKE upper('%` + search + `%')
-	// 		OR upper(tp.bank_id) LIKE upper('%` + search + `%') `
-	// }
-
-	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName:   m.NewSystemModel().TableName(),
-		SqlQuery:    q,
-		Results:     &resultRows,
-		PageNumber:  pageNumber,
-		RowsPerPage: rowsPerPage,
-		GroupCol:    "-",
-	})
-
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return resultRows, resultTotal, nil
+	gridArgs.GroupCol = "-"
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
 func (s *DPOService) GetRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {

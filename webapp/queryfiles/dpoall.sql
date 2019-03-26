@@ -1,14 +1,33 @@
 -- name: left-grid
-SELECT DISTINCT
-  TDP.id,
-  TDP.NAME                              AS downstream_process,
-  TP.FIRST_NAME||' '|| TP.LAST_NAME     AS process_owner,
-  TP.BANK_ID                            AS bank_id
-FROM TBL_DS_PROCESSES TDP
-INNER JOIN TBL_LINK_ROLE_PEOPLE TLRP ON TLRP.OBJECT_ID = TDP.ID AND TLRP.OBJECT_TYPE = 'PROCESSES'
-INNER JOIN TBL_ROLE RL ON TLRP.ROLE_ID = RL.ID AND UPPER(RL.ROLE_NAME) = 'DOWNSTREAM PROCESS OWNER'
-INNER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
-ORDER BY TDP.NAME
+SELECT * 
+	FROM (
+		SELECT * 
+			FROM (
+				SELECT res.*, 
+							COUNT(DISTINCT DOWNSTREAM_PROCESS) OVER () 	as COUNT_DOWNSTREAM_PROCESS,
+							COUNT(DISTINCT PROCESS_OWNER) OVER () 			as COUNT_PROCESS_OWNER,
+							COUNT(DISTINCT BANK_ID) OVER () 						as COUNT_BANK_ID
+						FROM (
+							SELECT DISTINCT
+									TDP.id,
+									TDP.NAME                              AS downstream_process,
+									TP.FIRST_NAME||' '|| TP.LAST_NAME     AS process_owner,
+									TP.BANK_ID                            AS bank_id
+								FROM TBL_DS_PROCESSES TDP
+									INNER JOIN TBL_LINK_ROLE_PEOPLE TLRP ON TLRP.OBJECT_ID = TDP.ID AND TLRP.OBJECT_TYPE = 'PROCESSES'
+									INNER JOIN TBL_ROLE RL ON TLRP.ROLE_ID = RL.ID AND UPPER(RL.ROLE_NAME) = 'DOWNSTREAM PROCESS OWNER'
+									INNER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
+								ORDER BY TDP.NAME
+						) res
+			) WHERE (
+				upper(downstream_process) LIKE upper('%?%')
+				AND upper(process_owner) LIKE upper('%?%')
+			) 
+	) WHERE (
+			upper(DOWNSTREAM_PROCESS) LIKE upper('%?%')
+			AND upper(PROCESS_OWNER) LIKE upper('%?%')
+			AND upper(BANK_ID) LIKE upper('%?%')
+		)
 
 -- name: right-grid
 SELECT DISTINCT
