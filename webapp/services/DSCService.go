@@ -88,59 +88,39 @@ func (s *DSCService) GetTableName(tabs string, systemID int, search string, sear
 
 	q := ""
 	args := make([]interface{}, 0)
-
+	args = append(args, toolkit.ToString(systemID))
 	args = append(args, toolkit.ToString(systemID))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "right-grid", args...)
-	if err != nil {
-		return nil, 0, err
-	}
-
+	///////// --------------------------------------------------DROPDOWN FILTER
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	filterTableName := searchDDM.GetString("TableName")
-	filterColumnName := searchDDM.GetString("ColumnName")
+	args = append(args, searchDDM.GetString("TableName"))
+	args = append(args, searchDDM.GetString("ColumnName"))
 
-	///////// DROPDOWN FILTER
-	q = `SELECT * FROM (
-		` + q + `
-	) WHERE (
-		upper(table_name) LIKE upper('%` + filterTableName + `%')
-		AND upper(column_name) LIKE upper('%` + filterColumnName + `%')
-	) `
-
+	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
-	cf := make([]string, 0)
 	if err != nil {
-		cf = append(cf, "", "", "", "")
+		args = append(args, "", "", "", "")
 	} else {
-		cf = append(cf, colFilterM.GetString("TABLE_NAME"), colFilterM.GetString("COLUMN_NAME"), colFilterM.GetString("BUSINESS_ALIAS_NAME"), colFilterM.GetString("CDE_YES_NO"))
+		args = append(args,
+			colFilterM.GetString("TABLE_NAME"),
+			colFilterM.GetString("COLUMN_NAME"),
+			colFilterM.GetString("BUSINESS_ALIAS_NAME"),
+			colFilterM.GetString("CDE_YES_NO"),
+		)
 	}
 
-	///////// COLUMN FILTER
-	if cf[0] != "" || cf[1] != "" || cf[2] != "" || cf[3] != "" {
-		q += `AND (
-			upper(table_name) LIKE upper('%` + cf[0] + `%')
-			AND upper(column_name) LIKE upper('%` + cf[1] + `%')
-			AND upper(business_alias_name) LIKE upper('%` + cf[2] + `%')
-			AND upper(cde_yes_no) LIKE upper('%` + cf[3] + `%')
-		) `
+	///////// --------------------------------------------------BUILD QUERY FROM ARGS
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err = h.BuildQueryFromFile(filePath, "right-grid", args...)
+	if err != nil {
+		return nil, 0, err
 	}
 
-	///////// COUNT
-	q = `SELECT res.*, 
-			COUNT(DISTINCT table_name) OVER () COUNT_table_name,
-			COUNT(DISTINCT column_name) OVER () COUNT_column_name,
-			COUNT(DISTINCT business_alias_name) OVER () COUNT_business_alias_name,
-			(SELECT COUNT (cde_yes_no) FROM ( ` + q + `) res2 WHERE cde_yes_no = 1) COUNT_cde_yes_no
-		FROM (
-			` + q + `
-		) res `
-
+	///////// --------------------------------------------------EXECUTE
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName:   m.NewSystemModel().TableName(),
 		SqlQuery:    q,

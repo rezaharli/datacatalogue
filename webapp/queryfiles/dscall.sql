@@ -43,49 +43,116 @@ SELECT *
 	)
 
 -- name: right-grid
-SELECT DISTINCT
-		tmt.id,
-		ts.id 			as tsid,
-		tmc.id 			as colid,
-		tmt.name 		as table_name,
-		tmc.name 		as column_name,
-		tmc.alias_name	as business_alias_name,
-		tmc.cde			as cde_yes_no
-	FROM tbl_system ts
-		LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
-		LEFT JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
-		LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
+SELECT * 
+	FROM (
+		SELECT * 
+			FROM (
+				SELECT res.*, 
+						COUNT(DISTINCT table_name) OVER () 				as COUNT_table_name,
+						COUNT(DISTINCT column_name) OVER () 			as COUNT_column_name,
+						COUNT(DISTINCT business_alias_name) OVER () 	as COUNT_business_alias_name,
+						(SELECT 
+								COUNT (cde_yes_no) 
+							FROM ( 
+								SELECT DISTINCT
+										tmt.id,
+										ts.id 			as tsid,
+										tmc.id 			as colid,
+										tmt.name 		as table_name,
+										tmc.name 		as column_name,
+										tmc.alias_name	as business_alias_name,
+										tmc.cde			as cde_yes_no
+									FROM tbl_system ts
+										LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
+										LEFT JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
+										LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
 
-		inner join tbl_md_resource tmr ON ts.id = tmr.system_id
-		inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
-		inner join tbl_md_column tmc ON tmt.id = tmc.table_id
-		
-		LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
-		
-		LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
-		LEFT JOIN Tbl_Link_Role_People tlrp_sdo ON tlrp_sdo.Object_ID = tsc.id AND tlrp_sdo.object_type = 'SUBCATEGORY'
-		LEFT JOIN Tbl_Role rl ON tlrp_sdo.role_id = rl.id and rl.role_name = 'Data Domain Owner'
-		LEFT JOIN Tbl_People ppl ON tlrp_sdo.people_id = ppl.id
-		
-		LEFT JOIN tbl_policy tpol ON tbt.policy_id = tpol.id
-		
-		left join tbl_link_column_interface ci on tmc.id = ci.column_id
-		left join tbl_system ips on ci.imm_prec_system_id = ips.id
-		left join tbl_system iss on ci.imm_succ_system_id = iss.id
-		LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
-		LEFT JOIN tbl_link_category_people tlcp ON tlcp.category_id = tc.id
-		inner join
-		(
-			SELECT
-			DISTINCT ts.id as sys_id, tmr.id as res_id, tmt.id as tab_id
-			FROM tbl_system ts
-				inner join tbl_md_resource tmr ON ts.id = tmr.system_id
-				inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
-				inner join tbl_md_column tmc ON tmt.id = tmc.table_id
-			WHERE ts.id = '?'
-				AND CDE = 1
-		) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id and tmt.id = cde.tab_id
-	ORDER BY tmt.name, tmc.name
+										inner join tbl_md_resource tmr ON ts.id = tmr.system_id
+										inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
+										inner join tbl_md_column tmc ON tmt.id = tmc.table_id
+										
+										LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
+										
+										LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
+										LEFT JOIN Tbl_Link_Role_People tlrp_sdo ON tlrp_sdo.Object_ID = tsc.id AND tlrp_sdo.object_type = 'SUBCATEGORY'
+										LEFT JOIN Tbl_Role rl ON tlrp_sdo.role_id = rl.id and rl.role_name = 'Data Domain Owner'
+										LEFT JOIN Tbl_People ppl ON tlrp_sdo.people_id = ppl.id
+										
+										LEFT JOIN tbl_policy tpol ON tbt.policy_id = tpol.id
+										
+										left join tbl_link_column_interface ci on tmc.id = ci.column_id
+										left join tbl_system ips on ci.imm_prec_system_id = ips.id
+										left join tbl_system iss on ci.imm_succ_system_id = iss.id
+										LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
+										LEFT JOIN tbl_link_category_people tlcp ON tlcp.category_id = tc.id
+										inner join (
+											SELECT DISTINCT 
+													ts.id as sys_id, tmr.id as res_id, tmt.id as tab_id
+												FROM tbl_system ts
+													inner join tbl_md_resource tmr ON ts.id = tmr.system_id
+													inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
+													inner join tbl_md_column tmc ON tmt.id = tmc.table_id
+												WHERE ts.id = '?'
+													AND CDE = 1
+										) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id and tmt.id = cde.tab_id
+									ORDER BY tmt.name, tmc.name
+							) WHERE 
+								cde_yes_no = 1
+						) 												as COUNT_cde_yes_no
+					FROM (
+						SELECT DISTINCT
+								tmt.id,
+								ts.id 			as tsid,
+								tmc.id 			as colid,
+								tmt.name 		as table_name,
+								tmc.name 		as column_name,
+								tmc.alias_name	as business_alias_name,
+								tmc.cde			as cde_yes_no
+							FROM tbl_system ts
+								LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
+								LEFT JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
+								LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
+
+								inner join tbl_md_resource tmr ON ts.id = tmr.system_id
+								inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
+								inner join tbl_md_column tmc ON tmt.id = tmc.table_id
+								
+								LEFT JOIN tbl_business_term tbt ON tmc.business_term_id = tbt.id
+								
+								LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
+								LEFT JOIN Tbl_Link_Role_People tlrp_sdo ON tlrp_sdo.Object_ID = tsc.id AND tlrp_sdo.object_type = 'SUBCATEGORY'
+								LEFT JOIN Tbl_Role rl ON tlrp_sdo.role_id = rl.id and rl.role_name = 'Data Domain Owner'
+								LEFT JOIN Tbl_People ppl ON tlrp_sdo.people_id = ppl.id
+								
+								LEFT JOIN tbl_policy tpol ON tbt.policy_id = tpol.id
+								
+								left join tbl_link_column_interface ci on tmc.id = ci.column_id
+								left join tbl_system ips on ci.imm_prec_system_id = ips.id
+								left join tbl_system iss on ci.imm_succ_system_id = iss.id
+								LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
+								LEFT JOIN tbl_link_category_people tlcp ON tlcp.category_id = tc.id
+								inner join (
+									SELECT DISTINCT 
+											ts.id as sys_id, tmr.id as res_id, tmt.id as tab_id
+										FROM tbl_system ts
+											inner join tbl_md_resource tmr ON ts.id = tmr.system_id
+											inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
+											inner join tbl_md_column tmc ON tmt.id = tmc.table_id
+										WHERE ts.id = '?'
+											AND CDE = 1
+								) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id and tmt.id = cde.tab_id
+							ORDER BY tmt.name, tmc.name
+					) res
+			) WHERE ( -- Main filter and dropdown filter
+				upper(table_name) LIKE upper('%?%')
+				AND upper(column_name) LIKE upper('%?%')
+			)
+	) WHERE ( -- Column filter
+		upper(table_name) LIKE upper('%?%')
+		AND upper(column_name) LIKE upper('%?%')
+		AND upper(business_alias_name) LIKE upper('%?%')
+		AND upper(cde_yes_no) LIKE upper('%?%')
+	)
 
 -- name: details
 SELECT DISTINCT
