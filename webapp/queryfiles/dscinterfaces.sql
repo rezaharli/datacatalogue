@@ -3,7 +3,7 @@ SELECT DISTINCT
         ts.id,
         ts.system_name 	as system_name,
         ts.itam_id		as itam_id,
-        tp.first_name	as dataset_custodian,
+        tp.first_name||' '||tp.last_name	as dataset_custodian,
         tp.bank_id		as bank_id
     FROM tbl_system ts 
         LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
@@ -25,11 +25,11 @@ SELECT DISTINCT
 -- name: right-grid
 SELECT DISTINCT
         tmt.id,
-        ts.id                               as tsid,
-        tmc.id                              as colid,
-        tmt.name                            as table_name,
-        tmc.name                            as column_name,
-        tmc.alias_name                      as list_of_cde,
+        ts.id		as tsid,
+        tmc.id		as colid,
+        tmt.name		as table_name,
+        tmc.name		as column_name,
+        tmc.alias_name                as list_of_cde,
         ips.system_name                     as imm_prec_system_name,
         tmc.Imm_Prec_System_SLA             as Imm_Prec_System_SLA,
         tmc.Imm_Prec_System_OLA             as Imm_Prec_System_OLA,
@@ -53,50 +53,50 @@ SELECT DISTINCT
         LEFT JOIN Tbl_Role rl ON tlrp_sdo.role_id = rl.id and rl.role_name = 'Downstream Process Owner'
         LEFT JOIN Tbl_People ppl ON tlrp_sdo.people_id = ppl.id
     WHERE ts.id = '?'
-        AND tmc.cde = 1
+	AND tmc.cde = 1
 
 -- name: details
 SELECT DISTINCT
-		ts.id,
-		tmt.id								as tmtid,
-		tmc.id								as tmcid,
-		ts.system_name						as system_name,
-		ts.itam_id							as itam_id,
-		tp.first_name						as dataset_custodian,
-		tp.bank_id							as bank_id,
-		tmc.alias_name						as business_alias_name,
-		tmt.name 							as table_name,
-		tmc.name 							as column_name,
-		tmc.description 					as business_alias_description,
-		tmc.cde								as cde_yes_no,
-		tmc.status							as status,
-		tmc.data_type						as data_type,
-		tmc.data_format						as data_format,
-		tmc.data_length						as data_length,
-		tmc.example							as example,
-		tmc.derived							as derived_yes_no,
-		tmc.Derivation_Logic				as derivation_logic,
-		tmc.Sourced_from_Upstream			as sourced_from_upstream_yes_no,
-		tmc.System_Checks					as system_checks,
-		tc.Name 							as domain,
-		tsc.name 							as subdomain,
-		ppl.first_name||' '||ppl.last_name 	as domain_owner,
-		tbt.bt_name							as business_term,
-		tbt.description 					as business_term_description,
-		tpol.info_asset_name				as information_asset_names,
-		tpol.description 					as information_asset_description,
-		tpol.confidentiality				as confidentiality,
-		tpol.integrity						as integrity,
-		tpol.availability					as availability,
-		tpol.overall_cia_rating				as overall_cia_rating,
-		tmt.record_category					as record_categories,
-		tmc.pii_flag						as pii_flag,
-		ips.system_name 					as imm_preceeding_system,
-		iss.system_name 					as imm_succeeding_system,
-		tmc.threshold						as threshold
-    FROM tbl_system ts
-        inner join tbl_md_resource res ON ts.id = res.system_id
-        inner join tbl_md_table tmt ON res.id = tmt.resource_id
+ts.id,
+tmt.id			as tmtid,
+tmc.id			as tmcid,
+ts.system_name		as system_name,
+ts.itam_id			as itam_id,
+tp.first_name||' '||tp.last_name	as dataset_custodian,
+tp.bank_id			as bank_id,
+tmc.alias_name		as business_alias_name,
+tmt.name 			as table_name,
+tmc.name 			as column_name,
+tmc.description 		as business_alias_description,
+tmc.cde			as cde_yes_no,
+tmc.status			as status,
+tmc.data_type			as data_type,
+tmc.data_format		as data_format,
+tmc.data_length		as data_length,
+tmc.example			as example,
+tmc.derived			as derived_yes_no,
+tmc.Derivation_Logic		as derivation_logic,
+tmc.Sourced_from_Upstream	as sourced_from_upstream_yes_no,
+tmc.System_Checks		as system_checks,
+tc.Name 			as domain,
+tsc.name 			as subdomain,
+ppl.first_name||' '||ppl.last_name 	as domain_owner,
+tbt.bt_name			as business_term,
+tbt.description 		as business_term_description,
+tpol.info_asset_name		as information_asset_names,
+tpol.description 		as information_asset_description,
+tpol.confidentiality		as confidentiality,
+tpol.integrity			as integrity,
+tpol.availability		as availability,
+tpol.overall_cia_rating		as overall_cia_rating,
+tmt.record_category		as record_categories,
+tmc.pii_flag			as pii_flag,
+ips.system_name 		as imm_preceeding_system,
+iss.system_name 		as imm_succeeding_system,
+tmc.threshold			as threshold
+FROM tbl_system ts
+       inner join tbl_md_resource res ON ts.id = res.system_id
+       inner join tbl_md_table tmt ON res.id = tmt.resource_id
         inner join tbl_md_column tmc ON tmt.id = tmc.table_id
         
         left join tbl_link_column_interface ci on tmc.id = ci.column_id

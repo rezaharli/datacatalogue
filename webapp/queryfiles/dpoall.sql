@@ -1,31 +1,34 @@
 -- name: left-grid
 SELECT DISTINCT
-		tdp.id,
-		tdp.Name 		as downstream_process,
-		tdp.owner_id 	as process_owner,
-		tp.bank_id		as bank_id
-	FROM
-		tbl_ds_processes tdp
-		LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = tdp.id
-		LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
+  TDP.id,
+  TDP.NAME                              AS downstream_process,
+  TP.FIRST_NAME||' '|| TP.LAST_NAME     AS process_owner,
+  TP.BANK_ID                            AS bank_id
+FROM TBL_DS_PROCESSES TDP
+INNER JOIN TBL_LINK_ROLE_PEOPLE TLRP ON TLRP.OBJECT_ID = TDP.ID AND TLRP.OBJECT_TYPE = 'PROCESSES'
+INNER JOIN TBL_ROLE RL ON TLRP.ROLE_ID = RL.ID AND UPPER(RL.ROLE_NAME) = 'DOWNSTREAM PROCESS OWNER'
+INNER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
+ORDER BY TDP.NAME
 
 -- name: right-grid
 SELECT DISTINCT
-		tdpd.id,
-		tdp.id 							as tdpid,
-		tdpd.id 						as cde_name,
-		tdpd.segment_name				as segment,
-		tdpd.imm_prec_system_id			as imm_prec_system,
-		tdpd.ultimate_source_system_id	as ult_source_system,
-		'' 								as business_description,
-		''								as cde_rationale
-	FROM 
-		tbl_ds_processes tdp
-		LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = tdp.id
-		LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
-
-		LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.process_id = tdp.id
-	WHERE tdp.id = '?'
+    TDPD.ID,
+    TDP.ID		 AS tdpid,
+    TMC.ALIAS_NAME          AS CDE_NAME,
+    TDPD.SEGMENT_NAME       AS SEGMENT, 
+    IPS.SYSTEM_NAME         AS IMM_PREC_SYSTEM,
+    USS.SYSTEM_NAME         AS ULT_SOURCE_SYSTEM,
+    TBT.DESCRIPTION          AS BUSINESS_DESCRIPTION, 
+    TBT.CDE_RATIONALE        AS CDE_RATIONALE
+FROM 
+TBL_DS_PROCESSES TDP
+INNER JOIN TBL_DS_PROCESS_DETAIL TDPD ON TDP.ID = TDPD.PROCESS_ID
+INNER JOIN TBL_MD_COLUMN TMC ON TDPD.COLUMN_ID = TMC.ID
+LEFT JOIN TBL_SYSTEM IPS ON TDPD.IMM_PREC_SYSTEM_ID = IPS.ID
+LEFT JOIN TBL_SYSTEM USS ON TDPD.ULTIMATE_SOURCE_SYSTEM_ID = USS.ID
+LEFT JOIN TBL_BUSINESS_TERM TBT ON TMC.BUSINESS_TERM_ID = TBT.ID
+WHERE TDP.ID='?'
+ORDER BY TMC.ALIAS_NAME
 
 -- name: details
 SELECT DISTINCT
@@ -33,7 +36,7 @@ SELECT DISTINCT
 		tdp.Name 						as downstream_process,
 		tdp.owner_id 					as process_owner,
 		tp.bank_id						as bank_id,
-		tdpd.id  			            as cde_name,
+		tdpd.business_term_id 			as cde_name,
 		tbt.cde_rationale				as cde_rationale,
 		tdpd.imm_prec_system_id			as imm_system,
 		tsy.itam_id						as imm_itam_id,
@@ -50,7 +53,7 @@ SELECT DISTINCT
 		tsy.itam_id						as ult_itam_id,
 		tmt.name 						as ult_table_name,
 		tmc.name 						as ult_column_name,
-		tbt.bt_name						as ult_screen_label_name,
+		''								as ult_screen_label_name,
 		tbt.description 				as ult_business_description,
 		tmc.derived						as ult_derived_yes_no,
 		tmc.derivation_logic			as ult_derivation_logic,
@@ -78,14 +81,13 @@ SELECT DISTINCT
 		tbl_ds_processes tdp
 		INNER JOIN tbl_ds_process_detail tdpd ON tdpd.process_id = tdp.id
 		LEFT JOIN tbl_people tp ON tdp.owner_id = tp.id
-		LEFT JOIN tbl_md_column tmc ON tdpd.column_id = tmc.id
-		LEFT JOIN tbl_md_table tmt ON tmc.table_id = tmt.id
-		LEFT JOIN tbl_business_term tbt ON tmt.business_term_id = tbt.id
-        
-		LEFT JOIN tbl_link_category_people tlcp ON tlcp.people_id = tp.id
-		LEFT JOIN tbl_category tc ON tlcp.category_id = tc.id
-		LEFT JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
-        
+		LEFT JOIN tbl_segment ts ON tdpd.segment_id = ts.id
+		LEFT JOIN tbl_business_term tbt ON tdpd.business_term_id = tbt.id
 		LEFT JOIN tbl_system tsy ON tdpd.imm_prec_system_id = tsy.id
+		LEFT JOIN tbl_md_table tmt ON tmt.business_term_id = tbt.id
+		LEFT JOIN tbl_md_column tmc ON tmc.table_id = tmt.id
+		LEFT JOIN tbl_category tc ON ts.subdomain_id = tc.id
+		LEFT JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
+		LEFT JOIN tbl_link_category_people tlcp ON tlcp.category_id = tc.id
 	WHERE
 		tdp.id = '?' AND tdpd.id = '?'

@@ -70,8 +70,8 @@ SELECT DISTINCT
 -- name: details
 SELECT DISTINCT
 		ts.id,
-		tmt.id								as tmtid,
-		tmc.id								as tmcid,
+		tmt.id					as tmtid,
+		tmc.id					as tmcid,
 		ts.system_name						as system_name,
 		ts.itam_id							as itam_id,
 		tp.first_name||' '||tp.last_name	as dataset_custodian,
