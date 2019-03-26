@@ -84,7 +84,7 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                  <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.SUB_DOMAINS" :isklik="false"></tablecell></b-link></td>
+                  <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SUB_DOMAINS" :isklik="false"></tablecell></b-link></td>
                   <td><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'DATA_DOMAIN').filter(Boolean)).join(', '))" :isklik="false"></tablecell></b-link></td>
                   <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'SUB_DOMAIN_OWNER').filter(Boolean)).join('; '))" :isklik="true"></tablecell></td>
                   <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'BANK_ID').filter(Boolean)).join('; '))" :isklik="true"></tablecell></td>
@@ -300,6 +300,12 @@ export default {
       systemRowClick (evt) {
         evt.preventDefault();
         this.store.isRightTable = true;
+      },
+      showRightTable(param){
+        //reset right table filter
+        this.store.filters.right = {};
+
+        this.$router.push(this.addressPath + '/' + param.ID);
       },
       showDetails (param) {
         this.$router.push(this.addressPath + "/" + param.TSCID + '/' + param.ID)

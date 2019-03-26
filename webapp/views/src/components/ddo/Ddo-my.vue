@@ -83,7 +83,7 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                  <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.SUB_DOMAINS" :isklik="false"></tablecell></b-link></td>
+                  <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SUB_DOMAINS" :isklik="false"></tablecell></b-link></td>
                   <td><tablecell :fulltext="props.item.DATA_DOMAIN" :isklik="false"></tablecell></td>
                   <td><tablecell :fulltext="props.item.SUB_DOMAIN_OWNER" :isklik="true"></tablecell></td>
                   <td><tablecell :fulltext="props.item.BANK_ID" :isklik="true"></tablecell></td>
@@ -282,6 +282,12 @@ export default {
       systemRowClick (evt) {
         evt.preventDefault();
         this.store.isRightTable = true;
+      },
+      showRightTable(param){
+        //reset right table filter
+        this.store.filters.right = {};
+
+        this.$router.push(this.addressPath + '/' + param.ID);
       },
       showDetails (param) {
         this.$router.push(this.addressPath + "/" + param.TSCID + '/' + param.ID)
