@@ -268,16 +268,16 @@ func (s *DPOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 
 	otherArgs := make([]string, 0)
 	otherArgs = append(otherArgs,
-		payload.GetString("Imm_System"),
-		payload.GetString("Imm_Itam_ID"),
-		payload.GetString("Imm_Table_Name"),
-		payload.GetString("Imm_Column_Name"),
-		payload.GetString("Imm_Screen_Label_name"),
-		payload.GetString("Ult_System"),
-		payload.GetString("Ult_Itam_ID"),
-		payload.GetString("Ult_Table_Name"),
-		payload.GetString("Ult_Column_Name"),
-		payload.GetString("Ult_Screen_Label_name"),
+		payload.GetString("ImmSystemName"),
+		payload.GetString("ImmItamID"),
+		payload.GetString("ImmTableName"),
+		payload.GetString("ImmColumnName"),
+		payload.GetString("ImmScreenLabel"),
+		payload.GetString("UltSystemName"),
+		payload.GetString("UltItamID"),
+		payload.GetString("UltTableName"),
+		payload.GetString("UltColumnName"),
+		payload.GetString("UltScreenLabel"),
 	)
 
 	checkNotEmpty := func(s []string) bool {

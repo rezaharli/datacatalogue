@@ -83,7 +83,7 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                  <td><b-link :to="{ path: addressPath + '/' + props.item.ID }"><tablecell :fulltext="props.item.DOWNSTREAM_PROCESS" :isklik="false"></tablecell></b-link></td>
+                  <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.DOWNSTREAM_PROCESS" :isklik="false"></tablecell></b-link></td>
                   <td><tablecell :fulltext="props.item.PROCESS_OWNER" :isklik="true"></tablecell></td>
                   <td><tablecell :fulltext="props.item.BANK_ID" :isklik="true"></tablecell></td>
                 </template>
@@ -289,6 +289,12 @@ export default {
       },
       getCDEConclusion (cdes) {
         return cdes.filter(Boolean).join(', ').indexOf("Yes") != -1 ? "Yes" : "No";
+      },
+      showRightTable(param){
+        //reset right table filter
+        this.store.filters.right = {};
+
+        this.$router.push(this.addressPath + '/' + param.ID);
       },
       showDetails (param) {
         this.$router.push(this.addressPath + "/" + param.TDPID + '/' + param.ID)
