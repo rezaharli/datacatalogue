@@ -135,15 +135,26 @@ func (s *DDOService) GetRightTable(tabs string, systemID int, search string, sea
 	if err != nil {
 		cf = append(cf, "", "", "")
 	} else {
-		cf = append(cf, colFilterM.GetString("BUSINESS_TERM"), colFilterM.GetString("BT_DESCRIPTION"), colFilterM.GetString("BUSINESS_ALIAS_NAME"), colFilterM.GetString("CDE_YES_NO"))
+		cf = append(cf, colFilterM.GetString("BUSINESS_TERM"), colFilterM.GetString("BT_DESCRIPTION"), colFilterM.GetString("CDE_YES_NO"))
 	}
 
 	///////// COLUMN FILTER
 	if cf[0] != "" || cf[1] != "" || cf[2] != "" {
+
+		cdeYesNo := ""
+
+		if cf[2] != "" {
+			if cf[2] == "Yes" {
+				cdeYesNo = "1"
+			} else {
+				cdeYesNo = "0"
+			}
+		}
+
 		q += `AND (
 			upper(business_term) LIKE upper('%` + cf[0] + `%')
 			AND upper(bt_description) LIKE upper('%` + cf[1] + `%')
-			AND upper(cde_yes_no) LIKE upper('%` + cf[2] + `%')
+			AND upper(cde_yes_no) LIKE upper('%` + cdeYesNo + `%')
 		) `
 	}
 
