@@ -2,13 +2,18 @@
 .button-footer-logout{
     position: absolute;
     right: 10px;
+
+    color: #666666 !important;
+    background-color: #ffffff !important;
+    border-color: #ffffff !important;
+    font-weight: bold !important;
 }
 </style>
 
 
 <template>
   <v-footer class="pa-3 white--text" color="teal">
-    <div>Eaciit &copy; {{ new Date().getFullYear() }}</div>
+    <div style="font-weight: bold">Eaciit &copy; {{ new Date().getFullYear() }}</div>
    
     <!-- <b-link v-if="showLogout" @click="doLogout">Logout</b-link> -->
 

@@ -111,7 +111,14 @@
               </b-tooltip>
 
               <v-flex xs12 sm12 md12 card-container v-if="isAdmin">
-                <v-btn to="/access" style="margin-top: 40px; background-color: #ffffff; text-decoration: none;">User Access Menu</v-btn>
+                <v-btn 
+                  :class="{ [`elevation-${elevation.user}`]: true }" 
+                  @mouseover="cardMouseover('user')"
+                  @mouseleave="cardMouseleave('user')"
+                  to="/access" 
+                  style="margin-top: 40px; background-color: #ffffff; text-decoration: none; border-radius: 20px; color: #666666; font-weight: bold;">
+                  User Access Menu
+                </v-btn>
               </v-flex>
             </v-layout>
           </v-container>
@@ -134,6 +141,7 @@ export default {
         DPO: false,
         DDO: false,
         RFO: false,
+        user: false,
       },
       isHome: this.decideIsHome(),
       elevation: {
@@ -141,6 +149,7 @@ export default {
         dpo: 12,
         ddo: 12,
         rfo: 12,
+        user: 12,
       },
       images: {
         dsc: require('../assets/images/u23.png'),
