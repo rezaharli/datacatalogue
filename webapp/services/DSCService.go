@@ -142,37 +142,23 @@ func (s *DSCService) GetInterfacesRightTable(tabs string, systemID int, search s
 
 	q := ""
 	args := make([]interface{}, 0)
-
 	args = append(args, toolkit.ToString(systemID))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "right-grid", args...)
-	if err != nil {
-		return nil, 0, err
-	}
-
+	///////// --------------------------------------------------DROPDOWN FILTER
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	filterTableName := searchDDM.GetString("TableName")
-	filterColumnName := searchDDM.GetString("ColumnName")
+	args = append(args, searchDDM.GetString("TableName"))
+	args = append(args, searchDDM.GetString("ColumnName"))
 
-	///////// FILTER
-	q = `SELECT * FROM (
-		` + q + `
-	) WHERE (
-		upper(table_name) LIKE upper('%` + filterTableName + `%')
-		AND upper(column_name) LIKE upper('%` + filterColumnName + `%')
-	) `
-
+	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
-	cf := make([]string, 0)
 	if err != nil {
-		cf = append(cf, "", "", "", "", "", "", "", "", "")
+		args = append(args, "", "", "", "", "", "", "", "", "")
 	} else {
-		cf = append(cf,
+		args = append(args,
 			colFilterM.GetString("LIST_OF_CDE"),
 			colFilterM.GetString("IMM_PREC_SYSTEM_NAME"),
 			colFilterM.GetString("IMM_PREC_SYSTEM_SLA"),
@@ -185,32 +171,19 @@ func (s *DSCService) GetInterfacesRightTable(tabs string, systemID int, search s
 		)
 	}
 
-	if cf[0] != "" || cf[1] != "" || cf[2] != "" || cf[3] != "" || cf[4] != "" || cf[5] != "" || cf[6] != "" || cf[7] != "" || cf[8] != "" {
-		q += `AND (
-			upper(list_of_cde) LIKE upper('%` + cf[0] + `%')
-			AND upper(imm_prec_system_name) LIKE upper('%` + cf[1] + `%')
-			AND upper(Imm_Prec_System_SLA) LIKE upper('%` + cf[2] + `%')
-			AND upper(Imm_Prec_System_OLA) LIKE upper('%` + cf[3] + `%')
-			AND upper(imm_succ_system_name) LIKE upper('%` + cf[4] + `%')
-			AND upper(Imm_Succ_System_SLA) LIKE upper('%` + cf[5] + `%')
-			AND upper(Imm_Succ_System_OLA) LIKE upper('%` + cf[6] + `%')
-			AND upper(list_downstream_process) LIKE upper('%` + cf[7] + `%')
-			AND upper(downstream_process_owner) LIKE upper('%` + cf[8] + `%')
-		) `
+	///////// --------------------------------------------------BUILD QUERY FROM ARGS
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err = h.BuildQueryFromFile(filePath, "right-grid", args...)
+	if err != nil {
+		return nil, 0, err
 	}
 
-	///////// COUNT
-	q = `SELECT res.*, 
-			COUNT(DISTINCT list_of_cde) OVER () COUNT_list_of_cde,
-			COUNT(DISTINCT imm_prec_system_name) OVER () COUNT_imm_prec_system_name,
-			COUNT(DISTINCT Imm_Prec_System_SLA) OVER () COUNT_Imm_Prec_System_SLA,
-			COUNT(DISTINCT Imm_Prec_System_OLA) OVER () COUNT_Imm_Prec_System_OLA,
-			COUNT(DISTINCT imm_succ_system_name) OVER () COUNT_imm_succ_system_name,
-			COUNT(DISTINCT Imm_Succ_System_SLA) OVER () COUNT_Imm_Succ_System_SLA,
-			COUNT(DISTINCT Imm_Succ_System_OLA) OVER () COUNT_Imm_Succ_System_OLA,
-			COUNT(DISTINCT list_downstream_process) OVER () COUNT_list_downstream_process,
-			COUNT(DISTINCT downstream_process_owner) OVER () COUNT_downstream_process_owner
-		FROM ( ` + q + `) res `
+	///////// --------------------------------------------------EXECUTE
+	filePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	q, err = h.BuildQueryFromFile(filePath, "right-grid", args...)
+	if err != nil {
+		return nil, 0, err
+	}
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName:   m.NewSystemModel().TableName(),
