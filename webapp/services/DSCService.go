@@ -12,6 +12,7 @@ import (
 )
 
 type DSCService struct {
+	*Base
 }
 
 func NewDSCService() *DSCService {
@@ -20,14 +21,14 @@ func NewDSCService() *DSCService {
 }
 
 func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
-	resultRows := make([]toolkit.M, 0)
-	resultTotal := 0
-
-	q := ""
-	args := make([]interface{}, 0)
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	gridArgs.QueryName = "left-grid"
+	gridArgs.PageNumber = pageNumber
+	gridArgs.RowsPerPage = rowsPerPage
 
 	if loggedinid != "" {
-		args = append(args, loggedinid)
+		gridArgs.MainArgs = append(gridArgs.MainArgs, loggedinid)
 	}
 
 	///////// --------------------------------------------------DROPDOWN FILTER
@@ -43,15 +44,17 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, col
 		filterSystemName = searchDDM.GetString("SystemName")
 	}
 
-	args = append(args, filterSystemName)
-	args = append(args, searchDDM.GetString("ItamID"))
+	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter,
+		filterSystemName,
+		searchDDM.GetString("ItamID"),
+	)
 
 	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		args = append(args, "", "", "", "")
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "")
 	} else {
-		args = append(args,
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
 			colFilterM.GetString("SYSTEM_NAME"),
 			colFilterM.GetString("ITAM_ID"),
 			colFilterM.GetString("DATASET_CUSTODIAN"),
@@ -59,37 +62,18 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, col
 		)
 	}
 
-	///////// --------------------------------------------------BUILD QUERY FROM ARGS
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err = h.BuildQueryFromFile(filePath, "left-grid", args...)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	///////// --------------------------------------------------EXECUTE
-	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName:   m.NewSystemModel().TableName(),
-		SqlQuery:    q,
-		Results:     &resultRows,
-		PageNumber:  pageNumber,
-		RowsPerPage: rowsPerPage,
-	})
-
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return resultRows, resultTotal, nil
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
 func (s *DSCService) GetTableName(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
-	resultRows := make([]toolkit.M, 0)
-	resultTotal := 0
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	gridArgs.QueryName = "right-grid"
+	gridArgs.PageNumber = pageNumber
+	gridArgs.RowsPerPage = rowsPerPage
 
-	q := ""
-	args := make([]interface{}, 0)
-	args = append(args, toolkit.ToString(systemID))
-	args = append(args, toolkit.ToString(systemID))
+	gridArgs.MainArgs = append(gridArgs.MainArgs, toolkit.ToString(systemID))
+	gridArgs.MainArgs = append(gridArgs.MainArgs, toolkit.ToString(systemID))
 
 	///////// --------------------------------------------------DROPDOWN FILTER
 	searchDDM, err := toolkit.ToM(searchDD)
@@ -97,15 +81,15 @@ func (s *DSCService) GetTableName(tabs string, systemID int, search string, sear
 		return nil, 0, err
 	}
 
-	args = append(args, searchDDM.GetString("TableName"))
-	args = append(args, searchDDM.GetString("ColumnName"))
+	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter, searchDDM.GetString("TableName"))
+	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter, searchDDM.GetString("ColumnName"))
 
 	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		args = append(args, "", "", "", "")
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "")
 	} else {
-		args = append(args,
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
 			colFilterM.GetString("TABLE_NAME"),
 			colFilterM.GetString("COLUMN_NAME"),
 			colFilterM.GetString("BUSINESS_ALIAS_NAME"),
@@ -113,36 +97,17 @@ func (s *DSCService) GetTableName(tabs string, systemID int, search string, sear
 		)
 	}
 
-	///////// --------------------------------------------------BUILD QUERY FROM ARGS
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err = h.BuildQueryFromFile(filePath, "right-grid", args...)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	///////// --------------------------------------------------EXECUTE
-	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName:   m.NewSystemModel().TableName(),
-		SqlQuery:    q,
-		Results:     &resultRows,
-		PageNumber:  pageNumber,
-		RowsPerPage: rowsPerPage,
-	})
-
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return resultRows, resultTotal, nil
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
 func (s *DSCService) GetInterfacesRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
-	resultRows := make([]toolkit.M, 0)
-	resultTotal := 0
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	gridArgs.QueryName = "right-grid"
+	gridArgs.PageNumber = pageNumber
+	gridArgs.RowsPerPage = rowsPerPage
 
-	q := ""
-	args := make([]interface{}, 0)
-	args = append(args, toolkit.ToString(systemID))
+	gridArgs.MainArgs = append(gridArgs.MainArgs, toolkit.ToString(systemID))
 
 	///////// --------------------------------------------------DROPDOWN FILTER
 	searchDDM, err := toolkit.ToM(searchDD)
@@ -150,15 +115,15 @@ func (s *DSCService) GetInterfacesRightTable(tabs string, systemID int, search s
 		return nil, 0, err
 	}
 
-	args = append(args, searchDDM.GetString("TableName"))
-	args = append(args, searchDDM.GetString("ColumnName"))
+	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter, searchDDM.GetString("TableName"))
+	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter, searchDDM.GetString("ColumnName"))
 
 	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		args = append(args, "", "", "", "", "", "", "", "", "")
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "")
 	} else {
-		args = append(args,
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
 			colFilterM.GetString("LIST_OF_CDE"),
 			colFilterM.GetString("IMM_PREC_SYSTEM_NAME"),
 			colFilterM.GetString("IMM_PREC_SYSTEM_SLA"),
@@ -171,34 +136,8 @@ func (s *DSCService) GetInterfacesRightTable(tabs string, systemID int, search s
 		)
 	}
 
-	///////// --------------------------------------------------BUILD QUERY FROM ARGS
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err = h.BuildQueryFromFile(filePath, "right-grid", args...)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	///////// --------------------------------------------------EXECUTE
-	filePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err = h.BuildQueryFromFile(filePath, "right-grid", args...)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName:   m.NewSystemModel().TableName(),
-		SqlQuery:    q,
-		Results:     &resultRows,
-		PageNumber:  pageNumber,
-		RowsPerPage: rowsPerPage,
-		GroupCol:    "list_of_cde",
-	})
-
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return resultRows, resultTotal, nil
+	gridArgs.GroupCol = "LIST_OF_CDE"
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
 func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
