@@ -134,7 +134,7 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                   <tr>
-                    <td><b-link @click="showDetails(props.item.ID)"><tablecell :fulltext="props.item.CDE_NAME" :isklik="false"></tablecell></b-link></td>
+                    <td><b-link @click="showDetails(props.item)"><tablecell :fulltext="props.item.CDE_NAME" :isklik="false"></tablecell></b-link></td>
                     <td><tablecell :fulltext="props.item.SEGMENT" :isklik="true"></tablecell></td>
                     <td><tablecell :fulltext="props.item.IMM_PREC_SYSTEM" :isklik="true"></tablecell></td>
                     <td><tablecell :fulltext="props.item.ULT_SOURCE_SYSTEM" :isklik="true"></tablecell></td>
@@ -297,7 +297,7 @@ export default {
         this.$router.push(this.addressPath + '/' + param.ID);
       },
       showDetails (param) {
-        this.$router.push(this.addressPath + "/" + param.TSID + '/' + param.ID + '/' + param.COLID)
+        this.$router.push(this.addressPath + "/" + param.TDPID + '/' + param.ID)
       }
     }
 }
