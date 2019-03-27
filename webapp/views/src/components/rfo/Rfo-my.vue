@@ -279,7 +279,7 @@ export default {
         tablenameSource: [],
         firstTableHeaders: [
           { text: 'Priority Report Names', align: 'left', value: 'PRIORITY_REPORT', sortable: false },
-          { text: 'Risk Reporting Load', align: 'left', value: 'RR_LEAD', sortable: false },
+          { text: 'Risk Reporting Lead', align: 'left', value: 'RR_LEAD', sortable: false },
           { text: 'Bank ID', align: 'left', value: 'BANK_ID', sortable: false },
         ],
         secondTableHeaders: [
