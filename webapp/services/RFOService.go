@@ -5,9 +5,6 @@ import (
 
 	"github.com/eaciit/clit"
 	"github.com/eaciit/toolkit"
-
-	h "eaciit/datacatalogue/webapp/helpers"
-	m "eaciit/datacatalogue/webapp/models"
 )
 
 type RFOService struct {
@@ -50,7 +47,7 @@ func (s *RFOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "")
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "")
 	} else {
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
 			colFilterM.GetString("PRIORITY_REPORT"),
@@ -63,42 +60,31 @@ func (s *RFOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 }
 
 func (s *RFOService) GetRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
-	resultRows := make([]toolkit.M, 0)
-	resultTotal := 0
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	gridArgs.QueryName = "right-grid"
+	gridArgs.PageNumber = pageNumber
+	gridArgs.RowsPerPage = rowsPerPage
 
-	q := ""
-	args := make([]interface{}, 0)
+	gridArgs.MainArgs = append(gridArgs.MainArgs, toolkit.ToString(systemID))
 
-	args = append(args, toolkit.ToString(systemID))
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "right-grid", args...)
-	if err != nil {
-		return nil, 0, err
-	}
-
+	///////// --------------------------------------------------DROPDOWN FILTER
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	filterPrincipalRiskType := searchDDM.GetString("PrincipalRiskType")
-	filterRiskSubType := searchDDM.GetString("RiskSubType")
+	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter,
+		searchDDM.GetString("PrincipalRiskType"),
+		searchDDM.GetString("RiskSubType"),
+	)
 
-	///////// DROPDOWN FILTER
-	q = `SELECT * FROM (
-		` + q + `
-	) WHERE (
-		upper(PRINCIPAL_RISK) LIKE upper('%` + filterPrincipalRiskType + `%')
-		AND upper(RISK_SUB) LIKE upper('%` + filterRiskSubType + `%')
-	) `
-
+	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
-	cf := make([]string, 0)
 	if err != nil {
-		cf = append(cf, "", "", "", "", "", "", "")
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "", "")
 	} else {
-		cf = append(cf,
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
 			colFilterM.GetString("PRINCIPAL_RISK"),
 			colFilterM.GetString("RISK_SUB"),
 			colFilterM.GetString("PR_RATIONALE"),
@@ -109,43 +95,5 @@ func (s *RFOService) GetRightTable(tabs string, systemID int, search string, sea
 		)
 	}
 
-	///////// COLUMN FILTER
-	if cf[0] != "" || cf[1] != "" || cf[2] != "" || cf[3] != "" || cf[4] != "" || cf[5] != "" || cf[6] != "" {
-		q += `AND (
-			upper(PRINCIPAL_RISK) LIKE upper('%` + cf[0] + `%')
-			AND upper(RISK_SUB) LIKE upper('%` + cf[1] + `%')
-			AND upper(PR_RATIONALE) LIKE upper('%` + cf[2] + `%')
-			AND upper(CRM_NAME) LIKE upper('%` + cf[3] + `%')
-			AND upper(CRM_RATIONALE) LIKE upper('%` + cf[4] + `%')
-			AND upper(ASSOC_CDES) LIKE upper('%` + cf[5] + `%')
-			AND upper(CDE_RATIONALE) LIKE upper('%` + cf[6] + `%')
-		) `
-	}
-
-	///////// COUNT
-	q = `SELECT res.*, 
-			COUNT(DISTINCT PRINCIPAL_RISK) OVER () COUNT_PRINCIPAL_RISK,
-			COUNT(DISTINCT RISK_SUB) OVER () COUNT_RISK_SUB,
-			COUNT(DISTINCT PR_RATIONALE) OVER () COUNT_PR_RATIONALE,
-			COUNT(DISTINCT CRM_NAME) OVER () COUNT_CRM_NAME,
-			COUNT(DISTINCT CRM_RATIONALE) OVER () COUNT_CRM_RATIONALE,
-			COUNT(DISTINCT ASSOC_CDES) OVER () COUNT_ASSOC_CDES,
-			COUNT(DISTINCT CDE_RATIONALE) OVER () COUNT_CDE_RATIONALE
-		FROM (
-			` + q + `
-		) res `
-
-	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName:   m.NewCategoryModel().TableName(),
-		SqlQuery:    q,
-		Results:     &resultRows,
-		PageNumber:  pageNumber,
-		RowsPerPage: rowsPerPage,
-	})
-
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return resultRows, resultTotal, nil
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
