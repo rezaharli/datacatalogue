@@ -20,11 +20,11 @@ SELECT *
 								WHERE TP.BANK_ID = '?'
 								ORDER BY TDP.NAME
 						) res
-			) WHERE (
+			) WHERE ( -- Main and dropdown search
 				upper(downstream_process) LIKE upper('%?%')
 				AND upper(process_owner) LIKE upper('%?%')
 			) 
-	) WHERE (
+	) WHERE ( -- Dropdown filter
 		upper(DOWNSTREAM_PROCESS) LIKE upper('%?%')
 		AND upper(PROCESS_OWNER) LIKE upper('%?%')
 		AND upper(BANK_ID) LIKE upper('%?%')
@@ -62,10 +62,10 @@ SELECT *
 							WHERE TDP.ID = '?'
 							ORDER BY TMC.ALIAS_NAME
 					) res
-			) WHERE (
+			) WHERE ( -- Main and dropdown search
 				upper(CDE_NAME) LIKE upper('%?%')
 			) 
-	) WHERE (
+	) WHERE ( -- COlumn filter
 		upper(CDE_NAME) LIKE upper('%?%')
 		AND upper(SEGMENT) LIKE upper('%?%')
 		AND upper(IMM_PREC_SYSTEM) LIKE upper('%?%')

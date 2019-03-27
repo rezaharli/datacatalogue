@@ -31,7 +31,7 @@ SELECT *
 										WHERE CDE = 1
 								) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id
 					) res
-			) WHERE ( -- Main filter and dropdown filter
+			) WHERE ( -- Main and dropdown search
 				upper(system_name) LIKE upper('%?%')
 				AND upper(itam_id) LIKE upper('%?%')
 			)
@@ -143,7 +143,7 @@ SELECT *
 								) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id and tmt.id = cde.tab_id
 							ORDER BY tmt.name, tmc.name
 					) res
-			) WHERE ( -- Main filter and dropdown filter
+			) WHERE ( -- Main and dropdown search
 				upper(table_name) LIKE upper('%?%')
 				AND upper(column_name) LIKE upper('%?%')
 			)

@@ -72,10 +72,10 @@ SELECT *
                                 INNER JOIN tbl_business_term tbt ON tbt.parent_id = tsc.id
                             WHERE tsc.id = '?'
                     ) res
-            ) WHERE (
+            ) WHERE ( -- Main and dropdown search
                 upper(business_term) LIKE upper('%?%')
             ) 
-    ) WHERE (
+    ) WHERE ( -- Column filter
         upper(business_term) LIKE upper('%?%')
         AND upper(bt_description) LIKE upper('%?%')
         AND upper(cde_yes_no) LIKE upper('%?%')

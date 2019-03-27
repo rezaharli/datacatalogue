@@ -16,7 +16,7 @@ SELECT *
 							FROM TBL_PRIORITY_REPORTS PR 
 							INNER JOIN TBL_PEOPLE PL ON PR.LEAD_ID = PL.ID
 					) res
-			) WHERE ( -- Main filter and dropdown filter
+			) WHERE ( -- Main and dropdown search
 				upper(PRIORITY_REPORT) LIKE upper('%?%')
 				AND upper(RR_LEAD) LIKE upper('%?%')
 			)
@@ -61,7 +61,7 @@ SELECT *
 								pr.id = '?'
 							ORDER BY CRM.NAME, BT.BT_NAME
 					) res
-			) WHERE ( -- Main filter and dropdown filter
+			) WHERE ( -- Main and dropdown search
 				upper(PRINCIPAL_RISK) LIKE upper('%?%')
 				AND upper(RISK_SUB) LIKE upper('%?%')
 			)
