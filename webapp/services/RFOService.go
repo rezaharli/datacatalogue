@@ -11,6 +11,7 @@ import (
 )
 
 type RFOService struct {
+	*Base
 }
 
 func NewRFOService() *RFOService {
@@ -19,22 +20,17 @@ func NewRFOService() *RFOService {
 }
 
 func (s *RFOService) GetLeftTable(tabs, loggedinid, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
-	resultRows := make([]toolkit.M, 0)
-	resultTotal := 0
-
-	q := ""
-	args := make([]interface{}, 0)
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	gridArgs.QueryName = "left-grid"
+	gridArgs.PageNumber = pageNumber
+	gridArgs.RowsPerPage = rowsPerPage
 
 	if loggedinid != "" {
-		args = append(args, loggedinid)
+		gridArgs.MainArgs = append(gridArgs.MainArgs, loggedinid)
 	}
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "left-grid", args...)
-	if err != nil {
-		return nil, 0, err
-	}
-
+	///////// --------------------------------------------------DROPDOWN FILTER
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {
 		return nil, 0, err
@@ -46,55 +42,24 @@ func (s *RFOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 	} else {
 		filterPriorityReportName = searchDDM.GetString("PriorityReportName")
 	}
-	filterRiskReportingLead := searchDDM.GetString("RiskReportingLead")
+	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter,
+		filterPriorityReportName,
+		searchDDM.GetString("RiskReportingLead"),
+	)
 
-	///////// DROPDOWN FILTER
-	q = `SELECT * FROM (
-		` + q + `
-	) WHERE (
-		upper(PRIORITY_REPORT) LIKE upper('%` + filterPriorityReportName + `%')
-		AND upper(RR_LEAD) LIKE upper('%` + filterRiskReportingLead + `%')
-	) `
-
+	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
-	cf := make([]string, 0)
 	if err != nil {
-		cf = append(cf, "", "", "")
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "")
 	} else {
-		cf = append(cf, colFilterM.GetString("PRIORITY_REPORT"), colFilterM.GetString("RR_LEAD"), colFilterM.GetString("BANK_ID"))
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
+			colFilterM.GetString("PRIORITY_REPORT"),
+			colFilterM.GetString("RR_LEAD"),
+			colFilterM.GetString("BANK_ID"),
+		)
 	}
 
-	///////// COLUMN FILTER
-	if cf[0] != "" || cf[1] != "" || cf[2] != "" {
-		q += `AND (
-			upper(PRIORITY_REPORT) LIKE upper('%` + cf[0] + `%')
-			AND upper(RR_LEAD) LIKE upper('%` + cf[1] + `%')
-			AND upper(BANK_ID) LIKE upper('%` + cf[2] + `%')
-		) `
-	}
-
-	///////// COUNT
-	q = `SELECT res.*, 
-			COUNT(DISTINCT PRIORITY_REPORT) OVER () COUNT_PRIORITY_REPORT,
-			COUNT(DISTINCT RR_LEAD) OVER () COUNT_RR_LEAD,
-			COUNT(DISTINCT BANK_ID) OVER () COUNT_BANK_ID
-		FROM (
-			` + q + `
-		) res `
-
-	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName:   m.NewCategoryModel().TableName(),
-		SqlQuery:    q,
-		Results:     &resultRows,
-		PageNumber:  pageNumber,
-		RowsPerPage: rowsPerPage,
-	})
-
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return resultRows, resultTotal, nil
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
 func (s *RFOService) GetRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {

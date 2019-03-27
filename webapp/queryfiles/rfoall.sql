@@ -1,11 +1,30 @@
 -- name: left-grid
-SELECT DISTINCT
-PR.id,
-PR.NAME                               AS PRIORITY_REPORT, 
-PL.FIRST_NAME||' '|| PL.LAST_NAME     AS RR_LEAD,
-PL.BANK_ID                            AS BANK_ID
-FROM TBL_PRIORITY_REPORTS PR INNER JOIN TBL_PEOPLE PL
-ON PR.LEAD_ID = PL.ID
+SELECT * 
+	FROM (
+		SELECT * 
+			FROM (
+				SELECT res.*, 
+						COUNT(DISTINCT PRIORITY_REPORT) OVER () COUNT_PRIORITY_REPORT,
+						COUNT(DISTINCT RR_LEAD) OVER () COUNT_RR_LEAD,
+						COUNT(DISTINCT BANK_ID) OVER () COUNT_BANK_ID
+					FROM (
+						SELECT DISTINCT
+								PR.id,
+								PR.NAME                               AS PRIORITY_REPORT, 
+								PL.FIRST_NAME||' '|| PL.LAST_NAME     AS RR_LEAD,
+								PL.BANK_ID                            AS BANK_ID
+							FROM TBL_PRIORITY_REPORTS PR 
+							INNER JOIN TBL_PEOPLE PL ON PR.LEAD_ID = PL.ID
+					) res
+			) WHERE ( -- Main filter and dropdown filter
+				upper(PRIORITY_REPORT) LIKE upper('%?%')
+				AND upper(RR_LEAD) LIKE upper('%?%')
+			)
+	) WHERE ( -- Column filter
+		upper(PRIORITY_REPORT) LIKE upper('%?%')
+		AND upper(RR_LEAD) LIKE upper('%?%')
+		AND upper(BANK_ID) LIKE upper('%?%')
+	)
 
 -- name: right-grid
 SELECT DISTINCT
