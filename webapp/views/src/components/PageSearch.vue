@@ -40,7 +40,7 @@ export default {
     },
     methods: {
         getLeftTable () {
-            this.$store.dispatch(`${this.storeName}/getLeftTable`)
+            return this.$store.dispatch(`${this.storeName}/getLeftTable`)
         },
         getRightTable (id) {
             this.$store.dispatch(`${this.storeName}/getRightTable`, id)
@@ -48,11 +48,21 @@ export default {
         onSubmit (evt) {
             if(evt) evt.preventDefault();
 
-            this.getLeftTable();
+            this.getLeftTable().then(res => {
+                var currentLeftID = this.$route.params.system;
+                var isLeftTableOwnCurrentRight = this.store.left.display.find(v => v.ID.toString() == currentLeftID);
+                
+                if(isLeftTableOwnCurrentRight) this.store.isRightTable = true;
 
-            if(this.store.isRightTable){
-                this.getRightTable(this.$route.params.system);
-            }
+                if(this.store.isRightTable){
+                    if(isLeftTableOwnCurrentRight) { 
+                        this.store.isRightTable = true;
+                        this.getRightTable(currentLeftID);
+                    } else {
+                        this.store.isRightTable = false;
+                    }
+                }
+            });
 
             this.$refs.ddownSearch.hide(true);
             // this.store.searchDropdown.show = false;
