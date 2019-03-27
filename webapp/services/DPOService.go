@@ -66,40 +66,28 @@ func (s *DPOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 }
 
 func (s *DPOService) GetRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
-	resultRows := make([]toolkit.M, 0)
-	resultTotal := 0
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	gridArgs.QueryName = "right-grid"
+	gridArgs.PageNumber = pageNumber
+	gridArgs.RowsPerPage = rowsPerPage
 
-	q := ""
-	args := make([]interface{}, 0)
+	gridArgs.MainArgs = append(gridArgs.MainArgs, toolkit.ToString(systemID))
 
-	args = append(args, toolkit.ToString(systemID))
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "right-grid", args...)
-	if err != nil {
-		return nil, 0, err
-	}
-
+	///////// --------------------------------------------------DROPDOWN FILTER
 	searchDDM, err := toolkit.ToM(searchDD)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	filterCDEName := searchDDM.GetString("CDEName")
+	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter, searchDDM.GetString("CDEName"))
 
-	///////// DROPDOWN FILTER
-	q = `SELECT * FROM (
-		` + q + `
-	) WHERE (
-		upper(CDE_NAME) LIKE upper('%` + filterCDEName + `%')
-	) `
-
+	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
-	cf := make([]string, 0)
 	if err != nil {
-		cf = append(cf, "", "", "", "", "", "")
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "")
 	} else {
-		cf = append(cf,
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
 			colFilterM.GetString("CDE_NAME"),
 			colFilterM.GetString("SEGMENT"),
 			colFilterM.GetString("IMM_PREC_SYSTEM"),
@@ -109,80 +97,8 @@ func (s *DPOService) GetRightTable(tabs string, systemID int, search string, sea
 		)
 	}
 
-	///////// COLUMN FILTER
-	if cf[0] != "" || cf[1] != "" || cf[2] != "" || cf[3] != "" {
-		q += `AND (
-			upper(CDE_NAME) LIKE upper('%` + cf[0] + `%')
-			AND upper(SEGMENT) LIKE upper('%` + cf[1] + `%')
-			AND upper(IMM_PREC_SYSTEM) LIKE upper('%` + cf[2] + `%')
-			AND upper(ULT_SOURCE_SYSTEM) LIKE upper('%` + cf[3] + `%')
-			AND upper(BUSINESS_DESCRIPTION) LIKE upper('%` + cf[4] + `%')
-			AND upper(CDE_RATIONALE) LIKE upper('%` + cf[5] + `%')
-		) `
-	}
-
-	///////// COUNT
-	q = `SELECT res.*, 
-			COUNT(DISTINCT CDE_NAME) OVER () COUNT_CDE_NAME,
-			COUNT(DISTINCT SEGMENT) OVER () COUNT_SEGMENT,
-			COUNT(DISTINCT IMM_PREC_SYSTEM) OVER () COUNT_IMM_PREC_SYSTEM,
-			COUNT(DISTINCT ULT_SOURCE_SYSTEM) OVER () COUNT_ULT_SOURCE_SYSTEM,
-			COUNT(DISTINCT BUSINESS_DESCRIPTION) OVER () COUNT_BUSINESS_DESCRIPTION,
-			COUNT(DISTINCT CDE_RATIONALE) OVER () COUNT_CDE_RATIONALE
-		FROM (
-			` + q + `
-		) res `
-
-	// q := `SELECT DISTINCT
-	// 		tbt.id,
-	// 		tdp.id as tdpid,
-	// 		tdpd.business_term_id as cde_name,
-	// 		ts.name as Segment,
-	// 		tdpd.imm_prec_system_id,
-	// 		tdpd.ultimate_source_system_id,
-	// 		tbt.description as business_description,
-	// 		tbt.cde_rationale
-	// 	FROM
-	// 		tbl_ds_processes tdp
-	// 		LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = tdp.id
-	// 		LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
-
-	//         LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.process_id = tdp.id
-	// 		LEFT JOIN tbl_segment ts ON tdpd.segment_id = ts.id
-	// 		LEFT JOIN tbl_business_term tbt ON tdpd.business_term_id = tbt.id
-	// 		LEFT JOIN tbl_system tsy ON tdpd.imm_prec_system_id = tsy.id
-	// 		LEFT JOIN tbl_md_table tmt ON tmt.business_term_id = tbt.id
-	// 		LEFT JOIN tbl_md_column tmc ON tmc.table_id = tmt.id
-	// 		LEFT JOIN tbl_category tc ON ts.subdomain_id = tc.id
-	// 		LEFT JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
-	// 		LEFT JOIN tbl_link_category_people tlcp ON tlcp.category_id = tc.id
-	// 	WHERE tdp.id = ` + toolkit.ToString(processID)
-
-	// if search != "" {
-	// 	q += `
-	// 		AND
-	// 			upper(tdpd.business_term_id) LIKE upper('%` + search + `%')
-	// 			OR upper(ts.name) LIKE upper('%` + search + `%')
-	// 			OR upper(tdpd.imm_prec_system_id) LIKE upper('%` + search + `%')
-	// 			OR upper(tdpd.ultimate_source_system_id) LIKE upper('%` + search + `%')
-	// 			OR upper(tbt.description) LIKE upper('%` + search + `%')
-	// 			OR upper(tbt.cde_rationale) LIKE upper('%` + search + `%')`
-	// }
-
-	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName:   m.NewSystemModel().TableName(),
-		SqlQuery:    q,
-		Results:     &resultRows,
-		PageNumber:  pageNumber,
-		RowsPerPage: rowsPerPage,
-		GroupCol:    "-",
-	})
-
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return resultRows, resultTotal, nil
+	gridArgs.GroupCol = "-"
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
 func (s *DPOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
