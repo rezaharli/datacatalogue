@@ -33,8 +33,8 @@ func (s *Base) ExecuteGridQueryFromFile(gridArgs GridArgs) ([]toolkit.M, int, er
 
 	args := make([]interface{}, 0)
 	args = append(args, gridArgs.MainArgs...)
-	args = append(args, gridArgs.ColumnFilter...)
 	args = append(args, gridArgs.DropdownFilter...)
+	args = append(args, gridArgs.ColumnFilter...)
 
 	///////// --------------------------------------------------BUILD QUERY FROM ARGS
 	q, err := h.BuildQueryFromFile(gridArgs.QueryFilePath, gridArgs.QueryName, args...)
