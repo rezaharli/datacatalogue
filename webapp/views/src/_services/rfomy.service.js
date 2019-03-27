@@ -31,44 +31,48 @@ function getRightTable(param) {
                             var tmp5 = _.groupBy(tmp4[v], "ASSOC_CDES");
 
                             var CDEs = _.map(Object.keys(tmp5), function(v, i){
-                                return {
-                                    ID: i,
-                                    LeftID: tmp5[v][0].TPRID,
-                                    ASSOC_CDES: v,
-                                    Rationales: tmp5[v],
-                                    RESULT_COUNT: Object.keys(tmp5).length
-                                }
+                                var ret = tmp5[v][0];
+                                ret.ID = i
+                                ret.ASSOC_CDES = v;
+                                ret.Rationales = tmp5[v];
+
+                                return ret;
                             });
 
-                            return {
-                                ID: i,
-                                LeftID: tmp4[v][0].TPRID,
-                                CRM_NAME: v,
-                                CDEs: CDEs,
-                                CDEsVal: tmp4[v],
-                                RESULT_COUNT: Object.keys(tmp4).length
-                            }
+                            var ret = tmp4[v][0];
+                            ret.ID = i
+                            ret.CRM_NAME = v;
+                            ret.CDEs = CDEs;
+                            ret.CDEsVal = tmp4[v];
+
+                            return ret;
                         });
 
-                        return {
-                            ID: i,
-                            LeftID: tmp3[v][0].TPRID,
-                            PR_RATIONALE: v,
-                            CRMNames: CRMNames,
-                            CRMNamesVal: tmp3[v],
-                            RESULT_COUNT: Object.keys(tmp3).length
-                        }
+                        var ret = tmp3[v][0];
+                        ret.ID = i
+                        ret.PR_RATIONALE = v;
+                        ret.CRMNames = CRMNames;
+                        ret.CRMNamesVal = tmp3[v];
+
+                        return ret;
                     });
 
-                    return {
-                        ID: i,
-                        LeftID: tmp2[v][0].TPRID,
-                        RISK_SUB: v,
-                        PriorityReports: PriorityReports,
-                        PriorityReportsVal: tmp2[v],
-                        RESULT_COUNT: Object.keys(tmp2).length
-                    }
+                    var ret = tmp2[v][0];
+                    ret.ID = i
+                    ret.RISK_SUB = v;
+                    ret.PriorityReports = PriorityReports;
+                    ret.PriorityReportsVal = tmp2[v];
+
+                    return ret;
                 });
+
+                var ret = tmp[v][0];
+                ret.LeftID = tmp[v][0].TPRID;
+                ret.PRINCIPAL_RISK = v;
+                ret.RiskSubTypes = RiskSubTypes;
+                ret.RiskSubTypesVal = tmp[v];
+
+                return ret;
 
                 return {
                     ID: tmp[v][0].ID,

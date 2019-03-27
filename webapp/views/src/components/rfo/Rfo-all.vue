@@ -41,7 +41,7 @@ table.v-table thead th > div.btn-group {
           </b-row>
 
           <b-row>
-            <b-col cols="6">
+            <b-col cols=6>
               <v-data-table
                   :headers="firstTableHeaders"
                   :items="store.left.display"
@@ -283,13 +283,13 @@ export default {
           { text: 'Bank ID', align: 'left', value: 'BANK_ID', sortable: false },
         ],
         secondTableHeaders: [
-          { text: 'Principal Risk Type', align: 'left', sortable: false, value: 'PRINCIPAL_RISK', width: "25%" },
-          { text: 'Risk Sub Type', align: 'left', sortable: false, value: 'RiskSubTypesVal.RISK_SUB', width: "25%" },
-          { text: 'Priority Report Rationale', align: 'left', sortable: false, value: 'RiskSubTypesVal.PR_RATIONALE', width: "25%" },
-          { text: 'CRM Name', align: 'left', sortable: false, value: 'RiskSubTypesVal.CRM_NAME', width: "25%" },
-          { text: 'CRM Rationale', align: 'left', sortable: false, value: 'RiskSubTypesVal.CRM_RATIONALE', width: "25%" },
-          { text: 'Associated CDEs', align: 'left', sortable: false, value: 'RiskSubTypesVal.ASSOC_CDES', width: "25%" },
-          { text: 'CDE Rationale', align: 'left', sortable: false, value: 'RiskSubTypesVal.CDE_RATIONALE', width: "25%" },
+          { text: 'Principal Risk Type', align: 'left', sortable: false, value: 'PRINCIPAL_RISK', displayCount: true, width: "25%" },
+          { text: 'Risk Sub Type', align: 'left', sortable: false, value: 'RiskSubTypesVal.RISK_SUB', displayCount: true, width: "25%" },
+          { text: 'Priority Report Rationale', align: 'left', sortable: false, value: 'RiskSubTypesVal.PR_RATIONALE', displayCount: true, width: "25%" },
+          { text: 'CRM Name', align: 'left', sortable: false, value: 'RiskSubTypesVal.CRM_NAME', displayCount: true, width: "25%" },
+          { text: 'CRM Rationale', align: 'left', sortable: false, value: 'RiskSubTypesVal.CRM_RATIONALE', displayCount: true, width: "25%" },
+          { text: 'Associated CDEs', align: 'left', sortable: false, value: 'RiskSubTypesVal.ASSOC_CDES', displayCount: true, width: "25%" },
+          { text: 'CDE Rationale', align: 'left', sortable: false, value: 'RiskSubTypesVal.CDE_RATIONALE', displayCount: true, width: "25%" },
         ],
       }
     },
