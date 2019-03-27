@@ -89,11 +89,21 @@ func (s *DSCService) GetTableName(tabs string, systemID int, search string, sear
 	if err != nil {
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "")
 	} else {
+		cdeYesNo := colFilterM.GetString("CDE_YES_NO")
+
+		if cdeYesNo != "" {
+			if strings.EqualFold(cdeYesNo, "yes") {
+				cdeYesNo = "1"
+			} else {
+				cdeYesNo = "0"
+			}
+		}
+
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
 			colFilterM.GetString("TABLE_NAME"),
 			colFilterM.GetString("COLUMN_NAME"),
 			colFilterM.GetString("BUSINESS_ALIAS_NAME"),
-			colFilterM.GetString("CDE_YES_NO"),
+			cdeYesNo,
 		)
 	}
 
