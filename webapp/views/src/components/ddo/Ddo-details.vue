@@ -550,10 +550,10 @@ export default {
         "Table Name": "selectedDetailsDownstreamUsage.TABLE_NAME",
         "Column Name": "selectedDetailsDownstreamUsage.COLUMN_NAME",
         "DQ Standards | Thresholds set by DDO": "selectedDetailsDownstreamUsage.DQ_STANDARDS",
-        "System Name": "selectedDetailsBTResiding.SYSTEM_NAME",
-        "ITAM ID": "selectedDetailsBTResiding.ITAM_ID",
-        "Table Name": "selectedDetailsBTResiding.TABLE_NAME",
-        "Column Name": "selectedDetailsBTResiding.COLUMN_NAME"
+        "System Name ": "selectedDetailsBTResiding.SYSTEM_NAME",
+        "ITAM ID ": "selectedDetailsBTResiding.ITAM_ID",
+        "Table Name ": "selectedDetailsBTResiding.TABLE_NAME",
+        "Column Name ": "selectedDetailsBTResiding.COLUMN_NAME"
       }
     };
   },
