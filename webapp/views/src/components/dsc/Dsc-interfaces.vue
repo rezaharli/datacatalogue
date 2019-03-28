@@ -53,22 +53,7 @@ table.v-table thead th > div.btn-group {
                   class="elevation-1">
 
                 <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} ({{ store.left.source[0] ? store.left.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0 }})
-
-                  <b-dropdown no-caret variant="link" class="header-filter-icon">
-                    <template slot="button-content">
-                      <!-- <i class="fa fa-filter text-muted"></i> -->
-                      <v-icon small>filter_list</v-icon>
-                    </template>
-
-                    <b-dropdown-header>
-                      <b-form-input type="text" placeholder="Filter" v-model="store.filters['left'][props.header.value.split('.').reverse()[0]]" @change="filterKeyup('left', props.header)"></b-form-input>
-                    </b-dropdown-header>
-
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, store.left.source)" :key="item" @click="filterClick('left', props.header, item)">
-                      {{ item }}
-                    </b-dropdown-item>
-                  </b-dropdown>
+                  <tableheader :storeName="storeName" :props="props" :which="'left'" />
                 </template>
 
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
@@ -120,7 +105,8 @@ table.v-table thead th > div.btn-group {
                   item-key="R__"
                   class="elevation-1">
                 <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
-                  <template slot="no-data">
+                  
+                <template slot="no-data">
                     <v-alert :value="store.right.isLoading" type="info">
                     Please wait while data is loading
                   </v-alert>
@@ -128,25 +114,10 @@ table.v-table thead th > div.btn-group {
                   <v-alert :value="!store.right.isLoading" type="error">
                     Sorry, nothing to display here
                   </v-alert>
-                  </template>
+                </template>
 
-                  <template slot="headerCell" slot-scope="props">
-                  {{ props.header.text }} {{ props.header.displayCount ? "(" + (store.right.source[0] ? store.right.source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0) + ")" : "" }}
-
-                  <b-dropdown no-caret variant="link" class="header-filter-icon">
-                    <template slot="button-content">
-                      <!-- <i class="fa fa-filter text-muted"></i> -->
-                      <v-icon small>filter_list</v-icon>
-                    </template>
-
-                    <b-dropdown-header>
-                      <b-form-input type="text" placeholder="Filter" v-model="store.filters['right'][props.header.value.split('.').reverse()[0]]" @change="filterKeyup('right', props.header)"></b-form-input>
-                    </b-dropdown-header>
-
-                    <b-dropdown-item v-for="item in distinctData(props.header.value, store.right.source)" :key="item" @click="filterClick('right', props.header, item)">
-                      {{ item }}
-                    </b-dropdown-item>
-                  </b-dropdown>
+                <template slot="headerCell" slot-scope="props">
+                  <tableheader :storeName="storeName" :props="props" :which="'right'" />
                 </template>
 
                 <template slot="items" slot-scope="props">
@@ -176,14 +147,15 @@ import { mapState, mapActions } from 'vuex'
 import JsonExcel from 'vue-json-excel'
 import pageSearch from '../PageSearch.vue'
 import pageExport from '../PageExport.vue'
+import tableheader from '../TableHeader.vue'
 import tablecell from '../Tablecell.vue'
 import pageLoader from '../PageLoader.vue'
  
 Vue.component('downloadExcel', JsonExcel)
 
 export default {
-    components: {
-      pageSearch, pageExport, tablecell, pageLoader
+    components: {      
+      pageSearch, pageExport, tableheader, tablecell, pageLoader
     },
     data () {
       return {
@@ -279,34 +251,6 @@ export default {
       },
       doGetRightTable (id) {
         this.getRightTable(id);
-      },
-      filterKeyup (type, keyModel) {
-        // this.columnFilter(type, keyModel);
-        if(type == "left") this.doGetLeftTable()
-        else this.doGetRightTable(this.$route.params.system)
-      },
-      filterClick (type, keyModel, val) {
-        this.store.filters[type][keyModel.value.split('.').reverse()[0]] = val;
-
-        // this.columnFilter(type, keyModel);
-        if(type == "left") this.doGetLeftTable()
-        else this.doGetRightTable(this.$route.params.system)
-      },
-      distinctData (col, datax) {
-        var cols = col.split(".")
-        if(cols.length > 1){
-          var a = datax;
-
-          cols.forEach((c, i) => {
-            a = this._.flattenDeep(this._.map(this._.sortBy(a, c), c));
-          });
-
-          return this._.uniq(a).filter(Boolean);
-        }
-        
-        return this._.uniq(
-            this._.map(this._.sortBy(datax, col), col)
-          ).filter(Boolean);
       },
       showRightTable(param){
         //reset right table filter
