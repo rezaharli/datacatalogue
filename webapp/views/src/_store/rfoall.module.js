@@ -6,10 +6,10 @@ const state = {
         tabName: '',
         searchMain: '',
         searchDropdown: {
-            SystemName: '',
-            ItamID: '',
-            TableName: '',
-            ColumnName: '',
+            PriorityReportName: '',
+            RiskReportingLead: '',
+            PrincipalRiskType: '',
+            RiskSubType: '',
         },
         filters: {
             left: {},

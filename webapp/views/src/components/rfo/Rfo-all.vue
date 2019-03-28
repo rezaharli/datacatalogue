@@ -20,7 +20,7 @@ table.v-table thead th > div.btn-group {
 <template>
   <b-row style="margin-top: 10px;margin-bottom: 10px;">
     <b-col>
-      <!-- Dsc details -->
+      <!-- Rfo details -->
       <router-view/>
 
       <!-- Main content -->
