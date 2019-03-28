@@ -2,7 +2,7 @@
   <div>
     {{ props.header.text }} ({{ store[which].source[0] ? store[which].source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0 }})
 
-    <b-dropdown no-caret variant="link" class="header-filter-icon">
+    <b-dropdown no-caret variant="link" class="header-filter-icon" ref="columnFilter">
       <template slot="button-content">
         <!-- <i class="fa fa-filter text-muted"></i> -->
         <v-icon small>filter_list</v-icon>
@@ -13,6 +13,7 @@
           type="text"
           placeholder="Filter"
           v-model="store.filters[which][props.header.value.split('.').reverse()[0]]"
+          @keyup.native="keyupAction"
           @change="filterKeyup(props.header)"
         ></b-form-input>
       </b-dropdown-header>
@@ -59,6 +60,9 @@ export default {
       return this._.uniq(
         this._.map(this._.sortBy(datax, col), col)
       ).filter(Boolean);
+    },
+    keyupAction(e){
+      if(e.key == "Enter") this.$refs.columnFilter.hide(true)
     },
     filterKeyup (keyModel) {
       if(this.which == "left") this.getLeftTable()
