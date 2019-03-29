@@ -162,8 +162,8 @@ export default {
       },
       searchDropdownInputs () {
         return [
-          { type: "text", label: "Data Domain", source: "DataDomain" },
           { type: "text", label: "Sub Data Domain", source: "SubDataDomain" },
+          { type: "text", label: "Data Domain", source: "DataDomain" },
           { type: "text", label: "Sub Data Domain Owner", source: "SubDataDomainOwner" },
           { type: "dropdown", label: "Business Term", source: "BusinessTerm", options: this._.map(this.store.right.source, 'BUSINESS_TERM') },
         ]
