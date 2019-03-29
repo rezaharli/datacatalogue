@@ -62,6 +62,17 @@ export default {
                         this.store.isRightTable = false;
                     }
                 }
+
+                if(!this.store.isRightTable){
+                    this.searchDDInputs.forEach((sf, i) => {
+                        console.log(sf);
+                        if(sf.type=="dropdown"){
+                            this.searchDDInputs[i].options = [];                            
+                            var dropdownSearchFilter =  document.getElementById(sf.source);
+                            dropdownSearchFilter.options.length = 0;
+                        }
+                    });
+                }
             });
 
             this.$refs.ddownSearch.hide(true);
@@ -73,6 +84,7 @@ export default {
             this.searchDDInputs.forEach(v => {
                 this.store.searchDropdown[v.source] = '';
             });
+            this.store.searchMain = '';
 
             this.onSubmit();
 
