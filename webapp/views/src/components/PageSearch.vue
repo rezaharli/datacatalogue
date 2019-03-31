@@ -41,7 +41,11 @@ export default {
             set: function(newVal){
                 this.$emit('update:searchDDInputs', newVal)
             }  
-        }
+        },
+        addressPath (){
+            var tmp = this.$route.path.split("/")
+            return tmp.slice(0, 3).join("/")
+        },
     },
     methods: {
         getLeftTable () {
@@ -74,6 +78,12 @@ export default {
 
                         return input;
                     });
+                }
+                
+                if(this.store.left.display.length == 1){
+                    var leftID = this.store.left.display[0].ID;
+
+                    this.$router.push(this.addressPath + "/" + leftID)
                 }
             });
 
