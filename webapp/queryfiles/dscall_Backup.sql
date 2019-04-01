@@ -30,7 +30,6 @@ SELECT *
 											inner join tbl_md_column tmc ON tmt.id = tmc.table_id
 										WHERE CDE = 1
 								) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id
-							WHERE tp.bank_id = '?'
 					) res
 			) WHERE ( -- Main and dropdown search
 				upper(system_name) LIKE upper('%?%')
@@ -154,15 +153,15 @@ SELECT *
 		AND upper(business_alias_name) LIKE upper('%?%')
 		AND upper(cde_yes_no) LIKE upper('%?%')
 	)
-	
+
 -- name: details
 SELECT DISTINCT
 		ts.id,
-		tmt.id							as tmtid,
-		tmc.id							as tmcid,
+		tmt.id					as tmtid,
+		tmc.id					as tmcid,
 		ts.system_name						as system_name,
 		ts.itam_id							as itam_id,
-		tp.first_name||' '||tp.last_name					as dataset_custodian,
+		tp.first_name||' '||tp.last_name	as dataset_custodian,
 		tp.bank_id							as bank_id,
 		tmc.alias_name						as business_alias_name,
 		tmt.name 							as table_name,
