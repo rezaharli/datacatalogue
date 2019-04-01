@@ -69,8 +69,8 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                  <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SUB_DOMAINS" :isklik="false"></tablecell></b-link></td>
                   <td><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'DATA_DOMAIN').filter(Boolean)).join(', '))" :isklik="false"></tablecell></b-link></td>
+                  <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SUB_DOMAINS" :isklik="false"></tablecell></b-link></td>
                   <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'SUB_DOMAIN_OWNER').filter(Boolean)).join('; '))" :isklik="true"></tablecell></td>
                   <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'BANK_ID').filter(Boolean)).join('; '))" :isklik="true"></tablecell></td>
                 </template>
@@ -158,8 +158,8 @@ export default {
         systemSource: [],
         tablenameSource: [],
         firstTableHeaders: [
-          { text: 'Sub Domains', align: 'left', value: 'SUB_DOMAINS', displayCount: true, sortable: false },
           { text: 'Data Domain', align: 'left', value: 'DATA_DOMAIN', displayCount: true, sortable: false },
+          { text: 'Sub Domains', align: 'left', value: 'SUB_DOMAINS', displayCount: true, sortable: false },
           { text: 'Sub Domain Owner', align: 'left', value: 'SUB_DOMAIN_OWNER', displayCount: true, sortable: false },
           { text: 'Bank ID', align: 'left', value: 'BANK_ID', displayCount: true, sortable: false },
         ],
@@ -180,8 +180,8 @@ export default {
       },
       searchDropdownInputs () {
         return [
-          { type: "text", label: "Sub Data Domain", source: "SubDataDomain" },
           { type: "text", label: "Data Domain", source: "DataDomain" },
+          { type: "text", label: "Sub Data Domain", source: "SubDataDomain" },
           { type: "text", label: "Sub Data Domain Owner", source: "SubDataDomainOwner" },
           { type: "dropdown", label: "Business Term", source: "BusinessTerm", options: this._.map(this.store.right.source, 'BUSINESS_TERM') },
         ]
