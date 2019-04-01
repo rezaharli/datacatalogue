@@ -312,7 +312,7 @@ export default {
       dscmy: state => state.dscmy.all
     }),
     ddTableOptions () {
-      return _.uniq(_.map(this.dscmy.DDSource, "TABLE_NAME"))
+      return _.uniq(_.map(this.dscmy.DDSource, (v) => v.TABLE_NAME.toString().trim())).filter(Boolean);
     },
     ddColumnOptions () {
       var self = this;
@@ -320,7 +320,7 @@ export default {
         return v.TABLE_NAME == self.ddTableSelected;
       });
 
-      return _.uniq(_.map(filtered, "COLUMN_NAME"));
+      return _.uniq(_.map(filtered, (v) => v.COLUMN_NAME.toString().trim())).filter(Boolean);
     },
     ddScreenLabelOptions () {
       var self = this;
@@ -328,7 +328,7 @@ export default {
         return v.TABLE_NAME == self.ddTableSelected && v.COLUMN_NAME == self.ddColumnSelected;
       });
       
-      return _.uniq(_.map(filtered, "BUSINESS_ALIAS_NAME"));
+      return _.uniq(_.map(filtered, (v) => v.BUSINESS_ALIAS_NAME.toString().trim())).filter(Boolean);
     },
     exportDatas () {
       if(this.selectedDetails){

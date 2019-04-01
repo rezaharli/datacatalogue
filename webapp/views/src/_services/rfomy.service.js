@@ -22,7 +22,7 @@ function getRightTable(param) {
                 var tmp2 = _.groupBy(tmp[v], "RISK_SUB");
 
                 var RiskSubTypes = _.map(Object.keys(tmp2), function(v, i){
-                    var tmp3 = _.groupBy(tmp2[v], "PR_RATIONALE");
+                    var tmp3 = _.groupBy(tmp2[v], "PR_NAME");
 
                     var PriorityReports = _.map(Object.keys(tmp3), function(v, i){
                         var tmp4 = _.groupBy(tmp3[v], "CRM_NAME");
@@ -50,7 +50,7 @@ function getRightTable(param) {
 
                         var ret = tmp3[v][0];
                         ret.ID = i
-                        ret.PR_RATIONALE = v;
+                        ret.PR_NAME = v;
                         ret.CRMNames = CRMNames;
                         ret.CRMNamesVal = tmp3[v];
 
@@ -73,15 +73,6 @@ function getRightTable(param) {
                 ret.RiskSubTypesVal = tmp[v];
 
                 return ret;
-
-                return {
-                    ID: tmp[v][0].ID,
-                    LeftID: tmp[v][0].TPRID,
-                    PRINCIPAL_RISK: v,
-                    RiskSubTypes: RiskSubTypes,
-                    RiskSubTypesVal: tmp[v],
-                    RESULT_COUNT: Object.keys(tmp).length
-                }
             });
 
             return res;

@@ -8,7 +8,7 @@
                     <b-form-row class="main-table-search-dropdown-form">
                         <b-col>
                             <b-form @submit="onSubmit" @reset="onReset">
-                                <b-form-group v-for="(input, i) in searchDDInputs" v-bind:key="i" horizontal :label-cols="4" breakpoint="md" :label="input.label" :label-for="input.source">
+                                <b-form-group v-for="(input, i) in inputs" v-bind:key="i" horizontal :label-cols="4" breakpoint="md" :label="input.label" :label-for="input.source">
                                     <b-form-input type="text" v-if="input.type == 'text'" :id="input.source" v-model="store.searchDropdown[input.source]"></b-form-input>
 
                                     <b-form-select v-if="input.type == 'dropdown'" :id="input.source" :options="input.options" v-model="store.searchDropdown[input.source]"></b-form-select>
@@ -32,11 +32,20 @@ export default {
     name: "pageSearch",
     props: ["storeName", "searchDDInputs"],
     data() {
-        return {
-        };
+        return {};
     },
     computed: {
         store () { return this.$store.state[this.storeName].all },
+        inputs: { 
+            get: function(){ return this.searchDDInputs },
+            set: function(newVal){
+                this.$emit('update:searchDDInputs', newVal)
+            }  
+        },
+        addressPath (){
+            var tmp = this.$route.path.split("/")
+            return tmp.slice(0, 3).join("/")
+        },
     },
     methods: {
         getLeftTable () {
@@ -62,10 +71,23 @@ export default {
                         this.store.isRightTable = false;
                     }
                 }
+
+                if( ! this.store.isRightTable){
+                    this.inputs = this.inputs.map((input, i) => {
+                        if(input.type == "dropdown") input.options = []; 
+
+                        return input;
+                    });
+                }
+                
+                if(this.store.left.display.length == 1){
+                    var leftID = this.store.left.display[0].ID;
+
+                    this.$router.push(this.addressPath + "/" + leftID)
+                }
             });
 
             this.$refs.ddownSearch.hide(true);
-            // this.store.searchDropdown.show = false;
         },
         onReset (evt) {
             evt.preventDefault();
@@ -73,6 +95,7 @@ export default {
             this.searchDDInputs.forEach(v => {
                 this.store.searchDropdown[v.source] = '';
             });
+            this.store.searchMain = '';
 
             this.onSubmit();
 
