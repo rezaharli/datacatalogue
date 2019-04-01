@@ -101,7 +101,7 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                   <tr>
-                    <td v-bind:style="{ width: store.right.colWidth['PRINCIPAL_RISK'] + 'px' }"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.PRINCIPAL_RISK" :isklik="false"></tablecell></b-link></td>
+                    <td v-bind:style="{ width: store.right.colWidth['PRINCIPAL_RISK'] + 'px' }"><b-link @click="rightDrillDownClick(props)"><tablecell :fulltext="props.item.PRINCIPAL_RISK" :isklik="false"></tablecell></b-link></td>
                     <td v-bind:style="{ width: store.right.colWidth['RISK_SUB'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'RISK_SUB')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                     <td v-bind:style="{ width: store.right.colWidth['PR_NAME'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'PR_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                     <td v-bind:style="{ width: store.right.colWidth['PR_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'PR_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
@@ -113,7 +113,7 @@ table.v-table thead th > div.btn-group {
                 </template>
                 
                 <template slot="expand" slot-scope="props">
-                  <v-data-table
+                  <v-data-table v-if="(store.right.reset == false)"
                     :headers="secondTableHeaders"
                     :items="props.item.RiskSubTypes"
                     class="elevation-1"
@@ -123,7 +123,7 @@ table.v-table thead th > div.btn-group {
                   >
                     <template slot="items" slot-scope="props">
                       <td v-bind:style="{ width: store.right.colWidth['PRINCIPAL_RISK'] + 'px' }">&nbsp;</td>
-                      <td v-bind:style="{ width: store.right.colWidth['RISK_SUB'] + 'px' }"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.RISK_SUB" :isklik="false"></tablecell></b-link></td>
+                      <td v-bind:style="{ width: store.right.colWidth['RISK_SUB'] + 'px' }"><b-link @click="rightDrillDownClick(props)"><tablecell :fulltext="props.item.RISK_SUB" :isklik="false"></tablecell></b-link></td>
                       <td v-bind:style="{ width: store.right.colWidth['PR_NAME'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'PR_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                       <td v-bind:style="{ width: store.right.colWidth['PR_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'PR_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                       <td v-bind:style="{ width: store.right.colWidth['CRM_NAME'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'CRM_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
@@ -144,7 +144,7 @@ table.v-table thead th > div.btn-group {
                         <template slot="items" slot-scope="props">
                           <td v-bind:style="{ width: store.right.colWidth['PRINCIPAL_RISK'] + 'px' }">&nbsp;</td>
                           <td v-bind:style="{ width: store.right.colWidth['RISK_SUB'] + 'px' }">&nbsp;</td>
-                          <td v-bind:style="{ width: store.right.colWidth['PR_NAME'] + 'px' }"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.PR_NAME" :isklik="false"></tablecell></b-link></td>
+                          <td v-bind:style="{ width: store.right.colWidth['PR_NAME'] + 'px' }"><b-link @click="rightDrillDownClick(props)"><tablecell :fulltext="props.item.PR_NAME" :isklik="false"></tablecell></b-link></td>
                           <td v-bind:style="{ width: store.right.colWidth['PR_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.CRMNamesVal, 'PR_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                           <td v-bind:style="{ width: store.right.colWidth['CRM_NAME'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.CRMNamesVal, 'CRM_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                           <td v-bind:style="{ width: store.right.colWidth['CRM_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.CRMNamesVal, 'CRM_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
@@ -166,7 +166,7 @@ table.v-table thead th > div.btn-group {
                               <td v-bind:style="{ width: store.right.colWidth['RISK_SUB'] + 'px' }">&nbsp;</td>
                               <td v-bind:style="{ width: store.right.colWidth['PR_NAME'] + 'px' }">&nbsp;</td>
                               <td v-bind:style="{ width: store.right.colWidth['PR_RATIONALE'] + 'px' }">&nbsp;</td>
-                              <td v-bind:style="{ width: store.right.colWidth['CRM_NAME'] + 'px' }"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.CRM_NAME" :isklik="false"></tablecell></b-link></td>
+                              <td v-bind:style="{ width: store.right.colWidth['CRM_NAME'] + 'px' }"><b-link @click="rightDrillDownClick(props)"><tablecell :fulltext="props.item.CRM_NAME" :isklik="false"></tablecell></b-link></td>
                               <td v-bind:style="{ width: store.right.colWidth['CRM_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.CDEsVal, 'CRM_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                               <td v-bind:style="{ width: store.right.colWidth['ASSOC_CDES'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.CDEsVal, 'ASSOC_CDES')).join(', '))" :isklik="true"></tablecell></td>
                               <td v-bind:style="{ width: store.right.colWidth['CDE_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.CDEsVal, 'CDE_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
@@ -326,9 +326,19 @@ export default {
         evt.preventDefault();
         this.store.isRightTable = true;
       },
+      rightDrillDownClick (props) {
+        if (this.store.right.reset == true)
+          props.expanded = false;
+        
+        this.store.right.reset = false;
+
+        if (this.store.right.reset == false)
+          props.expanded = !props.expanded;
+      },
       showRightTable(param){
         //reset right table filter
         this.store.filters.right = {};
+        this.store.right.reset = true;
 
         this.$router.push(this.addressPath + '/' + param.ID);
       },
