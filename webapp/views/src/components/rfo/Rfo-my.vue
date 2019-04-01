@@ -230,9 +230,9 @@ export default {
         systemSource: [],
         tablenameSource: [],
         firstTableHeaders: [
-          { text: 'Priority Report Names', align: 'left', value: 'PRIORITY_REPORT', sortable: false },
-          { text: 'Risk Reporting Lead', align: 'left', value: 'RR_LEAD', sortable: false },
-          { text: 'Bank ID', align: 'left', value: 'BANK_ID', sortable: false },
+          { text: 'Priority Report Names', align: 'left', value: 'PRIORITY_REPORT', displayCount: true, sortable: false },
+          { text: 'Risk Reporting Lead', align: 'left', value: 'RR_LEAD', displayCount: true, sortable: false },
+          { text: 'Bank ID', align: 'left', value: 'BANK_ID', displayCount: true, sortable: false },
         ],
         secondTableHeaders: [
           { text: 'Principal Risk Type', align: 'left', sortable: false, value: 'PRINCIPAL_RISK', width: "25%" },

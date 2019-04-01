@@ -177,10 +177,10 @@ export default {
         systemSource: [],
         tablenameSource: [],
         firstTableHeaders: [
-          { text: 'System Name', align: 'left', value: 'SYSTEM_NAME', sortable: false },
-          { text: 'ITAM ID', align: 'left', value: 'Custodians.ITAM_ID', sortable: false },
-          { text: 'Dataset Custodian', align: 'left', value: 'Custodians.DATASET_CUSTODIAN', sortable: false },
-          { text: 'Bank ID', align: 'left', value: 'Custodians.BANK_ID', sortable: false }
+          { text: 'System Name', align: 'left', value: 'SYSTEM_NAME', displayCount: true, sortable: false },
+          { text: 'ITAM ID', align: 'left', value: 'Custodians.ITAM_ID', displayCount: true, sortable: false },
+          { text: 'Dataset Custodian', align: 'left', value: 'Custodians.DATASET_CUSTODIAN', displayCount: true, sortable: false },
+          { text: 'Bank ID', align: 'left', value: 'Custodians.BANK_ID', displayCount: true, sortable: false }
         ],
         secondTableHeaders: [
           { text: 'Table Name', align: 'left', sortable: false, value: 'TABLE_NAME', displayCount: true, width: "25%" },

@@ -1,6 +1,6 @@
 <template>
   <div ref="widthAcuan">
-    {{ props.header.text }} ({{ store[which].source[0] ? store[which].source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0 }})
+    {{ props.header.text }} {{ count }}
 
     <b-dropdown no-caret variant="link" class="header-filter-icon" ref="columnFilter">
       <template slot="button-content">
@@ -36,6 +36,12 @@ export default {
   },
   computed: {
       store () { return this.$store.state[this.storeName].all },
+      count () {
+        if( ! this.props.header.displayCount) return "";
+        if( ! this.store[this.which].source[0]) return "(0)";
+
+        return ("(" + this.store[this.which].source[0]["COUNT_" + this.props.header.value.split(".").reverse()[0]] + ")");
+      }
   },
   mounted (){
     setTimeout(
