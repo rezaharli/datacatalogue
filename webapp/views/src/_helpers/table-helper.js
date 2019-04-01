@@ -4,6 +4,7 @@ export function newTableObject() {
         source: [],
         display: [],
         pagination: {},
-        totalItems: 0
+        totalItems: 0,
+        colWidth: {}
     }
 }
