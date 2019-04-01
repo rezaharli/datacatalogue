@@ -761,7 +761,7 @@ export default {
 
       param.Which = self.$route.name;
       param.Left = parseInt(self.$route.params.system).toString();
-      param.Right = parseInt(self.$route.params.details).toString();
+      param.Right = self.$route.params.details.toString();
 
       return self.getDetails(param).then(
         res => {

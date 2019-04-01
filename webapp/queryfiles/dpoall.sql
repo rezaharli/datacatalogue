@@ -143,4 +143,4 @@ itmc.threshold					as threshold_bt_level
 		LEFT JOIN tbl_category tc ON tlcp.category_id = tc.id
 		LEFT JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
 	WHERE
-		tdp.id = '?' AND tdpd.id = '?'
+		tdp.id = '?' AND itmc.alias_name = '?'

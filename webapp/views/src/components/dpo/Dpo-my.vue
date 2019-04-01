@@ -240,7 +240,7 @@ export default {
         this.$router.push(this.addressPath + '/' + param.ID);
       },
       showDetails (param) {
-        this.$router.push(this.addressPath + "/" + param.TDPID + '/' + param.ID)
+        this.$router.push(this.addressPath + "/" + param.TDPID + '/' + param.CDE_NAME)
       }
     }
 }

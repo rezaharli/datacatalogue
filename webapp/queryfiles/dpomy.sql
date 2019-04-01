@@ -133,4 +133,4 @@ SELECT DISTINCT
 		LEFT JOIN tbl_subcategory tsc ON tsc.category_id = tc.id
 		LEFT JOIN tbl_system tsy ON tdpd.imm_prec_system_id = tsy.id
 	WHERE
-		tdp.id = '?' AND tdpd.id = '?'
+		tdp.id = '?' AND itmc.alias_name = '?'
