@@ -191,29 +191,8 @@ table.v-table thead th > div.btn-group {
                                   <td style="width: calc(100% / 8)">&nbsp;</td>
                                   <td style="width: calc(100% / 8)">&nbsp;</td>
                                   <td style="width: calc(100% / 8)"><tablecell :fulltext="(_.uniq(_.map(props.item.Rationales, 'CRM_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                                  <td style="width: calc(100% / 8)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.ASSOC_CDES" :isklik="false"></tablecell></b-link></td>
+                                  <td style="width: calc(100% / 8)"><tablecell :fulltext="(_.uniq(_.map(props.item.Rationales, 'ASSOC_CDES')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                                   <td style="width: calc(100% / 8)"><tablecell :fulltext="(_.uniq(_.map(props.item.Rationales, 'CDE_RATIONALE')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                                </template>
-
-                                <template slot="expand" slot-scope="props">
-                                  <v-data-table
-                                    :headers="secondTableHeaders"
-                                    :items="props.item.Rationales"
-                                    class="elevation-1"
-                                    item-key="ID"
-                                    hide-actions
-                                    hide-headers
-                                  >
-                                    <template slot="items" slot-scope="props">
-                                      <td style="width: calc(100% / 8)">&nbsp;</td>
-                                      <td style="width: calc(100% / 8)">&nbsp;</td>
-                                      <td style="width: calc(100% / 8)">&nbsp;</td>
-                                      <td style="width: calc(100% / 8)">&nbsp;</td>
-                                      <td style="width: calc(100% / 8)"><tablecell :fulltext="props.item.CRM_RATIONALE" :isklik="true"></tablecell></td>
-                                      <td style="width: calc(100% / 8)">&nbsp;</td>
-                                      <td style="width: calc(100% / 8)"><tablecell :fulltext="props.item.CDE_RATIONALE" :isklik="true"></tablecell></td>
-                                    </template>
-                                  </v-data-table>
                                 </template>
                               </v-data-table>
                             </template>
