@@ -562,9 +562,7 @@ export default {
       ddomy: state => state.ddomy.all
     }),
     ddBusinessTermOptions() {
-      return _.uniq(
-        _.map(this.ddomy.DDSourceBusinessMetadata, "BUSINESS_TERM")
-      );
+      return _.uniq(_.map(this.ddomy.DDSourceBusinessMetadata, (v) => v.BUSINESS_TERM.toString().trim())).filter(Boolean);
     },
     ddBusinessAliasOptions() {
       var self = this;
@@ -572,12 +570,10 @@ export default {
         return v.BUSINESS_TERM == self.ddBusinessTermSelected;
       });
 
-      return _.uniq(_.map(filtered, "BUSINESS_ALIAS"));
+      return _.uniq(_.map(filtered, (v) => v.BUSINESS_ALIAS.toString().trim())).filter(Boolean);
     },
     ddDownstreamProcessNameOptions() {
-      return _.uniq(
-        _.map(this.ddomy.DDSourceDownstreamUsage, "DOWNSTREAM_PROCESS_NAME")
-      );
+      return _.uniq(_.map(this.ddomy.DDSourceDownstreamUsage, (v) => v.DOWNSTREAM_PROCESS_NAME.toString().trim())).filter(Boolean);
       // var self = this;
       // var filtered = _.filter(self.ddomy.DetailsDownstreamUsage, (v) => {
       //   return v.BUSINESS_TERM == self.ddBusinessTermSelected
@@ -587,7 +583,7 @@ export default {
       // return _.uniq(_.map(filtered, "DOWNSTREAM_PROCESS_NAME"));
     },
     ddSystemNameOptions() {
-      return _.uniq(_.map(this.ddomy.DDSourceBTResiding, "SYSTEM_NAME"));
+      return _.uniq(_.map(this.ddomy.DDSourceBTResiding, (v) => v.SYSTEM_NAME.toString().trim())).filter(Boolean);
       // var self = this;
       // var filtered = _.filter(self.ddomy.DDSource, (v) => {
       //   return v.BUSINESS_TERM == self.ddBusinessTermSelected
@@ -603,7 +599,7 @@ export default {
         return v.SYSTEM_NAME == self.ddSystemNameSelected;
       });
 
-      return _.uniq(_.map(filtered, "ITAM_ID"));
+      return _.uniq(_.map(filtered, (v) => v.ITAM_ID.toString().trim())).filter(Boolean);
     },
     ddTableNameOptions() {
       var self = this;
@@ -614,7 +610,7 @@ export default {
         );
       });
 
-      return _.uniq(_.map(filtered, "TABLE_NAME"));
+      return _.uniq(_.map(filtered, (v) => v.TABLE_NAME.toString().trim())).filter(Boolean);
     },
     ddColumnNameOptions() {
       var self = this;
@@ -626,7 +622,7 @@ export default {
         );
       });
 
-      return _.uniq(_.map(filtered, "COLUMN_NAME"));
+      return _.uniq(_.map(filtered, (v) => v.COLUMN_NAME.toString().trim())).filter(Boolean);
     },
     exportDatas() {
       if (
