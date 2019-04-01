@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ref="widthAcuan">
     {{ props.header.text }} ({{ store[which].source[0] ? store[which].source[0]["COUNT_" + props.header.value.split(".").reverse()[0]] : 0 }})
 
     <b-dropdown no-caret variant="link" class="header-filter-icon" ref="columnFilter">
@@ -36,6 +36,11 @@ export default {
   },
   computed: {
       store () { return this.$store.state[this.storeName].all },
+  },
+  mounted (){
+    setTimeout(
+      () => this.store[this.which].colWidth[this.props.header.value.split('.').reverse()[0]] = this.$refs.widthAcuan.parentNode.offsetWidth, 
+    100)
   },
   methods: {
     getLeftTable () {

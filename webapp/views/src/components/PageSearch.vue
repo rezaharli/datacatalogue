@@ -59,11 +59,19 @@ export default {
 
             this.getLeftTable().then(res => {
                 var currentLeftID = this.$route.params.system;
+
                 var isLeftTableOwnCurrentRight = this.store.left.display.find(v => v.ID.toString() == currentLeftID);
-                
-                if(isLeftTableOwnCurrentRight) this.store.isRightTable = true;
 
                 if(this.store.isRightTable){
+                    if(isLeftTableOwnCurrentRight) { 
+                        this.store.isRightTable = true;
+                        this.getRightTable(currentLeftID);
+                    } else {
+                        this.store.isRightTable = false;
+                    }
+                }
+
+                if( ! this.store.isRightTable){
                     if(isLeftTableOwnCurrentRight) { 
                         this.store.isRightTable = true;
                         this.getRightTable(currentLeftID);
@@ -92,11 +100,12 @@ export default {
         onReset (evt) {
             evt.preventDefault();
             /* Reset our form values */
+            this.store.searchMain = '';
             this.searchDDInputs.forEach(v => {
                 this.store.searchDropdown[v.source] = '';
             });
-            this.store.searchMain = '';
 
+            this.$router.push(this.addressPath);
             this.onSubmit();
 
             // /* Trick to reset/clear native browser form validation state */
