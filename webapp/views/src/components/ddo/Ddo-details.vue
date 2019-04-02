@@ -649,9 +649,13 @@ export default {
     ddBusinessTermSelected() {
       if (this.firstload) return;
 
-      if (this.ddBusinessAliasOptions[0])
-        this.ddBusinessAliasSelected = this.ddBusinessAliasOptions[0];
-      else this.ddBusinessAliasSelected = "";
+      if (!this.firstload) {
+        var param = {
+          BusinessTerm: this.ddBusinessTermSelected.toString()
+        };
+
+        this.runGetDetails(param);
+      }
     },
     ddBusinessAliasSelected() {
       if (this.firstload) return;
