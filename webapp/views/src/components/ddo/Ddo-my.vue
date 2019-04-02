@@ -146,8 +146,8 @@ export default {
           { text: 'Bank ID', align: 'left', value: 'BANK_ID', displayCount: true, sortable: false },
         ],
         secondTableHeaders: [
-          { text: 'Business Term', align: 'left', sortable: false, value: 'BUSINESS_TERM', displayCount: false, width: "25%" },
-          { text: 'Business Term Description', align: 'left', sortable: false, value: 'BT_DESCRIPTION', displayCount: true, width: "25%" },
+          { text: 'Business Term', align: 'left', sortable: false, value: 'BUSINESS_TERM', displayCount: true, width: "25%" },
+          { text: 'Business Term Description', align: 'left', sortable: false, value: 'BT_DESCRIPTION', displayCount: false, width: "25%" },
           { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'CDE_YES_NO', displayCount: true, width: "25%" },
         ],
       }
