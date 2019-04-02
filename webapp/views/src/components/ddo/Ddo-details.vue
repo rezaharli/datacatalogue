@@ -881,6 +881,14 @@ export default {
                 : "NA";
             });
 
+            self.ddomy.DDSourceBusinessMetadata.map(function(v){
+              Object.keys(v).forEach(function(key){
+                v[key] = v[key] ? v[key] : "NA"
+              })
+
+              return v
+            })
+
             setTimeout(() => {
               self.ddBusinessTermSelected = self.selectedDetailsBusinessMetadata.BUSINESS_TERM;
               self.ddBusinessAliasSelected = self.selectedDetailsBusinessMetadata.BUSINESS_ALIAS;
@@ -910,6 +918,14 @@ export default {
                 : "NA";
             });
 
+            self.ddomy.DDSourceDownstreamUsage.map(function(v){
+              Object.keys(v).forEach(function(key){
+                v[key] = v[key] ? v[key] : "NA"
+              })
+
+              return v
+            })
+
             setTimeout(() => {
               self.ddDownstreamProcessNameSelected = self.selectedDetailsDownstreamUsage.DOWNSTREAM_PROCESS_NAME;
 
@@ -937,6 +953,14 @@ export default {
                 ? self.selectedDetailsBTResiding[val]
                 : "NA";
             });
+
+            self.ddomy.DDSourceBTResiding.map(function(v){
+              Object.keys(v).forEach(function(key){
+                v[key] = v[key] ? v[key] : "NA"
+              })
+
+              return v
+            })
 
             setTimeout(() => {
               self.ddSystemNameSelected = self.selectedDetailsBTResiding.SYSTEM_NAME;

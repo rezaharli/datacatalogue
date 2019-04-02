@@ -783,6 +783,14 @@ export default {
             Object.keys(self.selectedDetails).forEach((val) => {
               self.selectedDetails[val] = !!self.selectedDetails[val].trim() ? self.selectedDetails[val] : "NA";
             });
+
+            self.dpomy.DDSource.map(function(v){
+              Object.keys(v).forEach(function(key){
+                v[key] = v[key] ? v[key] : "NA"
+              })
+
+              return v
+            })
             
             setTimeout(() => {
               self.ddImmSystemNameSelected = self.selectedDetails.IMM_SYSTEM;
