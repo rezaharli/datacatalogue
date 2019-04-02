@@ -164,10 +164,10 @@ export default {
         tablenameSource: [],
         searchMain: '',
         firstTableHeaders: [
-          { text: 'System Name', align: 'left', value: 'SYSTEM_NAME', sortable: false },
-          { text: 'ITAM ID', align: 'left', value: 'Custodians.ITAM_ID', sortable: false },
-          { text: 'Dataset Custodian', align: 'left', value: 'Custodians.DATASET_CUSTODIAN', sortable: false },
-          { text: 'Bank ID', align: 'left', value: 'Custodians.BANK_ID', sortable: false }
+          { text: 'System Name', align: 'left', value: 'SYSTEM_NAME', displayCount: true, sortable: false },
+          { text: 'ITAM ID', align: 'left', value: 'Custodians.ITAM_ID', displayCount: true, sortable: false },
+          { text: 'Dataset Custodian', align: 'left', value: 'Custodians.DATASET_CUSTODIAN', displayCount: true, sortable: false },
+          { text: 'Bank ID', align: 'left', value: 'Custodians.BANK_ID', displayCount: true, sortable: false }
         ],
         secondTableHeaders: [
           { text: 'List of CDEs', align: 'left', sortable: false, value: 'LIST_OF_CDE', displayCount: true, width: "25%" },

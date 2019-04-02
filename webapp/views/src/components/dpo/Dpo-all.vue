@@ -143,9 +143,9 @@ export default {
         systemSource: [],
         tablenameSource: [],
         firstTableHeaders: [
-          { text: 'Downstream Processes', align: 'left', value: 'DOWNSTREAM_PROCESS', sortable: false },
-          { text: 'Process Owner', align: 'left', value: 'PROCESS_OWNER', sortable: false },
-          { text: 'Bank ID', align: 'left', value: 'BANK_ID', sortable: false }
+          { text: 'Downstream Processes', align: 'left', value: 'DOWNSTREAM_PROCESS', displayCount: true, sortable: false },
+          { text: 'Process Owner', align: 'left', value: 'PROCESS_OWNER', displayCount: true, sortable: false },
+          { text: 'Bank ID', align: 'left', value: 'BANK_ID', displayCount: true, sortable: false }
         ],
         secondTableHeaders: [
           { text: 'CDE Name', align: 'left', sortable: false, value: 'CDE_NAME', displayCount: true, width: "25%" },

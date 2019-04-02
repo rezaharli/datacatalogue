@@ -5,6 +5,7 @@ export function newTableObject() {
         display: [],
         pagination: {},
         totalItems: 0,
-        colWidth: {}
+        colWidth: {},
+        reset: true,
     }
 }
