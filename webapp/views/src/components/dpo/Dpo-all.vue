@@ -152,7 +152,7 @@ export default {
           { text: 'Segment', align: 'left', sortable: false, value: 'SEGMENT', displayCount: true, width: "25%" },
           { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'IMM_PREC_SYSTEM', displayCount: true, width: "25%" },
           { text: 'Ultimate Source System', align: 'left', sortable: false, value: 'ULT_SOURCE_SYSTEM', displayCount: true, width: "25%" },
-          { text: 'Business Description', align: 'left', sortable: false, value: 'BUSINESS_DESCRIPTION', displayCount: true, width: "25%" },
+          { text: 'Business Description', align: 'left', sortable: false, value: 'BUSINESS_DESCRIPTION', displayCount: false, width: "25%" },
           { text: 'CDE Rationale', align: 'left', sortable: false, value: 'CDE_RATIONALE', displayCount: true, width: "25%" },
         ],
       }
