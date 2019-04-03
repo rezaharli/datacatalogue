@@ -69,6 +69,10 @@ legend.col-form-label, label.col-form-label {
               <h6 class="left-card-title">CDE Rationale</h6>
               <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.CDE_RATIONALE: ''"></text-wrap-dialog>
             </b-media>
+
+            <b-media class="left-card-media">
+              <h6 class="left-card-title" style="text-decoration: underline;"><b-link>CDE Lineage</b-link></h6>
+            </b-media>
           </b-card>
         </b-col>
 
@@ -257,7 +261,7 @@ legend.col-form-label, label.col-form-label {
                       <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DQ_STANDARDS_BT_LEVEL : ''"></text-wrap-dialog>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds defined by DPO*">
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds defined by DPO">
                       <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DPO_THRESHOLD : ''"></text-wrap-dialog>
                     </b-form-group>
 
@@ -344,7 +348,7 @@ export default {
         "Business Term Description": "selectedDetails.BUSINESS_TERM_DESCRIPTION",
         "DQ Standards set by DPO": "selectedDetails.DPO_DQ_STANDARDS",
         "DQ Standards set at Business Term Level": "selectedDetails.DQ_STANDARDS_BT_LEVEL",
-        "Thresholds defined by DPO*": "selectedDetails.DPO_THRESHOLD"
+        "Thresholds defined by DPO": "selectedDetails.DPO_THRESHOLD"
       }
     }
   },
@@ -783,6 +787,14 @@ export default {
             Object.keys(self.selectedDetails).forEach((val) => {
               self.selectedDetails[val] = !!self.selectedDetails[val].trim() ? self.selectedDetails[val] : "NA";
             });
+
+            self.dpomy.DDSource.map(function(v){
+              Object.keys(v).forEach(function(key){
+                v[key] = v[key] ? v[key] : "NA"
+              })
+
+              return v
+            })
             
             setTimeout(() => {
               self.ddImmSystemNameSelected = self.selectedDetails.IMM_SYSTEM;
