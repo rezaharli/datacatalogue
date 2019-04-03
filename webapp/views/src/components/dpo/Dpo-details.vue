@@ -257,7 +257,7 @@ legend.col-form-label, label.col-form-label {
                       <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DQ_STANDARDS_BT_LEVEL : ''"></text-wrap-dialog>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds defined by DPO*">
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds defined by DPO">
                       <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DPO_THRESHOLD : ''"></text-wrap-dialog>
                     </b-form-group>
 
@@ -344,7 +344,7 @@ export default {
         "Business Term Description": "selectedDetails.BUSINESS_TERM_DESCRIPTION",
         "DQ Standards set by DPO": "selectedDetails.DPO_DQ_STANDARDS",
         "DQ Standards set at Business Term Level": "selectedDetails.DQ_STANDARDS_BT_LEVEL",
-        "Thresholds defined by DPO*": "selectedDetails.DPO_THRESHOLD"
+        "Thresholds defined by DPO": "selectedDetails.DPO_THRESHOLD"
       }
     }
   },
