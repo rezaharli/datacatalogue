@@ -69,6 +69,10 @@ legend.col-form-label, label.col-form-label {
               <h6 class="left-card-title">CDE Rationale</h6>
               <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.CDE_RATIONALE: ''"></text-wrap-dialog>
             </b-media>
+
+            <b-media class="left-card-media">
+              <h6 class="left-card-title" style="text-decoration: underline;"><b-link>CDE Lineage</b-link></h6>
+            </b-media>
           </b-card>
         </b-col>
 
