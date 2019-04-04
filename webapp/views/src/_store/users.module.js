@@ -2,7 +2,7 @@ import { userService } from '../_services/user.service';
 
 const state = {
     all: {
-        loading: true,
+        isLoading: true,
         items: [],
         error: null
     }
