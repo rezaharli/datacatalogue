@@ -42,6 +42,7 @@ func (s *UserService) Authenticate(username int, password string) (bool, *m.SysU
 		Clause: dbflex.And(
 			dbflex.Eq("username", username),
 			dbflex.Eq("password", s.HashPassword(password)),
+			dbflex.Eq("status", 1),
 		),
 		Result: &users,
 	})
