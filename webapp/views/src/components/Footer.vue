@@ -13,7 +13,7 @@
 
 <template>
   <v-footer class="pa-3 white--text" color="teal">
-    <div style="font-weight: bold">Eaciit &copy; {{ new Date().getFullYear() }}</div>
+    <!-- <div style="font-weight: bold">Eaciit &copy; {{ new Date().getFullYear() }}</div> -->
    
     <!-- <b-link v-if="showLogout" @click="doLogout">Logout</b-link> -->
 

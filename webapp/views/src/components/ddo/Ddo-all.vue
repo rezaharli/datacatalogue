@@ -69,27 +69,10 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                  <td><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'DATA_DOMAIN').filter(Boolean)).join(', '))" :isklik="false"></tablecell></b-link></td>
+                  <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'DATA_DOMAIN').filter(Boolean)).join(', '))" :isklik="false"></tablecell></td>
                   <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SUB_DOMAINS" :isklik="false"></tablecell></b-link></td>
                   <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'SUB_DOMAIN_OWNER').filter(Boolean)).join('; '))" :isklik="true"></tablecell></td>
                   <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'BANK_ID').filter(Boolean)).join('; '))" :isklik="true"></tablecell></td>
-                </template>
-
-                <template slot="expand" slot-scope="props">
-                  <v-data-table
-                    :headers="firstTableHeaders"
-                    :items="props.item.Values"
-                    class="elevation-1"
-                    hide-actions
-                    hide-headers
-                  >
-                    <template slot="items" slot-scope="props">
-                      <td style="width: 25%">&nbsp;</td>
-                      <td style="width: 25%">&nbsp;</td>
-                      <td style="width: 25%">{{ props.item.SUB_DOMAIN_OWNER }}</td>
-                      <td style="width: 25%">{{ props.item.BANK_ID }}</td>
-                    </template>
-                  </v-data-table>
                 </template>
               </v-data-table>
             </b-col>

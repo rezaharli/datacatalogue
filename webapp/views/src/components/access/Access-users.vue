@@ -20,73 +20,78 @@ table.v-table thead th > div.btn-group {
                     <v-dialog v-model="dialog" max-width="500px">
                         <v-btn slot="activator" color="primary" dark class="mb-2">New Item</v-btn>
                         <v-card>
-                            <v-card-title>
-                                <span class="headline">{{ formTitle }}</span>
-                            </v-card-title>
+                            <v-form
+                                ref="form"
+                                v-model="valid"
+                                >
+                                <v-card-title>
+                                    <span class="headline">{{ formTitle }}</span>
+                                </v-card-title>
 
-                            <v-card-text>
-                                <v-container grid-list-md>
-                                    <v-layout wrap>
-                                        <v-flex xs12 sm12 md12>
-                                            <v-alert :value="users.error" color="error" icon="warning">
-                                                {{ users.error }}
-                                            </v-alert>
-                                        </v-flex>
+                                <v-card-text>
+                                    <v-container grid-list-md>
+                                        <v-layout wrap>
+                                            <v-flex xs12 sm12 md12>
+                                                <v-alert :value="users.error" color="error" icon="warning">
+                                                    {{ users.error }}
+                                                </v-alert>
+                                            </v-flex>
 
-                                        <v-flex xs12 sm6 md4>
-                                            <v-text-field type="number" :readonly="editedIndex > -1" :rules="[rules.required]" v-model="editedItem.Username" label="Username" ></v-text-field>
-                                        </v-flex>
+                                            <v-flex xs12 sm6 md4>
+                                                <v-text-field type="number" :readonly="editedIndex > -1" :rules="[rules.required]" v-model="editedItem.Username" label="Username" ></v-text-field>
+                                            </v-flex>
 
-                                        <v-flex xs12 sm6 md4>
-                                            <v-text-field type="email" :rules="[rules.required]" v-model="editedItem.Email" label="Email"></v-text-field>
-                                        </v-flex>
+                                            <v-flex xs12 sm6 md4>
+                                                <v-text-field type="email" :rules="[rules.required]" v-model="editedItem.Email" label="Email"></v-text-field>
+                                            </v-flex>
 
-                                        <v-flex xs12 sm6 md4>
-                                            <v-text-field type="password" v-model="editedItem.Password" label="Password"></v-text-field>
-                                        </v-flex>
+                                            <v-flex xs12 sm6 md4>
+                                                <v-text-field type="password" v-model="editedItem.Password" label="Password"></v-text-field>
+                                            </v-flex>
 
-                                        <v-flex xs12 sm6 md4>
-                                            <v-text-field :rules="[rules.required]" v-model="editedItem.Name" label="Name"></v-text-field>
-                                        </v-flex>
+                                            <v-flex xs12 sm6 md4>
+                                                <v-text-field :rules="[rules.required]" v-model="editedItem.Name" label="Name"></v-text-field>
+                                            </v-flex>
 
-                                        <v-flex xs12 sm6 md4>
-                                            <v-select
-                                                v-model="editedItem.Role"
-                                                :items="rolesMaster"
-                                                :rules="[rules.required]" 
-                                                label="Select"
-                                                multiple
-                                                chips
-                                                hint="What are the target regions"
-                                                persistent-hint
-                                            ></v-select>
-                                        </v-flex>
+                                            <v-flex xs12 sm6 md4>
+                                                <v-select
+                                                    v-model="editedItem.Role"
+                                                    :items="rolesMaster"
+                                                    :rules="[rules.required]" 
+                                                    label="Select"
+                                                    multiple
+                                                    chips
+                                                    hint="What are the target regions"
+                                                    persistent-hint
+                                                ></v-select>
+                                            </v-flex>
 
-                                        <v-flex xs12 sm6 md4>
-                                            <v-switch :label="`Status`" v-model="editedItem.Status"></v-switch>
-                                            <!-- <v-text-field v-model="editedItem.Status" label="Status"></v-text-field> -->
-                                        </v-flex>
-                                    </v-layout>
-                                </v-container>
-                            </v-card-text>
+                                            <v-flex xs12 sm6 md4>
+                                                <v-switch :label="`Status`" v-model="editedItem.Status"></v-switch>
+                                                <!-- <v-text-field v-model="editedItem.Status" label="Status"></v-text-field> -->
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-container>
+                                </v-card-text>
 
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-                                <v-btn color="blue darken-1" flat @click="save" :disabled="!formIsValid">Save</v-btn>
-                            </v-card-actions>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
+                                    <v-btn color="blue darken-1" flat @click="save" :disabled="!formIsValid">Save</v-btn>
+                                </v-card-actions>
+                            </v-form>
                         </v-card>
                     </v-dialog>
 
                     <v-data-table
                             :headers="headers"
                             :items="users.items"
-                            :loading="users.loading"
+                            :loading="users.isLoading"
                             class="elevation-1">
                         <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
                         <template slot="no-data">
-                            <v-alert :value="!users.loading" color="error" icon="warning">
+                            <v-alert :value="!users.isLoading" color="error" icon="warning">
                                 Sorry, nothing to display here :(
                             </v-alert>
                         </template>
@@ -146,6 +151,7 @@ import { mapState, mapActions } from 'vuex'
 export default {
     data () {
         return {
+            valid: true,
             rules: {
                 required: value => !!value || 'Required.',
             },
@@ -230,7 +236,11 @@ export default {
             setTimeout(() => {
                 this.editedItem = Object.assign({}, this.defaultItem)
                 this.editedIndex = -1
+                this.reset()
             }, 300)
+        },
+        reset () {
+            this.$refs.form.reset()
         },
         save () {
             this.users.error = null;

@@ -98,11 +98,11 @@ legend.col-form-label, label.col-form-label {
                       <b-form-select id="columnname" class="col-8" v-model="ddImmColumnNameSelected" :options="ddImmColumnNameOptions"></b-form-select>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Screen Label Name" label-for="screenlabelname">
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Name" label-for="screenlabelname">
                       <b-form-select id="screenlabelname" class="col-8" v-model="ddImmScreenLabelSelected" :options="ddImmScreenLabelOptions"></b-form-select>
                     </b-form-group>
                     
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Description">
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Description">
                       <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_BUSINESS_DESCRIPTION : ''"></text-wrap-dialog>
                     </b-form-group>
 
@@ -153,11 +153,11 @@ legend.col-form-label, label.col-form-label {
                       <b-form-select id="columnname" class="col-8" v-model="ddUltColumnNameSelected" :options="ddUltColumnNameOptions"></b-form-select>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Screen Label Name" label-for="screenlabelname">
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Name" label-for="screenlabelname">
                       <b-form-select id="screenlabelname" class="col-8" v-model="ddUltScreenLabelSelected" :options="ddUltScreenLabelOptions"></b-form-select>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Description">
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Description">
                       <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.ULT_BUSINESS_DESCRIPTION : ''"></text-wrap-dialog>
                     </b-form-group>
 
@@ -315,8 +315,8 @@ export default {
         'ITAM ID': 'selectedDetails.IMM_ITAM_ID',
         'TableName': 'selectedDetails.IMM_TABLE_NAME',
         "Column Name": "selectedDetails.IMM_COLUMN_NAME",
-        "Screen Label Name": "selectedDetails.IMM_SCREEN_LABEL_NAME",
-        "Business Description": "selectedDetails.IMM_BUSINESS_DESCRIPTION",
+        "Business Alias Name": "selectedDetails.IMM_SCREEN_LABEL_NAME",
+        "Business Alias Description": "selectedDetails.IMM_BUSINESS_DESCRIPTION",
         "Derived (Yes/No)": "selectedDetails.IMM_DERIVED_YES_NO",
         "Derivation Logic": "selectedDetails.IMM_DERIVATION_LOGIC",
         "Data Quality Requirements": "selectedDetails.IMM_DQ_REQUIREMENTS",
@@ -326,8 +326,8 @@ export default {
         'ITAM ID ': 'selectedDetails.ULT_ITAM_ID',
         'TableName ': 'selectedDetails.ULT_TABLE_NAME',
         "Column Name ": "selectedDetails.ULT_COLUMN_NAME",
-        "Screen Label Name ": "selectedDetails.ULT_SCREEN_LABEL_NAME",
-        "Business Description ": "selectedDetails.ULT_BUSINESS_DESCRIPTION",
+        "Business Alias Name ": "selectedDetails.ULT_SCREEN_LABEL_NAME",
+        "Business Alias Description ": "selectedDetails.ULT_BUSINESS_DESCRIPTION",
         "Derived?": "selectedDetails.ULT_DERIVED_YES_NO",
         "Derivation Logic ": "selectedDetails.ULT_DERIVATION_LOGIC",
         "Data Quality requirements ": "selectedDetails.ULT_DQ_REQUIREMENTS",
