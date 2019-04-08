@@ -1,4 +1,5 @@
 import { userService } from '../_services/user.service';
+import moment from 'moment'
 
 const state = {
     all: {
@@ -14,7 +15,16 @@ const actions = {
 
         userService.getAll()
             .then(
-                res => commit('getAllSuccess', res.Data),
+                res => {
+                    res.Data.map(v => {
+                        v.CreatedAt = moment(v.CreatedAt.substring(0, 19)).format('DD MMM YYYY, hh:mm a');
+                        v.UpdatedAt = moment(v.UpdatedAt.substring(0, 19)).format('DD MMM YYYY, hh:mm a');
+                        return v; 
+                    }),
+                    commit('getAllSuccess', res.Data);
+                }, 
+                
+                
                 error => commit('getAllFailure', error)
             );
     },
