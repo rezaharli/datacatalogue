@@ -78,6 +78,8 @@ func main() {
 	// s.NewDSCService().CreateLinkRolePeopleDummyData()
 	// s.NewDSCService().CreateLinkColumnInterfaceDummyData()
 
+	toolkit.Println("Done. Waiting.")
+
 	server.Wait()
 }
 
