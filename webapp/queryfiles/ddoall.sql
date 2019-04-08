@@ -136,7 +136,7 @@ SELECT DISTINCT
         TBT.BT_NAME                             AS BUSINESS_TERM,
         TDP.NAME                                AS DOWNSTREAM_PROCESS_NAME, 
         PPL.FIRST_NAME||' '|| PPL.LAST_NAME     AS DOWNSTREAM_PROCESS_OWNER,
-        'NO'                                    AS DATA_FROM_GS,
+        'No'                                    AS DATA_FROM_GS,
         ' '                                     AS SYSTEM_NAME,
         ' '                                     AS ITAM_ID,
         ' '                                     AS TABLE_NAME,

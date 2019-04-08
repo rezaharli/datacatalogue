@@ -16,9 +16,9 @@ SELECT *
 								tp.first_name||' '||tp.last_name 	as dataset_custodian,
 								tp.bank_id							as bank_id
 							FROM tbl_system ts 
-								LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
-								LEFT JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
-								LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id 
+								INNER JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
+								INNER JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
+								INNER JOIN tbl_people tp ON tlrp.people_id = tp.id 
 								
 								inner join tbl_md_resource tmr ON ts.id = tmr.system_id
 								inner join (
@@ -41,6 +41,7 @@ SELECT *
 		AND upper(dataset_custodian) LIKE upper('%?%')
 		AND upper(bank_id) LIKE upper('%?%')
 	)
+
 
 -- name: right-grid
 SELECT * 
@@ -112,7 +113,7 @@ SELECT *
 	) WHERE ( -- Column filter
 		upper(table_name) LIKE upper('%?%')
 		AND upper(column_name) LIKE upper('%?%')
-		AND upper(business_alias_name) LIKE upper('%?%')
+		AND upper(NVL(business_alias_name,' ')) LIKE upper('%?%')
 		AND upper(cde_yes_no) LIKE upper('%?%')
 	)
 

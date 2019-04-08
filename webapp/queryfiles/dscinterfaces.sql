@@ -16,9 +16,9 @@ SELECT *
 								tp.first_name||' '||tp.last_name 	as dataset_custodian,
 								tp.bank_id							as bank_id
 							FROM tbl_system ts 
-								LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
-								LEFT JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
-								LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id 
+								INNER JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
+								INNER JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
+								INNER JOIN tbl_people tp ON tlrp.people_id = tp.id 
 								
 								inner join tbl_md_resource tmr ON ts.id = tmr.system_id
 								inner join (
@@ -78,14 +78,14 @@ SELECT *
                                 inner join tbl_md_table tmt ON res.id = tmt.resource_id
                                 inner join tbl_md_column tmc ON tmt.id = tmc.table_id
                                 
-                                left join tbl_link_column_interface ci on tmc.id = ci.column_id
+                                LEFT join tbl_link_column_interface ci on tmc.id = ci.column_id
                                 left join tbl_system ips on ci.imm_prec_system_id = ips.id
                                 left join tbl_system iss on ci.imm_succ_system_id = iss.id
                                 LEFT JOIN tbl_ds_process_detail tdpd ON tdpd.column_id = tmc.id
                                 LEFT JOIN tbl_ds_processes tdp ON tdpd.process_id = tdp.id 
                                 
                                 LEFT JOIN Tbl_Link_Role_People tlrp_sdo ON tlrp_sdo.Object_ID = tdp.id and tlrp_sdo.object_type = 'PROCESSES'
-                                LEFT JOIN Tbl_Role rl ON tlrp_sdo.role_id = rl.id and rl.role_name = 'Downstream Process Owner'
+                                LEFT JOIN Tbl_Role rl ON tlrp_sdo.role_id = rl.id and UPPER(rl.role_name) = 'DOWNSTREAM PROCESS OWNER'
                                 LEFT JOIN Tbl_People ppl ON tlrp_sdo.people_id = ppl.id
                             WHERE ts.id = '?'
                             AND tmc.cde = 1
@@ -95,15 +95,15 @@ SELECT *
 				AND upper(column_name) LIKE upper('%?%')
 			)
 	) WHERE ( -- Column filter
-		upper(list_of_cde) LIKE upper('%?%')
-        AND upper(imm_prec_system_name) LIKE upper('%?%')
-        AND upper(Imm_Prec_System_SLA) LIKE upper('%?%')
-        AND upper(Imm_Prec_System_OLA) LIKE upper('%?%')
-        AND upper(imm_succ_system_name) LIKE upper('%?%')
-        AND upper(Imm_Succ_System_SLA) LIKE upper('%?%')
-        AND upper(Imm_Succ_System_OLA) LIKE upper('%?%')
-        AND upper(list_downstream_process) LIKE upper('%?%')
-        AND upper(downstream_process_owner) LIKE upper('%?%')
+		upper(NVL(list_of_cde,' ')) LIKE upper('%%')
+        AND upper(NVL(imm_prec_system_name,' ')) LIKE upper('%%')
+        AND upper(NVL(Imm_Prec_System_SLA,0)) LIKE upper('%%')
+        AND upper(NVL(Imm_Prec_System_OLA,0)) LIKE upper('%%')
+        AND upper(NVL(imm_succ_system_name,' ')) LIKE upper('%%')
+        AND upper(NVL(Imm_Succ_System_SLA,0)) LIKE upper('%%')
+        AND upper(NVL(Imm_Succ_System_OLA,0)) LIKE upper('%%')
+        AND upper(NVL(list_downstream_process,' ')) LIKE upper('%%')
+        AND upper(NVL(downstream_process_owner,' ')) LIKE upper('%%')
 	)
 
 -- name: details

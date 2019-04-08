@@ -89,7 +89,7 @@ isys.itam_id					as imm_itam_id,
 itmt.name 						as imm_table_name,
 itmc.name 						as imm_column_name,
 
-tbt.bt_name						as imm_screen_label_name,
+itmc.alias_name				as imm_screen_label_name,
 itmc.description 				as imm_business_description,
 itmc.derived					as imm_derived_yes_no,
 itmc.derivation_logic			as imm_derivation_logic,

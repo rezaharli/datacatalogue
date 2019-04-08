@@ -86,7 +86,7 @@ SELECT DISTINCT
 		tsy.itam_id						as imm_itam_id,
 		tmt.name 						as imm_table_name,
 		tmc.name 						as imm_column_name,
-		tbt.bt_name						as imm_screen_label_name,
+		itmc.alias_name					as imm_screen_label_name,
 		tbt.description 				as imm_business_description,
 		tmc.derived						as imm_derived_yes_no,
 		tmc.derivation_logic			as imm_derivation_logic,
