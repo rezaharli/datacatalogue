@@ -147,12 +147,12 @@ func (s *DPOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 		return false
 	}
 
-	q = `SELECT * FROM (
+	q = `SELECT rownum, a.* FROM (
 		` + q + `
-	) `
+	) a `
 
 	if checkNotEmpty(otherArgs) == true && payload.GetString("Imm_System") != "" {
-		q += `WHERE (
+		q += `WHERE ((
 			IMM_SYSTEM = '` + otherArgs[0] + `' `
 		if otherArgs[1] != "" {
 			q += `AND IMM_ITAM_ID = '` + otherArgs[1] + `' `
@@ -181,7 +181,9 @@ func (s *DPOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 		if otherArgs[9] != "" {
 			q += `AND ULT_SCREEN_LABEL_NAME = '` + otherArgs[9] + `' `
 		}
-		q += `) `
+		q += `)) AND rownum = 1 `
+	} else {
+		q += `WHERE rownum = 1 `
 	}
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
