@@ -151,9 +151,11 @@ func (s *DPOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 		` + q + `
 	) a `
 
-	if checkNotEmpty(otherArgs) == true && payload.GetString("Imm_System") != "" {
-		q += `WHERE ((
-			IMM_SYSTEM = '` + otherArgs[0] + `' `
+	if checkNotEmpty(otherArgs) == true {
+		q += `WHERE (( ID IS NOT NULL `
+		if otherArgs[1] != "" {
+			q += `AND IMM_SYSTEM = '` + otherArgs[0] + `' `
+		}
 		if otherArgs[1] != "" {
 			q += `AND IMM_ITAM_ID = '` + otherArgs[1] + `' `
 		}
