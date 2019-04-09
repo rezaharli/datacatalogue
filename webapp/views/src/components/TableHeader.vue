@@ -14,7 +14,6 @@
           placeholder="Filter"
           v-model="store.filters[which][props.header.value.split('.').reverse()[0]]"
           @keyup.native="keyupAction"
-          @change="filterKeyup(props.header)"
         ></b-form-input>
       </b-dropdown-header>
 
@@ -32,7 +31,9 @@ export default {
   name: "tableHeader",
   props: ["storeName", "props", "which"],
   data() {
-    return {};
+    return {
+      filterProcessTimeout: null
+    };
   },
   computed: {
       store () { return this.$store.state[this.storeName].all },
@@ -73,18 +74,23 @@ export default {
       ).filter(Boolean);
     },
     keyupAction(e){
-      if(e.key == "Enter") this.$refs.columnFilter.hide(true)
-    },
-    filterKeyup (keyModel) {
-      if(this.which == "left") this.getLeftTable()
-      else this.getRightTable(this.$route.params.system)
+      var self = this;
+
+      if(self.filterProcessTimeout != null) clearTimeout(self.filterProcessTimeout);
+
+      self.filterProcessTimeout = setTimeout(self.filterProcess, 500);
+
+      if(e.key == "Enter") self.$refs.columnFilter.hide(true)
     },
     filterClick (keyModel, val) {
       this.store.filters[this.which][keyModel.value.split('.').reverse()[0]] = val;
 
+      this.filterProcess();
+    },
+    filterProcess (){
       if(this.which == "left") this.getLeftTable()
       else this.getRightTable(this.$route.params.system)
-    },
+    }
   }
 };
 </script>
