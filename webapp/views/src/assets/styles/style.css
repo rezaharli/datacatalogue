@@ -23,6 +23,12 @@
     margin-top: 1rem;
 }
 
+/* ----- main 3 colors ------
+#5cb1b1
+#369fb5
+#397fa4
+----- end ----- */
+
 @import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic);
 
 body{background-color: #fafafa !important;}
