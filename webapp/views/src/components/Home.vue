@@ -3,14 +3,8 @@
 </style>
 
 <template>
-
-  <v-content class="cok">
-    <b-container fluid v-if="!isHome">
-      <CToolbar></CToolbar>
-      <router-view></router-view>
-    </b-container>
-
-    <v-container fluid fill-height back v-if="isHome">
+  <v-content>
+    <v-container fluid fill-height back>
       <v-layout align-center justify-center>
         <v-flex xs12 sm12 md12 card-container>
           <v-container grid-list-md text-xs-center>

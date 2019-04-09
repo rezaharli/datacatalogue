@@ -6,6 +6,7 @@ import Home from './components/Home';
 import Login from './components/Login';
 
 import Dsc from './components/dsc/Dsc';
+import DscMenu from './components/dsc/Dsc-menu';
 import DscDetails from './components/dsc/Dsc-details';
 import DscMy from './components/dsc/Dsc-my';
 import DscAll from './components/dsc/Dsc-all';
@@ -50,12 +51,19 @@ const router = new VueRouter({
     meta: { 
       title: "Home - Data Catalogue" 
     },
-    children: [{ // dsc
-      path: '/dsc', component: Dsc, 
-      meta: { 
-        title: "DSC - Data Catalogue",
-        permission: "DSC"
-      }, 
+  }, { // dsc
+    path: '/dsc', component: Dsc, 
+    meta: { 
+      title: "DSC - Data Catalogue",
+      permission: "DSC"
+    },
+  }, { // dsc.menu
+    path: '/dsc/:system', name: 'dsc.menu', component: DscMenu, 
+    meta: { 
+      title: "DSC - Data Catalogue",
+      permission: "DSC"
+    },
+  },
       // children: [{ 
       //   path: '', name: 'dsc', redirect: { name: 'dsc.my' }
       // }, { //dsc.my
@@ -151,182 +159,182 @@ const router = new VueRouter({
       //     }] 
       //   }]
       // }]
-    }, { // dpo
-      path: '/dpo', component: Dpo, 
+    // }, 
+  { // dpo
+    path: '/dpo', component: Dpo, 
+    meta: { 
+      title: "DPO - Data Catalogue",
+      permission: "DPO"
+    }, 
+    children: [{ 
+      path: '', name: 'dpo', redirect: { name: 'dpo.my' }
+    }, { //dpo.my
+      path: 'my', 
+      name: 'dpo.my', 
+      component: DpoMy, 
       meta: { 
         title: "DPO - Data Catalogue",
+        showModal: false,
+        permission: "DPO"
+      } 
+    }, { // dpo.my.system
+      path: 'my/:system', name: 'dpo.my', component: DpoMy, 
+      meta: { 
+        title: "DPO - Data Catalogue",
+        showModal: false,
         permission: "DPO"
       }, 
-      children: [{ 
-        path: '', name: 'dpo', redirect: { name: 'dpo.my' }
-      }, { //dpo.my
-        path: 'my', 
-        name: 'dpo.my', 
-        component: DpoMy, 
+      children: [{ // dpo.my.system.details
+        path: ':details', name: 'dpo.my.details', component: DpoDetails,
         meta: { 
-          title: "DPO - Data Catalogue",
-          showModal: false,
+          title: "DPO Details - Data Catalogue",
+          showModal: true,
           permission: "DPO"
         } 
-      }, { // dpo.my.system
-        path: 'my/:system', name: 'dpo.my', component: DpoMy, 
+      }] 
+    }, { // dpo.all
+      path: 'all', name: 'dpo.all', component: DpoAll, 
+      meta: { 
+        title: "DPO - Data Catalogue" ,
+        showModal: false,
+        permission: "DPO"
+      } 
+    }, { 
+      path: 'all/:system', name: 'dpo.all', component: DpoAll, 
+      meta: { 
+        title: "DPO - Data Catalogue" ,
+        showModal: false,
+        permission: "DPO"
+      }, 
+      children: [{ // dpo.all.system.details
+        path: ':details', name: 'dpo.all.details', component: DpoDetails,
         meta: { 
-          title: "DPO - Data Catalogue",
-          showModal: false,
-          permission: "DPO"
-        }, 
-        children: [{ // dpo.my.system.details
-          path: ':details', name: 'dpo.my.details', component: DpoDetails,
-          meta: { 
-            title: "DPO Details - Data Catalogue",
-            showModal: true,
-            permission: "DPO"
-          } 
-        }] 
-      }, { // dpo.all
-        path: 'all', name: 'dpo.all', component: DpoAll, 
-        meta: { 
-          title: "DPO - Data Catalogue" ,
-          showModal: false,
+          title: "DPO Details - Data Catalogue",
+          showModal: true,
           permission: "DPO"
         } 
-      }, { 
-        path: 'all/:system', name: 'dpo.all', component: DpoAll, 
-        meta: { 
-          title: "DPO - Data Catalogue" ,
-          showModal: false,
-          permission: "DPO"
-        }, 
-        children: [{ // dpo.all.system.details
-          path: ':details', name: 'dpo.all.details', component: DpoDetails,
-          meta: { 
-            title: "DPO Details - Data Catalogue",
-            showModal: true,
-            permission: "DPO"
-          } 
-        }]
       }]
-    }, { // ddo
-      path: '/ddo', component: Ddo, 
+    }]
+  }, { // ddo
+    path: '/ddo', component: Ddo, 
+    meta: { 
+      title: "DDO - Data Catalogue",
+      permission: "DDO"
+    }, 
+    children: [{ 
+      path: '', name: 'ddo', redirect: { name: 'ddo.my' }
+    }, { //ddo.my
+      path: 'my', 
+      name: 'ddo.my', 
+      component: DdoMy, 
       meta: { 
         title: "DDO - Data Catalogue",
+        showModal: false,
+        permission: "DDO"
+      } 
+    }, { // ddo.my.system
+      path: 'my/:system', name: 'ddo.my', component: DdoMy, 
+      meta: { 
+        title: "DDO - Data Catalogue",
+        showModal: false,
         permission: "DDO"
       }, 
-      children: [{ 
-        path: '', name: 'ddo', redirect: { name: 'ddo.my' }
-      }, { //ddo.my
-        path: 'my', 
-        name: 'ddo.my', 
-        component: DdoMy, 
+      children: [{ // ddo.my.system.details
+        path: ':details', name: 'ddo.my.details', component: DdoDetails,
         meta: { 
-          title: "DDO - Data Catalogue",
-          showModal: false,
+          title: "DDO Details - Data Catalogue",
+          showModal: true,
           permission: "DDO"
         } 
-      }, { // ddo.my.system
-        path: 'my/:system', name: 'ddo.my', component: DdoMy, 
+      }] 
+    }, { // ddo.all
+      path: 'all', name: 'ddo.all', component: DdoAll, 
+      meta: { 
+        title: "DDO - Data Catalogue" ,
+        showModal: false,
+        permission: "DDO"
+      } 
+    }, { 
+      path: 'all/:system', name: 'ddo.all', component: DdoAll, 
+      meta: { 
+        title: "DDO - Data Catalogue" ,
+        showModal: false,
+        permission: "DDO"
+      }, 
+      children: [{ // ddo.all.system.details
+        path: ':details', name: 'ddo.all.details', component: DdoDetails,
         meta: { 
-          title: "DDO - Data Catalogue",
-          showModal: false,
-          permission: "DDO"
-        }, 
-        children: [{ // ddo.my.system.details
-          path: ':details', name: 'ddo.my.details', component: DdoDetails,
-          meta: { 
-            title: "DDO Details - Data Catalogue",
-            showModal: true,
-            permission: "DDO"
-          } 
-        }] 
-      }, { // ddo.all
-        path: 'all', name: 'ddo.all', component: DdoAll, 
-        meta: { 
-          title: "DDO - Data Catalogue" ,
-          showModal: false,
+          title: "DDO Details - Data Catalogue",
+          showModal: true,
           permission: "DDO"
         } 
-      }, { 
-        path: 'all/:system', name: 'ddo.all', component: DdoAll, 
-        meta: { 
-          title: "DDO - Data Catalogue" ,
-          showModal: false,
-          permission: "DDO"
-        }, 
-        children: [{ // ddo.all.system.details
-          path: ':details', name: 'ddo.all.details', component: DdoDetails,
-          meta: { 
-            title: "DDO Details - Data Catalogue",
-            showModal: true,
-            permission: "DDO"
-          } 
-        }]
       }]
-    }, { // rfo
-      path: '/rfo', component: Rfo, 
+    }]
+  }, { // rfo
+    path: '/rfo', component: Rfo, 
+    meta: { 
+      title: "RFO - Data Catalogue",
+      permission: "RFO"
+    }, 
+    children: [{ 
+      path: '', name: 'rfo', redirect: { name: 'rfo.my' }
+    }, { //rfo.my
+      path: 'my', 
+      name: 'rfo.my', 
+      component: RfoMy, 
       meta: { 
         title: "RFO - Data Catalogue",
+        showModal: false,
         permission: "RFO"
-      }, 
-      children: [{ 
-        path: '', name: 'rfo', redirect: { name: 'rfo.my' }
-      }, { //rfo.my
-        path: 'my', 
-        name: 'rfo.my', 
-        component: RfoMy, 
-        meta: { 
-          title: "RFO - Data Catalogue",
-          showModal: false,
-          permission: "RFO"
-        } 
-      }, { // rfo.my.system
-        path: 'my/:system', name: 'rfo.my', component: RfoMy, 
-        meta: { 
-          title: "RFO - Data Catalogue",
-          showModal: false,
-          permission: "RFO"
-        },
-      }, { // rfo.all
-        path: 'all', name: 'rfo.all', component: RfoAll, 
-        meta: { 
-          title: "RFO - Data Catalogue" ,
-          showModal: false,
-          permission: "RFO"
-        } 
-      }, { 
-        path: 'all/:system', name: 'rfo.all', component: RfoAll, 
-        meta: { 
-          title: "RFO - Data Catalogue" ,
-          showModal: false,
-          permission: "RFO"
-        },
-      }]
-    }, { // access
-      path: '/access', component: Access, 
+      } 
+    }, { // rfo.my.system
+      path: 'my/:system', name: 'rfo.my', component: RfoMy, 
       meta: { 
-        title: "Access - Data Catalogue" ,
+        title: "RFO - Data Catalogue",
+        showModal: false,
+        permission: "RFO"
+      },
+    }, { // rfo.all
+      path: 'all', name: 'rfo.all', component: RfoAll, 
+      meta: { 
+        title: "RFO - Data Catalogue" ,
+        showModal: false,
+        permission: "RFO"
+      } 
+    }, { 
+      path: 'all/:system', name: 'rfo.all', component: RfoAll, 
+      meta: { 
+        title: "RFO - Data Catalogue" ,
+        showModal: false,
+        permission: "RFO"
+      },
+    }]
+  }, { // access
+    path: '/access', component: Access, 
+    meta: { 
+      title: "Access - Data Catalogue" ,
+      permission: "Admin"
+    }, 
+    children: [{ 
+      path: '', name: 'access', redirect: { name: 'access.users' }
+    }, { //access.users
+      path: 'users', name: 'access.users', component: AccessUsers, 
+      meta: { 
+        title: "Users - Data Catalogue",
         permission: "Admin"
-      }, 
-      children: [{ 
-        path: '', name: 'access', redirect: { name: 'access.users' }
-      }, { //access.users
-        path: 'users', name: 'access.users', component: AccessUsers, 
-        meta: { 
-          title: "Users - Data Catalogue",
-          permission: "Admin"
-        } 
-      }, { //access.users
-        path: 'roles', name: 'access.roles', component: AccessRoles, 
-        meta: { 
-          title: "Roles - Data Catalogue",
-          permission: "Admin"
-        } 
-      }, { //access.users
-        path: 'usage', name: 'access.usage', component: AccessUsage, 
-        meta: { 
-          title: "Usage Detail - Data Catalogue",
-          permission: "Admin"
-        } 
-      }]
+      } 
+    }, { //access.users
+      path: 'roles', name: 'access.roles', component: AccessRoles, 
+      meta: { 
+        title: "Roles - Data Catalogue",
+        permission: "Admin"
+      } 
+    }, { //access.users
+      path: 'usage', name: 'access.usage', component: AccessUsage, 
+      meta: { 
+        title: "Usage Detail - Data Catalogue",
+        permission: "Admin"
+      } 
     }]
   }, {
     path: '/login', name: 'login', component: Login, 
