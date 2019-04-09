@@ -4,55 +4,28 @@
 
 <template>
     <div>
-        <v-navigation-drawer app
-                :clipped="drawer.clipped"
-                :fixed="drawer.fixed"
-                :permanent="drawer.permanent"
-                :mini-variant="drawer.mini"
-                v-model="drawer.open">
-            <v-list>
-                <v-list-tile to="/">
-                    <v-list-tile-action><v-icon>dashboard</v-icon></v-list-tile-action>
-                    <v-list-tile-content><v-list-tile-title>Home</v-list-tile-title></v-list-tile-content>
-                </v-list-tile>
-
-                <v-list-tile to="/dsc" v-if="isDSC">
-                    <v-list-tile-action><v-icon>list</v-icon></v-list-tile-action>
-                    <v-list-tile-content><v-list-tile-title>Dataset Custodian</v-list-tile-title></v-list-tile-content>
-                </v-list-tile>
-
-                <v-list-tile to="/dpo" v-if="isDPO">
-                    <v-list-tile-action><v-icon>list</v-icon></v-list-tile-action>
-                    <v-list-tile-content><v-list-tile-title>Downstream Process Owner</v-list-tile-title></v-list-tile-content>
-                </v-list-tile>
-
-                <v-list-tile to="/ddo" v-if="isDDO">
-                    <v-list-tile-action><v-icon>list</v-icon></v-list-tile-action>
-                    <v-list-tile-content><v-list-tile-title>Data Domain Owner</v-list-tile-title></v-list-tile-content>
-                </v-list-tile>
-
-                <v-list-tile to="/rfo" v-if="isRFO">
-                    <v-list-tile-action><v-icon>list</v-icon></v-list-tile-action>
-                    <v-list-tile-content><v-list-tile-title>Risk Framework Owner</v-list-tile-title></v-list-tile-content>
-                </v-list-tile>
-
-                <v-list-tile to="/access" v-if="isAdmin">
-                    <v-list-tile-action><v-icon>list</v-icon></v-list-tile-action>
-                    <v-list-tile-content><v-list-tile-title>User Access</v-list-tile-title></v-list-tile-content>
-                </v-list-tile>
-            </v-list>
-        </v-navigation-drawer>
-
         <v-toolbar app
                 :fixed="toolbar.fixed"
                 :clipped-left="toolbar.clippedLeft">
-            <v-toolbar-side-icon @click.stop="toggleDrawer"></v-toolbar-side-icon>
+
+            <b-dropdown no-caret id="ddowntoolbar">
+                <template slot="button-content">
+                    <v-btn icon>
+                        <v-icon>home</v-icon>
+                    </v-btn>
+                </template>
+
+                <b-dropdown-item>
+                    <router-link to="/" class="standard-a">Home</router-link>
+                </b-dropdown-item>
+            </b-dropdown>
+
             <v-toolbar-title to="/" class="app-title"><router-link to="/" class="toolbar-title">Data Catalogue</router-link></v-toolbar-title>
             <v-spacer></v-spacer>
 
             <v-toolbar-title class="login-name">Hi, {{ account.user.Name }}</v-toolbar-title>
 
-            <b-dropdown right no-caret id="ddowntoolbarname">
+            <b-dropdown right no-caret id="ddowntoolbar">
                 <template slot="button-content">
                     <v-btn icon>
                         <v-icon>more_vert</v-icon>

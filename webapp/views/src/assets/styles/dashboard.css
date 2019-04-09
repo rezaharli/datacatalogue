@@ -1,15 +1,27 @@
+.v-toolbar {
+    background-color: #0072aa !important;
+    color: #ffffff !important;
+}
+.v-toolbar .v-btn {
+    color: #ffffff !important;
+}
+
+.v-toolbar .dropdown:hover .dropdown-menu {
+    display: block;
+}
+
 .v-toolbar__title.app-title {
     font-weight: bolder;
-    color: #3269B4;
+    color: #ffffff;
 }
 
 .v-toolbar__title.login-name {
     font-size: 14px;
 }
-.v-toolbar__title .toolbar-title {
+.v-toolbar__title .toolbar-title, .standard-a, .standard-a:hover {
     color: inherit;
     text-decoration: inherit;
-  }
+}
 
 .v-tabs.page-tab .v-tabs__bar{
     background-color: transparent;
@@ -39,7 +51,7 @@
     background-color: #F2F3F7 !important;
 }
 
-#ddowntoolbarname__BV_toggle_{
+#ddowntoolbar__BV_toggle_{
     background-color: transparent;
     border-color: transparent;
 }
