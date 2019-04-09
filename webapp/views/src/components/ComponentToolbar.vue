@@ -52,7 +52,7 @@
 
             <v-toolbar-title class="login-name">Hi, {{ account.user.Name }}</v-toolbar-title>
 
-            <b-dropdown right no-caret id="ddowntoolbarname">
+            <b-dropdown right no-caret id="ddowntoolbar">
                 <template slot="button-content">
                     <v-btn icon>
                         <v-icon>more_vert</v-icon>
