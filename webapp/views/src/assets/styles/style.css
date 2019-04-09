@@ -61,8 +61,8 @@ body{background-color: #fafafa !important;}
 .card_circle {
   height: 400px;
   width: 150%;
-  background: rgb(92,177,177);
-background: linear-gradient(45deg, rgba(92,177,177,1) 0%, rgba(54,159,181,1) 41%, rgba(57,127,164,1) 64%);
+  background: rgb(85,180,183);
+  background: linear-gradient(45deg, rgba(85,180,183,1) 20%, rgba(85,180,183,1) 30%, rgba(1,115,170,1) 60%, rgba(1,115,170,1) 70%);
   background-size: cover;
   position: absolute;
   border-radius: 50%;
