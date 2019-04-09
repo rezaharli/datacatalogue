@@ -33,6 +33,9 @@
 
 body{background-color: #fafafa !important;}
 
+.v-btn.green-tosca {background-color: #00CC99 !important;}
+.v-btn.red-neon {background-color: #FF0033 !important;}
+
 .transition {
   transition: .3s cubic-bezier(.3, 0, 0, 1.3)
 }

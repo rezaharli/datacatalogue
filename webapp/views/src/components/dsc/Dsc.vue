@@ -11,11 +11,11 @@
                 <b-col>
                     <b-row style="margin-top: 10px; margin-bottom: 20px;">
                         <b-col>
-                            <v-btn class="float-right" color="red" dark>
+                            <v-btn class="float-right" color="red-neon" dark>
                                 <v-icon dark>filter_list</v-icon>
                             </v-btn>
                             
-                            <v-btn class="float-right" color="success" dark>
+                            <v-btn class="float-right" color="green-tosca" dark>
                                 <v-icon dark>file_copy</v-icon>
                             </v-btn>
                         </b-col>
