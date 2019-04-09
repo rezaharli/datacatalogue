@@ -64,8 +64,8 @@ background: linear-gradient(45deg, rgba(92,177,177,1) 0%, rgba(54,159,181,1) 41%
   margin-top: -270px;
   transform: translateX(-50%);
 }
-.card:hover .card_circle{width: 180%;}
-.card:hover h2{ font-size: 24px;}
+.card:hover .card_circle{width: 180%; margin-top: -260px;}
+.card:hover h2{ font-size: 26px; margin-top: 45px;}
 
 .card h2 {
   text-align: center;
