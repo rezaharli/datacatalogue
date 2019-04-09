@@ -56,101 +56,101 @@ const router = new VueRouter({
         title: "DSC - Data Catalogue",
         permission: "DSC"
       }, 
-      children: [{ 
-        path: '', name: 'dsc', redirect: { name: 'dsc.my' }
-      }, { //dsc.my
-        path: 'my', 
-        name: 'dsc.my', 
-        component: DscMy, 
-        meta: { 
-          title: "DSC - Data Catalogue",
-          showModal: false,
-          permission: "DSC"
-        } 
-      }, { // dsc.my.system
-        path: 'my/:system', name: 'dsc.my', component: DscMy, 
-        meta: { 
-          title: "DSC - Data Catalogue",
-          showModal: false,
-          permission: "DSC"
-        }, 
-        children: [{ // dsc.my.system.details
-          path: ':details', name: 'dsc.my.details', component: DscDetails,
-          meta: { 
-            title: "DSC Details - Data Catalogue",
-            showModal: true,
-            permission: "DSC"
-          }, 
-          children: [{ // dsc.my.system.details.col
-            path: ':column', name: 'dsc.my.details', component: DscDetails,
-            meta: { 
-              title: "DSC Details - Data Catalogue",
-              showModal: true,
-              permission: "DSC"
-            }
-          }] 
-        }] 
-      }, { // dsc.all
-        path: 'all', name: 'dsc.all', component: DscAll, 
-        meta: { 
-          title: "DSC - Data Catalogue" ,
-          showModal: false,
-          permission: "DSC"
-        } 
-      }, { 
-        path: 'all/:system', name: 'dsc.all', component: DscAll, 
-        meta: { 
-          title: "DSC - Data Catalogue" ,
-          showModal: false,
-          permission: "DSC"
-        }, 
-        children: [{ // dsc.all.system.details
-          path: ':details', name: 'dsc.all.details', component: DscDetails,
-          meta: { 
-            title: "DSC Details - Data Catalogue",
-            showModal: true,
-            permission: "DSC"
-          }, 
-          children: [{ // dsc.all.system.details.col
-            path: ':column', name: 'dsc.all.details', component: DscDetails,
-            meta: { 
-              title: "DSC Details - Data Catalogue",
-              showModal: true,
-              permission: "DSC"
-            }
-          }]
-        }]
-      }, { // dsc.interfaces
-        path: 'interfaces', name: 'dsc.interfaces', component: DscInterfaces, 
-        meta: { 
-          title: "DSC - Data Catalogue" ,
-          showModal: false,
-          permission: "DSC"
-        } 
-      }, { 
-        path: 'interfaces/:system', name: 'dsc.interfaces', component: DscInterfaces, 
-        meta: { 
-          title: "DSC - Data Catalogue" ,
-          showModal: false,
-          permission: "DSC"
-        }, 
-        children: [{ // dsc.interfaces.system.details
-          path: ':details', name: 'dsc.interfaces.details', component: DscDetails,
-          meta: { 
-            title: "DSC Details - Data Catalogue",
-            showModal: true,
-            permission: "DSC"
-          }, 
-          children: [{ // dsc.interfaces.system.details.col
-            path: ':column', name: 'dsc.interfaces.details', component: DscDetails,
-            meta: { 
-              title: "DSC Details - Data Catalogue",
-              showModal: true,
-              permission: "DSC"
-            }
-          }] 
-        }]
-      }]
+      // children: [{ 
+      //   path: '', name: 'dsc', redirect: { name: 'dsc.my' }
+      // }, { //dsc.my
+      //   path: 'my', 
+      //   name: 'dsc.my', 
+      //   component: DscMy, 
+      //   meta: { 
+      //     title: "DSC - Data Catalogue",
+      //     showModal: false,
+      //     permission: "DSC"
+      //   } 
+      // }, { // dsc.my.system
+      //   path: 'my/:system', name: 'dsc.my', component: DscMy, 
+      //   meta: { 
+      //     title: "DSC - Data Catalogue",
+      //     showModal: false,
+      //     permission: "DSC"
+      //   }, 
+      //   children: [{ // dsc.my.system.details
+      //     path: ':details', name: 'dsc.my.details', component: DscDetails,
+      //     meta: { 
+      //       title: "DSC Details - Data Catalogue",
+      //       showModal: true,
+      //       permission: "DSC"
+      //     }, 
+      //     children: [{ // dsc.my.system.details.col
+      //       path: ':column', name: 'dsc.my.details', component: DscDetails,
+      //       meta: { 
+      //         title: "DSC Details - Data Catalogue",
+      //         showModal: true,
+      //         permission: "DSC"
+      //       }
+      //     }] 
+      //   }] 
+      // }, { // dsc.all
+      //   path: 'all', name: 'dsc.all', component: DscAll, 
+      //   meta: { 
+      //     title: "DSC - Data Catalogue" ,
+      //     showModal: false,
+      //     permission: "DSC"
+      //   } 
+      // }, { // dsc.all.system
+      //   path: 'all/:system', name: 'dsc.all', component: DscAll, 
+      //   meta: { 
+      //     title: "DSC - Data Catalogue" ,
+      //     showModal: false,
+      //     permission: "DSC"
+      //   }, 
+      //   children: [{ // dsc.all.system.details
+      //     path: ':details', name: 'dsc.all.details', component: DscDetails,
+      //     meta: { 
+      //       title: "DSC Details - Data Catalogue",
+      //       showModal: true,
+      //       permission: "DSC"
+      //     }, 
+      //     children: [{ // dsc.all.system.details.col
+      //       path: ':column', name: 'dsc.all.details', component: DscDetails,
+      //       meta: { 
+      //         title: "DSC Details - Data Catalogue",
+      //         showModal: true,
+      //         permission: "DSC"
+      //       }
+      //     }]
+      //   }]
+      // }, { // dsc.interfaces
+      //   path: 'interfaces', name: 'dsc.interfaces', component: DscInterfaces, 
+      //   meta: { 
+      //     title: "DSC - Data Catalogue" ,
+      //     showModal: false,
+      //     permission: "DSC"
+      //   } 
+      // }, { // dsc.interfaces.system
+      //   path: 'interfaces/:system', name: 'dsc.interfaces', component: DscInterfaces, 
+      //   meta: { 
+      //     title: "DSC - Data Catalogue" ,
+      //     showModal: false,
+      //     permission: "DSC"
+      //   }, 
+      //   children: [{ // dsc.interfaces.system.details
+      //     path: ':details', name: 'dsc.interfaces.details', component: DscDetails,
+      //     meta: { 
+      //       title: "DSC Details - Data Catalogue",
+      //       showModal: true,
+      //       permission: "DSC"
+      //     }, 
+      //     children: [{ // dsc.interfaces.system.details.col
+      //       path: ':column', name: 'dsc.interfaces.details', component: DscDetails,
+      //       meta: { 
+      //         title: "DSC Details - Data Catalogue",
+      //         showModal: true,
+      //         permission: "DSC"
+      //       }
+      //     }] 
+      //   }]
+      // }]
     }, { // dpo
       path: '/dpo', component: Dpo, 
       meta: { 
