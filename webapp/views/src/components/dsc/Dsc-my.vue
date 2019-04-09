@@ -28,7 +28,7 @@ table.v-table thead th > div.btn-group {
         <b-col>
           <page-loader v-if="store.left.isLoading || (store.isRightTable && store.right.isLoading)" />
           
-          <b-row>
+          <!-- <b-row>
             <b-col>
               <page-search :storeName="storeName" :searchDDInputs="searchDropdownInputs"/>
             </b-col>
@@ -38,45 +38,51 @@ table.v-table thead th > div.btn-group {
             <b-col>
               <page-export :storeName="storeName" :leftTableCols="firstTableHeaders" :rightTableCols="secondTableHeaders"/>
             </b-col>
-          </b-row>
+          </b-row> -->
 
           <b-row>
-            <b-col cols="6">
-              <v-data-table
-                  :headers="firstTableHeaders"
-                  :items="store.left.display"
-                  :pagination.sync="store.left.pagination"
-                  :total-items="store.left.totalItems"
-                  :loading="store.left.isLoading"
-                  item-key="ID"
-                  class="elevation-1 ">
+            <b-col cols="12">
+              <div class="card transition">
+                <h2 class="transition">My System</h2>
 
-                <template slot="headerCell" slot-scope="props">
-                  <tableheader :storeName="storeName" :props="props" :which="'left'" />
-                </template>
+                <v-data-table
+                    :headers="firstTableHeaders"
+                    :items="store.left.display"
+                    :pagination.sync="store.left.pagination"
+                    :total-items="store.left.totalItems"
+                    :loading="store.left.isLoading"
+                    item-key="ID"
+                    class="card-content ">
 
-                <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+                  <template slot="headerCell" slot-scope="props">
+                    <tableheader :storeName="storeName" :props="props" :which="'left'" />
+                  </template>
 
-                <template slot="no-data">
-                  <v-alert :value="store.left.isLoading" type="info">
-                    Please wait while data is loading
-                  </v-alert>
+                  <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
-                  <v-alert :value="!store.left.isLoading" type="error">
-                    Sorry, nothing to display here
-                  </v-alert>
-                </template>
+                  <template slot="no-data">
+                    <v-alert :value="store.left.isLoading" type="info">
+                      Please wait while data is loading
+                    </v-alert>
 
-                <template slot="items" slot-scope="props">
-                    <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SYSTEM_NAME" :isklik="false"></tablecell></b-link></td>
-                    <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'ITAM_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
-                    <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'DATASET_CUSTODIAN').filter(Boolean)).join('; '))" :isklik="true"></tablecell></td>
-                    <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'BANK_ID').filter(Boolean)).join('; '))" :isklik="true"></tablecell></td>
-                </template>
-              </v-data-table>
+                    <v-alert :value="!store.left.isLoading" type="error">
+                      Sorry, nothing to display here
+                    </v-alert>
+                  </template>
+
+                  <template slot="items" slot-scope="props">
+                      <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SYSTEM_NAME" :isklik="false"></tablecell></b-link></td>
+                      <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'ITAM_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                      <!-- <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'DATASET_CUSTODIAN').filter(Boolean)).join('; '))" :isklik="true"></tablecell></td>
+                      <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'BANK_ID').filter(Boolean)).join('; '))" :isklik="true"></tablecell></td> -->
+                  </template>
+                </v-data-table>
+
+                <div class="card_circle transition"></div>
+              </div>
             </b-col>
             
-            <b-col cols="6">
+            <!-- <b-col cols="6">
               <v-data-table
                   :headers="secondTableHeaders"
                   :items="store.right.display"
@@ -129,7 +135,7 @@ table.v-table thead th > div.btn-group {
                   </v-data-table>
                 </template>
               </v-data-table>
-            </b-col>
+            </b-col> -->
           </b-row>
         </b-col>
       </b-row>
@@ -159,17 +165,17 @@ export default {
         systemSource: [],
         tablenameSource: [],
         firstTableHeaders: [
-          { text: 'System Name', align: 'left', value: 'SYSTEM_NAME', displayCount: true, sortable: false },
-          { text: 'ITAM ID', align: 'left', value: 'Custodians.ITAM_ID', displayCount: true, sortable: false },
-          { text: 'Dataset Custodian', align: 'left', value: 'Custodians.DATASET_CUSTODIAN', displayCount: true, sortable: false },
-          { text: 'Bank ID', align: 'left', value: 'Custodians.BANK_ID', displayCount: true, sortable: false }
+          { text: 'System Name', align: 'left', value: 'SYSTEM_NAME', displayCount: false, sortable: false },
+          { text: 'ITAM ID', align: 'left', value: 'Custodians.ITAM_ID', displayCount: false, sortable: false },
+          // { text: 'Dataset Custodian', align: 'left', value: 'Custodians.DATASET_CUSTODIAN', displayCount: true, sortable: false },
+          // { text: 'Bank ID', align: 'left', value: 'Custodians.BANK_ID', displayCount: true, sortable: false }
         ],
-        secondTableHeaders: [
-          { text: 'Table Name', align: 'left', sortable: false, value: 'TABLE_NAME', displayCount: true, width: "25%" },
-          { text: 'Column Name', align: 'left', sortable: false, value: 'Columns.COLUMN_NAME', displayCount: true, width: "25%" },
-          { text: 'Business Alias Name', align: 'left', sortable: false, value: 'Columns.BUSINESS_ALIAS_NAME', displayCount: false, width: "25%" },
-          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'Columns.CDE_YES_NO', displayCount: true, width: "25%" }
-        ],
+        // secondTableHeaders: [
+        //   { text: 'Table Name', align: 'left', sortable: false, value: 'TABLE_NAME', displayCount: true, width: "25%" },
+        //   { text: 'Column Name', align: 'left', sortable: false, value: 'Columns.COLUMN_NAME', displayCount: true, width: "25%" },
+        //   { text: 'Business Alias Name', align: 'left', sortable: false, value: 'Columns.BUSINESS_ALIAS_NAME', displayCount: false, width: "25%" },
+        //   { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'Columns.CDE_YES_NO', displayCount: true, width: "25%" }
+        // ],
       }
     },
     computed: {
