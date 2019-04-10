@@ -170,8 +170,8 @@ export default {
         systemSource: [],
         tablenameSource: [],
         firstTableHeaders: [
-          { text: 'System Name', align: 'left', value: 'SYSTEM_NAME', displayCount: false, sortable: false },
-          { text: 'ITAM ID', align: 'left', value: 'Custodians.ITAM_ID', displayCount: false, sortable: false },
+          { text: 'System Name', align: 'left', value: 'SYSTEM_NAME', displayCount: true, sortable: false },
+          { text: 'ITAM ID', align: 'left', value: 'Custodians.ITAM_ID', displayCount: true, sortable: false },
           // { text: 'Dataset Custodian', align: 'left', value: 'Custodians.DATASET_CUSTODIAN', displayCount: true, sortable: false },
           // { text: 'Bank ID', align: 'left', value: 'Custodians.BANK_ID', displayCount: true, sortable: false }
         ],
