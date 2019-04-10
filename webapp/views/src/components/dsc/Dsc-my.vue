@@ -42,7 +42,7 @@ table.v-table thead th > div.btn-group {
 
           <b-row>
             <b-col cols="12">
-              <div class="card transition">
+              <div class="card card-v1 transition">
                 <h2 class="transition">My System</h2>
 
                 <v-data-table
@@ -83,7 +83,7 @@ table.v-table thead th > div.btn-group {
                   </template>
                 </v-data-table>
 
-                <div class="card_circle transition"></div>
+                <div class="card-circle transition"></div>
               </div>
             </b-col>
             
