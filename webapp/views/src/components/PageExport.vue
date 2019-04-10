@@ -5,7 +5,10 @@
         worksheet = "My Worksheet"
         name      = "filename.xls">
     
-        <v-btn small color="success" class="float-right">Export</v-btn>
+        <v-btn class="float-right" color="green-tosca" dark>
+            <!-- <v-icon dark>file_copy</v-icon> -->
+            <i class="fa fa-file-excel-o"></i>
+        </v-btn>
     </download-excel>
 </template>
 

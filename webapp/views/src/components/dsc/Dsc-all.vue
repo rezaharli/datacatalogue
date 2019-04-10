@@ -36,7 +36,7 @@ table.v-table thead th > div.btn-group {
             <b-col></b-col>
             <b-col></b-col>
             <b-col>
-              <page-export :storeName="storeName" :leftTableCols="firstTableHeaders" :rightTableCols="secondTableHeaders"/>
+              <page-export :storeName="storeName" :leftTableCols="store.leftHeaders" :rightTableCols="store.rightHeaders"/>
             </b-col>
           </b-row> -->
 
@@ -46,7 +46,7 @@ table.v-table thead th > div.btn-group {
                 <h2 class="transition">All System</h2>
               
                 <v-data-table
-                    :headers="firstTableHeaders"
+                    :headers="store.leftHeaders.filter(v => v.display == true)"
                     :items="store.left.display"
                     :pagination.sync="store.left.pagination"
                     :total-items="store.left.totalItems"
@@ -73,7 +73,14 @@ table.v-table thead th > div.btn-group {
 
                   <template slot="items" slot-scope="props">
                       <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SYSTEM_NAME" :isklik="false"></tablecell></b-link></td>
-                      <td><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'ITAM_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell></b-link></td>
+                      <td>
+                        <v-tooltip bottom slot="activator">
+                          <!-- <b-link @click="props.expanded = !props.expanded"> -->
+                          <tablecell slot="activator" :fulltext="(_.uniq(_.map(props.item.Custodians, 'ITAM_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell>
+                          <!-- </b-link> -->
+                          <span>{{(_.uniq(_.map(props.item.Custodians, 'DATASET_CUSTODIAN').filter(Boolean)).join('; '))}} , {{(_.uniq(_.map(props.item.Custodians, 'BANK_ID').filter(Boolean)).join('; '))}}</span>
+                        </v-tooltip>
+                      </td>
                       <!-- <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'DATASET_CUSTODIAN').filter(Boolean)).join('; '))" :isklik="true"></tablecell></td>
                       <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'BANK_ID').filter(Boolean)).join('; '))" :isklik="true"></tablecell></td> -->
                   </template>
@@ -102,7 +109,7 @@ table.v-table thead th > div.btn-group {
             
             <!-- <b-col cols=6>
               <v-data-table
-                  :headers="secondTableHeaders"
+                  :headers="store.rightHeaders"
                   :items="store.right.display"
                   :pagination.sync="store.right.pagination"
                   :total-items="store.right.totalItems"
@@ -138,7 +145,7 @@ table.v-table thead th > div.btn-group {
                 
                 <template slot="expand" slot-scope="props">
                   <v-data-table
-                    :headers="secondTableHeaders"
+                    :headers="store.rightHeaders"
                     :items="props.item.Columns"
                     class="elevation-1"
                     hide-actions
@@ -182,18 +189,6 @@ export default {
         storeName: "dscall",
         systemSource: [],
         tablenameSource: [],
-        firstTableHeaders: [
-          { text: 'System Name', align: 'left', value: 'SYSTEM_NAME', displayCount: false, sortable: false },
-          { text: 'ITAM ID', align: 'left', value: 'Custodians.ITAM_ID', displayCount: false, sortable: false },
-          // { text: 'Dataset Custodian', align: 'left', value: 'Custodians.DATASET_CUSTODIAN', displayCount: true, sortable: false },
-          // { text: 'Bank ID', align: 'left', value: 'Custodians.BANK_ID', displayCount: true, sortable: false }
-        ],
-        // secondTableHeaders: [
-        //   { text: 'Table Name', align: 'left', sortable: false, value: 'TABLE_NAME', displayCount: true, width: "25%" },
-        //   { text: 'Column Name', align: 'left', sortable: false, value: 'Columns.COLUMN_NAME', displayCount: true, width: "25%" },
-        //   { text: 'Business Alias Name', align: 'left', sortable: false, value: 'Columns.BUSINESS_ALIAS_NAME', displayCount: false, width: "25%" },
-        //   { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'Columns.CDE_YES_NO', displayCount: true, width: "25%" }
-        // ],
       }
     },
     computed: {
