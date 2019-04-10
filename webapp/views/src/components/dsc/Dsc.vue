@@ -11,12 +11,14 @@
                 <b-col>
                     <b-row style="margin-top: 10px; margin-bottom: 20px;">
                         <b-col>
-                            <v-btn class="float-right" color="red-neon" dark>
-                                <v-icon dark @click.native="resetFilter">filter_list</v-icon>
+                            <v-btn class="float-right" color="red-neon" @click.native="resetFilter" dark>
+                                <!-- <v-icon dark>filter_list</v-icon> -->
+                                <i class="fa fa-filter"></i>
                             </v-btn>
                             
                             <v-btn class="float-right" color="green-tosca" dark>
-                                <v-icon dark>file_copy</v-icon>
+                                <!-- <v-icon dark>file_copy</v-icon> -->
+                                <i class="fa fa-file-excel-o"></i>
                             </v-btn>
                         </b-col>
                     </b-row>
