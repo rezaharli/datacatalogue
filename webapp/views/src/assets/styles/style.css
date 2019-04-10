@@ -133,7 +133,7 @@ body{background-color: #fafafa !important;}
 
 .card.card-v2 {padding: 15px;}
 .card.card-v2 .title-1 {font-weight: 600; font-size: 16px;}
-.card.card-v2 .title-2 {font-weight: 700; font-style: normal; font-size: 20px; color: #0072AA; text-transform: capitalize;}
+.card.card-v2 .title-2 {font-weight: 700; font-style: normal; font-size: 20px; color: #0072AA;}
 
 .card-circle-left {
     width: 235px;

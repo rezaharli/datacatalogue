@@ -11,14 +11,14 @@
                 <b-col sm=12 md=6>
                     <div class="card card-v2 transition">
                         <h6 class="title-1">System Name</h6>
-                        <h3 class="title-2">{{$route.params.system}}</h3>
+                        <h3 class="title-2 text-capitalize">{{$route.params.system}}</h3>
                     </div>
                 </b-col>
             </b-row>
             
             <b-row>
                 <b-col md=12 class="mb-3 mt-5">
-                    <h5><b>Select SCI Type</b></h5>
+                    <h5><b>Select <span class="text-capitalize">{{$route.params.system}}</span> Type</b></h5>
                 </b-col>
             </b-row>
 
