@@ -17,6 +17,18 @@ const state = {
         },
         left: newTableObject(),
         right: newTableObject(),
+        leftHeaders: [
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: false, text: 'System Name', value: 'SYSTEM_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: false, text: 'ITAM ID', value: 'Custodians.ITAM_ID' },
+            { align: 'left', display: false, exportable: true, displayCount: true, sortable: false, text: 'Dataset Custodian', value: 'Custodians.DATASET_CUSTODIAN' },
+            { align: 'left', display: false, exportable: true, displayCount: true, sortable: false, text: 'Bank ID', value: 'Custodians.BANK_ID' }
+        ],
+        // rightHeaders: [
+        //   { text: 'Table Name', align: 'left', sortable: false, value: 'TABLE_NAME', displayCount: true, width: "25%" },
+        //   { text: 'Column Name', align: 'left', sortable: false, value: 'Columns.COLUMN_NAME', displayCount: true, width: "25%" },
+        //   { text: 'Business Alias Name', align: 'left', sortable: false, value: 'Columns.BUSINESS_ALIAS_NAME', displayCount: false, width: "25%" },
+        //   { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'Columns.CDE_YES_NO', displayCount: true, width: "25%" }
+        // ],
         isRightTable: false,
         DDSource: [],
         detailsLoading: true,
