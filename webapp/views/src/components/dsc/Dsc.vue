@@ -15,11 +15,8 @@
                                 <!-- <v-icon dark>filter_list</v-icon> -->
                                 <i class="fa fa-filter"></i>
                             </v-btn>
-                            
-                            <v-btn class="float-right" color="green-tosca" dark>
-                                <!-- <v-icon dark>file_copy</v-icon> -->
-                                <i class="fa fa-file-excel-o"></i>
-                            </v-btn>
+
+                            <page-export class="float-right" storeName="dscmy" :leftTableCols="myStore.leftHeaders" :rightTableCols="myStore.rightHeaders"/>
                         </b-col>
                     </b-row>
 
@@ -52,12 +49,13 @@
 import { mapState, mapActions } from 'vuex'
 
 import PageHeader from '../PageHeader';
+import pageExport from '../PageExport.vue'
 
 import dscMy from './Dsc-my.vue';
 import dscAll from './Dsc-all.vue';
 
 export default {
-    components: { PageHeader, dscMy, dscAll },
+    components: { PageHeader, pageExport, dscMy, dscAll },
     data () {
         return {}
     },
