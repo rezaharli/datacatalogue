@@ -22,13 +22,15 @@ func NewDSCService() *DSCService {
 
 func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	gridArgs.QueryName = "left-grid"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
+	gridArgs.QueryName = "dsc-view"
 	gridArgs.PageNumber = pageNumber
 	gridArgs.RowsPerPage = rowsPerPage
 
 	if loggedinid != "" {
-		gridArgs.MainArgs = append(gridArgs.MainArgs, loggedinid)
+		gridArgs.MainArgs = append(gridArgs.MainArgs, "MY", loggedinid)
+	} else {
+		gridArgs.MainArgs = append(gridArgs.MainArgs, "ALL", "0000000")
 	}
 
 	///////// --------------------------------------------------DROPDOWN FILTER
@@ -63,6 +65,35 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, col
 	}
 
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
+}
+
+func (s *DSCService) GetHomepageCounts(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	system := payload.GetString("System")
+	args = append(args, system, system, system)
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
+	q, err := h.BuildQueryFromFile(filePath, "dsc-view-homepage", args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
 }
 
 func (s *DSCService) GetTableName(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {

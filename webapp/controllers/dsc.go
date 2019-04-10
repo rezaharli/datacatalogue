@@ -50,6 +50,25 @@ func (c *DSC) GetAllSystems(k *knot.WebContext) {
 	h.WriteResultOK(k, res, systems)
 }
 
+func (c *DSC) GetHomepageCounts(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	systems, _, err := s.NewDSCService().GetHomepageCounts(payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	h.WriteResultOK(k, res, systems)
+}
+
 func (c *DSC) GetTableName(k *knot.WebContext) {
 	res := toolkit.NewResult()
 

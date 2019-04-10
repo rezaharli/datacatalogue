@@ -1,6 +1,6 @@
 <style>
   @import './assets/styles/style.css';
-  @import './assets/vendors/font-awesome-4.7.0/css/font-awesome.css';
+  @import 'https://use.fontawesome.com/releases/v5.8.1/css/all.css';
 </style>
 
 <template>

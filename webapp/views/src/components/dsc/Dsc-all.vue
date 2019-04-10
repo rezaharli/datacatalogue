@@ -42,7 +42,7 @@ table.v-table thead th > div.btn-group {
 
           <b-row>
             <b-col cols=12>
-              <div class="card transition">
+              <div class="card card-v1 transition">
                 <h2 class="transition">All System</h2>
               
                 <v-data-table
@@ -103,7 +103,7 @@ table.v-table thead th > div.btn-group {
                   </template> -->
                 </v-data-table>
 
-                <div class="card_circle transition"></div>
+                <div class="card-circle transition"></div>
               </div>
             </b-col>
             
@@ -272,7 +272,7 @@ export default {
         //reset right table filter
         this.store.filters.right = {};
 
-        this.$router.push(this.addressPath + '/' + param.ID);
+        this.$router.push(this.addressPath + '/' + param.SYSTEM_NAME);
       },
       showDetails (param) {
         this.$router.push(this.addressPath + "/" + param.TSID + '/' + param.ID + '/' + param.COLID)
