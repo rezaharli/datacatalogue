@@ -18,6 +18,10 @@
                 <b-dropdown-item>
                     <router-link to="/" class="standard-a">Home</router-link>
                 </b-dropdown-item>
+
+                <b-dropdown-item v-if="$route.params.system">
+                    <router-link to="/dsc" class="standard-a">System</router-link>
+                </b-dropdown-item>
             </b-dropdown>
 
             <v-toolbar-title to="/" class="app-title"><router-link to="/" class="toolbar-title">Data Catalogue</router-link></v-toolbar-title>
