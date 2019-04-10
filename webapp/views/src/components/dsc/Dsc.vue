@@ -24,17 +24,19 @@
                     </b-row>
 
                     <b-row>
-                        <b-col cols=3 />
+                        <!-- <b-container> -->
+                            <b-col sm=12 md=0 lg=3 />
 
-                        <b-col cols=3>
-                            <dsc-my />
-                        </b-col>
+                            <b-col sm=12 md=6 lg=3>
+                                <dsc-my />
+                            </b-col>
 
-                        <b-col cols=3>
-                            <dsc-all />
-                        </b-col>
+                            <b-col sm=12 md=6 lg=3>
+                                <dsc-all />
+                            </b-col>
 
-                        <b-col cols=3 />
+                            <b-col sm=12 md=0 lg=3 />
+                        <!-- </b-container> -->
                     </b-row>
 
                     <!-- <transition name="fade" mode="out-in">
