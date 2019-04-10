@@ -252,7 +252,7 @@ export default {
         //reset right table filter
         this.store.filters.right = {};
 
-        this.$router.push(this.addressPath + '/' + param.ID);
+        this.$router.push(this.addressPath + '/' + param.SYSTEM_NAME);
       },
       showDetails (param) {
         this.$router.push(this.addressPath + "/" + param.TSID + '/' + param.ID + '/' + param.COLID)
