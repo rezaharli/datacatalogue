@@ -69,17 +69,25 @@ export default {
         getAllLeftTable () { return this.$store.dispatch(`dscall/getLeftTable`) },
         getAllRightTable () { return this.$store.dispatch(`dscall/getRightTable`) },
         resetFilter (e) {
-            this.myStore.filters.left = {};
-            this.getMyLeftTable();
+            if(Object.keys(this.myStore.filters.left).length > 0){
+                this.myStore.filters.left = {};
+                this.getMyLeftTable();
+            }
 
-            // this.myStore.filters.right = {}
-            // this.getMyRightTable(this.$route.params.system);
+            // if(Object.keys(this.myStore.filters.right).length > 0){
+            //     this.myStore.filters.right = {}
+            //     this.getMyRightTable(this.$route.params.system);
+            // }
 
-            this.allStore.filters.left = {}
-            this.getAllLeftTable();
+            if(Object.keys(this.allStore.filters.left).length > 0){
+                this.allStore.filters.left = {}
+                this.getAllLeftTable();
+            }
 
-            // this.allStore.filters.right = {}
-            // this.getAllRightTable(this.$route.params.system);
+            // if(Object.keys(this.allStore.filters.right).length > 0){
+            //     this.allStore.filters.right = {}
+            //     this.getAllRightTable(this.$route.params.system);
+            // }
         }
     },
 }
