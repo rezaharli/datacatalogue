@@ -7,7 +7,7 @@
     
         <v-btn class="float-right" color="green-tosca" dark>
             <!-- <v-icon dark>file_copy</v-icon> -->
-            <i class="fa fa-file-excel-o"></i>
+            <i class="fa fa-file-excel"></i>
         </v-btn>
     </download-excel>
 </template>
