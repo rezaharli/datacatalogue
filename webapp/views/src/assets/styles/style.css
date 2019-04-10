@@ -89,7 +89,7 @@ body{background-color: #fafafa !important;}
   text-align: center;
   margin-top: 40px;
   position: absolute;
-  z-index: 9999;
+  z-index: 1;
   font-size: 20px;
   color: #ffffff;
   width: 100%;
