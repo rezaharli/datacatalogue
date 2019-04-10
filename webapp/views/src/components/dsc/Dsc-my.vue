@@ -72,7 +72,12 @@ table.v-table thead th > div.btn-group {
 
                   <template slot="items" slot-scope="props">
                       <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SYSTEM_NAME" :isklik="false"></tablecell></b-link></td>
-                      <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'ITAM_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell></td>
+                      <td>
+                        <v-tooltip bottom slot="activator">
+                          <tablecell slot="activator" :fulltext="(_.uniq(_.map(props.item.Custodians, 'ITAM_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell>
+                          <span>{{ (_.uniq(_.map(props.item.Custodians, 'DATASET_CUSTODIAN').filter(Boolean)).join('; ')) }} ,  {{ (_.uniq(_.map(props.item.Custodians, 'BANK_ID').filter(Boolean)).join('; ')) }}</span>
+                        </v-tooltip>
+                      </td>
                       <!-- <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'DATASET_CUSTODIAN').filter(Boolean)).join('; '))" :isklik="true"></tablecell></td>
                       <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'BANK_ID').filter(Boolean)).join('; '))" :isklik="true"></tablecell></td> -->
                   </template>
