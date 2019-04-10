@@ -22,13 +22,15 @@ func NewDSCService() *DSCService {
 
 func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	gridArgs.QueryName = "left-grid"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
+	gridArgs.QueryName = "dsc-view"
 	gridArgs.PageNumber = pageNumber
 	gridArgs.RowsPerPage = rowsPerPage
 
 	if loggedinid != "" {
-		gridArgs.MainArgs = append(gridArgs.MainArgs, loggedinid)
+		gridArgs.MainArgs = append(gridArgs.MainArgs, "MY", loggedinid)
+	} else {
+		gridArgs.MainArgs = append(gridArgs.MainArgs, "ALL", "0000000")
 	}
 
 	///////// --------------------------------------------------DROPDOWN FILTER
