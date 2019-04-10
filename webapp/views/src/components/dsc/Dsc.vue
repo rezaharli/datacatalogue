@@ -12,7 +12,7 @@
                     <b-row style="margin-top: 10px; margin-bottom: 20px;">
                         <b-col>
                             <v-btn class="float-right" color="red-neon" dark>
-                                <v-icon dark>filter_list</v-icon>
+                                <v-icon dark @click.native="resetFilter">filter_list</v-icon>
                             </v-btn>
                             
                             <v-btn class="float-right" color="green-tosca" dark>
@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+
 import PageHeader from '../PageHeader';
 
 import dscMy from './Dsc-my.vue';
@@ -55,5 +57,14 @@ export default {
     data () {
       return {}
     },
+    computed: {
+      myStore () { return this.$store.state.dscmy.all },
+      allStore () { return this.$store.state.dscall.all }
+    },
+    methods: {
+        resetFilter (e) {
+
+        }
+    }
 }
 </script>
