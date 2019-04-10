@@ -57,16 +57,30 @@ import dscAll from './Dsc-all.vue';
 export default {
     components: { PageHeader, dscMy, dscAll },
     data () {
-      return {}
+        return {}
     },
     computed: {
-      myStore () { return this.$store.state.dscmy.all },
-      allStore () { return this.$store.state.dscall.all }
+        myStore () { return this.$store.state.dscmy.all },
+        allStore () { return this.$store.state.dscall.all }
     },
     methods: {
+        getMyLeftTable () { return this.$store.dispatch(`dscmy/getLeftTable`) },
+        getMyRightTable () { return this.$store.dispatch(`dscmy/getRightTable`) },
+        getAllLeftTable () { return this.$store.dispatch(`dscall/getLeftTable`) },
+        getAllRightTable () { return this.$store.dispatch(`dscall/getRightTable`) },
         resetFilter (e) {
+            this.myStore.filters.left = {};
+            this.getMyLeftTable();
 
+            // this.myStore.filters.right = {}
+            // this.getMyRightTable(this.$route.params.system);
+
+            this.allStore.filters.left = {}
+            this.getAllLeftTable();
+
+            // this.allStore.filters.right = {}
+            // this.getAllRightTable(this.$route.params.system);
         }
-    }
+    },
 }
 </script>
