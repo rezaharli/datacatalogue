@@ -18,8 +18,8 @@ const state = {
         left: newTableObject(),
         right: newTableObject(),
         leftHeaders: [
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: false, text: 'System Name', value: 'SYSTEM_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: false, text: 'ITAM ID', value: 'Custodians.ITAM_ID' },
+            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'System Name', value: 'SYSTEM_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'ITAM ID', value: 'Custodians.ITAM_ID' },
             { align: 'left', display: false, exportable: true, displayCount: true, sortable: false, text: 'Dataset Custodian', value: 'Custodians.DATASET_CUSTODIAN' },
             { align: 'left', display: false, exportable: true, displayCount: true, sortable: false, text: 'Bank ID', value: 'Custodians.BANK_ID' }
         ],
