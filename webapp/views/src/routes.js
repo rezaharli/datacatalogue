@@ -52,7 +52,7 @@ const router = new VueRouter({
       title: "Home - Data Catalogue" 
     },
   }, { // dsc
-    path: '/dsc', component: Dsc, 
+    path: '/dsc', name: 'dsc', component: Dsc, 
     meta: { 
       title: "DSC - Data Catalogue",
       permission: "DSC"

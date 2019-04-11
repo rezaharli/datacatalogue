@@ -24,7 +24,7 @@
                 </b-dropdown-item>
             </b-dropdown>
 
-            <v-toolbar-title to="/" class="app-title"><router-link to="/" class="toolbar-title">Data Catalogue</router-link></v-toolbar-title>
+            <v-toolbar-title to="/" class="app-title text-capitalize"><router-link to="/" class="toolbar-title">{{ $route.name.indexOf('dsc.') != -1 ? $route.params.system : "Data Catalogue" }}</router-link></v-toolbar-title>
             <v-spacer></v-spacer>
 
             <v-toolbar-title class="login-name">Hi, {{ account.user.Name }}</v-toolbar-title>
