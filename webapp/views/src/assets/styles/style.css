@@ -33,6 +33,7 @@
 
 body{background-color: #fafafa !important;}
 
+.dropdown-menu{margin-top: 0 !important;}
 .bg-2 {
     background: linear-gradient(
         rgba(255, 255, 255, 1), 
