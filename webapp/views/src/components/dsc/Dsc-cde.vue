@@ -47,6 +47,7 @@ table.v-table thead th > div.btn-group {
                                     :pagination.sync="store.left.pagination"
                                     :total-items="store.left.totalItems"
                                     :loading="store.left.isLoading"
+                                    :expand="false"
                                     item-key="ID"
                                     class="card-content">
                                   <template slot="headerCell" slot-scope="props">
@@ -68,16 +69,52 @@ table.v-table thead th > div.btn-group {
                                   </template>
 
                                   <template slot="items" slot-scope="props">
-                                    <td>
-                                      <b-link @click="showDetails(props.item)">
-                                        <tablecell :fulltext="props.item.CDE" :isklik="false"></tablecell>
-                                      </b-link>
-                                    </td>
-                                    <td><tablecell :fulltext="props.item.DESCRIPTION" :isklik="true"></tablecell></td>
-                                    <td><tablecell :fulltext="props.item.TABLE_NAME" :isklik="true"></tablecell></td>
-                                    <td><tablecell :fulltext="props.item.COLUMN_NAME" :isklik="true"></tablecell></td>
-                                    <td><tablecell :fulltext="props.item.DSP_NAME" :isklik="true"></tablecell></td>
-                                    <td><tablecell :fulltext="props.item.PROCESS_OWNER" :isklik="true"></tablecell></td>
+                                    <td style="width: calc(100% / 6)"><b-link @click="showDetails(props.item)">{{ props.item.CDE }}</b-link></td>
+                                    <td style="width: calc(100% / 6)"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'DESCRIPTION')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                                    <td style="width: calc(100% / 6)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'TABLE_NAME')).filter(Boolean).join(', '))" :isklik="false"></tablecell></b-link></td>
+                                    <td style="width: calc(100% / 6)"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'COLUMN_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                                    <td style="width: calc(100% / 6)"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'DSP_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                                    <td style="width: calc(100% / 6)"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'PROCESS_OWNER')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                                  </template>
+                
+                                  <template slot="expand" slot-scope="props">
+                                    <v-data-table
+                                      :headers="store.leftHeaders.filter(v => v.display == true)"
+                                      :items="props.item.Columns"
+                                      class="elevation-1"
+                                      item-key="ID"
+                                      hide-actions
+                                      hide-headers
+                                    >
+                                      <template slot="items" slot-scope="props">
+                                        <td style="width: calc(100% / 6)">&nbsp;</td>
+                                        <td style="width: calc(100% / 6)">&nbsp;</td>
+                                        <td style="width: calc(100% / 6)">&nbsp;</td>
+                                        <td style="width: calc(100% / 6)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'COLUMN_NAME')).filter(Boolean).join(', '))" :isklik="false"></tablecell></b-link></td>
+                                        <td style="width: calc(100% / 6)"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'DSP_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                                        <td style="width: calc(100% / 6)"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'PROCESS_OWNER')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                                      </template>
+
+                                      <template slot="expand" slot-scope="props">
+                                        <v-data-table
+                                          :headers="store.leftHeaders.filter(v => v.display == true)"
+                                          :items="props.item.Values"
+                                          class="elevation-1"
+                                          item-key="ID"
+                                          hide-actions
+                                          hide-headers
+                                        >
+                                          <template slot="items" slot-scope="props">
+                                            <td style="width: calc(100% / 6)">&nbsp;</td>
+                                            <td style="width: calc(100% / 6)">&nbsp;</td>
+                                            <td style="width: calc(100% / 6)">&nbsp;</td>
+                                            <td style="width: calc(100% / 6)">&nbsp;</td>
+                                            <td style="width: calc(100% / 6)"><tablecell :fulltext="props.item.DSP_NAME" :isklik="true"></tablecell></td>
+                                            <td style="width: calc(100% / 6)"><tablecell :fulltext="props.item.PROCESS_OWNER" :isklik="true"></tablecell></td>
+                                          </template>
+                                        </v-data-table>
+                                      </template>
+                                    </v-data-table>
                                   </template>
                                 </v-data-table>
                               </b-col>

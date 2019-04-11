@@ -212,22 +212,12 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	tabs := ""
-
 	q := ""
 	args := make([]interface{}, 0)
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	if strings.Contains(payload.GetString("Which"), "interfaces") == true {
-		tabs = "dscinterfaces"
-	} else if strings.Contains(payload.GetString("Which"), "my") == true {
-		tabs = "dscmy"
-	} else {
-		tabs = "dscall"
-	}
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
 	q, err := h.BuildQueryFromFile(filePath, "details", args...)
 	if err != nil {
 		return nil, 0, err
@@ -274,22 +264,12 @@ func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	tabs := ""
-
 	q := ""
 	args := make([]interface{}, 0)
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	if strings.Contains(payload.GetString("Which"), "interfaces") == true {
-		tabs = "dscinterfaces"
-	} else if strings.Contains(payload.GetString("Which"), "my") == true {
-		tabs = "dscmy"
-	} else {
-		tabs = "dscall"
-	}
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
 	q, err := h.BuildQueryFromFile(filePath, "details", args...)
 	if err != nil {
 		return nil, 0, err
