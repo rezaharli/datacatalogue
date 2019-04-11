@@ -69,6 +69,36 @@ func (c *DSC) GetHomepageCounts(k *knot.WebContext) {
 	h.WriteResultOK(k, res, systems)
 }
 
+func (c *DSC) GetCDETable(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	system := payload.GetString("System")
+	colFilter := payload.Get("Filters")
+	pagination, err := toolkit.ToM(payload.Get("Pagination"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	pageNumber := pagination.GetInt("page")
+	rowsPerPage := pagination.GetInt("rowsPerPage")
+
+	systems, _, err := s.NewDSCService().GetCDETable(system, colFilter, pageNumber, rowsPerPage)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	h.WriteResultOK(k, res, systems)
+}
+
 func (c *DSC) GetTableName(k *knot.WebContext) {
 	res := toolkit.NewResult()
 

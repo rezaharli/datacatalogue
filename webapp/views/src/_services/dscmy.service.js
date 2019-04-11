@@ -3,6 +3,7 @@ import { fetchWHeader } from '../_helpers/auth-header';
 export const dscMyService = {
     getLeftTable,
     getHomepageCounts,
+    getCdeTable,
     getRightTable,
     getInterfacesRightTable,
     getDetails
@@ -31,6 +32,10 @@ function getHomepageCounts(param) {
         res.Data = res.Data[0] ? res.Data[0] : null;
         return res;
     });
+}
+
+function getCdeTable(param) {
+    return fetchWHeader(`/dsc/getcdetable`, param);
 }
 
 function getRightTable(param) {
