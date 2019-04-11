@@ -5,7 +5,7 @@
     <b-dropdown no-caret variant="link" class="header-filter-icon" ref="columnFilter">
       <template slot="button-content">
         <!-- <i class="fa fa-filter text-muted"></i> -->
-        <v-icon small v-bind:class="{'icon-active' : store.filters[which][props.header.value.split('.').reverse()[0]] != null }">filter_list</v-icon>
+        <v-icon small v-bind:class="{'icon-active' : store.filters[which][props.header.value.split('.').reverse()[0]] }">filter_list</v-icon>
       </template>
 
       <b-dropdown-header>
