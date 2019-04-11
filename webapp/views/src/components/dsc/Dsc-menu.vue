@@ -41,7 +41,7 @@
                                 </b-col>
                             </b-row>
 
-                            <h4 class="title-2">{{store.counts.CDE_COUNT}}</h4>
+                            <h4 class="title-2">{{ store.counts ? store.counts.CDE_COUNT : 0 }}</h4>
                             <div class="card-circle-left transition"></div>
                         </div>
                     </b-col>
@@ -62,7 +62,7 @@
                                 </b-col>
                             </b-row>
 
-                            <h4 class="title-2">{{store.counts.DSP_COUNT}}</h4>
+                            <h4 class="title-2">{{ store.counts ? store.counts.DSP_COUNT : 0 }}</h4>
                             <div class="card-circle-left transition"></div>
                         </div>
                     </b-col>
@@ -86,7 +86,7 @@
                                 </b-col>
                             </b-row>
 
-                            <h4 class="title-2">{{store.counts.INTERFACE_COUNT}}</h4>
+                            <h4 class="title-2">{{ store.counts ? store.counts.INTERFACE_COUNT : 0 }}</h4>
                             <div class="card-circle-left transition"></div>
                         </div>
                     </b-col>
