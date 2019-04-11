@@ -107,10 +107,10 @@ SELECT *
 				WHERE UPPER(TS.SYSTEM_NAME) = UPPER('?') AND CDE = 1
 			) res
 	) WHERE ( -- Column filter
-		upper(NVL(PROCESS_OWNER,' ')) LIKE upper('%?%')
-		AND upper(NVL(PROCESS_OWNER,' ')) LIKE upper('%?%')
-		AND upper(NVL(PROCESS_OWNER,' ')) LIKE upper('%?%')
-		AND upper(NVL(PROCESS_OWNER,' ')) LIKE upper('%?%')
-		AND upper(NVL(PROCESS_OWNER,' ')) LIKE upper('%?%')
+		upper(NVL(CDE,' ')) LIKE upper('%?%')
+		AND upper(NVL(DESCRIPTION,' ')) LIKE upper('%?%')
+		AND upper(NVL(TABLE_NAME,' ')) LIKE upper('%?%')
+		AND upper(NVL(COLUMN_NAME,' ')) LIKE upper('%?%')
+		AND upper(NVL(DSP_NAME,' ')) LIKE upper('%?%')
 		AND upper(NVL(PROCESS_OWNER,' ')) LIKE upper('%?%')
 	)
