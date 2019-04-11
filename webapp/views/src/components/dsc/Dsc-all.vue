@@ -40,10 +40,11 @@ table.v-table thead th > div.btn-group {
             </b-col>
           </b-row> -->
 
-          <b-row>
-            <b-col cols=12>
               <div class="card card-v1 transition">
-                <h2 class="transition">All System</h2>
+                <div class="title-wrapper">
+                  <v-img :src="images.all" :contain="true" class="card-icon transition"></v-img>
+                  <h2 class="transition title-1">All System</h2>
+                </div>
               
                 <v-data-table
                     :headers="store.leftHeaders.filter(v => v.display == true)"
@@ -105,7 +106,6 @@ table.v-table thead th > div.btn-group {
 
                 <div class="card-circle transition"></div>
               </div>
-            </b-col>
             
             <!-- <b-col cols=6>
               <v-data-table
@@ -161,7 +161,7 @@ table.v-table thead th > div.btn-group {
                 </template>
               </v-data-table>
             </b-col> -->
-          </b-row>
+          
         </b-col>
       </b-row>
     </b-col>
@@ -189,6 +189,9 @@ export default {
         storeName: "dscall",
         systemSource: [],
         tablenameSource: [],
+        images: {
+          all: require('../../assets/images/icon-all-system.png'),
+        }
       }
     },
     computed: {

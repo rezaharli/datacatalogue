@@ -4,43 +4,40 @@
 
 <template>
     <v-content>
+        <PageHeader />
+
         <b-container fluid>
-            <PageHeader />
-
-            <b-row>
+            <b-row style="margin-top: 10px; margin-bottom: 20px;">
                 <b-col>
-                    <b-row style="margin-top: 10px; margin-bottom: 20px;">
-                        <b-col>
-                            <v-btn class="float-right" color="red-neon" @click.native="resetFilter" dark>
-                                <!-- <v-icon dark>filter_list</v-icon> -->
-                                <i class="fa fa-filter"></i>
-                            </v-btn>
+                    <v-btn class="float-right" color="red-neon" @click.native="resetFilter" dark>
+                        <!-- <v-icon dark>filter_list</v-icon> -->
+                        <i class="fa fa-filter"></i>
+                    </v-btn>
 
-                            <page-export class="float-right" storeName="dscmy" :leftTableCols="myStore.leftHeaders" :rightTableCols="myStore.rightHeaders"/>
-                        </b-col>
-                    </b-row>
-
-                    <b-row>
-                        <!-- <b-container> -->
-                            <b-col sm=12 md=0 lg=3 />
-
-                            <b-col sm=12 md=6 lg=3>
-                                <dsc-my />
-                            </b-col>
-
-                            <b-col sm=12 md=6 lg=3>
-                                <dsc-all />
-                            </b-col>
-
-                            <b-col sm=12 md=0 lg=3 />
-                        <!-- </b-container> -->
-                    </b-row>
-
-                    <!-- <transition name="fade" mode="out-in">
-                        <router-view></router-view>
-                    </transition> -->
+                    <page-export class="float-right" storeName="dscmy" :leftTableCols="myStore.leftHeaders" :rightTableCols="myStore.rightHeaders"/>
                 </b-col>
             </b-row>
+        </b-container>
+
+        <b-container>
+            <b-row>
+                <b-col sm=12 md=1 lg=1 />
+
+                <b-col sm=12 md=5 lg=5>
+                    <dsc-my />
+                </b-col>
+
+                <b-col sm=12 md=5 lg=5>
+                    <dsc-all />
+                </b-col>
+
+                <b-col sm=12 md=1 lg=1 />
+            </b-row>
+
+            <!-- <transition name="fade" mode="out-in">
+                <router-view></router-view>
+            </transition> -->
+                
         </b-container>
     </v-content>
 </template>
