@@ -26,7 +26,7 @@
                 <b-row>
                     <b-col sm=12 md=1 lg=1 />
                     <b-col sm=12 md=5 lg=5 class="my-3">
-                        <div class="card card-v3 transition">
+                        <div class="card card-v3 transition link" @click="goToDscMenuContent('cde')">
                             <b-row>
                                 <b-col cols=4 class="transition">
                                     <v-img :src="images.cde" :contain="true" class="card-icon"></v-img>
@@ -47,7 +47,7 @@
                     </b-col>
                 
                     <b-col sm=12 md=5 lg=5 class="my-3">
-                        <div class="card card-v3 transition">
+                        <div class="card card-v3 transition link" @click="goToDscMenuContent('cdp')">
                             <b-row>
                                 <b-col cols=4 class="transition">
                                     <v-img :src="images.cdsp" :contain="true" class="card-icon"></v-img>
@@ -71,7 +71,7 @@
                 </b-row><b-row>
                     <b-col sm=12 md=1 lg=1 />
                     <b-col sm=12 md=5 lg=5 class="my-3">
-                        <div class="card card-v3 transition">
+                        <div class="card card-v3 transition link" @click="goToDscMenuContent('interfaces')">
                             <b-row>
                                 <b-col cols=4 class="transition">
                                     <v-img :src="images.imi" :contain="true" class="card-icon"></v-img>
@@ -92,7 +92,7 @@
                     </b-col>
 
                     <b-col sm=12 md=5 lg=5 class="my-3">
-                        <div class="card card-v3 transition">
+                        <div class="card card-v3 transition link" @click="goToDscMenuContent('dd')">
                             <b-row>
                                 <b-col cols=4 class="transition">
                                     <v-img :src="images.dd" :contain="true" class="card-icon"></v-img>
@@ -135,6 +135,10 @@ export default {
         }
     },
     computed: {
+        addressPathParent (){
+            var tmp = this.$route.path.split("/")
+            return tmp.slice(0, 2).join("/")
+        },
         store () {
             return this.$store.state.dsc.all
         },
@@ -145,6 +149,10 @@ export default {
     methods: {
         getCounts (param) {
             this.$store.dispatch(`dsc/getCounts`, param)
+        },
+        goToDscMenuContent(param){
+            // this.$router.push(this.addressPathParent + '/' + param + '/' + this.$route.params.system);
+            console.log(this.addressPathParent + '/' + param + '/' + this.$route.params.system);
         },
     }
 }
