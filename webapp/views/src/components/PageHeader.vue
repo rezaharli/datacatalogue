@@ -19,8 +19,12 @@
                     <router-link to="/" class="standard-a">Home</router-link>
                 </b-dropdown-item>
 
-                <b-dropdown-item v-if="$route.params.system">
-                    <router-link to="/dsc" class="standard-a">System</router-link>
+                <b-dropdown-item v-if="$route.name == 'dsc.menu' || $route.name.indexOf('dsc.') != -1">
+                    <router-link to="/dsc" class="standard-a">DSC System</router-link>
+                </b-dropdown-item>
+
+                <b-dropdown-item v-if="$route.name == 'dsc.cde'">
+                    <router-link :to="goToDscMenu" class="standard-a">System Landing Page</router-link>
                 </b-dropdown-item>
             </b-dropdown>
 
@@ -80,7 +84,13 @@ export default {
         },
         isRFO () {
             return this.user.Role.split(",").indexOf("RFO") != -1
-        }
+        },
+        goToDscMenu(){
+            var tmp = this.$route.path.split("/");
+            var tmp2 = tmp.slice(0, 2).join("/");
+            var tmp3 = tmp2 + '/' + this.$route.params.system;
+            return tmp3;
+        },
     },
     methods: {
         ...mapActions('account', ['logout']),
