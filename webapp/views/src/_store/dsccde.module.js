@@ -8,6 +8,7 @@ const state = {
             left: {},
             right: {}
         },
+        system: '',
         left: newTableObject(),
         leftHeaders: [
             { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'CDE', value: 'CDE' },
@@ -34,7 +35,7 @@ const actions = {
         });
 
         var param = {
-            System: system,
+            System: state.all.system,
             Filters: state.all.filters.left,
             Pagination: state.all.left.pagination
         }

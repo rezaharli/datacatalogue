@@ -180,13 +180,25 @@ export default {
   },
   mounted() {
     this.store.tabName = this.storeName;
+    this.store.system = this.$route.params.system;
   },
   methods: {
     getLeftTable() {
-      this.$store.dispatch(`${this.storeName}/getLeftTable`, this.$route.params.system);
+      this.$store.dispatch(`${this.storeName}/getLeftTable`);
     },
     systemRowClick(evt) {
       evt.preventDefault();
+    },
+    resetFilter (e) {
+        if(Object.keys(this.store.filters.left).length > 0){
+            this.store.filters.left = {};
+            this.getLeftTable();
+        }
+
+        // if(Object.keys(this.store.filters.right).length > 0){
+        //     this.store.filters.right = {}
+        //     this.getMyRightTable(this.$route.params.system);
+        // }
     },
     getCDEConclusion(cdes) {
       return cdes
