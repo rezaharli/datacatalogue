@@ -96,6 +96,33 @@ func (s *DSCService) GetHomepageCounts(payload toolkit.M) (interface{}, int, err
 	return resultRows, resultTotal, nil
 }
 
+func (s *DSCService) GetCDETable(system string, colFilter interface{}, pageNumber, rowsPerPage int) ([]toolkit.M, int, error) {
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
+	gridArgs.QueryName = "dsc-view-cde"
+	gridArgs.PageNumber = pageNumber
+	gridArgs.RowsPerPage = rowsPerPage
+
+	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
+
+	///////// --------------------------------------------------COLUMN FILTER
+	colFilterM, err := toolkit.ToM(colFilter)
+	if err != nil {
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "")
+	} else {
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
+			colFilterM.GetString("CDE"),
+			colFilterM.GetString("DESCRIPTION"),
+			colFilterM.GetString("TABLE_NAME"),
+			colFilterM.GetString("COLUMN_NAME"),
+			colFilterM.GetString("DSP_NAME"),
+			colFilterM.GetString("PROCESS_OWNER"),
+		)
+	}
+
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
+}
+
 func (s *DSCService) GetTableName(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
 	gridArgs := GridArgs{}
 	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
@@ -185,22 +212,12 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	tabs := ""
-
 	q := ""
 	args := make([]interface{}, 0)
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	if strings.Contains(payload.GetString("Which"), "interfaces") == true {
-		tabs = "dscinterfaces"
-	} else if strings.Contains(payload.GetString("Which"), "my") == true {
-		tabs = "dscmy"
-	} else {
-		tabs = "dscall"
-	}
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
 	q, err := h.BuildQueryFromFile(filePath, "details", args...)
 	if err != nil {
 		return nil, 0, err
@@ -247,22 +264,12 @@ func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	tabs := ""
-
 	q := ""
 	args := make([]interface{}, 0)
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	if strings.Contains(payload.GetString("Which"), "interfaces") == true {
-		tabs = "dscinterfaces"
-	} else if strings.Contains(payload.GetString("Which"), "my") == true {
-		tabs = "dscmy"
-	} else {
-		tabs = "dscall"
-	}
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
 	q, err := h.BuildQueryFromFile(filePath, "details", args...)
 	if err != nil {
 		return nil, 0, err

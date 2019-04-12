@@ -7,6 +7,7 @@ import Login from './components/Login';
 
 import Dsc from './components/dsc/Dsc';
 import DscMenu from './components/dsc/Dsc-menu';
+import DscCde from './components/dsc/Dsc-cde';
 import DscDetails from './components/dsc/Dsc-details';
 import DscMy from './components/dsc/Dsc-my';
 import DscAll from './components/dsc/Dsc-all';
@@ -63,6 +64,28 @@ const router = new VueRouter({
       title: "DSC - Data Catalogue",
       permission: "DSC"
     },
+  }, { // dsc.menu
+    path: '/dsc/cde/:system', name: 'dsc.cde', component: DscCde, 
+    meta: { 
+      title: "DSC - Data Catalogue",
+      permission: "DSC"
+    },
+    children: [{ // dsc.my.system.details
+      path: ':details', name: 'dsc.my.details', component: DscDetails,
+      meta: { 
+        title: "DSC Details - Data Catalogue",
+        showModal: true,
+        permission: "DSC"
+      }, 
+      children: [{ // dsc.my.system.details.col
+        path: ':column', name: 'dsc.my.details', component: DscDetails,
+        meta: { 
+          title: "DSC Details - Data Catalogue",
+          showModal: true,
+          permission: "DSC"
+        }
+      }] 
+    }] 
   },
       // children: [{ 
       //   path: '', name: 'dsc', redirect: { name: 'dsc.my' }

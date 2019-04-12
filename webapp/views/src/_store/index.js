@@ -7,6 +7,7 @@ import { users } from './users.module';
 import { dsc } from './dsc.module';
 import { dscmy } from './dscmy.module';
 import { dscall } from './dscall.module';
+import { dsccde } from './dsccde.module';
 import { dscinterfaces } from './dscinterfaces.module';
 import { dpomy } from './dpomy.module';
 import { dpoall } from './dpoall.module';
@@ -22,7 +23,7 @@ export const store = new Vuex.Store({
         alert,
         account,
         users,
-        dsc, dscmy, dscall, dscinterfaces,
+        dsc, dscmy, dscall, dsccde, dscinterfaces,
         dpomy, dpoall,
         ddomy, ddoall,
         rfomy, rfoall

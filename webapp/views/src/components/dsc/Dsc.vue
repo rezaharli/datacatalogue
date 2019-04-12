@@ -9,10 +9,9 @@
         <b-container fluid>
             <b-row style="margin-top: 10px; margin-bottom: 20px;">
                 <b-col>
-                    <v-btn class="float-right" color="red-neon" @click.native="resetFilter" dark>
-                        <!-- <v-icon dark>filter_list</v-icon> -->
+                    <b-button class="float-right red-neon icon-only ml-3" @click.native="resetFilter">
                         <i class="fa fa-filter"></i>
-                    </v-btn>
+                    </b-button>
 
                     <page-export class="float-right" storeName="dscmy" :leftTableCols="myStore.leftHeaders" :rightTableCols="myStore.rightHeaders"/>
                 </b-col>
@@ -37,8 +36,51 @@
             <!-- <transition name="fade" mode="out-in">
                 <router-view></router-view>
             </transition> -->
-                
         </b-container>
+
+        <v-navigation-drawer v-model="store.drawer" right absolute temporary width="400">
+
+            <b-row align-h="end" class="pr-4 pt-3 bg-light-grey">
+                <b-button variant="light" class="float-right" @click.stop="store.drawer = !store.drawer">
+                    <i class="fa fa-fw fa-arrow-right"></i>
+                </b-button>
+            </b-row>
+
+            <v-list class="p-0 bg-light-grey">
+                <!-- <v-list-tile avatar>
+                    <v-list-tile-content>
+                        <v-list-tile-title>{{ store.drawerContent.systemName }}</v-list-tile-title>
+                    </v-list-tile-content>
+                    <v-list-tile-content>
+                        <v-list-tile-title>{{ store.drawerContent.itamID }}</v-list-tile-title>
+                    </v-list-tile-content>
+                    <v-list-tile-content>
+                        <v-list-tile-title>{{ store.drawerContent.owners.length }}</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile> -->
+                <h1 class="px-4 py-2">{{ store.drawerContent.systemName }}</h1>
+                <b-row class="px-4 pt-2 pb-4">
+                    <b-col cols=12 sm=auto class="border-right">ITAM ID: {{ store.drawerContent.itamID }}</b-col>
+                    <b-col cols=12 sm=auto>{{ store.drawerContent.owners.length }} Owners</b-col>
+                </b-row>
+
+            </v-list>
+            
+
+            <v-list class="px-0 pt-4" dense>
+                <!-- <v-divider></v-divider> -->
+
+                <v-list-tile class="px-2 py-0"
+                    v-for="(owner, i) in store.drawerContent.owners"
+                    :key="i">
+                    <v-list-tile-action>{{ owner.BANK_ID }}</v-list-tile-action>
+
+                    <v-list-tile-content>
+                        <v-list-tile-title class="text-capitalize">{{ owner.DATASET_CUSTODIAN }}</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+        </v-navigation-drawer>
     </v-content>
 </template>
 
@@ -57,6 +99,7 @@ export default {
         return {}
     },
     computed: {
+        store () { return this.$store.state.dsc.all },
         myStore () { return this.$store.state.dscmy.all },
         allStore () { return this.$store.state.dscall.all }
     },

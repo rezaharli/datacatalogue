@@ -3,6 +3,7 @@ import { fetchWHeader } from '../_helpers/auth-header';
 export const dscMyService = {
     getLeftTable,
     getHomepageCounts,
+    getCdeTable,
     getRightTable,
     getInterfacesRightTable,
     getDetails
@@ -31,6 +32,37 @@ function getHomepageCounts(param) {
         res.Data = res.Data[0] ? res.Data[0] : null;
         return res;
     });
+}
+
+function getCdeTable(param) {
+    return fetchWHeader(`/dsc/getcdetable`, param).then(
+        res => {
+            var tmp = _.groupBy(res.Data, "TABLE_NAME")
+            
+            res.Data = _.map(Object.keys(tmp), function(v){
+                var tmp2 = _.groupBy(tmp[v], "COLUMN_NAME");  
+
+                var columns = _.map(Object.keys(tmp2), function(w, i){
+                    var ret = tmp2[w][0];
+                    ret.COLID = tmp2[w][0].COLID;
+                    ret.COLUMN_NAME = w;
+                    ret.Values = tmp2[w];
+
+                    return ret;
+                });
+
+                var ret = tmp[v][0];
+                ret.TABLE_NAME = v;
+                ret.TMTID = tmp[v][0].TMTID;
+                ret.Columns = columns;
+                ret.ColumnsVal = tmp[v];
+
+                return ret;
+            });
+            
+            return res;
+        }
+    );
 }
 
 function getRightTable(param) {
