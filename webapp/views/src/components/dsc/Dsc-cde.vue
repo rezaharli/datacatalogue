@@ -75,7 +75,7 @@
                   </template>
 
                   <template slot="items" slot-scope="props">
-                    <tr class="main-row">
+                    <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
                     <td style="width: calc(100% / 6)" class="text-capitalize text-title"><b-link @click="showDetails(props.item)">{{ props.item.CDE }}</b-link></td>
                     <td style="width: calc(100% / 6)" class="text-description"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'DESCRIPTION')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                     <td style="width: calc(100% / 6)" class="text-uppercase"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'TABLE_NAME')).filter(Boolean).join(', '))" :isklik="false"></tablecell></b-link></td>
