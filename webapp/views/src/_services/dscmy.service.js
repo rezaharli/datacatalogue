@@ -44,6 +44,7 @@ function getCdeTable(param) {
 
                 var columns = _.map(Object.keys(tmp2), function(w, i){
                     var ret = tmp2[w][0];
+                    ret.COLID = tmp2[w][0].COLID;
                     ret.COLUMN_NAME = w;
                     ret.Values = tmp2[w];
 
@@ -52,6 +53,7 @@ function getCdeTable(param) {
 
                 var ret = tmp[v][0];
                 ret.TABLE_NAME = v;
+                ret.TMTID = tmp[v][0].TMTID;
                 ret.Columns = columns;
                 ret.ColumnsVal = tmp[v];
 

@@ -82,7 +82,7 @@ table.v-table thead th > div.btn-group {
                                       :headers="store.leftHeaders.filter(v => v.display == true)"
                                       :items="props.item.Columns"
                                       class="elevation-1"
-                                      item-key="ID"
+                                      item-key="COLID"
                                       hide-actions
                                       hide-headers
                                     >
@@ -100,7 +100,6 @@ table.v-table thead th > div.btn-group {
                                           :headers="store.leftHeaders.filter(v => v.display == true)"
                                           :items="props.item.Values"
                                           class="elevation-1"
-                                          item-key="ID"
                                           hide-actions
                                           hide-headers
                                         >
