@@ -1,129 +1,133 @@
 <style>
-table.v-table thead th > div.btn-group {
+/* table.v-table thead th > div.btn-group {
   	width: auto;
 }
 
 .header-filter-icon .dropdown-menu {
 	overflow: scroll;
 	height: 200px;
-}
+} */
 </style>
 
 <template>
-    <v-content>
+    <v-content class="mx-4 my-5">
         <b-container fluid>
             <PageHeader />
 
+            <page-loader v-if="store.left.isLoading" />
+            
             <b-row>
-                <b-col>
-                    <page-loader v-if="store.left.isLoading" />
-
-                    <b-row style="margin-top: 10px; margin-bottom: 20px;">
-                        <b-col>
-                            <v-btn class="float-right" color="red-neon" @click.native="resetFilter" dark>
-                                <!-- <v-icon dark>filter_list</v-icon> -->
-                                <i class="fa fa-filter"></i>
-                            </v-btn>
-
-                            <page-export class="float-right" :storeName="storeName" :leftTableCols="store.leftHeaders" :rightTableCols="[]"/>
-                        </b-col>
-                    </b-row>
-
-                    <b-row style="margin-top: 10px;margin-bottom: 10px;">
-                      <b-col>
-                        <!-- Dsc details -->
-                        <router-view/>
-
-                        <!-- Main content -->
-                        <b-row>
-                          <b-col>
-                            <page-loader v-if="store.left.isLoading"/>
-
-                            <b-row>
-                              <b-col cols="12">
-                                <v-data-table
-                                    :headers="store.leftHeaders.filter(v => v.display == true)"
-                                    :items="store.left.display"
-                                    :pagination.sync="store.left.pagination"
-                                    :total-items="store.left.totalItems"
-                                    :loading="store.left.isLoading"
-                                    :expand="false"
-                                    item-key="ID"
-                                    class="card-content">
-                                  <template slot="headerCell" slot-scope="props">
-                                    <tableheader :storeName="storeName" :props="props" :which="'left'"/>
-                                  </template>
-
-                                  <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
-
-                                  <template slot="no-data">
-                                    <v-alert
-                                        :value="store.left.isLoading"
-                                        type="info"
-                                      >Please wait while data is loading</v-alert>
-
-                                    <v-alert
-                                        :value="!store.left.isLoading"
-                                        type="error"
-                                      >Sorry, nothing to display here</v-alert>
-                                  </template>
-
-                                  <template slot="items" slot-scope="props">
-                                    <td style="width: calc(100% / 6)"><b-link @click="showDetails(props.item)">{{ props.item.CDE }}</b-link></td>
-                                    <td style="width: calc(100% / 6)"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'DESCRIPTION')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                                    <td style="width: calc(100% / 6)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'TABLE_NAME')).filter(Boolean).join(', '))" :isklik="false"></tablecell></b-link></td>
-                                    <td style="width: calc(100% / 6)"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'COLUMN_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                                    <td style="width: calc(100% / 6)"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'DSP_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                                    <td style="width: calc(100% / 6)"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'PROCESS_OWNER')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                                  </template>
-                
-                                  <template slot="expand" slot-scope="props">
-                                    <v-data-table
-                                      :headers="store.leftHeaders.filter(v => v.display == true)"
-                                      :items="props.item.Columns"
-                                      class="elevation-1"
-                                      item-key="COLID"
-                                      hide-actions
-                                      hide-headers
-                                    >
-                                      <template slot="items" slot-scope="props">
-                                        <td style="width: calc(100% / 6)">&nbsp;</td>
-                                        <td style="width: calc(100% / 6)">&nbsp;</td>
-                                        <td style="width: calc(100% / 6)">&nbsp;</td>
-                                        <td style="width: calc(100% / 6)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'COLUMN_NAME')).filter(Boolean).join(', '))" :isklik="false"></tablecell></b-link></td>
-                                        <td style="width: calc(100% / 6)"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'DSP_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                                        <td style="width: calc(100% / 6)"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'PROCESS_OWNER')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                                      </template>
-
-                                      <template slot="expand" slot-scope="props">
-                                        <v-data-table
-                                          :headers="store.leftHeaders.filter(v => v.display == true)"
-                                          :items="props.item.Values"
-                                          class="elevation-1"
-                                          hide-actions
-                                          hide-headers
-                                        >
-                                          <template slot="items" slot-scope="props">
-                                            <td style="width: calc(100% / 6)">&nbsp;</td>
-                                            <td style="width: calc(100% / 6)">&nbsp;</td>
-                                            <td style="width: calc(100% / 6)">&nbsp;</td>
-                                            <td style="width: calc(100% / 6)">&nbsp;</td>
-                                            <td style="width: calc(100% / 6)"><tablecell :fulltext="props.item.DSP_NAME" :isklik="true"></tablecell></td>
-                                            <td style="width: calc(100% / 6)"><tablecell :fulltext="props.item.PROCESS_OWNER" :isklik="true"></tablecell></td>
-                                          </template>
-                                        </v-data-table>
-                                      </template>
-                                    </v-data-table>
-                                  </template>
-                                </v-data-table>
-                              </b-col>
-                            </b-row>
-                          </b-col>
-                        </b-row>
-                      </b-col>
-                    </b-row>
+                <b-col sm=12 md=3>
+                    <div class="card card-v2 transition">
+                        <h6 class="title-1">System Name</h6>
+                        <h3 class="title-2 text-capitalize">{{$route.params.system}}</h3>
+                    </div>
+                </b-col>
+                <b-col sm=12 md=3>
+                    <div class="card card-v2 transition">
+                        <h6 class="title-1">Critical Data Elements</h6>
+                        <h3 class="title-2 text-capitalize">{{ store.counts ? store.counts.CDE_COUNT : 0 }}</h3>
+                    </div>
                 </b-col>
             </b-row>
+
+            <b-row style="margin-top: 10px; margin-bottom: 20px;">
+                <b-col>
+                    <b-button class="float-right red-neon icon-only ml-3" @click.native="resetFilter">
+                        <i class="fa fa-fw fa-filter"></i>
+                    </b-button>
+
+                    <page-export class="float-right" :storeName="storeName" :leftTableCols="store.leftHeaders" :rightTableCols="[]"/>
+                </b-col>
+            </b-row>
+
+            <b-row style="margin-top: 10px;margin-bottom: 10px;">
+              <b-col>
+                <!-- Dsc details -->
+                <router-view/>
+
+                <!-- Main content -->
+                <v-data-table
+                    :headers="store.leftHeaders.filter(v => v.display == true)"
+                    :items="store.left.display"
+                    :pagination.sync="store.left.pagination"
+                    :total-items="store.left.totalItems"
+                    :loading="store.left.isLoading"
+                    :expand="false"
+                    item-key="ID"
+                    class="table-v1">
+                  <template slot="headerCell" slot-scope="props">
+                    <tableheader :storeName="storeName" :props="props" :which="'left'"/>
+                  </template>
+
+                  <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+
+                  <template slot="no-data">
+                    <v-alert
+                        :value="store.left.isLoading"
+                        type="info"
+                      >Please wait while data is loading</v-alert>
+
+                    <v-alert
+                        :value="!store.left.isLoading"
+                        type="error"
+                      >Sorry, nothing to display here</v-alert>
+                  </template>
+
+                  <template slot="items" slot-scope="props">
+                    <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
+                    <td style="width: calc(100% / 6)" class="text-capitalize text-title"><b-link @click="showDetails(props.item)">{{ props.item.CDE }}</b-link></td>
+                    <td style="width: calc(100% / 6)" class="text-description"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'DESCRIPTION')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                    <td style="width: calc(100% / 6)" class="text-uppercase"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'TABLE_NAME')).filter(Boolean).join(', '))" :isklik="false"></tablecell></b-link></td>
+                    <td style="width: calc(100% / 6)" class="text-uppercase"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'COLUMN_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                    <td style="width: calc(100% / 6)" class="text-uppercase"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'DSP_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                    <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'PROCESS_OWNER')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                    </tr>
+                  </template>
+
+                  <template slot="expand" slot-scope="props">
+                    <v-data-table
+                      :headers="store.leftHeaders.filter(v => v.display == true)"
+                      :items="props.item.Columns"
+                      class=""
+                      item-key="COLID"
+                      hide-actions
+                      hide-headers
+                    >
+                      <template slot="items" slot-scope="props">
+                        <td style="width: calc(100% / 6)">&nbsp;</td>
+                        <td style="width: calc(100% / 6)">&nbsp;</td>
+                        <td style="width: calc(100% / 6)">&nbsp;</td>
+                        <td style="width: calc(100% / 6)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'COLUMN_NAME')).filter(Boolean).join(', '))" :isklik="false"></tablecell></b-link></td>
+                        <td style="width: calc(100% / 6)"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'DSP_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                        <td style="width: calc(100% / 6)"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'PROCESS_OWNER')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                      </template>
+
+                      <template slot="expand" slot-scope="props">
+                        <v-data-table
+                          :headers="store.leftHeaders.filter(v => v.display == true)"
+                          :items="props.item.Values"
+                          class=""
+                          hide-actions
+                          hide-headers
+                        >
+                          <template slot="items" slot-scope="props">
+                            <td style="width: calc(100% / 6)">&nbsp;</td>
+                            <td style="width: calc(100% / 6)">&nbsp;</td>
+                            <td style="width: calc(100% / 6)">&nbsp;</td>
+                            <td style="width: calc(100% / 6)">&nbsp;</td>
+                            <td style="width: calc(100% / 6)"><tablecell :fulltext="props.item.DSP_NAME" :isklik="true"></tablecell></td>
+                            <td style="width: calc(100% / 6)"><tablecell :fulltext="props.item.PROCESS_OWNER" :isklik="true"></tablecell></td>
+                          </template>
+                        </v-data-table>
+                      </template>
+                    </v-data-table>
+                  </template>
+                </v-data-table>
+                      
+              </b-col>
+            </b-row>
+              
         </b-container>
     </v-content>
 </template>

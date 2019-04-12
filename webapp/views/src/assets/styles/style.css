@@ -29,9 +29,18 @@
 #397fa4
 ----- end ----- */
 
-@import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic);
+/* @import url(https://fonts.googleapis.com/css?family=Noto+Sans:300,400,600,700,400italic,700italic); */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
 
-body{background-color: #fafafa !important;}
+* {
+    /* font-family: 'Noto Sans', sans-serif; */
+    font-family: 'Open Sans', sans-serif;
+}
+
+body, .application--wrap{
+    /* background-color: #fafafa !important; */
+    background-color: rgba(242, 243, 247, 1) !important;
+}
 
 .dropdown-menu{margin-top: 0 !important;}
 .bg-2 {
@@ -46,9 +55,11 @@ body{background-color: #fafafa !important;}
     background-size: cover;
 }
 
+.btn {border-radius: 5px !important;}
+.btn.icon-only {border: none !important; padding: 7px 14px;}
 .btn.btn-link:hover{text-decoration: none;}
-.v-btn.green-tosca {background-color: #00CC99 !important;}
-.v-btn.red-neon {background-color: #FF0033 !important;}
+.btn.green-tosca {background-color: #00CC99 !important;}
+.btn.red-neon {background-color: #FF0033 !important;}
 .v-icon.icon-active {color: #000;}
 .v-icon.icon-active::before {
     content: "";
@@ -69,14 +80,23 @@ body{background-color: #fafafa !important;}
   bottom: 0;
   left: 0;
   right: 0;
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+  /* box-shadow: 0px 0px 10px rgba(0,0,0,0.3); */
+  box-shadow: 3px 3px 5px rgba(204, 204, 204, 0.349019607843137);
   overflow: hidden;
   border-radius: 7px !important;
   border: none !important;
 }
 
-.card a {color: #5cb1b1;}
-.card a:hover {color: #397fa4;}
+.card a,
+.table-v1 a  {
+    /* color: #5cb1b1; */
+    color: #56B8BB;
+}
+.card a:hover,
+.table-v1 a:hover {
+    /* color: #397fa4; */
+    color: #0072aa;
+}
 .card.link {cursor: pointer;}
 
 .card.card-v1:hover {
@@ -110,7 +130,6 @@ body{background-color: #fafafa !important;}
   font-size: 20px;
   color: #ffffff;
   width: 100%;
-  font-family: 'Noto Sans', serif;
   font-weight: bold;
 }
 .card.card-v1:hover .title-1{ font-size: 24px; margin-top: 50px;}
@@ -141,7 +160,7 @@ body{background-color: #fafafa !important;}
 
 .card.card-v2 {padding: 15px;}
 .card.card-v2 .title-1 {font-weight: 600; font-size: 16px;}
-.card.card-v2 .title-2 {font-weight: 700; font-style: normal; font-size: 20px; color: #0072AA;}
+.card.card-v2 .title-2 {font-weight: 700; font-style: normal; font-size: 18px; color: #0072AA; margin-top: 10px;}
 
 .card-circle-left {
     width: 225px;
@@ -177,3 +196,24 @@ body{background-color: #fafafa !important;}
     padding: 12px 10px 10px 12px;
     border-radius: 25px 0px 0px 0px;
 }
+
+.table-v1 {box-shadow: 3px 3px 5px rgba(204, 204, 204, 0.349019607843137);}
+.table-v1 table.v-table thead{background: linear-gradient(240deg, rgba(86, 184, 187, 1) 0%, rgba(86, 184, 187, 1) 0%, rgba(87, 202, 157, 1) 90%, rgba(87, 202, 157, 1) 100%);}
+.table-v1 table.v-table thead tr:first-child {border-bottom: none;}
+.table-v1 table.v-table thead tr th {color: #ffffff !important; padding: 20px 30px; font-size: 14px;}
+.table-v1 table.v-table thead tr th:first-of-type {border-top-left-radius: 7px; padding-left: 45px;}
+.table-v1 table.v-table thead tr th:last-of-type {border-top-right-radius: 7px; padding-right: 45px;}
+.table-v1 table.v-table thead tr th .v-icon {color: #fff !important;}
+.table-v1 table.v-table tbody tr {border-bottom: none !important;}
+.table-v1 > .v-table__overflow > table.v-table > tbody > tr.odd,
+.table-v1 > .v-table__overflow > table.v-table > tbody > tr.odd + .v-datatable__expand-row .v-table {background-color: #ffffff;}
+.table-v1 > .v-table__overflow > table.v-table > tbody > tr.even,
+.table-v1 > .v-table__overflow > table.v-table > tbody > tr.even + .v-datatable__expand-row .v-table {/*background-color: #f3f8fe;*/ background-color: #EEF3F9;}
+.table-v1 table.v-table tbody tr td {padding: 30px; font-weight: 400; font-size: 14px;}
+.table-v1 table.v-table tbody tr td:first-of-type {padding-left: 45px;}
+.table-v1 table.v-table tbody tr td:last-of-type {padding-right: 45px;}
+.table-v1 table.v-table tbody tr td.text-description {font-weight: 300; font-size: 13px;}
+.table-v1 table.v-table tbody tr td.text-title {font-weight: 600;}
+.table-v1 table.v-table tbody tr td .v-datatable__expand-content .v-table__overflow > table.v-table > tbody > tr > td {padding: 0 5px;}
+.table-v1 .v-table {background-color: transparent;}
+.table-v1 > .v-table > .v-datatable__actions {border-radius: 0 0 7px 7px;}
