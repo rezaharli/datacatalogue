@@ -215,6 +215,6 @@ body, .application--wrap{
 .table-v1 table.v-table tbody tr td:last-of-type {padding-right: 45px;}
 .table-v1 table.v-table tbody tr td.text-description {font-weight: 300; font-size: 13px;}
 .table-v1 table.v-table tbody tr td.text-title {font-weight: 600;}
-.table-v1 table.v-table tbody tr td .v-datatable__expand-content .v-table__overflow > table.v-table > tbody > tr > td {padding: 0 5px;}
+.table-v1 table.v-table tbody tr td .v-datatable__expand-content .v-table__overflow > table.v-table > tbody > tr > td {padding-top: 0; padding-bottom: 0;}
 .table-v1 .v-table {background-color: transparent;}
 .table-v1 > .v-table > .v-datatable__actions {border-radius: 0 0 7px 7px;}
