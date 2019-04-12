@@ -9,10 +9,9 @@
         <b-container fluid>
             <b-row style="margin-top: 10px; margin-bottom: 20px;">
                 <b-col>
-                    <v-btn class="float-right" color="red-neon" @click.native="resetFilter" dark>
-                        <!-- <v-icon dark>filter_list</v-icon> -->
+                    <b-button class="float-right red-neon icon-only ml-3" @click.native="resetFilter">
                         <i class="fa fa-filter"></i>
-                    </v-btn>
+                    </b-button>
 
                     <page-export class="float-right" storeName="dscmy" :leftTableCols="myStore.leftHeaders" :rightTableCols="myStore.rightHeaders"/>
                 </b-col>
