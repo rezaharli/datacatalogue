@@ -38,7 +38,7 @@
             </transition> -->
         </b-container>
 
-        <v-navigation-drawer v-model="store.drawer" right absolute temporary width="400">
+        <v-navigation-drawer v-model="store.drawer" right absolute temporary width="350">
 
             <b-row align-h="end" class="pr-4 pt-3 bg-light-grey">
                 <b-button variant="light" class="float-right" @click.stop="store.drawer = !store.drawer">
@@ -60,14 +60,14 @@
                 </v-list-tile> -->
                 <h1 class="px-4 py-2">{{ store.drawerContent.systemName }}</h1>
                 <b-row class="px-4 pt-2 pb-4">
-                    <b-col cols=12 sm=auto class="border-right">ITAM ID: {{ store.drawerContent.itamID }}</b-col>
+                    <b-col cols=12 sm=auto class="border-right border-dark">ITAM ID: {{ store.drawerContent.itamID }}</b-col>
                     <b-col cols=12 sm=auto>{{ store.drawerContent.owners.length }} Owners</b-col>
                 </b-row>
 
             </v-list>
             
 
-            <v-list class="px-0 pt-4" dense>
+            <v-list class="px-0 pt-4">
                 <!-- <v-divider></v-divider> -->
 
                 <v-list-tile class="px-2 py-0"
@@ -76,7 +76,7 @@
                     <v-list-tile-action>{{ owner.BANK_ID }}</v-list-tile-action>
 
                     <v-list-tile-content>
-                        <v-list-tile-title class="text-capitalize">{{ owner.DATASET_CUSTODIAN }}</v-list-tile-title>
+                        <v-list-tile-title class="text-capitalize border-left border-dark pl-2">{{ owner.DATASET_CUSTODIAN }}</v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
             </v-list>
