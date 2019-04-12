@@ -37,8 +37,37 @@
             <!-- <transition name="fade" mode="out-in">
                 <router-view></router-view>
             </transition> -->
-                
         </b-container>
+
+        <v-navigation-drawer v-model="store.drawer" right absolute temporary>
+            <v-list class="pa-1">
+                <v-list-tile avatar>
+                    <v-list-tile-content>
+                        <v-list-tile-title>{{ store.drawerContent.systemName }}</v-list-tile-title>
+                    </v-list-tile-content>
+                    <v-list-tile-content>
+                        <v-list-tile-title>{{ store.drawerContent.itamID }}</v-list-tile-title>
+                    </v-list-tile-content>
+                    <v-list-tile-content>
+                        <v-list-tile-title>{{ store.drawerContent.owners.length }}</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+
+            <v-list class="pt-0" dense>
+                <v-divider></v-divider>
+
+                <v-list-tile
+                    v-for="(owner, i) in store.drawerContent.owners"
+                    :key="i">
+                    <v-list-tile-action>{{ owner.BANK_ID }}</v-list-tile-action>
+
+                    <v-list-tile-content>
+                        <v-list-tile-title>{{ owner.DATASET_CUSTODIAN }}</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+        </v-navigation-drawer>
     </v-content>
 </template>
 
@@ -57,6 +86,7 @@ export default {
         return {}
     },
     computed: {
+        store () { return this.$store.state.dsc.all },
         myStore () { return this.$store.state.dscmy.all },
         allStore () { return this.$store.state.dscall.all }
     },

@@ -5,6 +5,12 @@ const state = {
         isLoading: true,
         error: null,
         counts: null,
+        drawer: null,
+        drawerContent: {
+            systemName: "",
+            itamID: "",
+            owners: []
+        }
     }
 };
 

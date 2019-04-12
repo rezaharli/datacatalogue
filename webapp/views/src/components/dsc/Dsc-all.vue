@@ -74,14 +74,7 @@ table.v-table thead th > div.btn-group {
 
                   <template slot="items" slot-scope="props">
                       <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SYSTEM_NAME" :isklik="false"></tablecell></b-link></td>
-                      <td>
-                        <v-tooltip bottom slot="activator">
-                          <!-- <b-link @click="props.expanded = !props.expanded"> -->
-                          <tablecell slot="activator" :fulltext="(_.uniq(_.map(props.item.Custodians, 'ITAM_ID').filter(Boolean)).join(', '))" :isklik="true"></tablecell>
-                          <!-- </b-link> -->
-                          <span>{{(_.uniq(_.map(props.item.Custodians, 'DATASET_CUSTODIAN').filter(Boolean)).join('; '))}} , {{(_.uniq(_.map(props.item.Custodians, 'BANK_ID').filter(Boolean)).join('; '))}}</span>
-                        </v-tooltip>
-                      </td>
+                      <td><b-link @click.stop="toggleDscDrawer(props.item)"><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'ITAM_ID').filter(Boolean)).join(', '))" :isklik="false"></tablecell></b-link></td>
                       <!-- <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'DATASET_CUSTODIAN').filter(Boolean)).join('; '))" :isklik="true"></tablecell></td>
                       <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'BANK_ID').filter(Boolean)).join('; '))" :isklik="true"></tablecell></td> -->
                   </template>
@@ -195,9 +188,8 @@ export default {
       }
     },
     computed: {
-      store () {
-        return this.$store.state[this.storeName].all
-      },
+      store () { return this.$store.state[this.storeName].all },
+      dscStore () { return this.$store.state.dsc.all },
       addressPath (){
         var tmp = this.$route.path.split("/")
         return tmp.slice(0, 3).join("/")
@@ -276,6 +268,27 @@ export default {
         this.store.filters.right = {};
 
         this.$router.push(this.addressPath + '/' + param.SYSTEM_NAME);
+      },
+      toggleDscDrawer(param){
+        this.dscStore.drawer = !this.dscStore.drawer;
+
+        console.log(this.dscStore.drawer, param);
+        
+
+        if(this.dscStore.drawer) {
+          this.dscStore.drawerContent.systemName = param.SYSTEM_NAME;
+          this.dscStore.drawerContent.itamID = param.ITAM_ID;
+          this.dscStore.drawerContent.owners = param.Custodians.map(v => {
+            return {
+              BANK_ID: v.BANK_ID,
+              DATASET_CUSTODIAN: v.DATASET_CUSTODIAN
+            }
+          });
+        } else {
+          this.dscStore.drawerContent.systemName = "";
+          this.dscStore.drawerContent.itamID = "";
+          this.dscStore.drawerContent.owners = [];
+        }
       },
       showDetails (param) {
         this.$router.push(this.addressPath + "/" + param.TSID + '/' + param.ID + '/' + param.COLID)
