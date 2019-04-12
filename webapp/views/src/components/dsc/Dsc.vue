@@ -38,9 +38,16 @@
             </transition> -->
         </b-container>
 
-        <v-navigation-drawer v-model="store.drawer" right absolute temporary>
-            <v-list class="pa-1">
-                <v-list-tile avatar>
+        <v-navigation-drawer v-model="store.drawer" right absolute temporary width="400">
+
+            <b-row align-h="end" class="pr-4 pt-3 bg-light-grey">
+                <b-button variant="light" class="float-right" @click.stop="store.drawer = !store.drawer">
+                    <i class="fa fa-fw fa-arrow-right"></i>
+                </b-button>
+            </b-row>
+
+            <v-list class="p-0 bg-light-grey">
+                <!-- <v-list-tile avatar>
                     <v-list-tile-content>
                         <v-list-tile-title>{{ store.drawerContent.systemName }}</v-list-tile-title>
                     </v-list-tile-content>
@@ -50,19 +57,26 @@
                     <v-list-tile-content>
                         <v-list-tile-title>{{ store.drawerContent.owners.length }}</v-list-tile-title>
                     </v-list-tile-content>
-                </v-list-tile>
+                </v-list-tile> -->
+                <h1 class="px-4 py-2">{{ store.drawerContent.systemName }}</h1>
+                <b-row class="px-4 pt-2 pb-4">
+                    <b-col cols=12 sm=auto class="border-right">ITAM ID: {{ store.drawerContent.itamID }}</b-col>
+                    <b-col cols=12 sm=auto>{{ store.drawerContent.owners.length }} Owners</b-col>
+                </b-row>
+
             </v-list>
+            
 
-            <v-list class="pt-0" dense>
-                <v-divider></v-divider>
+            <v-list class="px-0 pt-4" dense>
+                <!-- <v-divider></v-divider> -->
 
-                <v-list-tile
+                <v-list-tile class="px-2 py-0"
                     v-for="(owner, i) in store.drawerContent.owners"
                     :key="i">
                     <v-list-tile-action>{{ owner.BANK_ID }}</v-list-tile-action>
 
                     <v-list-tile-content>
-                        <v-list-tile-title>{{ owner.DATASET_CUSTODIAN }}</v-list-tile-title>
+                        <v-list-tile-title class="text-capitalize">{{ owner.DATASET_CUSTODIAN }}</v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
             </v-list>

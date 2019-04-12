@@ -54,6 +54,7 @@ body, .application--wrap{
       , url('../images/u2.png') center;
     background-size: cover;
 }
+.bg-light-grey {background-color: #E4E9EF !important;}
 
 .btn {border-radius: 5px !important;}
 .btn.icon-only {border: none !important; padding: 7px 14px;}
