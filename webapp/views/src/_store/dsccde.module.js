@@ -31,7 +31,7 @@ const actions = {
         commit('getLeftTableRequest');
 
         Object.keys(state.all.filters.left).map(function(key, index) {
-            state.all.filters.left[key] = state.all.filters.left[key].toString();
+            state.all.filters.left[key] = state.all.filters.left[key] ? state.all.filters.left[key].toString() : "";
         });
 
         var param = {

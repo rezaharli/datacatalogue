@@ -29,7 +29,7 @@ const actions = {
         commit('getLeftTableRequest');
 
         Object.keys(state.all.filters.left).map(function(key, index) {
-            state.all.filters.left[key] = state.all.filters.left[key].toString();
+            state.all.filters.left[key] = state.all.filters.left[key] ? state.all.filters.left[key].toString() : "";
         });
 
         var param = {
@@ -50,7 +50,7 @@ const actions = {
         commit('getRightTableRequest');
 
         Object.keys(state.all.filters.right).map(function(key, index) {
-            state.all.filters.right[key] = state.all.filters.right[key].toString();
+            state.all.filters.right[key] = state.all.filters.right[key] ? state.all.filters.right[key].toString() : "";
         });
 
         var param = {

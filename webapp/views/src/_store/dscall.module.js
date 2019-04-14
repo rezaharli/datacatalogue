@@ -63,7 +63,7 @@ const actions = {
         commit('getRightTableRequest');
 
         Object.keys(state.all.filters.right).map(function(key, index) {
-            state.all.filters.right[key] = state.all.filters.right[key].toString();
+            state.all.filters.right[key] = state.all.filters.right[key] ? state.all.filters.right[key].toString() : "";
         });
 
         var param = {
