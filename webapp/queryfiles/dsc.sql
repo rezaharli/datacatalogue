@@ -296,7 +296,13 @@ SELECT DISTINCT
 		tmt.record_category						as record_categories,
 		tmc.pii_flag							as pii_flag,
 		ips.system_name 						as imm_preceeding_system,
+		'' 										as imm_prec_incoming,
+		'' 										as imm_prec_derived,
+		'' 										as imm_prec_derivation_logic,
 		iss.system_name 						as imm_succeeding_system,
+		'' 										as imm_succ_incoming,
+		'' 										as imm_succ_derived,
+		'' 										as imm_succ_derivation_logic,
 		tmc.DQ_STANDARDS||' '||tmc.threshold	as threshold
 	FROM tbl_system ts
 		LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'

@@ -107,7 +107,7 @@ legend.col-form-label, label.col-form-label {
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Name*" label-for="screenLabelName">
-                        <b-form-select id="columnName" class="col-8" v-model="ddScreenLabelSelected" :options="ddScreenLabelOptions"></b-form-select>
+                        <b-form-select id="screenLabelName" class="col-8" v-model="ddScreenLabelSelected" :options="ddScreenLabelOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Description">
@@ -213,8 +213,32 @@ legend.col-form-label, label.col-form-label {
                         <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_PRECEEDING_SYSTEM : ''"></text-wrap-dialog>
                       </b-form-group>
 
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Incoming Data Element" label-for="precIncoming">
+                        <b-form-select id="precIncoming" class="col-8" v-model="ddPrecIncomingSelected" :options="ddPrecIncomingOptions"></b-form-select>
+                      </b-form-group>
+
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_PREC_DERIVED : ''"></text-wrap-dialog>
+                      </b-form-group>
+
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation Logic">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_PREC_DERIVATION_LOGIC : ''"></text-wrap-dialog>
+                      </b-form-group>
+
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Succeeding System*">
                         <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_SUCCEEDING_SYSTEM : ''"></text-wrap-dialog>
+                      </b-form-group>
+
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Incoming Data Element" label-for="succIncoming">
+                        <b-form-select id="succIncoming" class="col-8" v-model="ddSuccIncomingSelected" :options="ddSuccIncomingOptions"></b-form-select>
+                      </b-form-group>
+
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_SUCC_DERIVED : ''"></text-wrap-dialog>
+                      </b-form-group>
+
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation Logic">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_SUCC_DERIVATION_LOGIC : ''"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards | Threshold*">
@@ -303,6 +327,8 @@ export default {
       ddColumnSelected: null,
       ddScreenLabelSelected: null,
       ddBusinessTermSelected: null,
+      ddPrecIncomingSelected: null,
+      ddSuccIncomingSelected: null,
       excelFields: {
         'System Name': "selectedDetails.SYSTEM_NAME",
         'ITAM ID': "selectedDetails.ITAM_ID",
@@ -360,7 +386,8 @@ export default {
     ddScreenLabelOptions () {
       var self = this;
       var filtered = _.filter(self.dscmy.DDSource, (v) => {
-        return v.TABLE_NAME == self.ddTableSelected && v.COLUMN_NAME == self.ddColumnSelected;
+        return v.TABLE_NAME == self.ddTableSelected 
+          && v.COLUMN_NAME == self.ddColumnSelected;
       });
       
       return _.uniq(_.map(filtered, (v) => v.BUSINESS_ALIAS_NAME.toString().trim())).filter(Boolean);
@@ -374,6 +401,29 @@ export default {
       });
       
       return _.uniq(_.map(filtered, (v) => v.BUSINESS_TERM.toString().trim())).filter(Boolean);
+    },
+    ddPrecIncomingOptions () {
+      var self = this;
+      var filtered = _.filter(self.dscmy.DDSource, (v) => {
+        return v.TABLE_NAME == self.ddTableSelected 
+          && v.COLUMN_NAME == self.ddColumnSelected 
+          && v.BUSINESS_ALIAS_NAME == self.ddScreenLabelSelected
+          && v.BUSINESS_TERM == self.ddBusinessTermSelected;
+      });
+      
+      return _.uniq(_.map(filtered, (v) => v.IMM_PREC_INCOMING.toString().trim())).filter(Boolean);
+    },
+    ddSuccIncomingOptions () {
+      var self = this;
+      var filtered = _.filter(self.dscmy.DDSource, (v) => {
+        return v.TABLE_NAME == self.ddTableSelected 
+          && v.COLUMN_NAME == self.ddColumnSelected 
+          && v.BUSINESS_ALIAS_NAME == self.ddScreenLabelSelected
+          && v.BUSINESS_TERM == self.ddBusinessTermSelected
+          && v.IMM_PREC_INCOMING == self.ddPrecIncomingSelected;
+      });
+      
+      return _.uniq(_.map(filtered, (v) => v.IMM_SUCC_INCOMING.toString().trim())).filter(Boolean);
     },
     exportDatas () {
       if(this.selectedDetails){
@@ -435,6 +485,56 @@ export default {
 
         if(this.ddBusinessTermSelected && this.ddBusinessTermSelected != "NA"){
           param.BusinessTerm = this.ddBusinessTermSelected.toString();
+        } 
+        
+        this.runGetDetails(param);
+      }
+    },
+    ddPrecIncomingSelected (){
+      if(this.firstload) return;
+      if( ! this.firstload){
+        var param = {
+          ColumnName: this.ddColumnSelected.toString(),
+          TableName: this.ddTableSelected.toString(),
+        };
+
+        if(this.ddScreenLabelSelected && this.ddScreenLabelSelected != "NA"){
+          param.ScreenLabel = this.ddScreenLabelSelected.toString();
+        } 
+
+        if(this.ddBusinessTermSelected && this.ddBusinessTermSelected != "NA"){
+          param.BusinessTerm = this.ddBusinessTermSelected.toString();
+        } 
+
+        if(this.ddPrecIncomingSelected && this.ddPrecIncomingSelected != "NA"){
+          param.PrecIncoming = this.ddPrecIncomingSelected.toString();
+        } 
+        
+        this.runGetDetails(param);
+      }
+    },
+    ddSuccIncomingSelected (){
+      if(this.firstload) return;
+      if( ! this.firstload){
+        var param = {
+          ColumnName: this.ddColumnSelected.toString(),
+          TableName: this.ddTableSelected.toString(),
+        };
+
+        if(this.ddScreenLabelSelected && this.ddScreenLabelSelected != "NA"){
+          param.ScreenLabel = this.ddScreenLabelSelected.toString();
+        } 
+
+        if(this.ddBusinessTermSelected && this.ddBusinessTermSelected != "NA"){
+          param.BusinessTerm = this.ddBusinessTermSelected.toString();
+        } 
+
+        if(this.ddPrecIncomingSelected && this.ddPrecIncomingSelected != "NA"){
+          param.PrecIncoming = this.ddPrecIncomingSelected.toString();
+        } 
+
+        if(this.ddSuccIncomingSelected && this.ddSuccIncomingSelected != "NA"){
+          param.PrecIncoming = this.ddSuccIncomingSelected.toString();
         } 
         
         this.runGetDetails(param);
@@ -505,6 +605,8 @@ export default {
               self.ddColumnSelected = self.selectedDetails.COLUMN_NAME;
               self.ddScreenLabelSelected = self.selectedDetails.BUSINESS_ALIAS_NAME;
               self.ddBusinessTermSelected = self.selectedDetails.BUSINESS_TERM;
+              self.ddPrecIncomingSelected = self.selectedDetails.IMM_PREC_INCOMING;
+              self.ddSuccIncomingSelected = self.selectedDetails.IMM_SUCC_INCOMING;
 
               setTimeout(() => {
                 this.firstload = false;
