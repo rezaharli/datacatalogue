@@ -9,6 +9,7 @@ import Dsc from './components/dsc/Dsc';
 import DscMenu from './components/dsc/Dsc-menu';
 import DscCde from './components/dsc/Dsc-cde';
 import DscCdp from './components/dsc/Dsc-cdp';
+import DscCdpCde from './components/dsc/Dsc-cdp-cde';
 import DscDetails from './components/dsc/Dsc-details';
 import DscMy from './components/dsc/Dsc-my';
 import DscAll from './components/dsc/Dsc-all';
@@ -79,6 +80,34 @@ const router = new VueRouter({
         permission: "DSC"
       }
     }]
+  }, { // dsc.cdp
+    path: '/dsc/cdp/:system', name: 'dsc.cdp', component: DscCdp, 
+    meta: { 
+      title: "DSC - Data Catalogue",
+      permission: "DSC"
+    },
+    children: [{ // dsc.details
+      path: ':details/:column', name: 'dsc.details', component: DscDetails,
+      meta: { 
+        title: "DSC Details - Data Catalogue",
+        showModal: true,
+        permission: "DSC"
+      }
+    }] 
+  }, { // dsc.cdp.cde
+    path: '/dsc/cdp/:system/:dspName', name: 'dsc.cdp.cde', component: DscCdpCde, 
+    meta: { 
+      title: "DSC - Data Catalogue",
+      permission: "DSC"
+    },
+    children: [{ // dsc.details
+      path: ':details/:column', name: 'dsc.details', component: DscDetails,
+      meta: { 
+        title: "DSC Details - Data Catalogue",
+        showModal: true,
+        permission: "DSC"
+      }
+    }] 
   },
       // children: [{ 
       //   path: '', name: 'dsc', redirect: { name: 'dsc.my' }
