@@ -70,15 +70,13 @@
             <v-list class="px-0 pt-4">
                 <!-- <v-divider></v-divider> -->
 
-                <v-list-tile class="px-2 py-0"
+                <b-row align-v="center" class="px-4 py-2"
                     v-for="(owner, i) in store.drawerContent.owners"
                     :key="i">
-                    <v-list-tile-action>{{ owner.BANK_ID }}</v-list-tile-action>
+                    <b-col cols="3" class="text-right">{{ owner.BANK_ID }}</b-col>
 
-                    <v-list-tile-content>
-                        <v-list-tile-title class="text-capitalize border-left border-dark pl-2">{{ owner.DATASET_CUSTODIAN }}</v-list-tile-title>
-                    </v-list-tile-content>
-                </v-list-tile>
+                    <b-col cols="9" class="text-capitalize border-left border-dark">{{ owner.DATASET_CUSTODIAN }}</b-col>
+                </b-row>
             </v-list>
         </v-navigation-drawer>
     </v-content>
