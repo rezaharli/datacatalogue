@@ -16,6 +16,10 @@
 legend.col-form-label, label.col-form-label {
     font-weight: bolder;
 }
+.collapsed > .when-opened,
+:not(.collapsed) > .when-closed {
+  display: none;
+}
 </style>
 
 <template>
@@ -85,163 +89,192 @@ legend.col-form-label, label.col-form-label {
         <b-col cols="8"> 
           <b-row>
             <b-col>
-              <b-card title="Technical Metadata From System" tag="article" class="mb-2">
-                <p class="card-text">
-                  <b-form>
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="tableName">
-                      <b-form-select id="tableName" class="col-8" v-model="ddTableSelected" :options="ddTableOptions"></b-form-select>
-                    </b-form-group>
+              <b-card tag="article" class="mb-2">
+                <h4 class="card-title border-0 mb-0 pb-0" v-b-toggle.collapse-1>
+                  Technical Metadata From System
+                  <i class="when-opened float-right fa fa-chevron-up"></i>
+                  <i class="when-closed float-right fa fa-chevron-down"></i>
+                </h4>
+                <b-collapse id="collapse-1" class="mt-3 pt-4 border-top" visible>
+                  <p class="card-text">
+                    <b-form>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="tableName">
+                        <b-form-select id="tableName" class="col-8" v-model="ddTableSelected" :options="ddTableOptions"></b-form-select>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnName">
-                      <b-form-select id="columnName" class="col-8" v-model="ddColumnSelected" :options="ddColumnOptions"></b-form-select>
-                    </b-form-group>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnName">
+                        <b-form-select id="columnName" class="col-8" v-model="ddColumnSelected" :options="ddColumnOptions"></b-form-select>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Name*" label-for="screenLabelName">
-                      <b-form-select id="columnName" class="col-8" v-model="ddScreenLabelSelected" :options="ddScreenLabelOptions"></b-form-select>
-                    </b-form-group>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Name*" label-for="screenLabelName">
+                        <b-form-select id="columnName" class="col-8" v-model="ddScreenLabelSelected" :options="ddScreenLabelOptions"></b-form-select>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Description">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BUSINESS_ALIAS_DESCRIPTION : ''"></text-wrap-dialog>
-                    </b-form-group>
-                    
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="CDE (yes/no)">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.CDE_YES_NO : ''"></text-wrap-dialog>
-                    </b-form-group>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Description">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BUSINESS_ALIAS_DESCRIPTION : ''"></text-wrap-dialog>
+                      </b-form-group>
+                      
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="CDE (yes/no)">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.CDE_YES_NO : ''"></text-wrap-dialog>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Status*">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.STATUS : ''"></text-wrap-dialog>
-                    </b-form-group>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Status*">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.STATUS : ''"></text-wrap-dialog>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Type">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DATA_TYPE : ''"></text-wrap-dialog>
-                    </b-form-group>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Type">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DATA_TYPE : ''"></text-wrap-dialog>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Format">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DATA_FORMAT : ''"></text-wrap-dialog>
-                    </b-form-group>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Format">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DATA_FORMAT : ''"></text-wrap-dialog>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Length">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DATA_LENGTH : ''"></text-wrap-dialog>
-                    </b-form-group>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Length">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DATA_LENGTH : ''"></text-wrap-dialog>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Example">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.EXAMPLE : ''"></text-wrap-dialog>
-                    </b-form-group>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Example">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.EXAMPLE : ''"></text-wrap-dialog>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)*">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DERIVED_YES_NO : ''"></text-wrap-dialog>
-                    </b-form-group>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)*">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DERIVED_YES_NO : ''"></text-wrap-dialog>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation logic*">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DERIVATION_LOGIC : ''"></text-wrap-dialog>
-                    </b-form-group>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation logic*">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DERIVATION_LOGIC : ''"></text-wrap-dialog>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sourced from Upstream (Yes/No)*">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.SOURCED_FROM_UPSTREAM_YES_NO : ''"></text-wrap-dialog>
-                    </b-form-group>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sourced from Upstream (Yes/No)*">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.SOURCED_FROM_UPSTREAM_YES_NO : ''"></text-wrap-dialog>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Checks*">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.SYSTEM_CHECKS : ''"></text-wrap-dialog>
-                    </b-form-group>
-                  </b-form>
-                </p>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Checks*">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.SYSTEM_CHECKS : ''"></text-wrap-dialog>
+                      </b-form-group>
+                    </b-form>
+                  </p>
+                </b-collapse>
               </b-card>
             </b-col>
           </b-row>
 
           <b-row>
             <b-col>
-              <b-card title="Business Metadata From Domain" tag="article" class="mb-2">
-                <p class="card-text">
-                  <b-form>
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DOMAIN : ''"></text-wrap-dialog>
-                    </b-form-group>
+              <b-card tag="article" class="mb-2">
+                <h4 class="card-title border-0 mb-0 pb-0" v-b-toggle.collapse-2>
+                  Business Metadata From Domain
+                  <i class="when-opened float-right fa fa-chevron-up"></i>
+                  <i class="when-closed float-right fa fa-chevron-down"></i>
+                </h4>
+                <b-collapse id="collapse-2" class="mt-3 pt-4 border-top">
+                  <p class="card-text">
+                    <b-form>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DOMAIN : ''"></text-wrap-dialog>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Domain">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.SUBDOMAIN : ''"></text-wrap-dialog>
-                    </b-form-group>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Domain">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.SUBDOMAIN : ''"></text-wrap-dialog>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain Owner">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DOMAIN_OWNER : ''"></text-wrap-dialog>
-                    </b-form-group>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain Owner">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DOMAIN_OWNER : ''"></text-wrap-dialog>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term*">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BUSINESS_TERM : ''"></text-wrap-dialog>
-                    </b-form-group>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term*">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BUSINESS_TERM : ''"></text-wrap-dialog>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BUSINESS_TERM_DESCRIPTION : ''"></text-wrap-dialog>
-                    </b-form-group>
-                  </b-form>
-                </p>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BUSINESS_TERM_DESCRIPTION : ''"></text-wrap-dialog>
+                      </b-form-group>
+                    </b-form>
+                  </p>
+                </b-collapse>
               </b-card>
             </b-col>
           </b-row>
 
           <b-row>
             <b-col>
-              <b-card title="Policy Related Information" tag="article" class="mb-2">
-                <p class="card-text">
-                  <b-form>
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Names">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.INFORMATION_ASSET_NAMES : ''"></text-wrap-dialog>
-                    </b-form-group>
+              <b-card tag="article" class="mb-2">
+                <h4 class="card-title border-0 mb-0 pb-0" v-b-toggle.collapse-4>
+                  Interfaces
+                  <i class="when-opened float-right fa fa-chevron-up"></i>
+                  <i class="when-closed float-right fa fa-chevron-down"></i>
+                </h4>
+                <b-collapse id="collapse-4" class="mt-3 pt-4 border-top">
+                  <p class="card-text">
+                    <b-form>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Preceding System*">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_PRECEEDING_SYSTEM : ''"></text-wrap-dialog>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Description">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.INFORMATION_ASSET_DESCRIPTION : ''"></text-wrap-dialog>
-                    </b-form-group>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Succeeding System*">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_SUCCEEDING_SYSTEM : ''"></text-wrap-dialog>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="C - Confidentiality">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.CONFIDENTIALITY : ''"></text-wrap-dialog>
-                    </b-form-group>
-
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="I - Integrity">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.INTEGRITY : ''"></text-wrap-dialog>
-                    </b-form-group>
-
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="A - Availability">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.AVAILABILITY : ''"></text-wrap-dialog>
-                    </b-form-group>
-
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Overall CIA Rating">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.OVERALL_CIA_RATING : ''"></text-wrap-dialog>
-                    </b-form-group>
-
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Record Categories">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.RECORD_CATEGORIES : ''"></text-wrap-dialog>
-                    </b-form-group>
-
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="PII Flag">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.PII_FLAG : ''"></text-wrap-dialog>
-                    </b-form-group>
-                  </b-form>
-                </p>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards | Threshold*">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.THRESHOLD : ''"></text-wrap-dialog>
+                      </b-form-group>
+                    </b-form>
+                  </p>
+                </b-collapse>
               </b-card>
             </b-col>
           </b-row>
 
           <b-row>
             <b-col>
-              <b-card title="Interfaces" tag="article" class="mb-2">
-                <p class="card-text">
-                  <b-form>
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Preceding System*">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_PRECEEDING_SYSTEM : ''"></text-wrap-dialog>
-                    </b-form-group>
+              <b-card tag="article" class="mb-2">
+                <h4 class="card-title border-0 mb-0 pb-0" v-b-toggle.collapse-3>
+                  Policy Related Information
+                  <i class="when-opened float-right fa fa-chevron-up"></i>
+                  <i class="when-closed float-right fa fa-chevron-down"></i>
+                </h4>
+                <b-collapse id="collapse-3" class="mt-3 pt-4 border-top">
+                  <p class="card-text">
+                    <b-form>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Names">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.INFORMATION_ASSET_NAMES : ''"></text-wrap-dialog>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Succeeding System*">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_SUCCEEDING_SYSTEM : ''"></text-wrap-dialog>
-                    </b-form-group>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Information Asset Description">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.INFORMATION_ASSET_DESCRIPTION : ''"></text-wrap-dialog>
+                      </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards | Threshold*">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.THRESHOLD : ''"></text-wrap-dialog>
-                    </b-form-group>
-                  </b-form>
-                </p>
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="C - Confidentiality">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.CONFIDENTIALITY : ''"></text-wrap-dialog>
+                      </b-form-group>
+
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="I - Integrity">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.INTEGRITY : ''"></text-wrap-dialog>
+                      </b-form-group>
+
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="A - Availability">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.AVAILABILITY : ''"></text-wrap-dialog>
+                      </b-form-group>
+
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Overall CIA Rating">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.OVERALL_CIA_RATING : ''"></text-wrap-dialog>
+                      </b-form-group>
+
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Record Categories">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.RECORD_CATEGORIES : ''"></text-wrap-dialog>
+                      </b-form-group>
+
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="PII Flag">
+                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.PII_FLAG : ''"></text-wrap-dialog>
+                      </b-form-group>
+                    </b-form>
+                  </p>
+                </b-collapse>
               </b-card>
             </b-col>
           </b-row>
+
         </b-col>
       </b-row>
 
