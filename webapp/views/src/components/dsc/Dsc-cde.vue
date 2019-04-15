@@ -26,14 +26,14 @@
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
                         <h6 class="title-1">Critical Data Elements</h6>
-                        <h3 class="title-2 text-capitalize">{{ store.counts ? store.counts.CDE_COUNT : 0 }}</h3>
+                        <h3 class="title-2 text-capitalize">{{ store.left.totalItems }}</h3>
                     </div>
                 </b-col>
             </b-row>
 
             <b-row style="margin-top: 10px; margin-bottom: 20px;">
                 <b-col>
-                    <b-button class="float-right red-neon icon-only ml-3" @click.native="resetFilter">
+                    <b-button class="float-right red-neon icon-only ml-3" @click="resetFilter">
                         <i class="fa fa-fw fa-filter"></i>
                     </b-button>
 
@@ -95,12 +95,12 @@
                       hide-headers
                     >
                       <template slot="items" slot-scope="props">
-                        <td style="width: calc(100% / 6)">&nbsp;</td>
-                        <td style="width: calc(100% / 6)">&nbsp;</td>
-                        <td style="width: calc(100% / 6)">&nbsp;</td>
-                        <td style="width: calc(100% / 6)"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'COLUMN_NAME')).filter(Boolean).join(', '))" :isklik="false"></tablecell></b-link></td>
-                        <td style="width: calc(100% / 6)"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'DSP_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                        <td style="width: calc(100% / 6)"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'PROCESS_OWNER')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                        <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
+                        <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
+                        <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
+                        <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'COLUMN_NAME')).filter(Boolean).join(', '))" :isklik="false"></tablecell></b-link></td>
+                        <td v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'DSP_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                        <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'PROCESS_OWNER')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
                       </template>
 
                       <template slot="expand" slot-scope="props">
@@ -112,12 +112,12 @@
                           hide-headers
                         >
                           <template slot="items" slot-scope="props">
-                            <td style="width: calc(100% / 6)">&nbsp;</td>
-                            <td style="width: calc(100% / 6)">&nbsp;</td>
-                            <td style="width: calc(100% / 6)">&nbsp;</td>
-                            <td style="width: calc(100% / 6)">&nbsp;</td>
-                            <td style="width: calc(100% / 6)"><tablecell :fulltext="props.item.DSP_NAME" :isklik="true"></tablecell></td>
-                            <td style="width: calc(100% / 6)"><tablecell :fulltext="props.item.PROCESS_OWNER" :isklik="true"></tablecell></td>
+                            <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
+                            <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
+                            <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
+                            <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">&nbsp;</td>
+                            <td v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }"><tablecell :fulltext="props.item.DSP_NAME" :isklik="true"></tablecell></td>
+                            <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }"><tablecell :fulltext="props.item.PROCESS_OWNER" :isklik="true"></tablecell></td>
                           </template>
                         </v-data-table>
                       </template>

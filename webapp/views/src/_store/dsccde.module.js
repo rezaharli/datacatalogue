@@ -14,9 +14,9 @@ const state = {
             { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'CDE', value: 'CDE' },
             { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Description', value: 'DESCRIPTION' },
             { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Table Name', value: 'TABLE_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Column Name', value: 'COLUMN_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Downstream Process', value: 'DSP_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Downstream Process Owner', value: 'PROCESS_OWNER' },
+            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Column Name', value: 'ColumnsVal.COLUMN_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Downstream Process', value: 'ColumnsVal.DSP_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Downstream Process Owner', value: 'ColumnsVal.PROCESS_OWNER' },
         ],
         isRightTable: false,
         DDSource: [],
@@ -31,7 +31,7 @@ const actions = {
         commit('getLeftTableRequest');
 
         Object.keys(state.all.filters.left).map(function(key, index) {
-            state.all.filters.left[key] = state.all.filters.left[key].toString();
+            state.all.filters.left[key] = state.all.filters.left[key] ? state.all.filters.left[key].toString() : "";
         });
 
         var param = {

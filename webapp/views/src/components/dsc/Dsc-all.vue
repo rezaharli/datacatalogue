@@ -272,9 +272,6 @@ export default {
       toggleDscDrawer(param){
         this.dscStore.drawer = !this.dscStore.drawer;
 
-        console.log(this.dscStore.drawer, param);
-        
-
         if(this.dscStore.drawer) {
           this.dscStore.drawerContent.systemName = param.SYSTEM_NAME;
           this.dscStore.drawerContent.itamID = param.ITAM_ID;
