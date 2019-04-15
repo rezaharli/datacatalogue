@@ -6,6 +6,8 @@ export const dscMyService = {
     getCdeTable,
     getCdpTable,
     getCdpCdeTable,
+    getInterfacesTable,
+    getInterfacesCdeTable,
     getRightTable,
     getInterfacesRightTable,
     getDetails
@@ -73,6 +75,14 @@ function getCdpTable(param) {
 
 function getCdpCdeTable(param) {
     return fetchWHeader(`/dsc/getcdpcdetable`, param);
+}
+
+function getInterfacesTable(param) {
+    return fetchWHeader(`/dsc/getinterfacestable`, param);
+}
+
+function getInterfacesCdeTable(param) {
+    return fetchWHeader(`/dsc/getinterfacescdetable`, param);
 }
 
 function getRightTable(param) {

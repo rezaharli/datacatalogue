@@ -9,10 +9,13 @@ const state = {
             right: {}
         },
         system: '',
+        dspName: '',
         left: newTableObject(),
         leftHeaders: [
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Immediate Interfaces', value: 'IMM_INTERFACE' },
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: '# of CDEs', value: 'CDE_COUNT' },
+            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'CDE Name', value: 'CDE' },
+            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Description', value: 'DESCRIPTION' },
+            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Table Name', value: 'TABLE_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Column Name', value: 'COLUMN_NAME' },
         ],
         isRightTable: false,
         DDSource: [],
@@ -32,11 +35,12 @@ const actions = {
 
         var param = {
             System: state.all.system,
+            DspName: state.all.dspName,
             Filters: state.all.filters.left,
             Pagination: state.all.left.pagination
         }
 
-        return dscMyService.getInterfacesTable(param)
+        return dscMyService.getInterfacesCdeTable(param)
             .then(
                 res => commit('getLeftTableSuccess', res.Data),
                 error => commit('getLeftTableFailure', error)
@@ -87,7 +91,7 @@ const mutations = {
     },
 };
 
-export const dscinterfaces = {
+export const dscinterfacescde = {
     namespaced: true,
     state,
     actions,
