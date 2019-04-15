@@ -2,10 +2,10 @@
   <div ref="widthAcuan">
     {{ props.header.text }} {{ count }}
 
-    <b-dropdown no-caret variant="link" class="header-filter-icon" ref="columnFilter">
+    <b-dropdown no-caret variant="link" class="" ref="columnFilter">
       <template slot="button-content">
         <!-- <i class="fa fa-filter text-muted"></i> -->
-        <v-icon small v-bind:class="{'icon-active' : store.filters[which][props.header.value.split('.').reverse()[0]] }">filter_list</v-icon>
+        <v-icon small v-bind:class="{'icon-active' : store.filters[which][props.header.value.split('.').reverse()[0]] }" class="mx-1">filter_list</v-icon>
       </template>
 
       <b-dropdown-header>
@@ -17,11 +17,26 @@
         ></b-form-input>
       </b-dropdown-header>
 
-      <b-dropdown-item
-        v-for="item in distinctData(props.header.value, store[which].source)"
-        :key="item"
-        @click="filterClick(props.header, item)"
-      >{{ item }}</b-dropdown-item>
+      <b-dropdown-divider/>
+
+      <div class="dropdown-wrapper">
+        <b-dropdown-item
+          v-for="item in distinctData(props.header.value, store[which].source)"
+          :key="item"
+          @click="filterClick(props.header, item)"
+        >{{ item }}</b-dropdown-item>
+      </div>
+
+      <b-dropdown-divider/>
+
+      <b-row class="justify-content-center" v-bind:class="{'d-none' : !(store.filters[which][props.header.value.split('.').reverse()[0]]) }">
+        <b-col cols="auto">
+          <a class="text-danger mx-4 my-1" @click="resetFilterColumn(which, props.header.value.split('.').reverse()[0])">
+            <i class="fa fa-trash"></i> Clear
+          </a>
+        </b-col>
+      </b-row>
+
     </b-dropdown>
   </div>
 </template>
@@ -90,6 +105,16 @@ export default {
     filterProcess (){
       if(this.which == "left") this.getLeftTable()
       else this.getRightTable(this.$route.params.system)
+    },
+    resetFilterColumn (which, fieldName) {
+      // console.log(this.store.filters[this.which]);
+      // console.log("-------------------");
+      // console.log("fieldName : ", fieldName);
+      // console.log("-------------------");
+      // console.log(this.store.filters[which][fieldName]);
+      
+      this.store.filters[which][fieldName] = "";
+      this.filterProcess ();
     }
   }
 };

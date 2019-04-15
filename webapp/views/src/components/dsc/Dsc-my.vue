@@ -2,21 +2,6 @@
   @import '../../assets/styles/dashboard.css';
 </style>
 
-<style>
-table.v-table thead th > div.btn-group {
-  width: auto;
-}
-
-.header-filter-icon{
-
-}
-.header-filter-icon .dropdown-menu{
-  overflow: scroll;
-  height: 200px;
-}
-</style>
-
-
 <template>
   <b-row style="margin-top: 10px;margin-bottom: 10px;">
     <b-col>
@@ -42,7 +27,7 @@ table.v-table thead th > div.btn-group {
 
           
               <div class="card card-v1 transition">
-                <div class="title-wrapper">
+                <div class="title-wrapper transition">
                   <v-img :src="images.my" :contain="true" class="card-icon transition"></v-img>
                   <h2 class="transition title-1">My System</h2>
                 </div>
@@ -85,7 +70,7 @@ table.v-table thead th > div.btn-group {
                   </template>
                 </v-data-table>
 
-                <div class="card-circle transition"></div>
+                <!-- <div class="card-circle transition"></div> -->
               </div>
             
             <!-- <b-col cols="6">
