@@ -25,7 +25,7 @@
                 </b-col>
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
-                        <h6 class="title-1">Downstream Processes</h6>
+                        <h6 class="title-1">Immediate Interfaces</h6>
                         <h3 class="title-2 text-capitalize">{{ store.left.totalItems }}</h3>
                     </div>
                 </b-col>
