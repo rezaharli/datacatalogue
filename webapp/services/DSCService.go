@@ -108,7 +108,7 @@ func (s *DSCService) GetCDETable(system string, colFilter interface{}, pageNumbe
 	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "")
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "")
 	} else {
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
 			colFilterM.GetString("CDE"),
