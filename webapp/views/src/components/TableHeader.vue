@@ -115,6 +115,7 @@ export default {
       
       this.store.filters[which][fieldName] = "";
       this.filterProcess ();
+      this.$refs.columnFilter.hide(true);
     }
   }
 };
