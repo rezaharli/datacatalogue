@@ -155,8 +155,11 @@ table.v-table thead th > div.btn-group {
   margin-top: 200px;
   padding: 0px 20px;
 }
-.card.card-v1 .v-icon {border-radius: 50%; padding: 5px;}
+
+.card.card-v1 .v-icon,
+.table-v1 .v-icon {border-radius: 50%; padding: 5px;}
 .card.card-v1 .v-icon.icon-active {color: #fff; background-color: #56B8BB;}
+
 .card .v-table__overflow {overflow-x: visible; overflow-y: visible;}
 .card .v-datatable__actions{justify-content: space-between;}
 .card .v-datatable__actions__select,
@@ -223,6 +226,7 @@ table.v-table thead th > div.btn-group {
 .table-v1 table.v-table thead tr th:first-of-type {border-top-left-radius: 7px; padding-left: 45px;}
 .table-v1 table.v-table thead tr th:last-of-type {border-top-right-radius: 7px; padding-right: 45px;}
 .table-v1 table.v-table thead tr th .v-icon {color: #fff !important;}
+.table-v1 table.v-table thead tr th .v-icon.icon-active {color: #397fa4 !important; /*border: 1px solid #397fa4;*/}
 .table-v1 table.v-table tbody tr {border-bottom: none !important;}
 .table-v1 > .v-table__overflow > table.v-table > tbody > tr.odd,
 .table-v1 > .v-table__overflow > table.v-table > tbody > tr.odd + .v-datatable__expand-row .v-table {background-color: #ffffff;}
