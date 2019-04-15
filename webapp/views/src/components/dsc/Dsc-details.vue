@@ -184,7 +184,8 @@ legend.col-form-label, label.col-form-label {
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term*">
-                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BUSINESS_TERM : ''"></text-wrap-dialog>
+                        <!-- <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BUSINESS_TERM : ''"></text-wrap-dialog> -->
+                        <b-form-select id="businessTerm" class="col-8" v-model="ddBusinessTermSelected" :options="ddBusinessTermOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
@@ -301,6 +302,7 @@ export default {
       ddTableSelected: null,
       ddColumnSelected: null,
       ddScreenLabelSelected: null,
+      ddBusinessTermSelected: null,
       excelFields: {
         'System Name': "selectedDetails.SYSTEM_NAME",
         'ITAM ID': "selectedDetails.ITAM_ID",
@@ -363,6 +365,16 @@ export default {
       
       return _.uniq(_.map(filtered, (v) => v.BUSINESS_ALIAS_NAME.toString().trim())).filter(Boolean);
     },
+    ddBusinessTermOptions () {
+      var self = this;
+      var filtered = _.filter(self.dscmy.DDSource, (v) => {
+        return v.TABLE_NAME == self.ddTableSelected 
+          && v.COLUMN_NAME == self.ddColumnSelected 
+          && v.BUSINESS_ALIAS_NAME == self.ddScreenLabelSelected;
+      });
+      
+      return _.uniq(_.map(filtered, (v) => v.BUSINESS_TERM.toString().trim())).filter(Boolean);
+    },
     exportDatas () {
       if(this.selectedDetails){
         return [{
@@ -385,9 +397,14 @@ export default {
     },
     ddColumnSelected () {
       if(this.firstload) return;
-      
-      if(this.ddScreenLabelOptions[0]) this.ddScreenLabelSelected = this.ddScreenLabelOptions[0];
-      else this.ddScreenLabelSelected = "";
+      if( ! this.firstload){
+        var param = {
+          ColumnName: this.ddColumnSelected.toString(),
+          TableName: this.ddTableSelected.toString(),
+        };
+        
+        this.runGetDetails(param);
+      }
     },
     ddScreenLabelSelected (){
       if(this.firstload) return;
@@ -399,6 +416,25 @@ export default {
 
         if(this.ddScreenLabelSelected && this.ddScreenLabelSelected != "NA"){
           param.ScreenLabel = this.ddScreenLabelSelected.toString();
+        } 
+        
+        this.runGetDetails(param);
+      }
+    },
+    ddBusinessTermSelected (){
+      if(this.firstload) return;
+      if( ! this.firstload){
+        var param = {
+          ColumnName: this.ddColumnSelected.toString(),
+          TableName: this.ddTableSelected.toString(),
+        };
+
+        if(this.ddScreenLabelSelected && this.ddScreenLabelSelected != "NA"){
+          param.ScreenLabel = this.ddScreenLabelSelected.toString();
+        } 
+
+        if(this.ddBusinessTermSelected && this.ddBusinessTermSelected != "NA"){
+          param.BusinessTerm = this.ddBusinessTermSelected.toString();
         } 
         
         this.runGetDetails(param);
@@ -468,6 +504,7 @@ export default {
               self.ddTableSelected = self.selectedDetails.TABLE_NAME;
               self.ddColumnSelected = self.selectedDetails.COLUMN_NAME;
               self.ddScreenLabelSelected = self.selectedDetails.BUSINESS_ALIAS_NAME;
+              self.ddBusinessTermSelected = self.selectedDetails.BUSINESS_TERM;
 
               setTimeout(() => {
                 this.firstload = false;

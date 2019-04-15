@@ -327,7 +327,12 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 		otherArgs = append(otherArgs, payload.GetString("Right"), payload.GetString("Column"))
 	}
 
-	otherArgs = append(otherArgs, payload.GetString("TableName"), payload.GetString("ColumnName"), payload.GetString("ScreenLabel"))
+	otherArgs = append(otherArgs,
+		payload.GetString("TableName"),
+		payload.GetString("ColumnName"),
+		payload.GetString("ScreenLabel"),
+		payload.GetString("BusinessTerm"),
+	)
 
 	///////// FILTER
 	q = `SELECT * FROM (
@@ -341,6 +346,9 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 			AND column_name = '` + otherArgs[3] + `' `
 	if otherArgs[4] != "" {
 		q += `AND business_alias_name = '` + otherArgs[4] + `' `
+	}
+	if otherArgs[5] != "" {
+		q += `AND business_term = '` + otherArgs[5] + `' `
 	}
 	q += `) `
 
@@ -373,7 +381,7 @@ func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 	}
 
 	///////// FILTER
-	q = `SELECT DISTINCT table_name, column_name, business_alias_name 
+	q = `SELECT DISTINCT table_name, column_name, business_alias_name, business_term
 		FROM (
 		` + q + `
 	) `
