@@ -11,7 +11,8 @@ const state = {
         system: '',
         left: newTableObject(),
         leftHeaders: [
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Immediate Interfaces', value: 'IMM_INTERFACE' },
+            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Downstream Process NAME', value: 'DSP_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Downstream Process Owner', value: 'PROCESS_OWNER' },
             { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: '# of CDEs', value: 'CDE_COUNT' },
         ],
         isRightTable: false,
@@ -36,7 +37,7 @@ const actions = {
             Pagination: state.all.left.pagination
         }
 
-        return dscMyService.getInterfacesTable(param)
+        return dscMyService.getCdpTable(param)
             .then(
                 res => commit('getLeftTableSuccess', res.Data),
                 error => commit('getLeftTableFailure', error)
@@ -87,7 +88,7 @@ const mutations = {
     },
 };
 
-export const dscinterfaces = {
+export const dsccdp = {
     namespaced: true,
     state,
     actions,

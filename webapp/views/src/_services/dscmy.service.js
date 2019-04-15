@@ -4,6 +4,10 @@ export const dscMyService = {
     getLeftTable,
     getHomepageCounts,
     getCdeTable,
+    getCdpTable,
+    getCdpCdeTable,
+    getInterfacesTable,
+    getInterfacesCdeTable,
     getRightTable,
     getInterfacesRightTable,
     getDetails
@@ -63,6 +67,22 @@ function getCdeTable(param) {
             return res;
         }
     );
+}
+
+function getCdpTable(param) {
+    return fetchWHeader(`/dsc/getcdptable`, param);
+}
+
+function getCdpCdeTable(param) {
+    return fetchWHeader(`/dsc/getcdpcdetable`, param);
+}
+
+function getInterfacesTable(param) {
+    return fetchWHeader(`/dsc/getinterfacestable`, param);
+}
+
+function getInterfacesCdeTable(param) {
+    return fetchWHeader(`/dsc/getinterfacescdetable`, param);
 }
 
 function getRightTable(param) {

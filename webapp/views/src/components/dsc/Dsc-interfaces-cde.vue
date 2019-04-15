@@ -25,7 +25,19 @@
                 </b-col>
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
-                        <h6 class="title-1">Downstream Processes</h6>
+                        <h6 class="title-1">Downstream Process</h6>
+                        <h3 class="title-2 text-capitalize">{{ $route.params.dspName }}</h3>
+                    </div>
+                </b-col>
+                <b-col sm=12 md=3>
+                    <div class="card card-v2 transition">
+                        <h6 class="title-1">Downstream Process Owner</h6>
+                        <h3 class="title-2 text-capitalize">{{ store.left.display[0] ? store.left.display[0].PROCESS_OWNER : "" }}</h3>
+                    </div>
+                </b-col>
+                <b-col sm=12 md=3>
+                    <div class="card card-v2 transition">
+                        <h6 class="title-1">Critical Data Elements</h6>
                         <h3 class="title-2 text-capitalize">{{ store.left.totalItems }}</h3>
                     </div>
                 </b-col>
@@ -76,8 +88,10 @@
 
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                      <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.IMM_INTERFACE" :isklik="true"></tablecell></td>
-                      <td style="width: calc(100% / 6)" class="text-capitalize"><b-link @click.stop="showCDEs(props.item)"><tablecell :fulltext="props.item.CDE_COUNT" :isklik="false"></tablecell></b-link></td>
+                      <td style="width: calc(100% / 6)" class="text-capitalize"><b-link @click.stop="showDetails(props.item)"><tablecell :fulltext="props.item.CDE" :isklik="false"></tablecell></b-link></td>
+                      <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.DESCRIPTION" :isklik="true"></tablecell></td>
+                      <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.TABLE_NAME" :isklik="true"></tablecell></td>
+                      <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.COLUMN_NAME" :isklik="true"></tablecell></td>
                     </tr>
                   </template>
                 </v-data-table>
@@ -110,7 +124,7 @@ export default {
   },
   data() {
     return {
-      storeName: "dscinterfaces",
+      storeName: "dscinterfacescde",
       systemSource: [],
       tablenameSource: []
     };
@@ -141,6 +155,7 @@ export default {
   mounted() {
     this.store.tabName = this.storeName;
     this.store.system = this.$route.params.system;
+    this.store.dspName = this.$route.params.dspName;
   },
   methods: {
     getLeftTable() {
@@ -170,12 +185,12 @@ export default {
     },
     showCDEs(param) {
       this.$router.push(
-        this.addressPath + "/" + param.SYSTEM_NAME + "/" + param.IMM_INTERFACE
+        this.addressPath + "/" + param.SYSTEM_NAME + "/" + param.DSP_NAME
       );
     },
     showDetails(param) {
       this.$router.push(
-        this.addressPath + "/" + param.TSID + "/" + param.ID + "/" + param.COLID
+        this.addressPath + "/" + param.TSID + "/" + param.TMTID + "/" + param.COLID
       );
     }
   }
