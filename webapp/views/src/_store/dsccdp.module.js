@@ -11,8 +11,8 @@ const state = {
         system: '',
         left: newTableObject(),
         leftHeaders: [
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Downstream Process NAME', value: 'DSP_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Downstream Process Owner', value: 'PROCESS_OWNER' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: false, text: 'Downstream Process NAME', value: 'DSP_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: false, text: 'Downstream Process Owner', value: 'PROCESS_OWNER' },
             { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: '# of CDEs', value: 'CDE_COUNT' },
         ],
         isRightTable: false,
