@@ -69,10 +69,10 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                  <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'DATA_DOMAIN').filter(Boolean)).join(', '))" :isklik="false"></tablecell></td>
-                  <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SUB_DOMAINS" :isklik="false"></tablecell></b-link></td>
-                  <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'SUB_DOMAIN_OWNER').filter(Boolean)).join('; '))" :isklik="true"></tablecell></td>
-                  <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'BANK_ID').filter(Boolean)).join('; '))" :isklik="true"></tablecell></td>
+                  <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'DATA_DOMAIN').filter(Boolean)).join(', '))" showOn="hover"></tablecell></td>
+                  <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SUB_DOMAINS" showOn="hover"></tablecell></b-link></td>
+                  <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'SUB_DOMAIN_OWNER').filter(Boolean)).join('; '))" showOn="click"></tablecell></td>
+                  <td><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'BANK_ID').filter(Boolean)).join('; '))" showOn="click"></tablecell></td>
                 </template>
               </v-data-table>
             </b-col>
@@ -105,9 +105,9 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                   <tr>
-                    <td><b-link @click="showDetails(props.item)"><tablecell :fulltext="props.item.BUSINESS_TERM" :isklik="false"></tablecell></b-link></td>
-                    <td><tablecell :fulltext="props.item.BT_DESCRIPTION" :isklik="true"></tablecell></td>
-                    <td><tablecell :fulltext="props.item.CDE_YES_NO" :isklik="true"></tablecell></td>
+                    <td><b-link @click="showDetails(props.item)"><tablecell :fulltext="props.item.BUSINESS_TERM" showOn="hover"></tablecell></b-link></td>
+                    <td><tablecell :fulltext="props.item.BT_DESCRIPTION" showOn="click"></tablecell></td>
+                    <td><tablecell :fulltext="props.item.CDE_YES_NO" showOn="click"></tablecell></td>
                   </tr>
                 </template>
               </v-data-table>
