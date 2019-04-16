@@ -68,10 +68,10 @@ table.v-table thead th > div.btn-group {
                 </template>
 
                 <template slot="items" slot-scope="props">
-                  <td><tablecell :fulltext="props.item.DATA_DOMAIN" :isklik="false"></tablecell></td>
-                  <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SUB_DOMAINS" :isklik="false"></tablecell></b-link></td>
-                  <td><tablecell :fulltext="props.item.SUB_DOMAIN_OWNER" :isklik="true"></tablecell></td>
-                  <td><tablecell :fulltext="props.item.BANK_ID" :isklik="true"></tablecell></td>
+                  <td><tablecell :fulltext="props.item.DATA_DOMAIN" showOn="hover"></tablecell></td>
+                  <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SUB_DOMAINS" showOn="hover"></tablecell></b-link></td>
+                  <td><tablecell :fulltext="props.item.SUB_DOMAIN_OWNER" showOn="click"></tablecell></td>
+                  <td><tablecell :fulltext="props.item.BANK_ID" showOn="click"></tablecell></td>
                 </template>
               </v-data-table>
             </b-col>
@@ -104,9 +104,9 @@ table.v-table thead th > div.btn-group {
 
                 <template slot="items" slot-scope="props">
                   <tr>
-                    <td><b-link @click="showDetails(props.item)"><tablecell :fulltext="props.item.BUSINESS_TERM" :isklik="false"></tablecell></b-link></td>
-                    <td><tablecell :fulltext="props.item.BT_DESCRIPTION" :isklik="true"></tablecell></td>
-                    <td><tablecell :fulltext="props.item.CDE_YES_NO" :isklik="true"></tablecell></td>
+                    <td><b-link @click="showDetails(props.item)"><tablecell :fulltext="props.item.BUSINESS_TERM" showOn="hover"></tablecell></b-link></td>
+                    <td><tablecell :fulltext="props.item.BT_DESCRIPTION" showOn="click"></tablecell></td>
+                    <td><tablecell :fulltext="props.item.CDE_YES_NO" showOn="click"></tablecell></td>
                   </tr>
                 </template>
               </v-data-table>

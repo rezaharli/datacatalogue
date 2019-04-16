@@ -210,7 +210,7 @@ legend.col-form-label, label.col-form-label {
                   <p class="card-text">
                     <b-form>
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Preceding System*">
-                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_PRECEEDING_SYSTEM : ''"></text-wrap-dialog>
+                        <b-form-select id="prec" class="col-8" v-model="ddPrecSelected" :options="ddPrecOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Incoming Data Element" label-for="precIncoming">
@@ -226,7 +226,7 @@ legend.col-form-label, label.col-form-label {
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Immediate Succeeding System*">
-                        <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_SUCCEEDING_SYSTEM : ''"></text-wrap-dialog>
+                        <b-form-select id="succ" class="col-8" v-model="ddSuccSelected" :options="ddSuccOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Incoming Data Element" label-for="succIncoming">
@@ -327,7 +327,9 @@ export default {
       ddColumnSelected: null,
       ddScreenLabelSelected: null,
       ddBusinessTermSelected: null,
+      ddPrecSelected: null,
       ddPrecIncomingSelected: null,
+      ddSuccSelected: null,
       ddSuccIncomingSelected: null,
       excelFields: {
         'System Name': "selectedDetails.SYSTEM_NAME",
@@ -402,7 +404,7 @@ export default {
       
       return _.uniq(_.map(filtered, (v) => v.BUSINESS_TERM.toString().trim())).filter(Boolean);
     },
-    ddPrecIncomingOptions () {
+    ddPrecOptions () {
       var self = this;
       var filtered = _.filter(self.dscmy.DDSource, (v) => {
         return v.TABLE_NAME == self.ddTableSelected 
@@ -411,7 +413,32 @@ export default {
           && v.BUSINESS_TERM == self.ddBusinessTermSelected;
       });
       
+      return _.uniq(_.map(filtered, (v) => v.IMM_PRECEEDING_SYSTEM.toString().trim())).filter(Boolean);
+    },
+    ddPrecIncomingOptions () {
+      var self = this;
+      var filtered = _.filter(self.dscmy.DDSource, (v) => {
+        return v.TABLE_NAME == self.ddTableSelected 
+          && v.COLUMN_NAME == self.ddColumnSelected 
+          && v.BUSINESS_ALIAS_NAME == self.ddScreenLabelSelected
+          && v.BUSINESS_TERM == self.ddBusinessTermSelected
+          && v.IMM_PRECEEDING_SYSTEM == self.ddPrecSelected;
+      });
+      
       return _.uniq(_.map(filtered, (v) => v.IMM_PREC_INCOMING.toString().trim())).filter(Boolean);
+    },
+    ddSuccOptions () {
+      var self = this;
+      var filtered = _.filter(self.dscmy.DDSource, (v) => {
+        return v.TABLE_NAME == self.ddTableSelected 
+          && v.COLUMN_NAME == self.ddColumnSelected 
+          && v.BUSINESS_ALIAS_NAME == self.ddScreenLabelSelected
+          && v.BUSINESS_TERM == self.ddBusinessTermSelected
+          && v.IMM_PRECEEDING_SYSTEM == self.ddPrecSelected
+          && v.IMM_PREC_INCOMING == self.ddPrecIncomingSelected;
+      });
+      
+      return _.uniq(_.map(filtered, (v) => v.IMM_SUCCEEDING_SYSTEM.toString().trim())).filter(Boolean);
     },
     ddSuccIncomingOptions () {
       var self = this;
@@ -420,7 +447,9 @@ export default {
           && v.COLUMN_NAME == self.ddColumnSelected 
           && v.BUSINESS_ALIAS_NAME == self.ddScreenLabelSelected
           && v.BUSINESS_TERM == self.ddBusinessTermSelected
-          && v.IMM_PREC_INCOMING == self.ddPrecIncomingSelected;
+          && v.IMM_PRECEEDING_SYSTEM == self.ddPrecSelected
+          && v.IMM_PREC_INCOMING == self.ddPrecIncomingSelected
+          && v.IMM_SUCCEEDING_SYSTEM == self.ddSuccSelected;
       });
       
       return _.uniq(_.map(filtered, (v) => v.IMM_SUCC_INCOMING.toString().trim())).filter(Boolean);
@@ -490,6 +519,29 @@ export default {
         this.runGetDetails(param);
       }
     },
+    ddPrecSelected (){
+      if(this.firstload) return;
+      if( ! this.firstload){
+        var param = {
+          ColumnName: this.ddColumnSelected.toString(),
+          TableName: this.ddTableSelected.toString(),
+        };
+
+        if(this.ddScreenLabelSelected && this.ddScreenLabelSelected != "NA"){
+          param.ScreenLabel = this.ddScreenLabelSelected.toString();
+        } 
+
+        if(this.ddBusinessTermSelected && this.ddBusinessTermSelected != "NA"){
+          param.BusinessTerm = this.ddBusinessTermSelected.toString();
+        } 
+
+        if(this.ddPrecSelected && this.ddPrecSelected != "NA"){
+          param.Prec = this.ddPrecSelected.toString();
+        } 
+        
+        this.runGetDetails(param);
+      }
+    },
     ddPrecIncomingSelected (){
       if(this.firstload) return;
       if( ! this.firstload){
@@ -506,8 +558,43 @@ export default {
           param.BusinessTerm = this.ddBusinessTermSelected.toString();
         } 
 
+        if(this.ddPrecSelected && this.ddPrecSelected != "NA"){
+          param.Prec = this.ddPrecSelected.toString();
+        } 
+
         if(this.ddPrecIncomingSelected && this.ddPrecIncomingSelected != "NA"){
           param.PrecIncoming = this.ddPrecIncomingSelected.toString();
+        } 
+        
+        this.runGetDetails(param);
+      }
+    },
+    ddSuccSelected (){
+      if(this.firstload) return;
+      if( ! this.firstload){
+        var param = {
+          ColumnName: this.ddColumnSelected.toString(),
+          TableName: this.ddTableSelected.toString(),
+        };
+
+        if(this.ddScreenLabelSelected && this.ddScreenLabelSelected != "NA"){
+          param.ScreenLabel = this.ddScreenLabelSelected.toString();
+        } 
+
+        if(this.ddBusinessTermSelected && this.ddBusinessTermSelected != "NA"){
+          param.BusinessTerm = this.ddBusinessTermSelected.toString();
+        } 
+
+        if(this.ddPrecSelected && this.ddPrecSelected != "NA"){
+          param.Prec = this.ddPrecSelected.toString();
+        } 
+
+        if(this.ddPrecIncomingSelected && this.ddPrecIncomingSelected != "NA"){
+          param.PrecIncoming = this.ddPrecIncomingSelected.toString();
+        } 
+
+        if(this.ddSuccSelected && this.ddSuccSelected != "NA"){
+          param.Succ = this.ddSuccSelected.toString();
         } 
         
         this.runGetDetails(param);
@@ -529,8 +616,16 @@ export default {
           param.BusinessTerm = this.ddBusinessTermSelected.toString();
         } 
 
+        if(this.ddPrecSelected && this.ddPrecSelected != "NA"){
+          param.Prec = this.ddPrecSelected.toString();
+        } 
+
         if(this.ddPrecIncomingSelected && this.ddPrecIncomingSelected != "NA"){
           param.PrecIncoming = this.ddPrecIncomingSelected.toString();
+        } 
+
+        if(this.ddSuccSelected && this.ddSuccSelected != "NA"){
+          param.Succ = this.ddSuccSelected.toString();
         } 
 
         if(this.ddSuccIncomingSelected && this.ddSuccIncomingSelected != "NA"){
@@ -605,7 +700,9 @@ export default {
               self.ddColumnSelected = self.selectedDetails.COLUMN_NAME;
               self.ddScreenLabelSelected = self.selectedDetails.BUSINESS_ALIAS_NAME;
               self.ddBusinessTermSelected = self.selectedDetails.BUSINESS_TERM;
+              self.ddPrecSelected = self.selectedDetails.IMM_PRECEEDING_SYSTEM;
               self.ddPrecIncomingSelected = self.selectedDetails.IMM_PREC_INCOMING;
+              self.ddSuccSelected = self.selectedDetails.IMM_SUCCEEDING_SYSTEM;
               self.ddSuccIncomingSelected = self.selectedDetails.IMM_SUCC_INCOMING;
 
               setTimeout(() => {

@@ -332,7 +332,9 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 		payload.GetString("ColumnName"),
 		payload.GetString("ScreenLabel"),
 		payload.GetString("BusinessTerm"),
+		payload.GetString("Prec"),
 		payload.GetString("PrecIncoming"),
+		payload.GetString("Succ"),
 		payload.GetString("SuccIncoming"),
 	)
 
@@ -353,10 +355,16 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 		q += `AND business_term = '` + otherArgs[5] + `' `
 	}
 	if otherArgs[6] != "" {
-		q += `AND imm_prec_incoming = '` + otherArgs[6] + `' `
+		q += `AND IMM_PRECEEDING_SYSTEM = '` + otherArgs[6] + `' `
 	}
 	if otherArgs[7] != "" {
-		q += `AND imm_succ_incoming = '` + otherArgs[7] + `' `
+		q += `AND imm_prec_incoming = '` + otherArgs[7] + `' `
+	}
+	if otherArgs[8] != "" {
+		q += `AND IMM_SUCCEEDING_SYSTEM = '` + otherArgs[8] + `' `
+	}
+	if otherArgs[9] != "" {
+		q += `AND imm_succ_incoming = '` + otherArgs[9] + `' `
 	}
 	q += `) `
 
@@ -389,7 +397,15 @@ func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 	}
 
 	///////// FILTER
-	q = `SELECT DISTINCT table_name, column_name, business_alias_name, business_term, imm_prec_incoming, imm_succ_incoming
+	q = `SELECT DISTINCT 
+			table_name, 
+			column_name, 
+			business_alias_name, 
+			business_term, 
+			IMM_PRECEEDING_SYSTEM, 
+			imm_prec_incoming, 
+			IMM_SUCCEEDING_SYSTEM, 
+			imm_succ_incoming
 		FROM (
 		` + q + `
 	) `
