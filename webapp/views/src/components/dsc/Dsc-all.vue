@@ -28,7 +28,7 @@
               <div class="card card-v1 transition">
                 <div class="title-wrapper transition">
                   <v-img :src="images.all" :contain="true" class="card-icon transition"></v-img>
-                  <h2 class="transition title-1">All System</h2>
+                  <h2 class="transition title-1">All Systems</h2>
                 </div>
               
                 <v-data-table

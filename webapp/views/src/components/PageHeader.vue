@@ -23,8 +23,22 @@
                     <router-link to="/dsc" class="standard-a">DSC System</router-link>
                 </b-dropdown-item>
 
-                <b-dropdown-item v-if="$route.name == 'dsc.cde'">
+                <b-dropdown-item v-if="
+                    $route.name == 'dsc.cde' || 
+                    $route.name == 'dsc.cdp' || 
+                    $route.name == 'dsc.interfaces' || 
+                    $route.name == 'dsc.cdp.cde' || 
+                    $route.name == 'dsc.interfaces.cde'
+                    ">
                     <router-link :to="goToDscMenu" class="standard-a">System Landing Page</router-link>
+                </b-dropdown-item>
+
+                <b-dropdown-item v-if="$route.name == 'dsc.cdp.cde'">
+                    <router-link :to="goToLevel3" class="standard-a">Critical Downstream Process View</router-link>
+                </b-dropdown-item>
+
+                <b-dropdown-item v-if="$route.name == 'dsc.interfaces.cde'">
+                    <router-link :to="goToLevel3" class="standard-a">Immediate Interface View</router-link>
                 </b-dropdown-item>
             </b-dropdown>
 
@@ -88,6 +102,12 @@ export default {
         goToDscMenu(){
             var tmp = this.$route.path.split("/");
             var tmp2 = tmp.slice(0, 2).join("/");
+            var tmp3 = tmp2 + '/' + this.$route.params.system;
+            return tmp3;
+        },
+        goToLevel3(){
+            var tmp = this.$route.path.split("/");
+            var tmp2 = tmp.slice(0, 3).join("/");
             var tmp3 = tmp2 + '/' + this.$route.params.system;
             return tmp3;
         },
