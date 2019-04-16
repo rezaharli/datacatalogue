@@ -95,11 +95,24 @@ function getCdpCdeTable(param) {
             var tmp = _.groupBy(res.Data, "TABLE_NAME")
             
             res.Data = _.map(Object.keys(tmp), function(v){
+                var tmp2 = _.groupBy(tmp[v], "COLUMN_NAME");  
+
+                var columns = _.map(Object.keys(tmp2), function(w, i){
+                    var ret = tmp2[w][0];
+                    ret.COLID = tmp2[w][0].COLID;
+                    ret.COLUMN_NAME = w;
+                    ret.ColumnsVal = tmp2[w];
+
+                    return ret;
+                });
+
                 var ret = tmp[v][0];
                 ret.TABLE_NAME = v;
                 ret.TMTID = tmp[v][0].TMTID;
+                ret.Columns = columns;
                 ret.TablesVal = tmp[v];
-                ret.TablesVal.shift();
+
+                ret.Columns.shift();
 
                 return ret;
             });
@@ -119,18 +132,31 @@ function getInterfacesCdeTable(param) {
             var tmp = _.groupBy(res.Data, "TABLE_NAME")
             
             res.Data = _.map(Object.keys(tmp), function(v){
+                var tmp2 = _.groupBy(tmp[v], "COLUMN_NAME");  
+
+                var columns = _.map(Object.keys(tmp2), function(w, i){
+                    var ret = tmp2[w][0];
+                    ret.COLID = tmp2[w][0].COLID;
+                    ret.COLUMN_NAME = w;
+                    ret.ColumnsVal = tmp2[w];
+
+                    return ret;
+                });
+
                 var ret = tmp[v][0];
                 ret.TABLE_NAME = v;
                 ret.TMTID = tmp[v][0].TMTID;
+                ret.Columns = columns;
                 ret.TablesVal = tmp[v];
-                ret.TablesVal.shift();
+
+                ret.Columns.shift();
 
                 return ret;
             });
             
             return res;
         }
-    );;
+    );
 }
 
 function getRightTable(param) {
