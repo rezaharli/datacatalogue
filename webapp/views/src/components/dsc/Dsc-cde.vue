@@ -81,7 +81,7 @@
                       <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-uppercase"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.TABLE_NAME" showOn="hover"></tablecell></b-link></td>
                       <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-uppercase"><tablecell :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell></td>
                       <td v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }" class="text-uppercase"><tablecell :fulltext="props.item.DSP_NAME" showOn="click"></tablecell></td>
-                      <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }" class="text-capitalize"><tablecell :fulltext="props.item.PROCESS_OWNER" showOn="click"></tablecell></td>
+                      <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.TablesVal, 'PROCESS_OWNER')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
                     </tr>
                   </template>
 
@@ -100,7 +100,7 @@
                         <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover"></tablecell></b-link></td>
                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }"><tablecell :fulltext="props.item.DSP_NAME" showOn="click"></tablecell></td>
-                        <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }"><tablecell :fulltext="props.item.PROCESS_OWNER" showOn="click"></tablecell></td>
+                        <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'PROCESS_OWNER')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
                       </template>
 
                       <template slot="expand" slot-scope="props">
