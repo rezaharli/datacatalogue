@@ -1,10 +1,10 @@
 <template>
   <div>
-    <span v-if="isklik" @click="toggleText">{{ isTruncated ? truncateCells(fulltext) : fulltext }}</span>
+    <span v-if="showOn == 'click'" @click="toggleText">{{ isTruncated ? truncateCells(fulltext) : fulltext }}</span>
 
     <p
       style="margin-bottom: 0px !important;"
-      v-if="!isklik"
+      v-if="showOn == 'hover'"
       @mouseenter="toggleText"
       @mouseleave="toggleText"
     >{{ isTruncated ? truncateCells(fulltext) : fulltext }}</p>
@@ -14,7 +14,7 @@
 <script>
 export default {
   name: "tablecell",
-  props: ["fulltext", "isklik"],
+  props: ["fulltext", "showOn"],
   data() {
     return {
       isTruncated: true
