@@ -84,9 +84,27 @@
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
                       <td style="width: calc(100% / 6)" class="text-capitalize"><b-link @click.stop="showDetails(props.item)"><tablecell :fulltext="props.item.CDE" :isklik="false"></tablecell></b-link></td>
                       <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.DESCRIPTION" :isklik="true"></tablecell></td>
-                      <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.TABLE_NAME" :isklik="true"></tablecell></td>
+                      <td style="width: calc(100% / 6)" class="text-uppercase"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.TABLE_NAME" :isklik="false"></tablecell></b-link></td>
                       <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.COLUMN_NAME" :isklik="true"></tablecell></td>
                     </tr>
+                  </template>
+
+                  <template slot="expand" slot-scope="props">
+                    <v-data-table
+                      :headers="store.leftHeaders.filter(v => v.display == true)"
+                      :items="props.item.TablesVal"
+                      class=""
+                      item-key="COLID"
+                      hide-actions
+                      hide-headers
+                    >
+                      <template slot="items" slot-scope="props">
+                        <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
+                        <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
+                        <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }"><tablecell :fulltext="props.item.TABLE_NAME" :isklik="true"></tablecell></td>
+                        <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }"><tablecell :fulltext="props.item.COLUMN_NAME" :isklik="true"></tablecell></td>
+                      </template>
+                    </v-data-table>
                   </template>
                 </v-data-table>
                       

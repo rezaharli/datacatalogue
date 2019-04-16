@@ -74,7 +74,23 @@ function getCdpTable(param) {
 }
 
 function getCdpCdeTable(param) {
-    return fetchWHeader(`/dsc/getcdpcdetable`, param);
+    return fetchWHeader(`/dsc/getcdpcdetable`, param).then(
+        res => {
+            var tmp = _.groupBy(res.Data, "TABLE_NAME")
+            
+            res.Data = _.map(Object.keys(tmp), function(v){
+                var ret = tmp[v][0];
+                ret.TABLE_NAME = v;
+                ret.TMTID = tmp[v][0].TMTID;
+                ret.TablesVal = tmp[v];
+                ret.TablesVal.shift();
+
+                return ret;
+            });
+            
+            return res;
+        }
+    );
 }
 
 function getInterfacesTable(param) {
@@ -82,7 +98,23 @@ function getInterfacesTable(param) {
 }
 
 function getInterfacesCdeTable(param) {
-    return fetchWHeader(`/dsc/getinterfacescdetable`, param);
+    return fetchWHeader(`/dsc/getinterfacescdetable`, param).then(
+        res => {
+            var tmp = _.groupBy(res.Data, "TABLE_NAME")
+            
+            res.Data = _.map(Object.keys(tmp), function(v){
+                var ret = tmp[v][0];
+                ret.TABLE_NAME = v;
+                ret.TMTID = tmp[v][0].TMTID;
+                ret.TablesVal = tmp[v];
+                ret.TablesVal.shift();
+
+                return ret;
+            });
+            
+            return res;
+        }
+    );;
 }
 
 function getRightTable(param) {
