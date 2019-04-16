@@ -13,7 +13,7 @@
                         <i class="fa fa-filter"></i>
                     </b-button>
 
-                    <page-export class="float-right" storeName="dscmy" :leftTableCols="myStore.leftHeaders" :rightTableCols="myStore.rightHeaders"/>
+                    <page-export class="float-right" storeName="dscall" :leftTableCols="myStore.leftHeaders" :rightTableCols="myStore.rightHeaders"/>
                 </b-col>
             </b-row>
         </b-container>
