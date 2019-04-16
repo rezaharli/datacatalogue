@@ -101,7 +101,7 @@
                       <template slot="items" slot-scope="props">
                         <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
                         <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
-                        <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }"><tablecell :fulltext="props.item.TABLE_NAME" :isklik="true"></tablecell></td>
+                        <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
                         <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }"><tablecell :fulltext="props.item.COLUMN_NAME" :isklik="true"></tablecell></td>
                       </template>
                     </v-data-table>
