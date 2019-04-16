@@ -51,6 +51,7 @@ function getCdeTable(param) {
                     ret.COLID = tmp2[w][0].COLID;
                     ret.COLUMN_NAME = w;
                     ret.Values = tmp2[w];
+                    ret.Values.shift();
 
                     return ret;
                 });
@@ -59,7 +60,8 @@ function getCdeTable(param) {
                 ret.TABLE_NAME = v;
                 ret.TMTID = tmp[v][0].TMTID;
                 ret.Columns = columns;
-                ret.ColumnsVal = tmp[v];
+                ret.TablesVal = tmp[v];
+                ret.TablesVal.shift();
 
                 return ret;
             });

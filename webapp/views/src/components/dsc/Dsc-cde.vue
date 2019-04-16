@@ -77,11 +77,11 @@
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
                     <td style="width: calc(100% / 6)" class="text-capitalize text-title"><b-link @click="showDetails(props.item)">{{ props.item.CDE }}</b-link></td>
-                    <td style="width: calc(100% / 6)" class="text-description"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'DESCRIPTION')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                    <td style="width: calc(100% / 6)" class="text-uppercase"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'TABLE_NAME')).filter(Boolean).join(', '))" :isklik="false"></tablecell></b-link></td>
-                    <td style="width: calc(100% / 6)" class="text-uppercase"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'COLUMN_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                    <td style="width: calc(100% / 6)" class="text-uppercase"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'DSP_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                    <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="(_.uniq(_.map(props.item.ColumnsVal, 'PROCESS_OWNER')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                    <td style="width: calc(100% / 6)" class="text-description"><tablecell :fulltext="props.item.DESCRIPTION" :isklik="true"></tablecell></td>
+                    <td style="width: calc(100% / 6)" class="text-uppercase"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.TABLE_NAME" :isklik="false"></tablecell></b-link></td>
+                    <td style="width: calc(100% / 6)" class="text-uppercase"><tablecell :fulltext="props.item.COLUMN_NAME" :isklik="true"></tablecell></td>
+                    <td style="width: calc(100% / 6)" class="text-uppercase"><tablecell :fulltext="props.item.DSP_NAME" :isklik="true"></tablecell></td>
+                    <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.PROCESS_OWNER" :isklik="true"></tablecell></td>
                     </tr>
                   </template>
 
@@ -98,9 +98,9 @@
                         <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
                         <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
                         <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
-                        <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'COLUMN_NAME')).filter(Boolean).join(', '))" :isklik="false"></tablecell></b-link></td>
-                        <td v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'DSP_NAME')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
-                        <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.Values, 'PROCESS_OWNER')).filter(Boolean).join(', '))" :isklik="true"></tablecell></td>
+                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.COLUMN_NAME" :isklik="false"></tablecell></b-link></td>
+                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }"><tablecell :fulltext="props.item.DSP_NAME" :isklik="true"></tablecell></td>
+                        <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }"><tablecell :fulltext="props.item.PROCESS_OWNER" :isklik="true"></tablecell></td>
                       </template>
 
                       <template slot="expand" slot-scope="props">
@@ -116,7 +116,7 @@
                             <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
                             <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
                             <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">&nbsp;</td>
-                            <td v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }"><tablecell :fulltext="props.item.DSP_NAME" :isklik="true"></tablecell></td>
+                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }"><tablecell :fulltext="props.item.DSP_NAME" :isklik="true"></tablecell></td>
                             <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }"><tablecell :fulltext="props.item.PROCESS_OWNER" :isklik="true"></tablecell></td>
                           </template>
                         </v-data-table>
