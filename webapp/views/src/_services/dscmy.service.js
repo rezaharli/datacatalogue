@@ -47,11 +47,24 @@ function getCdeTable(param) {
                 var tmp2 = _.groupBy(tmp[v], "COLUMN_NAME");  
 
                 var columns = _.map(Object.keys(tmp2), function(w, i){
+                    var tmp3 = _.groupBy(tmp2[w], "DSP_NAME");  
+
+                    var dsps = _.map(Object.keys(tmp3), function(x, i){
+                        var ret = tmp3[x][0];
+                        ret.DSPID = i;
+                        ret.DSP_NAME = x;
+                        ret.DspsVal = tmp3[x];
+
+                        return ret;
+                    });
+
                     var ret = tmp2[w][0];
                     ret.COLID = tmp2[w][0].COLID;
                     ret.COLUMN_NAME = w;
-                    ret.Values = tmp2[w];
-                    ret.Values.shift();
+                    ret.Dsps = dsps;
+                    ret.ColumnsVal = tmp2[w];
+
+                    ret.Dsps.shift();
 
                     return ret;
                 });
@@ -61,7 +74,8 @@ function getCdeTable(param) {
                 ret.TMTID = tmp[v][0].TMTID;
                 ret.Columns = columns;
                 ret.TablesVal = tmp[v];
-                ret.TablesVal.shift();
+
+                ret.Columns.shift();
 
                 return ret;
             });
