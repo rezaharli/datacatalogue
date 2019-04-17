@@ -41,8 +41,6 @@ function getHomepageCounts(param) {
 function getCdeTable(param) {
     return fetchWHeader(`/dsc/getcdetable`, param).then(
         res => {
-            res.DataFlat = _.cloneDeep(res.Data);
-            
             var tmp = _.groupBy(res.Data, "TABLE_NAME")
             
             res.Data = _.map(Object.keys(tmp), function(v){
@@ -94,8 +92,6 @@ function getCdpTable(param) {
 function getCdpCdeTable(param) {
     return fetchWHeader(`/dsc/getcdpcdetable`, param).then(
         res => {
-            res.DataFlat = _.cloneDeep(res.Data);
-            
             var tmp = _.groupBy(res.Data, "TABLE_NAME")
             
             res.Data = _.map(Object.keys(tmp), function(v){
@@ -133,8 +129,6 @@ function getInterfacesTable(param) {
 function getInterfacesCdeTable(param) {
     return fetchWHeader(`/dsc/getinterfacescdetable`, param).then(
         res => {
-            res.DataFlat = _.cloneDeep(res.Data);
-
             var tmp = _.groupBy(res.Data, "TABLE_NAME")
             
             res.Data = _.map(Object.keys(tmp), function(v){
@@ -168,8 +162,6 @@ function getInterfacesCdeTable(param) {
 function getRightTable(param) {
     return fetchWHeader(`/dsc/gettablename`, param).then(
         res => {
-            res.DataFlat = _.cloneDeep(res.Data);
-
             res.Data = _.map(res.Data, function(v){
                 v.CDE_YES_NO = v.CDE_YES_NO == 0 ? "No" : "Yes";
                 
@@ -195,8 +187,6 @@ function getRightTable(param) {
 function getInterfacesRightTable(param) {
     return fetchWHeader(`/dsc/getinterfacesrighttable`, param).then(
         res => {
-            res.DataFlat = _.cloneDeep(res.Data);
-
             res.Data = _.map(res.Data, function(v){
                 v.IMM_PREC_SYSTEM_SLA = v.IMM_PREC_SYSTEM_SLA == 0 ? "No" : "Yes";
                 v.IMM_PREC_SYSTEM_OLA = v.IMM_PREC_SYSTEM_OLA == 0 ? "No" : "Yes";
