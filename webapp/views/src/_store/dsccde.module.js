@@ -42,7 +42,7 @@ const actions = {
 
         return dscMyService.getCdeTable(param)
             .then(
-                res => commit('getLeftTableSuccess', res.Data),
+                res => commit('getLeftTableSuccess', res),
                 error => commit('getLeftTableFailure', error)
             );
     },
@@ -65,10 +65,10 @@ const mutations = {
     getLeftTableRequest(state) {
         state.all.left.isLoading = true;
     },
-    getLeftTableSuccess(state, data) {
-        state.all.left.source = data;
-        state.all.left.display = data;
-        state.all.left.totalItems = data[0] ? data[0].RESULT_COUNT : 0;
+    getLeftTableSuccess(state, res) {
+        state.all.left.source = res.DataFlat;
+        state.all.left.display = res.Data;
+        state.all.left.totalItems = res.Data[0] ? res.Data[0].RESULT_COUNT : 0;
 
         state.all.left.isLoading = false;
     },

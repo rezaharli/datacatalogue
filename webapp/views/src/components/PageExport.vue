@@ -39,7 +39,7 @@ export default {
         excelData () {
             var res = [];
 
-            this._.each(this.store.left.display, (leftRow, i) => {
+            this._.each(this.store.left.source, (leftRow, i) => {
                 var temp = {}
 
                 this.leftTableCols.forEach(v => {
@@ -52,12 +52,13 @@ export default {
                         var parentName = splitted[0];
                         var colName = splitted.reverse()[0];
 
-                        temp[colName] = _.uniq(_.map(leftRow[parentName], colName).filter(Boolean)).join(', ')
+                        // temp[colName] = _.uniq(_.map(leftRow[parentName], colName).filter(Boolean)).join(', ')
+                        temp[colName] = leftRow[colName];
                     }
                 });
                 
                 if(this.store.isRightTable){
-                    var rightRows = this._.filter(this.store.right.display, (v) => v.LEFTID == leftRow.ID);
+                    var rightRows = this._.filter(this.store.right.source, (v) => v.LEFTID == leftRow.ID);
                     
                     if(rightRows.length > 0){
                         this._.each(rightRows, (row, i) => {
