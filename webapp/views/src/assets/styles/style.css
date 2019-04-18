@@ -187,8 +187,10 @@ table.v-table thead th > div.btn-group {
 .card-circle-left {
     width: 225px;
     height: 130%;
+    /* background: rgb(85,180,183);
+    background: linear-gradient(315deg, rgba(85,180,183,1) 20%, rgba(85,180,183,1) 30%, rgba(1,115,170,1) 60%, rgba(1,115,170,1) 70%); */
     background: rgb(85,180,183);
-    background: linear-gradient(315deg, rgba(85,180,183,1) 20%, rgba(85,180,183,1) 30%, rgba(1,115,170,1) 60%, rgba(1,115,170,1) 70%);
+    background: linear-gradient(210deg, rgba(86, 184, 187, 1) 0%, rgba(86, 184, 187, 1) 0%, rgba(87, 202, 157, 1) 90%, rgba(87, 202, 157, 1) 100%);
     background-size: cover;
     position: absolute;
     border-radius: 50%;
@@ -209,7 +211,9 @@ table.v-table thead th > div.btn-group {
     font-weight: 700; 
     font-style: normal; 
     font-size: 14px; 
-    background: linear-gradient(240deg, rgba(0, 114, 170, 1) 0%, rgba(0, 114, 170, 1) 0%, rgba(86, 184, 187, 1) 74%, rgba(86, 184, 187, 1) 100%);; 
+    /* background: linear-gradient(240deg, rgba(0, 114, 170, 1) 0%, rgba(0, 114, 170, 1) 0%, rgba(86, 184, 187, 1) 74%, rgba(86, 184, 187, 1) 100%); */
+    background: rgb(85,180,183);
+    background: linear-gradient(210deg, rgba(86, 184, 187, 1) 0%, rgba(86, 184, 187, 1) 0%, rgba(87, 202, 157, 1) 90%, rgba(87, 202, 157, 1) 100%);
     color: #ffffff;
     position: absolute;
     right: 0;
