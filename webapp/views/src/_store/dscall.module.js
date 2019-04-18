@@ -19,10 +19,10 @@ const state = {
         right: newTableObject(),
         exportDatas: [],
         leftHeaders: [
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'System Name', value: 'SYSTEM_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'ITAM ID', value: 'Custodians.ITAM_ID' },
-            { align: 'left', display: false, exportable: true, displayCount: true, sortable: false, text: 'Dataset Custodian', value: 'Custodians.DATASET_CUSTODIAN' },
-            { align: 'left', display: false, exportable: true, displayCount: true, sortable: false, text: 'Bank ID', value: 'Custodians.BANK_ID' }
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: false, text: 'System Name', value: 'SYSTEM_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: false, text: 'ITAM ID', value: 'Custodians.ITAM_ID' },
+            { align: 'left', display: false, filterable: true, exportable: true, displayCount: true, sortable: false, text: 'Dataset Custodian', value: 'Custodians.DATASET_CUSTODIAN' },
+            { align: 'left', display: false, filterable: true, exportable: true, displayCount: true, sortable: false, text: 'Bank ID', value: 'Custodians.BANK_ID' }
         ],
         // rightHeaders: [
         //   { text: 'Table Name', align: 'left', sortable: false, value: 'TABLE_NAME', displayCount: true, width: "25%" },

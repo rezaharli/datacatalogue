@@ -12,9 +12,9 @@ const state = {
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: false, text: 'Downstream Process Name', value: 'DSP_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: false, text: 'Downstream Process Owner', value: 'PROCESS_OWNER' },
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Number of CDEs', value: 'CDE_COUNT' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: false, text: 'Downstream Process Name', value: 'DSP_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: false, text: 'Downstream Process Owner', value: 'PROCESS_OWNER' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: false, text: 'Number of CDEs', value: 'CDE_COUNT' },
         ],
         isRightTable: false,
         DDSource: [],
