@@ -422,3 +422,31 @@ func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 
 	return resultRows, resultTotal, nil
 }
+
+func (s *DSCService) GetDDTable(system string, colFilter interface{}, pageNumber, rowsPerPage int) ([]toolkit.M, int, error) {
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
+	gridArgs.QueryName = "dsc-view-dd"
+	gridArgs.PageNumber = pageNumber
+	gridArgs.RowsPerPage = rowsPerPage
+
+	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
+
+	///////// --------------------------------------------------COLUMN FILTER
+	// colFilterM, err := toolkit.ToM(colFilter)
+	// if err != nil {
+	// 	gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "")
+	// } else {
+	// 	gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
+	// 		colFilterM.GetString("CDE"),
+	// 		colFilterM.GetString("DESCRIPTION"),
+	// 		colFilterM.GetString("TABLE_NAME"),
+	// 		colFilterM.GetString("COLUMN_NAME"),
+	// 		colFilterM.GetString("DSP_NAME"),
+	// 		colFilterM.GetString("PROCESS_OWNER"),
+	// 	)
+	// }
+
+	gridArgs.GroupCol = "-"
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
+}
