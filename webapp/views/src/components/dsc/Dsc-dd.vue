@@ -5,7 +5,7 @@
 <template>
     <v-content>
         <b-container fluid>
-            <CToolbar></CToolbar>
+            <PageHeader />
             
             <b-row>
                 <b-col>
@@ -38,14 +38,14 @@
 </template>
 
 <script>
-import CToolbar from '../ComponentToolbar';
+import PageHeader from '../PageHeader';
 import DscDdTechnical from './Dsc-dd-technical';
 import DscDdBusiness from './Dsc-dd-business';
 import DscDdPolicy from './Dsc-dd-policy';
 import DscDdInterfaces from './Dsc-dd-interfaces';
 
 export default {
-    components: { CToolbar, DscDdTechnical, DscDdBusiness, DscDdPolicy, DscDdInterfaces },
+    components: { PageHeader, DscDdTechnical, DscDdBusiness, DscDdPolicy, DscDdInterfaces },
     data () {
       return {}
     },
