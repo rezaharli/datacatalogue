@@ -295,7 +295,7 @@ export default {
     },
     showDetails(param) {
       this.$router.push(
-        this.addressPath + "/" + param.TSID + "/" + param.ID + "/" + param.COLID
+        this.addressPath + "/" + param.TSID + "/" + param.TMTID + "/" + param.COLID
       );
     }
   }

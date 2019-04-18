@@ -85,6 +85,7 @@ SELECT *
 			FROM (
 				SELECT DISTINCT 
 					TMT.ID,
+					TMT.ID									AS TMTID,
 					TS.ID									AS TSID,
 					TMC.ID									AS COLID,
 					TS.SYSTEM_NAME							AS SYSTEM_NAME,
@@ -341,7 +342,7 @@ SELECT DISTINCT
 		) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id and tmt.id = cde.tab_id
 	ORDER BY tmt.name, tmc.name
 
-	-- name: dsc-view-dd
+-- name: dsc-view-dd
 SELECT DISTINCT
 		ts.id,
 		tmt.id									as tmtid,
