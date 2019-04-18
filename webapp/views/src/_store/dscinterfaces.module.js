@@ -34,8 +34,10 @@ const actions = {
         var param = {
             System: state.all.system,
             Filters: state.all.filters.left,
-            Pagination: state.all.left.pagination
+            Pagination: _.cloneDeep(state.all.left.pagination)
         }
+
+        param.Pagination.rowsPerPage = -1;
 
         return dscMyService.getInterfacesTable(param)
             .then(
