@@ -190,6 +190,7 @@ export default {
     this.store.tabName = this.storeName;
     this.store.system = this.$route.params.system;
     this.store.dspName = this.$route.params.dspName;
+    this.resetFilter();
   },
   methods: {
     getLeftTable() {
