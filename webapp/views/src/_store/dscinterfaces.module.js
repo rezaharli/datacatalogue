@@ -13,7 +13,7 @@ const state = {
         exportDatas: [],
         leftHeaders: [
             { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Immediate Interfaces', value: 'IMM_INTERFACE' },
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: '# of CDEs', value: 'CDE_COUNT' },
+            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Number of CDEs', value: 'CDE_COUNT' },
         ],
         isRightTable: false,
         DDSource: [],
