@@ -4,7 +4,7 @@
         <!-- Main content -->
         <div class="table-v2-title">Interfaces</div>
         <v-data-table
-            :headers="store.leftHeaders.filter(v => v.display == true)"
+            :headers="store.leftHeaders.interfaces.filter(v => v.display == true)"
             :items="store.left.display"
             :pagination.sync="store.left.pagination"
             :total-items="store.left.totalItems"
@@ -32,47 +32,33 @@
 
           <template slot="items" slot-scope="props">
             <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['IMM_PRECEEDING_SYSTEM'] + 'px' }">
+                <tablecell :fulltext="props.item.IMM_PRECEEDING_SYSTEM" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['IMM_PREC_INCOMING'] + 'px' }">
+                <tablecell :fulltext="props.item.IMM_PREC_INCOMING" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['IMM_PREC_DERIVED'] + 'px' }">
+                <tablecell :fulltext="props.item.IMM_PREC_DERIVED" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['IMM_PREC_DERIVATION_LOGIC'] + 'px' }">
+                <tablecell :fulltext="props.item.IMM_PREC_DERIVATION_LOGIC" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['IMM_SUCCEEDING_SYSTEM'] + 'px' }">
+                <tablecell :fulltext="props.item.IMM_SUCCEEDING_SYSTEM" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['IMM_SUCC_INCOMING'] + 'px' }">
+                <tablecell :fulltext="props.item.IMM_SUCC_INCOMING" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['IMM_SUCC_DERIVED'] + 'px' }">
+                <tablecell :fulltext="props.item.IMM_SUCC_DERIVED" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['IMM_SUCC_DERIVATION_LOGIC'] + 'px' }">
+                <tablecell :fulltext="props.item.IMM_SUCC_DERIVATION_LOGIC" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['THRESHOLD'] + 'px' }">
+                <tablecell :fulltext="props.item.THRESHOLD" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
             </tr>
           </template>
         </v-data-table>

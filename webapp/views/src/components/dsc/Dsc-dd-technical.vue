@@ -4,7 +4,7 @@
         <!-- Main content -->
         <div class="table-v2-title">Technical Metadata</div>
         <v-data-table
-            :headers="store.leftHeaders.filter(v => v.display == true)"
+            :headers="store.leftHeaders.technical.filter(v => v.display == true)"
             :items="store.left.display"
             :pagination.sync="store.left.pagination"
             :total-items="store.left.totalItems"
@@ -32,47 +32,47 @@
 
           <template slot="items" slot-scope="props">
             <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
+                <tablecell :fulltext="props.item.TABLE_NAME" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
+                <tablecell :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_NAME'] + 'px' }">
+                <tablecell :fulltext="props.item.BUSINESS_ALIAS_NAME" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_DESCRIPTION'] + 'px' }">
+                <tablecell :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['CDE_YES_NO'] + 'px' }">
+                <tablecell :fulltext="props.item.CDE_YES_NO" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['STATUS'] + 'px' }">
+                <tablecell :fulltext="props.item.STATUS" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }">
+                <tablecell :fulltext="props.item.DATA_TYPE" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['DATA_FORMAT'] + 'px' }">
+                <tablecell :fulltext="props.item.DATA_FORMAT" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['DATA_LENGTH'] + 'px' }">
+                <tablecell :fulltext="props.item.DATA_LENGTH" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['EXAMPLE'] + 'px' }">
+                <tablecell :fulltext="props.item.EXAMPLE" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['DERIVED_YES_NO'] + 'px' }">
+                <tablecell :fulltext="props.item.DERIVED_YES_NO" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['DERIVATION_LOGIC'] + 'px' }">
+                <tablecell :fulltext="props.item.DERIVATION_LOGIC" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['SOURCED_FROM_UPSTREAM_YES_NO'] + 'px' }">
+                <tablecell :fulltext="props.item.SOURCED_FROM_UPSTREAM_YES_NO" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CHECKS'] + 'px' }">
+                <tablecell :fulltext="props.item.SYSTEM_CHECKS" showOn="click"></tablecell></td>
             </tr>
           </template>
         </v-data-table>

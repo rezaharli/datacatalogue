@@ -10,6 +10,7 @@ export const dscMyService = {
     getInterfacesCdeTable,
     getRightTable,
     getInterfacesRightTable,
+    getDdTable,
     getDetails
 };
 
@@ -248,6 +249,10 @@ function getInterfacesRightTable(param) {
             return res;
         }
     )
+}
+
+function getDdTable(param) {
+    return fetchWHeader(`/dsc/getddtable`, param);
 }
 
 function getDetails(param) {
