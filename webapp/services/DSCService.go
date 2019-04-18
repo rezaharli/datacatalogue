@@ -447,5 +447,6 @@ func (s *DSCService) GetDDTable(system string, colFilter interface{}, pageNumber
 	// 	)
 	// }
 
+	gridArgs.GroupCol = "-"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
