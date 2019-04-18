@@ -265,6 +265,7 @@ export default {
   mounted() {
     this.store.tabName = this.storeName;
     this.store.system = this.$route.params.system;
+    this.resetFilter();
   },
   methods: {
     getLeftTable() {

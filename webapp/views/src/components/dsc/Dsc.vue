@@ -101,6 +101,9 @@ export default {
         myStore () { return this.$store.state.dscmy.all },
         allStore () { return this.$store.state.dscall.all }
     },
+    mounted() {
+        this.resetFilter();
+    },
     methods: {
         getMyLeftTable () { return this.$store.dispatch(`dscmy/getLeftTable`) },
         getMyRightTable () { return this.$store.dispatch(`dscmy/getRightTable`) },
