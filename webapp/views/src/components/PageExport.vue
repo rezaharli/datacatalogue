@@ -1,12 +1,11 @@
 <template>
     <download-excel
-        :data     = "excelData"
-        :fields   = "excelFields"
-        worksheet = "My Worksheet"
-        name      = "filename.xls">
+        :fields     = "excelFields"
+        :fetch      = "fetchData"
+        worksheet   = "My Worksheet"
+        name        = "filename.xls">
     
         <b-button class="float-right icon-only green-tosca">
-            <!-- <v-icon dark>file_copy</v-icon> -->
             <i class="fa fa-fw fa-file-excel"></i>
         </b-button>
     </download-excel>
@@ -36,10 +35,17 @@ export default {
 
             return ret
         },
-        excelData () {
+    },
+    methods: {
+        getLeftTable () {
+            return this.$store.dispatch(`${this.storeName}/exportData`)
+        },
+        async fetchData(){
+            const resource = await this.getLeftTable();
+
             var res = [];
 
-            this._.each(this.store.left.source, (leftRow, i) => {
+            this._.each(this.store.exportDatas, (leftRow, i) => {
                 var temp = {}
 
                 this.leftTableCols.forEach(v => {
@@ -118,7 +124,7 @@ export default {
             });
 
             return res
-        }
+        },
     }
 };
 </script>

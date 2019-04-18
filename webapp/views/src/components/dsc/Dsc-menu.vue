@@ -56,7 +56,7 @@
                                 <b-col cols=8 class="">
                                     <div class="card-content">
                                         <div class="text">
-                                            <h6 class="title-1">Critical Down Stream Processes</h6>
+                                            <h6 class="title-1">Critical Downstream Processes</h6>
                                         </div>
                                     </div>
                                 </b-col>

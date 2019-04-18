@@ -52,34 +52,48 @@ function getCdeTable(param) {
                     var tmp3 = _.groupBy(tmp2[w], "DSP_NAME");  
 
                     var dsps = _.map(Object.keys(tmp3), function(x, i){
-                        var ret = tmp3[x][0];
-                        ret.DSPID = i;
-                        ret.DSP_NAME = x;
-                        ret.DspsVal = tmp3[x];
+                        var tmpTmp2 = _.cloneDeep(tmp3[x]);
+
+                        var ret         = tmpTmp2[0];
+                        ret.DSPID       = i;
+                        ret.DspsVal     = tmpTmp2;
+                        ret.DSP_NAME    = x;
 
                         return ret;
                     });
 
-                    var ret = tmp2[w][0];
-                    ret.COLID = tmp2[w][0].COLID;
-                    ret.COLUMN_NAME = w;
-                    ret.Dsps = dsps;
-                    ret.ColumnsVal = tmp2[w];
+                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
 
-                    ret.Dsps.shift();
+                    var ret         = tmpTmp2[0];
+                    ret.COLID       = tmpTmp2[0].COLID;
+                    ret.ColumnsVal  = tmpTmp2;
+                    ret.COLUMN_NAME = w;
+
+                    ret.Dsps = dsps;
 
                     return ret;
                 });
 
-                var ret = tmp[v][0];
-                ret.TABLE_NAME = v;
-                ret.TMTID = tmp[v][0].TMTID;
-                ret.Columns = columns;
-                ret.TablesVal = tmp[v];
+                var tmpTmp = _.cloneDeep(tmp[v]);
 
-                ret.Columns.shift();
+                var ret         = tmpTmp[0];
+                ret.TMTID       = tmpTmp[0].TMTID;
+                ret.TablesVal   = tmpTmp;
+                ret.TABLE_NAME  = v;
+
+                ret.Columns = columns;
 
                 return ret;
+            });
+
+            res.Data.forEach(v => {
+                if(v.Columns[0].Dsps.length <= 1){
+                    v.Columns.shift();
+                }
+
+                v.Columns.forEach(w => {
+                    w.Dsps.shift();
+                });
             });
             
             return res;
@@ -102,23 +116,30 @@ function getCdpCdeTable(param) {
                 var tmp2 = _.groupBy(tmp[v], "COLUMN_NAME");  
 
                 var columns = _.map(Object.keys(tmp2), function(w, i){
-                    var ret = tmp2[w][0];
-                    ret.COLID = tmp2[w][0].COLID;
+                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
+
+                    var ret         = tmpTmp2[0];
+                    ret.COLID       = tmpTmp2[0].COLID;
+                    ret.ColumnsVal  = tmpTmp2;
                     ret.COLUMN_NAME = w;
-                    ret.ColumnsVal = tmp2[w];
 
                     return ret;
                 });
 
-                var ret = tmp[v][0];
-                ret.TABLE_NAME = v;
-                ret.TMTID = tmp[v][0].TMTID;
-                ret.Columns = columns;
-                ret.TablesVal = tmp[v];
+                var tmpTmp = _.cloneDeep(tmp[v]);
 
-                ret.Columns.shift();
+                var ret         = tmpTmp[0];
+                ret.TMTID       = tmpTmp[0].TMTID;
+                ret.TablesVal   = tmpTmp;
+                ret.TABLE_NAME  = v;
+
+                ret.Columns = columns;
 
                 return ret;
+            });
+
+            res.Data.forEach(v => {
+                v.Columns.shift();
             });
             
             return res;
@@ -134,30 +155,37 @@ function getInterfacesCdeTable(param) {
     return fetchWHeader(`/dsc/getinterfacescdetable`, param).then(
         res => {
             res.DataFlat = _.cloneDeep(res.Data);
-
+            
             var tmp = _.groupBy(res.Data, "TABLE_NAME")
             
             res.Data = _.map(Object.keys(tmp), function(v){
                 var tmp2 = _.groupBy(tmp[v], "COLUMN_NAME");  
 
                 var columns = _.map(Object.keys(tmp2), function(w, i){
-                    var ret = tmp2[w][0];
-                    ret.COLID = tmp2[w][0].COLID;
+                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
+
+                    var ret         = tmpTmp2[0];
+                    ret.COLID       = tmpTmp2[0].COLID;
+                    ret.ColumnsVal  = tmpTmp2;
                     ret.COLUMN_NAME = w;
-                    ret.ColumnsVal = tmp2[w];
 
                     return ret;
                 });
 
-                var ret = tmp[v][0];
-                ret.TABLE_NAME = v;
-                ret.TMTID = tmp[v][0].TMTID;
-                ret.Columns = columns;
-                ret.TablesVal = tmp[v];
+                var tmpTmp = _.cloneDeep(tmp[v]);
 
-                ret.Columns.shift();
+                var ret         = tmpTmp[0];
+                ret.TMTID       = tmpTmp[0].TMTID;
+                ret.TablesVal   = tmpTmp;
+                ret.TABLE_NAME  = v;
+
+                ret.Columns = columns;
 
                 return ret;
+            });
+
+            res.Data.forEach(v => {
+                v.Columns.shift();
             });
             
             return res;

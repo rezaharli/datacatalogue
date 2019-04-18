@@ -82,14 +82,27 @@
 
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                      <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-capitalize text-title"><b-link @click="showDetails(props.item)">{{ props.item.CDE }}</b-link></td>
-                      <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }" class="text-description"><tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
-                      <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-uppercase"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.TABLE_NAME" showOn="hover"></tablecell></b-link></td>
-                      <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-uppercase"><tablecell :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell></td>
+                      <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-capitalize text-title">
+                        <b-link @click="showDetails(props.item)">
+                          <tablecell :fulltext="props.item.CDE" showOn="hover"></tablecell></b-link></td>
+
+                      <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }" class="text-description">
+                        <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+
+                      <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-uppercase">
+                        <b-link @click="props.expanded = !props.expanded">
+                          <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover"></tablecell>
+                        </b-link>
+                      </td>
+
+                      <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-uppercase">
+                        <tablecell :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell>
+                      </td>
                     </tr>
                   </template>
 
                   <template slot="expand" slot-scope="props">
+                    <!-- <table-rows-sub :storeName="storeName" :props="props" /> -->
                     <v-data-table
                       :headers="store.leftHeaders.filter(v => v.display == true)"
                       :items="props.item.Columns"
@@ -102,7 +115,10 @@
                         <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
                         <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
                         <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
-                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }"><b-link @click="props.expanded = !props.expanded"><tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover"></tablecell></b-link></td>
+
+                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
+                          <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover"></tablecell>
+                        </td>
                       </template>
                     </v-data-table>
                   </template>

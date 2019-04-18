@@ -10,6 +10,7 @@ const state = {
         },
         system: '',
         left: newTableObject(),
+        exportDatas: [],
         leftHeaders: [
             { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'CDE', value: 'CDE' },
             { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Description', value: 'DESCRIPTION' },
@@ -27,6 +28,25 @@ const state = {
 };
 
 const actions = {
+    exportData({ commit }) {
+        commit('getExportDataRequest');
+
+        Object.keys(state.all.filters.left).map(function(key, index) {
+            state.all.filters.left[key] = state.all.filters.left[key] ? state.all.filters.left[key].toString() : "";
+        });
+
+        var param = {
+            System: state.all.system,
+            Filters: state.all.filters.left,
+            Pagination: state.all.left.pagination
+        }
+
+        return dscMyService.getCdeTable(param)
+            .then(
+                res => commit('getExportDataSuccess', res),
+                error => commit('getExportDataFailure', error)
+            );
+    },
     getLeftTable({ commit }, system) {
         commit('getLeftTableRequest');
 
@@ -62,6 +82,18 @@ const actions = {
 };
 
 const mutations = {
+    getExportDataRequest(state) {
+        state.all.left.isLoading = true;
+    },
+    getExportDataSuccess(state, res) {
+        state.all.exportDatas = res.DataFlat;
+
+        state.all.left.isLoading = false;
+    },
+    getExportDataFailure(state, error) {
+        state.all.left.isLoading = false;
+        state.all.error = error;
+    },
     getLeftTableRequest(state) {
         state.all.left.isLoading = true;
     },

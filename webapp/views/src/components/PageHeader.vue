@@ -30,7 +30,7 @@
                     $route.name == 'dsc.cdp.cde' || 
                     $route.name == 'dsc.interfaces.cde'
                     ">
-                    <router-link :to="goToDscMenu" class="standard-a">System Landing Page</router-link>
+                    <router-link :to="goToDscMenu" class="standard-a">DSC Landing Page</router-link>
                 </b-dropdown-item>
 
                 <b-dropdown-item v-if="$route.name == 'dsc.cdp.cde'">
