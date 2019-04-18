@@ -129,9 +129,11 @@
                         <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
 
                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                          <b-link @click="props.expanded = !props.expanded">
+                          <b-link @click="props.expanded = !props.expanded" v-if="props.item.Dsps.length >= 1">
                             <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover"></tablecell>
                           </b-link>
+
+                          <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover" v-if="props.item.Dsps.length < 1"></tablecell>
                         </td>
 
                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }"><tablecell :fulltext="props.item.DSP_NAME" showOn="click"></tablecell></td>
