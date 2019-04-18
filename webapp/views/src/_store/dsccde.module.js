@@ -12,6 +12,7 @@ const state = {
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
+            { align: 'left', display: true, exportable: false, displayCount: false, sortable: false, text: 'Details', value: 'Details' },
             { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'CDE', value: 'CDE' },
             { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Description', value: 'DESCRIPTION' },
             { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Table Name', value: 'TABLE_NAME' },
