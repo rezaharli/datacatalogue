@@ -90,9 +90,11 @@
                         <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
 
                       <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-uppercase">
-                        <b-link @click="props.expanded = !props.expanded">
+                        <b-link @click="props.expanded = !props.expanded" v-if="props.item.Columns.length >= 1">
                           <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover"></tablecell>
                         </b-link>
+
+                        <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover" v-if="props.item.Columns.length < 1"></tablecell>
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-uppercase">
