@@ -17,6 +17,7 @@ const state = {
         },
         left: newTableObject(),
         right: newTableObject(),
+        exportDatas: [],
         leftHeaders: [
             { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'System Name', value: 'SYSTEM_NAME' },
             { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'ITAM ID', value: 'Custodians.ITAM_ID' },
@@ -38,6 +39,28 @@ const state = {
 };
 
 const actions = {
+    exportData({ commit }) {
+        commit('getExportDataRequest');
+
+        Object.keys(state.all.filters.left).map(function(key, index) {
+            state.all.filters.left[key] = state.all.filters.left[key] ? state.all.filters.left[key].toString() : "";
+        });
+
+        var param = {
+            Tabs: state.all.tabName,
+            LoggedInID: user.Username.toString(),
+            Search: state.all.searchMain.toString(),
+            SearchDD: state.all.searchDropdown,
+            Filters: state.all.filters.left,
+            Pagination: state.all.left.pagination
+        }
+
+        return dscMyService.getLeftTable(param)
+            .then(
+                res => commit('getExportDataSuccess', res.Data),
+                error => commit('getExportDataFailure', error)
+            );
+    },
     getLeftTable({ commit }) {
         commit('getLeftTableRequest');
 
@@ -100,6 +123,18 @@ const actions = {
 };
 
 const mutations = {
+    getExportDataRequest(state) {
+        state.all.left.isLoading = true;
+    },
+    getExportDataSuccess(state, data) {
+        state.all.exportDatas = data;
+
+        state.all.left.isLoading = false;
+    },
+    getExportDataFailure(state, error) {
+        state.all.left.isLoading = false;
+        state.all.error = error;
+    },
     getLeftTableRequest(state) {
         state.all.left.isLoading = true;
     },

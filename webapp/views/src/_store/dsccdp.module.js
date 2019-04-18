@@ -10,6 +10,7 @@ const state = {
         },
         system: '',
         left: newTableObject(),
+        exportDatas: [],
         leftHeaders: [
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: false, text: 'Downstream Process NAME', value: 'DSP_NAME' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: false, text: 'Downstream Process Owner', value: 'PROCESS_OWNER' },
@@ -24,6 +25,25 @@ const state = {
 };
 
 const actions = {
+    exportData({ commit }) {
+        commit('getExportDataRequest');
+
+        Object.keys(state.all.filters.left).map(function(key, index) {
+            state.all.filters.left[key] = state.all.filters.left[key] ? state.all.filters.left[key].toString() : "";
+        });
+
+        var param = {
+            System: state.all.system,
+            Filters: state.all.filters.left,
+            Pagination: state.all.left.pagination
+        }
+
+        return dscMyService.getCdpTable(param)
+            .then(
+                res => commit('getExportDataSuccess', res.Data),
+                error => commit('getExportDataFailure', error)
+            );
+    },
     getLeftTable({ commit }, system) {
         commit('getLeftTableRequest');
 
@@ -59,6 +79,18 @@ const actions = {
 };
 
 const mutations = {
+    getExportDataRequest(state) {
+        state.all.left.isLoading = true;
+    },
+    getExportDataSuccess(state, data) {
+        state.all.exportDatas = data;
+
+        state.all.left.isLoading = false;
+    },
+    getExportDataFailure(state, error) {
+        state.all.left.isLoading = false;
+        state.all.error = error;
+    },
     getLeftTableRequest(state) {
         state.all.left.isLoading = true;
     },
