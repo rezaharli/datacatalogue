@@ -214,11 +214,13 @@ func (DBcmd) Delete(param DeleteParam) error {
 }
 
 type SqlQueryParam struct {
-	TableName   string
-	SqlQuery    string
-	PageNumber  int
-	RowsPerPage int
-	GroupCol    string
+	TableName    string
+	SqlQuery     string
+	PageNumber   int
+	RowsPerPage  int
+	OrderBy      string
+	IsDescending bool
+	GroupCol     string
 
 	Results     interface{}
 	ResultTotal int
@@ -251,12 +253,16 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 			) a`
 
 		if param.RowsPerPage > 0 {
+			if param.IsDescending {
+				param.OrderBy += ` DESC`
+			}
+
 			sqlQuery = `SELECT * FROM
 				(
-					` + sqlQuery + `
+					` + sqlQuery + ` ORDER BY ` + param.OrderBy + ` 
 				) WHERE r__ 
 				BETWEEN ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + ` 
-				AND ` + toolkit.ToString(param.PageNumber*param.RowsPerPage)
+				AND ` + toolkit.ToString(param.PageNumber*param.RowsPerPage) + ` `
 		}
 	}
 

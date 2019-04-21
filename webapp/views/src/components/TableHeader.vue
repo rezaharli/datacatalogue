@@ -1,3 +1,13 @@
+<style>
+.icon-filter {
+  -webkit-transform: rotate(0deg) !important;
+  transform: rotate(0deg) !important;
+  opacity: 1 !important;
+  color: black !important;
+}
+</style>
+
+
 <template>
   <div ref="widthAcuan">
     {{ props.header.text }} {{ count }}
@@ -5,7 +15,7 @@
     <b-dropdown no-caret variant="link" class="" ref="columnFilter" v-if="props.header.filterable">
       <template slot="button-content">
         <!-- <i class="fa fa-filter text-muted"></i> -->
-        <v-icon small v-bind:class="{'icon-active' : store.filters[which][props.header.value.split('.').reverse()[0]] }" class="mx-1">filter_list</v-icon>
+        <v-icon small v-bind:class="{'icon-active' : store.filters[which][props.header.value.split('.').reverse()[0]] }" class="icon-filter mx-1">filter_list</v-icon>
       </template>
 
       <b-dropdown-header>
