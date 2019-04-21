@@ -98,12 +98,12 @@ func (s *DSCService) GetHomepageCounts(payload toolkit.M) (interface{}, int, err
 	return resultRows, resultTotal, nil
 }
 
-func (s *DSCService) GetCDETable(system string, colFilter interface{}, pageNumber, rowsPerPage int) ([]toolkit.M, int, error) {
+func (s *DSCService) GetCDETable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
 	gridArgs := GridArgs{}
 	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
 	gridArgs.QueryName = "dsc-view-cde"
-	gridArgs.PageNumber = pageNumber
-	gridArgs.RowsPerPage = rowsPerPage
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
@@ -122,6 +122,8 @@ func (s *DSCService) GetCDETable(system string, colFilter interface{}, pageNumbe
 		)
 	}
 
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	gridArgs.IsDescending = pagination.Get("descending").(bool)
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
