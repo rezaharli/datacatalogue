@@ -1,13 +1,3 @@
-<style>
-.icon-filter {
-  -webkit-transform: rotate(0deg) !important;
-  transform: rotate(0deg) !important;
-  opacity: 1 !important;
-  color: black !important;
-}
-</style>
-
-
 <template>
   <div ref="widthAcuan">
     {{ props.header.text }} {{ count }}

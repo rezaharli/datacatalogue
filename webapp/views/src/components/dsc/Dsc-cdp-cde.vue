@@ -89,8 +89,8 @@
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
                       <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }" class="text-capitalize text-title">
-                        <b-button size="sm" class="float-right primary icon-only ml-3" @click="showDetails(props.item)">
-                          <i class="fa fa-fw fa-edit"></i></b-button></td>
+                        <b-button size="sm" class="green-tosca-gradient icon-only" @click="showDetails(props.item)">
+                          <i class="fa fa-fw fa-external-link-alt"></i></b-button></td>
 
                       <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-capitalize text-title">
                         <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length > 0">

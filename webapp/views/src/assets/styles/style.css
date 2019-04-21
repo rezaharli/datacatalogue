@@ -60,6 +60,8 @@ body, .application--wrap{
 .btn.icon-only {border: none !important; padding: 7px 14px;}
 .btn.btn-link:hover{text-decoration: none;}
 .btn.green-tosca {background-color: #00CC99 !important;}
+.btn.green-tosca-gradient {background: rgb(85,180,183);
+    background: linear-gradient(210deg, rgba(86, 184, 187, 1) 0%, rgba(86, 184, 187, 1) 0%, rgba(87, 202, 157, 1) 90%, rgba(87, 202, 157, 1) 100%);}
 .btn.red-neon {background-color: #FF0033 !important;}
 
 /* .v-icon.icon-active::before {
@@ -73,6 +75,14 @@ body, .application--wrap{
 .transition {
   transition: .3s cubic-bezier(.3, 0, 0, 1.3)
 }
+
+.icon-filter {
+    -webkit-transform: rotate(0deg) !important;
+    transform: rotate(0deg) !important;
+    opacity: 1 !important;
+    color: black !important;
+    position: relative !important;
+  }
 
 table.v-table thead th > div.btn-group {
     width: auto;
@@ -156,9 +166,24 @@ table.v-table thead th > div.btn-group {
   padding: 0px 20px;
 }
 
-.card.card-v1 .v-icon,
-.table-v1 .v-icon {border-radius: 50%; padding: 5px;}
-.card.card-v1 .v-icon.icon-active {color: #fff; background-color: #56B8BB;}
+.card.card-v1 .v-icon.icon-filter,
+.table-v1 .v-icon.icon-filter {border-radius: 50%; padding: 5px;}
+.card.card-v1 .v-icon.icon-filter.icon-active {color: #fff !important; background-color: #56B8BB !important;}
+
+.card.card-v1 table.v-table thead tr th,
+.table-v1 table.v-table thead tr th {
+    position: relative;
+}
+
+.card.card-v1 table.v-table thead tr th .v-icon,
+.table-v1 table.v-table thead tr th .v-icon {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.card.card-v1 table.v-table thead tr th.column.sortable.active.desc .v-icon,
+.table-v1 table.v-table thead tr th.column.sortable.active.desc .v-icon {transform: translateY(-10px) rotate(180deg);}
 
 .card .v-table__overflow {overflow-x: visible; overflow-y: visible;}
 .card .v-datatable__actions{justify-content: space-between;}
@@ -230,8 +255,10 @@ table.v-table thead th > div.btn-group {
 .table-v1 table.v-table thead tr th {color: #ffffff !important; padding: 20px 30px; font-size: 14px;}
 .table-v1 table.v-table thead tr th:first-of-type {border-top-left-radius: 7px; padding-left: 45px;}
 .table-v1 table.v-table thead tr th:last-of-type {border-top-right-radius: 7px; padding-right: 45px;}
+.table-v1 table.v-table thead tr th .v-icon.icon-filter {color: #fff !important; left: unset;}
+.table-v1 table.v-table thead tr th .v-icon.icon-filter.icon-active {color: #397fa4 !important; }
 .table-v1 table.v-table thead tr th .v-icon {color: #fff !important;}
-.table-v1 table.v-table thead tr th .v-icon.icon-active {color: #397fa4 !important; }
+.table-v1 table.v-table thead tr th:first-of-type .v-icon {left: 15px;}
 .table-v1 table.v-table tbody tr {border-bottom: none !important;}
 .table-v1 > .v-table__overflow > table.v-table > tbody > tr.odd,
 .table-v1 > .v-table__overflow > table.v-table > tbody > tr.odd + .v-datatable__expand-row .v-table {background-color: #ffffff;}
@@ -270,8 +297,8 @@ table.v-table thead th > div.btn-group {
 .table-v2 table.v-table thead tr th {padding: 5px 5px; font-size: 12px; font-weight: 600;}
 .table-v2 table.v-table thead tr th:first-of-type {padding-left: 15px;}
 .table-v2 table.v-table thead tr th:last-of-type {padding-right: 15px;}
-.table-v2 table.v-table thead tr th .v-icon {display: none;}
-/* .table-v2 table.v-table thead tr th .v-icon.icon-active {color: #397fa4 !important; } */
+/* .table-v2 table.v-table thead tr th .v-icon.icon-filter {display: none;} */
+/* .table-v2 table.v-table thead tr th .v-icon.icon-filter.icon-active {color: #397fa4 !important; } */
 .table-v2 table.v-table tbody tr {border-bottom: none !important;}
 .table-v2 > .v-table__overflow > table.v-table > tbody > tr.odd,
 .table-v2 > .v-table__overflow > table.v-table > tbody > tr.odd + .v-datatable__expand-row .v-table {background-color: #ffffff;}
