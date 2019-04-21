@@ -65,7 +65,11 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, col
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
-	gridArgs.IsDescending = pagination.Get("descending").(bool)
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
@@ -123,7 +127,11 @@ func (s *DSCService) GetCDETable(system string, colFilter interface{}, paginatio
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
-	gridArgs.IsDescending = pagination.Get("descending").(bool)
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
@@ -149,7 +157,11 @@ func (s *DSCService) GetCDPTable(system string, colFilter interface{}, paginatio
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
-	gridArgs.IsDescending = pagination.Get("descending").(bool)
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
@@ -176,7 +188,11 @@ func (s *DSCService) GetCDPCDETable(system, dspName string, colFilter interface{
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
-	gridArgs.IsDescending = pagination.Get("descending").(bool)
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
@@ -201,7 +217,11 @@ func (s *DSCService) GetInterfacesTable(system string, colFilter interface{}, pa
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
-	gridArgs.IsDescending = pagination.Get("descending").(bool)
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
@@ -228,7 +248,11 @@ func (s *DSCService) GetInterfacesCDETable(system, dspName string, colFilter int
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
-	gridArgs.IsDescending = pagination.Get("descending").(bool)
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 

@@ -253,13 +253,17 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 			) a`
 
 		if param.RowsPerPage > 0 {
+			if param.OrderBy != "" {
+				param.OrderBy = `ORDER BY ` + param.OrderBy + ` `
+			}
+
 			if param.IsDescending {
-				param.OrderBy += ` DESC`
+				param.OrderBy += `DESC `
 			}
 
 			sqlQuery = `SELECT * FROM
 				(
-					` + sqlQuery + ` ORDER BY ` + param.OrderBy + ` 
+					` + sqlQuery + ` ` + param.OrderBy + ` 
 				) WHERE r__ 
 				BETWEEN ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + ` 
 				AND ` + toolkit.ToString(param.PageNumber*param.RowsPerPage) + ` `
