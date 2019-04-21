@@ -20,12 +20,12 @@ func NewDSCService() *DSCService {
 	return ret
 }
 
-func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
+func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
 	gridArgs := GridArgs{}
 	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
 	gridArgs.QueryName = "dsc-view"
-	gridArgs.PageNumber = pageNumber
-	gridArgs.RowsPerPage = rowsPerPage
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 
 	if loggedinid != "" {
 		gridArgs.MainArgs = append(gridArgs.MainArgs, "MY", loggedinid)
@@ -64,6 +64,8 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, col
 		)
 	}
 
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	gridArgs.IsDescending = pagination.Get("descending").(bool)
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
