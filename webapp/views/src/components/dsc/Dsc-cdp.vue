@@ -81,6 +81,13 @@
                       <td style="width: calc(100% / 6)" class="text-capitalize"><b-link @click.stop="showCDEs(props.item)"><tablecell :fulltext="props.item.CDE_COUNT" showOn="hover"></tablecell></b-link></td>
                     </tr>
                   </template>
+
+                  <template slot="footer" >
+                    <td :colspan="2">
+                      <strong>Total</strong>
+                    </td>
+                    <td>{{ store.left.display[0] ? store.left.display[0].TOTAL : 0 }}</td>
+                  </template>
                 </v-data-table>
                       
               </b-col>
