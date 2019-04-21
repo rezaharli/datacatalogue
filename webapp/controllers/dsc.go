@@ -139,10 +139,7 @@ func (c *DSC) GetCDPCDETable(k *knot.WebContext) {
 		return
 	}
 
-	pageNumber := pagination.GetInt("page")
-	rowsPerPage := pagination.GetInt("rowsPerPage")
-
-	systems, _, err := s.NewDSCService().GetCDPCDETable(system, dspName, colFilter, pageNumber, rowsPerPage)
+	systems, _, err := s.NewDSCService().GetCDPCDETable(system, dspName, colFilter, pagination)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
