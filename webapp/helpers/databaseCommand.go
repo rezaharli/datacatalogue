@@ -246,24 +246,25 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 			sqlQuery += `COUNT(DISTINCT  id) OVER () RESULT_COUNT `
 		}
 
+		if param.OrderBy != "" {
+			param.OrderBy = `ORDER BY UPPER(` + param.OrderBy + `) `
+		}
+
+		if param.IsDescending {
+			param.OrderBy += `DESC `
+		}
+
 		sqlQuery += `
 			FROM
 			(
 				` + param.SqlQuery + `
-			) a`
+			) a ` + param.OrderBy
 
 		if param.RowsPerPage > 0 {
-			if param.OrderBy != "" {
-				param.OrderBy = `ORDER BY UPPER(` + param.OrderBy + `) `
-			}
-
-			if param.IsDescending {
-				param.OrderBy += `DESC `
-			}
 
 			sqlQuery = `SELECT * FROM
 				(
-					` + sqlQuery + ` ` + param.OrderBy + ` 
+					` + sqlQuery + ` 
 				) WHERE r__ 
 				BETWEEN ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + ` 
 				AND ` + toolkit.ToString(param.PageNumber*param.RowsPerPage) + ` `
