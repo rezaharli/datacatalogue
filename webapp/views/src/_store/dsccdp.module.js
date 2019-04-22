@@ -14,7 +14,7 @@ const state = {
         leftHeaders: [
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Downstream Process Name', value: 'DSP_NAME' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Downstream Process Owner', value: 'PROCESS_OWNER' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Number of CDEs', value: 'CDE_COUNT' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Number of CDEs', value: 'CDE_COUNT' },
         ],
         isRightTable: false,
         DDSource: [],
