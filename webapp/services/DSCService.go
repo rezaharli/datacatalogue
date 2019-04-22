@@ -20,12 +20,12 @@ func NewDSCService() *DSCService {
 	return ret
 }
 
-func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
+func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
 	gridArgs := GridArgs{}
 	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
 	gridArgs.QueryName = "dsc-view"
-	gridArgs.PageNumber = pageNumber
-	gridArgs.RowsPerPage = rowsPerPage
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 
 	if loggedinid != "" {
 		gridArgs.MainArgs = append(gridArgs.MainArgs, "MY", loggedinid)
@@ -64,6 +64,12 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, col
 		)
 	}
 
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
@@ -96,12 +102,12 @@ func (s *DSCService) GetHomepageCounts(payload toolkit.M) (interface{}, int, err
 	return resultRows, resultTotal, nil
 }
 
-func (s *DSCService) GetCDETable(system string, colFilter interface{}, pageNumber, rowsPerPage int) ([]toolkit.M, int, error) {
+func (s *DSCService) GetCDETable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
 	gridArgs := GridArgs{}
 	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
 	gridArgs.QueryName = "dsc-view-cde"
-	gridArgs.PageNumber = pageNumber
-	gridArgs.RowsPerPage = rowsPerPage
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
@@ -120,15 +126,21 @@ func (s *DSCService) GetCDETable(system string, colFilter interface{}, pageNumbe
 		)
 	}
 
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
-func (s *DSCService) GetCDPTable(system string, colFilter interface{}, pageNumber, rowsPerPage int) ([]toolkit.M, int, error) {
+func (s *DSCService) GetCDPTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
 	gridArgs := GridArgs{}
 	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
 	gridArgs.QueryName = "dsc-view-cdp"
-	gridArgs.PageNumber = pageNumber
-	gridArgs.RowsPerPage = rowsPerPage
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
@@ -144,15 +156,21 @@ func (s *DSCService) GetCDPTable(system string, colFilter interface{}, pageNumbe
 		)
 	}
 
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
-func (s *DSCService) GetCDPCDETable(system, dspName string, colFilter interface{}, pageNumber, rowsPerPage int) ([]toolkit.M, int, error) {
+func (s *DSCService) GetCDPCDETable(system, dspName string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
 	gridArgs := GridArgs{}
 	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
 	gridArgs.QueryName = "dsc-view-cdp-cde"
-	gridArgs.PageNumber = pageNumber
-	gridArgs.RowsPerPage = rowsPerPage
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system, dspName)
 
@@ -169,15 +187,21 @@ func (s *DSCService) GetCDPCDETable(system, dspName string, colFilter interface{
 		)
 	}
 
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
-func (s *DSCService) GetInterfacesTable(system string, colFilter interface{}, pageNumber, rowsPerPage int) ([]toolkit.M, int, error) {
+func (s *DSCService) GetInterfacesTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
 	gridArgs := GridArgs{}
 	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
 	gridArgs.QueryName = "dsc-view-interfaces"
-	gridArgs.PageNumber = pageNumber
-	gridArgs.RowsPerPage = rowsPerPage
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
@@ -192,15 +216,21 @@ func (s *DSCService) GetInterfacesTable(system string, colFilter interface{}, pa
 		)
 	}
 
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
-func (s *DSCService) GetInterfacesCDETable(system, dspName string, colFilter interface{}, pageNumber, rowsPerPage int) ([]toolkit.M, int, error) {
+func (s *DSCService) GetInterfacesCDETable(system, dspName string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
 	gridArgs := GridArgs{}
 	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
 	gridArgs.QueryName = "dsc-view-interfaces-cde"
-	gridArgs.PageNumber = pageNumber
-	gridArgs.RowsPerPage = rowsPerPage
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system, dspName)
 
@@ -215,6 +245,12 @@ func (s *DSCService) GetInterfacesCDETable(system, dspName string, colFilter int
 			colFilterM.GetString("TABLE_NAME"),
 			colFilterM.GetString("COLUMN_NAME"),
 		)
+	}
+
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
 	}
 
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
@@ -421,4 +457,32 @@ func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 	}
 
 	return resultRows, resultTotal, nil
+}
+
+func (s *DSCService) GetDDTable(system string, colFilter interface{}, pageNumber, rowsPerPage int) ([]toolkit.M, int, error) {
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
+	gridArgs.QueryName = "dsc-view-dd"
+	gridArgs.PageNumber = pageNumber
+	gridArgs.RowsPerPage = rowsPerPage
+
+	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
+
+	///////// --------------------------------------------------COLUMN FILTER
+	// colFilterM, err := toolkit.ToM(colFilter)
+	// if err != nil {
+	// 	gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "")
+	// } else {
+	// 	gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
+	// 		colFilterM.GetString("CDE"),
+	// 		colFilterM.GetString("DESCRIPTION"),
+	// 		colFilterM.GetString("TABLE_NAME"),
+	// 		colFilterM.GetString("COLUMN_NAME"),
+	// 		colFilterM.GetString("DSP_NAME"),
+	// 		colFilterM.GetString("PROCESS_OWNER"),
+	// 	)
+	// }
+
+	gridArgs.GroupCol = "-"
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }

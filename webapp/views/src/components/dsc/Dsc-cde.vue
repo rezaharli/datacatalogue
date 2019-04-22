@@ -76,40 +76,37 @@
 
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
+                      <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }" class="text-capitalize text-title">
+                        <b-button size="sm" class="green-tosca-gradient icon-only" @click="showDetails(props.item)">
+                          <i class="fa fa-fw fa-external-link-alt"></i></b-button></td>
+
                       <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-capitalize text-title">
-                        <b-link @click="showDetails(props.item)">
-                          <tablecell :fulltext="props.item.CDE" showOn="hover"></tablecell></b-link></td>
+                        <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length > 0">
+                          <tablecell :fulltext="props.item.CDE" showOn="hover"></tablecell>
+                        </b-link>
+
+                        <tablecell :fulltext="props.item.CDE" showOn="hover" v-if="props.item.Tables.length < 1"></tablecell>
+                      </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }" class="text-description">
                         <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
 
                       <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-uppercase">
-                        <b-link @click="props.expanded = !props.expanded" v-if="props.item.Columns.length >= 1">
-                          <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover"></tablecell>
-                        </b-link>
-
-                        <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover" v-if="props.item.Columns.length < 1"></tablecell>
+                        <tablecell v-if="!props.expanded" :fulltext="props.item.TABLE_NAME" showOn="hover"></tablecell>
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-uppercase">
-                        <!-- <b-link @click="props.expanded = !props.expanded" 
-                            v-if="!props.expanded && props.item.Columns.length >= 1 && props.item.Columns[0].Dsps.length >= 1">
-                          <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover"></tablecell>
-                        </b-link>
-
-                        <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover" 
-                            v-if="(props.item.Columns.length < 1 || (props.item.Columns.length >= 1 && props.item.Columns[0].Dsps.length < 1))"></tablecell> -->
-                        <tablecell :fulltext="props.item.COLUMN_NAME" showOn="click" 
-                            v-if="(!props.expanded && props.item.Columns.length >= 1 && props.item.Columns[0].Dsps.length >= 1) || (props.item.Columns.length < 1 || (props.item.Columns.length >= 1 && props.item.Columns[0].Dsps.length < 1))"></tablecell>
+                        <tablecell v-if="!props.expanded" :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell>
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell :fulltext="props.item.DSP_NAME" showOn="click" 
-                            v-if="(!props.expanded && props.item.Columns.length >= 1 && props.item.Columns[0].Dsps.length >= 1) || (props.item.Columns.length < 1 || (props.item.Columns.length >= 1 && props.item.Columns[0].Dsps.length < 1))"></tablecell></td>
+                        <tablecell :fulltext="props.item.DSP_NAME" showOn="click" v-if="!props.expanded"></tablecell></td>
                         
                       <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }">
-                        <tablecell :fulltext="props.item.Columns.length < 1 ? (_.uniq(_.map(props.item.TablesVal, 'PROCESS_OWNER')).filter(Boolean).join(', ')) : props.item.PROCESS_OWNER" 
-                            v-if="(!props.expanded && props.item.Columns.length >= 1 && props.item.Columns[0].Dsps.length >= 1) || (props.item.Columns.length < 1 || (props.item.Columns.length >= 1 && props.item.Columns[0].Dsps.length < 1))" showOn="click"></tablecell></td>
+                        <tablecell v-if="!props.expanded" 
+                          :fulltext="props.item.PROCESS_OWNER" showOn="click"></tablecell></td>
+                        <!-- <tablecell v-if="!props.expanded" 
+                          :fulltext="props.item.Tables[0] ? (props.item.Tables[0].Columns[0] ? (props.item.Tables[0].Columns[0].Dsps[0] ? _.uniq(_.map(props.item.Tables[0].Columns[0].Dsps[0].DspsVal, 'PROCESS_OWNER')).filter(Boolean).join(', ') : props.item.PROCESS_OWNER) : props.item.PROCESS_OWNER) : props.item.PROCESS_OWNER" showOn="click"></tablecell></td> -->
                     </tr>
                   </template>
 
@@ -117,44 +114,91 @@
                     <!-- <table-rows-sub :storeName="storeName" :props="props" /> -->
                     <v-data-table
                       :headers="store.leftHeaders.filter(v => v.display == true)"
-                      :items="props.item.Columns"
+                      :items="props.item.Tables"
+                      :expand="false"
                       class=""
-                      item-key="COLID"
+                      item-key="TMTID"
                       hide-actions
                       hide-headers
                     >
                       <template slot="items" slot-scope="props">
+                        <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
                         <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
                         <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
-                        <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
 
-                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                          <b-link @click="props.expanded = !props.expanded" v-if="props.item.Dsps.length >= 1">
-                            <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover"></tablecell>
+                        <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
+                          <b-link @click="props.expanded = !props.expanded" v-if="props.item.Columns.length >= 1">
+                            <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover"></tablecell>
                           </b-link>
 
-                          <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover" v-if="props.item.Dsps.length < 1"></tablecell>
+                          <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover" v-if="props.item.Columns.length < 1"></tablecell>
                         </td>
 
-                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }"><tablecell :fulltext="props.item.DSP_NAME" showOn="click"></tablecell></td>
-                        <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }"><tablecell :fulltext="props.item.Dsps.length < 1 ? (_.uniq(_.map(props.item.ColumnsVal, 'PROCESS_OWNER')).filter(Boolean).join(', ')) : props.item.PROCESS_OWNER" showOn="click"></tablecell></td>
+                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
+                          <tablecell v-if="!props.expanded" :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell>
+                        </td>
+
+                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }">
+                          <tablecell v-if="!props.expanded" :fulltext="props.item.DSP_NAME" showOn="click"></tablecell>  
+                        </td>
+
+                        <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }">
+                          <tablecell v-if="!props.expanded" showOn="click" :fulltext="props.item.PROCESS_OWNER"></tablecell></td>
+                          <!-- <tablecell v-if="!props.expanded" showOn="click" :fulltext="props.item.Columns[0] ? (props.item.Columns[0].Dsps[0] ? _.uniq(_.map(props.item.Columns[0].Dsps[0].DspsVal, 'PROCESS_OWNER')).filter(Boolean).join(', ') : props.item.PROCESS_OWNER) : props.item.PROCESS_OWNER"></tablecell></td> -->
                       </template>
 
                       <template slot="expand" slot-scope="props">
                         <v-data-table
                           :headers="store.leftHeaders.filter(v => v.display == true)"
-                          :items="props.item.Dsps"
+                          :items="props.item.Columns"
+                          item-key="COLID"
                           class=""
                           hide-actions
                           hide-headers
                         >
                           <template slot="items" slot-scope="props">
+                            <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
                             <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
                             <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
                             <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
-                            <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">&nbsp;</td>
-                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.DspsVal, 'DSP_NAME')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                            <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.DspsVal, 'PROCESS_OWNER')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
+                            <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
+                              <b-link @click="props.expanded = !props.expanded" v-if="props.item.Dsps.length >= 1">
+                                <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover"></tablecell>
+                              </b-link>
+
+                              <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover" v-if="props.item.Dsps.length < 1"></tablecell>
+                            </td>
+
+                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }">
+                              <tablecell :fulltext="props.item.DSP_NAME" showOn="click"></tablecell></td>
+
+                            <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }">
+                              <tablecell showOn="click" :fulltext="props.item.PROCESS_OWNER"></tablecell></td>
+                              <!-- <tablecell showOn="click" :fulltext="props.item.Dsps[0] ? _.uniq(_.map(props.item.Dsps[0].DspsVal, 'PROCESS_OWNER')).filter(Boolean).join(', ') : props.item.PROCESS_OWNER"></tablecell></td> -->
+                          </template>
+
+                          <template slot="expand" slot-scope="props">
+                            <v-data-table
+                              :headers="store.leftHeaders.filter(v => v.display == true)"
+                              :items="props.item.Dsps"
+                              class=""
+                              hide-actions
+                              hide-headers
+                            >
+                              <template slot="items" slot-scope="props">
+                                <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
+                                <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
+                                <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
+                                <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
+                                <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">&nbsp;</td>
+
+                                <td v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }">
+                                  <tablecell :fulltext="props.item.DSP_NAME" showOn="click"></tablecell></td>
+                                
+                                <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }">
+                                  <tablecell :fulltext="(_.uniq(_.map(props.item.DspsVal, 'PROCESS_OWNER')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
+                              </template>
+                            </v-data-table>
                           </template>
                         </v-data-table>
                       </template>
@@ -221,6 +265,7 @@ export default {
   mounted() {
     this.store.tabName = this.storeName;
     this.store.system = this.$route.params.system;
+    this.resetFilter();
   },
   methods: {
     getLeftTable() {
@@ -250,7 +295,7 @@ export default {
     },
     showDetails(param) {
       this.$router.push(
-        this.addressPath + "/" + param.TSID + "/" + param.ID + "/" + param.COLID
+        this.addressPath + "/" + param.TSID + "/" + param.TMTID + "/" + param.COLID
       );
     }
   }

@@ -56,15 +56,6 @@
     border-color: transparent;
 }
 
-.header-filter-icon{
-
-}
-.header-filter-icon .dropdown-menu{
-    /* overflow: scroll; */
-    /* max-height: 200px; */
-    /* height: auto; */
-}
-
 .scrollableasdf{
     overflow: scroll;
 }

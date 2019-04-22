@@ -12,8 +12,8 @@ const state = {
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Immediate Interfaces', value: 'IMM_INTERFACE' },
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: '# of CDEs', value: 'CDE_COUNT' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Immediate Interfaces', value: 'IMM_INTERFACE' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Number of CDEs', value: 'CDE_COUNT' },
         ],
         isRightTable: false,
         DDSource: [],
@@ -34,8 +34,10 @@ const actions = {
         var param = {
             System: state.all.system,
             Filters: state.all.filters.left,
-            Pagination: state.all.left.pagination
+            Pagination: _.cloneDeep(state.all.left.pagination)
         }
+
+        param.Pagination.rowsPerPage = -1;
 
         return dscMyService.getInterfacesTable(param)
             .then(

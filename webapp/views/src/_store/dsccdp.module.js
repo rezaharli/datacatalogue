@@ -12,9 +12,9 @@ const state = {
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: false, text: 'Downstream Process NAME', value: 'DSP_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: false, text: 'Downstream Process Owner', value: 'PROCESS_OWNER' },
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: '# of CDEs', value: 'CDE_COUNT' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Downstream Process Name', value: 'DSP_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Downstream Process Owner', value: 'PROCESS_OWNER' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Number of CDEs', value: 'CDE_COUNT' },
         ],
         isRightTable: false,
         DDSource: [],
@@ -35,8 +35,10 @@ const actions = {
         var param = {
             System: state.all.system,
             Filters: state.all.filters.left,
-            Pagination: state.all.left.pagination
+            Pagination: _.cloneDeep(state.all.left.pagination)
         }
+        
+        param.Pagination.rowsPerPage = -1;
 
         return dscMyService.getCdpTable(param)
             .then(

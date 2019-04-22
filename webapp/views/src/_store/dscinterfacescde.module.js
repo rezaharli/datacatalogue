@@ -13,10 +13,11 @@ const state = {
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'CDE Name', value: 'CDE' },
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Description', value: 'DESCRIPTION' },
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Table Name', value: 'TABLE_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Column Name', value: 'COLUMN_NAME' },
+            { align: 'left', display: true, filterable: false, exportable: false, displayCount: false, sortable: false, text: 'Details', value: 'Details' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'CDE Name', value: 'CDE' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Description', value: 'DESCRIPTION' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Table Name', value: 'TABLE_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Column Name', value: 'COLUMN_NAME' },
         ],
         isRightTable: false,
         DDSource: [],
@@ -38,8 +39,10 @@ const actions = {
             System: state.all.system,
             DspName: state.all.dspName,
             Filters: state.all.filters.left,
-            Pagination: state.all.left.pagination
+            Pagination: _.cloneDeep(state.all.left.pagination)
         }
+
+        param.Pagination.rowsPerPage = -1;
 
         return dscMyService.getInterfacesCdeTable(param)
             .then(

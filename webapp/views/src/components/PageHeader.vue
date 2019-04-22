@@ -28,7 +28,8 @@
                     $route.name == 'dsc.cdp' || 
                     $route.name == 'dsc.interfaces' || 
                     $route.name == 'dsc.cdp.cde' || 
-                    $route.name == 'dsc.interfaces.cde'
+                    $route.name == 'dsc.interfaces.cde' ||
+                    $route.name == 'dsc.dd'
                     ">
                     <router-link :to="goToDscMenu" class="standard-a">DSC Landing Page</router-link>
                 </b-dropdown-item>
