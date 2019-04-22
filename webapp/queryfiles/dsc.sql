@@ -84,7 +84,7 @@ SELECT *
 				COUNT(DISTINCT PROCESS_OWNER) OVER ()	as COUNT_PROCESS_OWNER
 			FROM (
 				SELECT DISTINCT 
-					TMT.ID,
+					TMC.ID,
 					TMT.ID									AS TMTID,
 					TS.ID									AS TSID,
 					TMC.ID									AS COLID,

@@ -162,6 +162,7 @@ func (s *DSCService) GetCDPTable(system string, colFilter interface{}, paginatio
 		gridArgs.IsDescending = descending.(bool)
 	}
 
+	gridArgs.GroupCol = "-"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
