@@ -22,6 +22,7 @@ type GridArgs struct {
 	MainArgs       []interface{}
 	ColumnFilter   []interface{}
 	DropdownFilter []interface{}
+	Colnames       []string
 	GroupCol       string
 
 	PageNumber   int
@@ -40,7 +41,7 @@ func (s *Base) ExecuteGridQueryFromFile(gridArgs GridArgs) ([]toolkit.M, int, er
 	args = append(args, gridArgs.ColumnFilter...)
 
 	///////// --------------------------------------------------BUILD QUERY FROM ARGS
-	q, err := h.BuildQueryFromFile(gridArgs.QueryFilePath, gridArgs.QueryName, args...)
+	q, err := h.BuildQueryFromFile(gridArgs.QueryFilePath, gridArgs.QueryName, gridArgs.Colnames, args...)
 	if err != nil {
 		return nil, 0, err
 	}

@@ -233,6 +233,16 @@ function getInterfacesCdeTable(param) {
     );
 }
 
+function getDdTable(param) {
+    return fetchWHeader(`/dsc/getddtable`, param).then(
+        res => {
+            res.DataFlat = _.cloneDeep(res.Data);
+
+            return res;
+        }
+    );
+}
+
 function getRightTable(param) {
     return fetchWHeader(`/dsc/gettablename`, param).then(
         res => {
@@ -288,10 +298,6 @@ function getInterfacesRightTable(param) {
             return res;
         }
     )
-}
-
-function getDdTable(param) {
-    return fetchWHeader(`/dsc/getddtable`, param);
 }
 
 function getDetails(param) {

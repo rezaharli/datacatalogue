@@ -100,7 +100,7 @@ func TruncateSprintf(str string, args ...interface{}) (string, error) {
 	return toolkit.Sprintf(str, args[:n]...), nil
 }
 
-func BuildQueryFromFile(filePath, queryName string, args ...interface{}) (string, error) {
+func BuildQueryFromFile(filePath, queryName string, Colnames []string, args ...interface{}) (string, error) {
 	dot, err := dotsql.LoadFromFile(filePath)
 	if err != nil {
 		return "", err
@@ -109,6 +109,19 @@ func BuildQueryFromFile(filePath, queryName string, args ...interface{}) (string
 	raw, err := dot.Raw(queryName)
 	if err != nil {
 		return "", err
+	}
+
+	if len(Colnames) > 0 {
+		raw = `SELECT * FROM ( ` + raw + `) WHERE ( `
+		for i, colname := range Colnames {
+			if i != 0 {
+				raw += `AND `
+			}
+
+			raw += ` upper(` + colname + `) LIKE upper('%?%')
+			`
+		}
+		raw += `) `
 	}
 
 	replaced := strings.ReplaceAll(raw, "%", "%%")

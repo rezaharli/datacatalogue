@@ -131,7 +131,7 @@ func (s *DDOService) GetDetailsBusinessMetadataFromDomain(payload toolkit.M) (in
 	}
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-business-metadata-from-domain", args...)
+	q, err := h.BuildQueryFromFile(filePath, "details-business-metadata-from-domain", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -203,7 +203,7 @@ func (s *DDOService) GetddSourceBusinessMetadataFromDomain(payload toolkit.M) (i
 	}
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-business-metadata-from-domain", args...)
+	q, err := h.BuildQueryFromFile(filePath, "details-business-metadata-from-domain", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -245,7 +245,7 @@ func (s *DDOService) GetDetailsDownstreamUsageOfBusinessTerm(payload toolkit.M) 
 	}
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-downstream-usage-of-business-term", args...)
+	q, err := h.BuildQueryFromFile(filePath, "details-downstream-usage-of-business-term", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -306,7 +306,7 @@ func (s *DDOService) GetddSourceDownstreamUsageOfBusinessTerm(payload toolkit.M)
 	}
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-downstream-usage-of-business-term", args...)
+	q, err := h.BuildQueryFromFile(filePath, "details-downstream-usage-of-business-term", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -364,7 +364,7 @@ func (s *DDOService) GetDetailsBTResiding(payload toolkit.M) (interface{}, int, 
 	}
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-business-term-residing", args...)
+	q, err := h.BuildQueryFromFile(filePath, "details-business-term-residing", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -437,7 +437,7 @@ func (s *DDOService) GetddSourceBTResiding(payload toolkit.M) (interface{}, int,
 	}
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-business-term-residing", args...)
+	q, err := h.BuildQueryFromFile(filePath, "details-business-term-residing", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}

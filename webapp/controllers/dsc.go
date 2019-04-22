@@ -310,10 +310,7 @@ func (c *DSC) GetDDTable(k *knot.WebContext) {
 		return
 	}
 
-	pageNumber := pagination.GetInt("page")
-	rowsPerPage := pagination.GetInt("rowsPerPage")
-
-	systems, _, err := s.NewDSCService().GetDDTable(system, colFilter, pageNumber, rowsPerPage)
+	systems, _, err := s.NewDSCService().GetDDTable(system, colFilter, pagination)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
