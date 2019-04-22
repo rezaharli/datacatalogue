@@ -103,8 +103,8 @@ const mutations = {
     getLeftTableSuccess(state, res) {
         state.all.left.source = res.DataFlat;
         state.all.left.display = res.Data;
-        state.all.left.totalItems = res.Data[0] ? res.Data[0].RESULT_COUNT : 0;
-
+        state.all.left.totalItems = res.Data[0] ? res.Data[0].COUNT_CDE : 0;
+        
         state.all.left.isLoading = false;
     },
     getLeftTableFailure(state, error) {
