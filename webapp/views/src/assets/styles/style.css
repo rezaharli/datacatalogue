@@ -186,7 +186,9 @@ table.v-table thead th > div.btn-group {
 .card.card-v1 table.v-table thead tr th.column.sortable.active.desc .v-icon,
 .table-v1 table.v-table thead tr th.column.sortable.active.desc .v-icon{transform: translateY(-10px) rotate(180deg);}
 
-.card .v-table__overflow {overflow-x: visible; overflow-y: visible;}
+.card .v-table__overflow,
+.table-v1 .v-table__overflow,
+.table-v2 .v-table__overflow {overflow-x: visible; overflow-y: visible;}
 .card .v-datatable__actions{justify-content: space-between;}
 .card .v-datatable__actions__select,
 .card .v-datatable__actions__range-controls {
