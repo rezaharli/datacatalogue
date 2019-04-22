@@ -3,6 +3,7 @@ package services
 import (
 	h "eaciit/datacatalogue/webapp/helpers"
 	m "eaciit/datacatalogue/webapp/models"
+	"strings"
 
 	"github.com/eaciit/toolkit"
 )
@@ -23,8 +24,10 @@ type GridArgs struct {
 	DropdownFilter []interface{}
 	GroupCol       string
 
-	PageNumber  int
-	RowsPerPage int
+	PageNumber   int
+	RowsPerPage  int
+	OrderBy      string
+	IsDescending bool
 }
 
 func (s *Base) ExecuteGridQueryFromFile(gridArgs GridArgs) ([]toolkit.M, int, error) {
@@ -42,15 +45,20 @@ func (s *Base) ExecuteGridQueryFromFile(gridArgs GridArgs) ([]toolkit.M, int, er
 		return nil, 0, err
 	}
 
+	splitted := strings.Split(gridArgs.OrderBy, ".")
+	orderBy := splitted[len(splitted)-1]
+
 	///////// --------------------------------------------------EXECUTE
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName:   m.NewSystemModel().TableName(),
-		SqlQuery:    q,
-		Results:     &resultRows,
-		ResultTotal: resultTotal,
-		PageNumber:  gridArgs.PageNumber,
-		RowsPerPage: gridArgs.RowsPerPage,
-		GroupCol:    gridArgs.GroupCol,
+		TableName:    m.NewSystemModel().TableName(),
+		SqlQuery:     q,
+		Results:      &resultRows,
+		ResultTotal:  resultTotal,
+		PageNumber:   gridArgs.PageNumber,
+		RowsPerPage:  gridArgs.RowsPerPage,
+		OrderBy:      orderBy,
+		IsDescending: gridArgs.IsDescending,
+		GroupCol:     gridArgs.GroupCol,
 	})
 	if err != nil {
 		return nil, 0, err

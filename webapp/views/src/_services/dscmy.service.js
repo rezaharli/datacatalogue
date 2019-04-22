@@ -10,6 +10,7 @@ export const dscMyService = {
     getInterfacesCdeTable,
     getRightTable,
     getInterfacesRightTable,
+    getDdTable,
     getDetails
 };
 
@@ -43,57 +44,68 @@ function getCdeTable(param) {
         res => {
             res.DataFlat = _.cloneDeep(res.Data);
             
-            var tmp = _.groupBy(res.Data, "TABLE_NAME")
-            
-            res.Data = _.map(Object.keys(tmp), function(v){
-                var tmp2 = _.groupBy(tmp[v], "COLUMN_NAME");  
+            var tmp = _.groupBy(res.Data, "CDE")
+            res.Data = _.map(Object.keys(tmp), function(v, i){
+                var tmpTmp = _.cloneDeep(tmp[v]);
 
-                var columns = _.map(Object.keys(tmp2), function(w, i){
-                    var tmp3 = _.groupBy(tmp2[w], "DSP_NAME");  
+                var ret         = tmpTmp[0];
+                ret.ID          = i;
+                ret.CDEsVal     = tmpTmp;
+                ret.CDE         = v;
 
-                    var dsps = _.map(Object.keys(tmp3), function(x, i){
-                        var tmpTmp2 = _.cloneDeep(tmp3[x]);
+                var tmp2 = _.groupBy(tmp[v], "TABLE_NAME");  
+                ret.Tables = _.map(Object.keys(tmp2), function(w, i){
+                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
 
-                        var ret         = tmpTmp2[0];
-                        ret.DSPID       = i;
-                        ret.DspsVal     = tmpTmp2;
-                        ret.DSP_NAME    = x;
+                    var ret         = tmpTmp2[0];
+                    ret.TMTID       = tmpTmp2[0].ID;
+                    ret.TablesVal   = tmpTmp2;
+                    ret.TABLE_NAME  = w;
+
+                    var tmp3 = _.groupBy(tmp2[w], "COLUMN_NAME");
+                    ret.Columns = _.map(Object.keys(tmp3), function(x, i){
+                        var tmpTmp3 = _.cloneDeep(tmp3[x]);
+
+                        var ret         = tmpTmp3[0];
+                        ret.COLID       = tmpTmp3[0].COLID;
+                        ret.ColumnsVal  = tmpTmp3;
+                        ret.COLUMN_NAME = x;
+
+                        var tmp4 = _.groupBy(tmp3[x], "DSP_NAME");  
+                        ret.Dsps = _.map(Object.keys(tmp4), function(x, i){
+                            var tmpTmp4 = _.cloneDeep(tmp4[x]);
+
+                            var ret         = tmpTmp4[0];
+                            ret.DSPID       = i;
+                            ret.DspsVal     = tmpTmp4;
+                            ret.DSP_NAME    = x;
+
+                            return ret;
+                        });
 
                         return ret;
                     });
 
-                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
-
-                    var ret         = tmpTmp2[0];
-                    ret.COLID       = tmpTmp2[0].COLID;
-                    ret.ColumnsVal  = tmpTmp2;
-                    ret.COLUMN_NAME = w;
-
-                    ret.Dsps = dsps;
-
                     return ret;
                 });
-
-                var tmpTmp = _.cloneDeep(tmp[v]);
-
-                var ret         = tmpTmp[0];
-                ret.TMTID       = tmpTmp[0].TMTID;
-                ret.TablesVal   = tmpTmp;
-                ret.TABLE_NAME  = v;
-
-                ret.Columns = columns;
 
                 return ret;
             });
 
             res.Data.forEach(v => {
-                if(v.Columns[0].Dsps.length <= 1){
-                    v.Columns.shift();
-                }
+                v.Tables.forEach(w => {
+                    w.Columns.forEach(x => {
+                        x.Dsps.shift();
+                    });
 
-                v.Columns.forEach(w => {
-                    w.Dsps.shift();
+                    if(w.Columns[0].Dsps.length == 0){
+                        w.Columns.shift();
+                    }
                 });
+
+                if(v.Tables[0].Columns.length == 0){
+                    v.Tables.shift();
+                }
             });
             
             return res;
@@ -110,36 +122,50 @@ function getCdpCdeTable(param) {
         res => {
             res.DataFlat = _.cloneDeep(res.Data);
             
-            var tmp = _.groupBy(res.Data, "TABLE_NAME")
-            
-            res.Data = _.map(Object.keys(tmp), function(v){
-                var tmp2 = _.groupBy(tmp[v], "COLUMN_NAME");  
-
-                var columns = _.map(Object.keys(tmp2), function(w, i){
-                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
-
-                    var ret         = tmpTmp2[0];
-                    ret.COLID       = tmpTmp2[0].COLID;
-                    ret.ColumnsVal  = tmpTmp2;
-                    ret.COLUMN_NAME = w;
-
-                    return ret;
-                });
-
+            var tmp = _.groupBy(res.Data, "CDE")
+            res.Data = _.map(Object.keys(tmp), function(v, i){
                 var tmpTmp = _.cloneDeep(tmp[v]);
 
                 var ret         = tmpTmp[0];
-                ret.TMTID       = tmpTmp[0].TMTID;
-                ret.TablesVal   = tmpTmp;
-                ret.TABLE_NAME  = v;
+                ret.ID          = i;
+                ret.CDEsVal     = tmpTmp;
+                ret.CDE         = v;
 
-                ret.Columns = columns;
+                var tmp2 = _.groupBy(tmp[v], "TABLE_NAME");  
+                ret.Tables = _.map(Object.keys(tmp2), function(w, i){
+                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
+
+                    var ret         = tmpTmp2[0];
+                    ret.TMTID       = tmpTmp2[0].ID;
+                    ret.TablesVal   = tmpTmp2;
+                    ret.TABLE_NAME  = w;
+
+                    var tmp3 = _.groupBy(tmp2[w], "COLUMN_NAME");
+                    ret.Columns = _.map(Object.keys(tmp3), function(x, i){
+                        var tmpTmp3 = _.cloneDeep(tmp3[x]);
+
+                        var ret         = tmpTmp3[0];
+                        ret.COLID       = tmpTmp3[0].COLID;
+                        ret.ColumnsVal  = tmpTmp3;
+                        ret.COLUMN_NAME = x;
+
+                        return ret;
+                    });
+
+                    return ret;
+                });
 
                 return ret;
             });
 
             res.Data.forEach(v => {
-                v.Columns.shift();
+                v.Tables.forEach(w => {
+                    w.Columns.shift();
+                });
+
+                if(v.Tables[0].Columns.length == 0){
+                    v.Tables.shift();
+                }
             });
             
             return res;
@@ -156,36 +182,50 @@ function getInterfacesCdeTable(param) {
         res => {
             res.DataFlat = _.cloneDeep(res.Data);
             
-            var tmp = _.groupBy(res.Data, "TABLE_NAME")
-            
-            res.Data = _.map(Object.keys(tmp), function(v){
-                var tmp2 = _.groupBy(tmp[v], "COLUMN_NAME");  
-
-                var columns = _.map(Object.keys(tmp2), function(w, i){
-                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
-
-                    var ret         = tmpTmp2[0];
-                    ret.COLID       = tmpTmp2[0].COLID;
-                    ret.ColumnsVal  = tmpTmp2;
-                    ret.COLUMN_NAME = w;
-
-                    return ret;
-                });
-
+            var tmp = _.groupBy(res.Data, "CDE")
+            res.Data = _.map(Object.keys(tmp), function(v, i){
                 var tmpTmp = _.cloneDeep(tmp[v]);
 
                 var ret         = tmpTmp[0];
-                ret.TMTID       = tmpTmp[0].TMTID;
-                ret.TablesVal   = tmpTmp;
-                ret.TABLE_NAME  = v;
+                ret.ID          = i;
+                ret.CDEsVal     = tmpTmp;
+                ret.CDE         = v;
 
-                ret.Columns = columns;
+                var tmp2 = _.groupBy(tmp[v], "TABLE_NAME");  
+                ret.Tables = _.map(Object.keys(tmp2), function(w, i){
+                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
+
+                    var ret         = tmpTmp2[0];
+                    ret.TMTID       = tmpTmp2[0].ID;
+                    ret.TablesVal   = tmpTmp2;
+                    ret.TABLE_NAME  = w;
+
+                    var tmp3 = _.groupBy(tmp2[w], "COLUMN_NAME");
+                    ret.Columns = _.map(Object.keys(tmp3), function(x, i){
+                        var tmpTmp3 = _.cloneDeep(tmp3[x]);
+
+                        var ret         = tmpTmp3[0];
+                        ret.COLID       = tmpTmp3[0].COLID;
+                        ret.ColumnsVal  = tmpTmp3;
+                        ret.COLUMN_NAME = x;
+
+                        return ret;
+                    });
+
+                    return ret;
+                });
 
                 return ret;
             });
 
             res.Data.forEach(v => {
-                v.Columns.shift();
+                v.Tables.forEach(w => {
+                    w.Columns.shift();
+                });
+
+                if(v.Tables[0].Columns.length == 0){
+                    v.Tables.shift();
+                }
             });
             
             return res;
@@ -248,6 +288,10 @@ function getInterfacesRightTable(param) {
             return res;
         }
     )
+}
+
+function getDdTable(param) {
+    return fetchWHeader(`/dsc/getddtable`, param);
 }
 
 function getDetails(param) {

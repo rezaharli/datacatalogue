@@ -12,12 +12,13 @@ const state = {
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'CDE', value: 'CDE' },
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Description', value: 'DESCRIPTION' },
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Table Name', value: 'TABLE_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Column Name', value: 'ColumnsVal.COLUMN_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Downstream Process', value: 'ColumnsVal.DSP_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: true, sortable: false, text: 'Downstream Process Owner', value: 'ColumnsVal.PROCESS_OWNER' },
+            { align: 'left', display: true, filterable: false, exportable: false, displayCount: false, sortable: false, text: 'Details', value: 'Details' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'CDE', value: 'CDE' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Description', value: 'DESCRIPTION' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Table Name', value: 'TABLE_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Column Name', value: 'ColumnsVal.COLUMN_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Downstream Process', value: 'ColumnsVal.DSP_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Downstream Process Owner', value: 'ColumnsVal.PROCESS_OWNER' },
         ],
         isRightTable: false,
         DDSource: [],
@@ -38,8 +39,10 @@ const actions = {
         var param = {
             System: state.all.system,
             Filters: state.all.filters.left,
-            Pagination: state.all.left.pagination
+            Pagination: _.cloneDeep(state.all.left.pagination)
         }
+
+        param.Pagination.rowsPerPage = -1;
 
         return dscMyService.getCdeTable(param)
             .then(

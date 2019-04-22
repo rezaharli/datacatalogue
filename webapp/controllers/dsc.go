@@ -38,10 +38,7 @@ func (c *DSC) GetAllSystems(k *knot.WebContext) {
 		return
 	}
 
-	pageNumber := pagination.GetInt("page")
-	rowsPerPage := pagination.GetInt("rowsPerPage")
-
-	systems, _, err := s.NewDSCService().GetAllSystem(tabs, loggedinId, search, searchDD, colFilter, pageNumber, rowsPerPage, toolkit.M{})
+	systems, _, err := s.NewDSCService().GetAllSystem(tabs, loggedinId, search, searchDD, colFilter, pagination)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -87,10 +84,7 @@ func (c *DSC) GetCDETable(k *knot.WebContext) {
 		return
 	}
 
-	pageNumber := pagination.GetInt("page")
-	rowsPerPage := pagination.GetInt("rowsPerPage")
-
-	systems, _, err := s.NewDSCService().GetCDETable(system, colFilter, pageNumber, rowsPerPage)
+	systems, _, err := s.NewDSCService().GetCDETable(system, colFilter, pagination)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -117,10 +111,7 @@ func (c *DSC) GetCDPTable(k *knot.WebContext) {
 		return
 	}
 
-	pageNumber := pagination.GetInt("page")
-	rowsPerPage := pagination.GetInt("rowsPerPage")
-
-	systems, _, err := s.NewDSCService().GetCDPTable(system, colFilter, pageNumber, rowsPerPage)
+	systems, _, err := s.NewDSCService().GetCDPTable(system, colFilter, pagination)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -148,10 +139,7 @@ func (c *DSC) GetCDPCDETable(k *knot.WebContext) {
 		return
 	}
 
-	pageNumber := pagination.GetInt("page")
-	rowsPerPage := pagination.GetInt("rowsPerPage")
-
-	systems, _, err := s.NewDSCService().GetCDPCDETable(system, dspName, colFilter, pageNumber, rowsPerPage)
+	systems, _, err := s.NewDSCService().GetCDPCDETable(system, dspName, colFilter, pagination)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -178,10 +166,7 @@ func (c *DSC) GetInterfacesTable(k *knot.WebContext) {
 		return
 	}
 
-	pageNumber := pagination.GetInt("page")
-	rowsPerPage := pagination.GetInt("rowsPerPage")
-
-	systems, _, err := s.NewDSCService().GetInterfacesTable(system, colFilter, pageNumber, rowsPerPage)
+	systems, _, err := s.NewDSCService().GetInterfacesTable(system, colFilter, pagination)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -209,10 +194,7 @@ func (c *DSC) GetInterfacesCDETable(k *knot.WebContext) {
 		return
 	}
 
-	pageNumber := pagination.GetInt("page")
-	rowsPerPage := pagination.GetInt("rowsPerPage")
-
-	systems, _, err := s.NewDSCService().GetInterfacesCDETable(system, dspName, colFilter, pageNumber, rowsPerPage)
+	systems, _, err := s.NewDSCService().GetInterfacesCDETable(system, dspName, colFilter, pagination)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -308,4 +290,34 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 	data.Set("DDSource", ddSource)
 
 	h.WriteResultOK(k, res, data)
+}
+
+func (c *DSC) GetDDTable(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	system := payload.GetString("System")
+	colFilter := payload.Get("Filters")
+	pagination, err := toolkit.ToM(payload.Get("Pagination"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	pageNumber := pagination.GetInt("page")
+	rowsPerPage := pagination.GetInt("rowsPerPage")
+
+	systems, _, err := s.NewDSCService().GetDDTable(system, colFilter, pageNumber, rowsPerPage)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	h.WriteResultOK(k, res, systems)
 }

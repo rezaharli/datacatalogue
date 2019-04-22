@@ -23,18 +23,26 @@ export default {
         excelFields (){
             var ret = {}
 
-            _.each(this.leftTableCols, function(v){
+            console.log(this.LeftTableCols);
+            
+            _.each(this.LeftTableCols, function(v){
                 ret[v.text] = v.value.split(".").reverse()[0];
             })
 
             if(this.store.isRightTable){
-                _.each(this.rightTableCols, function(v){
+                _.each(this.RightTableCols, function(v){
                     ret[v.text] = v.value.split(".").reverse()[0];
                 })
             }
 
             return ret
         },
+        LeftTableCols () {
+            return this.leftTableCols.filter(v => v.filterable)
+        },
+        RightTableCols () {
+            return this.rightTableCols.filter(v => v.filterable)
+        }
     },
     methods: {
         getLeftTable () {
@@ -48,7 +56,7 @@ export default {
             this._.each(this.store.exportDatas, (leftRow, i) => {
                 var temp = {}
 
-                this.leftTableCols.forEach(v => {
+                this.LeftTableCols.forEach(v => {
                     var level = v.value.split(".").length;
 
                     if(level == 1) {
@@ -70,7 +78,7 @@ export default {
                         this._.each(rightRows, (row, i) => {
                             var firstLevel = _.cloneDeep(temp);
 
-                            var firstLevelCols = this.forceRightAtFirstLevel ? this.rightTableCols : _.filter(this.rightTableCols, (v) => v.value.split(".").length == 1);
+                            var firstLevelCols = this.forceRightAtFirstLevel ? this.RightTableCols : _.filter(this.RightTableCols, (v) => v.value.split(".").length == 1);
 
                             firstLevelCols.forEach(v => {
                                 var level = v.value.split(".").length;
@@ -91,7 +99,7 @@ export default {
                             });
 
                             if( ! this.forceRightAtFirstLevel) {
-                                var secondLevelCols = _.filter(this.rightTableCols, (v) => v.value.split(".").length == 2);
+                                var secondLevelCols = _.filter(this.RightTableCols, (v) => v.value.split(".").length == 2);
                                 if(secondLevelCols.length > 0){
                                     var colName = secondLevelCols[0].value.split(".")[0];
 
