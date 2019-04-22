@@ -254,7 +254,7 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 
 		if param.RowsPerPage > 0 {
 			if param.OrderBy != "" {
-				param.OrderBy = `ORDER BY ` + param.OrderBy + ` `
+				param.OrderBy = `ORDER BY UPPER(` + param.OrderBy + `) `
 			}
 
 			if param.IsDescending {
