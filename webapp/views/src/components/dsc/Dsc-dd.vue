@@ -46,8 +46,49 @@ import DscDdInterfaces from './Dsc-dd-interfaces';
 
 export default {
     components: { PageHeader, DscDdTechnical, DscDdBusiness, DscDdPolicy, DscDdInterfaces },
-    data () {
-      return {}
+    data() {
+      return {
+        storeName: "dscdd",
+      };
+    },
+    computed: {
+      store() {
+        return this.$store.state[this.storeName].all;
+      },
+    },
+    watch: {
+      $route(to) {},
+      "store.left.pagination": {
+        handler() {
+          this.getLeftTable();
+        },
+        deep: true
+      },
+      "store.searchMain"(val, oldVal) {
+        if (val || oldVal) {
+          this.getLeftTable();
+        }
+      }
+    },
+    mounted() {
+      this.store.tabName = this.storeName;
+      this.store.system = this.$route.params.system;
+    },
+    methods: {
+      getLeftTable() {
+        this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      },
+      resetFilter (e) {
+        if(Object.keys(this.store.filters.left).length > 0){
+          this.store.filters.left = {};
+          this.getLeftTable();
+        }
+
+        // if(Object.keys(this.store.filters.right).length > 0){
+        //     this.store.filters.right = {}
+        //     this.getMyRightTable(this.$route.params.system);
+        // }
+      },
     },
 }
 </script>

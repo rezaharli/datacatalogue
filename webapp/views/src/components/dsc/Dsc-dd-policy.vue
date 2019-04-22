@@ -86,68 +86,12 @@ export default {
   data() {
     return {
       storeName: "dscdd",
-      systemSource: [],
-      tablenameSource: []
     };
   },
   computed: {
     store() {
       return this.$store.state[this.storeName].all;
     },
-    addressPath() {
-      var tmp = this.$route.path.split("/");
-      return tmp.slice(0, 3).join("/");
-    },
   },
-  watch: {
-    $route(to) {},
-    "store.left.pagination": {
-      handler() {
-        this.getLeftTable();
-      },
-      deep: true
-    },
-    "store.searchMain"(val, oldVal) {
-      if (val || oldVal) {
-        this.getLeftTable();
-      }
-    }
-  },
-  mounted() {
-    this.store.tabName = this.storeName;
-    this.store.system = this.$route.params.system;
-  },
-  methods: {
-    getLeftTable() {
-      this.$store.dispatch(`${this.storeName}/getLeftTable`);
-    },
-    systemRowClick(evt) {
-      evt.preventDefault();
-    },
-    resetFilter (e) {
-        if(Object.keys(this.store.filters.left).length > 0){
-            this.store.filters.left = {};
-            this.getLeftTable();
-        }
-
-        // if(Object.keys(this.store.filters.right).length > 0){
-        //     this.store.filters.right = {}
-        //     this.getMyRightTable(this.$route.params.system);
-        // }
-    },
-    getCDEConclusion(cdes) {
-      return cdes
-        .filter(Boolean)
-        .join(", ")
-        .indexOf("Yes") != -1
-        ? "Yes"
-        : "No";
-    },
-    showDetails(param) {
-      this.$router.push(
-        this.addressPath + "/" + param.TSID + "/" + param.ID + "/" + param.COLID
-      );
-    }
-  }
 };
 </script>
