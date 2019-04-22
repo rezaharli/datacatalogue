@@ -84,9 +84,9 @@
 
                   <template slot="footer" >
                     <td :colspan="2">
-                      <strong>Total</strong>
+                      <b>Total</b>
                     </td>
-                    <td>{{ store.left.display[0] ? store.left.display[0].TOTAL : 0 }}</td>
+                    <td><b>{{ store.left.display[0] ? store.left.display[0].TOTAL : 0 }}</b></td>
                   </template>
                 </v-data-table>
                       
