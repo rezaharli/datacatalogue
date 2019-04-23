@@ -213,15 +213,15 @@ legend.col-form-label, label.col-form-label {
                         <b-form-select id="prec" class="col-8" v-model="ddPrecSelected" :options="ddPrecOptions"></b-form-select>
                       </b-form-group>
 
-                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Incoming Data Element" label-for="precIncoming">
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Outgoing Data Element" label-for="precIncoming">
                         <b-form-select id="precIncoming" class="col-8" v-model="ddPrecIncomingSelected" :options="ddPrecIncomingOptions"></b-form-select>
                       </b-form-group>
 
-                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)">
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)*">
                         <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_PREC_DERIVED : ''"></text-wrap-dialog>
                       </b-form-group>
 
-                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation Logic">
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation Logic*">
                         <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_PREC_DERIVATION_LOGIC : ''"></text-wrap-dialog>
                       </b-form-group>
 
@@ -229,15 +229,15 @@ legend.col-form-label, label.col-form-label {
                         <b-form-select id="succ" class="col-8" v-model="ddSuccSelected" :options="ddSuccOptions"></b-form-select>
                       </b-form-group>
 
-                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Incoming Data Element" label-for="succIncoming">
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Outgoing Data Element" label-for="succIncoming">
                         <b-form-select id="succIncoming" class="col-8" v-model="ddSuccIncomingSelected" :options="ddSuccIncomingOptions"></b-form-select>
                       </b-form-group>
 
-                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)">
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)*">
                         <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_SUCC_DERIVED : ''"></text-wrap-dialog>
                       </b-form-group>
 
-                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation Logic">
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation Logic*">
                         <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_SUCC_DERIVATION_LOGIC : ''"></text-wrap-dialog>
                       </b-form-group>
 
