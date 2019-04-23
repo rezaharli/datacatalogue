@@ -104,11 +104,11 @@
                         <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
 
                       <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell v-if="!props.expanded" :fulltext="props.item.TABLE_NAME" showOn="hover"></tablecell>
+                        <tablecell v-if="(!props.expanded) || (props.item.Tables.length > 1)" :fulltext="props.item.TABLE_NAME" showOn="hover"></tablecell>
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell v-if="!props.expanded" :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell>
+                        <tablecell v-if="(!props.expanded) || (props.item.Tables.length > 1)" :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell>
                       </td>
                     </tr>
                   </template>
@@ -138,7 +138,7 @@
                         </td>
 
                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                          <tablecell v-if="!props.expanded" :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell>
+                          <tablecell v-if="(!props.expanded) || (props.item.Columns.length > 1)" :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell>
                         </td>
                       </template>
 
