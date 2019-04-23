@@ -76,7 +76,7 @@
 
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                      <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.IMM_INTERFACE" showOn="click"></tablecell></td>
+                      <td style="width: calc(100% / 6)" class="text-capitalize">{{props.item.IMM_INTERFACE}}</td>
                       <td style="width: calc(100% / 6)" class="text-capitalize"><b-link @click.stop="showCDEs(props.item)"><tablecell :fulltext="props.item.CDE_COUNT" showOn="hover"></tablecell></b-link></td>
                     </tr>
                   </template>

@@ -76,7 +76,7 @@
 
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                      <td style="width: calc(100% / 6)" class="text-uppercase"><tablecell :fulltext="props.item.DSP_NAME" showOn="click"></tablecell></td>
+                      <td style="width: calc(100% / 6)" class="text-uppercase">{{props.item.DSP_NAME}}</td>
                       <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.PROCESS_OWNER" showOn="click"></tablecell></td>
                       <td style="width: calc(100% / 6)" class="text-capitalize"><b-link @click.stop="showCDEs(props.item)"><tablecell :fulltext="props.item.CDE_COUNT" showOn="hover"></tablecell></b-link></td>
                     </tr>
