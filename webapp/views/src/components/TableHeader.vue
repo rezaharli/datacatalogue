@@ -1,11 +1,11 @@
 <template>
-  <div ref="widthAcuan">
+  <div ref="widthAcuan" class="table-header-wrapper">
     {{ props.header.text }} {{ count }}
 
-    <b-dropdown no-caret variant="link" class="" ref="columnFilter" v-if="props.header.filterable">
+    <b-dropdown no-caret variant="link" class="dropdown-button-wrapper" ref="columnFilter" v-if="props.header.filterable">
       <template slot="button-content">
         <!-- <i class="fa fa-filter text-muted"></i> -->
-        <v-icon small v-bind:class="{'icon-active' : store.filters[which][props.header.value.split('.').reverse()[0]] }" class="icon-filter mx-1">filter_list</v-icon>
+        <v-icon small v-bind:class="{'icon-active' : store.filters[which][props.header.value.split('.').reverse()[0]] }" class="icon-filter">filter_list</v-icon>
       </template>
 
       <b-dropdown-header>
