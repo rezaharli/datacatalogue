@@ -82,7 +82,13 @@ body, .application--wrap{
     opacity: 1 !important;
     color: black !important;
     position: relative !important;
-  }
+}
+
+.table-header-wrapper {
+    width: unset !important;
+    display: inline-block;
+}
+.table-header-wrapper  .dropdown-button-wrapper .btn{padding: 0 5px 0 10px;}
 
 table.v-table thead th > div.btn-group {
     width: auto;
@@ -170,25 +176,13 @@ table.v-table thead th > div.btn-group {
 .table-v1 .v-icon.icon-filter {border-radius: 50%; padding: 5px;}
 .card.card-v1 .v-icon.icon-filter.icon-active {color: #fff !important; background-color: #56B8BB !important;}
 
-.card.card-v1 table.v-table thead tr th,
-.table-v1 table.v-table thead tr th,
-.table-v2 table.v-table thead tr th  {
-    position: relative;
-}
-
 .card.card-v1 table.v-table thead tr th .v-icon,
 .table-v1 table.v-table thead tr th .v-icon{
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    display: inline-block;
 }
-.card.card-v1 table.v-table thead tr th.column.sortable.active.desc .v-icon,
-.table-v1 table.v-table thead tr th.column.sortable.active.desc .v-icon{transform: translateY(-10px) rotate(180deg);}
 
 .card .v-table__overflow,
-.table-v1 .v-table__overflow,
-.table-v2 .v-table__overflow {overflow-x: visible; overflow-y: visible;}
+.table-v1 .v-table__overflow {overflow-x: visible; overflow-y: visible;}
 .card .v-datatable__actions{justify-content: space-between;}
 .card .v-datatable__actions__select,
 .card .v-datatable__actions__range-controls {
@@ -293,6 +287,7 @@ table.v-table thead th > div.btn-group {
 .v-tabs.page-tab .v-tabs__bar {
     padding: 20px 30px;
 }
+.table-v2 .v-table__overflow {overflow-x: scroll; overflow-y: visible;}
 .table-v2-title{
     background: linear-gradient(240deg, rgba(86, 184, 187, 1) 0%, rgba(86, 184, 187, 1) 0%, rgba(87, 202, 157, 1) 90%, rgba(87, 202, 157, 1) 100%);
     padding: 15px 20px;
@@ -307,16 +302,17 @@ table.v-table thead th > div.btn-group {
 .table-v2 table.v-table thead tr th:first-of-type {padding-left: 20px;}
 .table-v2 table.v-table thead tr th:last-of-type {padding-right: 20px;}
 .table-v2 table.v-table thead tr th .v-icon {
-    position: absolute;
-    left: -10px;
-    top: 47%;
-    transform: translateY(-50%);
+    /* position: absolute; */
+    /* left: -10px; */
+    /* top: 47%; */
+    /* transform: translateY(-50%); */
     font-size: 13px !important;
     vertical-align: unset;
 }
-.table-v2 table.v-table thead tr th:first-of-type .v-icon {left: 5px;}
-.table-v2 table.v-table thead tr th.column.sortable.active.desc .v-icon {transform: translateY(-5px) rotate(180deg);}
-.table-v2 table.v-table thead tr th .b-dropdown .btn {line-height: unset !important; padding: 0 10px;}
+/* .table-v2 table.v-table thead tr th:first-of-type .v-icon {left: 5px;}
+.table-v2 table.v-table thead tr th.column.sortable.active.desc .v-icon {transform: translateY(-5px) rotate(180deg);} */
+.table-v2 table.v-table thead tr th .dropdown {position: unset;}
+.table-v2 table.v-table thead tr th .dropdown .btn {line-height: unset !important; padding: 0 10px; position: unset;}
 /* .table-v2 table.v-table thead tr th .v-icon.icon-filter {display: none;} */
 /* .table-v2 table.v-table thead tr th .v-icon.icon-filter.icon-active {color: #397fa4 !important; } */
 .table-v2 table.v-table tbody tr {border-bottom: none !important;}

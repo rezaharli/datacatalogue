@@ -238,6 +238,11 @@ function getDdTable(param) {
         res => {
             res.DataFlat = _.cloneDeep(res.Data);
 
+            res.Data = _.map(res.Data, function(v){
+                v.CDE_YES_NO = v.CDE_YES_NO == 0 ? "No" : "Yes";
+                return v;
+            });
+
             return res;
         }
     );
