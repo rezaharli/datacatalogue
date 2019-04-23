@@ -58,7 +58,7 @@ function getCdeTable(param) {
                     var tmpTmp2 = _.cloneDeep(tmp2[w]);
 
                     var ret         = tmpTmp2[0];
-                    ret.TMTID       = tmpTmp2[0].ID;
+                    ret.TMTID       = tmpTmp2[0].TMTID;
                     ret.TablesVal   = tmpTmp2;
                     ret.TABLE_NAME  = w;
 
@@ -136,7 +136,7 @@ function getCdpCdeTable(param) {
                     var tmpTmp2 = _.cloneDeep(tmp2[w]);
 
                     var ret         = tmpTmp2[0];
-                    ret.TMTID       = tmpTmp2[0].ID;
+                    ret.TMTID       = tmpTmp2[0].TMTID;
                     ret.TablesVal   = tmpTmp2;
                     ret.TABLE_NAME  = w;
 
@@ -196,7 +196,7 @@ function getInterfacesCdeTable(param) {
                     var tmpTmp2 = _.cloneDeep(tmp2[w]);
 
                     var ret         = tmpTmp2[0];
-                    ret.TMTID       = tmpTmp2[0].ID;
+                    ret.TMTID       = tmpTmp2[0].TMTID;
                     ret.TablesVal   = tmpTmp2;
                     ret.TABLE_NAME  = w;
 
