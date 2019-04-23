@@ -119,7 +119,7 @@ func (s *DPOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	}
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "details", args...)
+	q, err := h.BuildQueryFromFile(filePath, "details", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -219,7 +219,7 @@ func (s *DPOService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 	}
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	q, err := h.BuildQueryFromFile(filePath, "details", args...)
+	q, err := h.BuildQueryFromFile(filePath, "details", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}

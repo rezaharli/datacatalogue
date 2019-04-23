@@ -171,21 +171,24 @@ table.v-table thead th > div.btn-group {
 .card.card-v1 .v-icon.icon-filter.icon-active {color: #fff !important; background-color: #56B8BB !important;}
 
 .card.card-v1 table.v-table thead tr th,
-.table-v1 table.v-table thead tr th {
+.table-v1 table.v-table thead tr th,
+.table-v2 table.v-table thead tr th  {
     position: relative;
 }
 
 .card.card-v1 table.v-table thead tr th .v-icon,
-.table-v1 table.v-table thead tr th .v-icon {
+.table-v1 table.v-table thead tr th .v-icon{
     position: absolute;
     left: 0;
     top: 50%;
     transform: translateY(-50%);
 }
 .card.card-v1 table.v-table thead tr th.column.sortable.active.desc .v-icon,
-.table-v1 table.v-table thead tr th.column.sortable.active.desc .v-icon {transform: translateY(-10px) rotate(180deg);}
+.table-v1 table.v-table thead tr th.column.sortable.active.desc .v-icon{transform: translateY(-10px) rotate(180deg);}
 
-.card .v-table__overflow {overflow-x: visible; overflow-y: visible;}
+.card .v-table__overflow,
+.table-v1 .v-table__overflow,
+.table-v2 .v-table__overflow {overflow-x: visible; overflow-y: visible;}
 .card .v-datatable__actions{justify-content: space-between;}
 .card .v-datatable__actions__select,
 .card .v-datatable__actions__range-controls {
@@ -250,7 +253,7 @@ table.v-table thead th > div.btn-group {
 
 .table-v1,
 .table-v2 {box-shadow: 3px 3px 5px rgba(204, 204, 204, 0.349019607843137);}
-.table-v1 table.v-table thead{background: linear-gradient(240deg, rgba(86, 184, 187, 1) 0%, rgba(86, 184, 187, 1) 0%, rgba(87, 202, 157, 1) 90%, rgba(87, 202, 157, 1) 100%);}
+.table-v1 table.v-table thead {background: linear-gradient(240deg, rgba(86, 184, 187, 1) 0%, rgba(86, 184, 187, 1) 0%, rgba(87, 202, 157, 1) 90%, rgba(87, 202, 157, 1) 100%);}
 .table-v1 table.v-table thead tr:first-child {border-bottom: none;}
 .table-v1 table.v-table thead tr th {color: #ffffff !important; padding: 20px 30px; font-size: 14px;}
 .table-v1 table.v-table thead tr th:first-of-type {border-top-left-radius: 7px; padding-left: 45px;}
@@ -264,12 +267,18 @@ table.v-table thead th > div.btn-group {
 .table-v1 > .v-table__overflow > table.v-table > tbody > tr.odd + .v-datatable__expand-row .v-table {background-color: #ffffff;}
 .table-v1 > .v-table__overflow > table.v-table > tbody > tr.even,
 .table-v1 > .v-table__overflow > table.v-table > tbody > tr.even + .v-datatable__expand-row .v-table {background-color: #EEF3F9;}
-.table-v1 table.v-table tbody tr td {padding: 30px; font-weight: 400; font-size: 14px;}
-.table-v1 table.v-table tbody tr td:first-of-type {padding-left: 45px;}
-.table-v1 table.v-table tbody tr td:last-of-type {padding-right: 45px;}
+.table-v1 table.v-table tbody tr td,
+.table-v1 table.v-table tfoot tr td {padding: 30px; font-weight: 400; font-size: 14px;}
+.table-v1 table.v-table tbody tr td:first-of-type,
+.table-v1 table.v-table tfoot tr td:first-of-type {padding-left: 45px;}
+.table-v1 table.v-table tbody tr td:last-of-type,
+.table-v1 table.v-table tfoot tr td:last-of-type {padding-right: 45px;}
 .table-v1 table.v-table tbody tr td.text-description {font-weight: 300; font-size: 13px;}
 .table-v1 table.v-table tbody tr td.text-title {font-weight: 600;}
 .table-v1 table.v-table tbody tr td .v-datatable__expand-content .v-table__overflow > table.v-table > tbody > tr > td {padding-top: 0; padding-bottom: 0;}
+.table-v1 table.v-table tfoot {background: linear-gradient(240deg, rgba(86, 184, 187, 0.65) 0%, rgba(86, 184, 187, 0.65) 0%, rgba(87, 202, 157, 0.65) 90%, rgba(87, 202, 157, 0.65) 100%);}
+.table-v1 table.v-table tfoot tr {border-top: none;}
+.table-v1 table.v-table tfoot tr td {color: #fff;}
 .table-v1 .v-table {background-color: transparent;}
 .table-v1 > .v-table > .v-datatable__actions {border-radius: 0 0 7px 7px;}
 
@@ -295,8 +304,19 @@ table.v-table thead th > div.btn-group {
 }
 .table-v2 table.v-table thead tr:first-child {border-bottom: none;}
 .table-v2 table.v-table thead tr th {padding: 5px 5px; font-size: 12px; font-weight: 600;}
-.table-v2 table.v-table thead tr th:first-of-type {padding-left: 15px;}
-.table-v2 table.v-table thead tr th:last-of-type {padding-right: 15px;}
+.table-v2 table.v-table thead tr th:first-of-type {padding-left: 20px;}
+.table-v2 table.v-table thead tr th:last-of-type {padding-right: 20px;}
+.table-v2 table.v-table thead tr th .v-icon {
+    position: absolute;
+    left: -10px;
+    top: 47%;
+    transform: translateY(-50%);
+    font-size: 13px !important;
+    vertical-align: unset;
+}
+.table-v2 table.v-table thead tr th:first-of-type .v-icon {left: 5px;}
+.table-v2 table.v-table thead tr th.column.sortable.active.desc .v-icon {transform: translateY(-5px) rotate(180deg);}
+.table-v2 table.v-table thead tr th .b-dropdown .btn {line-height: unset !important; padding: 0 10px;}
 /* .table-v2 table.v-table thead tr th .v-icon.icon-filter {display: none;} */
 /* .table-v2 table.v-table thead tr th .v-icon.icon-filter.icon-active {color: #397fa4 !important; } */
 .table-v2 table.v-table tbody tr {border-bottom: none !important;}
@@ -305,8 +325,8 @@ table.v-table thead th > div.btn-group {
 .table-v2 > .v-table__overflow > table.v-table > tbody > tr.even,
 .table-v2 > .v-table__overflow > table.v-table > tbody > tr.even + .v-datatable__expand-row .v-table {background-color: #EEF3F9;}
 .table-v2 table.v-table tbody tr td {padding: 5px 5px; font-weight: 300; font-size: 12px;}
-.table-v2 table.v-table tbody tr td:first-of-type {padding-left: 15px;}
-.table-v2 table.v-table tbody tr td:last-of-type {padding-right: 15px;}
+.table-v2 table.v-table tbody tr td:first-of-type {padding-left: 20px;}
+.table-v2 table.v-table tbody tr td:last-of-type {padding-right: 20px;}
 /* .table-v2 table.v-table tbody tr td.text-description {font-weight: 300; font-size: 11px;} */
 .table-v2 table.v-table tbody tr td.text-title {font-weight: 600;}
 .table-v2 table.v-table tbody tr td .v-datatable__expand-content .v-table__overflow > table.v-table > tbody > tr > td {padding-top: 0; padding-bottom: 0;}

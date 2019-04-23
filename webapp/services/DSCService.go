@@ -84,7 +84,7 @@ func (s *DSCService) GetHomepageCounts(payload toolkit.M) (interface{}, int, err
 	args = append(args, system, system, system)
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
-	q, err := h.BuildQueryFromFile(filePath, "dsc-view-homepage", args...)
+	q, err := h.BuildQueryFromFile(filePath, "dsc-view-homepage", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -162,6 +162,7 @@ func (s *DSCService) GetCDPTable(system string, colFilter interface{}, paginatio
 		gridArgs.IsDescending = descending.(bool)
 	}
 
+	gridArgs.GroupCol = "-"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
@@ -253,6 +254,46 @@ func (s *DSCService) GetInterfacesCDETable(system, dspName string, colFilter int
 		gridArgs.IsDescending = descending.(bool)
 	}
 
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
+}
+
+func (s *DSCService) GetDDTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
+	gridArgs.QueryName = "dsc-view-dd"
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
+
+	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"TABLE_NAME", "COLUMN_NAME", "BUSINESS_ALIAS_NAME", "BUSINESS_ALIAS_DESCRIPTION", "CDE_YES_NO", "STATUS", "DATA_TYPE", "DATA_FORMAT", "DATA_LENGTH", "EXAMPLE", "DERIVED_YES_NO", "DERIVATION_LOGIC", "SOURCED_FROM_UPSTREAM_YES_NO", "SYSTEM_CHECKS",
+		"DOMAIN", "SUBDOMAIN", "DOMAIN_OWNER", "BUSINESS_TERM", "BUSINESS_TERM_DESCRIPTION",
+		"INFORMATION_ASSET_NAMES", "INFORMATION_ASSET_DESCRIPTION", "CONFIDENTIALITY", "INTEGRITY", "AVAILABILITY", "OVERALL_CIA_RATING", "RECORD_CATEGORIES", "PII_FLAG",
+		// "IMM_PRECEEDING_SYSTEM", "IMM_PREC_INCOMING", "IMM_PREC_DERIVED", "IMM_PREC_DERIVATION_LOGIC", "IMM_SUCCEEDING_SYSTEM", "IMM_SUCC_INCOMING", "IMM_SUCC_DERIVED", "IMM_SUCC_DERIVATION_LOGIC", "THRESHOLD",
+		"IMM_PRECEEDING_SYSTEM", "IMM_SUCCEEDING_SYSTEM", "THRESHOLD",
+	)
+
+	colFilterM, err := toolkit.ToM(colFilter)
+	if err != nil {
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
+	} else {
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
+	}
+
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
+	gridArgs.GroupCol = "-"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
@@ -351,7 +392,7 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details", args...)
+	q, err := h.BuildQueryFromFile(filePath, "details", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -427,7 +468,7 @@ func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details", args...)
+	q, err := h.BuildQueryFromFile(filePath, "details", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -457,32 +498,4 @@ func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 	}
 
 	return resultRows, resultTotal, nil
-}
-
-func (s *DSCService) GetDDTable(system string, colFilter interface{}, pageNumber, rowsPerPage int) ([]toolkit.M, int, error) {
-	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
-	gridArgs.QueryName = "dsc-view-dd"
-	gridArgs.PageNumber = pageNumber
-	gridArgs.RowsPerPage = rowsPerPage
-
-	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
-
-	///////// --------------------------------------------------COLUMN FILTER
-	// colFilterM, err := toolkit.ToM(colFilter)
-	// if err != nil {
-	// 	gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "")
-	// } else {
-	// 	gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-	// 		colFilterM.GetString("CDE"),
-	// 		colFilterM.GetString("DESCRIPTION"),
-	// 		colFilterM.GetString("TABLE_NAME"),
-	// 		colFilterM.GetString("COLUMN_NAME"),
-	// 		colFilterM.GetString("DSP_NAME"),
-	// 		colFilterM.GetString("PROCESS_OWNER"),
-	// 	)
-	// }
-
-	gridArgs.GroupCol = "-"
-	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
