@@ -95,7 +95,7 @@
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }" class="text-description">
-                        <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+                        <tablecell :fulltext="props.item.DESCRIPTION" showOn="hover"></tablecell></td>
 
                       <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-uppercase">
                         <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.TABLE_NAME"></tablecell>
