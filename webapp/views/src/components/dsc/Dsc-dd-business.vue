@@ -32,6 +32,27 @@
 
           <template slot="items" slot-scope="props">
             <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
+              <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }">
+                <tablecell :fulltext="props.item.SYSTEM_NAME" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['ITAM_ID'] + 'px' }">
+                <tablecell :fulltext="props.item.ITAM_ID" showOn="click"></tablecell></td>
+
+              <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
+                <tablecell :fulltext="props.item.TABLE_NAME" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
+                <tablecell :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_NAME'] + 'px' }">
+                <tablecell :fulltext="props.item.BUSINESS_ALIAS_NAME" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_DESCRIPTION'] + 'px' }">
+                <tablecell :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['CDE_YES_NO'] + 'px' }">
+                <tablecell :fulltext="props.item.CDE_YES_NO" showOn="click"></tablecell></td>
+                
               <td v-bind:style="{ width: store.left.colWidth['DOMAIN'] + 'px' }">
                 <tablecell :fulltext="props.item.DOMAIN" showOn="click"></tablecell></td>
               

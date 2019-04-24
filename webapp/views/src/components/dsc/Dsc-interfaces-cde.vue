@@ -95,14 +95,14 @@
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }" class="text-description">
-                        <tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+                        <tablecell :fulltext="props.item.DESCRIPTION" showOn="hover"></tablecell></td>
 
                       <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell v-if="(!props.expanded) || (props.item.Tables.length > 1)" :fulltext="props.item.TABLE_NAME" showOn="hover"></tablecell>
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.TABLE_NAME"></tablecell>
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell v-if="(!props.expanded) || (props.item.Tables.length > 1)" :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell>
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
                       </td>
                     </tr>
                   </template>
@@ -132,7 +132,7 @@
                         </td>
 
                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                          <tablecell v-if="(!props.expanded) || (props.item.Columns.length > 1)" :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell>
+                          <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
                         </td>
                       </template>
 
@@ -225,6 +225,26 @@ export default {
   methods: {
     getLeftTable() {
       this.$store.dispatch(`${this.storeName}/getLeftTable`);
+    },
+    isMainLevelCellShowing (props){
+      if( ! props.expanded) return true;
+      else {
+        if(props.item.Tables.length > 0) {
+          if(props.item.Tables[0].Columns.length == 0) return true;
+        }
+        
+        return false;
+      }
+    },
+    isTableLevelCellShowing (props){
+      if( ! props.expanded) return true;
+      else {
+        if(props.item.Columns.length > 0) {
+          return true;
+        }
+        
+        return false;
+      }
     },
     systemRowClick(evt) {
       evt.preventDefault();

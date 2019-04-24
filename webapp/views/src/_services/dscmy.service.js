@@ -58,7 +58,7 @@ function getCdeTable(param) {
                     var tmpTmp2 = _.cloneDeep(tmp2[w]);
 
                     var ret         = tmpTmp2[0];
-                    ret.TMTID       = tmpTmp2[0].ID;
+                    ret.TMTID       = tmpTmp2[0].TMTID;
                     ret.TablesVal   = tmpTmp2;
                     ret.TABLE_NAME  = w;
 
@@ -136,7 +136,7 @@ function getCdpCdeTable(param) {
                     var tmpTmp2 = _.cloneDeep(tmp2[w]);
 
                     var ret         = tmpTmp2[0];
-                    ret.TMTID       = tmpTmp2[0].ID;
+                    ret.TMTID       = tmpTmp2[0].TMTID;
                     ret.TablesVal   = tmpTmp2;
                     ret.TABLE_NAME  = w;
 
@@ -196,7 +196,7 @@ function getInterfacesCdeTable(param) {
                     var tmpTmp2 = _.cloneDeep(tmp2[w]);
 
                     var ret         = tmpTmp2[0];
-                    ret.TMTID       = tmpTmp2[0].ID;
+                    ret.TMTID       = tmpTmp2[0].TMTID;
                     ret.TablesVal   = tmpTmp2;
                     ret.TABLE_NAME  = w;
 
@@ -237,6 +237,11 @@ function getDdTable(param) {
     return fetchWHeader(`/dsc/getddtable`, param).then(
         res => {
             res.DataFlat = _.cloneDeep(res.Data);
+
+            res.Data = _.map(res.Data, function(v){
+                v.CDE_YES_NO = v.CDE_YES_NO == 0 ? "No" : "Yes";
+                return v;
+            });
 
             return res;
         }
