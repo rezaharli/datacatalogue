@@ -22,8 +22,6 @@ export default {
         store () { return this.$store.state[this.storeName].all },
         excelFields (){
             var ret = {}
-
-            console.log(this.LeftTableCols);
             
             _.each(this.LeftTableCols, function(v){
                 ret[v.text] = v.value.split(".").reverse()[0];
