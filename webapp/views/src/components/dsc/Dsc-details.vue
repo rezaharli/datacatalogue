@@ -213,7 +213,7 @@ legend.col-form-label, label.col-form-label {
                         <b-form-select id="prec" class="col-8" v-model="ddPrecSelected" :options="ddPrecOptions"></b-form-select>
                       </b-form-group>
 
-                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Outgoing Data Element" label-for="precIncoming">
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Incoming Data Element" label-for="precIncoming">
                         <b-form-select id="precIncoming" class="col-8" v-model="ddPrecIncomingSelected" :options="ddPrecIncomingOptions"></b-form-select>
                       </b-form-group>
 
