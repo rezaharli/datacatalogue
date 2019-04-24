@@ -72,8 +72,7 @@ const state = {
             //     { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Derivation Logic', value: 'IMM_SUCC_DERIVATION_LOGIC' },
             //     { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'DQ Standards | Threshold', value: 'THRESHOLD' },
             // ],
-        }
-        ,
+        },
         isRightTable: false,
         DDSource: [],
         detailsLoading: true,

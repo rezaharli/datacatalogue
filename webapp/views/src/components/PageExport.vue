@@ -38,10 +38,30 @@ export default {
             return ret
         },
         LeftTableCols () {
-            return this.leftTableCols.filter(v => v.filterable)
+            var tofilter = [];
+            
+            if (typeof(this.leftTableCols) == "object") {
+                Object.keys(this.leftTableCols).forEach(key => {
+                    tofilter = tofilter.concat(this.leftTableCols[key]);
+                });
+            } else {
+                tofilter = this.leftTableCols;
+            }
+            
+            return tofilter.filter(v => v.filterable)
         },
         RightTableCols () {
-            return this.rightTableCols.filter(v => v.filterable)
+            var tofilter = [];
+            
+            if (typeof(this.RightTableCols) == "object") {
+                Object.keys(this.leftTableCols).forEach(key => {
+                    tofilter = tofilter.concat(this.RightTableCols[key]);
+                });
+            } else {
+                tofilter = this.RightTableCols;
+            }
+            
+            return tofilter.filter(v => v.filterable)
         }
     },
     methods: {

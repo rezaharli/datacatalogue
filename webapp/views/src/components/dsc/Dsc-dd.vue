@@ -13,7 +13,7 @@
                         <i class="fa fa-filter"></i>
                     </b-button>
 
-                    <!-- <page-export class="float-right" storeName="dscall" :leftTableCols="myStore.leftHeaders" :rightTableCols="myStore.rightHeaders"/> -->
+                    <page-export class="float-right" :storeName="storeName" :leftTableCols="store.leftHeaders" :rightTableCols="[]"/>
                 </b-col>
             </b-row>
 
@@ -49,13 +49,14 @@
 
 <script>
 import PageHeader from '../PageHeader';
+import pageExport from "../PageExport.vue";
 import DscDdTechnical from './Dsc-dd-technical';
 import DscDdBusiness from './Dsc-dd-business';
 import DscDdPolicy from './Dsc-dd-policy';
 import DscDdInterfaces from './Dsc-dd-interfaces';
 
 export default {
-    components: { PageHeader, DscDdTechnical, DscDdBusiness, DscDdPolicy, DscDdInterfaces },
+    components: { PageHeader, pageExport, DscDdTechnical, DscDdBusiness, DscDdPolicy, DscDdInterfaces },
     data() {
       return {
         storeName: "dscdd",
