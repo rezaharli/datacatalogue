@@ -1,12 +1,12 @@
 package models
 
+import "time"
+
 type BusinessTerm struct {
 	ID                         int
 	BT_Name                    string
 	Parent_ID                  int
 	Description                string
-	CDE                        int
-	CDE_Rationale              string
 	Mandatory                  int
 	Policy_ID                  int
 	Policy_Guidance            string
@@ -19,6 +19,9 @@ type BusinessTerm struct {
 	Target_Golden_Source_ID    int
 	DDO_DQ_Standards           string
 	DDO_Threshold              int
+	Created_DateTime           time.Time
+	Modified_DateTime          time.Time
+	Status                     int
 }
 
 func NewBusinessTermModel() *BusinessTerm {
