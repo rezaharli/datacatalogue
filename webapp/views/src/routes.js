@@ -28,7 +28,7 @@ import DdoMy from './components/ddo/Ddo-my';
 import DdoAll from './components/ddo/Ddo-all';
 
 import Rfo from './components/rfo/Rfo';
-// import RfoPriority from './components/rfo/Rfo-priority';
+import RfoPriority from './components/rfo/Rfo-priority';
 import RfoMy from './components/rfo/Rfo-my';
 import RfoAll from './components/rfo/Rfo-all';
 
@@ -358,15 +358,13 @@ const router = new VueRouter({
       title: "RFO - Data Catalogue",
       permission: "RFO"
     },
-  }, 
-  // { // rfo.priority
-  //   path: '/rfo/:type', name: 'rfo.priority', component: RfoPriority, 
-  //   meta: { 
-  //     title: "RFO - Data Catalogue",
-  //     permission: "RFO"
-  //   },
-  // },
-   { // access
+  }, { // rfo.priority
+    path: '/rfo/:type', name: 'rfo.priority', component: RfoPriority, 
+    meta: { 
+      title: "RFO - Data Catalogue",
+      permission: "RFO"
+    },
+  }, { // access
     path: '/access', component: Access, 
     meta: { 
       title: "Access - Data Catalogue" ,
