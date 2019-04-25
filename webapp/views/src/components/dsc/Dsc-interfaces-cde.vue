@@ -32,7 +32,7 @@
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
                         <h6 class="title-1">Critical Data Elements</h6>
-                        <h3 class="title-2 text-capitalize">{{ store.left.totalItems }}</h3>
+                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["COUNT_CDE"] : "0" }}</h3>
                     </div>
                 </b-col>
             </b-row>

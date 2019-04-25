@@ -105,13 +105,13 @@ SELECT DISTINCT
 -- name: dsc-view-cdp
 SELECT  DISTINCT
 		TDP.ID,
-		TS.SYSTEM_NAME						  							AS SYSTEM_NAME,
-		TDP.NAME                              							AS DSP_NAME,
-		TP.FIRST_NAME||' '|| TP.LAST_NAME     							AS PROCESS_OWNER,
-		TP.BANK_ID                            							AS BANK_ID,
+		TS.SYSTEM_NAME						  																	AS SYSTEM_NAME,
+		TDP.NAME                              												AS DSP_NAME,
+		TP.FIRST_NAME||' '|| TP.LAST_NAME     												AS PROCESS_OWNER,
+		TP.BANK_ID                            												AS BANK_ID,
 		COUNT(DISTINCT TMCD.ALIAS_NAME) OVER (PARTITION BY TDP.NAME)	AS CDE_COUNT,
-		COUNT(TMCD.ALIAS_NAME) OVER () 									AS TOTAL,
-		COUNT(DISTINCT TDP.NAME) OVER ()	  							AS DSP_COUNT
+		COUNT(TMCD.ALIAS_NAME) OVER () 																AS TOTAL,
+		COUNT(DISTINCT TDP.NAME) OVER ()	  													AS COUNT_DSP_NAME
 	FROM 
 		TBL_SYSTEM TS
 		INNER JOIN TBL_MD_RESOURCE TMR ON TS.ID = TMR.SYSTEM_ID
