@@ -659,7 +659,7 @@ export default {
       var self = this;
 
       param.Which = self.$route.name;
-      param.Left = parseInt(self.$route.params.system).toString();
+      param.Left = parseInt(self.$route.params.systemID).toString();
       param.Right = parseInt(self.$route.params.details).toString();
       param.Column = parseInt(self.$route.params.column).toString();
 

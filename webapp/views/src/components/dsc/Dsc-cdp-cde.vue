@@ -252,36 +252,15 @@ export default {
         return false;
       }
     },
-    systemRowClick(evt) {
-      evt.preventDefault();
-    },
     resetFilter (e) {
         if(Object.keys(this.store.filters.left).length > 0){
             this.store.filters.left = {};
             this.getLeftTable();
         }
-
-        // if(Object.keys(this.store.filters.right).length > 0){
-        //     this.store.filters.right = {}
-        //     this.getMyRightTable(this.$route.params.system);
-        // }
-    },
-    getCDEConclusion(cdes) {
-      return cdes
-        .filter(Boolean)
-        .join(", ")
-        .indexOf("Yes") != -1
-        ? "Yes"
-        : "No";
-    },
-    showCDEs(param) {
-      this.$router.push(
-        this.addressPath + "/" + param.SYSTEM_NAME + "/" + param.DSP_NAME
-      );
     },
     showDetails(param) {
       this.$router.push(
-        this.addressPath + "/" + param.TSID + "/" + param.TMTID + "/" + param.COLID
+        this.addressPath + "/" + this.store.system + "/" + this.store.dspName + "/" + param.TSID + "/" + param.TMTID + "/" + param.COLID
       );
     }
   }

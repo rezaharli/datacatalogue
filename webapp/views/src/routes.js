@@ -39,17 +39,6 @@ import AccessUsage from './components/access/Access-usage';
 
 Vue.use(VueRouter);
 
-var getDetailsRoute = (page, tab) => {
-  return {
-    path: ':details', name: page + '.' + tab + '.details', component: global.DscDetails,
-    meta: { 
-      title: _.upperCase(page) + " Details - Data Catalogue",
-      showModal: true,
-      permission: _.upperCase(page)
-    } 
-  }
-}
-
 const router = new VueRouter({
   mode: 'history',
   routes: [{ // home
@@ -76,7 +65,7 @@ const router = new VueRouter({
       permission: "DSC"
     },
     children: [{ // dsc.details
-      path: ':details/:column', name: 'dsc.details', component: DscDetails,
+      path: ':systemID/:details/:column', name: 'dsc.details', component: DscDetails,
       meta: { 
         title: "DSC Details - Data Catalogue",
         showModal: true,
@@ -88,15 +77,7 @@ const router = new VueRouter({
     meta: { 
       title: "DSC - Data Catalogue",
       permission: "DSC"
-    },
-    children: [{ // dsc.details
-      path: ':details/:column', name: 'dsc.details', component: DscDetails,
-      meta: { 
-        title: "DSC Details - Data Catalogue",
-        showModal: true,
-        permission: "DSC"
-      }
-    }] 
+    }
   }, { // dsc.cdp.cde
     path: '/dsc/cdp/:system/:dspName', name: 'dsc.cdp.cde', component: DscCdpCde, 
     meta: { 
@@ -104,7 +85,7 @@ const router = new VueRouter({
       permission: "DSC"
     },
     children: [{ // dsc.details
-      path: ':details/:column', name: 'dsc.details', component: DscDetails,
+      path: ':systemID/:details/:column', name: 'dsc.details', component: DscDetails,
       meta: { 
         title: "DSC Details - Data Catalogue",
         showModal: true,
@@ -116,15 +97,7 @@ const router = new VueRouter({
     meta: { 
       title: "DSC - Data Catalogue",
       permission: "DSC"
-    },
-    children: [{ // dsc.details
-      path: ':details/:column', name: 'dsc.details', component: DscDetails,
-      meta: { 
-        title: "DSC Details - Data Catalogue",
-        showModal: true,
-        permission: "DSC"
-      }
-    }] 
+    }
   },{ // dsc.interfaces.cde
     path: '/dsc/interfaces/:system/:dspName', name: 'dsc.interfaces.cde', component: DscInterfacesCde, 
     meta: { 
@@ -132,7 +105,7 @@ const router = new VueRouter({
       permission: "DSC"
     },
     children: [{ // dsc.details
-      path: ':details/:column', name: 'dsc.details', component: DscDetails,
+      path: ':systemID/:details/:column', name: 'dsc.details', component: DscDetails,
       meta: { 
         title: "DSC Details - Data Catalogue",
         showModal: true,
@@ -145,104 +118,7 @@ const router = new VueRouter({
       title: "DSC - Data Catalogue",
       permission: "DSC"
     },
-  },
-      // children: [{ 
-      //   path: '', name: 'dsc', redirect: { name: 'dsc.my' }
-      // }, { //dsc.my
-      //   path: 'my', 
-      //   name: 'dsc.my', 
-      //   component: DscMy, 
-      //   meta: { 
-      //     title: "DSC - Data Catalogue",
-      //     showModal: false,
-      //     permission: "DSC"
-      //   } 
-      // }, { // dsc.my.system
-      //   path: 'my/:system', name: 'dsc.my', component: DscMy, 
-      //   meta: { 
-      //     title: "DSC - Data Catalogue",
-      //     showModal: false,
-      //     permission: "DSC"
-      //   }, 
-      //   children: [{ // dsc.my.system.details
-      //     path: ':details', name: 'dsc.my.details', component: DscDetails,
-      //     meta: { 
-      //       title: "DSC Details - Data Catalogue",
-      //       showModal: true,
-      //       permission: "DSC"
-      //     }, 
-      //     children: [{ // dsc.my.system.details.col
-      //       path: ':column', name: 'dsc.my.details', component: DscDetails,
-      //       meta: { 
-      //         title: "DSC Details - Data Catalogue",
-      //         showModal: true,
-      //         permission: "DSC"
-      //       }
-      //     }] 
-      //   }] 
-      // }, { // dsc.all
-      //   path: 'all', name: 'dsc.all', component: DscAll, 
-      //   meta: { 
-      //     title: "DSC - Data Catalogue" ,
-      //     showModal: false,
-      //     permission: "DSC"
-      //   } 
-      // }, { // dsc.all.system
-      //   path: 'all/:system', name: 'dsc.all', component: DscAll, 
-      //   meta: { 
-      //     title: "DSC - Data Catalogue" ,
-      //     showModal: false,
-      //     permission: "DSC"
-      //   }, 
-      //   children: [{ // dsc.all.system.details
-      //     path: ':details', name: 'dsc.all.details', component: DscDetails,
-      //     meta: { 
-      //       title: "DSC Details - Data Catalogue",
-      //       showModal: true,
-      //       permission: "DSC"
-      //     }, 
-      //     children: [{ // dsc.all.system.details.col
-      //       path: ':column', name: 'dsc.all.details', component: DscDetails,
-      //       meta: { 
-      //         title: "DSC Details - Data Catalogue",
-      //         showModal: true,
-      //         permission: "DSC"
-      //       }
-      //     }]
-      //   }]
-      // }, { // dsc.interfaces
-      //   path: 'interfaces', name: 'dsc.interfaces', component: DscInterfaces, 
-      //   meta: { 
-      //     title: "DSC - Data Catalogue" ,
-      //     showModal: false,
-      //     permission: "DSC"
-      //   } 
-      // }, { // dsc.interfaces.system
-      //   path: 'interfaces/:system', name: 'dsc.interfaces', component: DscInterfaces, 
-      //   meta: { 
-      //     title: "DSC - Data Catalogue" ,
-      //     showModal: false,
-      //     permission: "DSC"
-      //   }, 
-      //   children: [{ // dsc.interfaces.system.details
-      //     path: ':details', name: 'dsc.interfaces.details', component: DscDetails,
-      //     meta: { 
-      //       title: "DSC Details - Data Catalogue",
-      //       showModal: true,
-      //       permission: "DSC"
-      //     }, 
-      //     children: [{ // dsc.interfaces.system.details.col
-      //       path: ':column', name: 'dsc.interfaces.details', component: DscDetails,
-      //       meta: { 
-      //         title: "DSC Details - Data Catalogue",
-      //         showModal: true,
-      //         permission: "DSC"
-      //       }
-      //     }] 
-      //   }]
-      // }]
-    // }, 
-  { // dpo
+  }, { // dpo
     path: '/dpo', component: Dpo, 
     meta: { 
       title: "DPO - Data Catalogue",
