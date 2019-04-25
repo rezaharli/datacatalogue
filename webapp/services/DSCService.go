@@ -34,22 +34,22 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, col
 	}
 
 	///////// --------------------------------------------------DROPDOWN FILTER
-	searchDDM, err := toolkit.ToM(searchDD)
-	if err != nil {
-		return nil, 0, err
-	}
+	// searchDDM, err := toolkit.ToM(searchDD)
+	// if err != nil {
+	// 	return nil, 0, err
+	// }
 
-	filterSystemName := ""
-	if search != "" {
-		filterSystemName = search
-	} else {
-		filterSystemName = searchDDM.GetString("SystemName")
-	}
+	// filterSystemName := ""
+	// if search != "" {
+	// 	filterSystemName = search
+	// } else {
+	// 	filterSystemName = searchDDM.GetString("SystemName")
+	// }
 
-	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter,
-		filterSystemName,
-		searchDDM.GetString("ItamID"),
-	)
+	// gridArgs.DropdownFilter = append(gridArgs.DropdownFilter,
+	// 	filterSystemName,
+	// 	searchDDM.GetString("ItamID"),
+	// )
 
 	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)

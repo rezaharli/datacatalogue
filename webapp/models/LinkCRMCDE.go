@@ -1,9 +1,13 @@
 package models
 
+import "time"
+
 type LinkCRMCDE struct {
-	ID     int
-	CRM_ID int
-	CDE_ID int
+	ID                int
+	CRM_ID            int
+	CDE_ID            int
+	Created_DateTime  time.Time
+	Modified_DateTime time.Time
 }
 
 func NewLinkCRMCDEModel() *LinkCRMCDE {

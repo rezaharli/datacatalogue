@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type Policy struct {
 	ID                 int
 	Info_Asset_Name    string
@@ -8,6 +10,9 @@ type Policy struct {
 	Integrity          int
 	Availability       int
 	Overall_CIA_Rating int
+	Created_DateTime   time.Time
+	Modified_DateTime  time.Time
+	Status             int
 }
 
 func NewPolicyModel() *Policy {

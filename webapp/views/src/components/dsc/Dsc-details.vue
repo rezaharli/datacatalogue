@@ -356,6 +356,9 @@ export default {
         "Domain Owner": "selectedDetails.DOMAIN_OWNER",
         "Business Term*": "selectedDetails.BUSINESS_TERM",
         "Business Term Description": "selectedDetails.BUSINESS_TERM_DESCRIPTION",
+        "Immediate Preceeding System*": "selectedDetails.IMM_PRECEEDING_SYSTEM",
+        "Immediate Succeeding System*": "selectedDetails.IMM_SUCCEEDING_SYSTEM",
+        "DQ Standards | Threshold*": "selectedDetails.THRESHOLD",
         "Information Asset Names": "selectedDetails.INFORMATION_ASSET_NAMES",
         "Information Asset Description": "selectedDetails.INFORMATION_ASSET_DESCRIPTION",
         "C - Confidentiality": "selectedDetails.CONFIDENTIALITY",
@@ -364,9 +367,6 @@ export default {
         "Overall CIA Rating": "selectedDetails.OVERALL_CIA_RATING",
         "Record Categories": "selectedDetails.RECORD_CATEGORIES",
         "PII Flag": "selectedDetails.PII_FLAG",
-        "Immediate Preceeding System*": "selectedDetails.IMM_PRECEEDING_SYSTEM",
-        "Immediate Succeeding System*": "selectedDetails.IMM_SUCCEEDING_SYSTEM",
-        "DQ Standards | Threshold*": "selectedDetails.THRESHOLD"
       }
     }
   },

@@ -182,7 +182,8 @@ table.v-table thead th > div.btn-group {
 }
 
 .card .v-table__overflow,
-.table-v1 .v-table__overflow {overflow-x: visible; overflow-y: visible;}
+.table-v1 .v-table__overflow,
+.table-v2 .v-table__overflow {overflow-x: auto; overflow-y: visible;}
 .card .v-datatable__actions{justify-content: space-between;}
 .card .v-datatable__actions__select,
 .card .v-datatable__actions__range-controls {
@@ -287,7 +288,6 @@ table.v-table thead th > div.btn-group {
 .v-tabs.page-tab .v-tabs__bar {
     padding: 20px 30px;
 }
-.table-v2 .v-table__overflow {overflow-x: scroll; overflow-y: visible;}
 .table-v2-title{
     background: linear-gradient(240deg, rgba(86, 184, 187, 1) 0%, rgba(86, 184, 187, 1) 0%, rgba(87, 202, 157, 1) 90%, rgba(87, 202, 157, 1) 100%);
     padding: 15px 20px;
