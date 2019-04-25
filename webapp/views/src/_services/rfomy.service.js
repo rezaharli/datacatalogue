@@ -3,6 +3,7 @@ import { fetchWHeader } from '../_helpers/auth-header';
 export const rfoMyService = {
     getLeftTable,
     getRightTable,
+    getPriorityTable,
 };
 
 function getLeftTable(param) {
@@ -78,4 +79,16 @@ function getRightTable(param) {
             return res;
         }
     )
+}
+
+function getPriorityTable(param) {
+    return fetchWHeader(`/dsc/getcdetable`, param).then(
+        res => {
+            res.DataFlat = _.cloneDeep(res.Data);
+            
+            var tmp = _.groupBy(res.Data, "CDE")
+            
+            return res;
+        }
+    );
 }
