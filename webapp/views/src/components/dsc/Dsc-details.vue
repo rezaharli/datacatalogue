@@ -692,7 +692,7 @@ export default {
             Object.keys(self.selectedDetails).forEach((val) => {
               self.selectedDetails[val] = !!self.selectedDetails[val].trim() ? self.selectedDetails[val] : "NA";
             });
-
+            
             self.dscmy.DDSource.map(function(v){
               Object.keys(v).forEach(function(key){
                 v[key] = v[key] ? v[key] : "NA"
@@ -702,14 +702,14 @@ export default {
             })
             
             setTimeout(() => {
-              self.ddTableSelected = self.selectedDetails.TABLE_NAME;
-              self.ddColumnSelected = self.selectedDetails.COLUMN_NAME;
-              self.ddScreenLabelSelected = self.selectedDetails.BUSINESS_ALIAS_NAME;
-              self.ddBusinessTermSelected = self.selectedDetails.BUSINESS_TERM;
-              self.ddPrecSelected = self.selectedDetails.IMM_PRECEEDING_SYSTEM;
-              self.ddPrecIncomingSelected = self.selectedDetails.IMM_PREC_INCOMING;
-              self.ddSuccSelected = self.selectedDetails.IMM_SUCCEEDING_SYSTEM;
-              self.ddSuccIncomingSelected = self.selectedDetails.IMM_SUCC_INCOMING;
+              self.ddTableSelected = self.selectedDetails.TABLE_NAME.split(", ")[0];
+              self.ddColumnSelected = self.selectedDetails.COLUMN_NAME.split(", ")[0];
+              self.ddScreenLabelSelected = self.selectedDetails.BUSINESS_ALIAS_NAME.split(", ")[0];
+              self.ddBusinessTermSelected = self.selectedDetails.BUSINESS_TERM.split(", ")[0];
+              self.ddPrecSelected = self.selectedDetails.IMM_PRECEEDING_SYSTEM.split(", ")[0];
+              self.ddPrecIncomingSelected = self.selectedDetails.IMM_PREC_INCOMING.split(", ")[0];
+              self.ddSuccSelected = self.selectedDetails.IMM_SUCCEEDING_SYSTEM.split(", ")[0];
+              self.ddSuccIncomingSelected = self.selectedDetails.IMM_SUCC_INCOMING.split(", ")[0];
 
               setTimeout(() => {
                 this.firstload = false;
