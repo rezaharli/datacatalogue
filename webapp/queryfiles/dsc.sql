@@ -313,37 +313,37 @@ SELECT DISTINCT
 -- name: dsc-view-dd
 SELECT DISTINCT
 		ts.id,
-		tmt.id									as tmtid,
-		tmc.id									as tmcid,
-		ts.system_name							as system_name,
-		ts.itam_id								as itam_id,
-		tp.first_name||' '||tp.last_name		as dataset_custodian,
-		tp.bank_id								as bank_id,
-		tmcd.alias_name							as business_alias_name,
-		tmt.name 								as table_name,
-		tmc.name 								as column_name,
-		tmcd.description 						as business_alias_description,
-		tmcd.cde									as cde_yes_no,
-		tmc.data_type							as data_type,
-		tmc.data_length							as data_length,
-		tmcd.example								as example,
-		tmcd.derived								as derived_yes_no,
-		tmcd.Derivation_Logic					as derivation_logic,
-		tmcd.Sourced_from_Upstream				as sourced_from_upstream_yes_no,
-		tmcd.System_Checks						as system_checks,
-		tc.Name 								as domain,
-		tsc.name 								as subdomain,
-		ppl.first_name||' '||ppl.last_name 		as domain_owner,
-		tbt.bt_name								as business_term,
-		tbt.description 						as business_term_description,
-		tpol.info_asset_name					as information_asset_names,
-		tpol.description 						as information_asset_description,
-		tpol.confidentiality					as confidentiality,
-		tpol.integrity							as integrity,
-		tpol.availability						as availability,
-		tpol.overall_cia_rating					as overall_cia_rating,
-		tmt.record_category						as record_categories,
-		tmcd.pii_flag							as pii_flag,
+		tmt.id																	as tmtid,
+		tmc.id																	as tmcid,
+		ts.system_name													as system_name,
+		ts.itam_id															as itam_id,
+		tp.first_name||' '||tp.last_name				as dataset_custodian,
+		tp.bank_id															as bank_id,
+		tmcd.alias_name													as business_alias_name,
+		tmt.name																as table_name,
+		tmc.name																as column_name,
+		tmcd.description												as business_alias_description,
+		tmcd.cde																as cde_yes_no,
+		tmc.data_type														as data_type,
+		tmc.data_length													as data_length,
+		tmcd.example														as example,
+		tmcd.derived														as derived_yes_no,
+		tmcd.Derivation_Logic										as derivation_logic,
+		tmcd.Sourced_from_Upstream							as sourced_from_upstream_yes_no,
+		tmcd.System_Checks											as system_checks,
+		tc.Name																	as domain,
+		tsc.name																as subdomain,
+		ppl.first_name||' '||ppl.last_name			as domain_owner,
+		tbt.bt_name															as business_term,
+		tbt.description 												as business_term_description,
+		tpol.info_asset_name										as information_asset_names,
+		tpol.description 												as information_asset_description,
+		tpol.confidentiality										as confidentiality,
+		tpol.integrity													as integrity,
+		tpol.availability												as availability,
+		tpol.overall_cia_rating									as overall_cia_rating,
+		tmt.record_category											as record_categories,
+		tmcd.pii_flag														as pii_flag,
 		tmcd.DQ_STANDARDS||' '||tmcd.threshold	as threshold
 	FROM tbl_system ts
 		LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
@@ -381,4 +381,32 @@ SELECT DISTINCT
 				UPPER(ts.system_name) = UPPER('?')
 				AND CDE = 1
 		) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id and tmt.id = cde.tab_id
+	WHERE
+		upper(NVL(ts.system_name, ' ')) LIKE upper('%?%')
+		AND upper(NVL(ts.itam_id, ' ')) LIKE upper('%?%')
+		AND upper(NVL(tmt.name, ' ')) LIKE upper('%?%')
+		AND  upper(NVL(tmc.name, ' ')) LIKE upper('%?%')
+		AND  upper(NVL(tmcd.alias_name, ' ')) LIKE upper('%?%')
+		AND  upper(NVL(tmcd.description, ' ')) LIKE upper('%?%')
+		AND  upper(tmcd.cde) LIKE upper('%?%')
+		AND  upper(NVL(tmc.data_type, ' ')) LIKE upper('%?%')
+		AND  upper(tmc.data_length) LIKE upper('%?%')
+		AND  upper(NVL(tmcd.example, ' ')) LIKE upper('%?%')
+		AND  upper(tmcd.derived) LIKE upper('%?%')
+		AND  upper(NVL(tmcd.Derivation_Logic, ' ')) LIKE upper('%?%')
+		AND  upper(tmcd.Sourced_from_Upstream) LIKE upper('%?%')
+		AND  upper(NVL(tmcd.System_Checks, ' ')) LIKE upper('%?%')
+		AND  upper(NVL(tc.Name, ' ')) LIKE upper('%?%')
+		AND  upper(NVL(tsc.name, ' ')) LIKE upper('%?%')
+		AND  upper(NVL(ppl.first_name||' '||ppl.last_name, ' ')) LIKE upper('%?%')
+		AND  upper(NVL(tbt.bt_name, ' ')) LIKE upper('%?%')
+		AND  upper(NVL(tbt.description, ' ')) LIKE upper('%?%')
+		AND  upper(NVL(tpol.info_asset_name, ' ')) LIKE upper('%?%')
+		AND  upper(NVL(tpol.description, ' ')) LIKE upper('%?%')
+		AND  NVL(to_char(tpol.confidentiality), ' ') LIKE upper('%?%')
+		AND  NVL(to_char(tpol.integrity), ' ') LIKE upper('%?%')
+		AND  NVL(to_char(tpol.availability), ' ') LIKE upper('%?%')
+		AND  NVL(to_char(tpol.overall_cia_rating), ' ') LIKE upper('%?%')
+		AND  upper(NVL(tmt.record_category, ' ')) LIKE upper('%?%')
+		AND  upper(tmcd.pii_flag) LIKE upper('%?%')
 	ORDER BY tmt.name, tmc.name
