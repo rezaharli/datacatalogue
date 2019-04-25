@@ -28,6 +28,7 @@ import DdoMy from './components/ddo/Ddo-my';
 import DdoAll from './components/ddo/Ddo-all';
 
 import Rfo from './components/rfo/Rfo';
+import RfoPriority from './components/rfo/Rfo-priority';
 import RfoMy from './components/rfo/Rfo-my';
 import RfoAll from './components/rfo/Rfo-all';
 
@@ -352,44 +353,17 @@ const router = new VueRouter({
       }]
     }]
   }, { // rfo
-    path: '/rfo', component: Rfo, 
+    path: '/rfo', name: 'rfo', component: Rfo, 
     meta: { 
       title: "RFO - Data Catalogue",
       permission: "RFO"
-    }, 
-    children: [{ 
-      path: '', name: 'rfo', redirect: { name: 'rfo.my' }
-    }, { //rfo.my
-      path: 'my', 
-      name: 'rfo.my', 
-      component: RfoMy, 
-      meta: { 
-        title: "RFO - Data Catalogue",
-        showModal: false,
-        permission: "RFO"
-      } 
-    }, { // rfo.my.system
-      path: 'my/:system', name: 'rfo.my', component: RfoMy, 
-      meta: { 
-        title: "RFO - Data Catalogue",
-        showModal: false,
-        permission: "RFO"
-      },
-    }, { // rfo.all
-      path: 'all', name: 'rfo.all', component: RfoAll, 
-      meta: { 
-        title: "RFO - Data Catalogue" ,
-        showModal: false,
-        permission: "RFO"
-      } 
-    }, { 
-      path: 'all/:system', name: 'rfo.all', component: RfoAll, 
-      meta: { 
-        title: "RFO - Data Catalogue" ,
-        showModal: false,
-        permission: "RFO"
-      },
-    }]
+    },
+  }, { // rfo.priority
+    path: '/rfo/:type', name: 'rfo.priority', component: RfoPriority, 
+    meta: { 
+      title: "RFO - Data Catalogue",
+      permission: "RFO"
+    },
   }, { // access
     path: '/access', component: Access, 
     meta: { 

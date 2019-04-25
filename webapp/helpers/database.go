@@ -111,19 +111,6 @@ func BuildQueryFromFile(filePath, queryName string, Colnames []string, args ...i
 		return "", err
 	}
 
-	if len(Colnames) > 0 {
-		raw = `SELECT * FROM ( ` + raw + `) WHERE ( `
-		for i, colname := range Colnames {
-			if i != 0 {
-				raw += `AND `
-			}
-
-			raw += ` upper(` + colname + `) LIKE upper('%?%')
-			`
-		}
-		raw += `) `
-	}
-
 	replaced := strings.ReplaceAll(raw, "%", "%%")
 	replaced = strings.ReplaceAll(replaced, "?", "%s")
 
