@@ -6,10 +6,10 @@ const state = {
         tabName: '',
         searchMain: '',
         searchDropdown: {
-            PriorityReportName: '',
-            RiskReportingLead: '',
-            PrincipalRiskType: '',
-            RiskSubType: '',
+            SystemName: '',
+            ItamID: '',
+            TableName: '',
+            ColumnName: '',
         },
         filters: {
             left: {},
@@ -17,6 +17,22 @@ const state = {
         },
         left: newTableObject(),
         right: newTableObject(),
+        exportDatas: [],
+        leftHeaders: [
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Principal Risk Types', value: 'PRINCIPAL_RISK_TYPES' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Risk Sub Type', value: 'RISK_SUB_TYPE' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Risk Framework Owner', value: 'RISK_FRAMEWORK_OWNER' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Risk Reporting Lead', value: 'RISK_REPORTING_LEAD' },
+            { align: 'left', display: false, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Unique Count of Risk Reporting Lead', value: 'PRIORITY_REPORTS_UNIQUE_COUNT' },
+            { align: 'left', display: false, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Unique Count of Critical Risk Measures', value: 'CRITICAL_RISK_MEASURES_UNIQUE_COUNT' },
+            { align: 'left', display: false, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Unique Count of Critical Data Element', value: 'CRITICAL_DATA_ELEMENT_UNIQUE_COUNT' },
+        ],
+        // rightHeaders: [
+        //   { text: 'Table Name', align: 'left', sortable: false, value: 'TABLE_NAME', displayCount: true, width: "25%" },
+        //   { text: 'Column Name', align: 'left', sortable: false, value: 'Columns.COLUMN_NAME', displayCount: true, width: "25%" },
+        //   { text: 'Business Alias Name', align: 'left', sortable: false, value: 'Columns.BUSINESS_ALIAS_NAME', displayCount: false, width: "25%" },
+        //   { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'Columns.CDE_YES_NO', displayCount: true, width: "25%" }
+        // ],
         isRightTable: false,
         DDSource: [],
         detailsLoading: true,
@@ -26,10 +42,8 @@ const state = {
 };
 
 const actions = {
-    getLeftTable({ commit }) {
-        commit('getLeftTableRequest');
-
-        var user = JSON.parse(localStorage.getItem("user"));
+    exportData({ commit }) {
+        commit('getExportDataRequest');
 
         Object.keys(state.all.filters.left).map(function(key, index) {
             state.all.filters.left[key] = state.all.filters.left[key] ? state.all.filters.left[key].toString() : "";
@@ -41,10 +55,36 @@ const actions = {
             Search: state.all.searchMain.toString(),
             SearchDD: state.all.searchDropdown,
             Filters: state.all.filters.left,
+            Pagination: _.cloneDeep(state.all.left.pagination)
+        }
+
+        param.Pagination.rowsPerPage = -1;
+
+        return dscMyService.getLeftTable(param)
+            .then(
+                res => commit('getExportDataSuccess', res.Data),
+                error => commit('getExportDataFailure', error)
+            );
+    },
+    getLeftTable({ commit }) {
+        commit('getLeftTableRequest');
+
+        var user = JSON.parse(localStorage.getItem("user"));
+
+        Object.keys(state.all.filters.left).map(function(key, index) {
+            state.all.filters.left[key] = state.all.filters.left[key].toString();
+        });
+
+        var param = {
+            Tabs: state.all.tabName,
+            LoggedInID: user.Username.toString(),
+            Search: state.all.searchMain.toString(),
+            SearchDD: state.all.searchDropdown,
+            Filters: state.all.filters.left,
             Pagination: state.all.left.pagination
         }
 
-        return rfoMyService.getLeftTable(param)
+        return rfoMyService.getAllRisk(param)
             .then(
                 res => commit('getLeftTableSuccess', res.Data),
                 error => commit('getLeftTableFailure', error)
@@ -54,7 +94,7 @@ const actions = {
         commit('getRightTableRequest');
 
         Object.keys(state.all.filters.right).map(function(key, index) {
-            state.all.filters.right[key] = state.all.filters.right[key] ? state.all.filters.right[key].toString() : "";
+            state.all.filters.right[key] = state.all.filters.right[key].toString();
         });
 
         var param = {
@@ -66,15 +106,40 @@ const actions = {
             Pagination: state.all.right.pagination
         }
 
-        return rfoMyService.getRightTable(param)
+        return dscMyService.getRightTable(param)
             .then(
                 res => commit('getRightTableSuccess', res.Data),
                 error => commit('getRightTableFailure', error)
             );
     },
+    getDetails({ commit }, param) {
+        commit('getDetailsRequest');
+
+        return dscMyService.getDetails(param)
+            .then(
+                res => {
+                    commit('getDetailsSuccess', res.Data)
+
+                    return res;
+                },
+                error => commit('getDetailsFailure', error)
+            );
+    },
 };
 
 const mutations = {
+    getExportDataRequest(state) {
+        state.all.left.isLoading = true;
+    },
+    getExportDataSuccess(state, data) {
+        state.all.exportDatas = data;
+
+        state.all.left.isLoading = false;
+    },
+    getExportDataFailure(state, error) {
+        state.all.left.isLoading = false;
+        state.all.error = error;
+    },
     getLeftTableRequest(state) {
         state.all.left.isLoading = true;
     },
@@ -101,6 +166,19 @@ const mutations = {
     },
     getRightTableFailure(state, error) {
         state.all.right.isLoading = false;
+        state.all.error = error;
+    },
+    getDetailsRequest(state) {
+        state.all.detailsLoading = true;
+    },
+    getDetailsSuccess(state, data) {
+        state.all.detailsSource = data.Detail;
+        state.all.DDSource = data.DDSource;
+        
+        state.all.detailsLoading = false;
+    },
+    getDetailsFailure(state, error) {
+        state.all.detailsLoading = false;
         state.all.error = error;
     },
 };

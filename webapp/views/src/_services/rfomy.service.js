@@ -3,6 +3,7 @@ import { fetchWHeader } from '../_helpers/auth-header';
 export const rfoMyService = {
     getLeftTable,
     getRightTable,
+    getAllRisk,
     getPriorityTable,
 };
 
@@ -81,12 +82,178 @@ function getRightTable(param) {
     )
 }
 
+function getAllRisk(param) {
+    return fetchWHeader(`/dsc/getallsystems`, param).then(
+        res => {
+            res.Data = [
+                { PRINCIPAL_RISK_TYPES: "Traded", RISK_SUB_TYPE: "Credit", RISK_FRAMEWORK_OWNER: "John Doe", RISK_REPORTING_LEAD: "Mark R.", PRIORITY_REPORTS_UNIQUE_COUNT: "5", CRITICAL_RISK_MEASURES_UNIQUE_COUNT: "24", CRITICAL_DATA_ELEMENT_UNIQUE_COUNT: "40" },
+                { PRINCIPAL_RISK_TYPES: "Traded", RISK_SUB_TYPE: "Market", RISK_FRAMEWORK_OWNER: "John Doe", RISK_REPORTING_LEAD: "Chris E.", PRIORITY_REPORTS_UNIQUE_COUNT: "7 Date", CRITICAL_RISK_MEASURES_UNIQUE_COUNT: "30", CRITICAL_DATA_ELEMENT_UNIQUE_COUNT: "35" },
+                { PRINCIPAL_RISK_TYPES: "Capital & Liquidity", RISK_SUB_TYPE: "Capital", RISK_FRAMEWORK_OWNER: "Jess How", RISK_REPORTING_LEAD: "Robert D.J.", PRIORITY_REPORTS_UNIQUE_COUNT: "9", CRITICAL_RISK_MEASURES_UNIQUE_COUNT: "14", CRITICAL_DATA_ELEMENT_UNIQUE_COUNT: "50" },
+                { PRINCIPAL_RISK_TYPES: "Capital & Liquidity", RISK_SUB_TYPE: "Liquidity", RISK_FRAMEWORK_OWNER: "Jess How", RISK_REPORTING_LEAD: "Scarlett J.", PRIORITY_REPORTS_UNIQUE_COUNT: "4", CRITICAL_RISK_MEASURES_UNIQUE_COUNT: "23", CRITICAL_DATA_ELEMENT_UNIQUE_COUNT: "43" },
+            ];
+
+            res.DataFlat = _.cloneDeep(res.Data);
+            
+            res.Data = _.groupBy(res.Data, "PRIORITY_REPORT");
+            
+            return res;
+        },
+        err => {
+            var res = {};
+            res.Data = [
+                { PRINCIPAL_RISK_TYPES: "Traded", RISK_SUB_TYPE: "Credit", RISK_FRAMEWORK_OWNER: "John Doe", RISK_REPORTING_LEAD: "Mark R.", PRIORITY_REPORTS_UNIQUE_COUNT: "5", CRITICAL_RISK_MEASURES_UNIQUE_COUNT: "24", CRITICAL_DATA_ELEMENT_UNIQUE_COUNT: "40" },
+                { PRINCIPAL_RISK_TYPES: "Traded", RISK_SUB_TYPE: "Market", RISK_FRAMEWORK_OWNER: "John Doe", RISK_REPORTING_LEAD: "Chris E.", PRIORITY_REPORTS_UNIQUE_COUNT: "7 Date", CRITICAL_RISK_MEASURES_UNIQUE_COUNT: "30", CRITICAL_DATA_ELEMENT_UNIQUE_COUNT: "35" },
+                { PRINCIPAL_RISK_TYPES: "Capital & Liquidity", RISK_SUB_TYPE: "Capital", RISK_FRAMEWORK_OWNER: "Jess How", RISK_REPORTING_LEAD: "Robert D.J.", PRIORITY_REPORTS_UNIQUE_COUNT: "9", CRITICAL_RISK_MEASURES_UNIQUE_COUNT: "14", CRITICAL_DATA_ELEMENT_UNIQUE_COUNT: "50" },
+                { PRINCIPAL_RISK_TYPES: "Capital & Liquidity", RISK_SUB_TYPE: "Liquidity", RISK_FRAMEWORK_OWNER: "Jess How", RISK_REPORTING_LEAD: "Scarlett J.", PRIORITY_REPORTS_UNIQUE_COUNT: "4", CRITICAL_RISK_MEASURES_UNIQUE_COUNT: "23", CRITICAL_DATA_ELEMENT_UNIQUE_COUNT: "43" },
+            ];
+
+            res.DataFlat = _.cloneDeep(res.Data);
+
+            var tmp = _.groupBy(res.Data, "PRINCIPAL_RISK_TYPES")
+            res.Data = _.map(Object.keys(tmp), function(v, i){
+                var tmpTmp = _.cloneDeep(tmp[v]);
+
+                var ret = tmpTmp[0];
+                ret.ID = i;
+                ret.PRINCIPAL_RISK_TYPESsVal = tmpTmp;
+                ret.PRINCIPAL_RISK_TYPES = v;
+
+                var tmp2 = _.groupBy(tmp[v], "RISK_SUB_TYPE");  
+                ret.RISK_SUB_TYPEs = _.map(Object.keys(tmp2), function(w, j){
+                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
+
+                    var ret = tmpTmp2[0];
+                    ret.ID = j;
+                    ret.RISK_SUB_TYPEsVal = tmpTmp2;
+                    ret.RISK_SUB_TYPE = w;
+
+                    return ret;
+                });
+
+                var tmp3 = _.groupBy(tmp[v], "RISK_FRAMEWORK_OWNER");  
+                ret.RISK_FRAMEWORK_OWNERs = _.map(Object.keys(tmp3), function(w, j){
+                    var tmpTmp3 = _.cloneDeep(tmp3[w]);
+
+                    var ret = tmpTmp3[0];
+                    ret.ID = j;
+                    ret.RISK_FRAMEWORK_OWNERsVal = tmpTmp3;
+                    ret.RISK_FRAMEWORK_OWNER = w;
+
+                    return ret;
+                });
+
+                var tmp4 = _.groupBy(tmp[v], "RISK_REPORTING_LEAD");  
+                ret.RISK_REPORTING_LEADs = _.map(Object.keys(tmp4), function(w, j){
+                    var tmpTmp4 = _.cloneDeep(tmp4[w]);
+
+                    var ret = tmpTmp4[0];
+                    ret.ID = j;
+                    ret.RISK_REPORTING_LEADsVal = tmpTmp4;
+                    ret.RISK_REPORTING_LEAD = w;
+
+                    return ret;
+                });
+
+                return ret;
+            });
+
+            res.Data.forEach(v => {
+                v.RISK_SUB_TYPEs.shift();
+                v.RISK_FRAMEWORK_OWNERs.shift();
+                v.RISK_REPORTING_LEADs.shift();
+
+                v.theMostLength = _.max([v.RISK_SUB_TYPEs, v.RISK_FRAMEWORK_OWNERs, v.RISK_REPORTING_LEADs], v => v.length);
+            });
+            
+            return res;
+        }
+    );
+}
+
 function getPriorityTable(param) {
     return fetchWHeader(`/dsc/getcdetable`, param).then(
         res => {
+            res.Data = [
+                { PRIORITY_REPORT: "FM Exposure", PRIORITY_REPORT_RATIONALE: "ZXCV", CRM_NAME: "PFE", CRM_RATIONALE: "GGKJH", CDE_NAME: "Legal Name", CDE_RATIONALE: "Rationale 1" },
+                { PRIORITY_REPORT: "FM Exposure", PRIORITY_REPORT_RATIONALE: "ZXCV", CRM_NAME: "CAT1", CRM_RATIONALE: "GGKJH", CDE_NAME: "Incorporation Date", CDE_RATIONALE: "Rationale 2" },
+                { PRIORITY_REPORT: "FM Exposure", PRIORITY_REPORT_RATIONALE: "ZXCV", CRM_NAME: "EEPE", CRM_RATIONALE: "GGKJH", CDE_NAME: "Legal Name", CDE_RATIONALE: "Rationale 1" },
+                { PRIORITY_REPORT: "FIN Rep", PRIORITY_REPORT_RATIONALE: "MM abcde", CRM_NAME: "xx", CRM_RATIONALE: "GGKJH", CDE_NAME: "Legal Name", CDE_RATIONALE: "Rationale 1" },
+                { PRIORITY_REPORT: "FIN Rep", PRIORITY_REPORT_RATIONALE: "fghijk lmnop", CRM_NAME: "yy", CRM_RATIONALE: "GGKJH", CDE_NAME: "", CDE_RATIONALE: "" },
+            ];
+
             res.DataFlat = _.cloneDeep(res.Data);
             
-            var tmp = _.groupBy(res.Data, "CDE")
+            res.Data = _.groupBy(res.Data, "PRIORITY_REPORT");
+            
+            return res;
+        },
+        err => {
+            var res = {};
+            res.Data = [
+                { PRIORITY_REPORT: "FM Exposure", PRIORITY_REPORT_RATIONALE: "ZXCV", CRM_NAME: "PFE", CRM_RATIONALE: "GGKK LIIHHH", CDE_NAME: "Legal Name", CDE_RATIONALE: "Rationale 1" },
+                { PRIORITY_REPORT: "FM Exposure", PRIORITY_REPORT_RATIONALE: "ZXCV", CRM_NAME: "CAT1", CRM_RATIONALE: "GGKK LIIHHH", CDE_NAME: "Incorporation Date", CDE_RATIONALE: "Rationale 2" },
+                { PRIORITY_REPORT: "FM Exposure", PRIORITY_REPORT_RATIONALE: "ZXCV", CRM_NAME: "EEPE", CRM_RATIONALE: "GGKK LIIHHH", CDE_NAME: "Legal Name", CDE_RATIONALE: "Rationale 1" },
+                { PRIORITY_REPORT: "FIN Rep", PRIORITY_REPORT_RATIONALE: "MM abcde", CRM_NAME: "xx", CRM_RATIONALE: "GGG", CDE_NAME: "", CDE_RATIONALE: "" },
+                { PRIORITY_REPORT: "FIN Rep", PRIORITY_REPORT_RATIONALE: "fghijk lmnop", CRM_NAME: "yy", CRM_RATIONALE: "GGG", CDE_NAME: "", CDE_RATIONALE: "" },
+            ];
+
+            res.DataFlat = _.cloneDeep(res.Data);
+
+            var tmp = _.groupBy(res.Data, "PRIORITY_REPORT")
+            res.Data = _.map(Object.keys(tmp), function(v, i){
+                var tmpTmp = _.cloneDeep(tmp[v]);
+
+                var ret = tmpTmp[0];
+                ret.ID = i;
+                ret.PRIORITY_REPORTsVal = tmpTmp;
+                ret.PRIORITY_REPORT = v;
+
+                var tmp2 = _.groupBy(tmp[v], "PRIORITY_REPORT_RATIONALE");  
+                ret.PRIORITY_REPORT_RATIONALEs = _.map(Object.keys(tmp2), function(w, j){
+                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
+
+                    var ret = tmpTmp2[0];
+                    ret.ID = j;
+                    ret.PRIORITY_REPORT_RATIONALEsVal = tmpTmp2;
+                    ret.PRIORITY_REPORT_RATIONALE = w;
+
+                    return ret;
+                });
+
+                var tmp3 = _.groupBy(tmp[v], "CRM_NAME");  
+                ret.CRM_NAMEs = _.map(Object.keys(tmp3), function(w, j){
+                    var tmpTmp3 = _.cloneDeep(tmp3[w]);
+
+                    var ret = tmpTmp3[0];
+                    ret.ID = j;
+                    ret.CRM_NAMEsVal = tmpTmp3;
+                    ret.CRM_NAME = w;
+
+                    return ret;
+                });
+
+                var tmp4 = _.groupBy(tmp[v], "CRM_RATIONALE");  
+                ret.CRM_RATIONALEs = _.map(Object.keys(tmp4), function(w, j){
+                    var tmpTmp4 = _.cloneDeep(tmp4[w]);
+
+                    var ret = tmpTmp4[0];
+                    ret.ID = j;
+                    ret.CRM_RATIONALEsVal = tmpTmp4;
+                    ret.CRM_RATIONALE = w;
+
+                    return ret;
+                });
+
+                return ret;
+            });
+
+            res.Data.forEach(v => {
+                v.PRIORITY_REPORT_RATIONALEs.shift();
+                v.CRM_NAMEs.shift();
+                v.CRM_RATIONALEs.shift();
+
+                v.theMostLength = _.max([v.PRIORITY_REPORT_RATIONALEs, v.CRM_NAMEs, v.CRM_RATIONALEs], v => v.length);
+            });
             
             return res;
         }
