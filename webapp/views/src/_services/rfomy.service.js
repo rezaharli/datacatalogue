@@ -84,10 +84,81 @@ function getRightTable(param) {
 function getPriorityTable(param) {
     return fetchWHeader(`/dsc/getcdetable`, param).then(
         res => {
+            res.Data = [
+                { PRIORITY_REPORT: "FM Exposure", PRIORITY_REPORT_RATIONALE: "ZXCV", CRM_NAME: "PFE", CRM_RATIONALE: "GGKJH", CDE_NAME: "Legal Name", CDE_RATIONALE: "Rationale 1" },
+                { PRIORITY_REPORT: "FM Exposure", PRIORITY_REPORT_RATIONALE: "ZXCV", CRM_NAME: "CAT1", CRM_RATIONALE: "GGKJH", CDE_NAME: "Incorporation Date", CDE_RATIONALE: "Rationale 2" },
+                { PRIORITY_REPORT: "FM Exposure", PRIORITY_REPORT_RATIONALE: "ZXCV", CRM_NAME: "EEPE", CRM_RATIONALE: "GGKJH", CDE_NAME: "Legal Name", CDE_RATIONALE: "Rationale 1" },
+                // { PRIORITY_REPORT: "FIN Rep", PRIORITY_REPORT_RATIONALE: "MM abcde", CRM_NAME: "xx", CRM_RATIONALE: "GGKJH", CDE_NAME: "Legal Name", CDE_RATIONALE: "Rationale 1" },
+                // { PRIORITY_REPORT: "FIN Rep", PRIORITY_REPORT_RATIONALE: "fghijk lmnop", CRM_NAME: "yy", CRM_RATIONALE: "GGKJH", CDE_NAME: "", CDE_RATIONALE: "" },
+            ];
+
             res.DataFlat = _.cloneDeep(res.Data);
             
-            var tmp = _.groupBy(res.Data, "CDE")
+            res.Data = _.groupBy(res.Data, "PRIORITY_REPORT");
             
+            return res;
+        },
+        err => {
+            var res = {};
+            res.Data = [
+                { PRIORITY_REPORT: "FM Exposure", PRIORITY_REPORT_RATIONALE: "ZXCV", CRM_NAME: "PFE", CRM_RATIONALE: "GGKK LIIHHH", CDE_NAME: "Legal Name", CDE_RATIONALE: "Rationale 1" },
+                { PRIORITY_REPORT: "FM Exposure", PRIORITY_REPORT_RATIONALE: "ZXCV", CRM_NAME: "CAT1", CRM_RATIONALE: "GGKK LIIHHH", CDE_NAME: "Incorporation Date", CDE_RATIONALE: "Rationale 2" },
+                { PRIORITY_REPORT: "FM Exposure", PRIORITY_REPORT_RATIONALE: "ZXCV", CRM_NAME: "EEPE", CRM_RATIONALE: "GGKK LIIHHH", CDE_NAME: "Legal Name", CDE_RATIONALE: "Rationale 1" },
+                // { PRIORITY_REPORT: "FIN Rep", PRIORITY_REPORT_RATIONALE: "MM abcde", CRM_NAME: "xx", CRM_RATIONALE: "GGG", CDE_NAME: "", CDE_RATIONALE: "" },
+                // { PRIORITY_REPORT: "FIN Rep", PRIORITY_REPORT_RATIONALE: "fghijk lmnop", CRM_NAME: "yy", CRM_RATIONALE: "GGG", CDE_NAME: "", CDE_RATIONALE: "" },
+            ];
+
+            res.DataFlat = _.cloneDeep(res.Data);
+
+            var tmp = _.groupBy(res.Data, "PRIORITY_REPORT")
+            res.Data = _.map(Object.keys(tmp), function(v, i){
+                var tmpTmp = _.cloneDeep(tmp[v]);
+
+                var ret = tmpTmp[0];
+                ret.ID = i;
+                ret.PRIORITY_REPORTsVal = tmpTmp;
+                ret.PRIORITY_REPORT = v;
+
+                var tmp2 = _.groupBy(tmp[v], "PRIORITY_REPORT_RATIONALE");  
+                ret.PRIORITY_REPORT_RATIONALEs = _.map(Object.keys(tmp2), function(w, j){
+                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
+
+                    ret.PRIORITY_REPORT_RATIONALEsVal = tmpTmp2;
+                    ret.PRIORITY_REPORT_RATIONALE = w;
+
+                    return ret;
+                });
+
+                var tmp3 = _.groupBy(tmp[v], "CRM_NAME");  
+                ret.CRM_NAMEs = _.map(Object.keys(tmp3), function(w, j){
+                    var tmpTmp3 = _.cloneDeep(tmp3[w]);
+
+                    ret.CRM_NAMEsVal = tmpTmp3;
+                    ret.CRM_NAME = w;
+
+                    return ret;
+                });
+
+                var tmp4 = _.groupBy(tmp[v], "CRM_RATIONALE");  
+                ret.CRM_RATIONALEs = _.map(Object.keys(tmp4), function(w, j){
+                    var tmpTmp4 = _.cloneDeep(tmp4[w]);
+
+                    ret.CRM_RATIONALEsVal = tmpTmp4;
+                    ret.CRM_RATIONALE = w;
+
+                    return ret;
+                });
+
+                return ret;
+            });
+
+            res.Data.forEach(v => {
+                v.PRIORITY_REPORT_RATIONALEs.shift();
+                v.CRM_NAMEs.shift();
+                v.CRM_RATIONALEs.shift();
+            });
+            
+            console.log(res.Data);
             return res;
         }
     );

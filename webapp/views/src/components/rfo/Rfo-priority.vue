@@ -49,7 +49,7 @@
                 <!-- Main content -->
                 <v-data-table
                     :headers="store.leftHeaders.filter(v => v.display == true)"
-                    :items="store.left.source"
+                    :items="store.left.display"
                     :pagination.sync="store.left.pagination"
                     :total-items="store.left.totalItems"
                     :loading="store.left.isLoading"
@@ -75,26 +75,45 @@
                   </template>
 
                   <template slot="items" slot-scope="props">
-                    <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                      <td :rowspan="props.index % 2 ? 2 : 1" v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-capitalize text-title">
-                        <tablecell showOn="hover" :fulltext="props.item.CDE"></tablecell></td>
+                    <tr>
+                      <td v-bind:style="{ width: store.left.colWidth['PRIORITY_REPORT'] + 'px' }" :rowspan="_.max([props.item.PRIORITY_REPORT_RATIONALEs.length, props.item.CRM_NAMEs.length, props.item.CRM_RATIONALEs.length])" class="text-capitalize text-title">
+                        <tablecell showOn="hover" :fulltext="props.item.PRIORITY_REPORT"></tablecell></td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }" class="text-description">
-                        <tablecell showOn="hover" :fulltext="props.item.DESCRIPTION"></tablecell></td>
+                      <td v-bind:style="{ width: store.left.colWidth['PRIORITY_REPORT_RATIONALE'] + 'px' }" class="text-description">
+                        <tablecell showOn="hover" :fulltext="props.item.PRIORITY_REPORT_RATIONALE"></tablecell></td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" :fulltext="props.item.TABLE_NAME"></tablecell>
+                      <td v-bind:style="{ width: store.left.colWidth['CRM_NAME'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" :fulltext="props.item.CRM_NAME"></tablecell>
                       </td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" :fulltext="props.item.COLUMN_NAME"></tablecell>
+                      <td v-bind:style="{ width: store.left.colWidth['CRM_RATIONALE'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" :fulltext="props.item.CRM_RATIONALE"></tablecell>
                       </td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" :fulltext="props.item.DSP_NAME"></tablecell></td>
+                      <td v-bind:style="{ width: store.left.colWidth['CDE_NAME'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" :fulltext="props.item.CDE_NAME"></tablecell></td>
                         
-                      <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }">
-                        <tablecell showOn="hover" :fulltext="props.item.PROCESS_OWNER"></tablecell></td>
+                      <td v-bind:style="{ width: store.left.colWidth['CDE_RATIONALE'] + 'px' }">
+                        <tablecell showOn="hover" :fulltext="props.item.CDE_RATIONALE"></tablecell></td>
+                    </tr>
+
+                    <tr :key="props.item.ID + '' + i" v-for="(item, i) in props.item.theMostLength">
+                      <td v-bind:style="{ width: store.left.colWidth['PRIORITY_REPORT_RATIONALE'] + 'px' }" class="text-description">
+                        <tablecell showOn="hover" :fulltext="item.PRIORITY_REPORT_RATIONALE"></tablecell></td>
+
+                      <td v-bind:style="{ width: store.left.colWidth['CRM_NAME'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" :fulltext="item.CRM_NAME"></tablecell>
+                      </td>
+
+                      <td v-bind:style="{ width: store.left.colWidth['CRM_RATIONALE'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" :fulltext="item.CRM_RATIONALE"></tablecell>
+                      </td>
+
+                      <td v-bind:style="{ width: store.left.colWidth['CDE_NAME'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" :fulltext="item.CDE_NAME"></tablecell></td>
+                        
+                      <td v-bind:style="{ width: store.left.colWidth['CDE_RATIONALE'] + 'px' }">
+                        <tablecell showOn="hover" :fulltext="item.CDE_RATIONALE"></tablecell></td>
                     </tr>
                   </template>
                 </v-data-table>
@@ -165,29 +184,6 @@ export default {
     getLeftTable() {
       this.$store.dispatch(`${this.storeName}/getLeftTable`);
     },
-    isMainLevelCellShowing (props){
-      if( ! props.expanded) return true;
-      else {
-        if(props.item.Tables.length > 0) {
-          if(props.item.Tables[0].Columns.length == 0) return true;
-        }
-        
-        return false;
-      }
-    },
-    isTableLevelCellShowing (props){
-      if( ! props.expanded) return true;
-      else {
-        if(props.item.Columns.length > 0) {
-          if(props.item.Columns[0].Dsps.length == 0) return true;
-        }
-        
-        return false;
-      }
-    },
-    systemRowClick(evt) {
-      evt.preventDefault();
-    },
     resetFilter (e) {
         if(Object.keys(this.store.filters.left).length > 0){
             this.store.filters.left = {};
@@ -199,19 +195,6 @@ export default {
         //     this.getMyRightTable(this.$route.params.system);
         // }
     },
-    getCDEConclusion(cdes) {
-      return cdes
-        .filter(Boolean)
-        .join(", ")
-        .indexOf("Yes") != -1
-        ? "Yes"
-        : "No";
-    },
-    showDetails(param) {
-      this.$router.push(
-        this.addressPath + "/" + param.TSID + "/" + param.TMTID + "/" + param.COLID
-      );
-    }
   }
 };
 </script>
