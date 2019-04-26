@@ -290,9 +290,6 @@ export default {
         return false;
       }
     },
-    systemRowClick(evt) {
-      evt.preventDefault();
-    },
     resetFilter (e) {
         if(Object.keys(this.store.filters.left).length > 0){
             this.store.filters.left = {};
@@ -304,17 +301,9 @@ export default {
         //     this.getMyRightTable(this.$route.params.system);
         // }
     },
-    getCDEConclusion(cdes) {
-      return cdes
-        .filter(Boolean)
-        .join(", ")
-        .indexOf("Yes") != -1
-        ? "Yes"
-        : "No";
-    },
     showDetails(param) {
       this.$router.push(
-        this.addressPath + "/" + param.TSID + "/" + param.TMTID + "/" + param.COLID
+        this.addressPath + "/" + param.SYSTEM_NAME + "/" + param.TSID + "/" + param.TMTID + "/" + param.COLID
       );
     }
   }
