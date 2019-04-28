@@ -815,6 +815,43 @@ func (s *DSCService) CreateCRMDummyData() error {
 	return nil
 }
 
+func (s *DSCService) CreateCDEDummyData() error {
+	toolkit.Println("CreateCDEDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewCDEModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.CDE, 0)
+	for i := 0; i < 10000; i++ {
+		mdt := m.NewCDEModel()
+		mdt.ID = i
+		mdt.Name = fake.Words()
+		mdt.CRM_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.CDE_Rationale = fake.Words()
+		mdt.Created_DateTime = time.Now()
+		mdt.Modified_DateTime = time.Now()
+		mdt.Status = rand.Intn(2)
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewCDEModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
 func (s *DSCService) CreateLinkCRMCDEDummyData() error {
 	toolkit.Println("CreateLinkCRMCDEDummyData")
 	err := h.NewDBcmd().Delete(h.DeleteParam{
