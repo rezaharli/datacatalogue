@@ -76,17 +76,27 @@
 
                   <template slot="items" slot-scope="props">
                     <tr>
-                      <td v-bind:style="{ width: store.left.colWidth['PRIORITY_REPORT'] + 'px' }" :rowspan="_.max([props.item.PRIORITY_REPORT_RATIONALEs.length, props.item.CRM_NAMEs.length, props.item.CRM_RATIONALEs.length])" class="text-capitalize text-title">
-                        <tablecell showOn="hover" :fulltext="props.item.PRIORITY_REPORT"></tablecell></td>
+                      <td v-bind:style="{ width: store.left.colWidth['PRIORITY_REPORT'] + 'px' }" :rowspan="props.item.expanded ? props.item.rowspanAcuan : 1" class="text-capitalize text-title">
+                        <b-link @click="props.item.expanded = !props.item.expanded">
+                          <tablecell showOn="hover" :fulltext="props.item.PRIORITY_REPORT"></tablecell></b-link></td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['PRIORITY_REPORT_RATIONALE'] + 'px' }" class="text-description">
+                      <td 
+                          v-bind:style="{ width: store.left.colWidth['PRIORITY_REPORT_RATIONALE'] + 'px' }" 
+                          :rowspan="props.item.expanded ? (props.item.rowspanAcuan / (props.item.PRIORITY_REPORT_RATIONALEs.length + 1)) : 1" 
+                          class="text-description">
                         <tablecell showOn="hover" :fulltext="props.item.PRIORITY_REPORT_RATIONALE"></tablecell></td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['CRM_NAME'] + 'px' }" class="text-uppercase">
+                      <td 
+                          v-bind:style="{ width: store.left.colWidth['CRM_NAME'] + 'px' }"
+                          :rowspan="props.item.expanded ? (props.item.rowspanAcuan / (props.item.CRM_NAMEs.length + 1)) : 1" 
+                          class="text-uppercase">
                         <tablecell showOn="hover" :fulltext="props.item.CRM_NAME"></tablecell>
                       </td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['CRM_RATIONALE'] + 'px' }" class="text-uppercase">
+                      <td 
+                          v-bind:style="{ width: store.left.colWidth['CRM_RATIONALE'] + 'px' }"
+                          :rowspan="props.item.expanded ? (props.item.rowspanAcuan / (props.item.CRM_RATIONALEs.length + 1)) : 1" 
+                          class="text-uppercase">
                         <tablecell showOn="hover" :fulltext="props.item.CRM_RATIONALE"></tablecell>
                       </td>
 
@@ -97,15 +107,24 @@
                         <tablecell showOn="hover" :fulltext="props.item.CDE_RATIONALE"></tablecell></td>
                     </tr>
 
-                    <tr :key="props.item.ID + '' + i" v-for="(item, i) in props.item.theMostLength">
-                      <td v-bind:style="{ width: store.left.colWidth['PRIORITY_REPORT_RATIONALE'] + 'px' }" class="text-description">
+                    <tr v-if="props.item.expanded" :key="props.item.ID + '' + i" v-for="(item, i) in props.item.theMostLength">
+                      <td
+                          v-if="props.item.PRIORITY_REPORT_RATIONALEs.length > 0" 
+                          v-bind:style="{ width: store.left.colWidth['PRIORITY_REPORT_RATIONALE'] + 'px' }" 
+                          class="text-description">
                         <tablecell showOn="hover" :fulltext="item.PRIORITY_REPORT_RATIONALE"></tablecell></td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['CRM_NAME'] + 'px' }" class="text-uppercase">
+                      <td 
+                          v-if="props.item.CRM_NAMEs.length > 0" 
+                          v-bind:style="{ width: store.left.colWidth['CRM_NAME'] + 'px' }" 
+                          class="text-uppercase">
                         <tablecell showOn="hover" :fulltext="item.CRM_NAME"></tablecell>
                       </td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['CRM_RATIONALE'] + 'px' }" class="text-uppercase">
+                      <td 
+                          v-if="props.item.CRM_RATIONALEs.length > 0" 
+                          v-bind:style="{ width: store.left.colWidth['CRM_RATIONALE'] + 'px' }" 
+                          class="text-uppercase">
                         <tablecell showOn="hover" :fulltext="item.CRM_RATIONALE"></tablecell>
                       </td>
 
@@ -141,15 +160,13 @@ import pageLoader from "../PageLoader.vue";
 Vue.component("downloadExcel", JsonExcel);
 
 export default {
-    name: "RfoPriority",
+  name: "RfoPriority",
   components: {
     PageHeader, pageSearch, pageExport, tableheader, tablecell, pageLoader
   },
   data() {
     return {
-      storeName: "rfopriority",
-      systemSource: [],
-      tablenameSource: []
+      storeName: "rfopriority"
     };
   },
   computed: {

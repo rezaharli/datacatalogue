@@ -1,4 +1,5 @@
 import { fetchWHeader } from '../_helpers/auth-header';
+import { lcm } from '../_helpers/helper';
 
 export const rfoMyService = {
     getLeftTable,
@@ -253,6 +254,10 @@ function getPriorityTable(param) {
                 v.CRM_RATIONALEs.shift();
 
                 v.theMostLength = _.max([v.PRIORITY_REPORT_RATIONALEs, v.CRM_NAMEs, v.CRM_RATIONALEs], v => v.length);
+                var lengths = [v.PRIORITY_REPORT_RATIONALEs.length + 1, v.CRM_NAMEs.length + 1, v.CRM_RATIONALEs.length + 1];
+                
+                v.rowspanAcuan = lcm(lengths);
+                v.expanded = false;
             });
             
             console.log(res.Data);
