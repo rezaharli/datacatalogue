@@ -105,65 +105,71 @@ function getAllRisk(param) {
                 { PRINCIPAL_RISK_TYPES: "Traded", RISK_SUB_TYPE: "Market", RISK_FRAMEWORK_OWNER: "John Doe", RISK_REPORTING_LEAD: "Chris E.", PRIORITY_REPORTS_UNIQUE_COUNT: "7 Date", CRITICAL_RISK_MEASURES_UNIQUE_COUNT: "30", CRITICAL_DATA_ELEMENT_UNIQUE_COUNT: "35" },
                 { PRINCIPAL_RISK_TYPES: "Capital & Liquidity", RISK_SUB_TYPE: "Capital", RISK_FRAMEWORK_OWNER: "Jess How", RISK_REPORTING_LEAD: "Robert D.J.", PRIORITY_REPORTS_UNIQUE_COUNT: "9", CRITICAL_RISK_MEASURES_UNIQUE_COUNT: "14", CRITICAL_DATA_ELEMENT_UNIQUE_COUNT: "50" },
                 { PRINCIPAL_RISK_TYPES: "Capital & Liquidity", RISK_SUB_TYPE: "Liquidity", RISK_FRAMEWORK_OWNER: "Jess How", RISK_REPORTING_LEAD: "Scarlett J.", PRIORITY_REPORTS_UNIQUE_COUNT: "4", CRITICAL_RISK_MEASURES_UNIQUE_COUNT: "23", CRITICAL_DATA_ELEMENT_UNIQUE_COUNT: "43" },
+                { PRINCIPAL_RISK_TYPES: "Capital & Liquidity", RISK_SUB_TYPE: "Liquidity", RISK_FRAMEWORK_OWNER: "Zonathan Parkour", RISK_REPORTING_LEAD: "Samuel L.J.", PRIORITY_REPORTS_UNIQUE_COUNT: "6", CRITICAL_RISK_MEASURES_UNIQUE_COUNT: "30", CRITICAL_DATA_ELEMENT_UNIQUE_COUNT: "26" },
             ];
 
-            res.DataFlat = _.cloneDeep(res.Data);
+            // res.countPrincipalRiskTypes = _.countBy(res.Data, 'PRINCIPAL_RISK_TYPES');
+            // console.log(res.countPrincipalRiskTypes);
+            // res.count
+            
 
-            var tmp = _.groupBy(res.Data, "PRINCIPAL_RISK_TYPES")
-            res.Data = _.map(Object.keys(tmp), function(v, i){
-                var tmpTmp = _.cloneDeep(tmp[v]);
+            // res.DataFlat = _.cloneDeep(res.Data);
 
-                var ret = tmpTmp[0];
-                ret.ID = i;
-                ret.PRINCIPAL_RISK_TYPESsVal = tmpTmp;
-                ret.PRINCIPAL_RISK_TYPES = v;
+            // var tmp = _.groupBy(res.Data, "PRINCIPAL_RISK_TYPES")
+            // res.Data = _.map(Object.keys(tmp), function(v, i){
+            //     var tmpTmp = _.cloneDeep(tmp[v]);
 
-                var tmp2 = _.groupBy(tmp[v], "RISK_SUB_TYPE");  
-                ret.RISK_SUB_TYPEs = _.map(Object.keys(tmp2), function(w, j){
-                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
+            //     var ret = tmpTmp[0];
+            //     ret.ID = i;
+            //     ret.PRINCIPAL_RISK_TYPESsVal = tmpTmp;
+            //     ret.PRINCIPAL_RISK_TYPES = v;
 
-                    var ret = tmpTmp2[0];
-                    ret.ID = j;
-                    ret.RISK_SUB_TYPEsVal = tmpTmp2;
-                    ret.RISK_SUB_TYPE = w;
+            //     var tmp2 = _.groupBy(tmp[v], "RISK_SUB_TYPE");  
+            //     ret.RISK_SUB_TYPEs = _.map(Object.keys(tmp2), function(w, j){
+            //         var tmpTmp2 = _.cloneDeep(tmp2[w]);
 
-                    return ret;
-                });
+            //         var ret = tmpTmp2[0];
+            //         ret.ID = j;
+            //         ret.RISK_SUB_TYPEsVal = tmpTmp2;
+            //         ret.RISK_SUB_TYPE = w;
 
-                var tmp3 = _.groupBy(tmp[v], "RISK_FRAMEWORK_OWNER");  
-                ret.RISK_FRAMEWORK_OWNERs = _.map(Object.keys(tmp3), function(w, j){
-                    var tmpTmp3 = _.cloneDeep(tmp3[w]);
+            //         return ret;
+            //     });
 
-                    var ret = tmpTmp3[0];
-                    ret.ID = j;
-                    ret.RISK_FRAMEWORK_OWNERsVal = tmpTmp3;
-                    ret.RISK_FRAMEWORK_OWNER = w;
+            //     var tmp3 = _.groupBy(tmp[v], "RISK_FRAMEWORK_OWNER");  
+            //     ret.RISK_FRAMEWORK_OWNERs = _.map(Object.keys(tmp3), function(w, j){
+            //         var tmpTmp3 = _.cloneDeep(tmp3[w]);
 
-                    return ret;
-                });
+            //         var ret = tmpTmp3[0];
+            //         ret.ID = j;
+            //         ret.RISK_FRAMEWORK_OWNERsVal = tmpTmp3;
+            //         ret.RISK_FRAMEWORK_OWNER = w;
 
-                var tmp4 = _.groupBy(tmp[v], "RISK_REPORTING_LEAD");  
-                ret.RISK_REPORTING_LEADs = _.map(Object.keys(tmp4), function(w, j){
-                    var tmpTmp4 = _.cloneDeep(tmp4[w]);
+            //         return ret;
+            //     });
 
-                    var ret = tmpTmp4[0];
-                    ret.ID = j;
-                    ret.RISK_REPORTING_LEADsVal = tmpTmp4;
-                    ret.RISK_REPORTING_LEAD = w;
+            //     var tmp4 = _.groupBy(tmp[v], "RISK_REPORTING_LEAD");  
+            //     ret.RISK_REPORTING_LEADs = _.map(Object.keys(tmp4), function(w, j){
+            //         var tmpTmp4 = _.cloneDeep(tmp4[w]);
 
-                    return ret;
-                });
+            //         var ret = tmpTmp4[0];
+            //         ret.ID = j;
+            //         ret.RISK_REPORTING_LEADsVal = tmpTmp4;
+            //         ret.RISK_REPORTING_LEAD = w;
 
-                return ret;
-            });
+            //         return ret;
+            //     });
 
-            res.Data.forEach(v => {
-                v.RISK_SUB_TYPEs.shift();
-                v.RISK_FRAMEWORK_OWNERs.shift();
-                v.RISK_REPORTING_LEADs.shift();
+            //     return ret;
+            // });
 
-                v.theMostLength = _.max([v.RISK_SUB_TYPEs, v.RISK_FRAMEWORK_OWNERs, v.RISK_REPORTING_LEADs], v => v.length);
-            });
+            // res.Data.forEach(v => {
+            //     v.RISK_SUB_TYPEs.shift();
+            //     v.RISK_FRAMEWORK_OWNERs.shift();
+            //     v.RISK_REPORTING_LEADs.shift();
+
+            //     v.theMostLength = _.max([v.RISK_SUB_TYPEs, v.RISK_FRAMEWORK_OWNERs, v.RISK_REPORTING_LEADs], v => v.length);
+            // });
             
             return res;
         }
