@@ -19,14 +19,22 @@
             <b-row>
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
-                        <h6 class="title-1">System Name</h6>
-                        <h3 class="title-2 text-capitalize">{{$route.params.system}}</h3>
+                        <h6 class="title-1">Principle Risk Type</h6>
+                        <h3 class="title-2 text-capitalize">{{ store.left.display[0] ? store.left.display[0].PRINCIPAL_RISK : "" }}</h3>
                     </div>
                 </b-col>
+                
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
-                        <h6 class="title-1">Critical Data Elements</h6>
-                        <h3 class="title-2 text-capitalize">{{ store.left.totalItems }}</h3>
+                        <h6 class="title-1">Sub Risk Type</h6>
+                        <h3 class="title-2 text-capitalize">{{ $route.params.type }}</h3>
+                    </div>
+                </b-col>
+
+                <b-col sm=12 md=3>
+                    <div class="card card-v2 transition">
+                        <h6 class="title-1">Priority Reports</h6>
+                        <h3 class="title-2 text-capitalize">{{ store.left.display[0] ? store.left.display[0].PR_COUNT : "" }}</h3>
                     </div>
                 </b-col>
             </b-row>
