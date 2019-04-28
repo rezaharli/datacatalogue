@@ -110,39 +110,6 @@ function getAllRisk(param) {
             
             return res;
         },
-        err => {
-            var res = {};
-            res.Data = [
-                { PRINCIPAL_RISK_TYPES: "Traded", RISK_SUB_TYPE: "Credit", RISK_FRAMEWORK_OWNER: "John Doe", RISK_REPORTING_LEAD: "Mark R.", PRIORITY_REPORTS_UNIQUE_COUNT: "5", CRITICAL_RISK_MEASURES_UNIQUE_COUNT: "24", CRITICAL_DATA_ELEMENT_UNIQUE_COUNT: "40" },
-                { PRINCIPAL_RISK_TYPES: "Traded", RISK_SUB_TYPE: "Market", RISK_FRAMEWORK_OWNER: "John Doe", RISK_REPORTING_LEAD: "Chris E.", PRIORITY_REPORTS_UNIQUE_COUNT: "7 Date", CRITICAL_RISK_MEASURES_UNIQUE_COUNT: "30", CRITICAL_DATA_ELEMENT_UNIQUE_COUNT: "35" },
-                { PRINCIPAL_RISK_TYPES: "Capital & Liquidity", RISK_SUB_TYPE: "Capital", RISK_FRAMEWORK_OWNER: "Jess How", RISK_REPORTING_LEAD: "Robert D.J.", PRIORITY_REPORTS_UNIQUE_COUNT: "9", CRITICAL_RISK_MEASURES_UNIQUE_COUNT: "14", CRITICAL_DATA_ELEMENT_UNIQUE_COUNT: "50" },
-                { PRINCIPAL_RISK_TYPES: "Capital & Liquidity", RISK_SUB_TYPE: "Liquidity", RISK_FRAMEWORK_OWNER: "Jess How", RISK_REPORTING_LEAD: "Scarlett J.", PRIORITY_REPORTS_UNIQUE_COUNT: "4", CRITICAL_RISK_MEASURES_UNIQUE_COUNT: "23", CRITICAL_DATA_ELEMENT_UNIQUE_COUNT: "43" },
-            ];
-
-            res.DataFlat = _.cloneDeep(res.Data);
-
-            var tmp = _.groupBy(res.Data, "PRINCIPAL_RISK_TYPES")
-            res.Data = _.map(Object.keys(tmp), function(v, i){
-                var tmpTmp = _.cloneDeep(tmp[v]);
-
-                var ret = tmpTmp[0];
-                ret.ID = i;
-                ret.PRINCIPAL_RISK_TYPESsVal = tmpTmp;
-                ret.PRINCIPAL_RISK_TYPES = v;
-
-                return ret;
-            });
-
-            res.Data.forEach(v => {
-                v.RISK_SUB_TYPEs.shift();
-                v.RISK_FRAMEWORK_OWNERs.shift();
-                v.RISK_REPORTING_LEADs.shift();
-
-                v.theMostLength = _.max([v.RISK_SUB_TYPEs, v.RISK_FRAMEWORK_OWNERs, v.RISK_REPORTING_LEADs], v => v.length);
-            });
-            
-            return res;
-        }
     );
 }
 
