@@ -7,7 +7,7 @@
     <v-container fluid fill-height back>
         <div id="login">
             <div id="description">
-                <h1>Metadata UI</h1>
+                <h1>Metadata Catalogue</h1>
                 <p>Sign in to your account.</p>
             </div>
 
@@ -28,7 +28,8 @@
                             label="Password"
                             label-for="password">
                         <div class="passw-container">
-                            <v-icon color="#95a5a6" class="fas" v-text="passwordIcon" @click="hidePassword = !hidePassword">visibility</v-icon>
+                            <!-- <v-icon color="#95a5a6" class="fas" v-text="passwordIcon" @click="hidePassword = !hidePassword">visibility</v-icon> -->
+                            <i class="fa fas" v-bind:class="{'fa-eye' : hidePassword, 'fa-eye-slash' : !hidePassword }" @click="hidePassword = !hidePassword"></i>
                             <b-form-input id="password"
                                 :type="passwordType"
                                 v-model="password"

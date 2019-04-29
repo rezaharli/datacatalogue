@@ -2,206 +2,103 @@
   @import '../../assets/styles/dashboard.css';
 </style>
 
-<style>
-table.v-table thead th > div.btn-group {
-  width: auto;
-}
-
-.header-filter-icon .dropdown-menu{
-  overflow: scroll;
-  height: 200px;
-}
-</style>
-
-
 <template>
   <b-row style="margin-top: 10px;margin-bottom: 10px;">
     <b-col>
-      <!-- Rfo details -->
+      <!-- Dsc details -->
       <router-view/>
 
       <!-- Main content -->
       <b-row>
         <b-col>
           <page-loader v-if="store.left.isLoading || (store.isRightTable && store.right.isLoading)" />
-          
-          <b-row>
-            <b-col>
-              <page-search :storeName="storeName" :searchDDInputs="searchDropdownInputs"/>
-            </b-col>
 
-            <b-col></b-col>
-            <b-col></b-col>
-            <b-col>
-              <page-export :storeName="storeName" :leftTableCols="firstTableHeaders" :rightTableCols="secondTableHeaders"/>
-            </b-col>
-          </b-row>
-
-          <b-row>
-            <b-col cols="6">
-              <v-data-table
-                  :headers="firstTableHeaders"
-                  :items="store.left.display"
-                  :pagination.sync="store.left.pagination"
-                  :total-items="store.left.totalItems"
-                  :loading="store.left.isLoading"
-                  item-key="ID"
-                  class="elevation-1 ">
-
-                <template slot="headerCell" slot-scope="props">
-                  <tableheader :storeName="storeName" :props="props" :which="'left'" />
-                </template>
-
-                <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
-
-                <template slot="no-data">
-                  <v-alert :value="store.left.isLoading" type="info">
-                    Please wait while data is loading
-                  </v-alert>
-
-                  <v-alert :value="!store.left.isLoading" type="error">
-                    Sorry, nothing to display here
-                  </v-alert>
-                </template>
-
-                <template slot="items" slot-scope="props">
-                    <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.PRIORITY_REPORT" showOn="hover"></tablecell></b-link></td>
-                    <td><tablecell :fulltext="props.item.RR_LEAD" showOn="click"></tablecell></td>
-                    <td><tablecell :fulltext="props.item.BANK_ID" showOn="click"></tablecell></td>
-                </template>
-              </v-data-table>
-            </b-col>
-            
-            <b-col cols="6">
-              <v-data-table
-                  :headers="secondTableHeaders"
-                  :items="store.right.display"
-                  :pagination.sync="store.right.pagination"
-                  :total-items="store.right.totalItems"
-                  :loading="store.right.isLoading"
-                  :expand="false"
-                  v-if="store.isRightTable"
-                  item-key="ID"
-                  class="elevation-1">
-                <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
-
-                <template slot="no-data">
-                  <v-alert :value="store.right.isLoading" type="info">
-                    Please wait while data is loading
-                  </v-alert>
-
-                  <v-alert :value="!store.right.isLoading" type="error">
-                    Sorry, nothing to display here
-                  </v-alert>
-                </template>
-
-                <template slot="headerCell" slot-scope="props">
-                  <tableheader :storeName="storeName" :props="props" :which="'right'" />
-                </template>
-
-                <template slot="items" slot-scope="props">
-                  <tr>
-                    <td v-bind:style="{ width: store.right.colWidth['PRINCIPAL_RISK'] + 'px' }"><b-link @click="rightDrillDownClick(props)"><tablecell :fulltext="props.item.PRINCIPAL_RISK" showOn="hover"></tablecell></b-link></td>
-                    <td v-bind:style="{ width: store.right.colWidth['RISK_SUB'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'RISK_SUB')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                    <td v-bind:style="{ width: store.right.colWidth['PR_NAME'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'PR_NAME')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                    <td v-bind:style="{ width: store.right.colWidth['PR_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'PR_RATIONALE')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                    <td v-bind:style="{ width: store.right.colWidth['CRM_NAME'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'CRM_NAME')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                    <td v-bind:style="{ width: store.right.colWidth['CRM_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'CRM_RATIONALE')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                    <td v-bind:style="{ width: store.right.colWidth['ASSOC_CDES'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'ASSOC_CDES')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                    <td v-bind:style="{ width: store.right.colWidth['CDE_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.RiskSubTypesVal, 'CDE_RATIONALE')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                  </tr>
-                </template>
-                
-                <template slot="expand" slot-scope="props">
-                  <v-data-table v-if="(store.right.reset == false)"
-                    :headers="secondTableHeaders"
-                    :items="props.item.RiskSubTypes"
-                    class="elevation-1"
+              <div class="card card-v1 transition">
+                <div class="title-wrapper transition">
+                  <v-img :src="images.all" :contain="true" class="card-icon transition"></v-img>
+                  <h2 class="transition title-1">All Risk Types</h2>
+                  <b-link v-on:click="toggleFieldDisplay()" class="toggle-field-display">
+                    <span v-if="hiddenFields">show all columns &raquo;</span>
+                    <span v-else>&laquo; show less columns</span>
+                  </b-link>
+                </div>
+              
+                <v-data-table
+                    :headers="store.leftHeaders.filter(v => v.display == true)"
+                    :items="store.left.display"
+                    :pagination.sync="store.left.pagination"
+                    :total-items="store.left.totalItems"
+                    :loading="store.left.isLoading"
+                    :expand="false"
                     item-key="ID"
-                    hide-actions
-                    hide-headers
-                  >
-                    <template slot="items" slot-scope="props">
-                      <td v-bind:style="{ width: store.right.colWidth['PRINCIPAL_RISK'] + 'px' }">&nbsp;</td>
-                      <td v-bind:style="{ width: store.right.colWidth['RISK_SUB'] + 'px' }"><b-link @click="rightDrillDownClick(props)"><tablecell :fulltext="props.item.RISK_SUB" showOn="hover"></tablecell></b-link></td>
-                      <td v-bind:style="{ width: store.right.colWidth['PR_NAME'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'PR_NAME')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                      <td v-bind:style="{ width: store.right.colWidth['PR_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'PR_RATIONALE')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                      <td v-bind:style="{ width: store.right.colWidth['CRM_NAME'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'CRM_NAME')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                      <td v-bind:style="{ width: store.right.colWidth['CRM_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'CRM_RATIONALE')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                      <td v-bind:style="{ width: store.right.colWidth['ASSOC_CDES'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'ASSOC_CDES')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                      <td v-bind:style="{ width: store.right.colWidth['CDE_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.PriorityReportsVal, 'CDE_RATIONALE')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                    </template>
+                    class="card-content">
 
-                    <template slot="expand" slot-scope="props">
-                      <v-data-table
-                        :headers="secondTableHeaders"
-                        :items="props.item.PriorityReports"
-                        class="elevation-1"
-                        item-key="ID"
-                        hide-actions
-                        hide-headers
-                      >
-                        <template slot="items" slot-scope="props">
-                          <td v-bind:style="{ width: store.right.colWidth['PRINCIPAL_RISK'] + 'px' }">&nbsp;</td>
-                          <td v-bind:style="{ width: store.right.colWidth['RISK_SUB'] + 'px' }">&nbsp;</td>
-                          <td v-bind:style="{ width: store.right.colWidth['PR_NAME'] + 'px' }"><b-link @click="rightDrillDownClick(props)"><tablecell :fulltext="props.item.PR_NAME" showOn="hover"></tablecell></b-link></td>
-                          <td v-bind:style="{ width: store.right.colWidth['PR_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.CRMNamesVal, 'PR_RATIONALE')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                          <td v-bind:style="{ width: store.right.colWidth['CRM_NAME'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.CRMNamesVal, 'CRM_NAME')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                          <td v-bind:style="{ width: store.right.colWidth['CRM_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.CRMNamesVal, 'CRM_RATIONALE')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                          <td v-bind:style="{ width: store.right.colWidth['ASSOC_CDES'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.CRMNamesVal, 'ASSOC_CDES')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                          <td v-bind:style="{ width: store.right.colWidth['CDE_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.CRMNamesVal, 'CDE_RATIONALE')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                        </template>
+                  <template slot="headerCell" slot-scope="props">
+                    <tableheader :storeName="storeName" :props="props" :which="'left'" />
+                  </template>
 
-                        <template slot="expand" slot-scope="props">
-                          <v-data-table
-                            :headers="secondTableHeaders"
-                            :items="props.item.CRMNames"
-                            class="elevation-1"
-                            item-key="ID"
-                            hide-actions
-                            hide-headers
-                          >
-                            <template slot="items" slot-scope="props">
-                              <td v-bind:style="{ width: store.right.colWidth['PRINCIPAL_RISK'] + 'px' }">&nbsp;</td>
-                              <td v-bind:style="{ width: store.right.colWidth['RISK_SUB'] + 'px' }">&nbsp;</td>
-                              <td v-bind:style="{ width: store.right.colWidth['PR_NAME'] + 'px' }">&nbsp;</td>
-                              <td v-bind:style="{ width: store.right.colWidth['PR_RATIONALE'] + 'px' }">&nbsp;</td>
-                              <td v-bind:style="{ width: store.right.colWidth['CRM_NAME'] + 'px' }"><b-link @click="rightDrillDownClick(props)"><tablecell :fulltext="props.item.CRM_NAME" showOn="hover"></tablecell></b-link></td>
-                              <td v-bind:style="{ width: store.right.colWidth['CRM_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.CDEsVal, 'CRM_RATIONALE')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                              <td v-bind:style="{ width: store.right.colWidth['ASSOC_CDES'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.CDEsVal, 'ASSOC_CDES')).join(', '))" showOn="click"></tablecell></td>
-                              <td v-bind:style="{ width: store.right.colWidth['CDE_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.CDEsVal, 'CDE_RATIONALE')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                            </template>
+                  <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
-                            <template slot="expand" slot-scope="props">
-                              <v-data-table
-                                :headers="secondTableHeaders"
-                                :items="props.item.CDEs"
-                                class="elevation-1"
-                                item-key="ID"
-                                hide-actions
-                                hide-headers
-                              >
-                                <template slot="items" slot-scope="props">
-                                  <td v-bind:style="{ width: store.right.colWidth['PRINCIPAL_RISK'] + 'px' }">&nbsp;</td>
-                                  <td v-bind:style="{ width: store.right.colWidth['RISK_SUB'] + 'px' }">&nbsp;</td>
-                                  <td v-bind:style="{ width: store.right.colWidth['PR_NAME'] + 'px' }">&nbsp;</td>
-                                  <td v-bind:style="{ width: store.right.colWidth['PR_RATIONALE'] + 'px' }">&nbsp;</td>
-                                  <td v-bind:style="{ width: store.right.colWidth['CRM_NAME'] + 'px' }">&nbsp;</td>
-                                  <td v-bind:style="{ width: store.right.colWidth['CRM_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.Rationales, 'CRM_RATIONALE')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                                  <td v-bind:style="{ width: store.right.colWidth['ASSOC_CDES'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.Rationales, 'ASSOC_CDES')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                                  <td v-bind:style="{ width: store.right.colWidth['CDE_RATIONALE'] + 'px' }"><tablecell :fulltext="(_.uniq(_.map(props.item.Rationales, 'CDE_RATIONALE')).filter(Boolean).join(', '))" showOn="click"></tablecell></td>
-                                </template>
-                              </v-data-table>
-                            </template>
-                          </v-data-table>
-                        </template>
-                      </v-data-table>
-                    </template>
-                  </v-data-table>
-                </template>
-              </v-data-table>
-            </b-col>
-          </b-row>
+                  <template slot="no-data">
+                    <v-alert :value="store.left.isLoading" type="info">
+                      Please wait while data is loading
+                    </v-alert>
+
+                    <v-alert :value="!store.left.isLoading" type="error">
+                      Sorry, nothing to display here
+                    </v-alert>
+                  </template>
+
+                  <template slot="items" slot-scope="props">
+                    <tr>
+                      <td v-if="isDisplayed('PRINCIPAL_RISK_TYPES')" :rowspan="props.item.RISK_SUB_TYPEs.length + 1">
+                        <tablecell :fulltext="props.item.PRINCIPAL_RISK_TYPES" showOn="hover"></tablecell></td>
+                      
+                      <td v-if="isDisplayed('RISK_SUB_TYPE')">
+                        <b-link @click.stop="showRightTable(props.item)">
+                          <tablecell :fulltext="props.item.RISK_SUB_TYPE" showOn="hover"></tablecell></b-link></td>
+                      
+                      <td v-if="isDisplayed('RISK_FRAMEWORK_OWNER')">
+                        <tablecell :fulltext="props.item.RISK_FRAMEWORK_OWNER" showOn="click"></tablecell></td>
+                      
+                      <td v-if="isDisplayed('RISK_REPORTING_LEAD')">
+                        <tablecell :fulltext="props.item.RISK_REPORTING_LEAD" showOn="click"></tablecell></td>
+                      
+                      <td v-if="isDisplayed('PR_COUNT')">
+                        <b-link @click.stop="showRightTable(props.item)">
+                          <tablecell :fulltext="props.item.PR_COUNT" showOn="click"></tablecell></b-link></td>
+                      
+                      <td v-if="isDisplayed('CRM_COUNT')">
+                        <tablecell :fulltext="props.item.CRM_COUNT" showOn="click"></tablecell></td>
+                      
+                      <td v-if="isDisplayed('CDE_COUNT')">
+                        <tablecell :fulltext="props.item.CDE_COUNT" showOn="click"></tablecell></td>
+                    </tr>
+
+                    <tr :key="props.item.ID + '' + i" v-for="(item, i) in props.item.RISK_SUB_TYPEs">
+                      <td v-if="isDisplayed('RISK_SUB_TYPE')">
+                        <b-link @click.stop="showRightTable(item)">
+                          <tablecell :fulltext="item.RISK_SUB_TYPE" showOn="hover"></tablecell></b-link></td>
+                      
+                      <td v-if="isDisplayed('RISK_FRAMEWORK_OWNER')">
+                        <tablecell :fulltext="item.RISK_FRAMEWORK_OWNER" showOn="click"></tablecell></td>
+                      
+                      <td v-if="isDisplayed('RISK_REPORTING_LEAD')">
+                        <tablecell :fulltext="item.RISK_REPORTING_LEAD" showOn="click"></tablecell></td>
+                      
+                      <td v-if="isDisplayed('PR_COUNT')">
+                        <b-link @click.stop="showRightTable(props.item)">
+                          <tablecell :fulltext="item.PR_COUNT" showOn="click"></tablecell></b-link></td>
+                      
+                      <td v-if="isDisplayed('CRM_COUNT')">
+                        <tablecell :fulltext="item.CRM_COUNT" showOn="click"></tablecell></td>
+                      
+                      <td v-if="isDisplayed('CDE_COUNT')">
+                        <tablecell :fulltext="item.CDE_COUNT" showOn="click"></tablecell></td>
+                    </tr>
+                  </template>
+                </v-data-table>
+              </div>
         </b-col>
       </b-row>
     </b-col>
@@ -229,42 +126,25 @@ export default {
         storeName: "rfomy",
         systemSource: [],
         tablenameSource: [],
-        firstTableHeaders: [
-          { text: 'Priority Report Names', align: 'left', value: 'PRIORITY_REPORT', displayCount: true, sortable: false },
-          { text: 'Risk Reporting Lead', align: 'left', value: 'RR_LEAD', displayCount: true, sortable: false },
-          { text: 'Bank ID', align: 'left', value: 'BANK_ID', displayCount: true, sortable: false },
-        ],
-        secondTableHeaders: [
-          { text: 'Principal Risk Type', align: 'left', sortable: false, value: 'PRINCIPAL_RISK', width: "25%" },
-          { text: 'Risk Sub Type', align: 'left', sortable: false, value: 'RiskSubTypesVal.RISK_SUB', width: "25%" },
-          { text: 'Priority Report Rationale', align: 'left', sortable: false, value: 'RiskSubTypesVal.PR_RATIONALE', width: "25%" },
-          { text: 'CRM Name', align: 'left', sortable: false, value: 'RiskSubTypesVal.CRM_NAME', width: "25%" },
-          { text: 'CRM Rationale', align: 'left', sortable: false, value: 'RiskSubTypesVal.CRM_RATIONALE', width: "25%" },
-          { text: 'Associated CDEs', align: 'left', sortable: false, value: 'RiskSubTypesVal.ASSOC_CDES', width: "25%" },
-          { text: 'CDE Rationale', align: 'left', sortable: false, value: 'RiskSubTypesVal.CDE_RATIONALE', width: "25%" },
-        ],
+        images: {
+          all: require('../../assets/images/icon-all-system.png'),
+        },
+        hiddenFields: true
       }
     },
     computed: {
-      store () {
-        return this.$store.state[this.storeName].all
-      },
+      store () { return this.$store.state[this.storeName].all },
+      dscStore () { return this.$store.state.dsc.all },
       addressPath (){
         var tmp = this.$route.path.split("/")
-        return tmp.slice(0, 3).join("/")
-      },
-      principalRiskMaster () {
-        return this._.uniq(this._.map(this.rfomy.right.source, 'PRINCIPAL_RISK'))
-      },
-      subRiskMaster () {
-        return this._.uniq(this._.map(this.rfomy.right.source, 'RISK_SUB'))
+        return tmp.slice(0, 2).join("/")
       },
       searchDropdownInputs () {
         return [
-          { type: "text", label: "Priority Report Name", source: "PriorityReportName" },
-          { type: "text", label: "Risk Reporting Lead", source: "RiskReportingLead" },
-          { type: "dropdown", label: "Principal Risk Type", source: "PrincipalRiskType", options: this._.map(this.store.right.source, 'PRINCIPAL_RISK') },
-          { type: "dropdown", label: "Sub Risk Type", source: "SubRiskType", options: this._.map(this.store.right.source, 'RISK_SUB') },
+          { type: "text", label: "System Name", source: "SystemName" },
+          { type: "text", label: "ITAM ID", source: "ItamID" },
+          { type: "dropdown", label: "Table Name", source: "TableName", options: this._.map(this.store.right.source, 'TABLE_NAME') },
+          { type: "dropdown", label: "Column Name", source: "ColumnName", options: this._.map(this._.flattenDeep(this._.map(this.store.right.source, 'Columns')), 'COLUMN_NAME') },
         ]
       },
     },
@@ -275,10 +155,6 @@ export default {
         if (to.params != undefined) {
           this.store.isRightTable = to.params.system; 
         }
-
-        if(this.store.isRightTable){
-          this.doGetRightTable(this.$route.params.system);
-        }
       },
       "store.left.pagination": {
         handler () {
@@ -288,62 +164,43 @@ export default {
       },
       "store.right.pagination": {
         handler () {
-          if(this.store.isRightTable){
-            this.doGetRightTable(this.$route.params.system);
-          }
         },
         deep: true
       },
       "store.searchMain" (val, oldVal){
         if(val || oldVal) {
           this.doGetLeftTable();
-
-          if(this.store.isRightTable){
-            this.doGetRightTable(this.$route.params.system);
-          }
         }
       }
     },
     mounted() {
       this.store.tabName = this.storeName;
-      this.store.isRightTable = this.$route.params.system;
     },
     methods: {
       getLeftTable () {
         this.$store.dispatch(`${this.storeName}/getLeftTable`)
       },
-      getRightTable (id) {
-        this.$store.dispatch(`${this.storeName}/getRightTable`, id)
-      },
       doGetLeftTable () {
         this.getLeftTable();
       },
-      doGetRightTable (id) {
-        this.getRightTable(id);
-      },
-      systemRowClick (evt) {
-        evt.preventDefault();
-        this.store.isRightTable = true;
-      },
-      rightDrillDownClick (props) {
-        if (this.store.right.reset == true)
-          props.expanded = false;
-        
-        this.store.right.reset = false;
-
-        if (this.store.right.reset == false)
-          props.expanded = !props.expanded;
-      },
       showRightTable(param){
-        //reset right table filter
-        this.store.filters.right = {};
-        this.store.right.reset = true;
+        this.$router.push(this.addressPath + '/' + param.RISK_SUB_TYPE);
+      },
+      toggleFieldDisplay(){
+        var toggleFieldName = (name) => {
+          var opts = this.store.leftHeaders.find(v => v.value == name);
+          opts.display = !opts.display;
+          this.hiddenFields = !this.hiddenFields; 
+        }
 
-        this.$router.push(this.addressPath + '/' + param.ID);
+        toggleFieldName('PR_COUNT');
+        toggleFieldName('CRM_COUNT');
+        toggleFieldName('CDE_COUNT');
       },
-      getCDEConclusion (cdes) {
-        return cdes.filter(Boolean).join(', ').indexOf("Yes") != -1 ? "Yes" : "No";
-      },
+      isDisplayed(name){
+        var opts = this.store.leftHeaders.find(v => v.value == name);
+        return opts ? opts.display : false;
+      }
     }
 }
 </script>

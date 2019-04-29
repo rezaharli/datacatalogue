@@ -62,11 +62,11 @@ SELECT DISTINCT
 
 -- name: dsc-view-cde
 SELECT DISTINCT 
-		TMC.ID,
-		TMT.ID														AS TMTID,
-		TS.ID														AS TSID,
-		TMC.ID														AS COLID,
-		TS.SYSTEM_NAME												AS SYSTEM_NAME,
+		TMCD.ID,
+		TMT.ID																						AS TMTID,
+		TS.ID																							AS TSID,
+		TMC.ID																						AS COLID,
+		TS.SYSTEM_NAME																		AS SYSTEM_NAME,
 		TMCD.ALIAS_NAME                        						AS CDE,
 		TMCD.DESCRIPTION                       						AS DESCRIPTION,
 		TMT.NAME                              						AS TABLE_NAME,
@@ -74,13 +74,8 @@ SELECT DISTINCT
 		TDP.NAME                              						AS DSP_NAME,
 		TP.FIRST_NAME||' '|| TP.LAST_NAME     						AS PROCESS_OWNER,
 		TP.BANK_ID                            						AS BANK_ID,
-		COUNT(DISTINCT TMCD.ALIAS_NAME) OVER () 					AS CDE_COUNT,
 		COUNT(DISTINCT TMCD.ALIAS_NAME) OVER ()						as COUNT_CDE,
-		COUNT(DISTINCT TMCD.DESCRIPTION) OVER ()					as COUNT_DESCRIPTION,
-		COUNT(DISTINCT TMT.NAME) OVER ()							as COUNT_TABLE_NAME,
-		COUNT(DISTINCT TMC.NAME) OVER ()							as COUNT_COLUMN_NAME,
-		COUNT(DISTINCT TDP.NAME) OVER ()							as COUNT_DSP_NAME,
-		COUNT(DISTINCT TP.FIRST_NAME||' '|| TP.LAST_NAME) OVER ()	as COUNT_PROCESS_OWNER
+		COUNT(DISTINCT TDP.NAME) OVER ()									as COUNT_DSP_NAME
 	FROM 
 		TBL_SYSTEM TS
 		INNER JOIN TBL_MD_RESOURCE TMR ON TS.ID = TMR.SYSTEM_ID

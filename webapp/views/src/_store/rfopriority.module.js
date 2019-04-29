@@ -1,4 +1,4 @@
-import { dscMyService } from '../_services/dscmy.service';
+import { rfoMyService } from '../_services/rfomy.service';
 import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
@@ -12,13 +12,12 @@ const state = {
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
-            { align: 'left', display: true, filterable: false, exportable: false, displayCount: false, sortable: false, text: 'Details', value: 'Details' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'CDE', value: 'CDE' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Description', value: 'DESCRIPTION' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Table Name', value: 'TABLE_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Column Name', value: 'COLUMN_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Downstream Process', value: 'DSP_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Downstream Process Owner', value: 'PROCESS_OWNER' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Priority Report', value: 'PRIORITY_REPORT' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Priority Report Rationale', value: 'PRIORITY_REPORT_RATIONALE' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'CRM Name', value: 'CRM_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'CRM Rationale', value: 'CRM_RATIONALE' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'CDE Name', value: 'CDE_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'CDE Rationale', value: 'CDE_RATIONALE' },
         ],
         isRightTable: false,
         DDSource: [],
@@ -44,7 +43,7 @@ const actions = {
 
         param.Pagination.rowsPerPage = -1;
 
-        return dscMyService.getCdeTable(param)
+        return rfoMyService.getPriorityTable(param)
             .then(
                 res => commit('getExportDataSuccess', res),
                 error => commit('getExportDataFailure', error)
@@ -63,23 +62,10 @@ const actions = {
             Pagination: state.all.left.pagination
         }
 
-        return dscMyService.getCdeTable(param)
+        return rfoMyService.getPriorityTable(param)
             .then(
                 res => commit('getLeftTableSuccess', res),
                 error => commit('getLeftTableFailure', error)
-            );
-    },
-    getDetails({ commit }, param) {
-        commit('getDetailsRequest');
-
-        return dscMyService.getDetails(param)
-            .then(
-                res => {
-                    commit('getDetailsSuccess', res.Data)
-
-                    return res;
-                },
-                error => commit('getDetailsFailure', error)
             );
     },
 };
@@ -111,22 +97,9 @@ const mutations = {
         state.all.left.isLoading = false;
         state.all.error = error;
     },
-    getDetailsRequest(state) {
-        state.all.detailsLoading = true;
-    },
-    getDetailsSuccess(state, data) {
-        state.all.detailsSource = data.Detail;
-        state.all.DDSource = data.DDSource;
-        
-        state.all.detailsLoading = false;
-    },
-    getDetailsFailure(state, error) {
-        state.all.detailsLoading = false;
-        state.all.error = error;
-    },
 };
 
-export const dsccde = {
+export const rfopriority = {
     namespaced: true,
     state,
     actions,

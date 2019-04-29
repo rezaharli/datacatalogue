@@ -16,33 +16,35 @@ func NewRFOService() *RFOService {
 	return ret
 }
 
-func (s *RFOService) GetLeftTable(tabs, loggedinid, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
+func (s *RFOService) GetLeftTable(tabs, loggedinid, search string, searchDD, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	gridArgs.QueryName = "left-grid"
-	gridArgs.PageNumber = pageNumber
-	gridArgs.RowsPerPage = rowsPerPage
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "rfo.sql")
+	gridArgs.QueryName = "rfo-view"
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 
 	if loggedinid != "" {
-		gridArgs.MainArgs = append(gridArgs.MainArgs, loggedinid)
+		gridArgs.MainArgs = append(gridArgs.MainArgs, "MY", loggedinid)
+	} else {
+		gridArgs.MainArgs = append(gridArgs.MainArgs, "ALL", "0000000")
 	}
 
 	///////// --------------------------------------------------DROPDOWN FILTER
-	searchDDM, err := toolkit.ToM(searchDD)
-	if err != nil {
-		return nil, 0, err
-	}
+	// searchDDM, err := toolkit.ToM(searchDD)
+	// if err != nil {
+	// 	return nil, 0, err
+	// }
 
-	filterPriorityReportName := ""
-	if search != "" {
-		filterPriorityReportName = search
-	} else {
-		filterPriorityReportName = searchDDM.GetString("PriorityReportName")
-	}
-	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter,
-		filterPriorityReportName,
-		searchDDM.GetString("RiskReportingLead"),
-	)
+	// filterPriorityReportName := ""
+	// if search != "" {
+	// 	filterPriorityReportName = search
+	// } else {
+	// 	filterPriorityReportName = searchDDM.GetString("PriorityReportName")
+	// }
+	// gridArgs.DropdownFilter = append(gridArgs.DropdownFilter,
+	// 	filterPriorityReportName,
+	// 	searchDDM.GetString("RiskReportingLead"),
+	// )
 
 	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
@@ -54,6 +56,12 @@ func (s *RFOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 			colFilterM.GetString("RR_LEAD"),
 			colFilterM.GetString("BANK_ID"),
 		)
+	}
+
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
 	}
 
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
@@ -93,6 +101,39 @@ func (s *RFOService) GetRightTable(tabs string, systemID int, search string, sea
 			colFilterM.GetString("ASSOC_CDES"),
 			colFilterM.GetString("CDE_RATIONALE"),
 		)
+	}
+
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
+}
+
+func (s *RFOService) GetPriorityTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "rfo.sql")
+	gridArgs.QueryName = "rfo-priority"
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
+
+	///////// --------------------------------------------------COLUMN FILTER
+	colFilterM, err := toolkit.ToM(colFilter)
+	if err != nil {
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "")
+	} else {
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
+			colFilterM.GetString("CDE"),
+			colFilterM.GetString("DESCRIPTION"),
+			colFilterM.GetString("TABLE_NAME"),
+			colFilterM.GetString("COLUMN_NAME"),
+			colFilterM.GetString("DSP_NAME"),
+			colFilterM.GetString("PROCESS_OWNER"),
+		)
+	}
+
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
 	}
 
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
