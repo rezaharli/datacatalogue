@@ -59,7 +59,7 @@ const actions = {
 
         param.Pagination.rowsPerPage = -1;
 
-        return dscMyService.getLeftTable(param)
+        return rfoMyService.getAllRisk(param)
             .then(
                 res => commit('getExportDataSuccess', res.Data),
                 error => commit('getExportDataFailure', error)

@@ -45,8 +45,10 @@ const actions = {
     exportData({ commit }) {
         commit('getExportDataRequest');
 
+        var user = JSON.parse(localStorage.getItem("user"));
+
         Object.keys(state.all.filters.left).map(function(key, index) {
-            state.all.filters.left[key] = state.all.filters.left[key] ? state.all.filters.left[key].toString() : "";
+            state.all.filters.left[key] = state.all.filters.left[key].toString();
         });
 
         var param = {
@@ -60,7 +62,7 @@ const actions = {
 
         param.Pagination.rowsPerPage = -1;
 
-        return dscMyService.getLeftTable(param)
+        return rfoMyService.getAllRisk(param)
             .then(
                 res => commit('getExportDataSuccess', res.Data),
                 error => commit('getExportDataFailure', error)

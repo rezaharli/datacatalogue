@@ -17,6 +17,7 @@ import { dpomy } from './dpomy.module';
 import { dpoall } from './dpoall.module';
 import { ddomy } from './ddomy.module';
 import { ddoall } from './ddoall.module';
+import { rfo } from './rfo.module';
 import { rfomy } from './rfomy.module';
 import { rfoall } from './rfoall.module';
 import { rfopriority } from './rfopriority.module';
@@ -31,6 +32,6 @@ export const store = new Vuex.Store({
         dsc, dscmy, dscall, dsccde, dsccdp, dsccdpcde, dscinterfaces, dscinterfacescde, dscdd,
         dpomy, dpoall,
         ddomy, ddoall,
-        rfomy, rfoall, rfopriority
+        rfo, rfomy, rfoall, rfopriority
     }
 });
