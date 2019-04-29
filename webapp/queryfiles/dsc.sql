@@ -257,13 +257,13 @@ SELECT DISTINCT
 		tmt.record_category						as record_categories,
 		tmcd.pii_flag							as pii_flag,
 		ips.system_name 						as imm_preceeding_system,
-		INCOMING_CDE_NAME						as imm_prec_incoming,
-		INCOMING_DERIVED						as imm_prec_derived,
-		INCOMING_DERIVATION_LOGIC		as imm_prec_derivation_logic,
+		ci.Incoming_CDE_Name						as imm_prec_incoming,
+		ci.INCOMING_DERIVED						as imm_prec_derived,
+		ci.INCOMING_DERIVATION_LOGIC		as imm_prec_derivation_logic,
 		iss.system_name 						as imm_succeeding_system,
-		OUTGOING_CDE_NAME						as imm_succ_incoming,
-		OUTGOING_DERIVED						as imm_succ_derived,
-		OUTGOING_DERIVATION_LOGIC		as imm_succ_derivation_logic,
+		ci.OUTGOING_CDE_NAME						as imm_succ_incoming,
+		ci.OUTGOING_DERIVED						as imm_succ_derived,
+		ci.OUTGOING_DERIVATION_LOGIC		as imm_succ_derivation_logic,
 		tmcd.DQ_STANDARDS||' '||tmcd.threshold	as threshold
 	FROM tbl_system ts
 		LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
