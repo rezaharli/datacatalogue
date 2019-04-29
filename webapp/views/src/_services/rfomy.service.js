@@ -187,6 +187,11 @@ function getPriorityTable(param) {
             });
 
             res.Data.forEach(v => {
+                v.PRIORITY_REPORT_RATIONALEsVal = _.cloneDeep(v.PRIORITY_REPORT_RATIONALEs);
+                v.CRM_NAMEsVal = _.cloneDeep(v.CRM_NAMEs);
+                v.CRM_RATIONALEsVal = _.cloneDeep(v.CRM_RATIONALEs);
+                v.CDE_NAMEsVal = _.cloneDeep(v.CDE_NAMEs);
+                
                 v.PRIORITY_REPORT_RATIONALEs.shift();
                 v.CRM_NAMEs.shift();
                 v.CRM_RATIONALEs.shift();
