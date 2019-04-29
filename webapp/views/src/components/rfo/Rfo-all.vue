@@ -50,7 +50,9 @@
                   </template>
 
                   <template slot="items" slot-scope="props">
-                      <td v-if="isDisplayed('PRINCIPAL_RISK_TYPES')"><tablecell :fulltext="props.item.PRINCIPAL_RISK_TYPES" showOn="hover"></tablecell></td>
+                    <tr>
+                      <td v-if="isDisplayed('PRINCIPAL_RISK_TYPES')" :rowspan="props.item.RISK_SUB_TYPEs.length + 1">
+                        <tablecell :fulltext="props.item.PRINCIPAL_RISK_TYPES" showOn="hover"></tablecell></td>
                       
                       <td v-if="isDisplayed('RISK_SUB_TYPE')">
                         <b-link @click.stop="showRightTable(props.item)">
@@ -70,6 +72,28 @@
                       
                       <td v-if="isDisplayed('CDE_COUNT')">
                         <tablecell :fulltext="props.item.CDE_COUNT" showOn="click"></tablecell></td>
+                    </tr>
+
+                    <tr :key="props.item.ID + '' + i" v-for="(item, i) in props.item.RISK_SUB_TYPEs">
+                      <td v-if="isDisplayed('RISK_SUB_TYPE')">
+                        <b-link @click.stop="showRightTable(item)">
+                          <tablecell :fulltext="item.RISK_SUB_TYPE" showOn="hover"></tablecell></b-link></td>
+                      
+                      <td v-if="isDisplayed('RISK_FRAMEWORK_OWNER')">
+                        <tablecell :fulltext="item.RISK_FRAMEWORK_OWNER" showOn="click"></tablecell></td>
+                      
+                      <td v-if="isDisplayed('RISK_REPORTING_LEAD')">
+                        <tablecell :fulltext="item.RISK_REPORTING_LEAD" showOn="click"></tablecell></td>
+                      
+                      <td v-if="isDisplayed('PR_COUNT')">
+                        <tablecell :fulltext="item.PR_COUNT" showOn="click"></tablecell></td>
+                      
+                      <td v-if="isDisplayed('CRM_COUNT')">
+                        <tablecell :fulltext="item.CRM_COUNT" showOn="click"></tablecell></td>
+                      
+                      <td v-if="isDisplayed('CDE_COUNT')">
+                        <tablecell :fulltext="item.CDE_COUNT" showOn="click"></tablecell></td>
+                    </tr>
                   </template>
                 </v-data-table>
               </div>

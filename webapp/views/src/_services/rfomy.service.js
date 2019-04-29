@@ -97,16 +97,28 @@ function getAllRisk(param) {
                 ret.PRINCIPAL_RISK_TYPESsVal = tmpTmp;
                 ret.PRINCIPAL_RISK_TYPES = v;
 
+                var tmp2 = _.groupBy(tmp[v], "RISK_SUB_TYPE");  
+                ret.RISK_SUB_TYPEs = _.map(Object.keys(tmp2), function(w, j){
+                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
+
+                    var ret = tmpTmp2[0];
+                    ret.ID = j;
+                    ret.RISK_SUB_TYPEsVal = tmpTmp2;
+                    ret.RISK_SUB_TYPE = w;
+
+                    return ret;
+                });
+
                 return ret;
             });
 
-            // res.Data.forEach(v => {
-            //     v.RISK_SUB_TYPEs.shift();
+            res.Data.forEach(v => {
+                v.RISK_SUB_TYPEs.shift();
             //     v.RISK_FRAMEWORK_OWNERs.shift();
             //     v.RISK_REPORTING_LEADs.shift();
 
             //     v.theMostLength = _.max([v.RISK_SUB_TYPEs, v.RISK_FRAMEWORK_OWNERs, v.RISK_REPORTING_LEADs], v => v.length);
-            // });
+            });
             
             return res;
         },
