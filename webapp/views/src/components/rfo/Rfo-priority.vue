@@ -136,10 +136,14 @@
                         <tablecell showOn="hover" :fulltext="item.CRM_RATIONALE"></tablecell>
                       </td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['CDE_NAME'] + 'px' }" class="text-uppercase">
+                      <td 
+                          v-if="props.item.CDE_NAMEs.length > 0" 
+                          v-bind:style="{ width: store.left.colWidth['CDE_NAME'] + 'px' }" class="text-uppercase">
                         <tablecell showOn="hover" :fulltext="item.CDE_NAME"></tablecell></td>
                         
-                      <td v-bind:style="{ width: store.left.colWidth['CDE_RATIONALE'] + 'px' }">
+                      <td 
+                          v-if="props.item.CDE_NAMEs.length > 0" 
+                          v-bind:style="{ width: store.left.colWidth['CDE_RATIONALE'] + 'px' }">
                         <tablecell showOn="hover" :fulltext="item.CDE_RATIONALE"></tablecell></td>
                     </tr>
                   </template>

@@ -137,7 +137,7 @@ function getPriorityTable(param) {
 
                 var tmp2 = _.groupBy(tmp[v], "PRIORITY_REPORT_RATIONALE");  
                 ret.PRIORITY_REPORT_RATIONALEs = _.map(Object.keys(tmp2), function(w, j){
-                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
+                    var tmpTmp2 = (tmp2[w]);
 
                     var ret = tmpTmp2[0];
                     ret.ID = j;
@@ -149,7 +149,7 @@ function getPriorityTable(param) {
 
                 var tmp3 = _.groupBy(tmp[v], "CRM_NAME");  
                 ret.CRM_NAMEs = _.map(Object.keys(tmp3), function(w, j){
-                    var tmpTmp3 = _.cloneDeep(tmp3[w]);
+                    var tmpTmp3 = (tmp3[w]);
 
                     var ret = tmpTmp3[0];
                     ret.ID = j;
@@ -161,12 +161,24 @@ function getPriorityTable(param) {
 
                 var tmp4 = _.groupBy(tmp[v], "CRM_RATIONALE");  
                 ret.CRM_RATIONALEs = _.map(Object.keys(tmp4), function(w, j){
-                    var tmpTmp4 = _.cloneDeep(tmp4[w]);
+                    var tmpTmp4 = (tmp4[w]);
 
                     var ret = tmpTmp4[0];
                     ret.ID = j;
                     ret.CRM_RATIONALEsVal = tmpTmp4;
                     ret.CRM_RATIONALE = w;
+
+                    return ret;
+                });
+
+                var tmp5 = _.groupBy(tmp[v], "CDE_NAME");  
+                ret.CDE_NAMEs = _.map(Object.keys(tmp5), function(w, j){
+                    var tmpTmp5 = (tmp5[w]);
+
+                    var ret = tmpTmp5[0];
+                    ret.ID = j;
+                    ret.CDE_NAMEsVal = tmpTmp5;
+                    ret.CDE_NAME = w;
 
                     return ret;
                 });
@@ -178,12 +190,16 @@ function getPriorityTable(param) {
                 v.PRIORITY_REPORT_RATIONALEs.shift();
                 v.CRM_NAMEs.shift();
                 v.CRM_RATIONALEs.shift();
+                v.CDE_NAMEs.shift();
 
-                v.theMostLength = _.max([v.PRIORITY_REPORT_RATIONALEs, v.CRM_NAMEs, v.CRM_RATIONALEs], v => v.length);
-                var lengths = [v.PRIORITY_REPORT_RATIONALEs.length + 1, v.CRM_NAMEs.length + 1, v.CRM_RATIONALEs.length + 1];
+                v.theMostLength = _.max([v.PRIORITY_REPORT_RATIONALEs, v.CRM_NAMEs, v.CRM_RATIONALEs, v.CDE_NAMEs], v => v.length);
+                var lengths = [v.PRIORITY_REPORT_RATIONALEs.length + 1, v.CRM_NAMEs.length + 1, v.CRM_RATIONALEs.length + 1, v.CDE_NAMEs.length + 1];
+
+                console.log(lengths);
+                
                 
                 v.rowspanAcuan = lcm(lengths);
-                v.expanded = false;
+                v.expanded = true;
             });
             
             console.log(res.Data);
