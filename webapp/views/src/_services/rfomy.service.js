@@ -114,10 +114,6 @@ function getAllRisk(param) {
 
             res.Data.forEach(v => {
                 v.RISK_SUB_TYPEs.shift();
-            //     v.RISK_FRAMEWORK_OWNERs.shift();
-            //     v.RISK_REPORTING_LEADs.shift();
-
-            //     v.theMostLength = _.max([v.RISK_SUB_TYPEs, v.RISK_FRAMEWORK_OWNERs, v.RISK_REPORTING_LEADs], v => v.length);
             });
             
             return res;
