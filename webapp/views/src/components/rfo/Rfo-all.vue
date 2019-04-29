@@ -65,7 +65,8 @@
                         <tablecell :fulltext="props.item.RISK_REPORTING_LEAD" showOn="click"></tablecell></td>
                       
                       <td v-if="isDisplayed('PR_COUNT')">
-                        <tablecell :fulltext="props.item.PR_COUNT" showOn="click"></tablecell></td>
+                        <b-link @click.stop="showRightTable(props.item)">
+                          <tablecell :fulltext="props.item.PR_COUNT" showOn="click"></tablecell></b-link></td>
                       
                       <td v-if="isDisplayed('CRM_COUNT')">
                         <tablecell :fulltext="props.item.CRM_COUNT" showOn="click"></tablecell></td>
