@@ -192,17 +192,30 @@ function getPriorityTable(param) {
                 v.CRM_RATIONALEs.shift();
                 v.CDE_NAMEs.shift();
 
-                v.theMostLength = _.max([v.PRIORITY_REPORT_RATIONALEs, v.CRM_NAMEs, v.CRM_RATIONALEs, v.CDE_NAMEs], v => v.length);
                 var lengths = [v.PRIORITY_REPORT_RATIONALEs.length + 1, v.CRM_NAMEs.length + 1, v.CRM_RATIONALEs.length + 1, v.CDE_NAMEs.length + 1];
-
-                console.log(lengths);
-                
-                
                 v.rowspanAcuan = lcm(lengths);
-                v.expanded = true;
+
+                v.theMostLength = _.max([v.PRIORITY_REPORT_RATIONALEs, v.CRM_NAMEs, v.CRM_RATIONALEs, v.CDE_NAMEs], v => v.length);
+
+                v.childrenRow = [];
+                v.theMostLength.forEach((w, i) => { // 012
+                    var PRIORITY_REPORT_RATIONALEsSkip = (v.rowspanAcuan / (v.PRIORITY_REPORT_RATIONALEs.length + 1)) - 1;
+                    var CRM_NAMEsSkip = (v.rowspanAcuan / (v.CRM_NAMEs.length + 1)) - 1;
+                    var CRM_RATIONALEsSkip = (v.rowspanAcuan / (v.CRM_RATIONALEs.length + 1)) - 1;
+                    var CDE_NAMEsSkip = (v.rowspanAcuan / (v.CDE_NAMEs.length + 1)) - 1;
+
+                    v.childrenRow.push({
+                        PRIORITY_REPORT_RATIONALE: i >= PRIORITY_REPORT_RATIONALEsSkip ? (v.PRIORITY_REPORT_RATIONALEs[i - (PRIORITY_REPORT_RATIONALEsSkip)] ? v.PRIORITY_REPORT_RATIONALEs[i - (PRIORITY_REPORT_RATIONALEsSkip)].PRIORITY_REPORT_RATIONALE : null) : null,
+                        CRM_NAME: i >= CRM_NAMEsSkip ? (v.CRM_NAMEs[i - (CRM_NAMEsSkip)] ? v.CRM_NAMEs[i - (CRM_NAMEsSkip)].CRM_NAME : null) : null,
+                        CRM_RATIONALE: i >= CRM_RATIONALEsSkip ? (v.CRM_RATIONALEs[i - (CRM_RATIONALEsSkip)] ? v.CRM_RATIONALEs[i - (CRM_RATIONALEsSkip)].CRM_RATIONALE : null) : null,
+                        CDE_NAME: i >= CDE_NAMEsSkip ? (v.CDE_NAMEs[i - (CDE_NAMEsSkip)] ? v.CDE_NAMEs[i - (CDE_NAMEsSkip)].CDE_NAME : null) : null,
+                        CDE_RATIONALE: i >= CDE_NAMEsSkip ? (v.CDE_NAMEs[i - (CDE_NAMEsSkip)] ? v.CDE_NAMEs[i - (CDE_NAMEsSkip)].CDE_RATIONALE : null) : null,
+                    })
+                });
+                
+                v.expanded = false;
             });
             
-            console.log(res.Data);
             return res;
         },
     );
