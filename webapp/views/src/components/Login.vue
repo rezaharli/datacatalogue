@@ -28,7 +28,8 @@
                             label="Password"
                             label-for="password">
                         <div class="passw-container">
-                            <v-icon color="#95a5a6" class="fas" v-text="passwordIcon" @click="hidePassword = !hidePassword">visibility</v-icon>
+                            <!-- <v-icon color="#95a5a6" class="fas" v-text="passwordIcon" @click="hidePassword = !hidePassword">visibility</v-icon> -->
+                            <i class="fa fas" v-bind:class="{'fa-eye' : hidePassword, 'fa-eye-slash' : !hidePassword }" @click="hidePassword = !hidePassword"></i>
                             <b-form-input id="password"
                                 :type="passwordType"
                                 v-model="password"

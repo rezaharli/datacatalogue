@@ -66,7 +66,9 @@ div#app div#login div#form .fas {
     caret-color: rgb(149, 165, 166);
     position: absolute;
     right: 0.4rem;
-    top: 0.4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
 }
 
 div#app div#login div#form .passw-container {
