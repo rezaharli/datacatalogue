@@ -1,17 +1,3 @@
-<style>
-/* table.v-table thead th > div.btn-group {
-  	width: auto;
-}
-
-.header-filter-icon .dropdown-menu {
-	overflow: scroll;
-	height: 200px;
-} */
-td {
-  border-bottom: 1px solid black !important;
-}
-</style>
-
 <template>
     <v-content class="mx-4 my-5">
         <b-container fluid>
