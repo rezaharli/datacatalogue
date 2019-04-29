@@ -49,12 +49,16 @@ func (s *RFOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "")
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "", "")
 	} else {
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("PRIORITY_REPORT"),
-			colFilterM.GetString("RR_LEAD"),
-			colFilterM.GetString("BANK_ID"),
+			colFilterM.GetString("PRINCIPAL_RISK_TYPES"),
+			colFilterM.GetString("RISK_SUB_TYPE"),
+			colFilterM.GetString("RISK_FRAMEWORK_OWNER"),
+			colFilterM.GetString("RISK_REPORTING_LEAD"),
+			colFilterM.GetString("PR_COUNT"),
+			colFilterM.GetString("CRM_COUNT"),
+			colFilterM.GetString("CDE_COUNT"),
 		)
 	}
 
@@ -121,12 +125,12 @@ func (s *RFOService) GetPriorityTable(system string, colFilter interface{}, pagi
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "")
 	} else {
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("CDE"),
-			colFilterM.GetString("DESCRIPTION"),
-			colFilterM.GetString("TABLE_NAME"),
-			colFilterM.GetString("COLUMN_NAME"),
-			colFilterM.GetString("DSP_NAME"),
-			colFilterM.GetString("PROCESS_OWNER"),
+			colFilterM.GetString("PRIORITY_REPORT"),
+			colFilterM.GetString("PRIORITY_REPORT_RATIONALE"),
+			colFilterM.GetString("CRM_NAME"),
+			colFilterM.GetString("CRM_RATIONALE"),
+			colFilterM.GetString("CDE_NAME"),
+			colFilterM.GetString("CDE_RATIONALE"),
 		)
 	}
 
