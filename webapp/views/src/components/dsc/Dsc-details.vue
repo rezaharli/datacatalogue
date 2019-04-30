@@ -217,11 +217,11 @@ legend.col-form-label, label.col-form-label {
                         <b-form-select id="precIncoming" class="col-8" v-model="ddPrecIncomingSelected" :options="ddPrecIncomingOptions"></b-form-select>
                       </b-form-group>
 
-                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)*">
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Incoming Derived (Yes/No)*">
                         <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_PREC_DERIVED : ''"></text-wrap-dialog>
                       </b-form-group>
 
-                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation Logic*">
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Incoming Derivation Logic*">
                         <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_PREC_DERIVATION_LOGIC : ''"></text-wrap-dialog>
                       </b-form-group>
 
@@ -233,11 +233,11 @@ legend.col-form-label, label.col-form-label {
                         <b-form-select id="succIncoming" class="col-8" v-model="ddSuccIncomingSelected" :options="ddSuccIncomingOptions"></b-form-select>
                       </b-form-group>
 
-                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)*">
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Outgoing Derived (Yes/No)*">
                         <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_SUCC_DERIVED : ''"></text-wrap-dialog>
                       </b-form-group>
 
-                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation Logic*">
+                      <b-form-group horizontal :label-cols="4" breakpoint="md" label="Outgoing Derivation Logic*">
                         <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_SUCC_DERIVATION_LOGIC : ''"></text-wrap-dialog>
                       </b-form-group>
 
@@ -358,12 +358,12 @@ export default {
         "Business Term Description": "selectedDetails.BUSINESS_TERM_DESCRIPTION",
         "Immediate Preceeding System*": "selectedDetails.IMM_PRECEEDING_SYSTEM",
         "Incoming Data elements": "selectedDetails.IMM_PREC_INCOMING",
-        "Derived (Yes/No)": "selectedDetails.IMM_PREC_DERIVED",
-        "Derivation Logic": "selectedDetails.IMM_PREC_DERIVATION_LOGIC",
+        "Incoming Derived (Yes/No)": "selectedDetails.IMM_PREC_DERIVED",
+        "Incoming Derivation Logic": "selectedDetails.IMM_PREC_DERIVATION_LOGIC",
         "Immediate Succeeding System*": "selectedDetails.IMM_SUCCEEDING_SYSTEM",
         "Outgoing Data Element": "selectedDetails.IMM_SUCC_INCOMING",
-        "Derived(Yes/No)": "selectedDetails.IMM_SUCC_DERIVED",
-        "Derivation Logic": "selectedDetails.IMM_SUCC_DERIVATION_LOGIC",
+        "Outgoing Derived(Yes/No)": "selectedDetails.IMM_SUCC_DERIVED",
+        "Outgoing Derivation Logic": "selectedDetails.IMM_SUCC_DERIVATION_LOGIC",
         "DQ Standards | Threshold*": "selectedDetails.THRESHOLD",
         "Information Asset Names": "selectedDetails.INFORMATION_ASSET_NAMES",
         "Information Asset Description": "selectedDetails.INFORMATION_ASSET_DESCRIPTION",

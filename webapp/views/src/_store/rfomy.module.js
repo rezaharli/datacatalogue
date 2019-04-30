@@ -23,9 +23,9 @@ const state = {
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Risk Sub Type', value: 'RISK_SUB_TYPE' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Risk Framework Owner', value: 'RISK_FRAMEWORK_OWNER' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Risk Reporting Lead', value: 'RISK_REPORTING_LEAD' },
-            { align: 'left', display: false, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Unique Count of Risk Reporting Lead', value: 'PR_COUNT' },
-            { align: 'left', display: false, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Unique Count of Critical Risk Measures', value: 'CRM_COUNT' },
-            { align: 'left', display: false, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Unique Count of Critical Data Element', value: 'CDE_COUNT' },
+            { align: 'left', display: false, filterable: false, exportable: true, displayCount: false, sortable: true, text: 'Unique Count of Risk Reporting Lead', value: 'PR_COUNT' },
+            { align: 'left', display: false, filterable: false, exportable: true, displayCount: false, sortable: true, text: 'Unique Count of Critical Risk Measures', value: 'CRM_COUNT' },
+            { align: 'left', display: false, filterable: false, exportable: true, displayCount: false, sortable: true, text: 'Unique Count of Critical Data Element', value: 'CDE_COUNT' },
         ],
         // rightHeaders: [
         //   { text: 'Table Name', align: 'left', sortable: false, value: 'TABLE_NAME', displayCount: true, width: "25%" },
@@ -45,8 +45,10 @@ const actions = {
     exportData({ commit }) {
         commit('getExportDataRequest');
 
+        var user = JSON.parse(localStorage.getItem("user"));
+
         Object.keys(state.all.filters.left).map(function(key, index) {
-            state.all.filters.left[key] = state.all.filters.left[key] ? state.all.filters.left[key].toString() : "";
+            state.all.filters.left[key] = state.all.filters.left[key].toString();
         });
 
         var param = {
@@ -60,7 +62,7 @@ const actions = {
 
         param.Pagination.rowsPerPage = -1;
 
-        return dscMyService.getLeftTable(param)
+        return rfoMyService.getAllRisk(param)
             .then(
                 res => commit('getExportDataSuccess', res.Data),
                 error => commit('getExportDataFailure', error)

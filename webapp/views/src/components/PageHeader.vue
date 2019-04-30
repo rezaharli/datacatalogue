@@ -41,6 +41,10 @@
                 <b-dropdown-item v-if="$route.name == 'dsc.interfaces.cde'">
                     <router-link :to="goToLevel3" class="standard-a">Immediate Interface View</router-link>
                 </b-dropdown-item>
+
+                <b-dropdown-item v-if="$route.name == 'rfo.priority' || $route.name.indexOf('rfo.') != -1">
+                    <router-link to="/rfo" class="standard-a">RFO View</router-link>
+                </b-dropdown-item>
             </b-dropdown>
 
             <v-toolbar-title to="/" class="app-title text-capitalize"><router-link to="/" class="toolbar-title">{{ $route.name.indexOf('dsc.') != -1 ? $route.params.system : "Data Catalogue" }}</router-link></v-toolbar-title>

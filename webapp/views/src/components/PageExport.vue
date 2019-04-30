@@ -46,7 +46,7 @@ export default {
                 tofilter = this.leftTableCols;
             }
             
-            return tofilter.filter(v => v.filterable)
+            return tofilter.filter(v => v.exportable)
         },
         RightTableCols () {
             var tofilter = [];
