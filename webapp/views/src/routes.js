@@ -24,6 +24,7 @@ import DpoAll from './components/dpo/Dpo-all';
 
 import Ddo from './components/ddo/Ddo';
 import DdoMenu from './components/ddo/Ddo-menu';
+import DdoBusinessterm from './components/ddo/Ddo-businessterm';
 import DdoDetails from './components/ddo/Ddo-details';
 import DdoMy from './components/ddo/Ddo-my';
 import DdoAll from './components/ddo/Ddo-all';
@@ -186,6 +187,12 @@ const router = new VueRouter({
       title: "DDO - Data Catalogue",
       permission: "DDO"
     },
+  }, { // ddo.businessterm
+    path: '/ddo/businessterm/:system', name: 'ddo.businessterm', component: DdoBusinessterm, 
+    meta: { 
+      title: "DDO - Data Catalogue",
+      permission: "DDO"
+    }
   },
   // { // ddo
   //   path: '/ddo', component: Ddo, 
