@@ -18,19 +18,19 @@
             </b-row>
         </b-container>
 
-        <b-container>
+        <b-container fluid>
             <b-row>
-                <b-col sm=12 md=1 lg=1 />
+                <!-- <b-col sm=12 md=1 lg=1 /> -->
 
-                <b-col sm=12 md=5 lg=5>
+                <b-col sm=12 md=6 lg=6>
                     <rfo-my />
                 </b-col>
 
-                <b-col sm=12 md=5 lg=5>
+                <b-col sm=12 md=6 lg=6>
                     <rfo-all />
                 </b-col>
 
-                <b-col sm=12 md=1 lg=1 />
+                <!-- <b-col sm=12 md=1 lg=1 /> -->
             </b-row>
         </b-container>
     </v-content>
