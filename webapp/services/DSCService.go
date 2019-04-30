@@ -209,11 +209,12 @@ func (s *DSCService) GetInterfacesTable(system string, colFilter interface{}, pa
 	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "")
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "")
 	} else {
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
 			colFilterM.GetString("IMM_INTERFACE"),
 			colFilterM.GetString("CDE_COUNT"),
+			colFilterM.GetString("PROCESS_OWNER"),
 		)
 	}
 
