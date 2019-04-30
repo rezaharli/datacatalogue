@@ -23,6 +23,7 @@ import DpoMy from './components/dpo/Dpo-my';
 import DpoAll from './components/dpo/Dpo-all';
 
 import Ddo from './components/ddo/Ddo';
+import DdoMenu from './components/ddo/Ddo-menu';
 import DdoDetails from './components/ddo/Ddo-details';
 import DdoMy from './components/ddo/Ddo-my';
 import DdoAll from './components/ddo/Ddo-all';
@@ -178,6 +179,12 @@ const router = new VueRouter({
     meta: { 
       title: "DSC - Data Catalogue",
       permission: "DSC"
+    },
+  }, { // ddo.menu
+    path: '/ddo/:system', name: 'ddo.menu', component: DdoMenu, 
+    meta: { 
+      title: "DDO - Data Catalogue",
+      permission: "DDO"
     },
   },
   // { // ddo
