@@ -16,7 +16,7 @@
               <div class="card card-v1 transition">
                 <div class="title-wrapper transition">
                   <v-img :src="images.all" :contain="true" class="card-icon transition"></v-img>
-                  <h2 class="transition title-1">All Risk Types</h2>
+                  <h2 class="transition title-1">My Risk Types</h2>
                   <b-link v-on:click="toggleFieldDisplay()" class="toggle-field-display">
                     <span v-if="hiddenFields">show all columns &raquo;</span>
                     <span v-else>&laquo; show less columns</span>
