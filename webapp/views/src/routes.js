@@ -174,61 +174,69 @@ const router = new VueRouter({
       }]
     }]
   }, { // ddo
-    path: '/ddo', component: Ddo, 
+    path: '/ddo', name: 'ddo', component: Ddo, 
     meta: { 
-      title: "DDO - Data Catalogue",
-      permission: "DDO"
-    }, 
-    children: [{ 
-      path: '', name: 'ddo', redirect: { name: 'ddo.my' }
-    }, { //ddo.my
-      path: 'my', 
-      name: 'ddo.my', 
-      component: DdoMy, 
-      meta: { 
-        title: "DDO - Data Catalogue",
-        showModal: false,
-        permission: "DDO"
-      } 
-    }, { // ddo.my.system
-      path: 'my/:system', name: 'ddo.my', component: DdoMy, 
-      meta: { 
-        title: "DDO - Data Catalogue",
-        showModal: false,
-        permission: "DDO"
-      }, 
-      children: [{ // ddo.my.system.details
-        path: ':details', name: 'ddo.my.details', component: DdoDetails,
-        meta: { 
-          title: "DDO Details - Data Catalogue",
-          showModal: true,
-          permission: "DDO"
-        } 
-      }] 
-    }, { // ddo.all
-      path: 'all', name: 'ddo.all', component: DdoAll, 
-      meta: { 
-        title: "DDO - Data Catalogue" ,
-        showModal: false,
-        permission: "DDO"
-      } 
-    }, { 
-      path: 'all/:system', name: 'ddo.all', component: DdoAll, 
-      meta: { 
-        title: "DDO - Data Catalogue" ,
-        showModal: false,
-        permission: "DDO"
-      }, 
-      children: [{ // ddo.all.system.details
-        path: ':details', name: 'ddo.all.details', component: DdoDetails,
-        meta: { 
-          title: "DDO Details - Data Catalogue",
-          showModal: true,
-          permission: "DDO"
-        } 
-      }]
-    }]
-  }, { // rfo
+      title: "DSC - Data Catalogue",
+      permission: "DSC"
+    },
+  },
+  // { // ddo
+  //   path: '/ddo', component: Ddo, 
+  //   meta: { 
+  //     title: "DDO - Data Catalogue",
+  //     permission: "DDO"
+  //   }, 
+  //   children: [{ 
+  //     path: '', name: 'ddo', redirect: { name: 'ddo.my' }
+  //   }, { //ddo.my
+  //     path: 'my', 
+  //     name: 'ddo.my', 
+  //     component: DdoMy, 
+  //     meta: { 
+  //       title: "DDO - Data Catalogue",
+  //       showModal: false,
+  //       permission: "DDO"
+  //     } 
+  //   }, { // ddo.my.system
+  //     path: 'my/:system', name: 'ddo.my', component: DdoMy, 
+  //     meta: { 
+  //       title: "DDO - Data Catalogue",
+  //       showModal: false,
+  //       permission: "DDO"
+  //     }, 
+  //     children: [{ // ddo.my.system.details
+  //       path: ':details', name: 'ddo.my.details', component: DdoDetails,
+  //       meta: { 
+  //         title: "DDO Details - Data Catalogue",
+  //         showModal: true,
+  //         permission: "DDO"
+  //       } 
+  //     }] 
+  //   }, { // ddo.all
+  //     path: 'all', name: 'ddo.all', component: DdoAll, 
+  //     meta: { 
+  //       title: "DDO - Data Catalogue" ,
+  //       showModal: false,
+  //       permission: "DDO"
+  //     } 
+  //   }, { 
+  //     path: 'all/:system', name: 'ddo.all', component: DdoAll, 
+  //     meta: { 
+  //       title: "DDO - Data Catalogue" ,
+  //       showModal: false,
+  //       permission: "DDO"
+  //     }, 
+  //     children: [{ // ddo.all.system.details
+  //       path: ':details', name: 'ddo.all.details', component: DdoDetails,
+  //       meta: { 
+  //         title: "DDO Details - Data Catalogue",
+  //         showModal: true,
+  //         permission: "DDO"
+  //       } 
+  //     }]
+  //   }]
+  // }, 
+  { // rfo
     path: '/rfo', name: 'rfo', component: Rfo, 
     meta: { 
       title: "RFO - Data Catalogue",

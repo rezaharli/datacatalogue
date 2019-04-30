@@ -15,6 +15,7 @@ import { dscinterfacescde } from './dscinterfacescde.module';
 import { dscdd } from './dscdd.module';
 import { dpomy } from './dpomy.module';
 import { dpoall } from './dpoall.module';
+import { ddo } from './ddo.module';
 import { ddomy } from './ddomy.module';
 import { ddoall } from './ddoall.module';
 import { rfo } from './rfo.module';
@@ -31,7 +32,7 @@ export const store = new Vuex.Store({
         users,
         dsc, dscmy, dscall, dsccde, dsccdp, dsccdpcde, dscinterfaces, dscinterfacescde, dscdd,
         dpomy, dpoall,
-        ddomy, ddoall,
+        ddo, ddomy, ddoall,
         rfo, rfomy, rfoall, rfopriority
     }
 });
