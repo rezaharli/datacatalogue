@@ -3,6 +3,7 @@ import { fetchWHeader } from '../_helpers/auth-header';
 export const ddoMyService = {
     getLeftTable,
     getHomepageCounts,
+    getBusinesstermTable,
     getRightTable,
     getDetails
 };
@@ -30,6 +31,10 @@ function getHomepageCounts(param) {
         res.Data = res.Data[0] ? res.Data[0] : null;
         return res;
     });
+}
+
+function getBusinesstermTable(param) {
+    return fetchWHeader(`/ddo/getbusinesstermtable`, param);
 }
 
 function getRightTable(param) {
