@@ -12,8 +12,8 @@ const state = {
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Business Term', value: 'BUSINESS_TERM' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Description', value: 'DESCRIPTION' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Systems', value: 'SYSTEM_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'List of Business Terms', value: 'BT_COUNT' },
         ],
         isRightTable: false,
         DDSource: [],

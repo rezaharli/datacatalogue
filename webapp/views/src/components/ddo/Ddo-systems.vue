@@ -19,14 +19,29 @@
             <b-row>
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
-                        <h6 class="title-1">System Name</h6>
-                        <h3 class="title-2 text-capitalize">{{$route.params.system}}</h3>
+                        <h6 class="title-1">Data Domain</h6>
+                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["DATA_DOMAIN"] : "0" }}</h3>
                     </div>
                 </b-col>
+
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
-                        <h6 class="title-1">Downstream Processes</h6>
-                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["COUNT_DSP_NAME"] : "0" }}</h3>
+                        <h6 class="title-1">Sub-domain</h6>
+                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["SUB_DOMAINS"] : "0" }}</h3>
+                    </div>
+                </b-col>
+
+                <b-col sm=12 md=3>
+                    <div class="card card-v2 transition">
+                        <h6 class="title-1">Sub-domain Owner</h6>
+                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["SUB_DOMAIN_OWNER"] : "0" }}</h3>
+                    </div>
+                </b-col>
+
+                <b-col sm=12 md=3>
+                    <div class="card card-v2 transition">
+                        <h6 class="title-1">Systems Mapped</h6>
+                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["BT_SYSTEMS_COUNT"] : "0" }}</h3>
                     </div>
                 </b-col>
             </b-row>
@@ -76,8 +91,8 @@
 
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                      <td style="width: calc(100% / 6)" class="text-uppercase">{{props.item.BUSINESS_TERM}}</td>
-                      <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+                      <td style="width: calc(100% / 6)" class="text-uppercase">{{props.item.SYSTEM_NAME}}</td>
+                      <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.BT_COUNT" showOn="click"></tablecell></td>
                     </tr>
                   </template>
                 </v-data-table>
