@@ -69,6 +69,35 @@ func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
+func (s *DDOService) GetHomepageCounts(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	system := payload.GetString("System")
+	args = append(args, system, system, system)
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddo.sql")
+	q, err := h.BuildQueryFromFile(filePath, "ddo-view-homepage", []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
 func (s *DDOService) GetRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
 	gridArgs := GridArgs{}
 	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
