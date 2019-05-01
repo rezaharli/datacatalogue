@@ -123,10 +123,6 @@ export default {
         if (to.params != undefined) {
           this.store.isRightTable = to.params.system; 
         }
-
-        if(this.store.isRightTable){
-          this.doGetRightTable(this.$route.params.system);
-        }
       },
       "store.left.pagination": {
         handler () {
@@ -135,45 +131,27 @@ export default {
         deep: true
       },
       "store.right.pagination": {
-        handler () {
-          if(this.store.isRightTable){
-            this.doGetRightTable(this.$route.params.system);
-          }
-        },
+        handler () {},
         deep: true
       },
       "store.searchMain" (val, oldVal){
         if(val || oldVal) {
           this.doGetLeftTable();
-
-          if(this.store.isRightTable){
-            this.doGetRightTable(this.$route.params.system);
-          }
         }
       }
     },
     mounted() {
       this.store.tabName = this.storeName;
-      this.store.isRightTable = this.$route.params.system;
     },
     methods: {
       getLeftTable () {
         this.$store.dispatch(`${this.storeName}/getLeftTable`)
       },
-      getRightTable (id) {
-        this.$store.dispatch(`${this.storeName}/getRightTable`, id)
-      },
       doGetLeftTable () {
         this.getLeftTable();
       },
-      doGetRightTable (id) {
-        this.getRightTable(id);
-      },
       showRightTable(param){
-        //reset right table filter
-        this.store.filters.right = {};
-
-        this.$router.push(this.addressPath + '/' + param.SYSTEM_NAME);
+        this.$router.push(this.addressPath + '/' + param.SUB_DOMAINS);
       },
     }
 }
