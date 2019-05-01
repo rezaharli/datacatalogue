@@ -73,7 +73,7 @@ body, .application--wrap{
 } */
 
 .is-highlighted p {
-    background-color: rgba(86, 188, 179, 0.85) !important;
+    background-color: #009688 !important;
     padding: 3px 6px;
     color: #ffffff;
     border-radius: 5px;
