@@ -20,35 +20,37 @@ func NewDDOService() *DDOService {
 	return ret
 }
 
-func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
+func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	gridArgs.QueryName = "left-grid"
-	gridArgs.PageNumber = pageNumber
-	gridArgs.RowsPerPage = rowsPerPage
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "ddo.sql")
+	gridArgs.QueryName = "ddo-view"
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 
 	if loggedinid != "" {
-		gridArgs.MainArgs = append(gridArgs.MainArgs, loggedinid)
+		gridArgs.MainArgs = append(gridArgs.MainArgs, "MY", loggedinid)
+	} else {
+		gridArgs.MainArgs = append(gridArgs.MainArgs, "ALL", "0000000")
 	}
 
 	///////// --------------------------------------------------DROPDOWN FILTER
-	searchDDM, err := toolkit.ToM(searchDD)
-	if err != nil {
-		return nil, 0, err
-	}
+	// searchDDM, err := toolkit.ToM(searchDD)
+	// if err != nil {
+	// 	return nil, 0, err
+	// }
 
-	filterSubDomains := ""
-	if search != "" {
-		filterSubDomains = search
-	} else {
-		filterSubDomains = searchDDM.GetString("SubDataDomain")
-	}
+	// filterSubDomains := ""
+	// if search != "" {
+	// 	filterSubDomains = search
+	// } else {
+	// 	filterSubDomains = searchDDM.GetString("SubDataDomain")
+	// }
 
-	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter,
-		filterSubDomains,
-		searchDDM.GetString("DataDomain"),
-		searchDDM.GetString("SubDataDomainOwner"),
-	)
+	// gridArgs.DropdownFilter = append(gridArgs.DropdownFilter,
+	// 	filterSubDomains,
+	// 	searchDDM.GetString("DataDomain"),
+	// 	searchDDM.GetString("SubDataDomainOwner"),
+	// )
 
 	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
@@ -65,6 +67,35 @@ func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 
 	gridArgs.GroupCol = "-"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
+}
+
+func (s *DDOService) GetHomepageCounts(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	system := payload.GetString("System")
+	args = append(args, system, system, system)
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddo.sql")
+	q, err := h.BuildQueryFromFile(filePath, "ddo-view-homepage", []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
 }
 
 func (s *DDOService) GetRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {

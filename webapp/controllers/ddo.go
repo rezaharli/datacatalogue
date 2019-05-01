@@ -38,10 +38,26 @@ func (c *DDO) GetLeftTable(k *knot.WebContext) {
 		return
 	}
 
-	pageNumber := pagination.GetInt("page")
-	rowsPerPage := pagination.GetInt("rowsPerPage")
+	systems, _, err := s.NewDDOService().GetLeftTable(tabs, loggedinId, search, searchDD, colFilter, pagination)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
 
-	systems, _, err := s.NewDDOService().GetLeftTable(tabs, loggedinId, search, searchDD, colFilter, pageNumber, rowsPerPage, toolkit.M{})
+	h.WriteResultOK(k, res, systems)
+}
+
+func (c *DDO) GetHomepageCounts(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	systems, _, err := s.NewDDOService().GetHomepageCounts(payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
