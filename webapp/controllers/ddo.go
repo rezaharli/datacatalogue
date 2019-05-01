@@ -38,10 +38,7 @@ func (c *DDO) GetLeftTable(k *knot.WebContext) {
 		return
 	}
 
-	pageNumber := pagination.GetInt("page")
-	rowsPerPage := pagination.GetInt("rowsPerPage")
-
-	systems, _, err := s.NewDDOService().GetLeftTable(tabs, loggedinId, search, searchDD, colFilter, pageNumber, rowsPerPage, toolkit.M{})
+	systems, _, err := s.NewDDOService().GetLeftTable(tabs, loggedinId, search, searchDD, colFilter, pagination)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return

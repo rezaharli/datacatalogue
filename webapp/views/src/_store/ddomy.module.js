@@ -12,19 +12,27 @@ const state = {
             BusinessTerm: '',
         },
         filters: {
-          left: {},
-          right: {}
+            left: {},
+            right: {}
         },
         left: newTableObject(),
         right: newTableObject(),
+        exportDatas: [],
+        leftHeaders: [
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Data Domain', value: 'DATA_DOMAIN' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Sub Domains', value: 'SUB_DOMAINS' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Sub Domain Owner', value: 'SUB_DOMAIN_OWNER' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Bank ID', value: 'BANK_ID' },
+        ],
         isRightTable: false,
-        detailsLoading: true,
         DetailsBusinessMetadata: [],
         DDSourceBusinessMetadata: [],
         DetailsDownstreamUsage: [],
         DDSourceDownstreamUsage: [],
         DetailsBTResiding: [],
         DDSourceBTResiding: [],
+        detailsLoading: true,
+        detailsSource: [],
         error: null
     }
 };

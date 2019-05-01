@@ -2,21 +2,6 @@
   @import '../../assets/styles/dashboard.css';
 </style>
 
-<style>
-table.v-table thead th > div.btn-group {
-  width: auto;
-}
-
-.header-filter-icon{
-
-}
-.header-filter-icon .dropdown-menu{
-  overflow: scroll;
-  height: 200px;
-}
-</style>
-
-
 <template>
   <b-row style="margin-top: 10px;margin-bottom: 10px;">
     <b-col>
@@ -27,8 +12,8 @@ table.v-table thead th > div.btn-group {
       <b-row>
         <b-col>
           <page-loader v-if="store.left.isLoading || (store.isRightTable && store.right.isLoading)" />
-
-          <b-row>
+          
+          <!-- <b-row>
             <b-col>
               <page-search :storeName="storeName" :searchDDInputs="searchDropdownInputs"/>
             </b-col>
@@ -36,82 +21,52 @@ table.v-table thead th > div.btn-group {
             <b-col></b-col>
             <b-col></b-col>
             <b-col>
-              <page-export :storeName="storeName" :leftTableCols="firstTableHeaders" :rightTableCols="secondTableHeaders"/>
+              <page-export :storeName="storeName" :leftTableCols="store.leftHeaders" :rightTableCols="store.rightHeaders"/>
             </b-col>
-          </b-row>
+          </b-row> -->
 
-          <b-row>
-            <b-col cols="6">
-              <v-data-table
-                  :headers="firstTableHeaders"
-                  :items="store.left.display"
-                  :pagination.sync="store.left.pagination"
-                  :total-items="store.left.totalItems"
-                  :loading="store.left.isLoading"
-                  item-key="ID"
-                  class="elevation-1 ">
+          
+          <div class="card card-v1 transition">
+            <div class="title-wrapper transition">
+              <v-img :src="images.my" :contain="true" class="card-icon transition"></v-img>
+              <h2 class="transition title-1">My System</h2>
+            </div>
 
-                <template slot="headerCell" slot-scope="props">
-                  <tableheader :storeName="storeName" :props="props" :which="'left'" />
-                </template>
+            <v-data-table
+                :headers="store.leftHeaders.filter(v => v.display == true)"
+                :items="store.left.display"
+                :pagination.sync="store.left.pagination"
+                :total-items="store.left.totalItems"
+                :loading="store.left.isLoading"
+                item-key="ID"
+                class="card-content ">
 
-                <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+              <template slot="headerCell" slot-scope="props">
+                <tableheader :storeName="storeName" :props="props" :which="'left'" />
+              </template>
 
-                <template slot="no-data">
-                  <v-alert :value="store.left.isLoading" type="info">
-                    Please wait while data is loading
-                  </v-alert>
+              <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
-                  <v-alert :value="!store.left.isLoading" type="error">
-                    Sorry, nothing to display here
-                  </v-alert>
-                </template>
+              <template slot="no-data">
+                <v-alert :value="store.left.isLoading" type="info">
+                  Please wait while data is loading
+                </v-alert>
 
-                <template slot="items" slot-scope="props">
-                  <td><tablecell :fulltext="props.item.DATA_DOMAIN" showOn="hover"></tablecell></td>
-                  <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SUB_DOMAINS" showOn="hover"></tablecell></b-link></td>
-                  <td><tablecell :fulltext="props.item.SUB_DOMAIN_OWNER" showOn="click"></tablecell></td>
-                  <td><tablecell :fulltext="props.item.BANK_ID" showOn="click"></tablecell></td>
-                </template>
-              </v-data-table>
-            </b-col>
-            
-            <b-col cols="6">
-              <v-data-table
-                  :headers="secondTableHeaders"
-                  :items="store.right.display"
-                  :pagination.sync="store.right.pagination"
-                  :total-items="store.right.totalItems"
-                  :loading="store.right.isLoading"
-                  v-if="store.isRightTable"
-                  item-key="ID"
-                  class="elevation-1">
-                <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+                <v-alert :value="!store.left.isLoading" type="error">
+                  Sorry, nothing to display here
+                </v-alert>
+              </template>
 
-                <template slot="no-data">
-                  <v-alert :value="store.right.isLoading" type="info">
-                    Please wait while data is loading
-                  </v-alert>
+              <template slot="items" slot-scope="props">
+                <td><tablecell :fulltext="props.item.DATA_DOMAIN" showOn="hover"></tablecell></td>
+                <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SUB_DOMAINS" showOn="hover"></tablecell></b-link></td>
+                <td><tablecell :fulltext="props.item.SUB_DOMAIN_OWNER" showOn="click"></tablecell></td>
+                <td><tablecell :fulltext="props.item.BANK_ID" showOn="click"></tablecell></td>
+            </template>
+            </v-data-table>
 
-                  <v-alert :value="!store.right.isLoading" type="error">
-                    Sorry, nothing to display here
-                  </v-alert>
-                </template>
-
-                <template slot="headerCell" slot-scope="props">
-                  <tableheader :storeName="storeName" :props="props" :which="'right'" />
-                </template>
-
-                <template slot="items" slot-scope="props">
-                  <tr>
-                    <td><b-link @click="showDetails(props.item)"><tablecell :fulltext="props.item.BUSINESS_TERM" showOn="hover"></tablecell></b-link></td>
-                    <td><tablecell :fulltext="props.item.BT_DESCRIPTION" showOn="click"></tablecell></td>
-                    <td><tablecell :fulltext="props.item.CDE_YES_NO" showOn="click"></tablecell></td>
-                  </tr>
-                </template>
-              </v-data-table>
-            </b-col>
-          </b-row>
+            <!-- <div class="card-circle transition"></div> -->
+          </div>
         </b-col>
       </b-row>
     </b-col>
@@ -139,17 +94,9 @@ export default {
         storeName: "ddomy",
         systemSource: [],
         tablenameSource: [],
-        firstTableHeaders: [
-          { text: 'Data Domain', align: 'left', value: 'DATA_DOMAIN', displayCount: true, sortable: false },
-          { text: 'Sub Domains', align: 'left', value: 'SUB_DOMAINS', displayCount: true, sortable: false },
-          { text: 'Sub Domain Owner', align: 'left', value: 'SUB_DOMAIN_OWNER', displayCount: true, sortable: false },
-          { text: 'Bank ID', align: 'left', value: 'BANK_ID', displayCount: true, sortable: false },
-        ],
-        secondTableHeaders: [
-          { text: 'Business Term', align: 'left', sortable: false, value: 'BUSINESS_TERM', displayCount: true, width: "25%" },
-          { text: 'Business Term Description', align: 'left', sortable: false, value: 'BT_DESCRIPTION', displayCount: false, width: "25%" },
-          { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'CDE_YES_NO', displayCount: true, width: "25%" },
-        ],
+        images: {
+          my: require('../../assets/images/icon-my-system.png'),
+        }
       }
     },
     computed: {
@@ -176,10 +123,6 @@ export default {
         if (to.params != undefined) {
           this.store.isRightTable = to.params.system; 
         }
-
-        if(this.store.isRightTable){
-          this.doGetRightTable(this.$route.params.system);
-        }
       },
       "store.left.pagination": {
         handler () {
@@ -188,53 +131,28 @@ export default {
         deep: true
       },
       "store.right.pagination": {
-        handler () {
-          if(this.store.isRightTable){
-            this.doGetRightTable(this.$route.params.system);
-          }
-        },
+        handler () {},
         deep: true
       },
       "store.searchMain" (val, oldVal){
         if(val || oldVal) {
           this.doGetLeftTable();
-
-          if(this.store.isRightTable){
-            this.doGetRightTable(this.$route.params.system);
-          }
         }
       }
     },
     mounted() {
       this.store.tabName = this.storeName;
-      this.store.isRightTable = this.$route.params.system;
     },
     methods: {
       getLeftTable () {
         this.$store.dispatch(`${this.storeName}/getLeftTable`)
       },
-      getRightTable (id) {
-        this.$store.dispatch(`${this.storeName}/getRightTable`, id)
-      },
       doGetLeftTable () {
         this.getLeftTable();
       },
-      doGetRightTable (id) {
-        this.getRightTable(id);
-      },
-      systemRowClick (evt) {
-        evt.preventDefault();
-        this.store.isRightTable = true;
-      },
       showRightTable(param){
-        //reset right table filter
-        this.store.filters.right = {};
-
-        this.$router.push(this.addressPath + '/' + param.ID);
+        this.$router.push(this.addressPath + '/' + param.SUB_DOMAINS);
       },
-      showDetails (param) {
-        this.$router.push(this.addressPath + "/" + param.TSCID + '/' + param.ID)
-      }
     }
 }
 </script>

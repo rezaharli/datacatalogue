@@ -20,35 +20,37 @@ func NewDDOService() *DDOService {
 	return ret
 }
 
-func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
+func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	gridArgs.QueryName = "left-grid"
-	gridArgs.PageNumber = pageNumber
-	gridArgs.RowsPerPage = rowsPerPage
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "ddo.sql")
+	gridArgs.QueryName = "ddo-view"
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 
 	if loggedinid != "" {
-		gridArgs.MainArgs = append(gridArgs.MainArgs, loggedinid)
+		gridArgs.MainArgs = append(gridArgs.MainArgs, "MY", loggedinid)
+	} else {
+		gridArgs.MainArgs = append(gridArgs.MainArgs, "ALL", "0000000")
 	}
 
 	///////// --------------------------------------------------DROPDOWN FILTER
-	searchDDM, err := toolkit.ToM(searchDD)
-	if err != nil {
-		return nil, 0, err
-	}
+	// searchDDM, err := toolkit.ToM(searchDD)
+	// if err != nil {
+	// 	return nil, 0, err
+	// }
 
-	filterSubDomains := ""
-	if search != "" {
-		filterSubDomains = search
-	} else {
-		filterSubDomains = searchDDM.GetString("SubDataDomain")
-	}
+	// filterSubDomains := ""
+	// if search != "" {
+	// 	filterSubDomains = search
+	// } else {
+	// 	filterSubDomains = searchDDM.GetString("SubDataDomain")
+	// }
 
-	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter,
-		filterSubDomains,
-		searchDDM.GetString("DataDomain"),
-		searchDDM.GetString("SubDataDomainOwner"),
-	)
+	// gridArgs.DropdownFilter = append(gridArgs.DropdownFilter,
+	// 	filterSubDomains,
+	// 	searchDDM.GetString("DataDomain"),
+	// 	searchDDM.GetString("SubDataDomainOwner"),
+	// )
 
 	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
@@ -56,8 +58,8 @@ func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "")
 	} else {
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("SUB_DOMAINS"),
 			colFilterM.GetString("DATA_DOMAIN"),
+			colFilterM.GetString("SUB_DOMAINS"),
 			colFilterM.GetString("SUB_DOMAIN_OWNER"),
 			colFilterM.GetString("BANK_ID"),
 		)
