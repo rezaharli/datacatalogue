@@ -72,6 +72,13 @@ body, .application--wrap{
     border-radius: 50%;
 } */
 
+.is-highlighted p {
+    background-color: #009688 !important;
+    padding: 3px 6px;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
 .transition {
   transition: .3s cubic-bezier(.3, 0, 0, 1.3)
 }

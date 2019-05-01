@@ -1,10 +1,3 @@
-<style>
-.is-highlighted p {
-  background-color: #FFFF00 !important;
-}
-</style>
-
-
 <template>
     <v-content class="mx-4 my-5">
         <b-container fluid>

@@ -154,13 +154,13 @@ func (s *DSCService) CreateRoleDummyData() error {
 		mdt.Status = rand.Intn(2)
 
 		if i%1 == 0 {
-			mdt.Role_Name = "Downstream Process Owner"
+			mdt.Role_Name = "Dataset Custodian"
 		}
 		if i%2 == 0 {
-			mdt.Role_Name = "Data Domain Owner"
+			mdt.Role_Name = "Downstream Process Owner"
 		}
 		if i%3 == 0 {
-			mdt.Role_Name = "Dataset Custodian"
+			mdt.Role_Name = "Data Domain Owner"
 		}
 
 		data = append(data, mdt)
@@ -230,11 +230,15 @@ func (s *DSCService) CreateSubCategoryDummyData() error {
 		mdt := m.NewSubCategoryModel()
 		mdt.ID = i
 		mdt.Name = fake.Words()
-		mdt.Type = "Sub Data Domain"
+		mdt.Type = fake.Words()
 		mdt.Category_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.Created_DateTime = time.Now()
 		mdt.Modified_DateTime = time.Now()
 		mdt.Status = rand.Intn(2)
+
+		if i%1 == 0 {
+			mdt.Type = "Sub Data Domain"
+		}
 
 		data = append(data, mdt)
 	}

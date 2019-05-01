@@ -3,7 +3,7 @@
 </style>
 
 <template>
-    <v-content>
+    <v-content style="overflow: auto;">
         <PageHeader />
 
         <b-container fluid>
@@ -18,20 +18,20 @@
             </b-row>
         </b-container>
 
-        <b-container fluid>
-            <b-row>
+        <b-container fluid style="overflow-x: auto; width: max-content;">
+            <!-- <b-row> -->
                 <!-- <b-col sm=12 md=1 lg=1 /> -->
 
-                <b-col sm=12 md=6 lg=6>
+                <div class="d-inline-block mx-3 mb-3">
                     <rfo-my />
-                </b-col>
+                </div>
 
-                <b-col sm=12 md=6 lg=6>
+                <div class="d-inline-block mx-3 mb-3">
                     <rfo-all />
-                </b-col>
+                </div>
 
                 <!-- <b-col sm=12 md=1 lg=1 /> -->
-            </b-row>
+            <!-- </b-row> -->
         </b-container>
     </v-content>
 </template>
