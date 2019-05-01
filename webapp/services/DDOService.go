@@ -58,8 +58,8 @@ func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "")
 	} else {
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("SUB_DOMAINS"),
 			colFilterM.GetString("DATA_DOMAIN"),
+			colFilterM.GetString("SUB_DOMAINS"),
 			colFilterM.GetString("SUB_DOMAIN_OWNER"),
 			colFilterM.GetString("BANK_ID"),
 		)

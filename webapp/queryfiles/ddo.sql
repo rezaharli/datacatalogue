@@ -15,6 +15,12 @@ SELECT DISTINCT
         INNER JOIN TBL_ROLE RL ON TLRP.ROLE_ID = RL.ID AND UPPER(RL.ROLE_NAME) = 'DATA DOMAIN OWNER'
         INNER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
     WHERE ('ALL' = '?' OR TP.BANK_ID = '?')
+        AND (
+            upper(NVL(TC.NAME, ' ')) LIKE upper('%?%')
+            AND upper(NVL(TSC.NAME, ' ')) LIKE upper('%?%')
+            AND upper(NVL(TP.FIRST_NAME||' '||TP.LAST_NAME, ' ')) LIKE upper('%?%')
+            AND upper(NVL(TP.BANK_ID, ' ')) LIKE upper('%?%')
+        )
     ORDER BY TC.NAME, TSC.NAME
 
 -- name: ddo-view-homepage
