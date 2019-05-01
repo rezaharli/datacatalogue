@@ -105,7 +105,7 @@ export default {
       },
       addressPath (){
         var tmp = this.$route.path.split("/")
-        return tmp.slice(0, 3).join("/")
+        return tmp.slice(0, 2).join("/")
       },
       searchDropdownInputs () {
         return [

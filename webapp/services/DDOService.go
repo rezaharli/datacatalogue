@@ -65,6 +65,12 @@ func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 		)
 	}
 
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
 	gridArgs.GroupCol = "-"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
