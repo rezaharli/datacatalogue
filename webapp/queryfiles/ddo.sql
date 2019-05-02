@@ -119,7 +119,9 @@ SELECT DISTINCT
         TP.FIRST_NAME||' '||TP.LAST_NAME            AS SUB_DOMAIN_OWNER,
         COUNT(DISTINCT BT.BT_NAME) OVER ()          AS BT_COUNT,
         BT.BT_NAME                                  AS BT_NAME,
+        TAB.ID                                      AS TMTID,
         TAB.NAME                                    AS TABLE_NAME,
+        COL.ID                                      AS COLID,
         COL.NAME                                    AS COLUMN_NAME
     FROM
         TBL_CATEGORY TC
