@@ -1,14 +1,3 @@
-<style>
-/* table.v-table thead th > div.btn-group {
-  	width: auto;
-}
-
-.header-filter-icon .dropdown-menu {
-	overflow: scroll;
-	height: 200px;
-} */
-</style>
-
 <template>
     <v-content class="mx-4 my-5">
         <b-container fluid>
@@ -40,8 +29,8 @@
 
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
-                        <h6 class="title-1">Systems Mapped</h6>
-                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["BT_SYSTEMS_COUNT"] : "0" }}</h3>
+                        <h6 class="title-1">Business Terms</h6>
+                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["BT_COUNT"] : "0" }}</h3>
                     </div>
                 </b-col>
             </b-row>
@@ -91,10 +80,9 @@
 
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                      <td style="width: calc(100% / 6)" class="text-uppercase">{{props.item.SYSTEM_NAME}}</td>
-                      <td style="width: calc(100% / 6)" class="text-capitalize">
-                        <b-link @click.stop="showBusinessterms(props.item)">
-                          <tablecell :fulltext="props.item.BT_COUNT" showOn="click"></tablecell></b-link></td>
+                      <td style="width: calc(100% / 6)" class="text-uppercase">{{props.item.BT_NAME}}</td>
+                      <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.TABLE_NAME" showOn="click"></tablecell></td>
+                      <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell></td>
                     </tr>
                   </template>
                 </v-data-table>
@@ -127,7 +115,7 @@ export default {
   },
   data() {
     return {
-      storeName: "ddosystems",
+      storeName: "ddosystemsbusinessterm",
       systemSource: [],
       tablenameSource: []
     };
@@ -157,6 +145,7 @@ export default {
   },
   mounted() {
     this.store.tabName = this.storeName;
+    this.store.subdomain = this.$route.params.subdomain;
     this.store.system = this.$route.params.system;
     this.resetFilter();
   },
@@ -186,9 +175,9 @@ export default {
         ? "Yes"
         : "No";
     },
-    showBusinessterms(param) {
+    showCDEs(param) {
       this.$router.push(
-        this.addressPath + "/" + param.SUB_DOMAINS + "/" + param.SYSTEM_NAME
+        this.addressPath + "/" + param.SYSTEM_NAME + "/" + param.DSP_NAME
       );
     },
     showDetails(param) {

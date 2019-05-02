@@ -120,6 +120,34 @@ func (c *DDO) GetSystemsTable(k *knot.WebContext) {
 	h.WriteResultOK(k, res, systems)
 }
 
+func (c *DDO) GetSystemsBusinesstermTable(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	subdomain := payload.GetString("Subdomain")
+	system := payload.GetString("System")
+	colFilter := payload.Get("Filters")
+	pagination, err := toolkit.ToM(payload.Get("Pagination"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	systems, _, err := s.NewDDOService().GetSystemsBusinesstermTable(subdomain, system, colFilter, pagination)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	h.WriteResultOK(k, res, systems)
+}
+
 func (c *DDO) GetRightTable(k *knot.WebContext) {
 	res := toolkit.NewResult()
 

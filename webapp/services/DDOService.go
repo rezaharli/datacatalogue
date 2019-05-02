@@ -164,6 +164,37 @@ func (s *DDOService) GetSystemsTable(system string, colFilter interface{}, pagin
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
+func (s *DDOService) GetSystemsBusinesstermTable(subdomain, system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "ddo.sql")
+	gridArgs.QueryName = "ddo-systems-businessterm"
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	gridArgs.MainArgs = append(gridArgs.MainArgs, subdomain, system)
+
+	///////// --------------------------------------------------COLUMN FILTER
+	colFilterM, err := toolkit.ToM(colFilter)
+	if err != nil {
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "")
+	} else {
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
+			colFilterM.GetString("BT_NAME"),
+			colFilterM.GetString("TABLE_NAME"),
+			colFilterM.GetString("COLUMN_NAME"),
+		)
+	}
+
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
+	gridArgs.GroupCol = "-"
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
+}
+
 func (s *DDOService) GetRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
 	gridArgs := GridArgs{}
 	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")

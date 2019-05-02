@@ -5,6 +5,7 @@ export const ddoMyService = {
     getHomepageCounts,
     getBusinesstermTable,
     getSystemsTable,
+    getSystemsBusinesstermTable,
     getRightTable,
     getDetails
 };
@@ -40,6 +41,10 @@ function getBusinesstermTable(param) {
 
 function getSystemsTable(param) {
     return fetchWHeader(`/ddo/getsystemstable`, param);
+}
+
+function getSystemsBusinesstermTable(param) {
+    return fetchWHeader(`/ddo/getsystemsbusinesstermtable`, param);
 }
 
 function getRightTable(param) {
