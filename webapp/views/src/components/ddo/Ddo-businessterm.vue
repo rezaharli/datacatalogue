@@ -159,7 +159,7 @@ export default {
   },
   mounted() {
     this.store.tabName = this.storeName;
-    this.store.system = this.$route.params.system;
+    this.store.system = this.$route.params.subdomain;
     this.resetFilter();
   },
   methods: {
@@ -190,7 +190,7 @@ export default {
     },
     showDetails(param) {
       this.$router.push(
-        this.addressPath + "/" + param.SUB_DOMAINS + "/" + param.TSCID
+        this.addressPath + "/" + param.SUB_DOMAINS + "/" + param.BT_NAME
       );
     }
   }

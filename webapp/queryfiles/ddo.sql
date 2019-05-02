@@ -143,3 +143,52 @@ SELECT DISTINCT
             AND upper(NVL(COL.NAME, ' ')) LIKE upper('%?%')
         )
     ORDER BY BT.BT_NAME, TAB.NAME, COL.NAME
+
+-- name: details
+SELECT 
+        TSC.ID,
+        TC.NAME                                                     AS DATA_DOMAIN,
+        TSC.NAME                                                    AS SUB_DOMAINS,
+        TP.FIRST_NAME||' '||TP.LAST_NAME                            AS SUB_DOMAIN_OWNER,
+        TP.BANK_ID                                                  AS BANK_ID,
+        BT.BT_NAME                                                  AS BT_NAME,
+        BT.DESCRIPTION                                              AS BT_DESCRIPTION,
+        BT.POLICY_GUIDANCE                                          AS POLICY_GUIDANCE,
+        BT.DQ_STANDARDS||' | '||BT.THRESHOLD                        AS BUSINESS_RULES,
+        BT.MANDATORY                                                AS MANDATORY,
+        GS.ITAM_ID                                                  AS GS_ITAM_ID,
+        GS.SYSTEM_NAME                                              AS GS_SYSTEM_NAME,
+        TGS.ITAM_ID                                                 AS TGS_ITAM_ID,
+        TGS.SYSTEM_NAME                                             AS TGS_SYSTEM_NAME,
+        ' '                                                         AS REMARKS,
+        S.ITAM_ID                                                   AS ITAM_ID,
+        S.SYSTEM_NAME                                               AS SYSTEM_NAME,
+        T.NAME                                                      AS TABLE_NAME,
+        C.NAME                                                      AS COLUMN_NAME,
+        CD.ALIAS_NAME                                               AS ALIAS_NAME,
+        CD.CDE                                                      AS CDE,
+        CASE WHEN S.ITAM_ID = GS.ITAM_ID THEN 'YES' ELSE 'NO' END   AS GOLDEN_SOURCE,
+        CD.PII_FLAG                                                 AS PII_FLAG,
+        ' '                                                         AS CIA_RATING,
+        CD.RECORD_CATEGORY                                          AS RECORD_CATEGORY
+    FROM
+        TBL_CATEGORY TC
+        INNER JOIN TBL_SUBCATEGORY TSC ON TSC.CATEGORY_ID = TC.ID AND UPPER(TSC.TYPE) = 'SUB DATA DOMAIN'
+        INNER JOIN TBL_LINK_ROLE_PEOPLE TLRP ON TLRP.OBJECT_ID = TSC.ID AND UPPER(TLRP.OBJECT_TYPE) = 'SUBCATEGORY' 
+        INNER JOIN TBL_ROLE RL ON TLRP.ROLE_ID = RL.ID AND UPPER(RL.ROLE_NAME) = 'DATA DOMAIN OWNER'
+        INNER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
+        INNER JOIN TBL_BUSINESS_TERM BT ON TSC.ID = BT.PARENT_ID
+        LEFT OUTER JOIN TBL_LINK_COLUMN_BUSINESS_TERM CBT ON BT.ID = CBT.BUSINESS_TERM_ID
+        LEFT OUTER JOIN TBL_MD_COLUMN C ON C.ID = CBT.COLUMN_ID
+        LEFT OUTER JOIN TBL_MD_COLUMN_DETAILS CD ON C.ID = CD.COLUMN_ID
+        LEFT OUTER JOIN TBL_MD_TABLE T ON T.ID = C.TABLE_ID
+        LEFT OUTER JOIN TBL_MD_RESOURCE R ON R.ID = T.RESOURCE_ID
+        LEFT OUTER JOIN TBL_SYSTEM S ON S.ID = R.SYSTEM_ID
+        LEFT OUTER JOIN TBL_LINK_COLUMN_GOLDEN_SOURCE CGS ON CBT.COLUMN_ID = CGS.COLUMN_ID
+        LEFT OUTER JOIN TBL_MD_COLUMN GSC ON GSC.ID = CGS.GOLDEN_SOURCE_COLUMN_ID
+        LEFT OUTER JOIN TBL_MD_TABLE GST ON GST.ID = GSC.TABLE_ID
+        LEFT OUTER JOIN TBL_MD_RESOURCE GSR ON GSR.ID = GST.RESOURCE_ID
+        LEFT OUTER JOIN TBL_SYSTEM GS ON GS.ID = GSR.SYSTEM_ID
+        LEFT OUTER JOIN TBL_SYSTEM TGS ON TGS.ID = BT.TARGET_GOLDEN_SOURCE_ID
+    WHERE TSC.NAME = '?' -- SUBCATEGORY NAME
+        AND BT.BT_NAME = '?' -- BUSINESS TERM NAME

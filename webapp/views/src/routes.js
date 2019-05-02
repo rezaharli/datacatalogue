@@ -190,13 +190,13 @@ const router = new VueRouter({
       permission: "DDO"
     },
   }, { // ddo.businessterm
-    path: '/ddo/businessterm/:system', name: 'ddo.businessterm', component: DdoBusinessterm, 
+    path: '/ddo/businessterm/:subdomain', name: 'ddo.businessterm', component: DdoBusinessterm, 
     meta: { 
       title: "DDO - Data Catalogue",
       permission: "DDO"
     },
     children: [{ // ddo.details
-      path: ':details', name: 'ddo.details', component: DdoDetails,
+      path: ':btname', name: 'ddo.details', component: DdoDetails,
       meta: { 
         title: "DDO Details - Data Catalogue",
         showModal: true,
@@ -204,7 +204,7 @@ const router = new VueRouter({
       } 
     }] 
   }, { // ddo.systems
-    path: '/ddo/systems/:system', name: 'ddo.systems', component: DdoSystems, 
+    path: '/ddo/systems/:subdomain', name: 'ddo.systems', component: DdoSystems, 
     meta: { 
       title: "DDO - Data Catalogue",
       permission: "DDO"
@@ -216,7 +216,7 @@ const router = new VueRouter({
       permission: "DDO"
     },
     children: [{ // ddo.details
-      path: ':details', name: 'ddo.details', component: DdoDetails,
+      path: ':btname', name: 'ddo.details', component: DdoDetails,
       meta: { 
         title: "DDO Details - Data Catalogue",
         showModal: true,

@@ -157,7 +157,7 @@ export default {
   },
   mounted() {
     this.store.tabName = this.storeName;
-    this.store.system = this.$route.params.system;
+    this.store.system = this.$route.params.subdomain;
     this.resetFilter();
   },
   methods: {
@@ -188,7 +188,7 @@ export default {
     },
     showBusinessterms(param) {
       this.$router.push(
-        this.addressPath + "/" + param.SUB_DOMAINS + "/" + param.SYSTEM_NAME
+        this.addressPath + "/" + this.$route.params.subdomain + "/" + param.SYSTEM_NAME
       );
     },
     showDetails(param) {

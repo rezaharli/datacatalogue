@@ -275,7 +275,7 @@ export default {
     },
     showDetails(param) {
       this.$router.push(
-        this.addressPath + "/" + this.$route.params.subdomain + "/" + this.$route.params.system + "/" + param.TSCID
+        this.addressPath + "/" + this.$route.params.subdomain + "/" + this.$route.params.system + "/" + param.BT_NAME
       );
     }
   }

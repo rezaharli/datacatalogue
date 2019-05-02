@@ -191,31 +191,15 @@ func (c *DDO) GetDetails(k *knot.WebContext) {
 		return
 	}
 
-	detailsBusinessMetadata, ddSourceBusinessMetadata, err := c.Base.GetDetails(payload, s.NewDDOService().GetDetailsBusinessMetadataFromDomain, s.NewDDOService().GetddSourceBusinessMetadataFromDomain)
-	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
-	}
-
-	detailsDownstreamUsage, ddSourceDownstreamUsage, err := c.Base.GetDetails(payload, s.NewDDOService().GetDetailsDownstreamUsageOfBusinessTerm, s.NewDDOService().GetddSourceDownstreamUsageOfBusinessTerm)
-	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
-	}
-
-	detailsBTResiding, ddSourceBTResiding, err := c.Base.GetDetails(payload, s.NewDDOService().GetDetailsBTResiding, s.NewDDOService().GetddSourceBTResiding)
+	detail, ddSource, err := c.Base.GetDetails(payload, s.NewDDOService().GetDetails, s.NewDDOService().GetddSource)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
 	data := toolkit.M{}
-	data.Set("DetailsBusinessMetadata", detailsBusinessMetadata)
-	data.Set("DDSourceBusinessMetadata", ddSourceBusinessMetadata)
-	data.Set("DetailsDownstreamUsage", detailsDownstreamUsage)
-	data.Set("DDSourceDownstreamUsage", ddSourceDownstreamUsage)
-	data.Set("DetailsBTResiding", detailsBTResiding)
-	data.Set("DDSourceBTResiding", ddSourceBTResiding)
+	data.Set("Detail", detail)
+	data.Set("DDSource", ddSource)
 
 	h.WriteResultOK(k, res, data)
 }

@@ -128,7 +128,7 @@ export default {
         goToDdoMenu(){
             var tmp = this.$route.path.split("/");
             var tmp2 = tmp.slice(0, 2).join("/");
-            var tmp3 = tmp2 + '/' + this.$route.params.system;
+            var tmp3 = tmp2 + '/' + this.$route.params.subdomain;
             return tmp3;
         },
         goToLevel3(){
