@@ -51,7 +51,8 @@
                 </b-dropdown-item>
 
                 <b-dropdown-item v-if="
-                    $route.name == 'ddo.businessterm'
+                    $route.name == 'ddo.businessterm' ||
+                    $route.name == 'ddo.systems'
                     ">
                     <router-link :to="goToDdoMenu" class="standard-a">DDO Landing Page</router-link>
                 </b-dropdown-item>
