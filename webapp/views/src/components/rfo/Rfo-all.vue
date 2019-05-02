@@ -192,6 +192,7 @@ export default {
           this.hiddenFields = !this.hiddenFields; 
         }
 
+        toggleFieldName('RISK_REPORTING_LEAD');
         toggleFieldName('PR_COUNT');
         toggleFieldName('CRM_COUNT');
         toggleFieldName('CDE_COUNT');
