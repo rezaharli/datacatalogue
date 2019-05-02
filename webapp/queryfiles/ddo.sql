@@ -65,14 +65,14 @@ SELECT BT_COUNT, BT_SYSTEMS_COUNT, DP_COUNT
 
 -- name: ddo-businessterm
 SELECT 
-    TSC.ID                                      AS TSCID,
-    TC.NAME                                     AS DATA_DOMAIN,
-    TSC.NAME                                    AS SUB_DOMAINS,
-    TP.FIRST_NAME||' '||TP.LAST_NAME            AS SUB_DOMAIN_OWNER,
-    TP.BANK_ID                                  AS BANK_ID,
-    COUNT(DISTINCT BT.BT_NAME) OVER ()          AS BT_COUNT,
-    BT.BT_NAME                                  AS BUSINESS_TERM,
-    BT.DESCRIPTION                              AS DESCRIPTION
+        TSC.ID                                      AS TSCID,
+        TC.NAME                                     AS DATA_DOMAIN,
+        TSC.NAME                                    AS SUB_DOMAINS,
+        TP.FIRST_NAME||' '||TP.LAST_NAME            AS SUB_DOMAIN_OWNER,
+        TP.BANK_ID                                  AS BANK_ID,
+        COUNT(DISTINCT BT.BT_NAME) OVER ()          AS BT_COUNT,
+        BT.BT_NAME                                  AS BT_NAME,
+        BT.DESCRIPTION                              AS BT_DESCRIPTION
     FROM
         TBL_CATEGORY TC
         INNER JOIN TBL_SUBCATEGORY TSC ON TSC.CATEGORY_ID = TC.ID AND UPPER(TSC.TYPE) = 'SUB DATA DOMAIN'

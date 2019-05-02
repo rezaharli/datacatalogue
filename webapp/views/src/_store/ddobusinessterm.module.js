@@ -13,8 +13,8 @@ const state = {
         exportDatas: [],
         leftHeaders: [
             { align: 'left', display: true, filterable: false, exportable: false, displayCount: false, sortable: false, text: 'Details', value: 'Details' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Business Term', value: 'BUSINESS_TERM' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Description', value: 'DESCRIPTION' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Business Term', value: 'BT_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Description', value: 'BT_DESCRIPTION' },
         ],
         isRightTable: false,
         DDSource: [],

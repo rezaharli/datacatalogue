@@ -41,7 +41,7 @@
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
                         <h6 class="title-1">Business Terms</h6>
-                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["BUSINESS_TERM"] : "0" }}</h3>
+                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["BT_COUNT"] : "0" }}</h3>
                     </div>
                 </b-col>
             </b-row>
@@ -95,8 +95,8 @@
                         <b-button size="sm" class="green-tosca-gradient icon-only" @click="showDetails(props.item)">
                           <i class="fa fa-fw fa-external-link-alt"></i></b-button></td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['BUSINESS_TERM'] + 'px' }" class="text-uppercase">{{ props.item.BUSINESS_TERM }}</td>
-                      <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }" class="text-capitalize"><tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+                      <td v-bind:style="{ width: store.left.colWidth['BUSINESS_TERM'] + 'px' }" class="text-uppercase">{{ props.item.BT_NAME }}</td>
+                      <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }" class="text-capitalize"><tablecell :fulltext="props.item.BT_DESCRIPTION" showOn="click"></tablecell></td>
                     </tr>
                   </template>
                 </v-data-table>
