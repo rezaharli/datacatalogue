@@ -13,6 +13,7 @@ const state = {
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
+            { align: 'left', display: true, filterable: false, exportable: false, displayCount: false, sortable: false, text: 'Details', value: 'Details' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Business Term', value: 'BT_NAME' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Table Name', value: 'TABLE_NAME' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Column Name', value: 'COLUMN_NAME' },

@@ -91,8 +91,12 @@
 
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                      <td style="width: calc(100% / 6)" class="text-uppercase">{{props.item.BUSINESS_TERM}}</td>
-                      <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
+                      <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }" class="text-capitalize text-title">
+                        <b-button size="sm" class="green-tosca-gradient icon-only" @click="showDetails(props.item)">
+                          <i class="fa fa-fw fa-external-link-alt"></i></b-button></td>
+
+                      <td v-bind:style="{ width: store.left.colWidth['BUSINESS_TERM'] + 'px' }" class="text-uppercase">{{ props.item.BUSINESS_TERM }}</td>
+                      <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }" class="text-capitalize"><tablecell :fulltext="props.item.DESCRIPTION" showOn="click"></tablecell></td>
                     </tr>
                   </template>
                 </v-data-table>
@@ -184,14 +188,9 @@ export default {
         ? "Yes"
         : "No";
     },
-    showCDEs(param) {
-      this.$router.push(
-        this.addressPath + "/" + param.SYSTEM_NAME + "/" + param.DSP_NAME
-      );
-    },
     showDetails(param) {
       this.$router.push(
-        this.addressPath + "/" + param.TSID + "/" + param.ID + "/" + param.COLID
+        this.addressPath + "/" + param.SUB_DOMAINS + "/" + param.TSCID
       );
     }
   }

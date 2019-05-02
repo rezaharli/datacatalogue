@@ -65,6 +65,7 @@ SELECT BT_COUNT, BT_SYSTEMS_COUNT, DP_COUNT
 
 -- name: ddo-businessterm
 SELECT 
+    TSC.ID                                      AS TSCID,
     TC.NAME                                     AS DATA_DOMAIN,
     TSC.NAME                                    AS SUB_DOMAINS,
     TP.FIRST_NAME||' '||TP.LAST_NAME            AS SUB_DOMAIN_OWNER,
@@ -112,6 +113,7 @@ SELECT DISTINCT
 
 -- name: ddo-systems-businessterm
 SELECT DISTINCT
+        TSC.ID                                      AS TSCID,
         TC.NAME                                     AS DATA_DOMAIN,
         TSC.NAME                                    AS SUB_DOMAINS,
         TP.FIRST_NAME||' '||TP.LAST_NAME            AS SUB_DOMAIN_OWNER,

@@ -80,9 +80,13 @@
 
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                      <td style="width: calc(100% / 6)" class="text-uppercase">{{props.item.BT_NAME}}</td>
-                      <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.TABLE_NAME" showOn="click"></tablecell></td>
-                      <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell></td>
+                      <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }" class="text-capitalize text-title">
+                        <b-button size="sm" class="green-tosca-gradient icon-only" @click="showDetails(props.item)">
+                          <i class="fa fa-fw fa-external-link-alt"></i></b-button></td>
+
+                      <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }" class="text-uppercase">{{props.item.BT_NAME}}</td>
+                      <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-capitalize"><tablecell :fulltext="props.item.TABLE_NAME" showOn="click"></tablecell></td>
+                      <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-capitalize"><tablecell :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell></td>
                     </tr>
                   </template>
                 </v-data-table>
@@ -175,14 +179,9 @@ export default {
         ? "Yes"
         : "No";
     },
-    showCDEs(param) {
-      this.$router.push(
-        this.addressPath + "/" + param.SYSTEM_NAME + "/" + param.DSP_NAME
-      );
-    },
     showDetails(param) {
       this.$router.push(
-        this.addressPath + "/" + param.TSID + "/" + param.ID + "/" + param.COLID
+        this.addressPath + "/" + this.$route.params.subdomain + "/" + this.$route.params.system + "/" + param.TSCID
       );
     }
   }
