@@ -683,10 +683,20 @@ export default {
             });
             
             // interrupt
-            self.selectedDetails.CDE_YES_NO = self.selectedDetails.CDE_YES_NO != 0 ? "Yes" : "No";
-            self.selectedDetails.STATUS = self.selectedDetails.STATUS != 0 ? "ACTIVE" : "INACTIVE";
-            self.selectedDetails.DERIVED_YES_NO = self.selectedDetails.DERIVED_YES_NO != 0 ? "Yes" : "No";
-            self.selectedDetails.SOURCED_FROM_UPSTREAM_YES_NO = self.selectedDetails.SOURCED_FROM_UPSTREAM_YES_NO != 0 ? "Yes" : "No";
+            var doInterrupt = (v, cond, expectedres) => v == cond[1] ? expectedres[1] : (v == cond[0] ? expectedres[0] : v);
+
+            self.selectedDetails.CDE_YES_NO = doInterrupt(self.selectedDetails.CDE_YES_NO, [0, 1], ["No", "Yes"]);
+            self.selectedDetails.STATUS = doInterrupt(self.selectedDetails.STATUS, [0, 1], ["INACTIVE", "ACTIVE"]);
+            self.selectedDetails.DERIVED_YES_NO = doInterrupt(self.selectedDetails.DERIVED_YES_NO, [0, 1], ["No", "Yes"]);
+            self.selectedDetails.SOURCED_FROM_UPSTREAM_YES_NO = doInterrupt(self.selectedDetails.SOURCED_FROM_UPSTREAM_YES_NO, [0, 1], ["No", "Yes"]);
+            self.selectedDetails.IMM_PREC_DERIVED = doInterrupt(self.selectedDetails.IMM_PREC_DERIVED, [0, 1], ["No", "Yes"]);
+            self.selectedDetails.IMM_SUCC_DERIVED = doInterrupt(self.selectedDetails.IMM_SUCC_DERIVED, [0, 1], ["No", "Yes"]);
+            // self.selectedDetails.CDE_YES_NO = self.selectedDetails.CDE_YES_NO == 1 ? "Yes" : (self.selectedDetails.CDE_YES_NO == 0 ? "No" : self.selectedDetails.CDE_YES_NO);
+            // self.selectedDetails.CDE_YES_NO = self.selectedDetails.CDE_YES_NO != 0 ? "Yes" : "No";
+            // self.selectedDetails.STATUS = self.selectedDetails.STATUS != 0 ? "ACTIVE" : "INACTIVE";
+            // self.selectedDetails.DERIVED_YES_NO = self.selectedDetails.DERIVED_YES_NO != 0 ? "Yes" : "No";
+            // self.selectedDetails.SOURCED_FROM_UPSTREAM_YES_NO = self.selectedDetails.SOURCED_FROM_UPSTREAM_YES_NO != 0 ? "Yes" : "No";
+            // self.selectedDetails.IMM_PREC_DERIVED = self.selectedDetails.IMM_PREC_DERIVED != 0 ? "Yes" : "No";
 
             // make falsy NA
             Object.keys(self.selectedDetails).forEach((val) => {

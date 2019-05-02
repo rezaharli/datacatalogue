@@ -349,8 +349,10 @@ export default {
             });
             
             // interrupt
-            self.selectedDetails.MANDATORY = self.selectedDetails.MANDATORY == 1 ? "Yes" : (self.selectedDetails.MANDATORY == 0 ? "No" : self.selectedDetails.MANDATORY);
-            self.selectedDetails.CDE = self.selectedDetails.CDE == 1 ? "Yes" : (self.selectedDetails.CDE == 0 ? "No" : self.selectedDetails.CDE);
+            var doInterrupt = (v, cond, expectedres) => v == cond[1] ? expectedres[1] : (v == cond[0] ? expectedres[0] : v);
+
+            self.selectedDetails.MANDATORY = doInterrupt(self.selectedDetails.MANDATORY, [0, 1], ["No", "Yes"]);
+            self.selectedDetails.CDE = doInterrupt(self.selectedDetails.CDE, [0, 1], ["No", "Yes"]);
 
             // make falsy NA
             Object.keys(self.selectedDetails).forEach((val) => {
