@@ -12,34 +12,22 @@
       <b-row>
         <b-col>
           <page-loader v-if="store.left.isLoading || (store.isRightTable && store.right.isLoading)" />
-          
-          <!-- <b-row>
-            <b-col>
-              <page-search :storeName="storeName" :searchDDInputs="searchDropdownInputs"/>
-            </b-col>
 
-            <b-col></b-col>
-            <b-col></b-col>
-            <b-col>
-              <page-export :storeName="storeName" :leftTableCols="store.leftHeaders" :rightTableCols="store.rightHeaders"/>
-            </b-col>
-          </b-row> -->
-
-          
           <div class="card card-v1 transition">
             <div class="title-wrapper transition">
-              <v-img :src="images.my" :contain="true" class="card-icon transition"></v-img>
-              <h2 class="transition title-1">All System</h2>
+              <v-img :src="images.all" :contain="true" class="card-icon transition"></v-img>
+              <h2 class="transition title-1">All Domains</h2>
             </div>
-
+          
             <v-data-table
                 :headers="store.leftHeaders.filter(v => v.display == true)"
                 :items="store.left.display"
                 :pagination.sync="store.left.pagination"
                 :total-items="store.left.totalItems"
                 :loading="store.left.isLoading"
+                :expand="false"
                 item-key="ID"
-                class="card-content ">
+                class="card-content">
 
               <template slot="headerCell" slot-scope="props">
                 <tableheader :storeName="storeName" :props="props" :which="'left'" />
@@ -58,14 +46,13 @@
               </template>
 
               <template slot="items" slot-scope="props">
-                <td><tablecell :fulltext="props.item.DATA_DOMAIN" showOn="hover"></tablecell></td>
-                <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SUB_DOMAINS" showOn="hover"></tablecell></b-link></td>
-                <td><tablecell :fulltext="props.item.SUB_DOMAIN_OWNER" showOn="click"></tablecell></td>
-                <td><tablecell :fulltext="props.item.BANK_ID" showOn="click"></tablecell></td>
-            </template>
+                <tr>
+                  <td><tablecell :fulltext="props.item.DATA_DOMAIN" showOn="hover"></tablecell></td>
+                  <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SUB_DOMAINS" showOn="hover"></tablecell></b-link></td>
+                  <td><tablecell :fulltext="props.item.SUB_DOMAIN_OWNER" showOn="click"></tablecell></td>
+                </tr>
+              </template>
             </v-data-table>
-
-            <!-- <div class="card-circle transition"></div> -->
           </div>
         </b-col>
       </b-row>
@@ -95,14 +82,13 @@ export default {
         systemSource: [],
         tablenameSource: [],
         images: {
-          my: require('../../assets/images/icon-my-system.png'),
-        }
+          all: require('../../assets/images/icon-all-system.png'),
+        },
+        hiddenFields: true
       }
     },
     computed: {
-      store () {
-        return this.$store.state[this.storeName].all
-      },
+      store () { return this.$store.state[this.storeName].all },
       addressPath (){
         var tmp = this.$route.path.split("/")
         return tmp.slice(0, 2).join("/")
