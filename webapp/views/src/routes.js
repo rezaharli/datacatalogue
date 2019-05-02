@@ -194,7 +194,15 @@ const router = new VueRouter({
     meta: { 
       title: "DDO - Data Catalogue",
       permission: "DDO"
-    }
+    },
+    children: [{ // ddo.details
+      path: ':details', name: 'ddo.details', component: DdoDetails,
+      meta: { 
+        title: "DDO Details - Data Catalogue",
+        showModal: true,
+        permission: "DDO"
+      } 
+    }] 
   }, { // ddo.systems
     path: '/ddo/systems/:system', name: 'ddo.systems', component: DdoSystems, 
     meta: { 

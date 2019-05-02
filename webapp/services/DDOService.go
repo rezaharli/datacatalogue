@@ -245,20 +245,12 @@ func (s *DDOService) GetDetailsBusinessMetadataFromDomain(payload toolkit.M) (in
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	tabs := ""
-
 	q := ""
 	args := make([]interface{}, 0)
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	if strings.Contains(payload.GetString("Which"), "my") == true {
-		tabs = "ddomy"
-	} else {
-		tabs = "ddoall"
-	}
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddodetails.sql")
 	q, err := h.BuildQueryFromFile(filePath, "details-business-metadata-from-domain", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
@@ -317,20 +309,12 @@ func (s *DDOService) GetddSourceBusinessMetadataFromDomain(payload toolkit.M) (i
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	tabs := ""
-
 	q := ""
 	args := make([]interface{}, 0)
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	if strings.Contains(payload.GetString("Which"), "my") == true {
-		tabs = "ddomy"
-	} else {
-		tabs = "ddoall"
-	}
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddodetails.sql")
 	q, err := h.BuildQueryFromFile(filePath, "details-business-metadata-from-domain", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
@@ -359,20 +343,12 @@ func (s *DDOService) GetDetailsDownstreamUsageOfBusinessTerm(payload toolkit.M) 
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	tabs := ""
-
 	q := ""
 	args := make([]interface{}, 0)
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	if strings.Contains(payload.GetString("Which"), "my") == true {
-		tabs = "ddomy"
-	} else {
-		tabs = "ddoall"
-	}
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddodetails.sql")
 	q, err := h.BuildQueryFromFile(filePath, "details-downstream-usage-of-business-term", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
@@ -420,20 +396,12 @@ func (s *DDOService) GetddSourceDownstreamUsageOfBusinessTerm(payload toolkit.M)
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	tabs := ""
-
 	q := ""
 	args := make([]interface{}, 0)
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	if strings.Contains(payload.GetString("Which"), "my") == true {
-		tabs = "ddomy"
-	} else {
-		tabs = "ddoall"
-	}
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddodetails.sql")
 	q, err := h.BuildQueryFromFile(filePath, "details-downstream-usage-of-business-term", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
@@ -478,20 +446,12 @@ func (s *DDOService) GetDetailsBTResiding(payload toolkit.M) (interface{}, int, 
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	tabs := ""
-
 	q := ""
 	args := make([]interface{}, 0)
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	if strings.Contains(payload.GetString("Which"), "my") == true {
-		tabs = "ddomy"
-	} else {
-		tabs = "ddoall"
-	}
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddodetails.sql")
 	q, err := h.BuildQueryFromFile(filePath, "details-business-term-residing", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
@@ -551,20 +511,12 @@ func (s *DDOService) GetddSourceBTResiding(payload toolkit.M) (interface{}, int,
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	tabs := ""
-
 	q := ""
 	args := make([]interface{}, 0)
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	if strings.Contains(payload.GetString("Which"), "my") == true {
-		tabs = "ddomy"
-	} else {
-		tabs = "ddoall"
-	}
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddodetails.sql")
 	q, err := h.BuildQueryFromFile(filePath, "details-business-term-residing", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
