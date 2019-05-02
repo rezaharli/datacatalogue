@@ -21,8 +21,7 @@ const state = {
         leftHeaders: [
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Data Domain', value: 'DATA_DOMAIN' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Sub Domains', value: 'SUB_DOMAINS' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Sub Domain Owner', value: 'SUB_DOMAIN_OWNER' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Bank ID', value: 'BANK_ID' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Domain / Sub domain owner', value: 'SUB_DOMAIN_OWNER' },
         ],
         isRightTable: false,
         DetailsBusinessMetadata: [],
