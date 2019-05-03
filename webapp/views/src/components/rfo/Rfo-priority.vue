@@ -1,21 +1,21 @@
 <template>
     <v-content class="mx-4 my-5">
         <b-container fluid>
-            <PageHeader />
+            <PageHeader title="Risk Framework Owner View" />
 
             <page-loader v-if="store.left.isLoading" />
             
             <b-row>
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
-                        <h6 class="title-1">Principle Risk Type</h6>
+                        <h6 class="title-1">Principal Risk Type</h6>
                         <h3 class="title-2 text-capitalize">{{ store.left.display[0] ? store.left.display[0].PRINCIPAL_RISK : "" }}</h3>
                     </div>
                 </b-col>
                 
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
-                        <h6 class="title-1">Sub Risk Type</h6>
+                        <h6 class="title-1">Risk Sub Type</h6>
                         <h3 class="title-2 text-capitalize">{{ $route.params.type }}</h3>
                     </div>
                 </b-col>

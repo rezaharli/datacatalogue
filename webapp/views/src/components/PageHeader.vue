@@ -52,7 +52,8 @@
 
                 <b-dropdown-item v-if="
                     $route.name == 'ddo.businessterm' ||
-                    $route.name == 'ddo.systems'
+                    $route.name == 'ddo.systems' ||
+                    $route.name == 'ddo.systems.businessterm'
                     ">
                     <router-link :to="goToDdoMenu" class="standard-a">DDO Landing Page</router-link>
                 </b-dropdown-item>
@@ -62,7 +63,12 @@
                 </b-dropdown-item>
             </b-dropdown>
 
-            <v-toolbar-title to="/" class="app-title text-capitalize"><router-link to="/" class="toolbar-title">{{ $route.name.indexOf('dsc.') != -1 ? $route.params.system : "Data Catalogue" }}</router-link></v-toolbar-title>
+            <v-toolbar-title to="/" class="app-title text-capitalize">
+                <router-link to="/" class="toolbar-title">
+                    {{ $route.name.indexOf('dsc.') != -1 ? $route.params.system : (title ? title : "Data Catalogue") }}
+                </router-link>
+            </v-toolbar-title>
+            
             <v-spacer></v-spacer>
 
             <v-toolbar-title class="login-name">Hi, {{ account.user.Name }}</v-toolbar-title>
@@ -84,6 +90,7 @@
 import { mapState, mapActions } from 'vuex'
 
 export default {
+    props: ["title"],
     data () {
         return {
             drawer: {

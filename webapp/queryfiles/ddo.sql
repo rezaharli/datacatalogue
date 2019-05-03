@@ -93,7 +93,8 @@ SELECT DISTINCT
         TP.FIRST_NAME||' '||TP.LAST_NAME                                AS SUB_DOMAIN_OWNER,
         COUNT(DISTINCT SYS.SYSTEM_NAME) OVER ()                         AS BT_SYSTEMS_COUNT,
         SYS.SYSTEM_NAME                                                 AS SYSTEM_NAME, 
-        COUNT(DISTINCT BT.BT_NAME) OVER (PARTITION BY SYS.SYSTEM_NAME)  AS BT_COUNT
+        COUNT(DISTINCT BT.BT_NAME) OVER (PARTITION BY SYS.SYSTEM_NAME)  AS BT_COUNT,
+        '0'                                                             AS TOTAL
     FROM
         TBL_CATEGORY TC
         INNER JOIN TBL_SUBCATEGORY TSC ON TSC.CATEGORY_ID = TC.ID AND UPPER(TSC.TYPE) = 'SUB DATA DOMAIN'
