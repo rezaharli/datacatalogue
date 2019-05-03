@@ -97,6 +97,13 @@
                           <tablecell :fulltext="props.item.BT_COUNT" showOn="click"></tablecell></b-link></td>
                     </tr>
                   </template>
+
+                  <template slot="footer" >
+                    <td>
+                      <b>Total</b>
+                    </td>
+                    <td><b>{{ store.left.display[0] ? store.left.display[0].TOTAL : 0 }}</b></td>
+                  </template>
                 </v-data-table>
                       
               </b-col>
