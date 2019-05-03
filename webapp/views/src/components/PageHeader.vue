@@ -56,6 +56,10 @@
                     ">
                     <router-link :to="goToDdoMenu" class="standard-a">DDO Landing Page</router-link>
                 </b-dropdown-item>
+
+                <b-dropdown-item v-if="$route.name == 'ddo.systems.businessterm'">
+                    <router-link :to="goToLevel3Ddo" class="standard-a">List of Business Terms mapped to System</router-link>
+                </b-dropdown-item>
             </b-dropdown>
 
             <v-toolbar-title to="/" class="app-title text-capitalize"><router-link to="/" class="toolbar-title">{{ $route.name.indexOf('dsc.') != -1 ? $route.params.system : "Data Catalogue" }}</router-link></v-toolbar-title>
@@ -124,13 +128,19 @@ export default {
         goToDdoMenu(){
             var tmp = this.$route.path.split("/");
             var tmp2 = tmp.slice(0, 2).join("/");
-            var tmp3 = tmp2 + '/' + this.$route.params.system;
+            var tmp3 = tmp2 + '/' + this.$route.params.subdomain;
             return tmp3;
         },
         goToLevel3(){
             var tmp = this.$route.path.split("/");
             var tmp2 = tmp.slice(0, 3).join("/");
             var tmp3 = tmp2 + '/' + this.$route.params.system;
+            return tmp3;
+        },
+        goToLevel3Ddo(){
+            var tmp = this.$route.path.split("/");
+            var tmp2 = tmp.slice(0, 3).join("/");
+            var tmp3 = tmp2 + '/' + this.$route.params.subdomain;
             return tmp3;
         },
     },

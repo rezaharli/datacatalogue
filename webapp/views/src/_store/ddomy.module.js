@@ -24,6 +24,9 @@ const state = {
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Domain / Sub domain owner', value: 'SUB_DOMAIN_OWNER' },
         ],
         isRightTable: false,
+        detailsSource: [],
+        DDSource: [],
+
         DetailsBusinessMetadata: [],
         DDSourceBusinessMetadata: [],
         DetailsDownstreamUsage: [],
@@ -31,7 +34,6 @@ const state = {
         DetailsBTResiding: [],
         DDSourceBTResiding: [],
         detailsLoading: true,
-        detailsSource: [],
         error: null
     }
 };
@@ -131,6 +133,9 @@ const mutations = {
         state.all.detailsLoading = true;
     },
     getDetailsSuccess(state, data) {
+        state.all.detailsSource = data.Detail;
+        state.all.DDSource = data.DDSource;
+
         state.all.DetailsBusinessMetadata = data.DetailsBusinessMetadata;
         state.all.DDSourceBusinessMetadata = data.DDSourceBusinessMetadata;
         state.all.DetailsDownstreamUsage = data.DetailsDownstreamUsage;

@@ -164,6 +164,37 @@ func (s *DDOService) GetSystemsTable(system string, colFilter interface{}, pagin
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
+func (s *DDOService) GetSystemsBusinesstermTable(subdomain, system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "ddo.sql")
+	gridArgs.QueryName = "ddo-systems-businessterm"
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	gridArgs.MainArgs = append(gridArgs.MainArgs, subdomain, system)
+
+	///////// --------------------------------------------------COLUMN FILTER
+	colFilterM, err := toolkit.ToM(colFilter)
+	if err != nil {
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "")
+	} else {
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
+			colFilterM.GetString("BT_NAME"),
+			colFilterM.GetString("TABLE_NAME"),
+			colFilterM.GetString("COLUMN_NAME"),
+		)
+	}
+
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
+	gridArgs.GroupCol = "-"
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
+}
+
 func (s *DDOService) GetRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
 	gridArgs := GridArgs{}
 	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
@@ -210,24 +241,119 @@ func (s *DDOService) GetRightTable(tabs string, systemID int, search string, sea
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
-func (s *DDOService) GetDetailsBusinessMetadataFromDomain(payload toolkit.M) (interface{}, int, error) {
+func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	tabs := ""
+	toolkit.MtoStruct(payload, m.MDColumn{})
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, payload.GetString("Subdomain"), payload.GetString("BTname"))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddo.sql")
+	q, err := h.BuildQueryFromFile(filePath, "details", []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	otherArgs := make([]string, 0)
+	otherArgs = append(otherArgs,
+		payload.GetString("SystemName"),
+		payload.GetString("TableName"),
+		payload.GetString("BusinessAliasName"),
+	)
+
+	checkNotEmpty := func(s []string) bool {
+		for _, v := range s {
+			if v != "" {
+				return true
+			}
+		}
+		return false
+	}
+
+	q = `SELECT rownum, a.* FROM (
+		` + q + `
+	) a `
+
+	if checkNotEmpty(otherArgs) == true {
+		q += `WHERE ( ID IS NOT NULL `
+		if otherArgs[0] != "" {
+			q += `AND SYSTEM_NAME = '` + otherArgs[0] + `' `
+		}
+		if otherArgs[1] != "" {
+			q += `AND TABLE_NAME = '` + otherArgs[1] + `' `
+		}
+		if otherArgs[2] != "" {
+			q += `AND ALIAS_NAME = '` + otherArgs[2] + `' `
+		}
+		q += `) AND rownum = 1 `
+	} else {
+		q += `WHERE rownum = 1 `
+	}
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DDOService) GetddSource(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, payload.GetString("Subdomain"), payload.GetString("BTname"))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddo.sql")
+	q, err := h.BuildQueryFromFile(filePath, "details", []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	///////// FILTER
+	q = `SELECT DISTINCT 
+			SYSTEM_NAME, 
+			TABLE_NAME, 
+			ALIAS_NAME
+		FROM (
+		` + q + `
+	) `
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DDOService) GetDetailsBusinessMetadataFromDomain(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
 
 	q := ""
 	args := make([]interface{}, 0)
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	if strings.Contains(payload.GetString("Which"), "my") == true {
-		tabs = "ddomy"
-	} else {
-		tabs = "ddoall"
-	}
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddodetails.sql")
 	q, err := h.BuildQueryFromFile(filePath, "details-business-metadata-from-domain", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
@@ -286,20 +412,12 @@ func (s *DDOService) GetddSourceBusinessMetadataFromDomain(payload toolkit.M) (i
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	tabs := ""
-
 	q := ""
 	args := make([]interface{}, 0)
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	if strings.Contains(payload.GetString("Which"), "my") == true {
-		tabs = "ddomy"
-	} else {
-		tabs = "ddoall"
-	}
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddodetails.sql")
 	q, err := h.BuildQueryFromFile(filePath, "details-business-metadata-from-domain", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
@@ -328,20 +446,12 @@ func (s *DDOService) GetDetailsDownstreamUsageOfBusinessTerm(payload toolkit.M) 
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	tabs := ""
-
 	q := ""
 	args := make([]interface{}, 0)
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	if strings.Contains(payload.GetString("Which"), "my") == true {
-		tabs = "ddomy"
-	} else {
-		tabs = "ddoall"
-	}
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddodetails.sql")
 	q, err := h.BuildQueryFromFile(filePath, "details-downstream-usage-of-business-term", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
@@ -389,20 +499,12 @@ func (s *DDOService) GetddSourceDownstreamUsageOfBusinessTerm(payload toolkit.M)
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	tabs := ""
-
 	q := ""
 	args := make([]interface{}, 0)
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	if strings.Contains(payload.GetString("Which"), "my") == true {
-		tabs = "ddomy"
-	} else {
-		tabs = "ddoall"
-	}
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddodetails.sql")
 	q, err := h.BuildQueryFromFile(filePath, "details-downstream-usage-of-business-term", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
@@ -447,20 +549,12 @@ func (s *DDOService) GetDetailsBTResiding(payload toolkit.M) (interface{}, int, 
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	tabs := ""
-
 	q := ""
 	args := make([]interface{}, 0)
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	if strings.Contains(payload.GetString("Which"), "my") == true {
-		tabs = "ddomy"
-	} else {
-		tabs = "ddoall"
-	}
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddodetails.sql")
 	q, err := h.BuildQueryFromFile(filePath, "details-business-term-residing", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
@@ -520,20 +614,12 @@ func (s *DDOService) GetddSourceBTResiding(payload toolkit.M) (interface{}, int,
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	tabs := ""
-
 	q := ""
 	args := make([]interface{}, 0)
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	if strings.Contains(payload.GetString("Which"), "my") == true {
-		tabs = "ddomy"
-	} else {
-		tabs = "ddoall"
-	}
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddodetails.sql")
 	q, err := h.BuildQueryFromFile(filePath, "details-business-term-residing", []string{}, args...)
 	if err != nil {
 		return nil, 0, err

@@ -172,7 +172,7 @@ export default {
     },
     showCDEs(param) {
       this.$router.push(
-        this.addressPath + "/" + param.SYSTEM_NAME + "/" + param.IMM_INTERFACE
+        this.addressPath + "/" + encodeURIComponent(param.SYSTEM_NAME) + "/" + encodeURIComponent(param.IMM_INTERFACE)
       );
     },
     showDetails(param) {

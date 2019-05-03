@@ -1,5 +1,4 @@
 import { fetchWHeader } from '../_helpers/auth-header';
-import { lcm } from '../_helpers/helper';
 
 export const rfoMyService = {
     getLeftTable,
@@ -187,36 +186,30 @@ function getPriorityTable(param) {
             });
 
             res.Data.forEach(v => {
-                v.PRIORITY_REPORT_RATIONALEsVal = _.cloneDeep(v.PRIORITY_REPORT_RATIONALEs);
-                v.CRM_NAMEsVal = _.cloneDeep(v.CRM_NAMEs);
-                v.CRM_RATIONALEsVal = _.cloneDeep(v.CRM_RATIONALEs);
-                v.CDE_NAMEsVal = _.cloneDeep(v.CDE_NAMEs);
-                
-                v.PRIORITY_REPORT_RATIONALEs.shift();
-                v.CRM_NAMEs.shift();
-                v.CRM_RATIONALEs.shift();
-                v.CDE_NAMEs.shift();
-
-                var lengths = [v.PRIORITY_REPORT_RATIONALEs.length + 1, v.CRM_NAMEs.length + 1, v.CRM_RATIONALEs.length + 1, v.CDE_NAMEs.length + 1];
-                v.rowspanAcuan = lcm(lengths);
-
-                v.theMostLength = _.max([v.PRIORITY_REPORT_RATIONALEs, v.CRM_NAMEs, v.CRM_RATIONALEs, v.CDE_NAMEs], v => v.length);
+                var lengths = [v.PRIORITY_REPORT_RATIONALEs.length, v.CRM_NAMEs.length, v.CRM_RATIONALEs.length, v.CDE_NAMEs.length];
+                v.rowspanAcuan = math.lcm(...lengths);
 
                 v.childrenRow = [];
-                v.theMostLength.forEach((w, i) => { // 012
-                    var PRIORITY_REPORT_RATIONALEsSkip = (v.rowspanAcuan / (v.PRIORITY_REPORT_RATIONALEs.length + 1)) - 1;
-                    var CRM_NAMEsSkip = (v.rowspanAcuan / (v.CRM_NAMEs.length + 1)) - 1;
-                    var CRM_RATIONALEsSkip = (v.rowspanAcuan / (v.CRM_RATIONALEs.length + 1)) - 1;
-                    var CDE_NAMEsSkip = (v.rowspanAcuan / (v.CDE_NAMEs.length + 1)) - 1;
+                for (let i = 0; i < v.rowspanAcuan; i++) {
+                    var inject = (valName) => {
+                        if (i % (v.rowspanAcuan / v[valName + "s"].length) == 0){
+                            return v[valName + "s"][(i / (v.rowspanAcuan / v[valName + "s"].length))][valName];
+                        }
 
-                    v.childrenRow.push({
-                        PRIORITY_REPORT_RATIONALE: i >= PRIORITY_REPORT_RATIONALEsSkip ? (v.PRIORITY_REPORT_RATIONALEs[i - (PRIORITY_REPORT_RATIONALEsSkip)] ? v.PRIORITY_REPORT_RATIONALEs[i - (PRIORITY_REPORT_RATIONALEsSkip)].PRIORITY_REPORT_RATIONALE : null) : null,
-                        CRM_NAME: i >= CRM_NAMEsSkip ? (v.CRM_NAMEs[i - (CRM_NAMEsSkip)] ? v.CRM_NAMEs[i - (CRM_NAMEsSkip)].CRM_NAME : null) : null,
-                        CRM_RATIONALE: i >= CRM_RATIONALEsSkip ? (v.CRM_RATIONALEs[i - (CRM_RATIONALEsSkip)] ? v.CRM_RATIONALEs[i - (CRM_RATIONALEsSkip)].CRM_RATIONALE : null) : null,
-                        CDE_NAME: i >= CDE_NAMEsSkip ? (v.CDE_NAMEs[i - (CDE_NAMEsSkip)] ? v.CDE_NAMEs[i - (CDE_NAMEsSkip)].CDE_NAME : null) : null,
-                        CDE_RATIONALE: i >= CDE_NAMEsSkip ? (v.CDE_NAMEs[i - (CDE_NAMEsSkip)] ? v.CDE_NAMEs[i - (CDE_NAMEsSkip)].CDE_RATIONALE : null) : null,
-                    })
-                });
+                        return null;
+                    }
+
+                    var row = {
+                        PRIORITY_REPORT_RATIONALE: inject("PRIORITY_REPORT_RATIONALE"),
+                        CRM_NAME: inject("CRM_NAME"),
+                        CRM_RATIONALE: inject("CRM_RATIONALE"),
+                        CDE_NAME: inject("CDE_NAME"),
+                        CDE_RATIONALE: inject("CDE_NAME"),
+                    }
+
+                    v.childrenRow.push(row);
+                }
+                v.childrenRow.shift();
                 
                 v.expanded = false;
             });

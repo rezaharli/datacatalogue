@@ -76,7 +76,6 @@ func main() {
 	// s.NewDSCService().CreateLinkColumnGoldenSourceDummyData()
 	// s.NewDSCService().CreatePriorityReportsDummyData()
 	// s.NewDSCService().CreateCRMDummyData()
-	// s.NewDSCService().CreateLinkCRMCDEDummyData()
 	// s.NewDSCService().CreateCDEDummyData()
 	// s.NewDSCService().CreateLinkRolePeopleDummyData()
 

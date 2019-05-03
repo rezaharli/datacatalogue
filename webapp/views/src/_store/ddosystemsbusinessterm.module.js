@@ -8,13 +8,15 @@ const state = {
             left: {},
             right: {}
         },
+        subdomain: '',
         system: '',
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
             { align: 'left', display: true, filterable: false, exportable: false, displayCount: false, sortable: false, text: 'Details', value: 'Details' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Business Term', value: 'BT_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Description', value: 'BT_DESCRIPTION' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Table Name', value: 'TABLE_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Column Name', value: 'COLUMN_NAME' },
         ],
         isRightTable: false,
         DDSource: [],
@@ -33,6 +35,7 @@ const actions = {
         });
 
         var param = {
+            Subdomain: state.all.subdomain,
             System: state.all.system,
             Filters: state.all.filters.left,
             Pagination: _.cloneDeep(state.all.left.pagination)
@@ -40,7 +43,7 @@ const actions = {
         
         param.Pagination.rowsPerPage = -1;
 
-        return ddoMyService.getBusinesstermTable(param)
+        return ddoMyService.getSystemsBusinesstermTable(param)
             .then(
                 res => commit('getExportDataSuccess', res.Data),
                 error => commit('getExportDataFailure', error)
@@ -54,12 +57,13 @@ const actions = {
         });
 
         var param = {
+            Subdomain: state.all.subdomain,
             System: state.all.system,
             Filters: state.all.filters.left,
             Pagination: state.all.left.pagination
         }
 
-        return ddoMyService.getBusinesstermTable(param)
+        return ddoMyService.getSystemsBusinesstermTable(param)
             .then(
                 res => commit('getLeftTableSuccess', res.Data),
                 error => commit('getLeftTableFailure', error)
@@ -122,7 +126,7 @@ const mutations = {
     },
 };
 
-export const ddobusinessterm = {
+export const ddosystemsbusinessterm = {
     namespaced: true,
     state,
     actions,

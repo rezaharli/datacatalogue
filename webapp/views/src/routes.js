@@ -26,6 +26,7 @@ import Ddo from './components/ddo/Ddo';
 import DdoMenu from './components/ddo/Ddo-menu';
 import DdoBusinessterm from './components/ddo/Ddo-businessterm';
 import DdoSystems from './components/ddo/Ddo-systems';
+import DdoSystemsBusinessterm from './components/ddo/Ddo-systems-businessterm';
 import DdoDetails from './components/ddo/Ddo-details';
 import DdoMy from './components/ddo/Ddo-my';
 import DdoAll from './components/ddo/Ddo-all';
@@ -189,17 +190,39 @@ const router = new VueRouter({
       permission: "DDO"
     },
   }, { // ddo.businessterm
-    path: '/ddo/businessterm/:system', name: 'ddo.businessterm', component: DdoBusinessterm, 
+    path: '/ddo/businessterm/:subdomain', name: 'ddo.businessterm', component: DdoBusinessterm, 
     meta: { 
       title: "DDO - Data Catalogue",
       permission: "DDO"
-    }
+    },
+    children: [{ // ddo.details
+      path: ':btname', name: 'ddo.details', component: DdoDetails,
+      meta: { 
+        title: "DDO Details - Data Catalogue",
+        showModal: true,
+        permission: "DDO"
+      } 
+    }] 
   }, { // ddo.systems
-    path: '/ddo/systems/:system', name: 'ddo.systems', component: DdoSystems, 
+    path: '/ddo/systems/:subdomain', name: 'ddo.systems', component: DdoSystems, 
     meta: { 
       title: "DDO - Data Catalogue",
       permission: "DDO"
     }
+  }, { // dsc.systems.businessterm
+    path: '/ddo/systems/:subdomain/:system', name: 'ddo.systems.businessterm', component: DdoSystemsBusinessterm, 
+    meta: { 
+      title: "DDO - Data Catalogue",
+      permission: "DDO"
+    },
+    children: [{ // ddo.details
+      path: ':btname', name: 'ddo.details', component: DdoDetails,
+      meta: { 
+        title: "DDO Details - Data Catalogue",
+        showModal: true,
+        permission: "DDO"
+      } 
+    }] 
   },
   // { // ddo
   //   path: '/ddo', component: Ddo, 

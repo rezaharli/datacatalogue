@@ -7,6 +7,7 @@ type MDTable struct {
 	Resource_ID       int
 	Schema_Name       string
 	Name              string
+	Display_Name      string
 	UUID              string
 	Type              string
 	Description       string

@@ -12,6 +12,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 require("expose-loader?$!jquery");
+require("expose-loader?math!mathjs");
 
 Vue.config.productionTip = process.env.NODE_ENV == 'production';
 Vue.use(BootstrapVue);

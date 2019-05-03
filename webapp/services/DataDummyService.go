@@ -362,6 +362,7 @@ func (s *DSCService) CreateMDTableDummyData() error {
 		mdt.Resource_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.Schema_Name = fake.Words()
 		mdt.Name = fake.Words()
+		mdt.Display_Name = fake.Words()
 		mdt.UUID = fake.Words()
 		mdt.Type = fake.Words()
 		mdt.Description = fake.Words()
@@ -403,6 +404,7 @@ func (s *DSCService) CreateMDColumnDummyData() error {
 		mdt.ID = i
 		mdt.Table_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.Name = fake.Words()
+		mdt.Display_Name = fake.Words()
 		mdt.UUID = fake.Words()
 		mdt.Type = fake.Words()
 		mdt.Data_Type = fake.Words()
@@ -845,41 +847,6 @@ func (s *DSCService) CreateCDEDummyData() error {
 
 	err = h.NewDBcmd().Insert(h.InsertParam{
 		TableName:       m.NewCDEModel().TableName(),
-		Data:            data,
-		ContinueOnError: true,
-	})
-	if err != nil {
-		log.Println(err.Error())
-		return err
-	}
-
-	return nil
-}
-
-func (s *DSCService) CreateLinkCRMCDEDummyData() error {
-	toolkit.Println("CreateLinkCRMCDEDummyData")
-	err := h.NewDBcmd().Delete(h.DeleteParam{
-		TableName: m.NewLinkCRMCDEModel().TableName(),
-	})
-	if err != nil {
-		log.Println(err.Error())
-		return err
-	}
-
-	data := make([]*m.LinkCRMCDE, 0)
-	for i := 0; i < 10000; i++ {
-		mdt := m.NewLinkCRMCDEModel()
-		mdt.ID = i
-		mdt.CRM_ID = toolkit.ToInt(fake.DigitsN(4), "")
-		mdt.CDE_ID = toolkit.ToInt(fake.DigitsN(4), "")
-		mdt.Created_DateTime = time.Now()
-		mdt.Modified_DateTime = time.Now()
-
-		data = append(data, mdt)
-	}
-
-	err = h.NewDBcmd().Insert(h.InsertParam{
-		TableName:       m.NewLinkCRMCDEModel().TableName(),
 		Data:            data,
 		ContinueOnError: true,
 	})

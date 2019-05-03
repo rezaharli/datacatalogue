@@ -6,6 +6,7 @@ type MDColumn struct {
 	ID                int
 	Table_ID          int
 	Name              string
+	Display_Name      string
 	UUID              string
 	Type              string
 	Data_Type         string

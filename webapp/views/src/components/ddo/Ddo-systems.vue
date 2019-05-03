@@ -92,7 +92,9 @@
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
                       <td style="width: calc(100% / 6)" class="text-uppercase">{{props.item.SYSTEM_NAME}}</td>
-                      <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.BT_COUNT" showOn="click"></tablecell></td>
+                      <td style="width: calc(100% / 6)" class="text-capitalize">
+                        <b-link @click.stop="showBusinessterms(props.item)">
+                          <tablecell :fulltext="props.item.BT_COUNT" showOn="click"></tablecell></b-link></td>
                     </tr>
                   </template>
                 </v-data-table>
@@ -155,7 +157,7 @@ export default {
   },
   mounted() {
     this.store.tabName = this.storeName;
-    this.store.system = this.$route.params.system;
+    this.store.system = this.$route.params.subdomain;
     this.resetFilter();
   },
   methods: {
@@ -184,9 +186,9 @@ export default {
         ? "Yes"
         : "No";
     },
-    showCDEs(param) {
+    showBusinessterms(param) {
       this.$router.push(
-        this.addressPath + "/" + param.SYSTEM_NAME + "/" + param.DSP_NAME
+        this.addressPath + "/" + this.$route.params.subdomain + "/" + param.SYSTEM_NAME
       );
     },
     showDetails(param) {
