@@ -37,6 +37,29 @@ const state = {
 };
 
 const actions = {
+    exportData({ commit }) {
+        commit('getExportDataRequest');
+
+        Object.keys(state.all.filters.left).map(function(key, index) {
+            state.all.filters.left[key] = state.all.filters.left[key] ? state.all.filters.left[key].toString() : "";
+        });
+
+        var param = {
+            Tabs: state.all.tabName,
+            Search: state.all.searchMain.toString(),
+            SearchDD: state.all.searchDropdown,
+            Filters: state.all.filters.left,
+            Pagination: _.cloneDeep(state.all.left.pagination)
+        }
+
+        param.Pagination.rowsPerPage = -1;
+
+        return ddoMyService.getLeftTable(param)
+            .then(
+                res => commit('getExportDataSuccess', res.Data),
+                error => commit('getExportDataFailure', error)
+            );
+    },
     getLeftTable({ commit }) {
         commit('getLeftTableRequest');
 
@@ -96,6 +119,18 @@ const actions = {
 };
 
 const mutations = {
+    getExportDataRequest(state) {
+        state.all.left.isLoading = true;
+    },
+    getExportDataSuccess(state, data) {
+        state.all.exportDatas = data;
+
+        state.all.left.isLoading = false;
+    },
+    getExportDataFailure(state, error) {
+        state.all.left.isLoading = false;
+        state.all.error = error;
+    },
     getLeftTableRequest(state) {
         state.all.left.isLoading = true;
     },
