@@ -7,6 +7,7 @@ export const ddoMyService = {
     getSystemsTable,
     getSystemsBusinesstermTable,
     getDownstreamTable,
+    getDownstreamBusinesstermTable,
     getRightTable,
     getDetails
 };
@@ -103,6 +104,112 @@ function getSystemsBusinesstermTable(param) {
 function getDownstreamTable(param) {
     return fetchWHeader(`/ddo/getdownstreamtable`, param);
 }
+
+function getDownstreamBusinesstermTable(param) {
+    return fetchWHeader(`/ddo/getdownstreambusinesstermtable`, param).then(
+        res => {
+            res.DataFlat = _.cloneDeep(res.Data);
+            
+            var tmp = _.groupBy(res.Data, "BT_NAME")
+            res.Data = _.map(Object.keys(tmp), function(v, i){
+                var tmpTmp = _.cloneDeep(tmp[v]);
+
+                var ret         = tmpTmp[0];
+                ret.ID          = i;
+                ret.BT_NAMEsVal = tmpTmp;
+                ret.BT_NAME     = v;
+
+                var tmp2 = _.groupBy(tmp[v], "TABLE_NAME");  
+                ret.Tables = _.map(Object.keys(tmp2), function(w, j){
+                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
+
+                    var ret         = tmpTmp2[0];
+                    ret.TMTID       = tmpTmp2[0].TMTID;
+                    ret.TablesVal   = tmpTmp2;
+                    ret.TABLE_NAME  = w;
+
+                    var tmp3 = _.groupBy(tmp2[w], "COLUMN_NAME");
+                    ret.Columns = _.map(Object.keys(tmp3), function(x, k){
+                        var tmpTmp3 = _.cloneDeep(tmp3[x]);
+
+                        var ret         = tmpTmp3[0];
+                        ret.COLID       = tmpTmp3[0].COLID;
+                        ret.ColumnsVal  = tmpTmp3;
+                        ret.COLUMN_NAME = x;
+
+                        return ret;
+                    });
+
+                    return ret;
+                });
+
+                var tmp4 = _.groupBy(tmp[v], "GS_SYSTEM_NAME")
+                ret.GSSystems = _.map(Object.keys(tmp4), function(w, j){
+                    var tmpTmp4 = _.cloneDeep(tmp4[w]);
+
+                    var ret             = tmpTmp4[0];
+                    ret.ID              = j;
+                    ret.GSSystemsVal    = tmpTmp4;
+                    ret.GS_SYSTEM_NAME  = w;
+
+                    var tmp5 = _.groupBy(tmp4[w], "GS_TABLE_NAME");  
+                    ret.GSTables = _.map(Object.keys(tmp5), function(x, k){
+                        var tmpTmp5 = _.cloneDeep(tmp5[x]);
+
+                        var ret             = tmpTmp5[0];
+                        ret.TMTID           = k;
+                        ret.GSTablesVal     = tmpTmp5;
+                        ret.GS_TABLE_NAME   = x;
+
+                        var tmp6 = _.groupBy(tmp5[x], "GS_COLUMN_NAME");
+                        ret.GSColumns = _.map(Object.keys(tmp6), function(y, l){
+                            var tmpTmp6 = _.cloneDeep(tmp6[y]);
+
+                            var ret             = tmpTmp6[0];
+                            ret.COLID           = l;
+                            ret.GSColumnsVal    = tmpTmp6;
+                            ret.GS_COLUMN_NAME  = y;
+
+                            return ret;
+                        });
+
+                        return ret;
+                    });
+
+                    return ret;
+                });
+
+
+                return ret;
+            });
+
+            res.Data.forEach(v => {
+                v.Tables.forEach(w => {
+                    w.Columns.shift();
+                });
+
+                if(v.Tables[0].Columns.length == 0){
+                    v.Tables.shift();
+                }
+
+                v.GSSystems.forEach(w => {
+                    w.GSTables.forEach(x => {
+                        x.GSColumns.shift();
+                    });
+
+                    if(w.GSTables[0].GSColumns.length == 0){
+                        w.GSTables.shift();
+                    }
+                });
+            });
+            
+            console.log(res);
+            
+            return res;
+        }
+    );
+}
+
 
 function getRightTable(param) {
     return fetchWHeader(`/ddo/getrighttable`, param).then(

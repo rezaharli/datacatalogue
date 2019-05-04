@@ -15,6 +15,22 @@
             <PageHeader />
 
             <page-loader v-if="store.left.isLoading" />
+            
+            <b-row>
+                <b-col sm=12 md=3>
+                    <div class="card card-v2 transition">
+                        <h6 class="title-1">Data Domain</h6>
+                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["DATA_DOMAIN"] : " " }}</h3>
+                    </div>
+                </b-col>
+
+                <b-col sm=12 md=3>
+                    <div class="card card-v2 transition">
+                        <h6 class="title-1">Sub-domain</h6>
+                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["SUB_DOMAINS"] : " " }}</h3>
+                    </div>
+                </b-col>
+            </b-row>
 
             <b-row style="margin-top: 10px; margin-bottom: 20px;">
                 <b-col>
@@ -166,7 +182,7 @@ export default {
     },
     showBusinessterms(param) {
       this.$router.push(
-        this.addressPath + "/" + this.$route.params.subdomain + "/" + param.SYSTEM_NAME
+        this.addressPath + "/" + this.$route.params.subdomain + "/" + param.DP_NAME
       );
     },
     showDetails(param) {
