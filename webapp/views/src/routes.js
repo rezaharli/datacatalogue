@@ -27,6 +27,7 @@ import DdoMenu from './components/ddo/Ddo-menu';
 import DdoBusinessterm from './components/ddo/Ddo-businessterm';
 import DdoSystems from './components/ddo/Ddo-systems';
 import DdoSystemsBusinessterm from './components/ddo/Ddo-systems-businessterm';
+import DdoDownstream from './components/ddo/Ddo-downstream';
 import DdoDetails from './components/ddo/Ddo-details';
 import DdoMy from './components/ddo/Ddo-my';
 import DdoAll from './components/ddo/Ddo-all';
@@ -223,6 +224,12 @@ const router = new VueRouter({
         permission: "DDO"
       } 
     }] 
+  }, { // ddo.downstream
+    path: '/ddo/downstream/:subdomain', name: 'ddo.downstream', component: DdoDownstream, 
+    meta: { 
+      title: "DDO - Data Catalogue",
+      permission: "DDO"
+    }
   },
   // { // ddo
   //   path: '/ddo', component: Ddo, 

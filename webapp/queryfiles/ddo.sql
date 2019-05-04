@@ -145,6 +145,25 @@ SELECT DISTINCT
         )
     ORDER BY BT.BT_NAME, TAB.NAME, COL.NAME
 
+-- name: ddo-downstream
+SELECT DISTINCT
+        TC.NAME                                                 AS DATA_DOMAIN,
+        TSC.NAME                                                AS SUB_DOMAINS,
+        COUNT(DISTINCT DP.NAME) OVER ()                         AS DP_COUNT,
+        DP.NAME                                                 AS DP_NAME,
+        COUNT(DISTINCT BT.BT_NAME) OVER (PARTITION BY DP.NAME)  AS BT_COUNT,
+        '0'                                                     AS TOTAL
+    FROM
+        TBL_CATEGORY TC
+        INNER JOIN TBL_SUBCATEGORY TSC ON TSC.CATEGORY_ID = TC.ID AND UPPER(TSC.TYPE) = 'SUB DATA DOMAIN'
+        INNER JOIN TBL_BUSINESS_TERM BT ON TSC.ID = BT.PARENT_ID
+        LEFT OUTER JOIN TBL_LINK_COLUMN_BUSINESS_TERM CBT ON BT.ID = CBT.BUSINESS_TERM_ID
+        LEFT OUTER JOIN TBL_MD_COLUMN COL ON CBT.COLUMN_ID = COL.ID
+        LEFT OUTER JOIN TBL_DS_PROCESS_DETAIL DPD ON COL.ID = DPD.COLUMN_ID
+        LEFT OUTER JOIN TBL_DS_PROCESSES DP ON DP.ID = DPD.PROCESS_ID
+    WHERE TSC.NAME = '?' -- SUBCATEGORY NAME
+    ORDER BY TC.NAME, TSC.NAME, DP.NAME
+
 -- name: details
 SELECT 
         TSC.ID,

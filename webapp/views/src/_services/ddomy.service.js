@@ -6,6 +6,7 @@ export const ddoMyService = {
     getBusinesstermTable,
     getSystemsTable,
     getSystemsBusinesstermTable,
+    getDownstreamTable,
     getRightTable,
     getDetails
 };
@@ -97,6 +98,10 @@ function getSystemsBusinesstermTable(param) {
             return res;
         }
     );
+}
+
+function getDownstreamTable(param) {
+    return fetchWHeader(`/ddo/getdownstreamtable`, param);
 }
 
 function getRightTable(param) {
