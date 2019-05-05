@@ -21,6 +21,8 @@ import { ddoall } from './ddoall.module';
 import { ddobusinessterm } from './ddobusinessterm.module';
 import { ddosystems } from './ddosystems.module';
 import { ddosystemsbusinessterm } from './ddosystemsbusinessterm.module';
+import { ddodownstream } from './ddodownstream.module';
+import { ddodownstreambusinessterm } from './ddodownstreambusinessterm.module';
 import { rfo } from './rfo.module';
 import { rfomy } from './rfomy.module';
 import { rfoall } from './rfoall.module';
@@ -35,7 +37,7 @@ export const store = new Vuex.Store({
         users,
         dsc, dscmy, dscall, dsccde, dsccdp, dsccdpcde, dscinterfaces, dscinterfacescde, dscdd,
         dpomy, dpoall,
-        ddo, ddomy, ddoall, ddobusinessterm, ddosystems, ddosystemsbusinessterm,
+        ddo, ddomy, ddoall, ddobusinessterm, ddosystems, ddosystemsbusinessterm, ddodownstream, ddodownstreambusinessterm,
         rfo, rfomy, rfoall, rfopriority
     }
 });

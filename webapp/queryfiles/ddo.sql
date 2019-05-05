@@ -145,6 +145,71 @@ SELECT DISTINCT
         )
     ORDER BY BT.BT_NAME, TAB.NAME, COL.NAME
 
+-- name: ddo-downstream
+SELECT DISTINCT
+        TC.NAME                                                 AS DATA_DOMAIN,
+        TSC.NAME                                                AS SUB_DOMAINS,
+        COUNT(DISTINCT DP.NAME) OVER ()                         AS DP_COUNT,
+        DP.NAME                                                 AS DP_NAME,
+        COUNT(DISTINCT BT.BT_NAME) OVER (PARTITION BY DP.NAME)  AS BT_COUNT,
+        '0'                                                     AS TOTAL
+    FROM
+        TBL_CATEGORY TC
+        INNER JOIN TBL_SUBCATEGORY TSC ON TSC.CATEGORY_ID = TC.ID AND UPPER(TSC.TYPE) = 'SUB DATA DOMAIN'
+        INNER JOIN TBL_BUSINESS_TERM BT ON TSC.ID = BT.PARENT_ID
+        LEFT OUTER JOIN TBL_LINK_COLUMN_BUSINESS_TERM CBT ON BT.ID = CBT.BUSINESS_TERM_ID
+        LEFT OUTER JOIN TBL_MD_COLUMN COL ON CBT.COLUMN_ID = COL.ID
+        LEFT OUTER JOIN TBL_DS_PROCESS_DETAIL DPD ON COL.ID = DPD.COLUMN_ID
+        LEFT OUTER JOIN TBL_DS_PROCESSES DP ON DP.ID = DPD.PROCESS_ID
+    WHERE TSC.NAME = '?' -- SUBCATEGORY NAME
+        AND (
+            upper(NVL(TC.NAME, ' ')) LIKE upper('%?%')
+            AND upper(NVL(DP.NAME, ' ')) LIKE upper('%?%')
+        )
+    ORDER BY TC.NAME, TSC.NAME, DP.NAME
+
+-- name: ddo-downstream-businessterm
+SELECT DISTINCT
+        BT.BT_NAME                                                  AS BT_NAME,
+        TGS.SYSTEM_NAME                                             AS SYSTEM_CONSUMED,
+        T.NAME                                                      AS TABLE_NAME,
+        C.NAME                                                      AS COLUMN_NAME,
+        CASE WHEN S.ITAM_ID = GS.ITAM_ID THEN 'YES' ELSE 'NO' END   AS GOLDEN_SOURCE,
+        CD.ALIAS_NAME                                               AS ALIAS_NAME,
+        GS.ITAM_ID                                                  AS GS_ITAM_ID,
+        GS.SYSTEM_NAME                                              AS GS_SYSTEM_NAME,
+        GST.NAME                                                    AS GS_TABLE_NAME,
+        GSC.NAME                                                    AS GS_COLUMN_NAME
+    FROM
+        TBL_DS_PROCESSES DSP
+        INNER JOIN TBL_DS_PROCESS_DETAIL DSPD ON DSP.ID = DSPD.PROCESS_ID    
+        INNER JOIN TBL_LINK_COLUMN_BUSINESS_TERM CBT ON DSPD.COLUMN_ID = CBT.COLUMN_ID        
+        INNER JOIN TBL_MD_COLUMN C ON C.ID = CBT.COLUMN_ID
+        INNER JOIN TBL_MD_COLUMN_DETAILS CD ON C.ID = CD.COLUMN_ID
+        INNER JOIN TBL_MD_TABLE T ON T.ID = C.TABLE_ID
+        INNER JOIN TBL_MD_RESOURCE R ON R.ID = T.RESOURCE_ID
+        INNER JOIN TBL_SYSTEM S ON S.ID = R.SYSTEM_ID    
+        LEFT OUTER JOIN TBL_BUSINESS_TERM BT ON CBT.BUSINESS_TERM_ID = BT.ID
+        LEFT OUTER JOIN TBL_LINK_COLUMN_GOLDEN_SOURCE CGS ON CBT.COLUMN_ID = CGS.COLUMN_ID
+        LEFT OUTER JOIN TBL_MD_COLUMN GSC ON GSC.ID = CGS.GOLDEN_SOURCE_COLUMN_ID
+        LEFT OUTER JOIN TBL_MD_TABLE GST ON GST.ID = GSC.TABLE_ID
+        LEFT OUTER JOIN TBL_MD_RESOURCE GSR ON GSR.ID = GST.RESOURCE_ID
+        LEFT OUTER JOIN TBL_SYSTEM GS ON GS.ID = GSR.SYSTEM_ID
+        LEFT OUTER JOIN TBL_SYSTEM TGS ON TGS.ID = BT.TARGET_GOLDEN_SOURCE_ID
+    WHERE DSP.NAME = '?' -- DP NAME -- LC-FCC |Transaction Monitoring
+        AND (
+            upper(NVL(BT.BT_NAME, ' ')) LIKE upper('%?%')
+            AND upper(NVL(TGS.SYSTEM_NAME, ' ')) LIKE upper('%?%')
+            AND upper(NVL(T.NAME, ' ')) LIKE upper('%?%')
+            AND upper(NVL(C.NAME, ' ')) LIKE upper('%?%')
+            AND upper(NVL(CASE WHEN S.ITAM_ID = GS.ITAM_ID THEN 'YES' ELSE 'NO' END, ' ')) LIKE upper('%?%')
+            AND upper(NVL(CD.ALIAS_NAME, ' ')) LIKE upper('%?%')
+            AND upper(NVL(GS.SYSTEM_NAME, ' ')) LIKE upper('%?%')
+            AND upper(NVL(GST.NAME, ' ')) LIKE upper('%?%')
+            AND upper(NVL(GSC.NAME, ' ')) LIKE upper('%?%')
+        )
+    ORDER BY BT.BT_NAME, TGS.SYSTEM_NAME, T.NAME, C.NAME
+
 -- name: details
 SELECT 
         TSC.ID,

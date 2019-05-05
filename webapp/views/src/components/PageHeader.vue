@@ -53,13 +53,19 @@
                 <b-dropdown-item v-if="
                     $route.name == 'ddo.businessterm' ||
                     $route.name == 'ddo.systems' ||
-                    $route.name == 'ddo.systems.businessterm'
+                    $route.name == 'ddo.systems.businessterm' ||
+                    $route.name == 'ddo.downstream' ||
+                    $route.name == 'ddo.downstream.businessterm'
                     ">
                     <router-link :to="goToDdoMenu" class="standard-a">DDO Landing Page</router-link>
                 </b-dropdown-item>
 
                 <b-dropdown-item v-if="$route.name == 'ddo.systems.businessterm'">
                     <router-link :to="goToLevel3Ddo" class="standard-a">List of Business Terms mapped to System</router-link>
+                </b-dropdown-item>
+
+                <b-dropdown-item v-if="$route.name == 'ddo.downstream.businessterm'">
+                    <router-link :to="goToLevel3Ddo" class="standard-a">Downstream Usage</router-link>
                 </b-dropdown-item>
             </b-dropdown>
 

@@ -148,6 +148,61 @@ func (c *DDO) GetSystemsBusinesstermTable(k *knot.WebContext) {
 	h.WriteResultOK(k, res, systems)
 }
 
+func (c *DDO) GetDownstreamTable(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	system := payload.GetString("System")
+	colFilter := payload.Get("Filters")
+	pagination, err := toolkit.ToM(payload.Get("Pagination"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	systems, _, err := s.NewDDOService().GetDownstreamTable(system, colFilter, pagination)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	h.WriteResultOK(k, res, systems)
+}
+
+func (c *DDO) GetDownstreamBusinesstermTable(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	subdomain := payload.GetString("Subdomain")
+	system := payload.GetString("System")
+	colFilter := payload.Get("Filters")
+	pagination, err := toolkit.ToM(payload.Get("Pagination"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	systems, _, err := s.NewDDOService().GetDownstreamBusinesstermTable(subdomain, system, colFilter, pagination)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	h.WriteResultOK(k, res, systems)
+}
+
 func (c *DDO) GetRightTable(k *knot.WebContext) {
 	res := toolkit.NewResult()
 

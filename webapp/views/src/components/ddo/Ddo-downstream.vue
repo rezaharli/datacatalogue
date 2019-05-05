@@ -20,28 +20,14 @@
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
                         <h6 class="title-1">Data Domain</h6>
-                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["DATA_DOMAIN"] : "" }}</h3>
+                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["DATA_DOMAIN"] : " " }}</h3>
                     </div>
                 </b-col>
-                
+
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
                         <h6 class="title-1">Sub-domain</h6>
-                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["SUB_DOMAINS"] : "0" }}</h3>
-                    </div>
-                </b-col>
-
-                <b-col sm=12 md=3>
-                    <div class="card card-v2 transition">
-                        <h6 class="title-1">Sub-domain Owner</h6>
-                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["SUB_DOMAIN_OWNER"] : "0" }}</h3>
-                    </div>
-                </b-col>
-
-                <b-col sm=12 md=3>
-                    <div class="card card-v2 transition">
-                        <h6 class="title-1">Business Terms</h6>
-                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["BT_COUNT"] : "0" }}</h3>
+                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["SUB_DOMAINS"] : " " }}</h3>
                     </div>
                 </b-col>
             </b-row>
@@ -91,13 +77,19 @@
 
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                      <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }" class="text-capitalize text-title">
-                        <b-button size="sm" class="green-tosca-gradient icon-only" @click="showDetails(props.item)">
-                          <i class="fa fa-fw fa-external-link-alt"></i></b-button></td>
-
-                      <td v-bind:style="{ width: store.left.colWidth['BUSINESS_TERM'] + 'px' }" class="text-uppercase">{{ props.item.BT_NAME }}</td>
-                      <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }" class="text-capitalize">{{ props.item.BT_DESCRIPTION }}</td>
+                      <td style="width: calc(100% / 6)" class="text-uppercase">{{props.item.DATA_DOMAIN}}</td>
+                      <td style="width: calc(100% / 6)" class="text-uppercase">{{props.item.DP_NAME}}</td>
+                      <td style="width: calc(100% / 6)" class="text-capitalize">
+                        <b-link @click.stop="showBusinessterms(props.item)">
+                          <tablecell :fulltext="props.item.BT_COUNT" showOn="click"></tablecell></b-link></td>
                     </tr>
+                  </template>
+
+                  <template slot="footer" >
+                    <td colspan="2">
+                      <b>Total</b>
+                    </td>
+                    <td><b>{{ store.left.display[0] ? store.left.display[0].TOTAL : 0 }}</b></td>
                   </template>
                 </v-data-table>
                       
@@ -129,7 +121,7 @@ export default {
   },
   data() {
     return {
-      storeName: "ddobusinessterm",
+      storeName: "ddodownstream",
       systemSource: [],
       tablenameSource: []
     };
@@ -188,9 +180,14 @@ export default {
         ? "Yes"
         : "No";
     },
+    showBusinessterms(param) {
+      this.$router.push(
+        this.addressPath + "/" + this.$route.params.subdomain + "/" + param.DP_NAME
+      );
+    },
     showDetails(param) {
       this.$router.push(
-        this.addressPath + "/" + param.SUB_DOMAINS + "/" + param.BT_NAME
+        this.addressPath + "/" + param.TSID + "/" + param.ID + "/" + param.COLID
       );
     }
   }

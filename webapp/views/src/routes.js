@@ -27,6 +27,8 @@ import DdoMenu from './components/ddo/Ddo-menu';
 import DdoBusinessterm from './components/ddo/Ddo-businessterm';
 import DdoSystems from './components/ddo/Ddo-systems';
 import DdoSystemsBusinessterm from './components/ddo/Ddo-systems-businessterm';
+import DdoDownstream from './components/ddo/Ddo-downstream';
+import DdoDownstreamBusinessterm from './components/ddo/Ddo-downstream-businessterm';
 import DdoDetails from './components/ddo/Ddo-details';
 import DdoMy from './components/ddo/Ddo-my';
 import DdoAll from './components/ddo/Ddo-all';
@@ -211,6 +213,26 @@ const router = new VueRouter({
     }
   }, { // dsc.systems.businessterm
     path: '/ddo/systems/:subdomain/:system', name: 'ddo.systems.businessterm', component: DdoSystemsBusinessterm, 
+    meta: { 
+      title: "DDO - Data Catalogue",
+      permission: "DDO"
+    },
+    children: [{ // ddo.details
+      path: ':btname', name: 'ddo.details', component: DdoDetails,
+      meta: { 
+        title: "DDO Details - Data Catalogue",
+        showModal: true,
+        permission: "DDO"
+      } 
+    }] 
+  }, { // ddo.downstream
+    path: '/ddo/downstream/:subdomain', name: 'ddo.downstream', component: DdoDownstream, 
+    meta: { 
+      title: "DDO - Data Catalogue",
+      permission: "DDO"
+    }
+  }, { // dsc.downstream.businessterm
+    path: '/ddo/downstream/:subdomain/:system', name: 'ddo.downstream.businessterm', component: DdoDownstreamBusinessterm, 
     meta: { 
       title: "DDO - Data Catalogue",
       permission: "DDO"
