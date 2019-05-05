@@ -67,6 +67,16 @@
                 <b-dropdown-item v-if="$route.name == 'ddo.downstream.businessterm'">
                     <router-link :to="goToLevel3Ddo" class="standard-a">Downstream Usage</router-link>
                 </b-dropdown-item>
+
+                <b-dropdown-item v-if="$route.name == 'dpo.menu' || $route.name.indexOf('dpo.') != -1">
+                    <router-link to="/dpo" class="standard-a">DPO View</router-link>
+                </b-dropdown-item>
+
+                <b-dropdown-item v-if="
+                    $route.name == 'dpo.dataelements'
+                    ">
+                    <router-link :to="goToDpoMenu" class="standard-a">DPO Landing Page</router-link>
+                </b-dropdown-item>
             </b-dropdown>
 
             <v-toolbar-title to="/" class="app-title text-capitalize">
@@ -142,6 +152,12 @@ export default {
             var tmp = this.$route.path.split("/");
             var tmp2 = tmp.slice(0, 2).join("/");
             var tmp3 = tmp2 + '/' + this.$route.params.subdomain;
+            return tmp3;
+        },
+        goToDpoMenu(){
+            var tmp = this.$route.path.split("/");
+            var tmp2 = tmp.slice(0, 2).join("/");
+            var tmp3 = tmp2 + '/' + this.$route.params.dspname;
             return tmp3;
         },
         goToLevel3(){

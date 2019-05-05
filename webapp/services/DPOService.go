@@ -20,45 +20,99 @@ func NewDPOService() *DPOService {
 	return ret
 }
 
-func (s *DPOService) GetLeftTable(tabs, loggedinid, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) ([]toolkit.M, int, error) {
+func (s *DPOService) GetLeftTable(tabs, loggedinid, search string, searchDD, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	gridArgs.QueryName = "left-grid"
-	gridArgs.PageNumber = pageNumber
-	gridArgs.RowsPerPage = rowsPerPage
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
+	gridArgs.QueryName = "dpo-view"
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 
 	if loggedinid != "" {
-		gridArgs.MainArgs = append(gridArgs.MainArgs, loggedinid)
-	}
-
-	///////// --------------------------------------------------DROPDOWN FILTER
-	searchDDM, err := toolkit.ToM(searchDD)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	filterProcessName := ""
-	if search != "" {
-		filterProcessName = search
+		gridArgs.MainArgs = append(gridArgs.MainArgs, "MY", loggedinid)
 	} else {
-		filterProcessName = searchDDM.GetString("ProcessName")
+		gridArgs.MainArgs = append(gridArgs.MainArgs, "ALL", "0000000")
 	}
-
-	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter,
-		filterProcessName,
-		searchDDM.GetString("ProcessOwner"),
-	)
 
 	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "")
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "")
 	} else {
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("DOWNSTREAM_PROCESS"),
-			colFilterM.GetString("PROCESS_OWNER"),
-			colFilterM.GetString("BANK_ID"),
+			colFilterM.GetString("DSP_NAME"),
+			colFilterM.GetString("DSP_OWNER"),
 		)
+	}
+
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
+	gridArgs.GroupCol = "-"
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
+}
+
+func (s *DPOService) GetHomepageCounts(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	system := payload.GetString("System")
+	args = append(args, system, system, system)
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
+	q, err := h.BuildQueryFromFile(filePath, "dpo-view-homepage", []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DPOService) GetDataelementsTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
+	gridArgs.QueryName = "dpo-dataelements"
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
+
+	///////// --------------------------------------------------COLUMN FILTER
+	colFilterM, err := toolkit.ToM(colFilter)
+	if err != nil {
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "", "", "")
+	} else {
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
+			colFilterM.GetString("SYSTEM_NAME"),
+			colFilterM.GetString("ITAM_ID"),
+			colFilterM.GetString("ALIAS_NAME"),
+			colFilterM.GetString("CDE"),
+			colFilterM.GetString("TABLE_NAME"),
+			colFilterM.GetString("COLUMN_NAME"),
+			colFilterM.GetString("ULT_SYSTEM_NAME"),
+			colFilterM.GetString("DATA_SLA"),
+		)
+	}
+
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
 	}
 
 	gridArgs.GroupCol = "-"
