@@ -4,23 +4,23 @@ import { newTableObject } from '../_helpers/table-helper';
 const state = {
     all: {
         tabName: '',
-        searchMain: '',
-        searchDropdown: {
-            SubDataDomain: '',
-            DataDomain: '',
-            SubDataDomainOwner: '',
-            BusinessTerm: '',
-        },
         filters: {
             left: {},
             right: {}
         },
+        dspname: '',
         left: newTableObject(),
-        right: newTableObject(),
         exportDatas: [],
         leftHeaders: [
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Downstream Processes', value: 'DSP_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Process Owner', value: 'DSP_OWNER' },
+            { align: 'left', display: true, filterable: false, exportable: false, displayCount: false, sortable: false, text: 'Details', value: 'Details' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'System / EUC used by Process', value: 'SYSTEM_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'ITAM ID', value: 'ITAM_ID' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'CDE NAME', value: 'ALIAS_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'CDE (Y or N)', value: 'CDE' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Table Name', value: 'TABLE_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Column Name', value: 'COLUMN_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'If sourced Ultimate source system', value: 'ULT_SYSTEM_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Data SLA (Y/ N)', value: 'DATA_SLA' },
         ],
         isRightTable: false,
         DDSource: [],
@@ -39,22 +39,20 @@ const actions = {
         });
 
         var param = {
-            Tabs: state.all.tabName,
-            Search: state.all.searchMain.toString(),
-            SearchDD: state.all.searchDropdown,
+            System: state.all.system,
             Filters: state.all.filters.left,
             Pagination: _.cloneDeep(state.all.left.pagination)
         }
-
+        
         param.Pagination.rowsPerPage = -1;
 
-        return dpoMyService.getLeftTable(param)
+        return dpoMyService.getDataelementsTable(param)
             .then(
                 res => commit('getExportDataSuccess', res.Data),
                 error => commit('getExportDataFailure', error)
             );
     },
-    getLeftTable({ commit }) {
+    getLeftTable({ commit }, system) {
         commit('getLeftTableRequest');
 
         Object.keys(state.all.filters.left).map(function(key, index) {
@@ -62,39 +60,15 @@ const actions = {
         });
 
         var param = {
-            Tabs: state.all.tabName,
-            Search: state.all.searchMain.toString(),
-            SearchDD: state.all.searchDropdown,
+            System: state.all.dspname,
             Filters: state.all.filters.left,
             Pagination: state.all.left.pagination
         }
 
-        return dpoMyService.getLeftTable(param)
+        return dpoMyService.getDataelementsTable(param)
             .then(
                 res => commit('getLeftTableSuccess', res.Data),
                 error => commit('getLeftTableFailure', error)
-            );
-    },
-    getRightTable({ commit }, systemID) {
-        commit('getRightTableRequest');
-
-        Object.keys(state.all.filters.right).map(function(key, index) {
-            state.all.filters.right[key] = state.all.filters.right[key] ? state.all.filters.right[key].toString() : "";
-        });
-
-        var param = {
-            Tabs: state.all.tabName,
-            SystemID: systemID,
-            Search: state.all.searchMain,
-            SearchDD: state.all.searchDropdown,
-            Filters: state.all.filters.right,
-            Pagination: state.all.right.pagination
-        }
-
-        return dpoMyService.getRightTable(param)
-            .then(
-                res => commit('getRightTableSuccess', res.Data),
-                error => commit('getRightTableFailure', error)
             );
     },
     getDetails({ commit }, param) {
@@ -139,20 +113,6 @@ const mutations = {
         state.all.left.isLoading = false;
         state.all.error = error;
     },
-    getRightTableRequest(state) {
-        state.all.right.isLoading = true;
-    },
-    getRightTableSuccess(state, data) {
-        state.all.right.source = data;
-        state.all.right.display = data;
-        state.all.right.totalItems = data[0] ? data[0].RESULT_COUNT : 0;
-
-        state.all.right.isLoading = false;
-    },
-    getRightTableFailure(state, error) {
-        state.all.right.isLoading = false;
-        state.all.error = error;
-    },
     getDetailsRequest(state) {
         state.all.detailsLoading = true;
     },
@@ -168,7 +128,7 @@ const mutations = {
     },
 };
 
-export const dpoall = {
+export const dpodataelements = {
     namespaced: true,
     state,
     actions,

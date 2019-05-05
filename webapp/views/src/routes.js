@@ -18,6 +18,8 @@ import DscMy from './components/dsc/Dsc-my';
 import DscAll from './components/dsc/Dsc-all';
 
 import Dpo from './components/dpo/Dpo';
+import DpoMenu from './components/dpo/Dpo-menu';
+import DpoDataelements from './components/dpo/Dpo-dataelements';
 import DpoDetails from './components/dpo/Dpo-details';
 import DpoMy from './components/dpo/Dpo-my';
 import DpoAll from './components/dpo/Dpo-all';
@@ -124,62 +126,91 @@ const router = new VueRouter({
       title: "DSC - Data Catalogue",
       permission: "DSC"
     },
-  }, { // dpo
-    path: '/dpo', component: Dpo, 
+  },  
+  { // dpo
+    path: '/dpo', name: 'dpo', component: Dpo, 
     meta: { 
       title: "DPO - Data Catalogue",
       permission: "DPO"
-    }, 
-    children: [{ 
-      path: '', name: 'dpo', redirect: { name: 'dpo.my' }
-    }, { //dpo.my
-      path: 'my', 
-      name: 'dpo.my', 
-      component: DpoMy, 
+    },
+  }, { // dpo.menu
+    path: '/dpo/:system', name: 'dpo.menu', component: DpoMenu, 
+    meta: { 
+      title: "DPO - Data Catalogue",
+      permission: "DPO"
+    },
+  }, { // dpo.dataelements
+    path: '/dpo/dataelements/:dspname', name: 'dpo.dataelements', component: DpoDataelements, 
+    meta: { 
+      title: "DPO - Data Catalogue",
+      permission: "DPO"
+    },
+    children: [{ // dpo.details
+      path: ':btname', name: 'dpo.details', component: DpoDetails,
       meta: { 
-        title: "DPO - Data Catalogue",
-        showModal: false,
+        title: "DPO Details - Data Catalogue",
+        showModal: true,
         permission: "DPO"
       } 
-    }, { // dpo.my.system
-      path: 'my/:system', name: 'dpo.my', component: DpoMy, 
-      meta: { 
-        title: "DPO - Data Catalogue",
-        showModal: false,
-        permission: "DPO"
-      }, 
-      children: [{ // dpo.my.system.details
-        path: ':details', name: 'dpo.my.details', component: DpoDetails,
-        meta: { 
-          title: "DPO Details - Data Catalogue",
-          showModal: true,
-          permission: "DPO"
-        } 
-      }] 
-    }, { // dpo.all
-      path: 'all', name: 'dpo.all', component: DpoAll, 
-      meta: { 
-        title: "DPO - Data Catalogue" ,
-        showModal: false,
-        permission: "DPO"
-      } 
-    }, { 
-      path: 'all/:system', name: 'dpo.all', component: DpoAll, 
-      meta: { 
-        title: "DPO - Data Catalogue" ,
-        showModal: false,
-        permission: "DPO"
-      }, 
-      children: [{ // dpo.all.system.details
-        path: ':details', name: 'dpo.all.details', component: DpoDetails,
-        meta: { 
-          title: "DPO Details - Data Catalogue",
-          showModal: true,
-          permission: "DPO"
-        } 
-      }]
-    }]
-  }, { // ddo
+    }] 
+  },
+  // { // dpo
+  //   path: '/dpo', component: Dpo, 
+  //   meta: { 
+  //     title: "DPO - Data Catalogue",
+  //     permission: "DPO"
+  //   }, 
+  //   children: [{ 
+  //     path: '', name: 'dpo', redirect: { name: 'dpo.my' }
+  //   }, { //dpo.my
+  //     path: 'my', 
+  //     name: 'dpo.my', 
+  //     component: DpoMy, 
+  //     meta: { 
+  //       title: "DPO - Data Catalogue",
+  //       showModal: false,
+  //       permission: "DPO"
+  //     } 
+  //   }, { // dpo.my.system
+  //     path: 'my/:system', name: 'dpo.my', component: DpoMy, 
+  //     meta: { 
+  //       title: "DPO - Data Catalogue",
+  //       showModal: false,
+  //       permission: "DPO"
+  //     }, 
+  //     children: [{ // dpo.my.system.details
+  //       path: ':details', name: 'dpo.my.details', component: DpoDetails,
+  //       meta: { 
+  //         title: "DPO Details - Data Catalogue",
+  //         showModal: true,
+  //         permission: "DPO"
+  //       } 
+  //     }] 
+  //   }, { // dpo.all
+  //     path: 'all', name: 'dpo.all', component: DpoAll, 
+  //     meta: { 
+  //       title: "DPO - Data Catalogue" ,
+  //       showModal: false,
+  //       permission: "DPO"
+  //     } 
+  //   }, { 
+  //     path: 'all/:system', name: 'dpo.all', component: DpoAll, 
+  //     meta: { 
+  //       title: "DPO - Data Catalogue" ,
+  //       showModal: false,
+  //       permission: "DPO"
+  //     }, 
+  //     children: [{ // dpo.all.system.details
+  //       path: ':details', name: 'dpo.all.details', component: DpoDetails,
+  //       meta: { 
+  //         title: "DPO Details - Data Catalogue",
+  //         showModal: true,
+  //         permission: "DPO"
+  //       } 
+  //     }]
+  //   }]
+  // }, 
+  { // ddo
     path: '/ddo', name: 'ddo', component: Ddo, 
     meta: { 
       title: "DSC - Data Catalogue",
@@ -211,7 +242,7 @@ const router = new VueRouter({
       title: "DDO - Data Catalogue",
       permission: "DDO"
     }
-  }, { // dsc.systems.businessterm
+  }, { // ddo.systems.businessterm
     path: '/ddo/systems/:subdomain/:system', name: 'ddo.systems.businessterm', component: DdoSystemsBusinessterm, 
     meta: { 
       title: "DDO - Data Catalogue",
@@ -245,8 +276,7 @@ const router = new VueRouter({
         permission: "DDO"
       } 
     }] 
-  }, 
-  { // rfo
+  }, { // rfo
     path: '/rfo', name: 'rfo', component: Rfo, 
     meta: { 
       title: "RFO - Data Catalogue",
