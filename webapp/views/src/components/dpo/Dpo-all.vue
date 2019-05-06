@@ -81,7 +81,7 @@ export default {
         systemSource: [],
         tablenameSource: [],
         images: {
-          all: require('../../assets/images/icon-my-system.png'),
+          all: require('../../assets/images/icon-all-system.png'),
         },
         hiddenFields: true
       }
