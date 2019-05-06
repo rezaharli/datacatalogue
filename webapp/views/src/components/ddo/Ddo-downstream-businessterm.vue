@@ -21,7 +21,7 @@
                 </b-col>
             </b-row>
 
-            <b-row style="margin-top: 10px; margin-bottom: 20px;">
+            <b-row class="my-4">
                 <b-col>
                     <b-button class="float-right red-neon icon-only ml-3" @click="resetFilter">
                         <i class="fa fa-fw fa-filter"></i>
@@ -45,7 +45,7 @@
                     :loading="store.left.isLoading"
                     :expand="false"
                     item-key="ID"
-                    class="table-v1">
+                    class="table-v1 table-w-button-left">
                   <template slot="headerCell" slot-scope="props">
                     <tableheader :storeName="storeName" :props="props" :which="'left'"/>
                   </template>
@@ -90,6 +90,10 @@
                         <tablecell :fulltext="props.item.BT_NAME" showOn="hover" v-if="props.item.Tables.length < 1"></tablecell>
                       </td>
 
+                      <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.ALIAS_NAME"></tablecell>
+                      </td>
+
                       <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CONSUMED'] + 'px' }" class="text-uppercase">
                         <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.SYSTEM_CONSUMED"></tablecell>
                       </td>
@@ -104,10 +108,6 @@
 
                       <td v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }" class="text-uppercase">
                         <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
-                      </td>
-
-                      <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.ALIAS_NAME"></tablecell>
                       </td>
 
                       <td colspan="3">
@@ -206,6 +206,7 @@
                       <template slot="items" slot-scope="props">
                         <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
                         <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }">&nbsp;</td>
+                        <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
                         <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CONSUMED'] + 'px' }">&nbsp;</td>
 
                         <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
@@ -223,10 +224,6 @@
                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
                           <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
                         </td>
-
-                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">
-                          <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
-                        </td>
                       </template>
 
                       <template slot="expand" slot-scope="props">
@@ -241,6 +238,7 @@
                           <template slot="items" slot-scope="props">
                             <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
                             <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }">&nbsp;</td>
+                            <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
                             <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CONSUMED'] + 'px' }">&nbsp;</td>
                             <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
 
@@ -250,10 +248,6 @@
 
                             <td v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
                               <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover"></tablecell>
-                            </td>
-
-                            <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">
-                              <tablecell :fulltext="props.item.ALIAS_NAME" showOn="hover"></tablecell>
                             </td>
                           </template>
                         </v-data-table>

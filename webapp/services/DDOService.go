@@ -259,7 +259,7 @@ func (s *DDOService) GetDownstreamBusinesstermTable(subdomain, system string, co
 		gridArgs.IsDescending = descending.(bool)
 	}
 
-	gridArgs.GroupCol = "-"
+	gridArgs.GroupCol = "BT_NAME"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 

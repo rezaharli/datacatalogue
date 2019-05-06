@@ -1,7 +1,7 @@
 <template>
     <v-content class="mx-4 my-5">
         <b-container fluid>
-            <PageHeader />
+            <PageHeader title="Downstream Process Owner View" />
 
             <page-loader v-if="store.left.isLoading" />
             
@@ -21,7 +21,7 @@
                 </b-col>
             </b-row>
 
-            <b-row style="margin-top: 10px; margin-bottom: 20px;">
+            <b-row class="my-4">
                 <b-col>
                     <b-button class="float-right red-neon icon-only ml-3" @click="resetFilter">
                         <i class="fa fa-fw fa-filter"></i>

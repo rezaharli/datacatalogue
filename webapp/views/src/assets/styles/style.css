@@ -201,6 +201,7 @@ table.v-table tbody tr td.hidden{display: none;} */
 .card .v-table__overflow,
 .table-v1 .v-table__overflow,
 .table-v2 .v-table__overflow {overflow-x: auto; overflow-y: visible;}
+.table-v1.table-w-button-left .v-table thead tr th:first-of-type {width: 100px;}
 .card .v-datatable__actions{justify-content: space-between;}
 .card .v-datatable__actions__select,
 .card .v-datatable__actions__range-controls {
@@ -220,9 +221,9 @@ table.v-table tbody tr td.hidden{display: none;} */
     margin: 0 10px;
 }
 
-.card.card-v2 {padding: 15px;}
-.card.card-v2 .title-1 {font-weight: 600; font-size: 16px;}
-.card.card-v2 .title-2 {font-weight: 700; font-style: normal; font-size: 18px; color: #0072AA; margin-top: 10px;}
+.card.card-v2 {padding: 15px; background: linear-gradient(90deg, rgba(0, 114, 170, 1) 0%, rgba(0, 114, 170, 1) 0%, rgba(86, 184, 187, 1) 74%, rgba(86, 184, 187, 1) 100%);}
+.card.card-v2 .title-1 {font-weight: 600; font-size: 16px; color: #fff;}
+.card.card-v2 .title-2 {font-weight: 700; font-style: normal; font-size: 18px; /*color: #0072AA;*/ color: #fff; margin-top: 10px;}
 
 .card-circle-left {
     width: 225px;
