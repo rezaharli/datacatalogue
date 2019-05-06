@@ -1,4 +1,4 @@
-import { ddoMyService } from '../_services/ddomy.service';
+import { dpoMyService } from '../_services/dpomy.service';
 import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
@@ -8,21 +8,19 @@ const state = {
             left: {},
             right: {}
         },
-        subdomain: '',
-        system: '',
+        dspname: '',
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
             { align: 'left', display: true, filterable: false, exportable: false, displayCount: false, sortable: false, text: 'Details', value: 'Details' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Business Term', value: 'BT_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Business Alias Name', value: 'ALIAS_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'System Consumed from', value: 'SYSTEM_CONSUMED' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'System Table Name', value: 'TABLE_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'System Column Name', value: 'COLUMN_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Golden source (Yes / No)', value: 'GOLDEN_SOURCE' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Golden Source System name', value: 'GS_SYSTEM_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Golden Source Table Name', value: 'GS_TABLE_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Golden Source Column Name', value: 'GS_COLUMN_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'System / EUC used by Process', value: 'SYSTEM_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'ITAM ID', value: 'ITAM_ID' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'CDE NAME', value: 'ALIAS_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'CDE (Y or N)', value: 'CDE' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Table Name', value: 'TABLE_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Column Name', value: 'COLUMN_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'If sourced Ultimate source system', value: 'ULT_SYSTEM_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Data SLA (Y/ N)', value: 'DATA_SLA' },
         ],
         isRightTable: false,
         DDSource: [],
@@ -41,7 +39,6 @@ const actions = {
         });
 
         var param = {
-            Subdomain: state.all.subdomain,
             System: state.all.system,
             Filters: state.all.filters.left,
             Pagination: _.cloneDeep(state.all.left.pagination)
@@ -49,7 +46,7 @@ const actions = {
         
         param.Pagination.rowsPerPage = -1;
 
-        return ddoMyService.getDownstreamBusinesstermTable(param)
+        return dpoMyService.getDataelementsTable(param)
             .then(
                 res => commit('getExportDataSuccess', res.Data),
                 error => commit('getExportDataFailure', error)
@@ -63,13 +60,12 @@ const actions = {
         });
 
         var param = {
-            Subdomain: state.all.subdomain,
-            System: state.all.system,
+            System: state.all.dspname,
             Filters: state.all.filters.left,
             Pagination: state.all.left.pagination
         }
 
-        return ddoMyService.getDownstreamBusinesstermTable(param)
+        return dpoMyService.getDataelementsTable(param)
             .then(
                 res => commit('getLeftTableSuccess', res.Data),
                 error => commit('getLeftTableFailure', error)
@@ -78,7 +74,7 @@ const actions = {
     getDetails({ commit }, param) {
         commit('getDetailsRequest');
 
-        return ddoMyService.getDetails(param)
+        return dpoMyService.getDetails(param)
             .then(
                 res => {
                     commit('getDetailsSuccess', res.Data)
@@ -132,7 +128,7 @@ const mutations = {
     },
 };
 
-export const ddodownstreambusinessterm = {
+export const dpodataelements = {
     namespaced: true,
     state,
     actions,

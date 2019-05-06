@@ -13,6 +13,8 @@ import { dsccdpcde } from './dsccdpcde.module';
 import { dscinterfaces } from './dscinterfaces.module';
 import { dscinterfacescde } from './dscinterfacescde.module';
 import { dscdd } from './dscdd.module';
+import { dpo } from './dpo.module';
+import { dpodataelements } from './dpodataelements.module';
 import { dpomy } from './dpomy.module';
 import { dpoall } from './dpoall.module';
 import { ddo } from './ddo.module';
@@ -36,7 +38,7 @@ export const store = new Vuex.Store({
         account,
         users,
         dsc, dscmy, dscall, dsccde, dsccdp, dsccdpcde, dscinterfaces, dscinterfacescde, dscdd,
-        dpomy, dpoall,
+        dpo, dpomy, dpoall, dpodataelements,
         ddo, ddomy, ddoall, ddobusinessterm, ddosystems, ddosystemsbusinessterm, ddodownstream, ddodownstreambusinessterm,
         rfo, rfomy, rfoall, rfopriority
     }

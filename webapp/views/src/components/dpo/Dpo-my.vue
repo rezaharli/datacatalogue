@@ -2,119 +2,57 @@
   @import '../../assets/styles/dashboard.css';
 </style>
 
-<style>
-table.v-table thead th > div.btn-group {
-  width: auto;
-}
-
-.header-filter-icon{
-
-}
-.header-filter-icon .dropdown-menu{
-  overflow: scroll;
-  height: 200px;
-}
-</style>
-
-
 <template>
   <b-row style="margin-top: 10px;margin-bottom: 10px;">
     <b-col>
-      <!-- Dsc details -->
+      <!-- Dpo details -->
       <router-view/>
 
       <!-- Main content -->
       <b-row>
         <b-col>
           <page-loader v-if="store.left.isLoading || (store.isRightTable && store.right.isLoading)" />
+
+          <div class="card card-v1 transition">
+            <div class="title-wrapper transition">
+              <v-img :src="images.all" :contain="true" class="card-icon transition"></v-img>
+              <h2 class="transition title-1">My Processes</h2>
+            </div>
           
-          <b-row>
-            <b-col>
-              <page-search :storeName="storeName" :searchDDInputs="searchDropdownInputs"/>
-            </b-col>
+            <v-data-table
+                :headers="store.leftHeaders.filter(v => v.display == true)"
+                :items="store.left.display"
+                :pagination.sync="store.left.pagination"
+                :total-items="store.left.totalItems"
+                :loading="store.left.isLoading"
+                :expand="false"
+                item-key="ID"
+                class="card-content">
 
-            <b-col></b-col>
-            <b-col></b-col>
-            <b-col>
-              <page-export :storeName="storeName" :leftTableCols="firstTableHeaders" :rightTableCols="secondTableHeaders"/>
-            </b-col>
-          </b-row>
+              <template slot="headerCell" slot-scope="props">
+                <tableheader :storeName="storeName" :props="props" :which="'left'" />
+              </template>
 
-          <b-row>
-            <b-col cols="6">
-              <v-data-table
-                  :headers="firstTableHeaders"
-                  :items="store.left.display"
-                  :pagination.sync="store.left.pagination"
-                  :total-items="store.left.totalItems"
-                  :loading="store.left.isLoading"
-                  item-key="ID"
-                  class="elevation-1 ">
+              <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
-                <template slot="headerCell" slot-scope="props">
-                  <tableheader :storeName="storeName" :props="props" :which="'left'" />
-                </template>
+              <template slot="no-data">
+                <v-alert :value="store.left.isLoading" type="info">
+                  Please wait while data is loading
+                </v-alert>
 
-                <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+                <v-alert :value="!store.left.isLoading" type="error">
+                  Sorry, nothing to display here
+                </v-alert>
+              </template>
 
-                <template slot="no-data">
-                  <v-alert :value="store.left.isLoading" type="info">
-                    Please wait while data is loading
-                  </v-alert>
-
-                  <v-alert :value="!store.left.isLoading" type="error">
-                    Sorry, nothing to display here
-                  </v-alert>
-                </template>
-
-                <template slot="items" slot-scope="props">
-                  <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.DOWNSTREAM_PROCESS" showOn="hover"></tablecell></b-link></td>
-                  <td><tablecell :fulltext="props.item.PROCESS_OWNER" showOn="click"></tablecell></td>
-                  <td><tablecell :fulltext="props.item.BANK_ID" showOn="click"></tablecell></td>
-                </template>
-              </v-data-table>
-            </b-col>
-            
-            <b-col cols="6">
-              <v-data-table
-                  :headers="secondTableHeaders"
-                  :items="store.right.display"
-                  :pagination.sync="store.right.pagination"
-                  :total-items="store.right.totalItems"
-                  :loading="store.right.isLoading"
-                  :expand="false"
-                  v-if="store.isRightTable"
-                  item-key="ID"
-                  class="elevation-1">
-                <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
-
-                <template slot="no-data">
-                  <v-alert :value="store.right.isLoading" type="info">
-                    Please wait while data is loading
-                  </v-alert>
-
-                  <v-alert :value="!store.right.isLoading" type="error">
-                    Sorry, nothing to display here
-                  </v-alert>
-                </template>
-
-                <template slot="headerCell" slot-scope="props">
-                  <tableheader :storeName="storeName" :props="props" :which="'right'" />
-                </template>
-
-                <template slot="items" slot-scope="props">
-                  <tr>
-                    <td><b-link @click="showDetails(props.item)"><tablecell :fulltext="props.item.CDE_NAME" showOn="hover"></tablecell></b-link></td>
-                    <td><tablecell :fulltext="props.item.SEGMENT" showOn="click"></tablecell></td>
-                    <td><tablecell :fulltext="props.item.IMM_PREC_SYSTEM" showOn="click"></tablecell></td>
-                    <td><tablecell :fulltext="props.item.ULT_SOURCE_SYSTEM" showOn="click"></tablecell></td>
-                    <td><tablecell :fulltext="props.item.BUSINESS_DESCRIPTION" showOn="click"></tablecell></td>
-                    <td><tablecell :fulltext="props.item.CDE_RATIONALE" showOn="click"></tablecell></td>
-                  </tr>
-                </template>
-              </v-data-table>
-            </b-col>
-          </b-row>
+              <template slot="items" slot-scope="props">
+                <tr>
+                  <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.DSP_NAME" showOn="hover"></tablecell></b-link></td>
+                  <td>{{ props.item.DSP_OWNER }}</td>
+                </tr>
+              </template>
+            </v-data-table>
+          </div>
         </b-col>
       </b-row>
     </b-col>
@@ -142,28 +80,17 @@ export default {
         storeName: "dpomy",
         systemSource: [],
         tablenameSource: [],
-        firstTableHeaders: [
-          { text: 'Downstream Processes', align: 'left', value: 'DOWNSTREAM_PROCESS', displayCount: true, sortable: false },
-          { text: 'Process Owner', align: 'left', value: 'PROCESS_OWNER', displayCount: true, sortable: false },
-          { text: 'Bank ID', align: 'left', value: 'BANK_ID', displayCount: true, sortable: false }
-        ],
-        secondTableHeaders: [
-          { text: 'CDE Name', align: 'left', sortable: false, value: 'CDE_NAME', displayCount: true, width: "25%" },
-          { text: 'Segment', align: 'left', sortable: false, value: 'SEGMENT', displayCount: true, width: "25%" },
-          { text: 'Immediate Preceding System', align: 'left', sortable: false, value: 'IMM_PREC_SYSTEM', displayCount: true, width: "25%" },
-          { text: 'Ultimate Source System', align: 'left', sortable: false, value: 'ULT_SOURCE_SYSTEM', displayCount: true, width: "25%" },
-          { text: 'Business Description', align: 'left', sortable: false, value: 'BUSINESS_DESCRIPTION', displayCount: false, width: "25%" },
-          { text: 'CDE Rationale', align: 'left', sortable: false, value: 'CDE_RATIONALE', displayCount: true, width: "25%" },
-        ],
+        images: {
+          all: require('../../assets/images/icon-my-system.png'),
+        },
+        hiddenFields: true
       }
     },
     computed: {
-      store () {
-        return this.$store.state[this.storeName].all
-      },
+      store () { return this.$store.state[this.storeName].all },
       addressPath (){
         var tmp = this.$route.path.split("/")
-        return tmp.slice(0, 3).join("/")
+        return tmp.slice(0, 2).join("/")
       },
       searchDropdownInputs () {
         return [
@@ -180,10 +107,6 @@ export default {
         if (to.params != undefined) {
           this.store.isRightTable = to.params.system; 
         }
-
-        if(this.store.isRightTable){
-          this.doGetRightTable(this.$route.params.system);
-        }
       },
       "store.left.pagination": {
         handler () {
@@ -192,56 +115,28 @@ export default {
         deep: true
       },
       "store.right.pagination": {
-        handler () {
-          if(this.store.isRightTable){
-            this.doGetRightTable(this.$route.params.system);
-          }
-        },
+        handler () {},
         deep: true
       },
       "store.searchMain" (val, oldVal){
         if(val || oldVal) {
           this.doGetLeftTable();
-
-          if(this.store.isRightTable){
-            this.doGetRightTable(this.$route.params.system);
-          }
         }
       }
     },
     mounted() {
       this.store.tabName = this.storeName;
-      this.store.isRightTable = this.$route.params.system;
     },
     methods: {
       getLeftTable () {
         this.$store.dispatch(`${this.storeName}/getLeftTable`)
       },
-      getRightTable (id) {
-        this.$store.dispatch(`${this.storeName}/getRightTable`, id)
-      },
       doGetLeftTable () {
         this.getLeftTable();
       },
-      doGetRightTable (id) {
-        this.getRightTable(id);
-      },
-      systemRowClick (evt) {
-        evt.preventDefault();
-        this.store.isRightTable = true;
-      },
-      getCDEConclusion (cdes) {
-        return cdes.filter(Boolean).join(', ').indexOf("Yes") != -1 ? "Yes" : "No";
-      },
       showRightTable(param){
-        //reset right table filter
-        this.store.filters.right = {};
-
-        this.$router.push(this.addressPath + '/' + param.ID);
+        this.$router.push(this.addressPath + '/' + param.SUB_DOMAINS);
       },
-      showDetails (param) {
-        this.$router.push(this.addressPath + "/" + param.TDPID + '/' + param.CDE_NAME)
-      }
     }
 }
 </script>

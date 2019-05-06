@@ -6,9 +6,10 @@ const state = {
         tabName: '',
         searchMain: '',
         searchDropdown: {
-            ProcessName: '',
-            ProcessOwner: '',
-            CDEName: '',
+            SubDataDomain: '',
+            DataDomain: '',
+            SubDataDomainOwner: '',
+            BusinessTerm: '',
         },
         filters: {
             left: {},
@@ -16,6 +17,11 @@ const state = {
         },
         left: newTableObject(),
         right: newTableObject(),
+        exportDatas: [],
+        leftHeaders: [
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Downstream Processes', value: 'DSP_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Process Owner', value: 'DSP_OWNER' },
+        ],
         isRightTable: false,
         DDSource: [],
         detailsLoading: true,
@@ -25,6 +31,32 @@ const state = {
 };
 
 const actions = {
+    exportData({ commit }) {
+        commit('getExportDataRequest');
+
+        var user = JSON.parse(localStorage.getItem("user"));
+
+        Object.keys(state.all.filters.left).map(function(key, index) {
+            state.all.filters.left[key] = state.all.filters.left[key] ? state.all.filters.left[key].toString() : "";
+        });
+
+        var param = {
+            Tabs: state.all.tabName,
+            LoggedInID: user.Username.toString(),
+            Search: state.all.searchMain.toString(),
+            SearchDD: state.all.searchDropdown,
+            Filters: state.all.filters.left,
+            Pagination: _.cloneDeep(state.all.left.pagination)
+        }
+
+        param.Pagination.rowsPerPage = -1;
+
+        return dpoMyService.getLeftTable(param)
+            .then(
+                res => commit('getExportDataSuccess', res.Data),
+                error => commit('getExportDataFailure', error)
+            );
+    },
     getLeftTable({ commit }) {
         commit('getLeftTableRequest');
 
@@ -87,6 +119,18 @@ const actions = {
 };
 
 const mutations = {
+    getExportDataRequest(state) {
+        state.all.left.isLoading = true;
+    },
+    getExportDataSuccess(state, data) {
+        state.all.exportDatas = data;
+
+        state.all.left.isLoading = false;
+    },
+    getExportDataFailure(state, error) {
+        state.all.left.isLoading = false;
+        state.all.error = error;
+    },
     getLeftTableRequest(state) {
         state.all.left.isLoading = true;
     },
