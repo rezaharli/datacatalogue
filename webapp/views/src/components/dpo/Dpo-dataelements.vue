@@ -1,7 +1,7 @@
 <template>
     <v-content class="mx-4 my-5">
         <b-container fluid>
-            <PageHeader />
+            <PageHeader title="Downstream Process Owner View" />
 
             <page-loader v-if="store.left.isLoading" />
             
