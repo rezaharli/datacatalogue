@@ -7,7 +7,7 @@
         <PageHeader />
 
         <b-container fluid>
-            <b-row style="margin-top: 10px; margin-bottom: 20px;">
+            <b-row class="my-4">
                 <b-col>
                     <b-button class="float-right red-neon icon-only ml-3" @click="resetFilter">
                         <i class="fa fa-filter"></i>

@@ -46,7 +46,7 @@
                 </b-col>
             </b-row>
 
-            <b-row style="margin-top: 10px; margin-bottom: 20px;">
+            <b-row class="my-4">
                 <b-col>
                     <b-button class="float-right red-neon icon-only ml-3" @click="resetFilter">
                         <i class="fa fa-fw fa-filter"></i>
@@ -70,7 +70,7 @@
                     :loading="store.left.isLoading"
                     :expand="false"
                     item-key="ID"
-                    class="table-v1">
+                    class="table-v1 table-w-button-left">
                   <template slot="headerCell" slot-scope="props">
                     <tableheader :storeName="storeName" :props="props" :which="'left'"/>
                   </template>
