@@ -1,7 +1,7 @@
 <template>
     <v-content class="mx-4 my-5">
         <b-container fluid>
-            <PageHeader />
+            <PageHeader title="Data Flow / Lineage View (Upstream)" />
 
             <page-loader v-if="store.left.isLoading" />
             
@@ -15,7 +15,7 @@
 
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
-                        <h6 class="title-1">Data Elements</h6>
+                        <h6 class="title-1">Upstream Data Providers</h6>
                         <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["COUNT_DATA_ELEMENTS"] : "0" }}</h3>
                     </div>
                 </b-col>
@@ -78,108 +78,15 @@
 
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                      <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }" class="text-capitalize text-title">
-                        <b-button size="sm" class="green-tosca-gradient icon-only" @click="showDetails(props.item)">
-                          <i class="fa fa-fw fa-external-link-alt"></i></b-button></td>
-
                       <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }" class="text-uppercase">
                         <tablecell showOn="hover" :fulltext="props.item.SYSTEM_NAME"></tablecell></td>
 
                       <td v-bind:style="{ width: store.left.colWidth['ITAM_ID'] + 'px' }" class="text-uppercase">
                         <tablecell showOn="hover" :fulltext="props.item.ITAM_ID"></tablecell></td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }" class="text-capitalize text-title">
-                        <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length > 0">
-                          <tablecell :fulltext="props.item.ALIAS_NAME" showOn="hover"></tablecell>
-                        </b-link>
-
-                        <tablecell :fulltext="props.item.BT_NAME" showOn="hover" v-if="props.item.Tables.length < 1"></tablecell>
-                      </td>
-
-                      <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-uppercase">
-                        {{ props.item.CDE }}</td>
-
-                      <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.TABLE_NAME"></tablecell>
-                      </td>
-
-                      <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
-                      </td>
-
-                      <td v-bind:style="{ width: store.left.colWidth['ULT_SYSTEM_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.ULT_SYSTEM_NAME"></tablecell>
-                      </td>
-
-                      <td v-bind:style="{ width: store.left.colWidth['DATA_SLA'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DATA_SLA"></tablecell>
-                      </td>
+                      <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" :fulltext="props.item.ALIAS_NAME"></tablecell></td>
                     </tr>
-                  </template>
-
-                  <template slot="expand" slot-scope="props">
-                    <!-- <table-rows-sub :storeName="storeName" :props="props" /> -->
-                    <v-data-table
-                      :headers="store.leftHeaders.filter(v => v.display == true)"
-                      :items="props.item.Tables"
-                      :expand="false"
-                      class=""
-                      item-key="TMTID"
-                      hide-actions
-                      hide-headers
-                    >
-                      <template slot="items" slot-scope="props">
-                        <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
-                        <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }">&nbsp;</td>
-                        <td v-bind:style="{ width: store.left.colWidth['ITAM_ID'] + 'px' }">&nbsp;</td>
-                        <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
-                        <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
-
-                        <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
-                          <b-link @click="props.expanded = !props.expanded" v-if="props.item.Columns.length >= 1">
-                            <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover"></tablecell>
-                          </b-link>
-
-                          <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover" v-if="props.item.Columns.length < 1"></tablecell>
-                        </td>
-
-                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                          <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
-                        </td>
-
-                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['ULT_SYSTEM_NAME'] + 'px' }">
-                          <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.ULT_SYSTEM_NAME"></tablecell>
-                        </td>
-
-                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['DATA_SLA'] + 'px' }">
-                          <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.DATA_SLA"></tablecell>
-                        </td>
-                      </template>
-
-                      <template slot="expand" slot-scope="props">
-                        <v-data-table
-                          :headers="store.leftHeaders.filter(v => v.display == true)"
-                          :items="props.item.Columns"
-                          item-key="COLID"
-                          class=""
-                          hide-actions
-                          hide-headers
-                        >
-                          <template slot="items" slot-scope="props">
-                            <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
-                            <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }">&nbsp;</td>
-                            <td v-bind:style="{ width: store.left.colWidth['ITAM_ID'] + 'px' }">&nbsp;</td>
-                            <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
-                            <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
-                            <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
-                            
-                            <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                              <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover"></tablecell>
-                            </td>
-                          </template>
-                        </v-data-table>
-                      </template>
-                    </v-data-table>
                   </template>
                 </v-data-table>
                       
@@ -211,7 +118,7 @@ export default {
   },
   data() {
     return {
-      storeName: "dpodataelements",
+      storeName: "dpodatalineage",
       systemSource: [],
       tablenameSource: []
     };

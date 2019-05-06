@@ -2,7 +2,6 @@ package services
 
 import (
 	"path/filepath"
-	"strings"
 
 	"github.com/eaciit/clit"
 	"github.com/eaciit/toolkit"
@@ -119,6 +118,42 @@ func (s *DPOService) GetDataelementsTable(system string, colFilter interface{}, 
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
+func (s *DPOService) GetDatalineageTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
+	gridArgs.QueryName = "dpo-datalineage"
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
+
+	///////// --------------------------------------------------COLUMN FILTER
+	colFilterM, err := toolkit.ToM(colFilter)
+	if err != nil {
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "", "", "")
+	} else {
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
+			colFilterM.GetString("SYSTEM_NAME"),
+			colFilterM.GetString("ITAM_ID"),
+			colFilterM.GetString("ALIAS_NAME"),
+			colFilterM.GetString("CDE"),
+			colFilterM.GetString("TABLE_NAME"),
+			colFilterM.GetString("COLUMN_NAME"),
+			colFilterM.GetString("ULT_SYSTEM_NAME"),
+			colFilterM.GetString("DATA_SLA"),
+		)
+	}
+
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
+	gridArgs.GroupCol = "-"
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
+}
+
 func (s *DPOService) GetRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
 	gridArgs := GridArgs{}
 	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
@@ -159,20 +194,12 @@ func (s *DPOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	tabs := ""
-
 	q := ""
 	args := make([]interface{}, 0)
 
-	args = append(args, toolkit.ToString(payload.GetInt("Left")), payload.GetString("Right"))
+	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
 
-	if strings.Contains(payload.GetString("Which"), "my") == true {
-		tabs = "dpomy"
-	} else {
-		tabs = "dpoall"
-	}
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
 	q, err := h.BuildQueryFromFile(filePath, "details", []string{}, args...)
 	if err != nil {
 		return nil, 0, err
@@ -259,20 +286,12 @@ func (s *DPOService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	tabs := ""
-
 	q := ""
 	args := make([]interface{}, 0)
 
-	args = append(args, toolkit.ToString(payload.GetInt("Left")), payload.GetString("Right"))
+	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
 
-	if strings.Contains(payload.GetString("Which"), "my") == true {
-		tabs = "dpomy"
-	} else {
-		tabs = "dpoall"
-	}
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
 	q, err := h.BuildQueryFromFile(filePath, "details", []string{}, args...)
 	if err != nil {
 		return nil, 0, err

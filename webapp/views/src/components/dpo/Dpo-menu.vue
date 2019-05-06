@@ -47,7 +47,7 @@
                     </b-col>
                 
                     <b-col sm=12 md=5 lg=5 class="my-3">
-                        <div class="card card-v3 transition link" @click="goToDpoMenuContent('upstream')">
+                        <div class="card card-v3 transition link" @click="goToDpoMenuContent('datalineage')">
                             <b-row>
                                 <b-col cols=4 class="transition">
                                     <v-img :src="images.cdsp" :contain="true" class="card-icon"></v-img>
