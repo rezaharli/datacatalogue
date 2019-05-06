@@ -201,6 +201,7 @@ table.v-table tbody tr td.hidden{display: none;} */
 .card .v-table__overflow,
 .table-v1 .v-table__overflow,
 .table-v2 .v-table__overflow {overflow-x: auto; overflow-y: visible;}
+.table-v1.table-w-button-left .v-table thead tr th:first-of-type {width: 100px;}
 .card .v-datatable__actions{justify-content: space-between;}
 .card .v-datatable__actions__select,
 .card .v-datatable__actions__range-controls {
