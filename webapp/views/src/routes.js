@@ -20,6 +20,7 @@ import DscAll from './components/dsc/Dsc-all';
 import Dpo from './components/dpo/Dpo';
 import DpoMenu from './components/dpo/Dpo-menu';
 import DpoDataelements from './components/dpo/Dpo-dataelements';
+import DpoDatalineage from './components/dpo/Dpo-datalineage';
 import DpoDetails from './components/dpo/Dpo-details';
 import DpoMy from './components/dpo/Dpo-my';
 import DpoAll from './components/dpo/Dpo-all';
@@ -146,13 +147,19 @@ const router = new VueRouter({
       permission: "DPO"
     },
     children: [{ // dpo.details
-      path: ':btname', name: 'dpo.details', component: DpoDetails,
+      path: ':cdename', name: 'dpo.details', component: DpoDetails,
       meta: { 
         title: "DPO Details - Data Catalogue",
         showModal: true,
         permission: "DPO"
       } 
     }] 
+  }, { // dpo.datalineage
+    path: '/dpo/datalineage/:dspname', name: 'dpo.datalineage', component: DpoDatalineage, 
+    meta: { 
+      title: "DPO - Data Catalogue",
+      permission: "DPO"
+    },
   },
   // { // dpo
   //   path: '/dpo', component: Dpo, 

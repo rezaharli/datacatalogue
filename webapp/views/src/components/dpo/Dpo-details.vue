@@ -764,8 +764,8 @@ export default {
       var self = this;
 
       param.Which = self.$route.name;
-      param.Left = parseInt(self.$route.params.system).toString();
-      param.Right = self.$route.params.details.toString();
+      param.Left = self.$route.params.dspname;
+      param.Right = self.$route.params.cdename;
 
       return self.getDetails(param).then(
         res => {
