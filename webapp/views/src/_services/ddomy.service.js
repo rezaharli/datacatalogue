@@ -119,23 +119,35 @@ function getDownstreamBusinesstermTable(param) {
                 ret.BT_NAMEsVal = tmpTmp;
                 ret.BT_NAME     = v;
 
-                var tmp2 = _.groupBy(tmp[v], "TABLE_NAME");  
-                ret.Tables = _.map(Object.keys(tmp2), function(w, j){
+                var tmp2 = _.groupBy(tmp[v], "SYSTEM_CONSUMED");  
+                ret.Systems = _.map(Object.keys(tmp2), function(w, j){
                     var tmpTmp2 = _.cloneDeep(tmp2[w]);
 
                     var ret         = tmpTmp2[0];
-                    ret.TMTID       = tmpTmp2[0].TMTID;
-                    ret.TablesVal   = tmpTmp2;
-                    ret.TABLE_NAME  = w;
+                    ret.SYSID       = j;
+                    ret.SystemsVal   = tmpTmp2;
+                    ret.SYSTEM_CONSUMED  = w;
 
-                    var tmp3 = _.groupBy(tmp2[w], "COLUMN_NAME");
-                    ret.Columns = _.map(Object.keys(tmp3), function(x, k){
+                    var tmp3 = _.groupBy(tmp2[w], "TABLE_NAME");
+                    ret.Tables = _.map(Object.keys(tmp3), function(x, k){
                         var tmpTmp3 = _.cloneDeep(tmp3[x]);
 
                         var ret         = tmpTmp3[0];
-                        ret.COLID       = tmpTmp3[0].COLID;
-                        ret.ColumnsVal  = tmpTmp3;
-                        ret.COLUMN_NAME = x;
+                        ret.TMTID       = k;
+                        ret.TablesVal  = tmpTmp3;
+                        ret.TABLE_NAME = x;
+
+                        var tmp4 = _.groupBy(tmp3[x], "COLUMN_NAME");
+                        ret.Columns = _.map(Object.keys(tmp4), function(y, l){
+                            var tmpTmp4 = _.cloneDeep(tmp4[y]);
+
+                            var ret         = tmpTmp4[0];
+                            ret.COLID       = l;
+                            ret.ColumnsVal  = tmpTmp4;
+                            ret.COLUMN_NAME = y;
+
+                            return ret;
+                        });
 
                         return ret;
                     });
@@ -184,12 +196,18 @@ function getDownstreamBusinesstermTable(param) {
             });
 
             res.Data.forEach(v => {
-                v.Tables.forEach(w => {
-                    w.Columns.shift();
+                v.Systems.forEach(w => {
+                    w.Tables.forEach(x => {
+                        x.Columns.shift();
+                    });
+
+                    if(w.Tables[0].Columns.length == 0){
+                        w.Tables.shift();
+                    }
                 });
 
-                if(v.Tables[0].Columns.length == 0){
-                    v.Tables.shift();
+                if(v.Systems[0].Tables.length == 0){
+                    v.Systems.shift();
                 }
 
                 v.GSSystems.forEach(w => {
@@ -202,8 +220,6 @@ function getDownstreamBusinesstermTable(param) {
                     }
                 });
             });
-            
-            console.log(res);
             
             return res;
         }
