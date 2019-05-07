@@ -32,11 +32,11 @@
 
           <template slot="items" slot-scope="props">
             <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-              <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }">
+              <!-- <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.SYSTEM_NAME" showOn="click"></tablecell></td>
               
               <td v-bind:style="{ width: store.left.colWidth['ITAM_ID'] + 'px' }">
-                <tablecell :fulltext="props.item.ITAM_ID" showOn="click"></tablecell></td>
+                <tablecell :fulltext="props.item.ITAM_ID" showOn="click"></tablecell></td> -->
 
               <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.TABLE_NAME" showOn="click"></tablecell></td>
