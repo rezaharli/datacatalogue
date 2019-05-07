@@ -74,12 +74,54 @@
                       >Sorry, nothing to display here</v-alert>
                   </template>
 
-                  <template slot="items" slot-scope="props">
+                  <!-- <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
                       <td style="width: calc(100% / 6)" class="text-capitalize">{{props.item.IMM_INTERFACE}}</td>
                       <td style="width: calc(100% / 6)" class="text-capitalize"><b-link @click.stop="showCDEs(props.item)"><tablecell :fulltext="props.item.CDE_COUNT" showOn="hover"></tablecell></b-link></td>
                       <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.PROCESS_OWNER" showOn="hover"></tablecell></td>
                     </tr>
+                  </template> -->
+
+                  <template slot="items" slot-scope="props">
+                    <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
+                      
+                      <td v-bind:style="{ width: store.left.colWidth['IMM_INTERFACE'] + 'px' }" class="text-capitalize text-title">
+                        <b-link @click="props.expanded = !props.expanded" v-if="props.item.Owners.length > 0">
+                          <tablecell :fulltext="props.item.IMM_INTERFACE" showOn="hover"></tablecell>
+                        </b-link>
+
+                        <tablecell :fulltext="props.item.IMM_INTERFACE" showOn="hover" v-if="props.item.Owners.length < 1"></tablecell>
+                      </td>
+
+                      <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }" class="text-uppercase">
+                        <b-link @click.stop="showCDEs(props.item)">
+                          <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.CDE_COUNT"></tablecell>
+                        </b-link>
+                      </td>
+
+                      <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PROCESS_OWNER"></tablecell>
+                      </td>
+                    </tr>
+                  </template>
+
+                  <template slot="expand" slot-scope="props">
+                    <v-data-table
+                      :headers="store.leftHeaders.filter(v => v.display == true)"
+                      :items="props.item.Owners"
+                      item-key="COLID"
+                      class=""
+                      hide-actions
+                      hide-headers
+                    >
+                      <template slot="items" slot-scope="props">
+                        <td v-bind:style="{ width: store.left.colWidth['IMM_INTERFACE'] + 'px' }">&nbsp;</td>
+                        <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }">&nbsp;</td>
+                        <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }">
+                          <tablecell :fulltext="props.item.PROCESS_OWNER" showOn="hover"></tablecell>
+                        </td>
+                      </template>
+                    </v-data-table>
                   </template>
                 </v-data-table>
                       
@@ -147,6 +189,16 @@ export default {
   methods: {
     getLeftTable() {
       this.$store.dispatch(`${this.storeName}/getLeftTable`);
+    },
+    isMainLevelCellShowing (props){
+      if( ! props.expanded) return true;
+      else {
+        if(props.item.Owners.length > 0) {
+          return true;
+        }
+        
+        return false;
+      }
     },
     systemRowClick(evt) {
       evt.preventDefault();

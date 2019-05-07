@@ -174,7 +174,41 @@ function getCdpCdeTable(param) {
 }
 
 function getInterfacesTable(param) {
-    return fetchWHeader(`/dsc/getinterfacestable`, param);
+    return fetchWHeader(`/dsc/getinterfacestable`, param).then(
+        res => {
+            res.DataFlat = _.cloneDeep(res.Data);
+            
+            var tmp = _.groupBy(res.Data, "IMM_INTERFACE")
+            res.Data = _.map(Object.keys(tmp), function(v, i){
+                var tmpTmp = _.cloneDeep(tmp[v]);
+
+                var ret         = tmpTmp[0];
+                ret.ID          = i;
+                ret.IMM_INTERFACEsVal     = tmpTmp;
+                ret.IMM_INTERFACE         = v;
+
+                var tmp2 = _.groupBy(tmp[v], "PROCESS_OWNER");  
+                ret.Owners = _.map(Object.keys(tmp2), function(w, i){
+                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
+
+                    var ret         = tmpTmp2[0];
+                    ret.TMTID       = tmpTmp2[0].TMTID;
+                    ret.OwnersVal   = tmpTmp2;
+                    ret.PROCESS_OWNER  = w;
+
+                    return ret;
+                });
+
+                return ret;
+            });
+
+            res.Data.forEach(v => {
+                v.Owners.shift();
+            });
+            
+            return res;
+        }
+    );
 }
 
 function getInterfacesCdeTable(param) {
