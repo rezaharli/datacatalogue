@@ -30,17 +30,18 @@ func (c *Users) Authenticate(k *knot.WebContext) {
 		return
 	}
 
-	ldapConf := clit.Config("default", "LDAP", "").(map[string]interface{})
+	if clit.Config("default", "LDAP", "") != "" {
+		ldapConf := clit.Config("default", "LDAP", "").(map[string]interface{})
+		if ldapConf["IsEnabled"].(string) == "true" {
+			isSuccess, _, err := h.TryToLoginUsingLDAP(payload.GetString("username"), payload.GetString("password"))
 
-	if ldapConf["IsEnabled"].(string) == "true" {
-		isSuccess, _, err := h.TryToLoginUsingLDAP(payload.GetString("username"), payload.GetString("password"))
+			toolkit.Println("Success ?? >> ", isSuccess)
+			toolkit.Println("Err ?? >> ", err)
 
-		toolkit.Println("Success ?? >> ", isSuccess)
-		toolkit.Println("Err ?? >> ", err)
-
-		if !(isSuccess && err == nil) {
-			h.WriteResultErrorOK(k, res, "LDAP login fail.")
-			return
+			if !(isSuccess && err == nil) {
+				h.WriteResultErrorOK(k, res, "LDAP login fail.")
+				return
+			}
 		}
 	}
 
