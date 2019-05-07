@@ -283,7 +283,50 @@ func (s *DSCService) GetDDTable(system string, colFilter interface{}, pagination
 		}
 	} else {
 		for _, colname := range gridArgs.Colnames {
-			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+
+			if colname == "CDE_YES_NO" {
+				cdeYesNo := colFilterM.GetString("CDE_YES_NO")
+				if cdeYesNo != "" {
+					if strings.EqualFold(cdeYesNo, "yes") {
+						cdeYesNo = "1"
+					} else {
+						cdeYesNo = "0"
+					}
+				}
+				gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, cdeYesNo)
+			} else if colname == "DERIVED_YES_NO" {
+				derivedYesNo := colFilterM.GetString("DERIVED_YES_NO")
+				if derivedYesNo != "" {
+					if strings.EqualFold(derivedYesNo, "yes") {
+						derivedYesNo = "1"
+					} else {
+						derivedYesNo = "0"
+					}
+				}
+				gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, derivedYesNo)
+			} else if colname == "SOURCED_FROM_UPSTREAM_YES_NO" {
+				sfoYesNo := colFilterM.GetString("SOURCED_FROM_UPSTREAM_YES_NO")
+				if sfoYesNo != "" {
+					if strings.EqualFold(sfoYesNo, "yes") {
+						sfoYesNo = "1"
+					} else {
+						sfoYesNo = "0"
+					}
+				}
+				gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, sfoYesNo)
+			} else if colname == "PII_FLAG" {
+				piiYesNo := colFilterM.GetString("PII_FLAG")
+				if piiYesNo != "" {
+					if strings.EqualFold(piiYesNo, "yes") {
+						piiYesNo = "1"
+					} else {
+						piiYesNo = "0"
+					}
+				}
+				gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, piiYesNo)
+			} else {
+				gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+			}
 		}
 	}
 

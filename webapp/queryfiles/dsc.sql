@@ -383,8 +383,8 @@ SELECT DISTINCT
 	WHERE
 		upper(NVL(ts.system_name, ' ')) LIKE upper('%?%')
 		AND upper(NVL(ts.itam_id, ' ')) LIKE upper('%?%')
-		AND upper(NVL(tmt.name, ' ')) LIKE upper('%?%')
-		AND  upper(NVL(tmc.name, ' ')) LIKE upper('%?%')
+		AND upper(NVL(tmt.display_name, ' ')) LIKE upper('%?%')
+		AND  upper(NVL(tmc.display_name, ' ')) LIKE upper('%?%')
 		AND  upper(NVL(tmcd.alias_name, ' ')) LIKE upper('%?%')
 		AND  upper(NVL(tmcd.description, ' ')) LIKE upper('%?%')
 		AND  upper(tmcd.cde) LIKE upper('%?%')

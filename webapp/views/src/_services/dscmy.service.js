@@ -270,12 +270,14 @@ function getInterfacesCdeTable(param) {
 function getDdTable(param) {
     return fetchWHeader(`/dsc/getddtable`, param).then(
         res => {
-            res.DataFlat = _.cloneDeep(res.Data);
-
             res.Data = _.map(res.Data, function(v){
                 v.CDE_YES_NO = v.CDE_YES_NO == 0 ? "No" : "Yes";
+                v.DERIVED_YES_NO = v.DERIVED_YES_NO == 0 ? "No" : "Yes";
+                v.PII_FLAG = v.PII_FLAG == 0 ? "No" : "Yes";
                 return v;
             });
+
+            res.DataFlat = _.cloneDeep(res.Data);
 
             return res;
         }
