@@ -9,14 +9,14 @@
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
                         <h6 class="title-1">Downstream Process Name</h6>
-                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["DSP_NAME"] : " " }}</h3>
+                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["PROCESS_NAME"] : " " }}</h3>
                     </div>
                 </b-col>
 
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
                         <h6 class="title-1">Upstream Data Providers</h6>
-                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["COUNT_DATA_ELEMENTS"] : "0" }}</h3>
+                        <h3 class="title-2 text-capitalize">{{ store.left.source[0] ? store.left.source[0]["UPSTREAM_COUNT"] : "0" }}</h3>
                     </div>
                 </b-col>
             </b-row>
@@ -78,14 +78,14 @@
 
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
+                      <td v-if="displayPRName" v-bind:style="{ width: store.left.colWidth['PR_NAME'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" :fulltext="props.item.PR_NAME"></tablecell></td>
+
                       <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }" class="text-uppercase">
                         <tablecell showOn="hover" :fulltext="props.item.SYSTEM_NAME"></tablecell></td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['ITAM_ID'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" :fulltext="props.item.ITAM_ID"></tablecell></td>
-
-                      <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" :fulltext="props.item.ALIAS_NAME"></tablecell></td>
+                      <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" :fulltext="props.item.CDE_COUNT"></tablecell></td>
                     </tr>
                   </template>
                 </v-data-table>
@@ -131,6 +131,15 @@ export default {
       var tmp = this.$route.path.split("/");
       return tmp.slice(0, 3).join("/");
     },
+    displayPRName() {
+      if(parseInt(this.store.left.source[0] ? this.store.left.source[0]["PR_NAME_COUNT"] : "0") == 0){
+        this.store.leftHeaders.find(v => v.value == "PR_NAME").display = false;
+        return false;
+      } else {
+        this.store.leftHeaders.find(v => v.value == "PR_NAME").display = true;
+        return true;
+      }
+    }
   },
   watch: {
     $route(to) {},
@@ -149,6 +158,7 @@ export default {
   mounted() {
     this.store.tabName = this.storeName;
     this.store.dspname = this.$route.params.dspname;
+
     this.resetFilter();
   },
   methods: {

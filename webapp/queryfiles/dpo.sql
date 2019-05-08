@@ -67,6 +67,24 @@ SELECT DISTINCT
         )
     ORDER BY SYS.SYSTEM_NAME, TAB.NAME, COL.NAME
 
+-- name: dpo-datalineage
+SELECT DISTINCT 
+        DSP.NAME                                                                        AS PROCESS_NAME,
+        COUNT(DISTINCT SYS.SYSTEM_NAME) OVER ()                                         AS UPSTREAM_COUNT,
+        COUNT(DISTINCT '') OVER ()                                                      AS PR_NAME_COUNT,
+        ''                                                                              AS PR_NAME,
+        SYS.SYSTEM_NAME                                                                 AS SYSTEM_NAME, 
+        COUNT(DISTINCT CD.ALIAS_NAME) OVER (PARTITION BY SYS.SYSTEM_NAME)               AS CDE_COUNT
+    FROM TBL_DS_PROCESSES DSP
+        INNER JOIN TBL_DS_PROCESS_DETAIL DSPD ON DSP.ID = DSPD.PROCESS_ID 
+        INNER JOIN TBL_MD_COLUMN COL ON DSPD.COLUMN_ID = COL.ID 
+        INNER JOIN TBL_MD_COLUMN_DETAILS CD ON CD.COLUMN_ID = COL.ID 
+        INNER JOIN TBL_MD_TABLE TAB ON COL.TABLE_ID = TAB.ID
+        INNER JOIN TBL_MD_RESOURCE RES ON TAB.RESOURCE_ID = RES.ID
+        INNER JOIN TBL_SYSTEM SYS ON RES.SYSTEM_ID = SYS.ID
+    WHERE 
+        DSP.NAME = '?' -- DOWNSTREAM PROCESS NAME
+
 -- name: details
 SELECT DISTINCT
         tdp.id,

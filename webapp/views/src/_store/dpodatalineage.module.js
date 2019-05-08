@@ -12,9 +12,9 @@ const state = {
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Priority Report Name *', value: 'SYSTEM_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Upstream Data Providers', value: 'ITAM_ID' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'No. of CDEs', value: 'ALIAS_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Priority Report Name *', value: 'PR_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Upstream Data Providers', value: 'SYSTEM_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'No. of CDEs', value: 'CDE_COUNT' },
         ],
         isRightTable: false,
         DDSource: [],
