@@ -132,6 +132,7 @@ func (s *DSCService) GetCDETable(system string, colFilter interface{}, paginatio
 		gridArgs.IsDescending = descending.(bool)
 	}
 
+	gridArgs.GroupCol = "CDE"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 

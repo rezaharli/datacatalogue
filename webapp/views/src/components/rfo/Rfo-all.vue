@@ -190,13 +190,14 @@ export default {
         var toggleFieldName = (name) => {
           var opts = this.store.leftHeaders.find(v => v.value == name);
           opts.display = !opts.display;
-          this.hiddenFields = !this.hiddenFields; 
         }
 
         toggleFieldName('RISK_REPORTING_LEAD');
         toggleFieldName('PR_COUNT');
         toggleFieldName('CRM_COUNT');
         toggleFieldName('CDE_COUNT');
+        
+        this.hiddenFields = !this.hiddenFields; 
       },
       isDisplayed(name){
         var opts = this.store.leftHeaders.find(v => v.value == name);

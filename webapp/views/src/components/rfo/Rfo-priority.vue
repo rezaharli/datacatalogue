@@ -106,7 +106,6 @@
                         
                       <td 
                           v-bind:style="{ width: store.left.colWidth['CDE_RATIONALE'] + 'px' }"
-                          v-bind:class="{ 'is-highlighted': highlightedCDENames.indexOf(props.item.CDE_NAME) != -1 }"
                           :rowspan="props.item.expanded ? (props.item.rowspanAcuan / props.item.CDE_NAMEs.length) : 1">
                         <tablecell showOn="hover" :fulltext="props.item.CDE_RATIONALE"></tablecell></td>
                     </tr>
@@ -145,7 +144,6 @@
                         <td 
                             v-if="item.CDE_RATIONALE" 
                             :rowspan="props.item.rowspanAcuan / props.item.CDE_NAMEs.length"
-                            v-bind:class="{ 'is-highlighted': highlightedCDENames.indexOf(item.CDE_NAME) != -1 }"
                             v-bind:style="{ width: store.left.colWidth['CDE_RATIONALE'] + 'px' }">
                           <tablecell showOn="hover" :fulltext="item.CDE_RATIONALE"></tablecell></td>
                       </tr>
