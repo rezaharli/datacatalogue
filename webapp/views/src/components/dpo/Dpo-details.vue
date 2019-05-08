@@ -20,7 +20,7 @@ legend.col-form-label, label.col-form-label {
 
 <template>
   <b-modal hide-footer header-class="modal-details-header setbackground" body-class="setbackground" v-if="showModal" id="modal-details" ref="modalDetails" size="lg" @hidden="handleClose">
-    <page-loader v-if="dpomy.detailsLoading" />
+    <page-loader v-if="store.detailsLoading" />
     
     <b-container fluid class="row-kasijarak">
       <b-row>
@@ -103,27 +103,27 @@ legend.col-form-label, label.col-form-label {
                     </b-form-group>
                     
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Description">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_BUSINESS_DESCRIPTION : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsImmediatePrecedingSystem ? selectedDetailsImmediatePrecedingSystem.DESCRIPTION : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_DERIVED_YES_NO : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsImmediatePrecedingSystem ? selectedDetailsImmediatePrecedingSystem.DERIVED : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation Logic">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_DERIVATION_LOGIC : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsImmediatePrecedingSystem ? selectedDetailsImmediatePrecedingSystem.DERIVATION_LOGIC : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Quality Requirements">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_DQ_REQUIREMENTS : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsImmediatePrecedingSystem ? selectedDetailsImmediatePrecedingSystem.DQ_STANDARDS : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_THRESHOLD : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsImmediatePrecedingSystem ? selectedDetailsImmediatePrecedingSystem.THRESHOLD : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data SLA signed?">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.IMM_DATA_SLA_SIGNED : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsImmediatePrecedingSystem ? selectedDetailsImmediatePrecedingSystem.DATA_SLA : ''"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -158,59 +158,59 @@ legend.col-form-label, label.col-form-label {
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Description">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.ULT_BUSINESS_DESCRIPTION : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.DESCRIPTION : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived?">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.ULT_DERIVED_YES_NO : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.DERIVED : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation Logic">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.ULT_DERIVATION_LOGIC : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.DERIVATION_LOGIC : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Quality requirements">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.ULT_DQ_REQUIREMENTS : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.DQ_STANDARDS : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.ULT_THRESHOLD : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.THRESHOLD : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source (Yes/No)">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.GOLDEN_SOURCE : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GOLDEN_SOURCE : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source System Name">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.GS_SYSTEM_NAME : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_SYSTEM_NAME : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source ITAM ID">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.GS_ITAM_ID : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GF_ITAM_ID : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Table Name">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.GS_TABLE_NAME : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_TABLE_NAME : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Column Name">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.GS_COLUMN_NAME : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_COLUMN_NAME : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Screen Name">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.GS_SCREEN_NAME : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_DATA_ELEMENT : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Business Description">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.GS_BUSINESS_DESC : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_DESCRIPTION : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Derived (Yes/No)">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.GS_DERIVED_YES_NO : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_DERIVED : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Derivation Logic">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.GS_DERIVATION_LOGIC : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_DERIVATION_LOGIC : ''"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -224,23 +224,23 @@ legend.col-form-label, label.col-form-label {
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DOMAIN : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.DOMAIN_NAME : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Domain">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.SUBDOMAIN : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.SUBDOMAIN_NAME : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain Owner">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DOMAIN_OWNER : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.SUBDOMAIN_OWNER : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BUSINESS_TERM : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.BUSINESS_TERM : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BUSINESS_TERM_DESCRIPTION : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.BUSINESS_TERM_DESCRIPTION : ''"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -254,19 +254,19 @@ legend.col-form-label, label.col-form-label {
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards set by DPO">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DPO_DQ_STANDARDS : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsDataStandards ? selectedDetailsDataStandards.DPO_DQ_STANDARDS : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards set at Business Term Level">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DQ_STANDARDS_BT_LEVEL : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsDataStandards ? selectedDetailsDataStandards.DQ_STANDARDS_BT_LEVEL : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds defined by DPO">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DPO_THRESHOLD : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsDataStandards ? selectedDetailsDataStandards.DPO_THRESHOLD : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds set at Business term level">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.THRESHOLD_BT_LEVEL : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="selectedDetailsDataStandards ? selectedDetailsDataStandards.THRESHOLD_BT_LEVEL : ''"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -296,6 +296,10 @@ export default {
       firstload: true,
       showModal: this.$route.meta.showModal,
       selectedDetails: null,
+      selectedDetailsImmediatePrecedingSystem: null,
+      selectedDetailsUltimateSourceSystem: null,
+      selectedDetailsDomainView: null,
+      selectedDetailsDataStandards: null,
       ddImmSystemNameSelected: null,
       ddImmItamIDSelected: null,
       ddImmTableNameSelected: null,
@@ -311,11 +315,11 @@ export default {
         'Process Owner': "selectedDetails.PROCESS_OWNER",
         'CDE Name': 'selectedDetails.CDE_NAME',
         'CDE Rationale': 'selectedDetails.CDE_RATIONALE',
-        'System Name': 'selectedDetails.IMM_SYSTEM',
-        'ITAM ID': 'selectedDetails.IMM_ITAM_ID',
-        'TableName': 'selectedDetails.IMM_TABLE_NAME',
-        "Column Name": "selectedDetails.IMM_COLUMN_NAME",
-        "Business Alias Name": "selectedDetails.IMM_SCREEN_LABEL_NAME",
+        'System Name': 'selectedDetails.SYSTEM_NAME',
+        'ITAM ID': 'selectedDetails.ITAM_ID',
+        'TableName': 'selectedDetails.TABLE_NAME',
+        "Column Name": "selectedDetails.COLUMN_NAME",
+        "Business Alias Name": "selectedDetails.DATA_ELEMENT",
         "Business Alias Description": "selectedDetails.IMM_BUSINESS_DESCRIPTION",
         "Derived (Yes/No)": "selectedDetails.IMM_DERIVED_YES_NO",
         "Derivation Logic": "selectedDetails.IMM_DERIVATION_LOGIC",
@@ -354,118 +358,89 @@ export default {
   },
   computed: {
     ...mapState({
-      dpomy: state => state.dpomy.all
+      store: state => state.dpo.all
     }),
     ddImmSystemNameOptions () {
-      return _.uniq(_.map(this.dpomy.DDSource, (v) => v.IMM_SYSTEM.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(this.store.DDSourceImmediatePrecedingSystem, (v) => v.SYSTEM_NAME.toString().trim())).filter(Boolean);
     },
     ddImmItamIDOptions () {
       var self = this;
-      var filtered = _.filter(self.dpomy.DDSource, (v) => {
-        return v.IMM_SYSTEM == self.ddImmSystemNameSelected;
+      var filtered = _.filter(self.store.DDSourceImmediatePrecedingSystem, (v) => {
+        return v.SYSTEM_NAME == self.ddImmSystemNameSelected;
       });
 
-      return _.uniq(_.map(filtered, (v) => v.IMM_ITAM_ID.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.ITAM_ID.toString().trim())).filter(Boolean);
     },
     ddImmTableNameOptions () {
       var self = this;
-      var filtered = _.filter(self.dpomy.DDSource, (v) => {
-        return v.IMM_SYSTEM == self.ddImmSystemNameSelected 
-          && v.IMM_ITAM_ID == self.ddImmItamIDSelected
+      var filtered = _.filter(self.store.DDSourceImmediatePrecedingSystem, (v) => {
+        return v.SYSTEM_NAME == self.ddImmSystemNameSelected 
+          && v.ITAM_ID == self.ddImmItamIDSelected
       });
       
-      return _.uniq(_.map(filtered, (v) => v.IMM_TABLE_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.TABLE_NAME.toString().trim())).filter(Boolean);
     },
     ddImmColumnNameOptions () {
       var self = this;
-      var filtered = _.filter(self.dpomy.DDSource, (v) => {
-        return v.IMM_SYSTEM == self.ddImmSystemNameSelected 
-          && v.IMM_ITAM_ID == self.ddImmItamIDSelected
-          && v.IMM_TABLE_NAME == self.ddImmTableNameSelected
+      var filtered = _.filter(self.store.DDSourceImmediatePrecedingSystem, (v) => {
+        return v.SYSTEM_NAME == self.ddImmSystemNameSelected 
+          && v.ITAM_ID == self.ddImmItamIDSelected
+          && v.TABLE_NAME == self.ddImmTableNameSelected
       });
       
-      return _.uniq(_.map(filtered, (v) => v.IMM_COLUMN_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.COLUMN_NAME.toString().trim())).filter(Boolean);
     },
     ddImmScreenLabelOptions () {
       var self = this;
-      var filtered = _.filter(self.dpomy.DDSource, (v) => {
-        return v.IMM_SYSTEM == self.ddImmSystemNameSelected 
-          && v.IMM_ITAM_ID == self.ddImmItamIDSelected
-          && v.IMM_TABLE_NAME == self.ddImmTableNameSelected
-          && v.IMM_COLUMN_NAME == self.ddImmColumnNameSelected
+      var filtered = _.filter(self.store.DDSourceImmediatePrecedingSystem, (v) => {
+        return v.SYSTEM_NAME == self.ddImmSystemNameSelected 
+          && v.ITAM_ID == self.ddImmItamIDSelected
+          && v.TABLE_NAME == self.ddImmTableNameSelected
+          && v.COLUMN_NAME == self.ddImmColumnNameSelected
       });
       
-      return _.uniq(_.map(filtered, (v) => v.IMM_SCREEN_LABEL_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.DATA_ELEMENT.toString().trim())).filter(Boolean);
     },
     ddUltSystemNameOptions () {
-      var self = this;
-      var filtered = _.filter(self.dpomy.DDSource, (v) => {
-        return v.IMM_SYSTEM == self.ddImmSystemNameSelected 
-          && v.IMM_ITAM_ID == self.ddImmItamIDSelected
-          && v.IMM_TABLE_NAME == self.ddImmTableNameSelected
-          && v.IMM_COLUMN_NAME == self.ddImmColumnNameSelected
-          && v.IMM_SCREEN_LABEL_NAME == self.ddImmScreenLabelSelected
-      });
-      
-      return _.uniq(_.map(filtered, (v) => v.ULT_SYSTEM.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(this.store.DDSourceUltimateSourceSystem, (v) => v.SYSTEM_NAME.toString().trim())).filter(Boolean);
     },
     ddUltItamIDOptions () {
       var self = this;
-      var filtered = _.filter(self.dpomy.DDSource, (v) => {
-        return v.IMM_SYSTEM == self.ddImmSystemNameSelected 
-          && v.IMM_ITAM_ID == self.ddImmItamIDSelected
-          && v.IMM_TABLE_NAME == self.ddImmTableNameSelected
-          && v.IMM_COLUMN_NAME == self.ddImmColumnNameSelected
-          && v.IMM_SCREEN_LABEL_NAME == self.ddImmScreenLabelSelected
-          && v.ULT_SYSTEM == self.ddUltSystemNameSelected
+      var filtered = _.filter(self.store.DDSourceUltimateSourceSystem, (v) => {
+        return v.SYSTEM_NAME == self.ddUltSystemNameSelected;
       });
-      
-      return _.uniq(_.map(filtered, (v) => v.ULT_ITAM_ID.toString().trim())).filter(Boolean);
+
+      return _.uniq(_.map(filtered, (v) => v.ITAM_ID.toString().trim())).filter(Boolean);
     },
     ddUltTableNameOptions () {
       var self = this;
-      var filtered = _.filter(self.dpomy.DDSource, (v) => {
-        return v.IMM_SYSTEM == self.ddImmSystemNameSelected 
-          && v.IMM_ITAM_ID == self.ddImmItamIDSelected
-          && v.IMM_TABLE_NAME == self.ddImmTableNameSelected
-          && v.IMM_COLUMN_NAME == self.ddImmColumnNameSelected
-          && v.IMM_SCREEN_LABEL_NAME == self.ddImmScreenLabelSelected
-          && v.ULT_SYSTEM == self.ddUltSystemNameSelected
-          && v.ULT_ITAM_ID == self.ddUltItamIDSelected
+      var filtered = _.filter(self.store.DDSourceUltimateSourceSystem, (v) => {
+        return v.SYSTEM_NAME == self.ddUltSystemNameSelected 
+          && v.ITAM_ID == self.ddUltItamIDSelected
       });
       
-      return _.uniq(_.map(filtered, (v) => v.ULT_TABLE_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.TABLE_NAME.toString().trim())).filter(Boolean);
     },
     ddUltColumnNameOptions () {
       var self = this;
-      var filtered = _.filter(self.dpomy.DDSource, (v) => {
-        return v.IMM_SYSTEM == self.ddImmSystemNameSelected 
-          && v.IMM_ITAM_ID == self.ddImmItamIDSelected
-          && v.IMM_TABLE_NAME == self.ddImmTableNameSelected
-          && v.IMM_COLUMN_NAME == self.ddImmColumnNameSelected
-          && v.IMM_SCREEN_LABEL_NAME == self.ddImmScreenLabelSelected
-          && v.ULT_SYSTEM == self.ddUltSystemNameSelected
-          && v.ULT_ITAM_ID == self.ddUltItamIDSelected
-          && v.ULT_TABLE_NAME == self.ddUltTableNameSelected
+      var filtered = _.filter(self.store.DDSourceUltimateSourceSystem, (v) => {
+        return v.SYSTEM_NAME == self.ddUltSystemNameSelected 
+          && v.ITAM_ID == self.ddUltItamIDSelected
+          && v.TABLE_NAME == self.ddUltTableNameSelected
       });
       
-      return _.uniq(_.map(filtered, (v) => v.ULT_COLUMN_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.COLUMN_NAME.toString().trim())).filter(Boolean);
     },
     ddUltScreenLabelOptions () {
       var self = this;
-      var filtered = _.filter(self.dpomy.DDSource, (v) => {
-        return v.IMM_SYSTEM == self.ddImmSystemNameSelected 
-          && v.IMM_ITAM_ID == self.ddImmItamIDSelected
-          && v.IMM_TABLE_NAME == self.ddImmTableNameSelected
-          && v.IMM_COLUMN_NAME == self.ddImmColumnNameSelected
-          && v.IMM_SCREEN_LABEL_NAME == self.ddImmScreenLabelSelected
-          && v.ULT_SYSTEM == self.ddUltSystemNameSelected
-          && v.ULT_ITAM_ID == self.ddUltItamIDSelected
-          && v.ULT_TABLE_NAME == self.ddUltTableNameSelected
-          && v.ULT_COLUMN_NAME == self.ddUltColumnNameSelected
+      var filtered = _.filter(self.store.DDSourceUltimateSourceSystem, (v) => {
+        return v.SYSTEM_NAME == self.ddUltSystemNameSelected 
+          && v.ITAM_ID == self.ddUltItamIDSelected
+          && v.TABLE_NAME == self.ddUltTableNameSelected
+          && v.COLUMN_NAME == self.ddUltColumnNameSelected
       });
       
-      return _.uniq(_.map(filtered, (v) => v.ULT_SCREEN_LABEL_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.DATA_ELEMENT.toString().trim())).filter(Boolean);
     },
     exportDatas () {
       if(this.selectedDetails){
@@ -754,7 +729,7 @@ export default {
     this.runGetDetails(param)
   },
   methods: {
-    ...mapActions("dpomy", {
+    ...mapActions("dpo", {
       getDetails: "getDetails"
     }),
     handleClose () {
@@ -771,24 +746,69 @@ export default {
         res => {
           this.firstload = true;
 
-          if (self.dpomy.detailsSource.length > 0){
-            var tmp = self.dpomy.detailsSource[0].Values[0];
+          // if (self.store.detailsSource.length > 0){
+          //   var tmp = self.store.detailsSource[0].Values[0];
 
-            self.selectedDetails = {}
+          //   self.selectedDetails = {}
+          //   _.each(Object.keys(tmp), function(v, i){
+          //       self.selectedDetails[v] = _.uniq(
+          //         _.map(self.store.detailsSource[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)
+          //       );
+
+          //       self.selectedDetails[v] = self.selectedDetails[v].join(", ");
+          //   });
+
+          //   // make falsy NA
+          //   Object.keys(self.selectedDetails).forEach((val) => {
+          //     self.selectedDetails[val] = !!self.selectedDetails[val].trim() ? self.selectedDetails[val] : "NA";
+          //   });
+
+          //   self.store.DDSource.map(function(v){
+          //     Object.keys(v).forEach(function(key){
+          //       v[key] = v[key] ? v[key] : "NA"
+          //     })
+
+          //     return v
+          //   })
+            
+          //   setTimeout(() => {
+          //     self.ddImmSystemNameSelected = self.selectedDetails.SYSTEM_NAME;
+          //     self.ddImmItamIDSelected = self.selectedDetails.ITAM_ID;
+          //     self.ddImmTableNameSelected = self.selectedDetails.TABLE_NAME;
+          //     self.ddImmColumnNameSelected = self.selectedDetails.COLUMN_NAME;
+          //     self.ddImmScreenLabelSelected = self.selectedDetails.DATA_ELEMENT;
+          //     self.ddUltSystemNameSelected = self.selectedDetails.ULT_SYSTEM;
+          //     self.ddUltItamIDSelected = self.selectedDetails.ULT_ITAM_ID;
+          //     self.ddUltTableNameSelected = self.selectedDetails.ULT_TABLE_NAME;
+          //     self.ddUltColumnNameSelected = self.selectedDetails.ULT_COLUMN_NAME;
+          //     self.ddUltScreenLabelSelected = self.selectedDetails.ULT_SCREEN_LABEL_NAME;
+
+          //     setTimeout(() => {
+          //       this.firstload = false;
+          //     }, 100);
+          //   }, 100);
+          // } else {
+          //   this.selectedDetails = null;
+          // }
+
+          if (self.store.DetailsImmediatePrecedingSystem.length > 0){
+            var tmp = self.store.DetailsImmediatePrecedingSystem[0].Values[0];
+
+            self.selectedDetailsImmediatePrecedingSystem = {}
             _.each(Object.keys(tmp), function(v, i){
-                self.selectedDetails[v] = _.uniq(
-                  _.map(self.dpomy.detailsSource[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)
+                self.selectedDetailsImmediatePrecedingSystem[v] = _.uniq(
+                  _.map(self.store.DetailsImmediatePrecedingSystem[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)
                 );
 
-                self.selectedDetails[v] = self.selectedDetails[v].join(", ");
+                self.selectedDetailsImmediatePrecedingSystem[v] = self.selectedDetailsImmediatePrecedingSystem[v].join(", ");
             });
 
             // make falsy NA
-            Object.keys(self.selectedDetails).forEach((val) => {
-              self.selectedDetails[val] = !!self.selectedDetails[val].trim() ? self.selectedDetails[val] : "NA";
+            Object.keys(self.selectedDetailsImmediatePrecedingSystem).forEach((val) => {
+              self.selectedDetailsImmediatePrecedingSystem[val] = !!self.selectedDetailsImmediatePrecedingSystem[val].trim() ? self.selectedDetailsImmediatePrecedingSystem[val] : "NA";
             });
 
-            self.dpomy.DDSource.map(function(v){
+            self.store.DDSourceImmediatePrecedingSystem.map(function(v){
               Object.keys(v).forEach(function(key){
                 v[key] = v[key] ? v[key] : "NA"
               })
@@ -797,23 +817,114 @@ export default {
             })
             
             setTimeout(() => {
-              self.ddImmSystemNameSelected = self.selectedDetails.IMM_SYSTEM;
-              self.ddImmItamIDSelected = self.selectedDetails.IMM_ITAM_ID;
-              self.ddImmTableNameSelected = self.selectedDetails.IMM_TABLE_NAME;
-              self.ddImmColumnNameSelected = self.selectedDetails.IMM_COLUMN_NAME;
-              self.ddImmScreenLabelSelected = self.selectedDetails.IMM_SCREEN_LABEL_NAME;
-              self.ddUltSystemNameSelected = self.selectedDetails.ULT_SYSTEM;
-              self.ddUltItamIDSelected = self.selectedDetails.ULT_ITAM_ID;
-              self.ddUltTableNameSelected = self.selectedDetails.ULT_TABLE_NAME;
-              self.ddUltColumnNameSelected = self.selectedDetails.ULT_COLUMN_NAME;
-              self.ddUltScreenLabelSelected = self.selectedDetails.ULT_SCREEN_LABEL_NAME;
+              self.ddImmSystemNameSelected = self.selectedDetailsImmediatePrecedingSystem.SYSTEM_NAME;
+              self.ddImmItamIDSelected = self.selectedDetailsImmediatePrecedingSystem.ITAM_ID;
+              self.ddImmTableNameSelected = self.selectedDetailsImmediatePrecedingSystem.TABLE_NAME;
+              self.ddImmColumnNameSelected = self.selectedDetailsImmediatePrecedingSystem.COLUMN_NAME;
+              self.ddImmScreenLabelSelected = self.selectedDetailsImmediatePrecedingSystem.DATA_ELEMENT;
 
               setTimeout(() => {
                 this.firstload = false;
               }, 100);
             }, 100);
           } else {
-            this.selectedDetails = null;
+            this.selectedDetailsImmediatePrecedingSystem = null;
+          }
+
+          if (self.store.DetailsUltimateSourceSystem.length > 0){
+            var tmp = self.store.DetailsUltimateSourceSystem[0].Values[0];
+
+            self.selectedDetailsUltimateSourceSystem = {}
+            _.each(Object.keys(tmp), function(v, i){
+                self.selectedDetailsUltimateSourceSystem[v] = _.uniq(
+                  _.map(self.store.DetailsUltimateSourceSystem[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)
+                );
+
+                self.selectedDetailsUltimateSourceSystem[v] = self.selectedDetailsUltimateSourceSystem[v].join(", ");
+            });
+
+            // make falsy NA
+            Object.keys(self.selectedDetailsUltimateSourceSystem).forEach((val) => {
+              self.selectedDetailsUltimateSourceSystem[val] = !!self.selectedDetailsUltimateSourceSystem[val].trim() ? self.selectedDetailsUltimateSourceSystem[val] : "NA";
+            });
+
+            self.store.DDSourceImmediatePrecedingSystem.map(function(v){
+              Object.keys(v).forEach(function(key){
+                v[key] = v[key] ? v[key] : "NA"
+              })
+
+              return v
+            })
+            
+            setTimeout(() => {
+              self.ddUltSystemNameSelected = self.selectedDetailsUltimateSourceSystem.SYSTEM_NAME;
+              self.ddUltItamIDSelected = self.selectedDetailsUltimateSourceSystem.ITAM_ID;
+              self.ddUltTableNameSelected = self.selectedDetailsUltimateSourceSystem.TABLE_NAME;
+              self.ddUltColumnNameSelected = self.selectedDetailsUltimateSourceSystem.COLUMN_NAME;
+              self.ddUltScreenLabelSelected = self.selectedDetailsUltimateSourceSystem.DATA_ELEMENT;
+
+              setTimeout(() => {
+                this.firstload = false;
+              }, 100);
+            }, 100);
+          } else {
+            this.selectedDetailsImmediatePrecedingSystem = null;
+          }
+
+          if (self.store.DetailsDomainView.length > 0){
+            var tmp = self.store.DetailsDomainView[0].Values[0];
+
+            self.selectedDetailsDomainView = {}
+            _.each(Object.keys(tmp), function(v, i){
+                self.selectedDetailsDomainView[v] = _.uniq(
+                  _.map(self.store.DetailsDomainView[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)
+                );
+                
+                self.selectedDetailsDomainView[v] = self.selectedDetailsDomainView[v].join(", ");
+            });
+
+            // make falsy NA
+            Object.keys(self.selectedDetailsDomainView).forEach((val) => {
+              self.selectedDetailsDomainView[val] = !!self.selectedDetailsDomainView[val].trim() ? self.selectedDetailsDomainView[val] : "NA";
+            });
+
+            self.store.DDSourceDomainView.map(function(v){
+              Object.keys(v).forEach(function(key){
+                v[key] = v[key] ? v[key] : "NA"
+              })
+
+              return v
+            })
+          } else {
+            this.selectedDetailsDomainView = null;
+          }
+
+          if (self.store.DetailsDataStandards.length > 0){
+            var tmp = self.store.DetailsDataStandards[0].Values[0];
+
+            self.selectedDetailsDataStandards = {}
+            _.each(Object.keys(tmp), function(v, i){
+                self.selectedDetailsDataStandards[v] = _.uniq(
+                  _.map(self.store.DetailsDataStandards[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)
+                );
+                
+                self.selectedDetailsDataStandards[v] = self.selectedDetailsDataStandards[v].join(", ");
+            });
+
+            // make falsy NA
+            Object.keys(self.selectedDetailsDataStandards).forEach((val) => {
+              self.selectedDetailsDataStandards[val] = !!self.selectedDetailsDataStandards[val].trim() ? self.selectedDetailsDataStandards[val] : "NA";
+            });
+
+            self.store.DDSourceDataStandards.map(function(v){
+              Object.keys(v).forEach(function(key){
+                v[key] = v[key] ? v[key] : "NA"
+              })
+
+              return v
+            })
+          } else {
+            this.selectedDetailsDataStandards = null;
           }
         },
         err => err

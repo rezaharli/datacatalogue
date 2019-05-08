@@ -163,15 +163,45 @@ func (c *DPO) GetDetails(k *knot.WebContext) {
 		return
 	}
 
-	detail, ddSource, err := c.Base.GetDetails(payload, s.NewDPOService().GetDetails, s.NewDPOService().GetddSource)
+	// detail, ddSource, err := c.Base.GetDetails(payload, s.NewDPOService().GetDetails, s.NewDPOService().GetddSource)
+	// if err != nil {
+	// 	h.WriteResultError(k, res, err.Error())
+	// 	return
+	// }
+
+	detailsImmediatePrecedingSystem, ddSourceImmediatePrecedingSystem, err := c.Base.GetDetails(payload, s.NewDPOService().GetDetailsImmediatePrecedingSystem, s.NewDPOService().GetddSourceImmediatePrecedingSystem)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	detailsUltimateSourceSystem, ddSourceUltimateSourceSystem, err := c.Base.GetDetails(payload, s.NewDPOService().GetDetailsUltimateSourceSystem, s.NewDPOService().GetddSourceUltimateSourceSystem)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	detailsDomainView, ddSourceDomainView, err := c.Base.GetDetails(payload, s.NewDPOService().GetDetailsDomainView, s.NewDPOService().GetddSourceDomainView)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	detailsDataStandards, ddSourceDataStandards, err := c.Base.GetDetails(payload, s.NewDPOService().GetDetailsDataStandards, s.NewDPOService().GetddSourceDataStandards)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
 	data := toolkit.M{}
-	data.Set("Detail", detail)
-	data.Set("DDSource", ddSource)
+	data.Set("DetailsImmediatePrecedingSystem", detailsImmediatePrecedingSystem)
+	data.Set("DDSourceImmediatePrecedingSystem", ddSourceImmediatePrecedingSystem)
+	data.Set("DetailsUltimateSourceSystem", detailsUltimateSourceSystem)
+	data.Set("DDSourceUltimateSourceSystem", ddSourceUltimateSourceSystem)
+	data.Set("DetailsDomainView", detailsDomainView)
+	data.Set("DDSourceDomainView", ddSourceDomainView)
+	data.Set("DetailsDataStandards", detailsDataStandards)
+	data.Set("DDSourceDataStandards", ddSourceDataStandards)
 
 	h.WriteResultOK(k, res, data)
 }

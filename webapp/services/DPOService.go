@@ -325,3 +325,337 @@ func (s *DPOService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 
 	return resultRows, resultTotal, nil
 }
+
+func (s *DPOService) GetDetailsImmediatePrecedingSystem(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
+	q, err := h.BuildQueryFromFile(filePath, "details-immediate-preceding-system", []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	otherArgs := make([]string, 0)
+	otherArgs = append(otherArgs,
+		payload.GetString("ImmSystemName"),
+		payload.GetString("ImmItamID"),
+		payload.GetString("ImmTableName"),
+		payload.GetString("ImmColumnName"),
+		payload.GetString("ImmScreenLabel"),
+	)
+
+	checkNotEmpty := func(s []string) bool {
+		for _, v := range s {
+			if v != "" {
+				return true
+			}
+		}
+		return false
+	}
+
+	q = `SELECT rownum, a.* FROM (
+		` + q + `
+	) a `
+
+	if checkNotEmpty(otherArgs) == true {
+		q += `WHERE (( ID IS NOT NULL `
+		if otherArgs[0] != "" {
+			q += `AND SYSTEM_NAME = '` + otherArgs[0] + `' `
+		}
+		if otherArgs[1] != "" {
+			q += `AND ITAM_ID = '` + otherArgs[1] + `' `
+		}
+		if otherArgs[2] != "" {
+			q += `AND TABLE_NAME = '` + otherArgs[2] + `' `
+		}
+		if otherArgs[3] != "" {
+			q += `AND COLUMN_NAME = '` + otherArgs[3] + `' `
+		}
+		if otherArgs[4] != "" {
+			q += `AND DATA_ELEMENT = '` + otherArgs[4] + `' `
+		}
+		q += `)) AND rownum = 1 `
+	} else {
+		q += `WHERE rownum = 1 `
+	}
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DPOService) GetddSourceImmediatePrecedingSystem(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
+	q, err := h.BuildQueryFromFile(filePath, "details-immediate-preceding-system", []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	///////// FILTER
+	q = `SELECT DISTINCT 
+			SYSTEM_NAME, 
+			ITAM_ID, 
+			TABLE_NAME, 
+			COLUMN_NAME, 
+			DATA_ELEMENT
+		FROM (
+		` + q + `
+	) `
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DPOService) GetDetailsUltimateSourceSystem(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
+	q, err := h.BuildQueryFromFile(filePath, "details-ultimate-source-system", []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	otherArgs := make([]string, 0)
+	otherArgs = append(otherArgs,
+		payload.GetString("UltSystemName"),
+		payload.GetString("UltItamID"),
+		payload.GetString("UltTableName"),
+		payload.GetString("UltColumnName"),
+		payload.GetString("UltScreenLabel"),
+	)
+
+	checkNotEmpty := func(s []string) bool {
+		for _, v := range s {
+			if v != "" {
+				return true
+			}
+		}
+		return false
+	}
+
+	q = `SELECT rownum, a.* FROM (
+		` + q + `
+	) a `
+
+	if checkNotEmpty(otherArgs) == true {
+		q += `WHERE (( ID IS NOT NULL `
+		if otherArgs[0] != "" {
+			q += `AND SYSTEM_NAME = '` + otherArgs[0] + `' `
+		}
+		if otherArgs[1] != "" {
+			q += `AND ITAM_ID = '` + otherArgs[1] + `' `
+		}
+		if otherArgs[2] != "" {
+			q += `AND TABLE_NAME = '` + otherArgs[2] + `' `
+		}
+		if otherArgs[3] != "" {
+			q += `AND COLUMN_NAME = '` + otherArgs[3] + `' `
+		}
+		if otherArgs[4] != "" {
+			q += `AND DATA_ELEMENT = '` + otherArgs[4] + `' `
+		}
+		q += `)) AND rownum = 1 `
+	} else {
+		q += `WHERE rownum = 1 `
+	}
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DPOService) GetddSourceUltimateSourceSystem(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
+	q, err := h.BuildQueryFromFile(filePath, "details-ultimate-source-system", []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	///////// FILTER
+	q = `SELECT DISTINCT 
+			SYSTEM_NAME, 
+			ITAM_ID, 
+			TABLE_NAME, 
+			COLUMN_NAME, 
+			DATA_ELEMENT
+		FROM (
+		` + q + `
+	) `
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DPOService) GetDetailsDomainView(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, payload.GetString("Right"))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
+	q, err := h.BuildQueryFromFile(filePath, "details-domain-view", []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DPOService) GetddSourceDomainView(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
+	q, err := h.BuildQueryFromFile(filePath, "details-domain-view", []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DPOService) GetDetailsDataStandards(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
+	q, err := h.BuildQueryFromFile(filePath, "details-data-standards", []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DPOService) GetddSourceDataStandards(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
+	q, err := h.BuildQueryFromFile(filePath, "details-data-standards", []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}

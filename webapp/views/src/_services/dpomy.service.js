@@ -96,6 +96,48 @@ function getRightTable(param) {
 function getDetails(param) {
     return fetchWHeader(`/dpo/getdetails`, param).then(
         res => {
+            var tmp = _.groupBy(res.Data.DetailsImmediatePrecedingSystem, "ID")
+            res.Data.DetailsImmediatePrecedingSystem = _.map(Object.keys(tmp), function(v, i){
+                var ret = tmp[v][0];
+                ret.ID = v;
+                ret.Values = tmp[v];
+
+                return ret;
+            });
+
+            var tmp = _.groupBy(res.Data.DetailsUltimateSourceSystem, "ID")
+            res.Data.DetailsUltimateSourceSystem = _.map(Object.keys(tmp), function(v, i){
+                var ret = tmp[v][0];
+                ret.ID = v;
+                ret.Values = tmp[v];
+
+                return ret;
+            });
+
+            var tmp = _.groupBy(res.Data.DetailsDomainView, "ID")
+            res.Data.DetailsDomainView = _.map(Object.keys(tmp), function(v, i){
+                var ret = tmp[v][0];
+                ret.ID = v;
+                ret.Values = tmp[v];
+
+                return ret;
+            });
+
+            var tmp = _.groupBy(res.Data.DetailsDataStandards, "ID")
+            res.Data.DetailsDataStandards = _.map(Object.keys(tmp), function(v, i){
+                var ret = tmp[v][0];
+                ret.ID = v;
+                ret.Values = tmp[v];
+
+                return ret;
+            });
+
+            return res;
+        }
+    )
+
+    return fetchWHeader(`/dpo/getdetails`, param).then(
+        res => {
             var tmp = _.groupBy(res.Data.Detail, "ID")
             
             res.Data.Detail = _.map(Object.keys(tmp), function(v, i){
