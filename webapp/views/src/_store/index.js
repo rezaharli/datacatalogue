@@ -15,6 +15,7 @@ import { dscinterfacescde } from './dscinterfacescde.module';
 import { dscdd } from './dscdd.module';
 import { dpo } from './dpo.module';
 import { dpodataelements } from './dpodataelements.module';
+import { dpodatalineage } from './dpodatalineage.module';
 import { dpomy } from './dpomy.module';
 import { dpoall } from './dpoall.module';
 import { ddo } from './ddo.module';
@@ -38,7 +39,7 @@ export const store = new Vuex.Store({
         account,
         users,
         dsc, dscmy, dscall, dsccde, dsccdp, dsccdpcde, dscinterfaces, dscinterfacescde, dscdd,
-        dpo, dpomy, dpoall, dpodataelements,
+        dpo, dpomy, dpoall, dpodataelements, dpodatalineage,
         ddo, ddomy, ddoall, ddobusinessterm, ddosystems, ddosystemsbusinessterm, ddodownstream, ddodownstreambusinessterm,
         rfo, rfomy, rfoall, rfopriority
     }

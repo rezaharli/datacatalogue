@@ -47,6 +47,25 @@ func (c *DPO) GetLeftTable(k *knot.WebContext) {
 	h.WriteResultOK(k, res, systems)
 }
 
+func (c *DPO) GetHomepageCounts(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	systems, _, err := s.NewDPOService().GetHomepageCounts(payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	h.WriteResultOK(k, res, systems)
+}
+
 func (c *DPO) GetDataelementsTable(k *knot.WebContext) {
 	res := toolkit.NewResult()
 
@@ -74,7 +93,7 @@ func (c *DPO) GetDataelementsTable(k *knot.WebContext) {
 	h.WriteResultOK(k, res, systems)
 }
 
-func (c *DPO) GetHomepageCounts(k *knot.WebContext) {
+func (c *DPO) GetDatalineageTable(k *knot.WebContext) {
 	res := toolkit.NewResult()
 
 	payload := toolkit.M{}
@@ -84,7 +103,15 @@ func (c *DPO) GetHomepageCounts(k *knot.WebContext) {
 		return
 	}
 
-	systems, _, err := s.NewDPOService().GetHomepageCounts(payload)
+	system := payload.GetString("System")
+	colFilter := payload.Get("Filters")
+	pagination, err := toolkit.ToM(payload.Get("Pagination"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	systems, _, err := s.NewDPOService().GetDatalineageTable(system, colFilter, pagination)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return

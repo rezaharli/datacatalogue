@@ -39,6 +39,12 @@
 			"revisionTime": "2017-08-08T02:36:21Z"
 		},
 		{
+			"checksumSHA1": "4/C3886PlNwmyKEmgJzCEL7y6h4=",
+			"path": "github.com/eaciit/asn1-ber",
+			"revision": "4e86f4367175e39f69d9358a5f17b4dda270378d",
+			"revisionTime": "2015-09-24T05:17:56Z"
+		},
+		{
 			"checksumSHA1": "g7EejMWOXHQrMAWoaONMXtO9wMk=",
 			"path": "github.com/eaciit/clit",
 			"revision": "655ca35ccf7b209df59d2bfff401436b5a561663",
@@ -49,6 +55,12 @@
 			"path": "github.com/eaciit/gora",
 			"revision": "bdd7f6b54ab3e87626a5696c1ccb4ffa299bcf03",
 			"revisionTime": "2019-02-23T21:42:39Z"
+		},
+		{
+			"checksumSHA1": "PJv1JfCc9joZI4ezT77IGyPr77Y=",
+			"path": "github.com/eaciit/ldap",
+			"revision": "3e61dbb4633377219bd9c6f25e6da32ba360264b",
+			"revisionTime": "2017-10-03T07:51:44Z"
 		},
 		{
 			"checksumSHA1": "Tsi7fuCqYuassTkdO5JYUPW4jIU=",

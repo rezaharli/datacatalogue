@@ -13,5 +13,24 @@
             "password": "example",
             "name": "scbdc"
         }
+    },
+    "LDAP": {
+        "IsEnabled": "true",
+        "Type": "ssl",
+        "ServerName": "10.20.160.230",
+        "Host": "10.20.160.230:1636",
+        "BaseDN": "EDMCDC_SRVACC_01,ou=EDMCDC,ou=apps,o=standardchartered",
+        "UserDN": "EDMCDC_SRVACC_01,ou=EDMCDC,ou=apps,o=standardchartered",
+        "UserAuthAttr": "CN",
+        "Certificate": "./../../../ecsbysvr01-eaciit.cer",
+        "BindUsername": "",
+        "BindPassword": "dd81225e0ccca1174d53626174e4305940c32327b1e94cb5deba5909671e1c304f9862853c",
+        "BindFilter": "",
+        "IsInsecureSkipVerify": "false",
+        "IsUsingEncryptedPassword": "false",
+        "DataFullName": "CN",
+        "DataFirstName": "givenName",
+        "DataLastName": "",
+        "DataUserCountry": ""
     }
 }

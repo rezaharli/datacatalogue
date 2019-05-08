@@ -292,7 +292,7 @@ export default {
     },
     showDetails(param) {
       this.$router.push(
-        this.addressPath + "/" + this.$route.params.dspname + "/" + this.$route.params.system + "/" + param.BT_NAME
+        this.addressPath + "/" + this.$route.params.dspname + "/" + param.ALIAS_NAME
       );
     }
   }

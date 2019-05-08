@@ -3,6 +3,7 @@ package controllers
 import (
 	"time"
 
+	"github.com/eaciit/clit"
 	"github.com/eaciit/toolkit"
 
 	"git.eaciitapp.com/sebar/knot"
@@ -27,6 +28,21 @@ func (c *Users) Authenticate(k *knot.WebContext) {
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
+	}
+
+	if clit.Config("default", "LDAP", "") != "" {
+		ldapConf := clit.Config("default", "LDAP", "").(map[string]interface{})
+		if ldapConf["IsEnabled"].(string) == "true" {
+			isSuccess, _, err := h.TryToLoginUsingLDAP(payload.GetString("username"), payload.GetString("password"))
+
+			toolkit.Println("Success ?? >> ", isSuccess)
+			toolkit.Println("Err ?? >> ", err)
+
+			if !(isSuccess && err == nil) {
+				h.WriteResultErrorOK(k, res, "LDAP login fail.")
+				return
+			}
+		}
 	}
 
 	ok, user, err := s.NewUserService().Authenticate(payload.GetInt("username"), payload.GetString("password"))

@@ -4,6 +4,7 @@ export const dpoMyService = {
     getLeftTable,
     getHomepageCounts,
     getDataelementsTable,
+    getDatalineageTable,
     getRightTable,
     getDetails
 };
@@ -73,6 +74,10 @@ function getDataelementsTable(param) {
             return res;
         }
     );
+}
+
+function getDatalineageTable(param) {
+    return fetchWHeader(`/dpo/getdatalineagetable`, param);
 }
 
 function getRightTable(param) {

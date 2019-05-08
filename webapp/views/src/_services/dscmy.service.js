@@ -174,7 +174,41 @@ function getCdpCdeTable(param) {
 }
 
 function getInterfacesTable(param) {
-    return fetchWHeader(`/dsc/getinterfacestable`, param);
+    return fetchWHeader(`/dsc/getinterfacestable`, param).then(
+        res => {
+            res.DataFlat = _.cloneDeep(res.Data);
+            
+            var tmp = _.groupBy(res.Data, "IMM_INTERFACE")
+            res.Data = _.map(Object.keys(tmp), function(v, i){
+                var tmpTmp = _.cloneDeep(tmp[v]);
+
+                var ret         = tmpTmp[0];
+                ret.ID          = i;
+                ret.IMM_INTERFACEsVal     = tmpTmp;
+                ret.IMM_INTERFACE         = v;
+
+                var tmp2 = _.groupBy(tmp[v], "PROCESS_OWNER");  
+                ret.Owners = _.map(Object.keys(tmp2), function(w, i){
+                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
+
+                    var ret         = tmpTmp2[0];
+                    ret.TMTID       = tmpTmp2[0].TMTID;
+                    ret.OwnersVal   = tmpTmp2;
+                    ret.PROCESS_OWNER  = w;
+
+                    return ret;
+                });
+
+                return ret;
+            });
+
+            res.Data.forEach(v => {
+                v.Owners.shift();
+            });
+            
+            return res;
+        }
+    );
 }
 
 function getInterfacesCdeTable(param) {
@@ -236,12 +270,14 @@ function getInterfacesCdeTable(param) {
 function getDdTable(param) {
     return fetchWHeader(`/dsc/getddtable`, param).then(
         res => {
-            res.DataFlat = _.cloneDeep(res.Data);
-
             res.Data = _.map(res.Data, function(v){
                 v.CDE_YES_NO = v.CDE_YES_NO == 0 ? "No" : "Yes";
+                v.DERIVED_YES_NO = v.DERIVED_YES_NO == 0 ? "No" : "Yes";
+                v.PII_FLAG = v.PII_FLAG == 0 ? "No" : "Yes";
                 return v;
             });
+
+            res.DataFlat = _.cloneDeep(res.Data);
 
             return res;
         }
