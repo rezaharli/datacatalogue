@@ -51,7 +51,7 @@
 
                   <template slot="items" slot-scope="props">
                     <tr>
-                      <td v-if="isDisplayed('PRINCIPAL_RISK_TYPES')" :rowspan="props.item.RISK_SUB_TYPEs.length + 1">
+                      <td v-if="isDisplayed('PRINCIPAL_RISK_TYPES')" :rowspan="props.item.PRINCIPAL_RISK_TYPESsVal.length + 1">
                         <tablecell :fulltext="props.item.PRINCIPAL_RISK_TYPES" showOn="hover"></tablecell></td>
                       
                       <td v-if="isDisplayed('RISK_SUB_TYPE')">
@@ -75,7 +75,7 @@
                         <tablecell :fulltext="props.item.CDE_COUNT" showOn="click"></tablecell></td>
                     </tr>
 
-                    <tr :key="props.item.ID + '' + i" v-for="(item, i) in props.item.RISK_SUB_TYPEs">
+                    <tr :key="props.item.ID + '' + i" v-for="(item, i) in props.item.PRINCIPAL_RISK_TYPESsVal">
                       <td v-if="isDisplayed('RISK_SUB_TYPE')">
                         <b-link @click.stop="showRightTable(item)">
                           <tablecell :fulltext="item.RISK_SUB_TYPE" showOn="hover"></tablecell></b-link></td>
