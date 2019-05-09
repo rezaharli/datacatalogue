@@ -132,11 +132,15 @@ export default {
       return tmp.slice(0, 3).join("/");
     },
     displayPRName() {
+      var prNameHeader = this.store.leftHeaders.find(v => v.value == "PR_NAME");
+
       if(parseInt(this.store.left.source[0] ? this.store.left.source[0]["PR_NAME_COUNT"] : "0") == 0){
-        this.store.leftHeaders.find(v => v.value == "PR_NAME").display = false;
+        prNameHeader.display = false;
+        prNameHeader.exportable = false;
         return false;
       } else {
-        this.store.leftHeaders.find(v => v.value == "PR_NAME").display = true;
+        prNameHeader.display = true;
+        prNameHeader.exportable = true;
         return true;
       }
     }

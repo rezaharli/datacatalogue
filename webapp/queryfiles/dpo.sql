@@ -84,6 +84,10 @@ SELECT DISTINCT
         INNER JOIN TBL_SYSTEM SYS ON RES.SYSTEM_ID = SYS.ID
     WHERE 
         DSP.NAME = '?' -- DOWNSTREAM PROCESS NAME
+        AND (
+            upper(NVL('', ' ')) LIKE upper('%?%')
+            AND upper(NVL(SYS.SYSTEM_NAME, ' ')) LIKE upper('%?%')
+        )
 
 -- name: details
 SELECT DISTINCT

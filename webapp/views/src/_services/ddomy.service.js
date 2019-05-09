@@ -108,6 +108,16 @@ function getDownstreamTable(param) {
 function getDownstreamBusinesstermTable(param) {
     return fetchWHeader(`/ddo/getdownstreambusinesstermtable`, param).then(
         res => {
+            res.Data = _.map(res.Data, function(v){
+                var keys = Object.keys(v);
+
+                keys.forEach(key => {
+                    v[key] = v[key] ? v[key] : "...";
+                })
+                
+                return v;
+            });
+
             res.DataFlat = _.cloneDeep(res.Data);
             
             var tmp = _.groupBy(res.Data, "BT_NAME")
