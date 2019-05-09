@@ -213,7 +213,7 @@
                         </td>
 
                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
-                          <tablecell showOn="hover" v-if="isSystemLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
+                          <tablecell showOn="hover" v-if="isSystemLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
                         </td>
 
                         <td colspan="3"></td>
@@ -247,7 +247,7 @@
                             </td>
 
                             <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
-                              <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
+                              <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
                             </td>
 
                             <td colspan="3"></td>
@@ -273,7 +273,7 @@
                                   <tablecell showOn="hover" :fulltext="props.item.COLUMN_NAME"></tablecell></td>
 
                                 <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
-                                  <tablecell showOn="hover" :fulltext="props.item.COLUMN_NAME"></tablecell></td>
+                                  <tablecell showOn="hover" :fulltext="props.item.GOLDEN_SOURCE"></tablecell></td>
 
                                 <td colspan="3"></td>
                               </template>

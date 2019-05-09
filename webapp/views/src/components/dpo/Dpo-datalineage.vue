@@ -28,6 +28,10 @@
                     </b-button>
 
                     <page-export class="float-right" :storeName="storeName" :leftTableCols="store.leftHeaders" :rightTableCols="[]"/>
+
+                    <b-button class="float-right primary icon-only mr-3" @click="linkDataLineage">
+                        <i class="fa fa-fw fa-external-link-alt"></i> Go to data lineage
+                    </b-button>
                 </b-col>
             </b-row>
 
@@ -132,11 +136,15 @@ export default {
       return tmp.slice(0, 3).join("/");
     },
     displayPRName() {
+      var prNameHeader = this.store.leftHeaders.find(v => v.value == "PR_NAME");
+
       if(parseInt(this.store.left.source[0] ? this.store.left.source[0]["PR_NAME_COUNT"] : "0") == 0){
-        this.store.leftHeaders.find(v => v.value == "PR_NAME").display = false;
+        prNameHeader.display = false;
+        prNameHeader.exportable = false;
         return false;
       } else {
-        this.store.leftHeaders.find(v => v.value == "PR_NAME").display = true;
+        prNameHeader.display = true;
+        prNameHeader.exportable = true;
         return true;
       }
     }
@@ -187,6 +195,20 @@ export default {
     },
     systemRowClick(evt) {
       evt.preventDefault();
+    },
+    linkDataLineage(){
+      var processName = store.left.source[0] ? store.left.source[0]["PROCESS_NAME"] : "";
+
+      switch (processName) {
+        case "USFRR":
+          window.open("http://hklpadmdm002.global.standardchartered.com:9999/data/view/id/535#!tab-data-relationships");
+          break;
+        case "GNS":
+          window.open("http://hklpadmdm002.global.standardchartered.com:9999/data/view/id/532#!tab-data-relationships");
+          break;
+        default:
+          break;
+      }
     },
     resetFilter (e) {
         if(Object.keys(this.store.filters.left).length > 0){

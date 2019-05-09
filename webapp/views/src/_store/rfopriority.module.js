@@ -12,7 +12,7 @@ const state = {
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Priority Report', value: 'PRIORITY_REPORT' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Priority Reports', value: 'PRIORITY_REPORT' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Priority Report Rationale', value: 'PRIORITY_REPORT_RATIONALE' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'CRM Name', value: 'CRM_NAME' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'CRM Rationale', value: 'CRM_RATIONALE' },

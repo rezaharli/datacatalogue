@@ -25,7 +25,7 @@ const state = {
             { align: 'left', display: false, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Risk Reporting Lead', value: 'RISK_REPORTING_LEAD' },
             { align: 'left', display: false, filterable: false, exportable: true, displayCount: false, sortable: true, text: 'Unique Count of Priority Reports', value: 'PR_COUNT' },
             { align: 'left', display: false, filterable: false, exportable: true, displayCount: false, sortable: true, text: 'Unique Count of Critical Risk Measures', value: 'CRM_COUNT' },
-            { align: 'left', display: false, filterable: false, exportable: true, displayCount: false, sortable: true, text: 'Unique Count of Critical Data Element', value: 'CDE_COUNT' },
+            { align: 'left', display: false, filterable: false, exportable: true, displayCount: false, sortable: true, text: 'Unique Count of Critical Data Elements', value: 'CDE_COUNT' },
         ],
         // rightHeaders: [
         //   { text: 'Table Name', align: 'left', sortable: false, value: 'TABLE_NAME', displayCount: true, width: "25%" },
@@ -64,7 +64,7 @@ const actions = {
 
         return rfoMyService.getAllRisk(param)
             .then(
-                res => commit('getExportDataSuccess', res.Data),
+                res => commit('getExportDataSuccess', res),
                 error => commit('getExportDataFailure', error)
             );
     },
@@ -88,7 +88,7 @@ const actions = {
 
         return rfoMyService.getAllRisk(param)
             .then(
-                res => commit('getLeftTableSuccess', res.Data),
+                res => commit('getLeftTableSuccess', res),
                 error => commit('getLeftTableFailure', error)
             );
     },
@@ -133,8 +133,8 @@ const mutations = {
     getExportDataRequest(state) {
         state.all.left.isLoading = true;
     },
-    getExportDataSuccess(state, data) {
-        state.all.exportDatas = data;
+    getExportDataSuccess(state, res) {
+        state.all.exportDatas = res.DataFlat;
 
         state.all.left.isLoading = false;
     },
@@ -145,10 +145,10 @@ const mutations = {
     getLeftTableRequest(state) {
         state.all.left.isLoading = true;
     },
-    getLeftTableSuccess(state, data) {
-        state.all.left.source = data;
-        state.all.left.display = data;
-        state.all.left.totalItems = data[0] ? data[0].RESULT_COUNT : 0;
+    getLeftTableSuccess(state, res) {
+        state.all.left.source = res.DataFlat;
+        state.all.left.display = res.Data;
+        state.all.left.totalItems = res.Data[0] ? res.Data[0].RESULT_COUNT : 0;
 
         state.all.left.isLoading = false;
     },
