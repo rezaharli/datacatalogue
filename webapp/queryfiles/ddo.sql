@@ -170,6 +170,8 @@ SELECT DISTINCT
 
 -- name: ddo-downstream-businessterm
 SELECT DISTINCT
+        ''                                                          AS DATA_DOMAIN,
+        ''                                                          AS SUB_DOMAINS,
         BT.BT_NAME                                                  AS BT_NAME,
         TGS.SYSTEM_NAME                                             AS SYSTEM_CONSUMED,
         T.NAME                                                      AS TABLE_NAME,
