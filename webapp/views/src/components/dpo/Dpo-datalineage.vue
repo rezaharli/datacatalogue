@@ -28,6 +28,10 @@
                     </b-button>
 
                     <page-export class="float-right" :storeName="storeName" :leftTableCols="store.leftHeaders" :rightTableCols="[]"/>
+
+                    <b-button class="float-right primary icon-only mr-3" @click="linkDataLineage">
+                        <i class="fa fa-fw fa-external-link-alt"></i> Go to data lineage
+                    </b-button>
                 </b-col>
             </b-row>
 
@@ -191,6 +195,20 @@ export default {
     },
     systemRowClick(evt) {
       evt.preventDefault();
+    },
+    linkDataLineage(){
+      var processName = store.left.source[0] ? store.left.source[0]["PROCESS_NAME"] : "";
+
+      switch (processName) {
+        case "USFRR":
+          window.open("http://hklpadmdm002.global.standardchartered.com:9999/data/view/id/535#!tab-data-relationships");
+          break;
+        case "GNS":
+          window.open("http://hklpadmdm002.global.standardchartered.com:9999/data/view/id/532#!tab-data-relationships");
+          break;
+        default:
+          break;
+      }
     },
     resetFilter (e) {
         if(Object.keys(this.store.filters.left).length > 0){
