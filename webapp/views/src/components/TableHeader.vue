@@ -91,6 +91,14 @@ export default {
     keyupAction(e){
       var self = this;
 
+      // manually adding space
+      if(e.key == " ") {
+        var model = this.store.filters[this.which][this.props.header.value.split('.').reverse()[0]];
+        model = model ? model + " " : " ";
+
+        this.store.filters[this.which][this.props.header.value.split('.').reverse()[0]] = model;
+      }
+
       if(self.filterProcessTimeout != null) clearTimeout(self.filterProcessTimeout);
 
       self.filterProcessTimeout = setTimeout(self.filterProcess, 500);
