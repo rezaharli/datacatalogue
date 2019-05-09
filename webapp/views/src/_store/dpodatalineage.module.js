@@ -33,7 +33,7 @@ const actions = {
         });
 
         var param = {
-            System: state.all.system,
+            System: state.all.dspname,
             Filters: state.all.filters.left,
             Pagination: _.cloneDeep(state.all.left.pagination)
         }

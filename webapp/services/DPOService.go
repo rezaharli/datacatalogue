@@ -130,17 +130,12 @@ func (s *DPOService) GetDatalineageTable(system string, colFilter interface{}, p
 	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "", "", "")
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "")
 	} else {
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
+			colFilterM.GetString("PR_NAME"),
 			colFilterM.GetString("SYSTEM_NAME"),
-			colFilterM.GetString("ITAM_ID"),
-			colFilterM.GetString("ALIAS_NAME"),
-			colFilterM.GetString("CDE"),
-			colFilterM.GetString("TABLE_NAME"),
-			colFilterM.GetString("COLUMN_NAME"),
-			colFilterM.GetString("ULT_SYSTEM_NAME"),
-			colFilterM.GetString("DATA_SLA"),
+			colFilterM.GetString("CDE_COUNT"),
 		)
 	}
 
