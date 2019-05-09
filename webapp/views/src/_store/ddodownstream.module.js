@@ -14,7 +14,7 @@ const state = {
         leftHeaders: [
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Downstream Process Name', value: 'DATA_DOMAIN' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Downstream Process Owner', value: 'DP_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'List of Business Terms', value: 'BT_COUNT' },
+            { align: 'left', display: true, filterable: false, exportable: true, displayCount: false, sortable: true, text: 'List of Business Terms', value: 'BT_COUNT' },
         ],
         isRightTable: false,
         DDSource: [],

@@ -119,8 +119,8 @@ func (s *DDOService) GetBusinesstermTable(system string, colFilter interface{}, 
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "")
 	} else {
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("BUSINESS_TERM"),
-			colFilterM.GetString("DESCRIPTION"),
+			colFilterM.GetString("BT_NAME"),
+			colFilterM.GetString("BT_DESCRIPTION"),
 		)
 	}
 
