@@ -77,8 +77,8 @@
 
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                      <td style="width: calc(100% / 6)" class="text-uppercase">{{props.item.DATA_DOMAIN}}</td>
                       <td style="width: calc(100% / 6)" class="text-uppercase">{{props.item.DP_NAME}}</td>
+                      <td style="width: calc(100% / 6)" class="text-uppercase">{{props.item.PROCESS_OWNER}}</td>
                       <td style="width: calc(100% / 6)" class="text-capitalize">
                         <b-link @click.stop="showBusinessterms(props.item)">
                           <tablecell :fulltext="props.item.BT_COUNT" showOn="click"></tablecell></b-link></td>
