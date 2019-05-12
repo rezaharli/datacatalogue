@@ -119,8 +119,8 @@ func (s *DDOService) GetBusinesstermTable(system string, colFilter interface{}, 
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "")
 	} else {
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("BUSINESS_TERM"),
-			colFilterM.GetString("DESCRIPTION"),
+			colFilterM.GetString("BT_NAME"),
+			colFilterM.GetString("BT_DESCRIPTION"),
 		)
 	}
 
@@ -233,7 +233,7 @@ func (s *DDOService) GetDownstreamBusinesstermTable(subdomain, system string, co
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 
-	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
+	gridArgs.MainArgs = append(gridArgs.MainArgs, system, subdomain)
 
 	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)

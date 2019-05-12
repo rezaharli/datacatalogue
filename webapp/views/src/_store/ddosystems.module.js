@@ -13,7 +13,7 @@ const state = {
         exportDatas: [],
         leftHeaders: [
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Systems', value: 'SYSTEM_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'List of Business Terms', value: 'BT_COUNT' },
+            { align: 'left', display: true, filterable: false, exportable: true, displayCount: false, sortable: true, text: 'List of Business Terms', value: 'BT_COUNT' },
         ],
         isRightTable: false,
         DDSource: [],
