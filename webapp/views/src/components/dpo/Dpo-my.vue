@@ -47,8 +47,8 @@
 
               <template slot="items" slot-scope="props">
                 <tr>
-                  <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.DSP_NAME" showOn="hover"></tablecell></b-link></td>
-                  <td>{{ props.item.DSP_OWNER }}</td>
+                  <td v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }"><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.DSP_NAME" showOn="hover"></tablecell></b-link></td>
+                  <td v-bind:style="{ width: store.left.colWidth['DSP_OWNER'] + 'px' }">{{ props.item.DSP_OWNER }}</td>
                 </tr>
               </template>
             </v-data-table>
