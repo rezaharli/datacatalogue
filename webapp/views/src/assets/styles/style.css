@@ -346,3 +346,11 @@ table.v-table tbody tr td.hidden{display: none;} */
 .table-v2 table.v-table tbody tr td .v-datatable__expand-content .v-table__overflow > table.v-table > tbody > tr > td {padding-top: 0; padding-bottom: 0;}
 .table-v2 .v-table {background-color: transparent;}
 .table-v2 > .v-table > .v-datatable__actions {border-radius: 0 0 7px 7px;}
+
+/* The sticky class is added to the header with JS when it reaches its scroll position */
+table.v-table.v-datatable .sticky {
+    position: fixed;
+    z-index: 2;
+    background-color: #fff;
+}
+table.v-table thead.sticky .v-datatable__progress {visibility: hidden;}
