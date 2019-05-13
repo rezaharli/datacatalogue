@@ -233,7 +233,7 @@ func (s *DDOService) GetDownstreamBusinesstermTable(subdomain, system string, co
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 
-	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
+	gridArgs.MainArgs = append(gridArgs.MainArgs, system, subdomain)
 
 	///////// --------------------------------------------------COLUMN FILTER
 	colFilterM, err := toolkit.ToM(colFilter)

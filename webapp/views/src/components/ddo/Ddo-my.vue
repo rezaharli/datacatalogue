@@ -47,9 +47,9 @@
 
               <template slot="items" slot-scope="props">
                 <tr>
-                  <td><tablecell :fulltext="props.item.DATA_DOMAIN" showOn="hover"></tablecell></td>
-                  <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SUB_DOMAINS" showOn="hover"></tablecell></b-link></td>
-                  <td><tablecell :fulltext="props.item.SUB_DOMAIN_OWNER" showOn="click"></tablecell></td>
+                  <td v-bind:style="{ width: store.left.colWidth['DATA_DOMAIN'] + 'px' }"><tablecell :fulltext="props.item.DATA_DOMAIN" showOn="hover"></tablecell></td>
+                  <td v-bind:style="{ width: store.left.colWidth['SUB_DOMAINS'] + 'px' }"><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SUB_DOMAINS" showOn="hover"></tablecell></b-link></td>
+                  <td v-bind:style="{ width: store.left.colWidth['SUB_DOMAIN_OWNER'] + 'px' }"><tablecell :fulltext="props.item.SUB_DOMAIN_OWNER" showOn="click"></tablecell></td>
                 </tr>
               </template>
             </v-data-table>

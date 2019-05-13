@@ -47,7 +47,8 @@ export default {
   props: ["storeName", "props", "which"],
   data() {
     return {
-      filterProcessTimeout: null
+      filterProcessTimeout: null,
+      sticky: 0
     };
   },
   computed: {
@@ -60,9 +61,10 @@ export default {
       }
   },
   mounted (){
-    setTimeout(
-      () => this.store[this.which].colWidth[this.props.header.value.split('.').reverse()[0]] = this.$refs.widthAcuan.parentNode.offsetWidth, 
-    100)
+    setTimeout(() => {
+      this.store[this.which].colWidth[this.props.header.value.split('.').reverse()[0]] = this.$refs.widthAcuan.parentNode.offsetWidth;
+      this.makeTableHeaderFixed();
+    }, 100);
   },
   methods: {
     getLeftTable () {
@@ -127,6 +129,44 @@ export default {
       this.store.filters[which][fieldName] = "";
       this.filterProcess ();
       this.$refs.columnFilter.hide(true);
+    },
+    onScrollListener(e){
+        // metode mengawang alias menambah class sticky ke current elemen 
+        if ($(window).scrollTop() > this.sticky) {
+            // && tableBody.height() > window.innerHeight 
+            $('table.v-table.v-datatable thead').addClass("sticky");
+            $('table.v-table.v-datatable thead').css({'top': $('.v-toolbar').height()});
+        } else {
+            $('table.v-table.v-datatable thead').removeClass("sticky");
+            $('table.v-table.v-datatable thead').css({'top': 'unset'});
+        }
+
+        // // pake clone jes
+        // if ($(window).scrollTop() > this.sticky) {
+        //     // && tableBody.height() > window.innerHeight 
+        //     $('table.v-table.v-datatable thead.sticky').show();
+        //     $('table.v-table.v-datatable thead.sticky').css({'top': $('.v-toolbar').height()});
+        // } else {
+        //     $('table.v-table.v-datatable thead.sticky').hide();
+        //     $('table.v-table.v-datatable thead.sticky').css({'top': 'unset'});
+        // }
+    },
+
+    makeTableHeaderFixed(){
+        const theads = document.querySelectorAll('table.v-table.v-datatable thead');
+        theads.forEach((thead) => {
+          thead.querySelectorAll("tr > th").forEach((th) => {
+            th.style.width = th.offsetWidth+'px';
+          });
+
+          // let clone = thead.cloneNode( true );
+          // clone.setAttribute( 'class', 'sticky');
+          // thead.closest('table.v-table.v-datatable').appendChild( clone );
+          // clone.style.display = "none";
+        });
+
+        this.sticky = $('table.v-table thead').offset().top;    
+        $(window).scroll(this.onScrollListener);
     }
   }
 };

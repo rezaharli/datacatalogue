@@ -39,7 +39,7 @@
                     :total-items="store.left.totalItems"
                     :loading="store.left.isLoading"
                     item-key="ID"
-                    class="card-content ">
+                    class="card-content">
 
                   <template slot="headerCell" slot-scope="props">
                     <tableheader :storeName="storeName" :props="props" :which="'left'" />
@@ -58,8 +58,8 @@
                   </template>
 
                   <template slot="items" slot-scope="props">
-                      <td><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SYSTEM_NAME" showOn="hover"></tablecell></b-link></td>
-                      <td>
+                      <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }"><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SYSTEM_NAME" showOn="hover"></tablecell></b-link></td>
+                      <td v-bind:style="{ width: store.left.colWidth['ITAM_ID'] + 'px' }">
                         <v-tooltip bottom slot="activator">
                           <tablecell slot="activator" :fulltext="(_.uniq(_.map(props.item.Custodians, 'ITAM_ID').filter(Boolean)).join(', '))" showOn="click"></tablecell>
                           <span>{{ (_.uniq(_.map(props.item.Custodians, 'DATASET_CUSTODIAN').filter(Boolean)).join('; ')) }} ,  {{ (_.uniq(_.map(props.item.Custodians, 'BANK_ID').filter(Boolean)).join('; ')) }}</span>
