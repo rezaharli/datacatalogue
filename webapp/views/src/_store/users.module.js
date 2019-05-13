@@ -1,10 +1,30 @@
 import { userService } from '../_services/user.service';
-import moment from 'moment'
+import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
     all: {
-        isLoading: true,
-        items: [],
+        tabName: '',
+        filters: {
+            left: {},
+            right: {}
+        },
+        system: '',
+        left: newTableObject(),
+        exportDatas: [],
+        leftHeaders: [
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Username', value: 'USERNAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Email', value: 'EMAIL' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Name', value: 'NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Role', value: 'ROLE' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Status', value: 'STATUS' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Created At', value: 'CREATEDAT' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Updated At', value: 'UPDATEDAT' },
+            { align: 'left', display: true, filterable: false, exportable: false, displayCount: false, sortable: false, text: 'Actions', value: 'ACTIONS' },
+        ],
+        isRightTable: false,
+        DDSource: [],
+        detailsLoading: true,
+        detailsSource: [],
         error: null
     }
 };
