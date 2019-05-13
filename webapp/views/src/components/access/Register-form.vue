@@ -123,6 +123,9 @@ export default {
                 }, err => {});
             }
         },
+        reset () {
+            this.$refs.form.reset()
+        },
     }
 };
 </script>

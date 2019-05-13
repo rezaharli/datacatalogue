@@ -1,5 +1,7 @@
 import { fetchWHeader } from '../_helpers/auth-header';
 
+import moment from 'moment'
+
 export const userService = {
     login,
     logout,
@@ -43,8 +45,18 @@ function register(user) {
         );
 }
 
-function getAll() {
-    return fetchWHeader(`/users/getall`, {});
+function getAll(param) {
+    return fetchWHeader(`/users/getall`, param).then(
+        res => {
+            res.Data = res.Data.map(v => {
+                v.CREATEDAT = moment(v.CREATEDAT.substring(0, 19)).format('DD MMM YYYY, hh:mm a');
+                v.UPDATEDAT = moment(v.UPDATEDAT.substring(0, 19)).format('DD MMM YYYY, hh:mm a');
+                return v; 
+            });
+
+            return res;
+        }
+    );
 }
 
 function update(user) {

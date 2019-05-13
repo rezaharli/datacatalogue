@@ -1,11 +1,11 @@
 <template>
-    <v-content class="mx-4 my-5">
+    <v-content class="mx-4 my-0 py-0">
         <b-container fluid>
             <PageHeader title="Risk Framework Owner View" />
 
             <page-loader v-if="store.left.isLoading" />
 
-            <b-row class="my-4">
+            <!-- <b-row class="my-4">
                 <b-col>
                     <b-button class="float-right red-neon icon-only ml-3" @click="resetFilter">
                         <i class="fa fa-fw fa-filter"></i>
@@ -13,7 +13,7 @@
 
                     <page-export class="float-right" :storeName="storeName" :leftTableCols="store.leftHeaders" :rightTableCols="[]"/>
                 </b-col>
-            </b-row>
+            </b-row> -->
 
             <b-row style="margin-top: 10px;margin-bottom: 10px;">
                 <b-col>
@@ -67,8 +67,8 @@
                                 <td v-bind:style="{ width: store.left.colWidth['CREATEDAT'] + 'px' }" class="text-capitalize text-title">
                                     <tablecell showOn="hover" :fulltext="props.item.CREATEDAT"></tablecell></td>
 
-                                <td v-bind:style="{ width: store.left.colWidth['UPDATEAT'] + 'px' }" class="text-capitalize text-title">
-                                    <tablecell showOn="hover" :fulltext="props.item.UPDATEAT"></tablecell></td>
+                                <td v-bind:style="{ width: store.left.colWidth['UPDATEDAT'] + 'px' }" class="text-capitalize text-title">
+                                    <tablecell showOn="hover" :fulltext="props.item.UPDATEDAT"></tablecell></td>
 
                                 <td v-bind:style="{ width: store.left.colWidth['ACTIONS'] + 'px' }" class="text-capitalize text-title">
                                     <!-- <v-icon
@@ -164,9 +164,6 @@ export default {
                     res => this.getAllUsers(), 
                     err => this.getAllUsers()
                 )
-        },
-        reset () {
-            this.$refs.form.reset()
         },
         resetFilter (e) {
             if(Object.keys(this.store.filters.left).length > 0){

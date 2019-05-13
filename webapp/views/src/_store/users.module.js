@@ -1,8 +1,6 @@
 import { userService } from '../_services/user.service';
 import { newTableObject } from '../_helpers/table-helper';
 
-import moment from 'moment'
-
 const state = {
     all: {
         tabName: '',
@@ -33,22 +31,39 @@ const state = {
 
 const actions = {
     getAll({ commit }) {
-        commit('getAllRequest');
+        commit('getLeftTableRequest');
 
-        userService.getAll()
+        Object.keys(state.all.filters.left).map(function(key, index) {
+            state.all.filters.left[key] = state.all.filters.left[key] ? state.all.filters.left[key].toString() : "";
+        });
+
+        var param = {
+            System: state.all.system,
+            Filters: state.all.filters.left,
+            Pagination: state.all.left.pagination
+        }
+
+        return userService.getAll(param)
             .then(
-                res => {
-                    res.Data.map(v => {
-                        v.CreatedAt = moment(v.CreatedAt.substring(0, 19)).format('DD MMM YYYY, hh:mm a');
-                        v.UpdatedAt = moment(v.UpdatedAt.substring(0, 19)).format('DD MMM YYYY, hh:mm a');
-                        return v; 
-                    }),
-                    commit('getAllSuccess', res.Data);
-                }, 
-                
-                
-                error => commit('getAllFailure', error)
+                res => commit('getLeftTableSuccess', res),
+                error => commit('getLeftTableFailure', error)
             );
+        // commit('getAllRequest');
+
+        // userService.getAll()
+        //     .then(
+        //         res => {
+        //             res.Data.map(v => {
+        //                 v.CreatedAt = moment(v.CreatedAt.substring(0, 19)).format('DD MMM YYYY, hh:mm a');
+        //                 v.UpdatedAt = moment(v.UpdatedAt.substring(0, 19)).format('DD MMM YYYY, hh:mm a');
+        //                 return v; 
+        //             }),
+        //             commit('getAllSuccess', res.Data);
+        //         }, 
+                
+                
+        //         error => commit('getAllFailure', error)
+        //     );
     },
     register({ commit }, user) {
         var tempUser = _.cloneDeep(user)
@@ -89,15 +104,18 @@ const actions = {
 };
 
 const mutations = {
-    getAllRequest(state) {
-        state.all.isLoading = true;
+    getLeftTableRequest(state) {
+        state.all.left.isLoading = true;
     },
-    getAllSuccess(state, users) {
-        state.all.isLoading = false;
-        state.all.items = users;
+    getLeftTableSuccess(state, res) {
+        state.all.left.source = res.Data;
+        state.all.left.display = res.Data;
+        state.all.left.totalItems = res.Data[0] ? res.Data[0].COUNT_CDE : 0;
+        
+        state.all.left.isLoading = false;
     },
-    getAllFailure(state, error) {
-        state.all.isLoading = false;
+    getLeftTableFailure(state, error) {
+        state.all.left.isLoading = false;
         state.all.error = error;
     },
     registerRequest(state) {
