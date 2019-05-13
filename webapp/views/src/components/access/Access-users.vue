@@ -1,8 +1,6 @@
 <template>
     <v-content class="mx-4 my-0 py-0">
         <b-container fluid>
-            <PageHeader title="Risk Framework Owner View" />
-
             <page-loader v-if="store.left.isLoading" />
 
             <!-- <b-row class="my-4">
