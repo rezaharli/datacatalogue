@@ -55,12 +55,17 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 	if strings.Trim(BindUsernameLDAP, " ") != "" {
 		// Bind Through Config
 		// defer l.Unbind(BindUsernameLDAP, BindPasswordLDAP)
+		toolkit.Println("Bind with config:", BindUsernameLDAP, "-", BindPasswordLDAP)
 		err = l.Bind(BindUsernameLDAP, BindPasswordLDAP)
+		toolkit.Println("with -", err)
 	} else {
 		// defer l.Unbind(username, password)
+		toolkit.Println("Bind without config:", username, "-", password)
 		err = l.Bind(username, password)
+		toolkit.Println("without -", err)
 	}
 
+	toolkit.Println("BindUsernameLDAP", BindUsernameLDAP, "|", strings.Trim(BindUsernameLDAP, " "), "|", strings.Trim(BindUsernameLDAP, " ") != "", "|", strings.Trim(BindUsernameLDAP, " ") != "" && err == nil)
 	if strings.Trim(BindUsernameLDAP, " ") != "" && err == nil {
 		// from Login FORM
 		// defer l.Unbind(username, password)
@@ -69,14 +74,18 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 		if err == nil {
 			cond = true
 		} else {
-			toolkit.Println("#ERROR Binding to LDAP with username : ", username, " - ", err.Error())
+			toolkit.Println("#ERROR Binding to LDAP with username : ", username)
+			toolkit.Println("#ERROR Binding to LDAP with password : ", password)
+			toolkit.Println(err.Error())
 		}
 	} else {
 		toolkit.Println("bbbbbbbbb")
 		if err == nil {
 			cond = true
 		} else {
-			toolkit.Println("#ERROR Binding to LDAP  with username : ", username, " - ", err.Error())
+			toolkit.Println("#ERROR Binding to LDAP with username : ", username)
+			toolkit.Println("#ERROR Binding to LDAP with password : ", password)
+			toolkit.Println(err.Error())
 		}
 	}
 
@@ -222,6 +231,7 @@ func TryToLoginUsingLDAP(username, password string) (bool, LDAPDataList, error) 
 		}
 
 		toolkit.Println("#Username : ", username)
+		toolkit.Println("#Password : ", password)
 		loginConf.Set("type", configLDAPType)
 
 		tlsconfig := tls.Config{}

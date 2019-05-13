@@ -40,15 +40,27 @@ func (s *UserService) HashPassword(password string) string {
 func (s *UserService) Authenticate(username int, password string) (bool, *m.SysUser, error) {
 	users := make([]m.SysUser, 0)
 
+	filter := []*dbflex.Filter{}
+	filter = append(filter, dbflex.Eq("status", 1))
+	filter = append(filter, dbflex.Eq("username", username))
+
+	if clit.Config("default", "LDAP", "") != "" {
+		ldapConf := clit.Config("default", "LDAP", "").(map[string]interface{})
+		if ldapConf["IsEnabled"].(string) == "true" {
+			//do nothing
+		} else {
+			filter = append(filter, dbflex.Eq("password", s.HashPassword(password)))
+		}
+	} else {
+		filter = append(filter, dbflex.Eq("password", s.HashPassword(password)))
+	}
+
 	err := h.NewDBcmd().GetBy(h.GetByParam{
 		TableName: m.NewSysUserModel().TableName(),
-		Clause: dbflex.And(
-			dbflex.Eq("username", username),
-			dbflex.Eq("password", s.HashPassword(password)),
-			dbflex.Eq("status", 1),
-		),
-		Result: &users,
+		Clause:    dbflex.And(filter...),
+		Result:    &users,
 	})
+
 	if err != nil {
 		return false, m.NewSysUserModel(), err
 	}
