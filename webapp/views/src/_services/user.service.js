@@ -1,5 +1,7 @@
 import { fetchWHeader } from '../_helpers/auth-header';
 
+import moment from 'moment'
+
 export const userService = {
     login,
     logout,
@@ -43,15 +45,25 @@ function register(user) {
         );
 }
 
-function getAll() {
-    return fetchWHeader(`/users/getall`, {});
+function getAll(param) {
+    return fetchWHeader(`/users/getall`, param).then(
+        res => {
+            res.Data = res.Data.map(v => {
+                v.CREATEDAT = moment(v.CREATEDAT.substring(0, 19)).format('DD MMM YYYY, hh:mm a');
+                v.UPDATEDAT = moment(v.UPDATEDAT.substring(0, 19)).format('DD MMM YYYY, hh:mm a');
+                return v; 
+            });
+
+            return res;
+        }
+    );
 }
 
 function update(user) {
-    return fetchWHeader(`/users/update`, {});
+    return fetchWHeader(`/users/update`, user);
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
 function _delete(username) {
-    return fetchWHeader(`/users/delete`, {});
+    return fetchWHeader(`/users/delete`, { Username: username});
 }

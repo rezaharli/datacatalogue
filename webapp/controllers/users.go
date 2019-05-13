@@ -63,19 +63,30 @@ func (c *Users) GetAll(k *knot.WebContext) {
 	res := toolkit.NewResult()
 
 	payload := toolkit.M{}
-
-	sortKey := payload.GetString("sort-key")
-	sortOrder := payload.GetString("sort-order")
-	skip := payload.GetInt("skip")
-	take := payload.GetInt("take")
-
-	users, _, err := s.NewUserService().GetAll(sortKey, sortOrder, skip, take, toolkit.M{})
+	err := k.GetPayload(&payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
-	h.WriteResultOK(k, res, users)
+	tabs := payload.GetString("Tabs")
+	loggedinId := payload.GetString("LoggedInID")
+	search := payload.GetString("Search")
+	searchDD := payload.Get("SearchDD")
+	colFilter := payload.Get("Filters")
+	pagination, err := toolkit.ToM(payload.Get("Pagination"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	systems, _, err := s.NewUserService().GetAll(tabs, loggedinId, search, searchDD, colFilter, pagination)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	h.WriteResultOK(k, res, systems)
 }
 
 func (c *Users) Register(k *knot.WebContext) {

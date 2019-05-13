@@ -4,11 +4,13 @@ import (
 	"crypto/md5"
 	"fmt"
 	"io"
+	"path/filepath"
 	"strings"
 	"time"
 
 	"github.com/icrowley/fake"
 
+	"github.com/eaciit/clit"
 	"github.com/eaciit/toolkit"
 
 	"git.eaciitapp.com/sebar/dbflex"
@@ -18,6 +20,7 @@ import (
 )
 
 type UserService struct {
+	*Base
 }
 
 func NewUserService() *UserService {
@@ -57,26 +60,35 @@ func (s *UserService) Authenticate(username int, password string) (bool, *m.SysU
 	return true, &(users[0]), nil
 }
 
-func (s *UserService) GetAll(sortKey, sortOrder string, skip, take int, filter toolkit.M) ([]m.SysUser, int, error) {
-	resultRows := make([]m.SysUser, 0)
-	resultTotal := 0
+func (s *UserService) GetAll(tabs, loggedinid, search string, searchDD, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "users.sql")
+	gridArgs.QueryName = "users"
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 
-	err := h.NewDBcmd().GetAll(h.GetAllParam{
-		Filter:      filter,
-		SortKey:     sortKey,
-		SortOrder:   sortOrder,
-		Skip:        skip,
-		Take:        take,
-		TableName:   m.NewSysUserModel().TableName(),
-		ResultRows:  &resultRows,
-		ResultTotal: &resultTotal,
-	})
-
+	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		return nil, 0, err
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "", "")
+	} else {
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
+			colFilterM.GetString("PRINCIPAL_RISK_TYPES"),
+			colFilterM.GetString("RISK_SUB_TYPE"),
+			colFilterM.GetString("RISK_FRAMEWORK_OWNER"),
+			colFilterM.GetString("RISK_REPORTING_LEAD"),
+			colFilterM.GetString("PR_COUNT"),
+			colFilterM.GetString("CRM_COUNT"),
+			colFilterM.GetString("CDE_COUNT"),
+		)
 	}
 
-	return resultRows, resultTotal, nil
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
 func (s *UserService) getRegisteredPeople(username int) ([]m.People, error) {
@@ -169,39 +181,38 @@ func (s *UserService) Insert(data *m.SysUser) (bool, error) {
 		return true, fmt.Errorf("The same username already exists")
 	}
 
-	registeredPeople, err := s.getRegisteredPeople(data.Username)
+	// registeredPeople, err := s.getRegisteredPeople(data.Username)
+	// if err != nil {
+	// 	return false, err
+	// }
+
+	// if len(registeredPeople) > 0 {
+	data.Password = s.HashPassword(data.Password)
+	dataM, err := toolkit.ToM(data)
 	if err != nil {
 		return false, err
 	}
 
-	if len(registeredPeople) > 0 {
-		data.Password = s.HashPassword(data.Password)
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName: m.NewSysUserModel().TableName(),
+		Data:      dataM,
+	})
 
-		dataM, err := toolkit.ToM(data)
-		if err != nil {
-			return false, err
+	if err != nil {
+		if strings.Contains(err.Error(), "duplicate key") {
+			return true, fmt.Errorf("Different data with same ID already exists")
 		}
 
-		err = h.NewDBcmd().Insert(h.InsertParam{
-			TableName: m.NewSysUserModel().TableName(),
-			Data:      dataM,
-		})
-
-		if err != nil {
-			if strings.Contains(err.Error(), "duplicate key") {
-				return true, fmt.Errorf("Different data with same ID already exists")
-			}
-
-			return false, err
-		}
-
-		// err = s.insertLinkRolePeople(registeredPeople[0], data.Role)
-		// if err != nil {
-		// 	return false, err
-		// }
-
-		return true, nil
+		return false, err
 	}
+
+	// err = s.insertLinkRolePeople(registeredPeople[0], data.Role)
+	// if err != nil {
+	// 	return false, err
+	// }
+
+	return true, nil
+	// }
 
 	return true, fmt.Errorf("User id is not registered in tbl_people")
 }
