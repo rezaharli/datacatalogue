@@ -1,8 +1,27 @@
 <style>
-.table-v1 table.v-table.v-datatable tr th:nth-of-type(2){width: 18% !important;}
-.table-v1 table.v-table.v-datatable tr th:nth-of-type(3){width: 15% !important;}
-.table-v1 table.v-table.v-datatable tr th:nth-of-type(6){width: 10% !important;}
-.table-v1 table.v-table.v-datatable tr th:nth-of-type(7){width: 10% !important;}
+.table-v1 table.v-table {table-layout: auto;}
+.table-v1 table.v-table .table-header-wrapper {font-size: 0.97em; }
+.table-v1 table.v-table .table-header-wrapper .dropdown-button-wrapper .btn {padding: 0;}
+.table-v1 table.v-table thead tr th:first-of-type,
+.table-v1 table.v-table tbody tr td:first-of-type{padding-left: 20px;}
+.table-v1 table.v-table thead tr th:last-of-type,
+.table-v1 table.v-table tbody tr td:last-of-type{padding-right: 20px;}
+.table-v1 table.v-table thead tr th,
+.table-v1 table.v-table tbody tr td {padding-left: 10px; padding-right: 10px; }
+.table-v1 table.v-table tr th:nth-of-type(1),
+.table-v1 table.v-table tr td:nth-of-type(1){width: 8% !important;}
+.table-v1 table.v-table tr th:nth-of-type(2),
+.table-v1 table.v-table tr td:nth-of-type(2){width: 29% !important;}
+.table-v1 table.v-table tr th:nth-of-type(3),
+.table-v1 table.v-table tr td:nth-of-type(3){width: 15% !important;}
+.table-v1 table.v-table tr th:nth-of-type(4),
+.table-v1 table.v-table tr td:nth-of-type(4){width: 13% !important;}
+.table-v1 table.v-table tr th:nth-of-type(5),
+.table-v1 table.v-table tr td:nth-of-type(5){width: 13% !important;}
+.table-v1 table.v-table tr th:nth-of-type(6),
+.table-v1 table.v-table tr td:nth-of-type(6){width: 10% !important;}
+.table-v1 table.v-table tr th:nth-of-type(7),
+.table-v1 table.v-table tr td:nth-of-type(7){width: 12% !important;}
 </style>
 
 <template>
