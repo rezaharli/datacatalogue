@@ -57,13 +57,15 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 		// defer l.Unbind(BindUsernameLDAP, BindPasswordLDAP)
 		toolkit.Println("Bind with config:", BindUsernameLDAP, "-", BindPasswordLDAP)
 		err = l.Bind(BindUsernameLDAP, BindPasswordLDAP)
+		toolkit.Println("with -", err)
 	} else {
 		// defer l.Unbind(username, password)
 		toolkit.Println("Bind without config:", username, "-", password)
 		err = l.Bind(username, password)
+		toolkit.Println("without -", err)
 	}
 
-	toolkit.Println("BindUsernameLDAP", BindUsernameLDAP, "|", strings.Trim(BindUsernameLDAP, " "), "|", strings.Trim(BindUsernameLDAP, " ") != "")
+	toolkit.Println("BindUsernameLDAP", BindUsernameLDAP, "|", strings.Trim(BindUsernameLDAP, " "), "|", strings.Trim(BindUsernameLDAP, " ") != "", "|", strings.Trim(BindUsernameLDAP, " ") != "" && err == nil)
 	if strings.Trim(BindUsernameLDAP, " ") != "" && err == nil {
 		// from Login FORM
 		// defer l.Unbind(username, password)
