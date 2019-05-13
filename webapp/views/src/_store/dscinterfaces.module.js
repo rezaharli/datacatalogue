@@ -12,7 +12,7 @@ const state = {
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Immediate Interfaces', value: 'IMM_INTERFACE' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Immediate Interfaces', value: 'IMM_INTERFACE' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Number of CDEs', value: 'CDE_COUNT' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'System Owner Name', value: 'PROCESS_OWNER' },
         ],
