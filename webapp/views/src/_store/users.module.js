@@ -4,6 +4,9 @@ import { newTableObject } from '../_helpers/table-helper';
 const state = {
     all: {
         tabName: '',
+        dialog: false,
+        editedIndex: -1,
+        editedItem: {},
         filters: {
             left: {},
             right: {}
@@ -48,28 +51,12 @@ const actions = {
                 res => commit('getLeftTableSuccess', res),
                 error => commit('getLeftTableFailure', error)
             );
-        // commit('getAllRequest');
-
-        // userService.getAll()
-        //     .then(
-        //         res => {
-        //             res.Data.map(v => {
-        //                 v.CreatedAt = moment(v.CreatedAt.substring(0, 19)).format('DD MMM YYYY, hh:mm a');
-        //                 v.UpdatedAt = moment(v.UpdatedAt.substring(0, 19)).format('DD MMM YYYY, hh:mm a');
-        //                 return v; 
-        //             }),
-        //             commit('getAllSuccess', res.Data);
-        //         }, 
-                
-                
-        //         error => commit('getAllFailure', error)
-        //     );
     },
     register({ commit }, user) {
         var tempUser = _.cloneDeep(user)
-        tempUser.Username = parseInt(tempUser.Username);
-        tempUser.Role = tempUser.Role.join();
-        tempUser.Status = tempUser.Status == true ? 1 : 0;
+        tempUser.USERNAME = parseInt(tempUser.USERNAME);
+        tempUser.ROLE = tempUser.ROLE.join();
+        tempUser.STATUS = tempUser.STATUS == true ? 1 : 0;
 
         commit('registerRequest', tempUser);
     
@@ -80,13 +67,14 @@ const actions = {
             );
     },
     update({ commit }, user) {
-        user.Username = parseInt(user.Username);
-        user.Role = user.Role.join();
-        tempUser.Status = tempUser.Status == true ? 1 : 0;
+        var tempUser = _.cloneDeep(user)
+        tempUser.USERNAME = parseInt(tempUser.USERNAME);
+        tempUser.ROLE = tempUser.ROLE.join();
+        tempUser.STATUS = tempUser.STATUS == true ? 1 : 0;
         
-        commit('updateRequest', user);
+        commit('updateRequest', tempUser);
     
-        return userService.update(user)
+        return userService.update(tempUser)
             .then(
                 user => commit('updateSuccess', user),
                 error => commit('updateFailure', error)
@@ -110,7 +98,7 @@ const mutations = {
     getLeftTableSuccess(state, res) {
         state.all.left.source = res.Data;
         state.all.left.display = res.Data;
-        state.all.left.totalItems = res.Data[0] ? res.Data[0].COUNT_CDE : 0;
+        state.all.left.totalItems = res.Data[0] ? res.Data[0].RESULT_COUNT : 0;
         
         state.all.left.isLoading = false;
     },
@@ -141,8 +129,8 @@ const mutations = {
     deleteRequest(state, id) {
         // add 'deleting:true' property to user being deleted
         state.all.isLoading = true;
-        state.all.items = state.all.items.map(user =>
-            user.id === id
+        state.all.left.display = state.all.left.display.map(user =>
+            user.ID === id
                 ? { ...user, deleting: true }
                 : user
         )
@@ -150,13 +138,13 @@ const mutations = {
     deleteSuccess(state, id) {
         // remove deleted user from state
         state.all.isLoading = false;
-        state.all.items = state.all.items.filter(user => user.id !== id)
+        state.all.left.display = state.all.left.display.filter(user => user.id !== id)
     },
     deleteFailure(state, { id, error }) {
         // remove 'deleting:true' property and add 'deleteError:[error]' property to user 
         state.all.isLoading = false;
-        state.all.items = state.items.map(user => {
-            if (user.id === id) {
+        state.all.left.display = state.all.left.display.map(user => {
+            if (user.ID === id) {
                 // make copy of user without 'deleting:true' property
                 const { deleting, ...userCopy } = user;
                 // return copy of user with 'deleteError:[error]' property

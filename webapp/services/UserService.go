@@ -181,39 +181,38 @@ func (s *UserService) Insert(data *m.SysUser) (bool, error) {
 		return true, fmt.Errorf("The same username already exists")
 	}
 
-	registeredPeople, err := s.getRegisteredPeople(data.Username)
+	// registeredPeople, err := s.getRegisteredPeople(data.Username)
+	// if err != nil {
+	// 	return false, err
+	// }
+
+	// if len(registeredPeople) > 0 {
+	data.Password = s.HashPassword(data.Password)
+	dataM, err := toolkit.ToM(data)
 	if err != nil {
 		return false, err
 	}
 
-	if len(registeredPeople) > 0 {
-		data.Password = s.HashPassword(data.Password)
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName: m.NewSysUserModel().TableName(),
+		Data:      dataM,
+	})
 
-		dataM, err := toolkit.ToM(data)
-		if err != nil {
-			return false, err
+	if err != nil {
+		if strings.Contains(err.Error(), "duplicate key") {
+			return true, fmt.Errorf("Different data with same ID already exists")
 		}
 
-		err = h.NewDBcmd().Insert(h.InsertParam{
-			TableName: m.NewSysUserModel().TableName(),
-			Data:      dataM,
-		})
-
-		if err != nil {
-			if strings.Contains(err.Error(), "duplicate key") {
-				return true, fmt.Errorf("Different data with same ID already exists")
-			}
-
-			return false, err
-		}
-
-		// err = s.insertLinkRolePeople(registeredPeople[0], data.Role)
-		// if err != nil {
-		// 	return false, err
-		// }
-
-		return true, nil
+		return false, err
 	}
+
+	// err = s.insertLinkRolePeople(registeredPeople[0], data.Role)
+	// if err != nil {
+	// 	return false, err
+	// }
+
+	return true, nil
+	// }
 
 	return true, fmt.Errorf("User id is not registered in tbl_people")
 }

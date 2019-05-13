@@ -71,15 +71,9 @@
                                     <tablecell showOn="hover" :fulltext="props.item.UPDATEDAT"></tablecell></td>
 
                                 <td v-bind:style="{ width: store.left.colWidth['ACTIONS'] + 'px' }" class="text-capitalize text-title">
-                                    <!-- <v-icon
-                                        small
-                                        class="mr-2"
-                                        @click="editItem(props.item)"
-                                    >edit</v-icon>
-                                                                        <v-icon
-                                        small
-                                        @click="deleteItem(props.item)"
-                                    >delete</v-icon> -->
+                                    <v-icon small class="mr-2" @click="editItem(props.item)" v-if="isMyself(props.item) || amIAdmin()">edit</v-icon>
+
+                                    <v-icon small @click="deleteItem(props.item)" v-if="( ! (isMyself(props.item)))">delete</v-icon>
                                 </td>
                             </tr>
                         </template>
@@ -139,28 +133,32 @@ export default {
             updateUser: 'update',
             registerUser: 'register'
         }),
+        isMyself(item) {
+            return JSON.parse(localStorage.getItem('user')).ID == item.ID;
+        },
+        amIAdmin() {
+            return JSON.parse(localStorage.getItem('user')).Role.indexOf("Admin") != -1;
+        },
         distinctData (col, datax) {
+            var sorted = this._.sortBy(datax, col);
+
             return this._.uniq(
-                    this._.map(
-                    this._.sortBy(datax, col), 
-                    col
-                    )
-                );
+                this._.map(sorted, col));
         },
         editItem (item) {
-            this.editedIndex = this.store.items.indexOf(item)
+            this.store.editedIndex = this.store.left.display.indexOf(item)
 
-            this.editedItem = Object.assign({}, item)
-            this.editedItem.Role = this.editedItem.Role.split(",");
-            this.editedItem.Status = this.editedItem.Status == 1 ? true : false;
-            this.editedItem.Password = ''
+            this.store.editedItem = Object.assign({}, item)
+            this.store.editedItem.ROLE = this.store.editedItem.ROLE.split(",");
+            this.store.editedItem.STATUS = this.store.editedItem.STATUS == 1 ? true : false;
+            this.store.editedItem.PASSWORD = ''
 
             this.store.error = null
-            this.dialog = true
+            this.store.dialog = true
         },
         deleteItem (item) {
             confirm('Are you sure you want to delete this user?') && 
-                this.deleteUser(item.Username).then(
+                this.deleteUser(item.USERNAME).then(
                     res => this.getAllUsers(), 
                     err => this.getAllUsers()
                 )

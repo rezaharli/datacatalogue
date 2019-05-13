@@ -1,5 +1,6 @@
 -- name: users
 SELECT 
+        ID,
         USERNAME,
         EMAIL,
         NAME,
