@@ -128,14 +128,6 @@ export default {
         ...mapState({
             store: state => state.users.all
         }),
-        formIsValid () {
-            return (
-                this.editedItem.Username &&
-                this.editedItem.Email &&
-                this.editedItem.Name &&
-                this.editedItem.Role
-            )
-        }
     },
     created() {
         this.getAllUsers();
@@ -175,24 +167,6 @@ export default {
         },
         reset () {
             this.$refs.form.reset()
-        },
-        save () {
-            this.store.error = null;
-            if (this.editedIndex > -1) { //edit
-                this.updateUser(this.editedItem).then(res => {
-                    if(!this.users.error) {
-                        this.close()
-                    }
-                    this.getAllUsers()
-                }, err => this.getAllUsers());
-            } else { //add
-                this.registerUser(this.editedItem).then(res => {
-                    if(!this.store.error) {
-                        this.close()
-                    }
-                    this.getAllUsers()
-                }, err => {});
-            }
         },
         resetFilter (e) {
             if(Object.keys(this.store.filters.left).length > 0){

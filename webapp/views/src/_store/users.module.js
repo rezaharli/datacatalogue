@@ -1,6 +1,8 @@
 import { userService } from '../_services/user.service';
 import { newTableObject } from '../_helpers/table-helper';
 
+import moment from 'moment'
+
 const state = {
     all: {
         tabName: '',
