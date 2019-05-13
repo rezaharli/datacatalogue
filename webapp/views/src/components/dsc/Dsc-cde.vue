@@ -1,12 +1,8 @@
 <style>
-/* table.v-table thead th > div.btn-group {
-  	width: auto;
-}
-
-.header-filter-icon .dropdown-menu {
-	overflow: scroll;
-	height: 200px;
-} */
+.table-v1 table.v-table.v-datatable tr th:nth-of-type(2){width: 18% !important;}
+.table-v1 table.v-table.v-datatable tr th:nth-of-type(3){width: 15% !important;}
+.table-v1 table.v-table.v-datatable tr th:nth-of-type(6){width: 10% !important;}
+.table-v1 table.v-table.v-datatable tr th:nth-of-type(7){width: 10% !important;}
 </style>
 
 <template>
