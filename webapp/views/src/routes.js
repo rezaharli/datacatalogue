@@ -307,7 +307,6 @@ router.beforeEach((to, from, next) => {
 
   if(to.name != "landingpage"){
     var user = store.state.account.user;
-
     if(user)
       if(to.name.split(".")[0].toLowerCase() == "access"){
         if(user.Role.toLowerCase().split(",").indexOf("Admin".toLowerCase()) == -1){
