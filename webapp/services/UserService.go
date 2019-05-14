@@ -38,8 +38,43 @@ func (s *UserService) HashPassword(password string) string {
 }
 
 func (s *UserService) Authenticate(username int, password string) (bool, *m.SysUser, error) {
-	users := make([]m.SysUser, 0)
+	users, err := s.authenticate(username, password)
+	if err != nil {
+		return false, m.NewSysUserModel(), err
+	}
 
+	if len(users) == 0 {
+		//if not found create new user
+		newUser := m.NewSysUserModel()
+		newUser.ID = username
+		newUser.Username = username
+		newUser.Password = password
+		newUser.Email = toolkit.ToString(username)
+		newUser.Name = toolkit.ToString(username)
+		newUser.Status = 1
+		newUser.Role = "Admin,DSC,DDO,DPO,RFO"
+		newUser.CreatedAt = time.Now().String()
+		newUser.UpdatedAt = time.Now().String()
+
+		ok, err := NewUserService().Insert(newUser)
+		if !ok && err != nil {
+			return false, m.NewSysUserModel(), err
+		}
+
+		users, err = s.authenticate(username, password)
+		if err != nil {
+			return false, m.NewSysUserModel(), err
+		}
+
+		if len(users) == 0 {
+			return false, m.NewSysUserModel(), nil
+		}
+	}
+
+	return true, &(users[0]), nil
+}
+
+func (s *UserService) authenticate(username int, password string) ([]m.SysUser, error) {
 	filter := []*dbflex.Filter{}
 	filter = append(filter, dbflex.Eq("status", 1))
 	filter = append(filter, dbflex.Eq("username", username))
@@ -55,21 +90,14 @@ func (s *UserService) Authenticate(username int, password string) (bool, *m.SysU
 		filter = append(filter, dbflex.Eq("password", s.HashPassword(password)))
 	}
 
+	users := make([]m.SysUser, 0)
 	err := h.NewDBcmd().GetBy(h.GetByParam{
 		TableName: m.NewSysUserModel().TableName(),
 		Clause:    dbflex.And(filter...),
 		Result:    &users,
 	})
 
-	if err != nil {
-		return false, m.NewSysUserModel(), err
-	}
-
-	if len(users) == 0 {
-		return false, m.NewSysUserModel(), nil
-	}
-
-	return true, &(users[0]), nil
+	return users, err
 }
 
 func (s *UserService) GetAll(tabs, loggedinid, search string, searchDD, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
