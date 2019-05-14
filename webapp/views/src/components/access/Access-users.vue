@@ -71,7 +71,7 @@
                                 <td v-bind:style="{ width: store.left.colWidth['ACTIONS'] + 'px' }" class="text-capitalize text-title">
                                     <v-icon small class="mr-2" @click="editItem(props.item)" v-if="isMyself(props.item) || amIAdmin()">edit</v-icon>
 
-                                    <v-icon small @click="deleteItem(props.item)" v-if="( ! (isMyself(props.item)))">delete</v-icon>
+                                    <v-icon small @click="deleteItem(props.item)" v-if="( ! (isMyself(props.item))) && amIAdmin()">delete</v-icon>
                                 </td>
                             </tr>
                         </template>
@@ -125,12 +125,18 @@ export default {
         this.getAllUsers();
     },
     methods: {
-        ...mapActions('users', {
-            getAllUsers: 'getAll',
-            deleteUser: 'delete',
-            updateUser: 'update',
-            registerUser: 'register'
-        }),
+        getAllUsers() {
+            return this.$store.dispatch(`users/getLeftTable`);
+        },
+        registerUser(param) {
+            return this.$store.dispatch(`users/register`, param);
+        },
+        updateUser(param) {
+            return this.$store.dispatch(`users/update`, param);
+        },
+        deleteUser(param) {
+            return this.$store.dispatch(`users/delete`, param);
+        },
         isMyself(item) {
             return JSON.parse(localStorage.getItem('user')).ID == item.ID;
         },

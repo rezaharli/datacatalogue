@@ -84,13 +84,13 @@ func (s *UserService) GetAll(tabs, loggedinid, search string, searchDD, colFilte
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "", "")
 	} else {
 		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("PRINCIPAL_RISK_TYPES"),
-			colFilterM.GetString("RISK_SUB_TYPE"),
-			colFilterM.GetString("RISK_FRAMEWORK_OWNER"),
-			colFilterM.GetString("RISK_REPORTING_LEAD"),
-			colFilterM.GetString("PR_COUNT"),
-			colFilterM.GetString("CRM_COUNT"),
-			colFilterM.GetString("CDE_COUNT"),
+			colFilterM.GetString("USERNAME"),
+			colFilterM.GetString("EMAIL"),
+			colFilterM.GetString("NAME"),
+			colFilterM.GetString("ROLE"),
+			colFilterM.GetString("STATUS"),
+			colFilterM.GetString("CREATEDAT"),
+			colFilterM.GetString("UPDATEDAT"),
 		)
 	}
 

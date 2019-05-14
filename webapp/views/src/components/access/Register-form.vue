@@ -95,7 +95,7 @@ export default {
     },
     methods: {
         getAllUsers() {
-            return this.$store.dispatch(`users/getAll`);
+            return this.$store.dispatch(`users/getLeftTable`);
         },
         registerUser(param) {
             return this.$store.dispatch(`users/register`, param);
