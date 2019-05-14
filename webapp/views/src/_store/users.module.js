@@ -88,7 +88,16 @@ const actions = {
                 user => commit('deleteSuccess', user),
                 error => commit('deleteFailure', { id, error: error.toString() })
             );
-    }
+    },
+    saveLog({ commit }, param) {
+        commit('saveLogRequest');
+
+        return userService.saveLog(param)
+            .then(
+                res => commit('saveLogSuccess', res),
+                error => commit('saveLogFailure', error)
+            );
+    },
 };
 
 const mutations = {
@@ -153,7 +162,21 @@ const mutations = {
 
             return user;
         })
-    }
+    },
+    saveLogRequest(state) {
+        // state.all.left.isLoading = true;
+    },
+    saveLogSuccess(state, res) {
+        // state.all.left.source = res.Data;
+        // state.all.left.display = res.Data;
+        // state.all.left.totalItems = res.Data[0] ? res.Data[0].RESULT_COUNT : 0;
+        
+        // state.all.left.isLoading = false;
+    },
+    saveLogFailure(state, error) {
+        // state.all.left.isLoading = false;
+        // state.all.error = error;
+    },
 };
 
 export const users = {
