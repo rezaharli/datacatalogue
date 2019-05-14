@@ -1,12 +1,6 @@
 <style>
-/* table.v-table thead th > div.btn-group {
-  	width: auto;
-}
-
-.header-filter-icon .dropdown-menu {
-	overflow: scroll;
-	height: 200px;
-} */
+#table-ddo-systems table.v-table tr th:nth-of-type(1){width: 75% !important;}
+#table-ddo-systems table.v-table tr th:nth-of-type(2){width: 25% !important;}
 </style>
 
 <template>
@@ -70,7 +64,8 @@
                     :loading="store.left.isLoading"
                     :expand="false"
                     item-key="ID"
-                    class="table-v1">
+                    class="table-v1"
+                    id="table-ddo-systems">
                   <template slot="headerCell" slot-scope="props">
                     <tableheader :storeName="storeName" :props="props" :which="'left'"/>
                   </template>
@@ -91,8 +86,8 @@
 
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                      <td style="width: calc(100% / 6)" class="text-uppercase">{{props.item.SYSTEM_NAME}}</td>
-                      <td style="width: calc(100% / 6)" class="text-capitalize">
+                      <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }" class="text-uppercase">{{props.item.SYSTEM_NAME}}</td>
+                      <td v-bind:style="{ width: store.left.colWidth['BT_COUNT'] + 'px' }" class="text-capitalize">
                         <b-link @click.stop="showBusinessterms(props.item)">
                           <tablecell :fulltext="props.item.BT_COUNT" showOn="click"></tablecell></b-link></td>
                     </tr>

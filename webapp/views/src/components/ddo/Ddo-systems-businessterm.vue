@@ -1,3 +1,10 @@
+<style>
+#table-ddo-systems-businessterm table.v-table tr th:nth-of-type(1){width: 10% !important;}
+#table-ddo-systems-businessterm table.v-table tr th:nth-of-type(2){width: 40% !important;}
+#table-ddo-systems-businessterm table.v-table tr th:nth-of-type(3){width: 25% !important;}
+#table-ddo-systems-businessterm table.v-table tr th:nth-of-type(4){width: 25% !important;}
+</style>
+
 <template>
     <v-content class="mx-4 my-5">
         <b-container fluid>
@@ -59,7 +66,8 @@
                     :loading="store.left.isLoading"
                     :expand="false"
                     item-key="ID"
-                    class="table-v1 table-w-button-left">
+                    class="table-v1"
+                    id="table-ddo-systems-businessterm">
                   <template slot="headerCell" slot-scope="props">
                     <tableheader :storeName="storeName" :props="props" :which="'left'"/>
                   </template>

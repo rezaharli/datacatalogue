@@ -1,12 +1,7 @@
 <style>
-/* table.v-table thead th > div.btn-group {
-  	width: auto;
-}
-
-.header-filter-icon .dropdown-menu {
-	overflow: scroll;
-	height: 200px;
-} */
+#table-ddo-downstream table.v-table tr th:nth-of-type(1){width: 40% !important;}
+#table-ddo-downstream table.v-table tr th:nth-of-type(2){width: 40% !important;}
+#table-ddo-downstream table.v-table tr th:nth-of-type(3){width: 20% !important;}
 </style>
 
 <template>
@@ -56,7 +51,8 @@
                     :loading="store.left.isLoading"
                     :expand="false"
                     item-key="ID"
-                    class="table-v1">
+                    class="table-v1"
+                    id="table-ddo-downstream">
                   <template slot="headerCell" slot-scope="props">
                     <tableheader :storeName="storeName" :props="props" :which="'left'"/>
                   </template>
@@ -77,19 +73,19 @@
 
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                      <td style="width: calc(100% / 6)" class="text-uppercase">{{props.item.DP_NAME}}</td>
-                      <td style="width: calc(100% / 6)" class="text-uppercase">{{props.item.PROCESS_OWNER}}</td>
-                      <td style="width: calc(100% / 6)" class="text-capitalize">
+                      <td v-bind:style="{ width: store.left.colWidth['DP_NAME'] + 'px' }" class="text-uppercase">{{props.item.DP_NAME}}</td>
+                      <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }" class="text-uppercase">{{props.item.PROCESS_OWNER}}</td>
+                      <td v-bind:style="{ width: store.left.colWidth['BT_COUNT'] + 'px' }" class="text-capitalize">
                         <b-link @click.stop="showBusinessterms(props.item)">
                           <tablecell :fulltext="props.item.BT_COUNT" showOn="click"></tablecell></b-link></td>
                     </tr>
                   </template>
 
                   <template slot="footer" >
-                    <td colspan="2">
+                    <td v-bind:style="{ width: (store.left.colWidth['DP_NAME']+store.left.colWidth['PROCESS_OWNER']) + 'px' }" colspan="2">
                       <b>Total</b>
                     </td>
-                    <td><b>{{ store.left.display[0] ? store.left.display[0].TOTAL : 0 }}</b></td>
+                    <td v-bind:style="{ width: store.left.colWidth['BT_COUNT'] + 'px' }"><b>{{ store.left.display[0] ? store.left.display[0].TOTAL : 0 }}</b></td>
                   </template>
                 </v-data-table>
                       

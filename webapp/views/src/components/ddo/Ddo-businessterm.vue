@@ -1,12 +1,7 @@
 <style>
-/* table.v-table thead th > div.btn-group {
-  	width: auto;
-}
-
-.header-filter-icon .dropdown-menu {
-	overflow: scroll;
-	height: 200px;
-} */
+#table-ddo-businessterm table.v-table tr th:nth-of-type(1){width: 10% !important;}
+#table-ddo-businessterm table.v-table tr th:nth-of-type(2){width: 30% !important;}
+#table-ddo-businessterm table.v-table tr th:nth-of-type(3){width: 60% !important;}
 </style>
 
 <template>
@@ -70,7 +65,8 @@
                     :loading="store.left.isLoading"
                     :expand="false"
                     item-key="ID"
-                    class="table-v1 table-w-button-left">
+                    class="table-v1"
+                    id="table-ddo-businessterm">
                   <template slot="headerCell" slot-scope="props">
                     <tableheader :storeName="storeName" :props="props" :which="'left'"/>
                   </template>
@@ -95,8 +91,8 @@
                         <b-button size="sm" class="green-tosca-gradient icon-only" @click="showDetails(props.item)">
                           <i class="fa fa-fw fa-external-link-alt"></i></b-button></td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['BUSINESS_TERM'] + 'px' }" class="text-uppercase">{{ props.item.BT_NAME }}</td>
-                      <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }" class="text-capitalize">{{ props.item.BT_DESCRIPTION }}</td>
+                      <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }" class="text-uppercase">{{ props.item.BT_NAME }}</td>
+                      <td v-bind:style="{ width: store.left.colWidth['BT_DESCRIPTION'] + 'px' }" class="text-capitalize">{{ props.item.BT_DESCRIPTION }}</td>
                     </tr>
                   </template>
                 </v-data-table>
