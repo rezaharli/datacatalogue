@@ -1,3 +1,8 @@
+<style> 
+#table-dpo-datalineage table.v-table tr th:nth-of-type(1){width: 75% !important;}
+#table-dpo-datalineage table.v-table tr th:nth-of-type(2){width: 25% !important;}
+</style>
+
 <template>
     <v-content class="mx-4 my-5">
         <b-container fluid>
@@ -49,7 +54,8 @@
                     :loading="store.left.isLoading"
                     :expand="false"
                     item-key="ID"
-                    class="table-v1">
+                    class="table-v1"
+                    id="table-dpo-datalineage">
                   <template slot="headerCell" slot-scope="props">
                     <tableheader :storeName="storeName" :props="props" :which="'left'"/>
                   </template>
