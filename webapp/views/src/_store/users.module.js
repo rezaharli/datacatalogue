@@ -33,7 +33,7 @@ const state = {
 };
 
 const actions = {
-    getAll({ commit }) {
+    getLeftTable({ commit }) {
         commit('getLeftTableRequest');
 
         Object.keys(state.all.filters.left).map(function(key, index) {
