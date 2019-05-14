@@ -63,8 +63,11 @@ export default {
   mounted (){
     setTimeout(() => {
       this.store[this.which].colWidth[this.props.header.value.split('.').reverse()[0]] = this.$refs.widthAcuan.parentNode.offsetWidth;
-      this.makeTableHeaderFixed();
     }, 100);
+    setTimeout(() => {
+      // this.makeTableHeaderFixed();
+      // this.setTableColumnsWidth();
+    }, 200);
   },
   methods: {
     getLeftTable () {
@@ -136,9 +139,11 @@ export default {
             // && tableBody.height() > window.innerHeight 
             $('table.v-table.v-datatable thead').addClass("sticky");
             $('table.v-table.v-datatable thead').css({'top': $('.v-toolbar').height()});
+            // $('.v-datatable__actions').css({'position': 'fixed', 'bottom': 0});
         } else {
             $('table.v-table.v-datatable thead').removeClass("sticky");
             $('table.v-table.v-datatable thead').css({'top': 'unset'});
+            // $('.v-datatable__actions').css({'position': 'unset', 'bottom': 'unset'});
         }
 
         // // pake clone jes
@@ -167,6 +172,32 @@ export default {
 
         this.sticky = $('table.v-table thead').offset().top;    
         $(window).scroll(this.onScrollListener);
+    },
+
+    setTableColumnsWidth(){
+
+      $("table.v-table.v-datatable").each(function (tableIndex) {
+        var THs = $(this).find('thead tr th');
+        var tbodyTR = $(this).find('tbody tr');
+        // var TDs = $(this).find('tbody tr td:not([colspan])');
+        THs.each(function (thIndex) {
+          var th = $(this);
+          var thWidth = $(this).width();
+          console.log('tableIndex: ',tableIndex, ', thIndex: ', thIndex, ', width: ', thWidth);
+
+          // th.css({'width': thWidth});
+          // TDs.eq(thIndex).css({'width': thWidth});
+          // th.closest('table.v-table').find('tbody td').each(function (tdIndex) {
+          //   $(this).eq(thIndex).css({'width': thWidth});
+          // });
+
+          // th.width(thWidth);
+          // tbodyTR.each(function () {
+          //   var TDs = $(this).find('td:not([colspan])');
+          //   TDs.eq(thIndex).width(thWidth);
+          // });
+        });
+      });
     }
   }
 };
