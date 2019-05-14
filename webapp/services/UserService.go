@@ -317,7 +317,7 @@ func (s *UserService) DeleteByUsername(username int) error {
 }
 
 func (s *UserService) SaveUsage(data toolkit.M) error {
-	data.Set("Time", time.Now().String())
+	data.Set("Time", time.Now())
 
 	data.Unset("ID")
 
@@ -333,4 +333,37 @@ func (s *UserService) SaveUsage(data toolkit.M) error {
 	}
 
 	return err
+}
+
+func (s *UserService) GetUsageTable(colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "users.sql")
+	gridArgs.QueryName = "users-usage"
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	///////// --------------------------------------------------COLUMN FILTER
+	colFilterM, err := toolkit.ToM(colFilter)
+	if err != nil {
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "", "")
+	} else {
+		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
+			colFilterM.GetString("USERNAME"),
+			colFilterM.GetString("FULLNAME"),
+			colFilterM.GetString("ROLE"),
+			colFilterM.GetString("MODULE"),
+			colFilterM.GetString("DESCRIPTION"),
+			colFilterM.GetString("TIME"),
+			colFilterM.GetString("RESOURCEURL"),
+		)
+	}
+
+	// gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
+	gridArgs.GroupCol = "-"
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }

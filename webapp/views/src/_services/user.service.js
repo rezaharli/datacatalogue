@@ -8,7 +8,9 @@ export const userService = {
     register,
     getAll,
     update,
-    delete: _delete
+    delete: _delete,
+    saveLog,
+    getUsageTable
 };
 
 function login(username, password) {
@@ -66,4 +68,12 @@ function update(user) {
 // prefixed function name with underscore because delete is a reserved word in javascript
 function _delete(username) {
     return fetchWHeader(`/users/delete`, { Username: username});
+}
+
+function saveLog(param) {
+    return fetchWHeader(`/users/saveusage`, param);
+}
+
+function getUsageTable(param) {
+    return fetchWHeader(`/users/getusagetable`, param);
 }
