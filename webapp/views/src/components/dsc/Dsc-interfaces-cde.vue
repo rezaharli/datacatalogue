@@ -1,12 +1,9 @@
 <style>
-/* table.v-table thead th > div.btn-group {
-  	width: auto;
-}
-
-.header-filter-icon .dropdown-menu {
-	overflow: scroll;
-	height: 200px;
-} */
+#table-dsc-interfaces-cde table.v-table tr th:nth-of-type(1){width: 8% !important;}
+#table-dsc-interfaces-cde table.v-table tr th:nth-of-type(2){width: 32% !important;}
+#table-dsc-interfaces-cde table.v-table tr th:nth-of-type(3){width: 34% !important;}
+#table-dsc-interfaces-cde table.v-table tr th:nth-of-type(4){width: 13% !important;}
+#table-dsc-interfaces-cde table.v-table tr th:nth-of-type(5){width: 13% !important;}
 </style>
 
 <template>
@@ -61,7 +58,8 @@
                     :loading="store.left.isLoading"
                     :expand="false"
                     item-key="ID"
-                    class="table-v1 table-w-button-left">
+                    class="table-v1"
+                    id="table-dsc-interfaces-cde">
                   <template slot="headerCell" slot-scope="props">
                     <tableheader :storeName="storeName" :props="props" :which="'left'"/>
                   </template>

@@ -11,7 +11,8 @@
             :loading="store.left.isLoading"
             :expand="false"
             item-key="ID"
-            class="table-v2">
+            class="table-v2"
+            id="table-dsc-dd-business">
           <template slot="headerCell" slot-scope="props">
             <tableheader :storeName="storeName" :props="props" :which="'left'"/>
           </template>

@@ -1,12 +1,7 @@
 <style>
-/* table.v-table thead th > div.btn-group {
-  	width: auto;
-}
-
-.header-filter-icon .dropdown-menu {
-	overflow: scroll;
-	height: 200px;
-} */
+#table-dsc-cdp table.v-table tr th:nth-of-type(1){width: 45% !important;}
+#table-dsc-cdp table.v-table tr th:nth-of-type(2){width: 45% !important;}
+#table-dsc-cdp table.v-table tr th:nth-of-type(3){width: 10% !important;}
 </style>
 
 <template>
@@ -55,7 +50,8 @@
                     :loading="store.left.isLoading"
                     :expand="false"
                     item-key="ID"
-                    class="table-v1">
+                    class="table-v1"
+                    id="table-dsc-cdp">
                   <template slot="headerCell" slot-scope="props">
                     <tableheader :storeName="storeName" :props="props" :which="'left'"/>
                   </template>
@@ -76,17 +72,17 @@
 
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                      <td style="width: calc(100% / 6)" class="text-uppercase">{{props.item.DSP_NAME}}</td>
-                      <td style="width: calc(100% / 6)" class="text-capitalize"><tablecell :fulltext="props.item.PROCESS_OWNER" showOn="click"></tablecell></td>
-                      <td style="width: calc(100% / 6)" class="text-capitalize"><b-link @click.stop="showCDEs(props.item)"><tablecell :fulltext="props.item.CDE_COUNT" showOn="hover"></tablecell></b-link></td>
+                      <td v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }" class="text-uppercase">{{props.item.DSP_NAME}}</td>
+                      <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }" class="text-capitalize"><tablecell :fulltext="props.item.PROCESS_OWNER" showOn="click"></tablecell></td>
+                      <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }" class="text-capitalize"><b-link @click.stop="showCDEs(props.item)"><tablecell :fulltext="props.item.CDE_COUNT" showOn="hover"></tablecell></b-link></td>
                     </tr>
                   </template>
 
                   <template slot="footer" >
-                    <td :colspan="2">
+                    <td v-bind:style="{ width: (store.left.colWidth['DSP_NAME']+store.left.colWidth['PROCESS_OWNER']) + 'px' }" :colspan="2" >
                       <b>Total</b>
                     </td>
-                    <td><b>{{ store.left.display[0] ? store.left.display[0].TOTAL : 0 }}</b></td>
+                    <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }"><b>{{ store.left.display[0] ? store.left.display[0].TOTAL : 0 }}</b></td>
                   </template>
                 </v-data-table>
                       
