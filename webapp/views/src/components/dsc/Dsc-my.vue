@@ -40,6 +40,7 @@
                     :pagination.sync="store.left.pagination"
                     :total-items="store.left.totalItems"
                     :loading="store.left.isLoading"
+                    :must-sort="true"
                     item-key="ID"
                     class="card-content"
                     id="table-dsc-my">

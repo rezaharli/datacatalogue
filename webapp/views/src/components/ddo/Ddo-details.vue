@@ -94,7 +94,7 @@ label.col-form-label {
                       <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.POLICY_GUIDANCE : ''"></text-wrap-dialog>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Rules (Documents, Domain Values, Dérivation Logic, etc.)">
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Rules (Documents, Domain Values, Derivation Logic, etc.)">
                       <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BUSINESS_RULES : ''"></text-wrap-dialog>
                     </b-form-group>
 
@@ -110,7 +110,7 @@ label.col-form-label {
                       <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.GS_SYSTEM_NAME : ''"></text-wrap-dialog>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Target Golden Source ITAM Id">
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Target Golden Source ITAM ID">
                       <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.TGS_ITAM_ID : ''"></text-wrap-dialog>
                     </b-form-group>
 
