@@ -21,7 +21,7 @@
 
       <div class="dropdown-wrapper">
         <b-dropdown-item
-          v-for="item in distinctData(props.header.value, store[which].source)"
+          v-for="item in distinctData"
           :key="item"
           @click="filterClick(props.header, item)"
         >{{ item }}</b-dropdown-item>
@@ -52,13 +52,35 @@ export default {
     };
   },
   computed: {
-      store () { return this.$store.state[this.storeName].all },
-      count () {
-        if( ! this.props.header.displayCount) return "";
-        if( ! this.store[this.which].source[0]) return "(0)";
+    store () { return this.$store.state[this.storeName].all },
+    count () {
+      if( ! this.props.header.displayCount) return "";
+      if( ! this.store[this.which].source[0]) return "(0)";
 
-        return ("(" + this.store[this.which].source[0]["COUNT_" + this.props.header.value.split(".").reverse()[0]] + ")");
+      return ("(" + this.store[this.which].source[0]["COUNT_" + this.props.header.value.split(".").reverse()[0]] + ")");
+    },
+    distinctData () {
+      var headerValueField = this.props.header.value;
+      var datax = this.store[this.which].source;
+
+      var cols = headerValueField.split(".")
+
+      if(cols.length > 1){
+        var a = datax;
+
+        cols.forEach((c, i) => {
+          a = this._.flattenDeep(this._.map(this._.sortBy(a, c), c));
+        });
+
+        var ret = this._.uniq(a).map(v => v.toString().trim()).filter(Boolean);
+
+        return ret;
       }
+      
+      return this._.uniq(
+        this._.map(this._.sortBy(datax, headerValueField), headerValueField).map(v => v.toString().trim())
+      ).filter(Boolean);
+    },
   },
   mounted (){
     setTimeout(() => {
@@ -75,23 +97,6 @@ export default {
     },
     getRightTable (id) {
         this.$store.dispatch(`${this.storeName}/getRightTable`, id)
-    },
-    distinctData (col, datax) {
-      var cols = col.split(".")
-
-      if(cols.length > 1){
-        var a = datax;
-
-        cols.forEach((c, i) => {
-          a = this._.flattenDeep(this._.map(this._.sortBy(a, c), c));
-        });
-
-        return this._.uniq(a).filter(Boolean);
-      }
-      
-      return this._.uniq(
-        this._.map(this._.sortBy(datax, col), col)
-      ).filter(Boolean);
     },
     keyupAction(e){
       var self = this;
