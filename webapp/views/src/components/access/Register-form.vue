@@ -1,6 +1,7 @@
 <template>
     <v-dialog v-model="store.dialog" max-width="500px">
-        <v-btn slot="activator" color="primary" dark class="mb-2">New Item</v-btn>
+        <!-- <v-btn slot="activator" color="primary" dark class="mb-2">New Item</v-btn> -->
+        <button slot="activator" type="button" class="btn green-tosca-gradient icon-only btn-secondary btn-md mb-4"><i class="fa fa-fw fa-plus-circle"></i> &nbsp; New Item</button>
         <v-card>
             <v-form
                 ref="form"

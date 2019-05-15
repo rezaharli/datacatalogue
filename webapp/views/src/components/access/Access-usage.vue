@@ -1,12 +1,15 @@
 <style>
-/* table.v-table thead th > div.btn-group {
-  	width: auto;
+#table-access-usage table.v-table.v-datatable thead{
+    width: unset;
+    display: table-header-group;
+    padding-right: unset;
 }
-
-.header-filter-icon .dropdown-menu {
-	overflow: scroll;
-	height: 200px;
-} */
+#table-access-usage table.v-table.v-datatable tbody{
+    display:table-row-group;
+    overflow:auto;
+    max-height:unset;
+    width:unset;
+}
 </style>
 
 <template>
@@ -45,7 +48,8 @@
                             :expand="false"
                             :must-sort="true"
                             item-key="ID"
-                            class="table-v1">
+                            class="table-v1"
+                            id="table-access-usage">
                         <template slot="headerCell" slot-scope="props">
                             <tableheader :storeName="storeName" :props="props" :which="'left'"/>
                         </template>

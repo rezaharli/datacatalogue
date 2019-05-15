@@ -8,12 +8,12 @@
 
         <b-container fluid>
             <b-row>
-                <b-col sm=12 md=12 lg=12>
+                <b-col>
                     <v-tabs left class="page-tab">
-                        <v-tab to="/access/users">Users</v-tab>
-                        <v-tab to="/access/roles">Roles</v-tab>
-                        <!-- <v-tab to="/access/roles">Application Usage Detail</v-tab> -->
-                        <v-tab to="/access/usage">User Audit Trail</v-tab>
+                        <v-tab class="px-2 mx-3" to="/access/users">Users</v-tab>
+                        <v-tab class="px-2 mx-3" to="/access/roles">Roles</v-tab>
+                        <!-- <v-tab class="px-2 mx-3" to="/access/roles">Application Usage Detail</v-tab> -->
+                        <v-tab class="px-2 mx-3" to="/access/usage">User Audit Trail</v-tab>
                     </v-tabs>
                 </b-col>
             </b-row>

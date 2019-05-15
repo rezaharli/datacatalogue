@@ -1,5 +1,7 @@
 <style>
-  @import '../../assets/styles/dashboard.css';
+@import '../../assets/styles/dashboard.css';
+#table-dsc-my table.v-table tr th:nth-of-type(1){width: 60% !important;}
+#table-dsc-my table.v-table tr th:nth-of-type(2){width: 40% !important;}
 </style>
 
 <template>
@@ -40,7 +42,8 @@
                     :loading="store.left.isLoading"
                     :must-sort="true"
                     item-key="ID"
-                    class="card-content">
+                    class="card-content"
+                    id="table-dsc-my">
 
                   <template slot="headerCell" slot-scope="props">
                     <tableheader :storeName="storeName" :props="props" :which="'left'" />

@@ -1,10 +1,15 @@
 <style>
-  @import '../../assets/styles/dashboard.css';
-</style>
-
-<style>
-table.v-table thead th > div.btn-group {
-    width: auto;
+@import '../../assets/styles/dashboard.css';
+#table-access-role table.v-table.v-datatable thead{
+    width: unset;
+    display: table-header-group;
+    padding-right: unset;
+}
+#table-access-role table.v-table.v-datatable tbody{
+    display:table-row-group;
+    overflow:auto;
+    max-height:unset;
+    width:unset;
 }
 </style>
 
@@ -20,7 +25,8 @@ table.v-table thead th > div.btn-group {
                     <v-data-table
                         :headers="headers"
                         :items="roles"
-                        class="elevation-1">
+                        class="elevation-1 table-v1"
+                        id="table-access-role">
                         <template slot="items" slot-scope="props">
                             <td>{{ props.item.RoleName }}</td>
                             <td>HOME</td>
@@ -95,8 +101,8 @@ export default {
         return {
             headers: [
                 { text: 'Role Name', align: 'left', value: 'RoleName', sortable: false, filter: true },
-                { text: 'Landing Page', align: 'left', value: 'RoleName', sortable: false, filter: true },
-                { text: 'Status', align: 'left', value: 'RoleName', sortable: false, filter: true },
+                { text: 'Landing Page', align: 'left', value: 'LandingPage', sortable: false, filter: true },
+                { text: 'Status', align: 'left', value: 'Status', sortable: false, filter: true },
             ],
             roles: [
                 { RoleName: 'Admin' },

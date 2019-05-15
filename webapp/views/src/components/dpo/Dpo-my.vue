@@ -1,5 +1,7 @@
 <style>
-  @import '../../assets/styles/dashboard.css';
+@import '../../assets/styles/dashboard.css';
+#table-dpo-my table.v-table tr th:nth-of-type(1){width: 55% !important;}
+#table-dpo-my table.v-table tr th:nth-of-type(2){width: 45% !important;}
 </style>
 
 <template>
@@ -28,7 +30,8 @@
                 :expand="false"
                 :must-sort="true"
                 item-key="ID"
-                class="card-content">
+                class="card-content"
+                id="table-dpo-my">
 
               <template slot="headerCell" slot-scope="props">
                 <tableheader :storeName="storeName" :props="props" :which="'left'" />
