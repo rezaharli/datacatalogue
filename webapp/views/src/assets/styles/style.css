@@ -367,7 +367,7 @@ table.v-table.v-datatable tbody{
     max-height:420px;
     width:100%;
 }
-/* table.v-table.v-datatable tbody tr {display: block;} */
+table.v-table.v-datatable tbody tr {display: block;}
 table.v-table.v-datatable thead tr,
 table.v-table.v-datatable tfoot tr {
     /* display:block; */
