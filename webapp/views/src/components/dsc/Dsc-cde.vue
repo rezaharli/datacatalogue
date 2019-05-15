@@ -8,8 +8,8 @@
 #table-dsc-cde table.v-table thead tr th,
 #table-dsc-cde table.v-table tbody tr td {padding-left: 10px; padding-right: 10px; }
 #table-dsc-cde table.v-table tr th:nth-of-type(1){width: 8% !important;}
-#table-dsc-cde table.v-table tr th:nth-of-type(2){width: 29% !important;}
-#table-dsc-cde table.v-table tr th:nth-of-type(3){width: 15% !important;}
+#table-dsc-cde table.v-table tr th:nth-of-type(2){width: 25% !important;}
+#table-dsc-cde table.v-table tr th:nth-of-type(3){width: 19% !important;}
 #table-dsc-cde table.v-table tr th:nth-of-type(4){width: 13% !important;}
 #table-dsc-cde table.v-table tr th:nth-of-type(5){width: 13% !important;}
 #table-dsc-cde table.v-table tr th:nth-of-type(6){width: 10% !important;}

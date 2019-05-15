@@ -1,9 +1,9 @@
 <style>
 #table-dsc-interfaces-cde table.v-table tr th:nth-of-type(1){width: 8% !important;}
-#table-dsc-interfaces-cde table.v-table tr th:nth-of-type(2){width: 32% !important;}
-#table-dsc-interfaces-cde table.v-table tr th:nth-of-type(3){width: 34% !important;}
-#table-dsc-interfaces-cde table.v-table tr th:nth-of-type(4){width: 13% !important;}
-#table-dsc-interfaces-cde table.v-table tr th:nth-of-type(5){width: 13% !important;}
+#table-dsc-interfaces-cde table.v-table tr th:nth-of-type(2){width: 28% !important;}
+#table-dsc-interfaces-cde table.v-table tr th:nth-of-type(3){width: 28% !important;}
+#table-dsc-interfaces-cde table.v-table tr th:nth-of-type(4){width: 18% !important;}
+#table-dsc-interfaces-cde table.v-table tr th:nth-of-type(5){width: 18% !important;}
 </style>
 
 <template>

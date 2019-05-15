@@ -1,9 +1,9 @@
 <style>
 #table-dsc-cdp-cde table.v-table tr th:nth-of-type(1){width: 8% !important;}
-#table-dsc-cdp-cde table.v-table tr th:nth-of-type(2){width: 32% !important;}
-#table-dsc-cdp-cde table.v-table tr th:nth-of-type(3){width: 34% !important;}
-#table-dsc-cdp-cde table.v-table tr th:nth-of-type(4){width: 13% !important;}
-#table-dsc-cdp-cde table.v-table tr th:nth-of-type(5){width: 13% !important;}
+#table-dsc-cdp-cde table.v-table tr th:nth-of-type(2){width: 26% !important;}
+#table-dsc-cdp-cde table.v-table tr th:nth-of-type(3){width: 26% !important;}
+#table-dsc-cdp-cde table.v-table tr th:nth-of-type(4){width: 20% !important;}
+#table-dsc-cdp-cde table.v-table tr th:nth-of-type(5){width: 20% !important;}
 </style>
 
 <template>
