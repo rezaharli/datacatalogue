@@ -1,5 +1,6 @@
 <style>
   @import '../../assets/styles/dashboard.css';
+  #table-rfo-all table.v-table.v-datatable tbody tr {display: table-row;}
 </style>
 
 <template>

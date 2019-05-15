@@ -1,3 +1,7 @@
+<style>
+#table-rfo-priority table.v-table.v-datatable tbody tr {display: table-row;}
+</style>
+
 <template>
     <v-content class="mx-4 my-5">
         <b-container fluid>
