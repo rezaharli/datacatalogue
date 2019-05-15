@@ -49,6 +49,7 @@
                     :total-items="store.left.totalItems"
                     :loading="store.left.isLoading"
                     :expand="false"
+                    :must-sort="true"
                     item-key="ID"
                     class="table-v1"
                     id="table-dsc-cdp">

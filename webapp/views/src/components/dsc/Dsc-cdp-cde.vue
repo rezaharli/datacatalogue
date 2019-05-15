@@ -63,6 +63,7 @@
                     :total-items="store.left.totalItems"
                     :loading="store.left.isLoading"
                     :expand="false"
+                    :must-sort="true"
                     item-key="ID"
                     class="table-v1"
                     id="table-dsc-cdp-cde">
@@ -92,10 +93,10 @@
 
                       <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-capitalize text-title">
                         <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length > 0">
-                          <tablecell :fulltext="props.item.CDE" showOn="hover"></tablecell>
+                          {{ props.item.CDE }}
                         </b-link>
 
-                        <tablecell :fulltext="props.item.CDE" showOn="hover" v-if="props.item.Tables.length < 1"></tablecell>
+                        <span v-if="props.item.Tables.length < 1">{{ props.item.CDE }}</span>
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }" class="text-description">

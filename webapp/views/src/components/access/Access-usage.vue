@@ -1,111 +1,190 @@
 <style>
-  @import '../../assets/styles/dashboard.css';
-</style>
-
-<style>
-table.v-table thead th > div.btn-group {
-    width: auto;
+/* table.v-table thead th > div.btn-group {
+  	width: auto;
 }
+
+.header-filter-icon .dropdown-menu {
+	overflow: scroll;
+	height: 200px;
+} */
 </style>
 
 <template>
-    <b-row>
-        <b-col>
-        <!-- Users details -->
-            <router-view/>
+    <v-content class="mx-4 my-0 py-0">
+        <b-container fluid>
+            <page-loader v-if="store.left.isLoading" />
 
-            <!-- Main content -->
-            <b-row>
+            <!-- <b-row class="my-4">
+                <b-col>
+                    <b-button class="float-right red-neon icon-only ml-3" @click="resetFilter">
+                        <i class="fa fa-fw fa-filter"></i>
+                    </b-button>
+
+                    <page-export class="float-right" :storeName="storeName" :leftTableCols="store.leftHeaders" :rightTableCols="[]"/>
+                </b-col>
+            </b-row> -->
+
+            <b-row class="my-4">
+                <b-col>
+                    <b-button class="float-right red-neon icon-only ml-3" @click="resetFilter">
+                        <i class="fa fa-fw fa-filter"></i>
+                    </b-button>
+
+                    <page-export class="float-right" :storeName="storeName" :leftTableCols="store.leftHeaders" :rightTableCols="[]"/>
+                </b-col>
+            </b-row>
+
+            <b-row style="margin-top: 10px;margin-bottom: 10px;">
                 <b-col>
                     <v-data-table
-                        :headers="headers"
-                        :items="roles"
-                        class="elevation-1">
-                        <template slot="items" slot-scope="props">
-                            <td>{{ props.item.RoleName }}</td>
-                            <td>HOME</td>
-                            <td>Enabled</td>
+                            :headers="store.leftHeaders.filter(v => v.display == true)"
+                            :items="store.left.display"
+                            :pagination.sync="store.left.pagination"
+                            :total-items="store.left.totalItems"
+                            :loading="store.left.isLoading"
+                            :expand="false"
+                            :must-sort="true"
+                            item-key="ID"
+                            class="table-v1">
+                        <template slot="headerCell" slot-scope="props">
+                            <tableheader :storeName="storeName" :props="props" :which="'left'"/>
                         </template>
-                    </v-data-table>
 
-                    <!-- <v-data-table
-                            :headers="headers"
-                            :items="users.items"
-                            :loading="users.loading"
-                            class="elevation-1">
                         <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
                         <template slot="no-data">
-                            <v-alert :value="!users.loading" color="error" icon="warning">
-                                Sorry, nothing to display here :(
-                            </v-alert>
-                        </template>
+                            <v-alert
+                                :value="store.left.isLoading"
+                                type="info"
+                            >Please wait while data is loading</v-alert>
 
-                        <template slot="headers" slot-scope="props">
-                            <tr>
-                                <th v-for="header in props.headers" :key="header.text">
-                                    {{ header.text }} ({{ distinctData(header.value, users.items).length }})
-
-                                    <b-dropdown v-if="header.filter"  no-caret variant="link" class="header-filter-icon">
-                                        <template slot="button-content"><i class="fa fa-filter text-muted"></i></template>
-
-                                        <b-dropdown-header><b-form-input type="text" placeholder="Filter"></b-form-input></b-dropdown-header>
-
-                                        <b-dropdown-item v-for="item in distinctData(header.value, users.items)" v-bind:key="item">{{ item }}</b-dropdown-item>
-                                    </b-dropdown>
-                                </th>
-                            </tr>
+                            <v-alert
+                                :value="!store.left.isLoading"
+                                type="error"
+                            >Sorry, nothing to display here</v-alert>
                         </template>
 
                         <template slot="items" slot-scope="props">
-                            <tr :active="props.selected" @click="props.selected = !props.selected">
-                                <td>{{ props.item.Username }}</td>
-                                <td>{{ props.item.Email }}</td>
-                                <td>{{ props.item.Name }}</td>
-                                <td>{{ props.item.Role }}</td>
-                                <td>{{ props.item.Status }}</td>
-                                <td>{{ props.item.CreatedAt }}</td>
-                                <td>{{ props.item.UpdatedAt }}</td>
-                                <td class="justify-center layout px-0">
-                                    <v-icon
-                                        small
-                                        class="mr-2"
-                                        @click="editItem(props.item)"
-                                    >edit</v-icon>
+                            <tr>
+                                <td v-bind:style="{ width: store.left.colWidth['USERNAME'] + 'px' }" class="text-capitalize text-title">
+                                    {{ props.item.USERNAME }}</td>
 
-                                    <v-icon
-                                        small
-                                        @click="deleteItem(props.item)"
-                                    >delete</v-icon>
-                                </td>
+                                <td v-bind:style="{ width: store.left.colWidth['FULLNAME'] + 'px' }" class="text-capitalize text-title">
+                                    {{ props.item.FULLNAME }}</td>
+
+                                <td v-bind:style="{ width: store.left.colWidth['ROLE'] + 'px' }" class="text-capitalize text-title">
+                                    {{ props.item.ROLE }}</td>
+
+                                <td v-bind:style="{ width: store.left.colWidth['MODULE'] + 'px' }" class="text-capitalize text-title">
+                                    {{ props.item.MODULE }}</td>
+
+                                <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }" class="text-capitalize text-title">
+                                    {{ props.item.DESCRIPTION }}</td>
+
+                                <td v-bind:style="{ width: store.left.colWidth['TIME'] + 'px' }" class="text-capitalize text-title">
+                                    {{ props.item.TIME }}</td>
+
+                                <td v-bind:style="{ width: store.left.colWidth['RESOURCEURL'] + 'px' }" class="text-capitalize text-title">
+                                    {{ props.item.RESOURCEURL }}</td>
                             </tr>
                         </template>
-                    </v-data-table> -->
+                    </v-data-table>    
                 </b-col>
-            </b-row>
-        </b-col>
-    </b-row>
+            </b-row> 
+        </b-container>
+    </v-content>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import Vue from "vue";
+import { mapState, mapActions } from "vuex";
+
+import PageHeader from '../PageHeader';
+
+import JsonExcel from "vue-json-excel";
+import pageSearch from "../PageSearch.vue";
+import pageExport from "../PageExport.vue";
+import tableheader from "../TableHeader.vue";
+import tablecell from "../Tablecell.vue";
+import pageLoader from "../PageLoader.vue";
+
+Vue.component("downloadExcel", JsonExcel);
 
 export default {
-    data () {
-        return {
-            headers: [
-                { text: 'Role Name', align: 'left', value: 'RoleName', sortable: false, filter: true },
-                { text: 'Landing Page', align: 'left', value: 'RoleName', sortable: false, filter: true },
-                { text: 'Status', align: 'left', value: 'RoleName', sortable: false, filter: true },
-            ],
-            roles: [
-                { RoleName: 'Admin' },
-                { RoleName: 'DSC' },
-                { RoleName: 'DPO' },
-                { RoleName: 'DDO' },
-                { RoleName: 'RFO' },
-            ]
-        }
+  components: {
+    PageHeader, pageSearch, pageExport, tableheader, tablecell, pageLoader
+  },
+  data() {
+    return {
+      storeName: "usersusage",
+      systemSource: [],
+      tablenameSource: []
+    };
+  },
+  computed: {
+    store() {
+      return this.$store.state[this.storeName].all;
+    },
+    addressPath() {
+      var tmp = this.$route.path.split("/");
+      return tmp.slice(0, 3).join("/");
+    },
+  },
+  watch: {
+    $route(to) {},
+    "store.left.pagination": {
+      handler() {
+        this.getLeftTable();
+      },
+      deep: true
+    },
+    "store.searchMain"(val, oldVal) {
+      if (val || oldVal) {
+        this.getLeftTable();
+      }
     }
-}
+  },
+  mounted() {
+    this.store.tabName = this.storeName;
+    this.store.system = this.$route.params.system;
+    this.resetFilter();
+  },
+  methods: {
+    getLeftTable() {
+      this.$store.dispatch(`${this.storeName}/getLeftTable`);
+    },
+    systemRowClick(evt) {
+      evt.preventDefault();
+    },
+    resetFilter (e) {
+        if(Object.keys(this.store.filters.left).length > 0){
+            this.store.filters.left = {};
+            this.getLeftTable();
+        }
+
+        // if(Object.keys(this.store.filters.right).length > 0){
+        //     this.store.filters.right = {}
+        //     this.getMyRightTable(this.$route.params.system);
+        // }
+    },
+    getCDEConclusion(cdes) {
+      return cdes
+        .filter(Boolean)
+        .join(", ")
+        .indexOf("Yes") != -1
+        ? "Yes"
+        : "No";
+    },
+    showCDEs(param) {
+      this.$router.push(
+        this.addressPath + "/" + param.SYSTEM_NAME + "/" + param.DSP_NAME
+      );
+    },
+    showDetails(param) {
+      this.$router.push(
+        this.addressPath + "/" + param.TSID + "/" + param.ID + "/" + param.COLID
+      );
+    }
+  }
+};
 </script>

@@ -10,6 +10,7 @@
             :total-items="store.left.totalItems"
             :loading="store.left.isLoading"
             :expand="false"
+            :must-sort="true"
             item-key="ID"
             class="table-v2"
             id="table-dsc-dd-policy">

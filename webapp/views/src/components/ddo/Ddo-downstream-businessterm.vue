@@ -44,6 +44,7 @@
                     :total-items="store.left.totalItems"
                     :loading="store.left.isLoading"
                     :expand="false"
+                    :must-sort="true"
                     item-key="ID"
                     class="table-v1"
                     id="table-ddo-downstream-businessterm">
@@ -73,10 +74,10 @@
 
                       <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }" class="text-capitalize text-title">
                         <b-link @click="props.expanded = !props.expanded" v-if="props.item.Systems.length > 0">
-                          <tablecell :fulltext="props.item.BT_NAME" showOn="hover"></tablecell>
+                          {{ props.item.BT_NAME }}
                         </b-link>
 
-                        <tablecell :fulltext="props.item.BT_NAME" showOn="hover" v-if="props.item.Systems.length < 1"></tablecell>
+                        <span v-if="props.item.Systems.length < 1">{{ props.item.BT_NAME }}</span>
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }" class="text-uppercase">

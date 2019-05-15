@@ -46,6 +46,8 @@ import AccessUsers from './components/access/Access-users';
 import AccessRoles from './components/access/Access-roles';
 import AccessUsage from './components/access/Access-usage';
 
+import {store} from './_store/index'
+
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -161,62 +163,6 @@ const router = new VueRouter({
       permission: "DPO"
     },
   },
-  // { // dpo
-  //   path: '/dpo', component: Dpo, 
-  //   meta: { 
-  //     title: "DPO - Data Catalogue",
-  //     permission: "DPO"
-  //   }, 
-  //   children: [{ 
-  //     path: '', name: 'dpo', redirect: { name: 'dpo.my' }
-  //   }, { //dpo.my
-  //     path: 'my', 
-  //     name: 'dpo.my', 
-  //     component: DpoMy, 
-  //     meta: { 
-  //       title: "DPO - Data Catalogue",
-  //       showModal: false,
-  //       permission: "DPO"
-  //     } 
-  //   }, { // dpo.my.system
-  //     path: 'my/:system', name: 'dpo.my', component: DpoMy, 
-  //     meta: { 
-  //       title: "DPO - Data Catalogue",
-  //       showModal: false,
-  //       permission: "DPO"
-  //     }, 
-  //     children: [{ // dpo.my.system.details
-  //       path: ':details', name: 'dpo.my.details', component: DpoDetails,
-  //       meta: { 
-  //         title: "DPO Details - Data Catalogue",
-  //         showModal: true,
-  //         permission: "DPO"
-  //       } 
-  //     }] 
-  //   }, { // dpo.all
-  //     path: 'all', name: 'dpo.all', component: DpoAll, 
-  //     meta: { 
-  //       title: "DPO - Data Catalogue" ,
-  //       showModal: false,
-  //       permission: "DPO"
-  //     } 
-  //   }, { 
-  //     path: 'all/:system', name: 'dpo.all', component: DpoAll, 
-  //     meta: { 
-  //       title: "DPO - Data Catalogue" ,
-  //       showModal: false,
-  //       permission: "DPO"
-  //     }, 
-  //     children: [{ // dpo.all.system.details
-  //       path: ':details', name: 'dpo.all.details', component: DpoDetails,
-  //       meta: { 
-  //         title: "DPO Details - Data Catalogue",
-  //         showModal: true,
-  //         permission: "DPO"
-  //       } 
-  //     }]
-  //   }]
-  // }, 
   { // ddo
     path: '/ddo', name: 'ddo', component: Ddo, 
     meta: { 
@@ -309,13 +255,13 @@ const router = new VueRouter({
         title: "Users - Data Catalogue",
         permission: "Admin"
       } 
-    }, { //access.users
+    }, { //access.roles
       path: 'roles', name: 'access.roles', component: AccessRoles, 
       meta: { 
         title: "Roles - Data Catalogue",
         permission: "Admin"
       } 
-    }, { //access.users
+    }, { //access.usage
       path: 'usage', name: 'access.usage', component: AccessUsage, 
       meta: { 
         title: "Usage Detail - Data Catalogue",
@@ -334,8 +280,18 @@ router.beforeEach((to, from, next) => {
 });
 
 var saveUsage = function(isAuth, to, from, next){
-  // console.log(isAuth, to, from, next);
+  var saveLog = (param) => { store.dispatch(`users/saveLog`, param); }
   
+  var user = store.state.account.user;
+  if(user)
+    saveLog({
+      Username: user.Username,
+      Fullname: user.Name,
+      Role: user.Role,
+      Module: to.name,
+      Description: isAuth ? "SUCCESS" : "Permission Denied",
+      ResourceUrl: to.fullPath
+    });
 }
 
 router.beforeEach((to, from, next) => {
@@ -347,6 +303,22 @@ router.beforeEach((to, from, next) => {
   if (authRequired && !loggedIn) {
     saveUsage(false, to, from, next);
     return next('/login');
+  }
+
+  if(to.name != "landingpage"){
+    var user = store.state.account.user;
+    if(user)
+      if(to.name.split(".")[0].toLowerCase() == "access"){
+        if(user.Role.toLowerCase().split(",").indexOf("Admin".toLowerCase()) == -1){
+          saveUsage(false, to, from, next);
+          return next('/');
+        }
+      } else {
+        if(user.Role.toLowerCase().split(",").indexOf(to.name.split(".")[0].toLowerCase()) == -1){
+          saveUsage(false, to, from, next);
+          return next('/');
+        }
+      }
   }
 
   saveUsage(true, to, from, next)

@@ -92,7 +92,7 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 	toolkit.Println("# Closing LDAP Connection")
 	toolkit.Println("# Connection Time : ", time.Since(connectTime).Seconds(), "s")
 
-	return
+	// return
 
 	if cond {
 		toolkit.Println("# Getting some Information from LDAP ")
@@ -177,7 +177,6 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 	}
 
 	return
-
 }
 
 func TryToLoginUsingLDAP(username, password string) (bool, LDAPDataList, error) {

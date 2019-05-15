@@ -23,11 +23,10 @@ func (m *SysUser) TableName() string {
 
 type UserUsage struct {
 	ID          int
-	Username    string
+	Username    int
 	Fullname    string
 	Role        string
 	Module      string
-	Action      string
 	Description string
 	Time        string
 	ResourceURL string

@@ -28,6 +28,7 @@
                 :total-items="store.left.totalItems"
                 :loading="store.left.isLoading"
                 :expand="false"
+                :must-sort="true"
                 item-key="ID"
                 class="card-content"
                 id="table-dpo-my">
