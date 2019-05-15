@@ -1,3 +1,18 @@
+<style>
+/* #table-dsc-dd-policy table.v-table tr {display: block;} */
+#table-dsc-dd-policy table.v-table.v-datatable thead{
+    width: unset;
+    display: table-header-group;
+    padding-right: unset;
+}
+#table-dsc-dd-policy table.v-table.v-datatable tbody{
+    display:table-row-group;
+    overflow:auto;
+    max-height:unset;
+    width:unset;
+}
+</style>
+
 <template>
     <b-row style="margin-top: 10px;margin-bottom: 10px;">
       <b-col>
