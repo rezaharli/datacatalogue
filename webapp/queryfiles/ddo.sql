@@ -15,12 +15,6 @@ SELECT DISTINCT
         INNER JOIN TBL_ROLE RL ON TLRP.ROLE_ID = RL.ID AND UPPER(RL.ROLE_NAME) = 'DATA DOMAIN OWNER'
         INNER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
     WHERE ('ALL' = '?' OR TP.BANK_ID = '?')
-        AND (
-            upper(NVL(TC.NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(TSC.NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(TP.FIRST_NAME||' '||TP.LAST_NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(TP.BANK_ID, ' ')) LIKE upper('%?%')
-        )
     ORDER BY TC.NAME, TSC.NAME
 
 -- name: ddo-view-homepage
@@ -81,10 +75,6 @@ SELECT
         INNER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
         INNER JOIN TBL_BUSINESS_TERM BT ON TSC.ID = BT.PARENT_ID
     WHERE TSC.NAME = '?' -- SUBCATEGORY NAME
-        AND (
-            upper(NVL(BT.BT_NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(BT.DESCRIPTION,' ')) LIKE upper('%?%')
-        )
 
 -- name: ddo-systems
 SELECT DISTINCT
@@ -108,9 +98,6 @@ SELECT DISTINCT
         LEFT OUTER JOIN TBL_MD_RESOURCE RES ON TAB.RESOURCE_ID = RES.ID
         LEFT OUTER JOIN TBL_SYSTEM SYS ON RES.SYSTEM_ID = SYS.ID
     WHERE TSC.NAME = '?' -- SUBCATEGORY NAME
-        AND (
-            upper(NVL(SYS.SYSTEM_NAME, ' ')) LIKE upper('%?%')
-        )
 
 -- name: ddo-systems-businessterm
 SELECT DISTINCT
@@ -138,11 +125,6 @@ SELECT DISTINCT
         LEFT OUTER JOIN TBL_SYSTEM SYS ON RES.SYSTEM_ID = SYS.ID
     WHERE TSC.NAME = '?' -- SUBCATEGORY NAME
         AND NVL(SYS.SYSTEM_NAME, ' ') = '?' -- SYSTEM NAME
-        AND (
-            upper(NVL(BT.BT_NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(TAB.NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(COL.NAME, ' ')) LIKE upper('%?%')
-        )
     ORDER BY BT.BT_NAME, TAB.NAME, COL.NAME
 
 -- name: ddo-downstream
@@ -166,10 +148,6 @@ SELECT DISTINCT
 		LEFT OUTER JOIN TBL_ROLE RL ON TLRP.ROLE_ID = RL.ID AND UPPER(RL.ROLE_NAME) = 'DOWNSTREAM PROCESS OWNER'
 		LEFT OUTER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
     WHERE TSC.NAME = '?' -- SUBCATEGORY NAME
-        AND (
-            upper(NVL(TC.NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(DP.NAME, ' ')) LIKE upper('%?%')
-        )
     ORDER BY TC.NAME, TSC.NAME, NVL(DP.NAME,' ')
 
 -- name: ddo-downstream-businessterm
@@ -206,17 +184,6 @@ SELECT DISTINCT
         LEFT OUTER JOIN TBL_SYSTEM TGS ON TGS.ID = BT.TARGET_GOLDEN_SOURCE_ID
     WHERE NVL(DSP.NAME, ' ') = '?' -- DP NAME -- LC-FCC |Transaction Monitoring
 	    AND TSC.NAME = '?'
-        AND (
-            upper(NVL(BT.BT_NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(TGS.SYSTEM_NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(T.NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(C.NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(CASE WHEN S.ITAM_ID = GS.ITAM_ID THEN 'YES' ELSE 'NO' END, ' ')) LIKE upper('%?%')
-            AND upper(NVL(CD.ALIAS_NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(GS.SYSTEM_NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(GST.NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(GSC.NAME, ' ')) LIKE upper('%?%')
-        )
     ORDER BY BT.BT_NAME, TGS.SYSTEM_NAME, T.NAME, C.NAME
 
 -- name: details
