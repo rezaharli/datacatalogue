@@ -274,7 +274,7 @@ table.v-table tbody tr td.hidden{display: none;} */
 .table-v1 table.v-table thead tr th .v-icon.icon-filter {color: #fff !important; left: unset;}
 .table-v1 table.v-table thead tr th .v-icon.icon-filter.icon-active {color: #397fa4 !important; }
 .table-v1 table.v-table thead tr th .v-icon {color: #fff !important;}
-.table-v1 table.v-table thead tr th:first-of-type .v-icon {left: 15px;}
+/* .table-v1 table.v-table thead tr th:first-of-type .v-icon {left: 15px;} */
 .table-v1 table.v-table tbody tr {border-bottom: none !important;}
 .table-v1 > .v-table__overflow > table.v-table > tbody > tr.odd,
 .table-v1 > .v-table__overflow > table.v-table > tbody > tr.odd + .v-datatable__expand-row .v-table {background-color: #ffffff;}

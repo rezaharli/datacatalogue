@@ -82,7 +82,7 @@
                       <td v-bind:style="{ width: store.left.colWidth['PRIORITY_REPORT'] + 'px' }" 
                           :rowspan="props.item.expanded ? props.item.rowspanAcuan : 1" class="text-capitalize text-title">
                         <b-link @click="props.item.expanded = !props.item.expanded">
-                          <tablecell showOn="hover" :fulltext="props.item.PRIORITY_REPORT"></tablecell></b-link></td>
+                          {{props.item.PRIORITY_REPORT}}</b-link></td>
 
                       <td 
                           v-bind:style="{ width: store.left.colWidth['PRIORITY_REPORT_RATIONALE'] + 'px' }" 
