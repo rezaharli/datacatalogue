@@ -166,7 +166,7 @@ const router = new VueRouter({
   { // ddo
     path: '/ddo', name: 'ddo', component: Ddo, 
     meta: { 
-      title: "DSC - Data Catalogue",
+      title: "DDO - Data Catalogue",
       permission: "DSC"
     },
   }, { // ddo.menu
