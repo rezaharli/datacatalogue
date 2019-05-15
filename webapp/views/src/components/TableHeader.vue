@@ -85,6 +85,7 @@ export default {
   mounted (){
     setTimeout(() => {
       this.store[this.which].colWidth[this.props.header.value.split('.').reverse()[0]] = this.$refs.widthAcuan.parentNode.offsetWidth;
+      // console.log(this.$refs.widthAcuan.parentNode, '----' ,this.$refs.widthAcuan.parentNode.offsetWidth);
     }, 100);
     setTimeout(() => {
       // this.makeTableHeaderFixed();

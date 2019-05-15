@@ -1,3 +1,17 @@
+<style>
+#table-access-users table.v-table.v-datatable thead{
+    width: unset;
+    display: table-header-group;
+    padding-right: unset;
+}
+#table-access-users table.v-table.v-datatable tbody{
+    display:table-row-group;
+    overflow:auto;
+    max-height:unset;
+    width:unset;
+}
+</style>
+
 <template>
     <v-content class="mx-4 my-0 py-0">
         <b-container fluid>
@@ -26,7 +40,8 @@
                             :expand="false"
                             :must-sort="true"
                             item-key="ID"
-                            class="table-v1">
+                            class="table-v1"
+                            id="table-access-users">
                         <template slot="headerCell" slot-scope="props">
                             <tableheader :storeName="storeName" :props="props" :which="'left'"/>
                         </template>

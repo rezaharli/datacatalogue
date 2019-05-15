@@ -53,7 +53,8 @@
                     :expand="false"
                     :must-sort="true"
                     item-key="ID"
-                    class="table-v1">
+                    class="table-v1"
+                    id="table-rfo-priority">
                   <template slot="headerCell" slot-scope="props">
                     <tableheader :storeName="storeName" :props="props" :which="'left'"/>
                   </template>
