@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"reflect"
+	"strconv"
 	"time"
 
 	_ "gopkg.in/goracle.v2"
@@ -214,13 +215,14 @@ func (DBcmd) Delete(param DeleteParam) error {
 }
 
 type SqlQueryParam struct {
-	TableName    string
-	SqlQuery     string
-	PageNumber   int
-	RowsPerPage  int
-	OrderBy      string
-	IsDescending bool
-	GroupCol     string
+	TableName       string
+	SqlQuery        string
+	PageNumber      int
+	RowsPerPage     int
+	OrderBy         string
+	IsDescending    bool
+	GroupCol        string
+	AdditionalWhere map[string]interface{}
 
 	Results     interface{}
 	ResultTotal int
@@ -258,7 +260,31 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 			FROM
 			(
 				` + param.SqlQuery + `
-			) a ` + param.OrderBy
+			) a `
+
+		if len(param.AdditionalWhere) > 0 {
+			sqlQuery += `WHERE( `
+
+			i := 0
+			for key, val := range param.AdditionalWhere {
+				if i != 0 {
+					sqlQuery += `AND `
+				}
+
+				intVal, err := strconv.Atoi(toolkit.ToString(val))
+				if err != nil {
+					sqlQuery += `upper(NVL(` + key + `, ' ')) LIKE upper('%` + toolkit.ToString(val) + `%') `
+				} else {
+					sqlQuery += `upper(` + key + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
+				}
+
+				i++
+			}
+
+			sqlQuery += `) `
+		}
+
+		sqlQuery += param.OrderBy
 
 		if param.RowsPerPage > 0 {
 
