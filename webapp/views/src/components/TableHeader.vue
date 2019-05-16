@@ -1,10 +1,16 @@
+<style>
+  .dropdown-menu {
+    cursor: default;
+  }
+</style>
+
+
 <template>
   <div ref="widthAcuan" class="table-header-wrapper">
-    {{ props.header.text }} {{ count }}
+    <span>{{ props.header.text }} {{ count }}</span>
 
     <b-dropdown no-caret variant="link" class="dropdown-button-wrapper" ref="columnFilter" v-if="props.header.filterable">
       <template slot="button-content">
-        <!-- <i class="fa fa-filter text-muted"></i> -->
         <v-icon small v-bind:class="{'icon-active' : store.filters[which][props.header.value.split('.').reverse()[0]] }" class="icon-filter">filter_list</v-icon>
       </template>
 
@@ -84,6 +90,14 @@ export default {
   },
   mounted (){
     setTimeout(() => {
+      var $dropdownWrapper = $(this.$refs.widthAcuan).closest("th.column.sortable").find(".dropdown-menu");
+      if($dropdownWrapper[0]){
+        $dropdownWrapper.on("click", function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+        });
+      }
+
       this.store[this.which].colWidth[this.props.header.value.split('.').reverse()[0]] = this.$refs.widthAcuan.parentNode.offsetWidth;
       // console.log(this.$refs.widthAcuan.parentNode, '----' ,this.$refs.widthAcuan.parentNode.offsetWidth);
     }, 100);
