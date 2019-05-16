@@ -1,7 +1,7 @@
 <style>
-#table-dsc-cdp table.v-table tr th:nth-of-type(1){width: 39% !important;}
-#table-dsc-cdp table.v-table tr th:nth-of-type(2){width: 39% !important;}
-#table-dsc-cdp table.v-table tr th:nth-of-type(3){width: 26% !important;}
+#table-dsc-cdp table.v-table tr th:nth-of-type(1){width: 25% !important; display: table-cell;}
+#table-dsc-cdp table.v-table tr th:nth-of-type(2){width: 20% !important; display: table-cell;}
+#table-dsc-cdp table.v-table tr th:nth-of-type(3){width: 15% !important; display: table-cell;}
 </style>
 
 <template>

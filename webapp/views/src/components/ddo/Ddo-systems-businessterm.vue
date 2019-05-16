@@ -1,8 +1,8 @@
 <style>
-#table-ddo-systems-businessterm table.v-table tr th:nth-of-type(1){width: 10% !important;}
-#table-ddo-systems-businessterm table.v-table tr th:nth-of-type(2){width: 40% !important;}
-#table-ddo-systems-businessterm table.v-table tr th:nth-of-type(3){width: 25% !important;}
-#table-ddo-systems-businessterm table.v-table tr th:nth-of-type(4){width: 25% !important;}
+#table-ddo-systems-businessterm table.v-table tr th:nth-of-type(1){width: 5% !important;}
+#table-ddo-systems-businessterm table.v-table tr th:nth-of-type(2){width: 15% !important;}
+#table-ddo-systems-businessterm table.v-table tr th:nth-of-type(3){width: 15% !important;}
+#table-ddo-systems-businessterm table.v-table tr th:nth-of-type(4){width: 15% !important;}
 </style>
 
 <template>

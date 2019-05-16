@@ -1,6 +1,6 @@
 <style> 
-#table-dpo-datalineage table.v-table tr th:nth-of-type(1){width: 75% !important;}
-#table-dpo-datalineage table.v-table tr th:nth-of-type(2){width: 25% !important;}
+#table-dpo-datalineage table.v-table tr th:nth-of-type(1){width: 10% !important;}
+#table-dpo-datalineage table.v-table tr th:nth-of-type(2){width: 10% !important;}
 </style>
 
 <template>

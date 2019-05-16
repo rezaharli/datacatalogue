@@ -1,7 +1,7 @@
 <style>
-#table-dsc-interfaces table.v-table tr th:nth-of-type(1){width: 40% !important;}
-#table-dsc-interfaces table.v-table tr th:nth-of-type(2){width: 32% !important;}
-#table-dsc-interfaces table.v-table tr th:nth-of-type(3){width: 38% !important;}
+#table-dsc-interfaces table.v-table tr th:nth-of-type(1){width: 20% !important;}
+#table-dsc-interfaces table.v-table tr th:nth-of-type(2){width: 15% !important;}
+#table-dsc-interfaces table.v-table tr th:nth-of-type(3){width: 15% !important;}
 </style>
 
 <template>

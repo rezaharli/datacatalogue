@@ -1,7 +1,7 @@
 <style>
-#table-ddo-businessterm table.v-table tr th:nth-of-type(1){width: 10% !important;}
-#table-ddo-businessterm table.v-table tr th:nth-of-type(2){width: 30% !important;}
-#table-ddo-businessterm table.v-table tr th:nth-of-type(3){width: 60% !important;}
+#table-ddo-businessterm table.v-table tr th:nth-of-type(1){width: 5% !important;}
+#table-ddo-businessterm table.v-table tr th:nth-of-type(2){width: 10% !important;}
+#table-ddo-businessterm table.v-table tr th:nth-of-type(3){width: 35% !important;}
 </style>
 
 <template>
