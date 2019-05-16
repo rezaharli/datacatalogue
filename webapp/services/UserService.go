@@ -107,19 +107,20 @@ func (s *UserService) GetAll(tabs, loggedinid, search string, searchDD, colFilte
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"USERNAME", "EMAIL", "NAME", "ROLE", "STATUS", "CREATEDAT", "UPDATEDAT",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("USERNAME"),
-			colFilterM.GetString("EMAIL"),
-			colFilterM.GetString("NAME"),
-			colFilterM.GetString("ROLE"),
-			colFilterM.GetString("STATUS"),
-			colFilterM.GetString("CREATEDAT"),
-			colFilterM.GetString("UPDATEDAT"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -343,19 +344,20 @@ func (s *UserService) GetUsageTable(colFilter interface{}, pagination toolkit.M)
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 
 	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"USERNAME", "FULLNAME", "ROLE", "MODULE", "DESCRIPTION", "TIME", "RESOURCEURL",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("USERNAME"),
-			colFilterM.GetString("FULLNAME"),
-			colFilterM.GetString("ROLE"),
-			colFilterM.GetString("MODULE"),
-			colFilterM.GetString("DESCRIPTION"),
-			colFilterM.GetString("TIME"),
-			colFilterM.GetString("RESOURCEURL"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	// gridArgs.OrderBy = pagination.GetString("sortBy")
