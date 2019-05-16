@@ -13,10 +13,6 @@ SELECT DISTINCT
         INNER JOIN TBL_ROLE RL ON TLRP.ROLE_ID = RL.ID AND UPPER(RL.ROLE_NAME) = 'DOWNSTREAM PROCESS OWNER'
         INNER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
     WHERE ('ALL' = '?' OR TP.BANK_ID = '?')
-        AND (
-            upper(NVL(TC.NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(TP.FIRST_NAME||' '||TP.LAST_NAME||' | '||TP.BANK_ID, ' ')) LIKE upper('%?%')
-        )
     ORDER BY TC.NAME
 
 -- name: dpo-view-homepage
@@ -55,16 +51,6 @@ SELECT DISTINCT
         INNER JOIN TBL_SYSTEM SYS ON SYS.ID = RES.SYSTEM_ID
         LEFT OUTER JOIN TBL_SYSTEM ULT ON ULT.ID = TSC.ULTIMATE_SOURCE_SYSTEM_ID
     WHERE TC.NAME = '?'
-        AND (
-            upper(NVL(SYS.SYSTEM_NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(SYS.ITAM_ID, ' ')) LIKE upper('%?%')
-            AND upper(NVL(CD.ALIAS_NAME, ' ')) LIKE upper('%?%')
-            AND upper(CD.CDE) LIKE upper('%?%')
-            AND upper(NVL(TAB.NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(COL.NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(ULT.SYSTEM_NAME, ' ')) LIKE upper('%?%')
-            AND upper(CD.DATA_SLA_SIGNED) LIKE upper('%?%')
-        )
     ORDER BY SYS.SYSTEM_NAME, TAB.NAME, COL.NAME
 
 -- name: dpo-datalineage
@@ -84,10 +70,6 @@ SELECT DISTINCT
         INNER JOIN TBL_SYSTEM SYS ON RES.SYSTEM_ID = SYS.ID
     WHERE 
         DSP.NAME = '?' -- DOWNSTREAM PROCESS NAME
-        AND (
-            upper(NVL('', ' ')) LIKE upper('%?%')
-            AND upper(NVL(SYS.SYSTEM_NAME, ' ')) LIKE upper('%?%')
-        )
 
 -- name: details
 SELECT DISTINCT

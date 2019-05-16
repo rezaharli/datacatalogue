@@ -29,37 +29,21 @@ func (s *RFOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 		gridArgs.MainArgs = append(gridArgs.MainArgs, "ALL", "0000000")
 	}
 
-	///////// --------------------------------------------------DROPDOWN FILTER
-	// searchDDM, err := toolkit.ToM(searchDD)
-	// if err != nil {
-	// 	return nil, 0, err
-	// }
-
-	// filterPriorityReportName := ""
-	// if search != "" {
-	// 	filterPriorityReportName = search
-	// } else {
-	// 	filterPriorityReportName = searchDDM.GetString("PriorityReportName")
-	// }
-	// gridArgs.DropdownFilter = append(gridArgs.DropdownFilter,
-	// 	filterPriorityReportName,
-	// 	searchDDM.GetString("RiskReportingLead"),
-	// )
-
 	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"PRINCIPAL_RISK_TYPES", "RISK_SUB_TYPE", "RISK_FRAMEWORK_OWNER", "RISK_REPORTING_LEAD", "PR_COUNT", "CRM_COUNT", "CDE_COUNT",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("PRINCIPAL_RISK_TYPES"),
-			colFilterM.GetString("RISK_SUB_TYPE"),
-			colFilterM.GetString("RISK_FRAMEWORK_OWNER"),
-			colFilterM.GetString("RISK_REPORTING_LEAD"),
-			colFilterM.GetString("PR_COUNT"),
-			colFilterM.GetString("CRM_COUNT"),
-			colFilterM.GetString("CDE_COUNT"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -120,18 +104,20 @@ func (s *RFOService) GetPriorityTable(system string, colFilter interface{}, pagi
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
 	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"PRIORITY_REPORT", "PRIORITY_REPORT_RATIONALE", "CRM_NAME", "CRM_RATIONALE", "CDE_NAME", "CDE_RATIONALE",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("PRIORITY_REPORT"),
-			colFilterM.GetString("PRIORITY_REPORT_RATIONALE"),
-			colFilterM.GetString("CRM_NAME"),
-			colFilterM.GetString("CRM_RATIONALE"),
-			colFilterM.GetString("CDE_NAME"),
-			colFilterM.GetString("CDE_RATIONALE"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")

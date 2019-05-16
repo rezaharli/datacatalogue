@@ -33,36 +33,21 @@ func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 		gridArgs.MainArgs = append(gridArgs.MainArgs, "ALL", "0000000")
 	}
 
-	///////// --------------------------------------------------DROPDOWN FILTER
-	// searchDDM, err := toolkit.ToM(searchDD)
-	// if err != nil {
-	// 	return nil, 0, err
-	// }
-
-	// filterSubDomains := ""
-	// if search != "" {
-	// 	filterSubDomains = search
-	// } else {
-	// 	filterSubDomains = searchDDM.GetString("SubDataDomain")
-	// }
-
-	// gridArgs.DropdownFilter = append(gridArgs.DropdownFilter,
-	// 	filterSubDomains,
-	// 	searchDDM.GetString("DataDomain"),
-	// 	searchDDM.GetString("SubDataDomainOwner"),
-	// )
-
 	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"DATA_DOMAIN", "SUB_DOMAINS", "SUB_DOMAIN_OWNER", "BANK_ID",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("DATA_DOMAIN"),
-			colFilterM.GetString("SUB_DOMAINS"),
-			colFilterM.GetString("SUB_DOMAIN_OWNER"),
-			colFilterM.GetString("BANK_ID"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -114,14 +99,20 @@ func (s *DDOService) GetBusinesstermTable(system string, colFilter interface{}, 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
 	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"BT_NAME", "BT_DESCRIPTION",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("BT_NAME"),
-			colFilterM.GetString("BT_DESCRIPTION"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -144,14 +135,20 @@ func (s *DDOService) GetSystemsTable(system string, colFilter interface{}, pagin
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
 	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"SYSTEM_NAME", "BT_COUNT",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("SYSTEM_NAME"),
-			colFilterM.GetString("BT_COUNT"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -174,15 +171,20 @@ func (s *DDOService) GetSystemsBusinesstermTable(subdomain, system string, colFi
 	gridArgs.MainArgs = append(gridArgs.MainArgs, subdomain, system)
 
 	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"BT_NAME", "TABLE_NAME", "COLUMN_NAME",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("BT_NAME"),
-			colFilterM.GetString("TABLE_NAME"),
-			colFilterM.GetString("COLUMN_NAME"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -205,15 +207,20 @@ func (s *DDOService) GetDownstreamTable(system string, colFilter interface{}, pa
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
 	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"DATA_DOMAIN", "DP_NAME", "BT_COUNT",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("DATA_DOMAIN"),
-			colFilterM.GetString("DP_NAME"),
-			colFilterM.GetString("BT_COUNT"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -236,21 +243,20 @@ func (s *DDOService) GetDownstreamBusinesstermTable(subdomain, system string, co
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system, subdomain)
 
 	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"BT_NAME", "SYSTEM_CONSUMED", "TABLE_NAME", "COLUMN_NAME", "GOLDEN_SOURCE", "ALIAS_NAME", "GS_SYSTEM_NAME", "GS_TABLE_NAME", "GS_COLUMN_NAME",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "", "", "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("BT_NAME"),
-			colFilterM.GetString("SYSTEM_CONSUMED"),
-			colFilterM.GetString("TABLE_NAME"),
-			colFilterM.GetString("COLUMN_NAME"),
-			colFilterM.GetString("GOLDEN_SOURCE"),
-			colFilterM.GetString("ALIAS_NAME"),
-			colFilterM.GetString("GS_SYSTEM_NAME"),
-			colFilterM.GetString("GS_TABLE_NAME"),
-			colFilterM.GetString("GS_COLUMN_NAME"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")

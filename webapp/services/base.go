@@ -38,7 +38,6 @@ func (s *Base) ExecuteGridQueryFromFile(gridArgs GridArgs) ([]toolkit.M, int, er
 	args := make([]interface{}, 0)
 	args = append(args, gridArgs.MainArgs...)
 	args = append(args, gridArgs.DropdownFilter...)
-	args = append(args, gridArgs.ColumnFilter...)
 
 	///////// --------------------------------------------------BUILD QUERY FROM ARGS
 	q, err := h.BuildQueryFromFile(gridArgs.QueryFilePath, gridArgs.QueryName, gridArgs.Colnames, args...)
@@ -46,20 +45,28 @@ func (s *Base) ExecuteGridQueryFromFile(gridArgs GridArgs) ([]toolkit.M, int, er
 		return nil, 0, err
 	}
 
+	additionalWhere := make(map[string]interface{}, len(gridArgs.Colnames))
+	for i, colname := range gridArgs.Colnames {
+		if toolkit.ToString(gridArgs.ColumnFilter[i]) != "" {
+			additionalWhere[colname] = gridArgs.ColumnFilter[i]
+		}
+	}
+
 	splitted := strings.Split(gridArgs.OrderBy, ".")
 	orderBy := splitted[len(splitted)-1]
 
 	///////// --------------------------------------------------EXECUTE
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName:    m.NewSystemModel().TableName(),
-		SqlQuery:     q,
-		Results:      &resultRows,
-		ResultTotal:  resultTotal,
-		PageNumber:   gridArgs.PageNumber,
-		RowsPerPage:  gridArgs.RowsPerPage,
-		OrderBy:      orderBy,
-		IsDescending: gridArgs.IsDescending,
-		GroupCol:     gridArgs.GroupCol,
+		TableName:       m.NewSystemModel().TableName(),
+		SqlQuery:        q,
+		Results:         &resultRows,
+		ResultTotal:     resultTotal,
+		PageNumber:      gridArgs.PageNumber,
+		RowsPerPage:     gridArgs.RowsPerPage,
+		OrderBy:         orderBy,
+		IsDescending:    gridArgs.IsDescending,
+		GroupCol:        gridArgs.GroupCol,
+		AdditionalWhere: additionalWhere,
 	})
 	if err != nil {
 		return nil, 0, err

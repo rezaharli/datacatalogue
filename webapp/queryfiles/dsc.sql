@@ -15,12 +15,6 @@ SELECT DISTINCT
 		INNER JOIN TBL_ROLE RL_SYS ON TLRP.ROLE_ID = RL_SYS.ID AND UPPER(RL_SYS.ROLE_NAME) = 'DATASET CUSTODIAN'
 		INNER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID 
 	WHERE ('ALL' = '?' OR TP.BANK_ID = '?')
-		AND (
-			upper(TS.SYSTEM_NAME) LIKE upper('%?%')
-			AND upper(TS.ITAM_ID) LIKE upper('%?%')
-			AND upper(TP.FIRST_NAME||' '||TP.LAST_NAME) LIKE upper('%?%')
-			AND upper(TP.BANK_ID) LIKE upper('%?%')
-		)
 	ORDER BY TS.SYSTEM_NAME
 
 -- name: dsc-view-homepage
@@ -44,9 +38,10 @@ SELECT DISTINCT
 				INNER JOIN TBL_MD_RESOURCE TMR ON TS.ID = TMR.SYSTEM_ID
 				INNER JOIN TBL_MD_TABLE TMT ON TMR.ID = TMT.RESOURCE_ID
 				INNER JOIN TBL_MD_COLUMN TMC ON TMT.ID = TMC.TABLE_ID
+				INNER JOIN TBL_MD_COLUMN_DETAILS TMCD ON TMCD.COLUMN_ID = TMC.ID
 				LEFT OUTER JOIN TBL_DS_PROCESS_DETAIL DSPD ON DSPD.COLUMN_ID = TMC.ID
 				LEFT OUTER JOIN TBL_DS_PROCESSES DSP ON DSPD.PROCESS_ID = DSP.ID
-			WHERE UPPER(TS.SYSTEM_NAME) = UPPER('?')
+			WHERE UPPER(TS.SYSTEM_NAME) = UPPER('?') AND CDE = 1
 	) DSP, (
 		SELECT 
 				COUNT(DISTINCT SS.SYSTEM_NAME) 		AS INTERFACE_COUNT
@@ -55,9 +50,10 @@ SELECT DISTINCT
 				INNER JOIN TBL_MD_RESOURCE TMR ON TS.ID = TMR.SYSTEM_ID
 				INNER JOIN TBL_MD_TABLE TMT ON TMR.ID = TMT.RESOURCE_ID
 				INNER JOIN TBL_MD_COLUMN TMC ON TMT.ID = TMC.TABLE_ID
+				INNER JOIN TBL_MD_COLUMN_DETAILS TMCD ON TMCD.COLUMN_ID = TMC.ID
 				INNER JOIN TBL_LINK_COLUMN_INTERFACE CI ON CI.COLUMN_ID = TMC.ID
 			INNER JOIN TBL_SYSTEM SS ON CI.IMM_SUCC_SYSTEM_ID = SS.ID
-			WHERE UPPER(TS.SYSTEM_NAME) = UPPER('?')
+			WHERE UPPER(TS.SYSTEM_NAME) = UPPER('?') AND CDE = 1
 	) INTERFACE
 
 -- name: dsc-view-cde
@@ -71,7 +67,7 @@ SELECT DISTINCT
 		TMCD.DESCRIPTION                       			AS DESCRIPTION,
 		TMT.DISPLAY_NAME                              			AS TABLE_NAME,
 		TMC.DISPLAY_NAME                              			AS COLUMN_NAME,
-		TDP.NAME                              				AS DSP_NAME,
+		NVL(TDP.NAME,' ')                              				AS DSP_NAME,
 		TP.FIRST_NAME||' '|| TP.LAST_NAME     			AS PROCESS_OWNER,
 		TP.BANK_ID                            				AS BANK_ID,
 		COUNT(DISTINCT TMCD.ALIAS_NAME) OVER () 		AS CDE_COUNT,
@@ -79,7 +75,7 @@ SELECT DISTINCT
 		COUNT(DISTINCT TMCD.DESCRIPTION) OVER ()		AS COUNT_DESCRIPTION,
 		COUNT(DISTINCT TMT.DISPLAY_NAME) OVER ()		AS COUNT_TABLE_NAME,
 		COUNT(DISTINCT TMC.DISPLAY_NAME) OVER ()		AS COUNT_COLUMN_NAME,
-		COUNT(DISTINCT TDP.NAME) OVER ()			AS COUNT_DSP_NAME,
+		COUNT(DISTINCT NVL(TDP.NAME,' ')) OVER ()			AS COUNT_DSP_NAME,
 		COUNT(DISTINCT TP.FIRST_NAME||' '|| TP.LAST_NAME) OVER ()	AS COUNT_PROCESS_OWNER
 	FROM 
 		TBL_SYSTEM TS
@@ -93,14 +89,6 @@ SELECT DISTINCT
 		LEFT OUTER JOIN TBL_ROLE RL ON TLRP.ROLE_ID = RL.ID AND UPPER(RL.ROLE_NAME) = 'DOWNSTREAM PROCESS OWNER'
 		LEFT OUTER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
 	WHERE UPPER(TS.SYSTEM_NAME) = UPPER('?') AND CDE = 1
-		AND (
-			upper(NVL(TMCD.ALIAS_NAME,' ')) LIKE upper('%?%')
-			AND upper(NVL(TMCD.DESCRIPTION,' ')) LIKE upper('%?%')
-			AND upper(NVL(TMT.DISPLAY_NAME,' ')) LIKE upper('%?%')
-			AND upper(NVL(TMC.DISPLAY_NAME,' ')) LIKE upper('%?%')
-			AND upper(NVL(TDP.NAME,' ')) LIKE upper('%?%')
-			AND upper(NVL(TP.FIRST_NAME||' '|| TP.LAST_NAME,' ')) LIKE upper('%?%')
-		)
 
 -- name: dsc-view-cdp
 SELECT  DISTINCT
@@ -124,10 +112,6 @@ SELECT  DISTINCT
 		LEFT OUTER JOIN TBL_ROLE RL ON TLRP.ROLE_ID = RL.ID AND UPPER(RL.ROLE_NAME) = 'DOWNSTREAM PROCESS OWNER'
 		LEFT OUTER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
 	WHERE UPPER(TS.SYSTEM_NAME) = UPPER('?') AND CDE = 1
-		AND (
-			upper(NVL(TDP.NAME, ' ')) LIKE upper('%?%')
-			AND upper(NVL(TP.FIRST_NAME||' '|| TP.LAST_NAME, ' ')) LIKE upper('%?%')
-		)
 
 -- name: dsc-view-cdp-cde
 SELECT  DISTINCT 
@@ -160,12 +144,6 @@ SELECT  DISTINCT
 		LEFT OUTER JOIN TBL_ROLE RL ON TLRP.ROLE_ID = RL.ID AND UPPER(RL.ROLE_NAME) = 'DOWNSTREAM PROCESS OWNER'
 		LEFT OUTER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
 	WHERE UPPER(TS.SYSTEM_NAME) = UPPER('?') AND CDE = 1 AND NVL(UPPER(TDP.NAME), ' ') = UPPER('?')
-		AND (
-			upper(NVL(TMCD.ALIAS_NAME,' ')) LIKE upper('%?%')
-			AND upper(NVL(TMCD.DESCRIPTION,' ')) LIKE upper('%?%')
-			AND upper(NVL(TMT.DISPLAY_NAME,' ')) LIKE upper('%?%')
-			AND upper(NVL(TMC.DISPLAY_NAME,' ')) LIKE upper('%?%')
-		)
 
 -- name: dsc-view-interfaces
 SELECT ID, SYSTEM_NAME, IMM_INTERFACE, CDE_COUNT, COUNT_IMM_INTERFACE, PROCESS_OWNER
@@ -177,7 +155,7 @@ SELECT  DISTINCT
 		SS.SYSTEM_NAME                            		AS IMM_INTERFACE,
 		COUNT(DISTINCT TMCD.ALIAS_NAME) OVER(PARTITION BY SS.SYSTEM_NAME)      	   	AS CDE_COUNT,
 		COUNT(DISTINCT SS.SYSTEM_NAME) OVER ()	AS COUNT_IMM_INTERFACE,
-		' '     			AS PROCESS_OWNER
+		TP.FIRST_NAME||' '||TP.LAST_NAME     			AS PROCESS_OWNER
 	FROM 
 		TBL_SYSTEM TS
 		INNER JOIN TBL_MD_RESOURCE TMR ON TS.ID = TMR.SYSTEM_ID
@@ -186,16 +164,10 @@ SELECT  DISTINCT
 		INNER JOIN TBL_MD_COLUMN_DETAILS TMCD ON TMCD.COLUMN_ID = TMC.ID
 		INNER JOIN TBL_LINK_COLUMN_INTERFACE CI ON CI.COLUMN_ID = TMC.ID
 		INNER JOIN TBL_SYSTEM SS ON CI.IMM_SUCC_SYSTEM_ID = SS.ID
-		LEFT JOIN TBL_DS_PROCESS_DETAIL DPD ON DPD.COLUMN_ID = TMC.ID
-		LEFT JOIN TBL_DS_PROCESSES TDP ON DPD.PROCESS_ID = TDP.ID
-		LEFT JOIN TBL_LINK_ROLE_PEOPLE TLRP ON TLRP.OBJECT_ID = TDP.ID AND TLRP.OBJECT_TYPE = 'PROCESSES'
-		LEFT JOIN TBL_ROLE RL ON TLRP.ROLE_ID = RL.ID AND UPPER(RL.ROLE_NAME) = 'DOWNSTREAM PROCESS OWNER'
-		LEFT JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID    
+		LEFT OUTER JOIN TBL_LINK_ROLE_PEOPLE TLRP ON TLRP.OBJECT_ID = SS.ID AND TLRP.OBJECT_TYPE = 'SYSTEM'
+		LEFT OUTER JOIN TBL_ROLE RL_SYS ON TLRP.ROLE_ID = RL_SYS.ID AND UPPER(RL_SYS.ROLE_NAME) = 'DATASET CUSTODIAN'
+		LEFT OUTER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID  
 	WHERE UPPER(TS.SYSTEM_NAME) = UPPER('?')
-		AND (
-			upper(NVL(SS.SYSTEM_NAME,' ')) LIKE upper('%?%')
-			AND upper(NVL(TP.FIRST_NAME||' '|| TP.LAST_NAME,' ')) LIKE upper('%?%')
-		)
     ) RES WHERE CDE_COUNT <> 0
     ORDER BY IMM_INTERFACE, PROCESS_OWNER
 
@@ -225,12 +197,6 @@ SELECT  DISTINCT
 		INNER JOIN TBL_LINK_COLUMN_INTERFACE CI ON CI.COLUMN_ID = TMC.ID
 		INNER JOIN TBL_SYSTEM SS ON CI.IMM_SUCC_SYSTEM_ID = SS.ID
 	WHERE UPPER(TS.SYSTEM_NAME) = UPPER('?') AND UPPER(SS.SYSTEM_NAME) = UPPER('?')
-		AND (
-			upper(NVL(TMCD.ALIAS_NAME,' ')) LIKE upper('%?%')
-			AND upper(NVL(TMCD.DESCRIPTION,' ')) LIKE upper('%?%')
-			AND upper(NVL(TMT.DISPLAY_NAME,' ')) LIKE upper('%?%')
-			AND upper(NVL(TMC.DISPLAY_NAME,' ')) LIKE upper('%?%')
-		)
 
 -- name: details
 SELECT DISTINCT
@@ -378,33 +344,4 @@ SELECT DISTINCT
 				UPPER(ts.system_name) = UPPER('?')
 				AND CDE = 1
 		) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id and tmt.id = cde.tab_id
-	WHERE
-		upper(NVL(tc.TYPE, 'Data Domain')) = 'DATA DOMAIN'
-		AND upper(NVL(ts.system_name, ' ')) LIKE upper('%?%')
-		AND upper(NVL(ts.itam_id, ' ')) LIKE upper('%?%')
-		AND upper(NVL(tmt.display_name, ' ')) LIKE upper('%?%')
-		AND  upper(NVL(tmc.display_name, ' ')) LIKE upper('%?%')
-		AND  upper(NVL(tmcd.alias_name, ' ')) LIKE upper('%?%')
-		AND  upper(NVL(tmcd.description, ' ')) LIKE upper('%?%')
-		AND  NVL(to_char(tmcd.cde), ' ') LIKE upper('%?%')
-		AND  upper(NVL(tmc.data_type, ' ')) LIKE upper('%?%')
-		AND  NVL(to_char(tmc.data_length), ' ') LIKE upper('%?%')
-		AND  upper(NVL(tmcd.example, ' ')) LIKE upper('%?%')
-		AND  NVL(to_char(tmcd.derived), ' ') LIKE upper('%?%')
-		AND  upper(NVL(tmcd.Derivation_Logic, ' ')) LIKE upper('%?%')
-		AND  NVL(to_char(tmcd.Sourced_from_Upstream), ' ') LIKE upper('%?%')
-		AND  upper(NVL(tmcd.System_Checks, ' ')) LIKE upper('%?%')
-		AND  upper(NVL(tc.Name, ' ')) LIKE upper('%?%')
-		AND  upper(NVL(tsc.name, ' ')) LIKE upper('%?%')
-		AND  upper(NVL(ppl.first_name||' '||ppl.last_name, ' ')) LIKE upper('%?%')
-		AND  upper(NVL(tbt.bt_name, ' ')) LIKE upper('%?%')
-		AND  upper(NVL(tbt.description, ' ')) LIKE upper('%?%')
-		AND  upper(NVL(tpol.info_asset_name, ' ')) LIKE upper('%?%')
-		AND  upper(NVL(tpol.description, ' ')) LIKE upper('%?%')
-		AND  NVL(to_char(tpol.confidentiality), ' ') LIKE upper('%?%')
-		AND  NVL(to_char(tpol.integrity), ' ') LIKE upper('%?%')
-		AND  NVL(to_char(tpol.availability), ' ') LIKE upper('%?%')
-		AND  NVL(to_char(tpol.overall_cia_rating), ' ') LIKE upper('%?%')
-		AND  upper(NVL(tmt.record_category, ' ')) LIKE upper('%?%')
-		AND  NVL(to_char(tmcd.pii_flag), ' ') LIKE upper('%?%')
 	ORDER BY tmt.DISPLAY_NAME, tmc.DISPLAY_NAME

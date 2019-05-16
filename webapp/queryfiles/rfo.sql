@@ -16,12 +16,6 @@ FROM TBL_PRIORITY_REPORTS PR
     INNER JOIN TBL_CRM CRM ON PR.ID = CRM.PRORITY_REPORT_ID
     INNER JOIN TBL_CDE CDE ON CDE.CRM_ID = CRM.ID
 WHERE ('ALL' = '?' OR PL.BANK_ID = '?')
-    AND (
-        upper(CAT.NAME) LIKE upper('%?%')
-        AND upper(SC.NAME) LIKE upper('%?%')
-        AND upper(PO.FIRST_NAME||' '||PO.LAST_NAME) LIKE upper('%?%')
-        AND upper(PL.FIRST_NAME||' '||PL.LAST_NAME) LIKE upper('%?%')
-    )
 ORDER BY CAT.NAME, SC.NAME
 
 -- name: rfo-priority
@@ -43,12 +37,4 @@ FROM TBL_PRIORITY_REPORTS PR
     INNER JOIN TBL_CRM CRM ON PR.ID = CRM.PRORITY_REPORT_ID
     INNER JOIN TBL_CDE CDE ON CDE.CRM_ID = CRM.ID
 WHERE UPPER(SC.NAME) = upper('?') -- PASS SUB RISK TYPE IN UPPER CASE
-    AND (
-        upper(PR.NAME) LIKE upper('%?%')
-        AND upper(PR.RATIONALE) LIKE upper('%?%')
-        AND upper(CRM.NAME) LIKE upper('%?%')
-        AND upper(CRM.CRM_RATIONALE) LIKE upper('%?%')
-        AND upper(CDE.NAME) LIKE upper('%?%')
-        AND upper(CDE.CDE_RATIONALE) LIKE upper('%?%')
-    )
 ORDER BY PR.NAME, CRM.NAME, CDE.NAME
