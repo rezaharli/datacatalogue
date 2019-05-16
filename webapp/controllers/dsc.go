@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"time"
+
 	"github.com/eaciit/toolkit"
 
 	"git.eaciitapp.com/sebar/knot"
@@ -293,6 +295,7 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 }
 
 func (c *DSC) GetDDTable(k *knot.WebContext) {
+	queryTime := time.Now()
 	res := toolkit.NewResult()
 
 	payload := toolkit.M{}
@@ -317,4 +320,5 @@ func (c *DSC) GetDDTable(k *knot.WebContext) {
 	}
 
 	h.WriteResultOK(k, res, systems)
+	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
 }
