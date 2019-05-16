@@ -27,6 +27,7 @@
             :loading="store.left.isLoading"
             :expand="false"
             :must-sort="true"
+            :rows-per-page-items="[25, 50, 75, 100]"
             item-key="ID"
             class="table-v2"
             id="table-dsc-dd-interfaces">
