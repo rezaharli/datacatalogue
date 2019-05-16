@@ -33,35 +33,21 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, col
 		gridArgs.MainArgs = append(gridArgs.MainArgs, "ALL", "0000000")
 	}
 
-	///////// --------------------------------------------------DROPDOWN FILTER
-	// searchDDM, err := toolkit.ToM(searchDD)
-	// if err != nil {
-	// 	return nil, 0, err
-	// }
-
-	// filterSystemName := ""
-	// if search != "" {
-	// 	filterSystemName = search
-	// } else {
-	// 	filterSystemName = searchDDM.GetString("SystemName")
-	// }
-
-	// gridArgs.DropdownFilter = append(gridArgs.DropdownFilter,
-	// 	filterSystemName,
-	// 	searchDDM.GetString("ItamID"),
-	// )
-
 	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"SYSTEM_NAME", "ITAM_ID", "DATASET_CUSTODIAN", "BANK_ID",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("SYSTEM_NAME"),
-			colFilterM.GetString("ITAM_ID"),
-			colFilterM.GetString("DATASET_CUSTODIAN"),
-			colFilterM.GetString("BANK_ID"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -112,18 +98,20 @@ func (s *DSCService) GetCDETable(system string, colFilter interface{}, paginatio
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
 	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"CDE", "DESCRIPTION", "TABLE_NAME", "COLUMN_NAME", "DSP_NAME", "PROCESS_OWNER",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("CDE"),
-			colFilterM.GetString("DESCRIPTION"),
-			colFilterM.GetString("TABLE_NAME"),
-			colFilterM.GetString("COLUMN_NAME"),
-			colFilterM.GetString("DSP_NAME"),
-			colFilterM.GetString("PROCESS_OWNER"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -146,15 +134,20 @@ func (s *DSCService) GetCDPTable(system string, colFilter interface{}, paginatio
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
 	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"DSP_NAME", "PROCESS_OWNER", "CDE_COUNT",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("DSP_NAME"),
-			colFilterM.GetString("PROCESS_OWNER"),
-			colFilterM.GetString("CDE_COUNT"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -177,16 +170,20 @@ func (s *DSCService) GetCDPCDETable(system, dspName string, colFilter interface{
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system, dspName)
 
 	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"CDE", "DESCRIPTION", "TABLE_NAME", "COLUMN_NAME",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("CDE"),
-			colFilterM.GetString("DESCRIPTION"),
-			colFilterM.GetString("TABLE_NAME"),
-			colFilterM.GetString("COLUMN_NAME"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -208,15 +205,20 @@ func (s *DSCService) GetInterfacesTable(system string, colFilter interface{}, pa
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
 	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"IMM_INTERFACE", "CDE_COUNT", "PROCESS_OWNER",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("IMM_INTERFACE"),
-			colFilterM.GetString("CDE_COUNT"),
-			colFilterM.GetString("PROCESS_OWNER"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -238,16 +240,20 @@ func (s *DSCService) GetInterfacesCDETable(system, dspName string, colFilter int
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system, dspName)
 
 	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"CDE", "DESCRIPTION", "TABLE_NAME", "COLUMN_NAME",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("CDE"),
-			colFilterM.GetString("DESCRIPTION"),
-			colFilterM.GetString("TABLE_NAME"),
-			colFilterM.GetString("COLUMN_NAME"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")

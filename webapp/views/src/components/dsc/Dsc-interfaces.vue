@@ -1,12 +1,7 @@
 <style>
-/* table.v-table thead th > div.btn-group {
-  	width: auto;
-}
-
-.header-filter-icon .dropdown-menu {
-	overflow: scroll;
-	height: 200px;
-} */
+#table-dsc-interfaces table.v-table tr th:nth-of-type(1){width: 40% !important;}
+#table-dsc-interfaces table.v-table tr th:nth-of-type(2){width: 32% !important;}
+#table-dsc-interfaces table.v-table tr th:nth-of-type(3){width: 38% !important;}
 </style>
 
 <template>
@@ -56,7 +51,8 @@
                     :expand="false"
                     :must-sort="true"
                     item-key="ID"
-                    class="table-v1">
+                    class="table-v1"
+                    id="table-dsc-interfaces">
                   <template slot="headerCell" slot-scope="props">
                     <tableheader :storeName="storeName" :props="props" :which="'left'"/>
                   </template>

@@ -18,20 +18,20 @@
             </b-row>
         </b-container>
 
-        <b-container>
-            <b-row>
-                <b-col sm=12 md=1 lg=1 />
+        <b-container fluid style="overflow-x: auto; width: max-content;">
+            <!-- <b-row> -->
+                <!-- <b-col sm=12 md=1 lg=1 /> -->
 
-                <b-col sm=12 md=5 lg=5>
+                <div class="d-inline-block mx-3 mb-3">
                     <dsc-my />
-                </b-col>
+                </div>
 
-                <b-col sm=12 md=5 lg=5>
+                <div class="d-inline-block mx-3 mb-3">
                     <dsc-all />
-                </b-col>
+                </div>
 
-                <b-col sm=12 md=1 lg=1 />
-            </b-row>
+                <!-- <b-col sm=12 md=1 lg=1 /> -->
+            <!-- </b-row> -->
 
             <!-- <transition name="fade" mode="out-in">
                 <router-view></router-view>

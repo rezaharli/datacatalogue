@@ -1,3 +1,7 @@
+<style>
+#table-rfo-priority table.v-table.v-datatable tbody tr {display: table-row;}
+</style>
+
 <template>
     <v-content class="mx-4 my-5">
         <b-container fluid>
@@ -53,7 +57,8 @@
                     :expand="false"
                     :must-sort="true"
                     item-key="ID"
-                    class="table-v1">
+                    class="table-v1"
+                    id="table-rfo-priority">
                   <template slot="headerCell" slot-scope="props">
                     <tableheader :storeName="storeName" :props="props" :which="'left'"/>
                   </template>
@@ -77,7 +82,7 @@
                       <td v-bind:style="{ width: store.left.colWidth['PRIORITY_REPORT'] + 'px' }" 
                           :rowspan="props.item.expanded ? props.item.rowspanAcuan : 1" class="text-capitalize text-title">
                         <b-link @click="props.item.expanded = !props.item.expanded">
-                          <tablecell showOn="hover" :fulltext="props.item.PRIORITY_REPORT"></tablecell></b-link></td>
+                          {{props.item.PRIORITY_REPORT}}</b-link></td>
 
                       <td 
                           v-bind:style="{ width: store.left.colWidth['PRIORITY_REPORT_RATIONALE'] + 'px' }" 

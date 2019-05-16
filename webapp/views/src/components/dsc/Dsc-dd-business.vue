@@ -1,3 +1,19 @@
+<style>
+/* #table-dsc-dd-business table.v-table tr {display: block;} */
+#table-dsc-dd-business table.v-table.v-datatable thead{
+    width: unset;
+    display: table-header-group;
+    padding-right: unset;
+}
+#table-dsc-dd-business table.v-table.v-datatable tbody{
+    display:table-row-group;
+    overflow:auto;
+    max-height:unset;
+    width:unset;
+}
+#table-dsc-dd-business table.v-table.v-datatable tbody tr {display: table-row;}
+</style>
+
 <template>
     <b-row style="margin-top: 10px;margin-bottom: 10px;">
       <b-col>
@@ -12,7 +28,8 @@
             :expand="false"
             :must-sort="true"
             item-key="ID"
-            class="table-v2">
+            class="table-v2"
+            id="table-dsc-dd-business">
           <template slot="headerCell" slot-scope="props">
             <tableheader :storeName="storeName" :props="props" :which="'left'"/>
           </template>

@@ -33,14 +33,20 @@ func (s *DPOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 	}
 
 	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"DSP_NAME", "DSP_OWNER",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("DSP_NAME"),
-			colFilterM.GetString("DSP_OWNER"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -92,20 +98,20 @@ func (s *DPOService) GetDataelementsTable(system string, colFilter interface{}, 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
 	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"SYSTEM_NAME", "ITAM_ID", "ALIAS_NAME", "CDE", "TABLE_NAME", "COLUMN_NAME", "ULT_SYSTEM_NAME", "DATA_SLA",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "", "", "", "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("SYSTEM_NAME"),
-			colFilterM.GetString("ITAM_ID"),
-			colFilterM.GetString("ALIAS_NAME"),
-			colFilterM.GetString("CDE"),
-			colFilterM.GetString("TABLE_NAME"),
-			colFilterM.GetString("COLUMN_NAME"),
-			colFilterM.GetString("ULT_SYSTEM_NAME"),
-			colFilterM.GetString("DATA_SLA"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -128,15 +134,20 @@ func (s *DPOService) GetDatalineageTable(system string, colFilter interface{}, p
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
 	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"PR_NAME", "SYSTEM_NAME", "CDE_COUNT",
+	)
+
 	colFilterM, err := toolkit.ToM(colFilter)
 	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "")
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
 	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("PR_NAME"),
-			colFilterM.GetString("SYSTEM_NAME"),
-			colFilterM.GetString("CDE_COUNT"),
-		)
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")

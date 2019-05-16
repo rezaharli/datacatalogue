@@ -201,7 +201,7 @@ table.v-table tbody tr td.hidden{display: none;} */
 .card .v-table__overflow,
 .table-v1 .v-table__overflow,
 .table-v2 .v-table__overflow {overflow-x: auto; overflow-y: visible;}
-.table-v1.table-w-button-left .v-table thead tr th:first-of-type {width: 100px;}
+/* .table-v1.table-w-button-left .v-table thead tr th:first-of-type {width: 100px;} */
 .card .v-datatable__actions{justify-content: space-between;}
 .card .v-datatable__actions__select,
 .card .v-datatable__actions__range-controls {
@@ -274,7 +274,7 @@ table.v-table tbody tr td.hidden{display: none;} */
 .table-v1 table.v-table thead tr th .v-icon.icon-filter {color: #fff !important; left: unset;}
 .table-v1 table.v-table thead tr th .v-icon.icon-filter.icon-active {color: #397fa4 !important; }
 .table-v1 table.v-table thead tr th .v-icon {color: #fff !important;}
-.table-v1 table.v-table thead tr th:first-of-type .v-icon {left: 15px;}
+/* .table-v1 table.v-table thead tr th:first-of-type .v-icon {left: 15px;} */
 .table-v1 table.v-table tbody tr {border-bottom: none !important;}
 .table-v1 > .v-table__overflow > table.v-table > tbody > tr.odd,
 .table-v1 > .v-table__overflow > table.v-table > tbody > tr.odd + .v-datatable__expand-row .v-table {background-color: #ffffff;}
@@ -353,4 +353,28 @@ table.v-table.v-datatable .sticky {
     z-index: 2;
     background-color: #fff;
 }
-table.v-table thead.sticky .v-datatable__progress {visibility: hidden;}
+table.v-table.v-datatable thead.sticky .v-datatable__progress {visibility: hidden;}
+
+table.v-table.v-datatable thead,
+table.v-table.v-datatable tfoot {
+    width: 100%;/* scrollbar is average 1em/16px width, remove it from thead width */
+    display: block;
+    padding-right: 17px;
+}
+table.v-table.v-datatable tbody{
+    display:block;
+    overflow:auto;
+    max-height:420px;
+    width:100%;
+}
+table.v-table.v-datatable tbody tr {display: block;}
+table.v-table.v-datatable thead tr,
+table.v-table.v-datatable tfoot tr {
+    /* display:block; */
+    position: relative;
+}
+table.v-table.v-datatable th,
+table.v-table.v-datatable td {
+    /* border: 1px solid #f00;  */
+    box-sizing: border-box;
+}

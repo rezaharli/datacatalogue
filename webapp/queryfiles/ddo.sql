@@ -15,12 +15,6 @@ SELECT DISTINCT
         INNER JOIN TBL_ROLE RL ON TLRP.ROLE_ID = RL.ID AND UPPER(RL.ROLE_NAME) = 'DATA DOMAIN OWNER'
         INNER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
     WHERE ('ALL' = '?' OR TP.BANK_ID = '?')
-        AND (
-            upper(NVL(TC.NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(TSC.NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(TP.FIRST_NAME||' '||TP.LAST_NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(TP.BANK_ID, ' ')) LIKE upper('%?%')
-        )
     ORDER BY TC.NAME, TSC.NAME
 
 -- name: ddo-view-homepage
@@ -81,10 +75,6 @@ SELECT
         INNER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
         INNER JOIN TBL_BUSINESS_TERM BT ON TSC.ID = BT.PARENT_ID
     WHERE TSC.NAME = '?' -- SUBCATEGORY NAME
-        AND (
-            upper(NVL(BT.BT_NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(BT.DESCRIPTION,' ')) LIKE upper('%?%')
-        )
 
 -- name: ddo-systems
 SELECT DISTINCT
@@ -108,9 +98,6 @@ SELECT DISTINCT
         LEFT OUTER JOIN TBL_MD_RESOURCE RES ON TAB.RESOURCE_ID = RES.ID
         LEFT OUTER JOIN TBL_SYSTEM SYS ON RES.SYSTEM_ID = SYS.ID
     WHERE TSC.NAME = '?' -- SUBCATEGORY NAME
-        AND (
-            upper(NVL(SYS.SYSTEM_NAME, ' ')) LIKE upper('%?%')
-        )
 
 -- name: ddo-systems-businessterm
 SELECT DISTINCT
@@ -138,18 +125,13 @@ SELECT DISTINCT
         LEFT OUTER JOIN TBL_SYSTEM SYS ON RES.SYSTEM_ID = SYS.ID
     WHERE TSC.NAME = '?' -- SUBCATEGORY NAME
         AND NVL(SYS.SYSTEM_NAME, ' ') = '?' -- SYSTEM NAME
-        AND (
-            upper(NVL(BT.BT_NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(TAB.NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(COL.NAME, ' ')) LIKE upper('%?%')
-        )
     ORDER BY BT.BT_NAME, TAB.NAME, COL.NAME
 
 -- name: ddo-downstream
 SELECT DISTINCT
         TC.NAME                                                 AS DATA_DOMAIN,
         TSC.NAME                                                AS SUB_DOMAINS,
-        COUNT(DISTINCT DP.NAME) OVER ()                         AS DP_COUNT,
+        COUNT(DISTINCT NVL(DP.NAME,' ')) OVER ()                         AS DP_COUNT,
         NVL(DP.NAME,' ')                                        AS DP_NAME,
 		TP.FIRST_NAME||' '|| TP.LAST_NAME     					AS PROCESS_OWNER,
         COUNT(DISTINCT BT.BT_NAME) OVER (PARTITION BY DP.NAME)  AS BT_COUNT,
@@ -166,10 +148,6 @@ SELECT DISTINCT
 		LEFT OUTER JOIN TBL_ROLE RL ON TLRP.ROLE_ID = RL.ID AND UPPER(RL.ROLE_NAME) = 'DOWNSTREAM PROCESS OWNER'
 		LEFT OUTER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
     WHERE TSC.NAME = '?' -- SUBCATEGORY NAME
-        AND (
-            upper(NVL(TC.NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(DP.NAME, ' ')) LIKE upper('%?%')
-        )
     ORDER BY TC.NAME, TSC.NAME, NVL(DP.NAME,' ')
 
 -- name: ddo-downstream-businessterm
@@ -187,36 +165,28 @@ SELECT DISTINCT
         GST.NAME                                                    AS GS_TABLE_NAME,
         GSC.NAME                                                    AS GS_COLUMN_NAME
     FROM
-        TBL_DS_PROCESSES DSP
-        INNER JOIN TBL_DS_PROCESS_DETAIL DSPD ON DSP.ID = DSPD.PROCESS_ID    
-        INNER JOIN TBL_LINK_COLUMN_BUSINESS_TERM CBT ON DSPD.COLUMN_ID = CBT.COLUMN_ID        
-        INNER JOIN TBL_MD_COLUMN C ON C.ID = CBT.COLUMN_ID
-        INNER JOIN TBL_MD_COLUMN_DETAILS CD ON C.ID = CD.COLUMN_ID
-        INNER JOIN TBL_MD_TABLE T ON T.ID = C.TABLE_ID
-        INNER JOIN TBL_MD_RESOURCE R ON R.ID = T.RESOURCE_ID
-        INNER JOIN TBL_SYSTEM S ON S.ID = R.SYSTEM_ID 
-        LEFT OUTER JOIN TBL_BUSINESS_TERM BT ON CBT.BUSINESS_TERM_ID = BT.ID
-		LEFT OUTER JOIN TBL_SUBCATEGORY TSC ON BT.PARENT_ID = TSC.ID AND UPPER(TSC.TYPE) = 'SUB DATA DOMAIN'
-		LEFT OUTER JOIN TBL_CATEGORY TC ON TSC.CATEGORY_ID = TC.ID
+        TBL_CATEGORY TC
+        INNER JOIN TBL_SUBCATEGORY TSC ON TSC.CATEGORY_ID = TC.ID AND UPPER(TSC.TYPE) = 'SUB DATA DOMAIN'
+        INNER JOIN TBL_BUSINESS_TERM BT ON TSC.ID = BT.PARENT_ID
+        LEFT OUTER JOIN TBL_LINK_COLUMN_BUSINESS_TERM CBT ON BT.ID = CBT.BUSINESS_TERM_ID
+        LEFT OUTER JOIN TBL_MD_COLUMN C ON CBT.COLUMN_ID = C.ID
+        LEFT OUTER JOIN TBL_MD_TABLE T ON T.ID = C.TABLE_ID
+        LEFT OUTER JOIN TBL_MD_COLUMN_DETAILS CD ON C.ID = CD.COLUMN_ID
+        LEFT OUTER JOIN TBL_MD_RESOURCE R ON R.ID = T.RESOURCE_ID
+        LEFT OUTER JOIN TBL_SYSTEM S ON S.ID = R.SYSTEM_ID
+        LEFT OUTER JOIN TBL_DS_PROCESS_DETAIL DPD ON C.ID = DPD.COLUMN_ID
+        LEFT OUTER JOIN TBL_DS_PROCESSES DP ON DP.ID = DPD.PROCESS_ID
+        LEFT OUTER JOIN TBL_LINK_ROLE_PEOPLE TLRP ON TLRP.OBJECT_ID = DP.ID AND TLRP.OBJECT_TYPE = 'PROCESSES'
+        LEFT OUTER JOIN TBL_ROLE RL ON TLRP.ROLE_ID = RL.ID AND UPPER(RL.ROLE_NAME) = 'DOWNSTREAM PROCESS OWNER'
+        LEFT OUTER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
         LEFT OUTER JOIN TBL_LINK_COLUMN_GOLDEN_SOURCE CGS ON CBT.COLUMN_ID = CGS.COLUMN_ID
         LEFT OUTER JOIN TBL_MD_COLUMN GSC ON GSC.ID = CGS.GOLDEN_SOURCE_COLUMN_ID
         LEFT OUTER JOIN TBL_MD_TABLE GST ON GST.ID = GSC.TABLE_ID
         LEFT OUTER JOIN TBL_MD_RESOURCE GSR ON GSR.ID = GST.RESOURCE_ID
         LEFT OUTER JOIN TBL_SYSTEM GS ON GS.ID = GSR.SYSTEM_ID
         LEFT OUTER JOIN TBL_SYSTEM TGS ON TGS.ID = BT.TARGET_GOLDEN_SOURCE_ID
-    WHERE NVL(DSP.NAME, ' ') = '?' -- DP NAME -- LC-FCC |Transaction Monitoring
+    WHERE NVL(DP.NAME, ' ') = '?' -- DP NAME -- LC-FCC |Transaction Monitoring
 	    AND TSC.NAME = '?'
-        AND (
-            upper(NVL(BT.BT_NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(TGS.SYSTEM_NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(T.NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(C.NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(CASE WHEN S.ITAM_ID = GS.ITAM_ID THEN 'YES' ELSE 'NO' END, ' ')) LIKE upper('%?%')
-            AND upper(NVL(CD.ALIAS_NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(GS.SYSTEM_NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(GST.NAME, ' ')) LIKE upper('%?%')
-            AND upper(NVL(GSC.NAME, ' ')) LIKE upper('%?%')
-        )
     ORDER BY BT.BT_NAME, TGS.SYSTEM_NAME, T.NAME, C.NAME
 
 -- name: details

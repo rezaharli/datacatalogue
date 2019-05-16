@@ -1,5 +1,6 @@
 <style>
   @import '../../assets/styles/dashboard.css';
+  #table-rfo-all table.v-table.v-datatable tbody tr {display: table-row;}
 </style>
 
 <template>
@@ -32,7 +33,8 @@
                     :expand="false"
                     :must-sort="true"
                     item-key="ID"
-                    class="card-content">
+                    class="card-content"
+                    id="table-rfo-all">
 
                   <template slot="headerCell" slot-scope="props">
                     <tableheader :storeName="storeName" :props="props" :which="'left'" />
@@ -52,49 +54,49 @@
 
                   <template slot="items" slot-scope="props">
                     <tr>
-                      <td v-if="isDisplayed('PRINCIPAL_RISK_TYPES')" :rowspan="props.item.PRINCIPAL_RISK_TYPESsVal.length + 1">
+                      <td v-bind:style="{ width: store.left.colWidth['PRINCIPAL_RISK_TYPES'] + 'px' }" v-if="isDisplayed('PRINCIPAL_RISK_TYPES')" :rowspan="props.item.PRINCIPAL_RISK_TYPESsVal.length + 1">
                         <tablecell :fulltext="props.item.PRINCIPAL_RISK_TYPES" showOn="hover"></tablecell></td>
                       
-                      <td v-if="isDisplayed('RISK_SUB_TYPE')">
+                      <td v-bind:style="{ width: store.left.colWidth['RISK_SUB_TYPE'] + 'px' }" v-if="isDisplayed('RISK_SUB_TYPE')">
                         <b-link @click.stop="showRightTable(props.item)">
                           <tablecell :fulltext="props.item.RISK_SUB_TYPE" showOn="hover"></tablecell></b-link></td>
                       
-                      <td v-if="isDisplayed('RISK_FRAMEWORK_OWNER')">
+                      <td v-bind:style="{ width: store.left.colWidth['RISK_FRAMEWORK_OWNER'] + 'px' }" v-if="isDisplayed('RISK_FRAMEWORK_OWNER')">
                         <tablecell :fulltext="props.item.RISK_FRAMEWORK_OWNER" showOn="click"></tablecell></td>
                       
-                      <td v-if="isDisplayed('RISK_REPORTING_LEAD')">
+                      <td v-bind:style="{ width: store.left.colWidth['RISK_REPORTING_LEAD'] + 'px' }" v-if="isDisplayed('RISK_REPORTING_LEAD')">
                         <tablecell :fulltext="props.item.RISK_REPORTING_LEAD" showOn="click"></tablecell></td>
                       
-                      <td v-if="isDisplayed('PR_COUNT')">
+                      <td v-bind:style="{ width: store.left.colWidth['PR_COUNT'] + 'px' }" v-if="isDisplayed('PR_COUNT')">
                         <b-link @click.stop="showRightTable(props.item)">
                           <tablecell :fulltext="props.item.PR_COUNT" showOn="click"></tablecell></b-link></td>
                       
-                      <td v-if="isDisplayed('CRM_COUNT')">
+                      <td v-bind:style="{ width: store.left.colWidth['CRM_COUNT'] + 'px' }" v-if="isDisplayed('CRM_COUNT')">
                         <tablecell :fulltext="props.item.CRM_COUNT" showOn="click"></tablecell></td>
                       
-                      <td v-if="isDisplayed('CDE_COUNT')">
+                      <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }" v-if="isDisplayed('CDE_COUNT')">
                         <tablecell :fulltext="props.item.CDE_COUNT" showOn="click"></tablecell></td>
                     </tr>
 
                     <tr :key="props.item.ID + '' + i" v-for="(item, i) in props.item.PRINCIPAL_RISK_TYPESsVal">
-                      <td v-if="isDisplayed('RISK_SUB_TYPE')">
+                      <td v-bind:style="{ width: store.left.colWidth['RISK_SUB_TYPE'] + 'px' }" v-if="isDisplayed('RISK_SUB_TYPE')">
                         <b-link @click.stop="showRightTable(item)">
                           <tablecell :fulltext="item.RISK_SUB_TYPE" showOn="hover"></tablecell></b-link></td>
                       
-                      <td v-if="isDisplayed('RISK_FRAMEWORK_OWNER')">
+                      <td v-bind:style="{ width: store.left.colWidth['RISK_FRAMEWORK_OWNER'] + 'px' }" v-if="isDisplayed('RISK_FRAMEWORK_OWNER')">
                         <tablecell :fulltext="item.RISK_FRAMEWORK_OWNER" showOn="click"></tablecell></td>
                       
-                      <td v-if="isDisplayed('RISK_REPORTING_LEAD')">
+                      <td v-bind:style="{ width: store.left.colWidth['RISK_REPORTING_LEAD'] + 'px' }" v-if="isDisplayed('RISK_REPORTING_LEAD')">
                         <tablecell :fulltext="item.RISK_REPORTING_LEAD" showOn="click"></tablecell></td>
                       
-                      <td v-if="isDisplayed('PR_COUNT')">
+                      <td v-bind:style="{ width: store.left.colWidth['PR_COUNT'] + 'px' }" v-if="isDisplayed('PR_COUNT')">
                         <b-link @click.stop="showRightTable(props.item)">
                           <tablecell :fulltext="item.PR_COUNT" showOn="click"></tablecell></b-link></td>
                       
-                      <td v-if="isDisplayed('CRM_COUNT')">
+                      <td v-bind:style="{ width: store.left.colWidth['CRM_COUNT'] + 'px' }" v-if="isDisplayed('CRM_COUNT')">
                         <tablecell :fulltext="item.CRM_COUNT" showOn="click"></tablecell></td>
                       
-                      <td v-if="isDisplayed('CDE_COUNT')">
+                      <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }" v-if="isDisplayed('CDE_COUNT')">
                         <tablecell :fulltext="item.CDE_COUNT" showOn="click"></tablecell></td>
                     </tr>
                   </template>

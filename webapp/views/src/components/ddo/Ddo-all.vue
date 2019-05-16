@@ -1,5 +1,8 @@
 <style>
-  @import '../../assets/styles/dashboard.css';
+@import '../../assets/styles/dashboard.css';
+#table-ddo-all table.v-table tr th:nth-of-type(1){width: 30% !important;}
+#table-ddo-all table.v-table tr th:nth-of-type(2){width: 30% !important;}
+#table-ddo-all table.v-table tr th:nth-of-type(3){width: 40% !important;}
 </style>
 
 <template>
@@ -28,7 +31,8 @@
                 :expand="false"
                 :must-sort="true"
                 item-key="ID"
-                class="card-content">
+                class="card-content"
+                id="table-ddo-all">
 
               <template slot="headerCell" slot-scope="props">
                 <tableheader :storeName="storeName" :props="props" :which="'left'" />
