@@ -152,9 +152,9 @@ const mutations = {
         state.all.left.isLoading = true;
     },
     getLeftTableSuccess(state, res) {
-        state.all.left.source = res.DataFlat;
-        state.all.left.display = res.Data;
-        state.all.left.totalItems = res.Data[0] ? res.Data[0].RESULT_COUNT : 0;
+        state.all.left.source = res.Data.Flat;
+        state.all.left.display = res.Data.Grouped;
+        state.all.left.totalItems = res.Data.Flat[0] ? res.Data.Flat[0].RESULT_COUNT : 0;
 
         state.all.left.isLoading = false;
     },

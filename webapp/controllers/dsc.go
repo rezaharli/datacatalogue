@@ -313,12 +313,16 @@ func (c *DSC) GetDDTable(k *knot.WebContext) {
 		return
 	}
 
-	systems, _, err := s.NewDSCService().GetDDTable(system, colFilter, pagination)
+	tableRows, _, err := s.NewDSCService().GetDDTable(system, colFilter, pagination)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
-	h.WriteResultOK(k, res, systems)
+	ret := toolkit.M{}
+	ret.Set("Flat", tableRows)
+	ret.Set("Grouped", tableRows)
+
+	h.WriteResultOK(k, res, ret)
 	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
 }
