@@ -11,6 +11,7 @@
     max-height:unset;
     width:unset;
 }
+#table-access-role table.v-table.v-datatable tbody tr {display: table-row;}
 </style>
 
 <template>

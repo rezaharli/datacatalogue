@@ -10,6 +10,7 @@
     max-height:unset;
     width:unset;
 }
+#table-access-users table.v-table.v-datatable tbody tr {display: table-row;}
 </style>
 
 <template>
