@@ -81,6 +81,12 @@
 			"revisionTime": "2018-02-03T21:58:53Z"
 		},
 		{
+			"checksumSHA1": "7WnGUurFrC+xsk6tPIY1wsTvCyw=",
+			"path": "github.com/novalagung/gubrak",
+			"revision": "149e14d37ef6f87b617e2fe8a9645e52bb1aaf6c",
+			"revisionTime": "2019-03-15T17:20:14Z"
+		},
+		{
 			"checksumSHA1": "I7hloldMJZTqUx6hbVDp5nk9fZQ=",
 			"path": "github.com/pkg/errors",
 			"revision": "856c240a51a2bf8fb8269ea7f3f9b046aadde36e",
