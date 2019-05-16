@@ -283,65 +283,56 @@ SELECT DISTINCT
 		ts.id,
 		tmt.id				as tmtid,
 		tmc.id				as tmcid,
-		ts.system_name			as system_name,
-		ts.itam_id				as itam_id,
-		tp.first_name||' '||tp.last_name		as dataset_custodian,
-		tp.bank_id				as bank_id,
-		tmcd.alias_name			as business_alias_name,
-		tmt.DISPLAY_NAME			as table_name,
-		tmc.DISPLAY_NAME			as column_name,
-		tmcd.description			as business_alias_description,
-		tmcd.cde				as cde_yes_no,
-		tmc.data_type				as data_type,
-		tmc.data_length			as data_length,
-		tmcd.example				as example,
-		tmcd.derived				as derived_yes_no,
-		tmcd.Derivation_Logic			as derivation_logic,
-		case when tmcd.Sourced_from_Upstream = 1 then 'Yes' else 'No' End	as sourced_from_upstream_yes_no,
-		tmcd.System_Checks			as system_checks,
-		tc.Name				as domain,
-		tsc.name				as subdomain,
-		ppl.first_name||' '||ppl.last_name		as domain_owner,
-		tbt.bt_name				as business_term,
-		tbt.description 				as business_term_description,
-		tpol.info_asset_name			as information_asset_names,
-		tpol.description 			as information_asset_description,
-		tpol.confidentiality			as confidentiality,
-		tpol.integrity				as integrity,
-		tpol.availability			as availability,
-		tpol.overall_cia_rating			as overall_cia_rating,
-		tmt.record_category			as record_categories,
-		tmcd.pii_flag				as pii_flag
-	FROM tbl_system ts
-		LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
-		LEFT JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
-		LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
-		inner join tbl_md_resource tmr ON ts.id = tmr.system_id
-		inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
-		inner join tbl_md_column tmc ON tmt.id = tmc.table_id
+		TS.SYSTEM_NAME			AS SYSTEM_NAME,
+		TMCD.ALIAS_NAME			AS BUSINESS_ALIAS_NAME,
+		TMT.DISPLAY_NAME			AS TABLE_NAME,
+		TMC.DISPLAY_NAME			AS COLUMN_NAME,
+		TMCD.DESCRIPTION			AS BUSINESS_ALIAS_DESCRIPTION,
+		TMCD.CDE				AS CDE_YES_NO,
+		TMC.DATA_TYPE				AS DATA_TYPE,
+		TMC.DATA_LENGTH			AS DATA_LENGTH,
+		TMCD.EXAMPLE				AS EXAMPLE,
+		TMCD.DERIVED				AS DERIVED_YES_NO,
+		TMCD.DERIVATION_LOGIC			AS DERIVATION_LOGIC,
+		CASE WHEN TMCD.SOURCED_FROM_UPSTREAM = 1 THEN 'YES' ELSE 'NO' END	AS SOURCED_FROM_UPSTREAM_YES_NO,
+		TMCD.SYSTEM_CHECKS			AS SYSTEM_CHECKS,
+		TC.NAME				AS DOMAIN,
+		TSC.NAME				AS SUBDOMAIN,
+		PPL.FIRST_NAME||' '||PPL.LAST_NAME		AS DOMAIN_OWNER,
+		TBT.BT_NAME				AS BUSINESS_TERM,
+		TBT.DESCRIPTION 				AS BUSINESS_TERM_DESCRIPTION,
+		TPOL.INFO_ASSET_NAME			AS INFORMATION_ASSET_NAMES,
+		TPOL.DESCRIPTION 			AS INFORMATION_ASSET_DESCRIPTION,
+		TPOL.CONFIDENTIALITY			AS CONFIDENTIALITY,
+		TPOL.INTEGRITY				AS INTEGRITY,
+		TPOL.AVAILABILITY			AS AVAILABILITY,
+		TPOL.OVERALL_CIA_RATING			AS OVERALL_CIA_RATING,
+		TMT.RECORD_CATEGORY			AS RECORD_CATEGORIES,
+		TMCD.PII_FLAG				AS PII_FLAG
+	FROM TBL_SYSTEM TS
+		INNER JOIN TBL_MD_RESOURCE TMR ON TS.ID = TMR.SYSTEM_ID
+		INNER JOIN TBL_MD_TABLE TMT ON TMR.ID = TMT.RESOURCE_ID
+		INNER JOIN TBL_MD_COLUMN TMC ON TMT.ID = TMC.TABLE_ID
 		INNER JOIN TBL_MD_COLUMN_DETAILS TMCD ON TMCD.COLUMN_ID = TMC.ID		
-		LEFT JOIN tbl_link_column_business_term LCBT ON TMC.ID = LCBT.COLUMN_ID 
-		LEFT JOIN tbl_business_term tbt ON LCBT.business_term_id = tbt.id
-		LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
-		LEFT JOIN Tbl_Link_Role_People tlrp_sdo ON tlrp_sdo.Object_ID = tsc.id AND tlrp_sdo.object_type = 'SUBCATEGORY'
-		LEFT JOIN Tbl_Role rl ON tlrp_sdo.role_id = rl.id and rl.role_name = 'Data Domain Owner'
-		LEFT JOIN Tbl_People ppl ON tlrp_sdo.people_id = ppl.id
-		LEFT JOIN tbl_policy tpol ON tbt.policy_id = tpol.id
-		left join tbl_link_column_interface ci on tmc.id = ci.column_id
-		left join tbl_system ips on ci.imm_prec_system_id = ips.id
-		left join tbl_system iss on ci.imm_succ_system_id = iss.id
-		LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
-		inner join
+		LEFT JOIN TBL_LINK_COLUMN_BUSINESS_TERM LCBT ON TMC.ID = LCBT.COLUMN_ID 
+		LEFT JOIN TBL_BUSINESS_TERM TBT ON LCBT.BUSINESS_TERM_ID = TBT.ID
+		LEFT JOIN TBL_SUBCATEGORY TSC ON TBT.PARENT_ID = TSC.ID
+		LEFT JOIN TBL_LINK_ROLE_PEOPLE TLRP_SDO ON TLRP_SDO.OBJECT_ID = TSC.ID AND TLRP_SDO.OBJECT_TYPE = 'SUBCATEGORY'
+		LEFT JOIN TBL_ROLE RL ON TLRP_SDO.ROLE_ID = RL.ID AND UPPER(RL.ROLE_NAME) = 'DATA DOMAIN OWNER'
+		LEFT JOIN TBL_PEOPLE PPL ON TLRP_SDO.PEOPLE_ID = PPL.ID
+		LEFT JOIN TBL_POLICY TPOL ON TBT.POLICY_ID = TPOL.ID
+		LEFT JOIN TBL_CATEGORY TC ON TSC.CATEGORY_ID = TC.ID
+		INNER JOIN
 		(
 			SELECT
-			DISTINCT ts.id as sys_id, tmr.id as res_id, tmt.id as tab_id
-			FROM tbl_system ts
-				inner join tbl_md_resource tmr ON ts.id = tmr.system_id
-				inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
-				inner join tbl_md_column tmc ON tmt.id = tmc.table_id
-        INNER JOIN TBL_MD_COLUMN_DETAILS TMCD ON TMCD.COLUMN_ID = TMC.ID
-		WHERE 
-				UPPER(ts.system_name) = UPPER('?')
-				AND CDE = 1
-		) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id and tmt.id = cde.tab_id
-	ORDER BY tmt.DISPLAY_NAME, tmc.DISPLAY_NAME
+					DISTINCT TS.ID AS SYS_ID, TMR.ID AS RES_ID, TMT.ID AS TAB_ID
+				FROM TBL_SYSTEM TS
+					INNER JOIN TBL_MD_RESOURCE TMR ON TS.ID = TMR.SYSTEM_ID
+					INNER JOIN TBL_MD_TABLE TMT ON TMR.ID = TMT.RESOURCE_ID
+					INNER JOIN TBL_MD_COLUMN TMC ON TMT.ID = TMC.TABLE_ID
+        			INNER JOIN TBL_MD_COLUMN_DETAILS TMCD ON TMCD.COLUMN_ID = TMC.ID
+				WHERE 
+					UPPER(TS.SYSTEM_NAME) = UPPER('?')
+					AND CDE = 1
+		) CDE ON TS.ID = CDE.SYS_ID AND TMR.ID = CDE.RES_ID AND TMT.ID = CDE.TAB_ID
+	ORDER BY TMT.DISPLAY_NAME, TMC.DISPLAY_NAME
