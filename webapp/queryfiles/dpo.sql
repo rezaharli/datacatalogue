@@ -17,21 +17,21 @@ SELECT DISTINCT
 
 -- name: dpo-view-homepage
 SELECT 
-    COUNT(DISTINCT CD.ALIAS_NAME)         AS DATA_ELEMENTS,
-    COUNT(DISTINCT SYS.SYSTEM_NAME)       AS UPSTREAM_DATA
-FROM
-    TBL_DS_PROCESSES TC
-    INNER JOIN TBL_DS_PROCESS_DETAIL TSC ON TSC.PROCESS_ID = TC.ID 
-    INNER JOIN TBL_MD_COLUMN COL ON TSC.COLUMN_ID = COL.ID
-    INNER JOIN TBL_MD_COLUMN_DETAILS CD ON CD.COLUMN_ID = COL.ID
-    INNER JOIN TBL_MD_TABLE TAB ON TAB.ID = COL.TABLE_ID
-    INNER JOIN TBL_MD_RESOURCE RES ON RES.ID = TAB.RESOURCE_ID
-    INNER JOIN TBL_SYSTEM SYS ON SYS.ID = RES.SYSTEM_ID
-WHERE TC.NAME = '?'
+        COUNT(DISTINCT CD.ALIAS_NAME)         AS DATA_ELEMENTS,
+        COUNT(DISTINCT SYS.SYSTEM_NAME)       AS UPSTREAM_DATA
+    FROM
+        TBL_DS_PROCESSES TC
+        INNER JOIN TBL_DS_PROCESS_DETAIL TSC ON TSC.PROCESS_ID = TC.ID 
+        INNER JOIN TBL_MD_COLUMN COL ON TSC.COLUMN_ID = COL.ID
+        INNER JOIN TBL_MD_COLUMN_DETAILS CD ON CD.COLUMN_ID = COL.ID
+        INNER JOIN TBL_MD_TABLE TAB ON TAB.ID = COL.TABLE_ID
+        INNER JOIN TBL_MD_RESOURCE RES ON RES.ID = TAB.RESOURCE_ID
+        INNER JOIN TBL_SYSTEM SYS ON SYS.ID = RES.SYSTEM_ID
+    WHERE TC.NAME = '?'
 
 -- name: dpo-dataelements
 SELECT DISTINCT
-        TC.NAME                                         AS DSP_NAME,
+        TC.NAME                                    	  AS DSP_NAME,
         COUNT(DISTINCT CD.ALIAS_NAME) OVER ()         AS COUNT_DATA_ELEMENTS,
         SYS.SYSTEM_NAME                               AS SYSTEM_NAME,
         SYS.ITAM_ID                                   AS ITAM_ID,
@@ -58,7 +58,7 @@ SELECT DISTINCT
         DSP.NAME                                                                        AS PROCESS_NAME,
         COUNT(DISTINCT SYS.SYSTEM_NAME) OVER ()                                         AS UPSTREAM_COUNT,
         COUNT(DISTINCT '') OVER ()                                                      AS PR_NAME_COUNT,
-        ''                                                                              AS PR_NAME,
+        ' '                                                                             AS PR_NAME,
         SYS.SYSTEM_NAME                                                                 AS SYSTEM_NAME, 
         COUNT(DISTINCT CD.ALIAS_NAME) OVER (PARTITION BY SYS.SYSTEM_NAME)               AS CDE_COUNT
     FROM TBL_DS_PROCESSES DSP
