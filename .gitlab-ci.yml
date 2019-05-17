@@ -30,9 +30,7 @@ artifact_upload:
   script:
     - sh build_linux.sh
     - mkdir -p ~/.ssh
-    - echo "$SERVER_SSH_KEY"
     - echo "$SERVER_SSH_KEY" | tr -d '\r' > ~/developer.pem
     - chmod 600 ~/developer.pem
     - ssh-keyscan -H 'go.eaciit.com' >> ~/.ssh/known_hosts
-    - echo "scp -i ~/developer.pem builds/*.zip $SERVER_USER@$SERVER_HOSTNAME:/data/nginx/files/$CI_PROJECT_NAME/"
     - scp -i ~/developer.pem builds/*.zip $SERVER_USER@$SERVER_HOSTNAME:/data/nginx/files/$CI_PROJECT_NAME/
