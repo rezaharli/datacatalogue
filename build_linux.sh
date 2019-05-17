@@ -1,7 +1,7 @@
 export GOOS=linux
 
 tanggal=`date +%Y%m%d_%H%M`
-foldername="$CI_PROJECT_NAME-$tanggal"
+foldername="$CI_PROJECT_NAME-dd-$tanggal"
 rm -r "builds"
 mkdir "builds"
 mkdir "builds/${foldername}"

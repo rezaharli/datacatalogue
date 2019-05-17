@@ -26,7 +26,7 @@ stages:
 artifact_upload:
   stage: build
   only:
-    - master
+    - master-edmp-dd
   script:
     - sh build_linux.sh
     - mkdir -p ~/.ssh
