@@ -1,5 +1,15 @@
 <style>
 #table-rfo-priority table.v-table.v-datatable tbody tr {display: table-row;}
+#table-rfo-priority table.v-table tr th:nth-of-type(1){width: 10% !important;}
+#table-rfo-priority table.v-table tr th:nth-of-type(2){width: 10% !important;}
+#table-rfo-priority table.v-table tr th:nth-of-type(3){width: 10% !important;}
+#table-rfo-priority table.v-table tr th:nth-of-type(4){width: 10% !important;}
+#table-rfo-priority table.v-table tr th:nth-of-type(5){width: 10% !important;}
+#table-rfo-priority table.v-table tr th:nth-of-type(6){width: 10% !important;}
+#table-rfo-priority table.v-table tbody tr td:first-of-type, 
+#table-rfo-priority table.v-table tfoot tr td:first-of-type {
+  padding-left: 30px;
+}
 </style>
 
 <template>
@@ -217,6 +227,12 @@ export default {
     this.store.tabName = this.storeName;
     this.store.system = this.$route.params.type;
     this.resetFilter();
+    setTimeout(() => {
+      this.setTableColumnsWidth($('#table-rfo-priority'));
+    }, 300);
+  },
+  updated() {
+    this.setTableColumnsWidth($('#table-rfo-priority'));
   },
   methods: {
     getLeftTable() {
@@ -239,6 +255,18 @@ export default {
         //     this.store.filters.right = {}
         //     this.getMyRightTable(this.$route.params.system);
         // }
+    },
+    setTableColumnsWidth(elem){
+      var tableElem = elem.find('.v-table__overflow > table.v-table');
+      var THs = tableElem.find('thead tr th');
+      var tbodyTR = tableElem.find('tbody tr');
+      THs.each(function (thIndex) {
+        var thWidth = $(this).width();
+        tbodyTR.each(function (tdIndex) {
+          var TDs = $(this).find('td:not([colspan])');
+          TDs.eq(thIndex).width(thWidth);
+        });
+      });
     },
   }
 };

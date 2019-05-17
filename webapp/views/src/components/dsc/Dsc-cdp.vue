@@ -1,7 +1,7 @@
 <style>
-#table-dsc-cdp table.v-table tr th:nth-of-type(1){width: 39% !important;}
-#table-dsc-cdp table.v-table tr th:nth-of-type(2){width: 39% !important;}
-#table-dsc-cdp table.v-table tr th:nth-of-type(3){width: 26% !important;}
+#table-dsc-cdp table.v-table tr th:nth-of-type(1){width: 25% !important; display: table-cell;}
+#table-dsc-cdp table.v-table tr th:nth-of-type(2){width: 20% !important; display: table-cell;}
+#table-dsc-cdp table.v-table tr th:nth-of-type(3){width: 15% !important; display: table-cell;}
 </style>
 
 <template>
@@ -147,6 +147,12 @@ export default {
     this.store.tabName = this.storeName;
     this.store.system = this.$route.params.system;
     this.resetFilter();
+    setTimeout(() => {
+      this.setTableColumnsWidth($('#table-dsc-cdp'));
+    }, 300);
+  },
+  updated() {
+    this.setTableColumnsWidth($('#table-dsc-cdp'));
   },
   methods: {
     getLeftTable() {
@@ -183,6 +189,18 @@ export default {
       this.$router.push(
         this.addressPath + "/" + param.TSID + "/" + param.ID + "/" + param.COLID
       );
+    },
+    setTableColumnsWidth(elem){
+      var tableElem = elem.find('.v-table__overflow > table.v-table');
+      var THs = tableElem.find('thead tr th');
+      var tbodyTR = tableElem.find('tbody tr');
+      THs.each(function (thIndex) {
+        var thWidth = $(this).width();
+        tbodyTR.each(function (tdIndex) {
+          var TDs = $(this).find('td:not([colspan])');
+          TDs.eq(thIndex).width(thWidth);
+        });
+      });
     }
   }
 };

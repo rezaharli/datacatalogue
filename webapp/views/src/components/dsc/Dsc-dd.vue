@@ -19,10 +19,10 @@
 
             <b-row>
                 <b-col>
-                    <v-tabs left class="page-tab">
-                      <v-tab class="px-2 mx-5" key="technical-metadata">Technical Metadata</v-tab>
-                      <v-tab class="px-2 mx-5" key="business-metadata">Business Metadata</v-tab>
-                      <v-tab class="px-2 mx-5" key="policy-related">Policy Related Information</v-tab>
+                    <v-tabs left id="page-tab" class="page-tab">
+                      <v-tab class="px-2 mx-5" key="technical-metadata" id="tab-technical" ref="technical">Technical Metadata</v-tab>
+                      <v-tab class="px-2 mx-5" key="business-metadata" id="tab-business" ref="business">Business Metadata</v-tab>
+                      <v-tab class="px-2 mx-5" key="policy-related" id="tab-policy" ref="policy">Policy Related Information</v-tab>
                       <!-- <v-tab class="px-2 mx-5" key="interfaces">Interfaces</v-tab> -->
 
                       <v-tab-item key="technical-metadata">

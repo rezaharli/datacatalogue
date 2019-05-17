@@ -1,5 +1,12 @@
 <style>
-#table-access-usage table.v-table.v-datatable thead{
+#table-access-usage table.v-table tr th:nth-of-type(1){width: 10% !important;}
+#table-access-usage table.v-table tr th:nth-of-type(2){width: 12% !important;}
+#table-access-usage table.v-table tr th:nth-of-type(3){width: 12% !important;}
+#table-access-usage table.v-table tr th:nth-of-type(4){width: 12% !important;}
+#table-access-usage table.v-table tr th:nth-of-type(5){width: 10% !important;}
+#table-access-usage table.v-table tr th:nth-of-type(6){width: 10% !important;}
+#table-access-usage table.v-table tr th:nth-of-type(7){width: 10% !important;}
+/* #table-access-usage table.v-table.v-datatable thead{
     width: unset;
     display: table-header-group;
     padding-right: unset;
@@ -10,7 +17,7 @@
     max-height:unset;
     width:unset;
 }
-#table-access-usage table.v-table.v-datatable tbody tr {display: table-row;}
+#table-access-usage table.v-table.v-datatable tbody tr {display: table-row;} */
 </style>
 
 <template>
@@ -153,6 +160,12 @@ export default {
     this.store.tabName = this.storeName;
     this.store.system = this.$route.params.system;
     this.resetFilter();
+    setTimeout(() => {
+      this.setTableColumnsWidth($('#table-access-usage'));
+      }, 300);
+  },
+  updated() {
+      this.setTableColumnsWidth($('#table-access-usage'));
   },
   methods: {
     getLeftTable() {
@@ -189,6 +202,18 @@ export default {
       this.$router.push(
         this.addressPath + "/" + param.TSID + "/" + param.ID + "/" + param.COLID
       );
+    },
+    setTableColumnsWidth(elem){
+        var tableElem = elem.find('.v-table__overflow > table.v-table');
+        var THs = tableElem.find('thead tr th');
+        var tbodyTR = tableElem.find('tbody tr');
+        THs.each(function (thIndex) {
+            var thWidth = $(this).width();
+            tbodyTR.each(function (tdIndex) {
+            var TDs = $(this).find('td:not([colspan])');
+            TDs.eq(thIndex).width(thWidth);
+            });
+        });
     }
   }
 };

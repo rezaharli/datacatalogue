@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"time"
+
 	"github.com/eaciit/toolkit"
 
 	"git.eaciitapp.com/sebar/knot"
@@ -293,6 +295,7 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 }
 
 func (c *DSC) GetDDTable(k *knot.WebContext) {
+	queryTime := time.Now()
 	res := toolkit.NewResult()
 
 	payload := toolkit.M{}
@@ -310,11 +313,16 @@ func (c *DSC) GetDDTable(k *knot.WebContext) {
 		return
 	}
 
-	systems, _, err := s.NewDSCService().GetDDTable(system, colFilter, pagination)
+	tableRows, _, err := s.NewDSCService().GetDDTable(system, colFilter, pagination)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
-	h.WriteResultOK(k, res, systems)
+	ret := toolkit.M{}
+	ret.Set("Flat", tableRows)
+	ret.Set("Grouped", tableRows)
+
+	h.WriteResultOK(k, res, ret)
+	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
 }

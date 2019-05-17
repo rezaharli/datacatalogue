@@ -55,12 +55,12 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 	if strings.Trim(BindUsernameLDAP, " ") != "" {
 		// Bind Through Config
 		// defer l.Unbind(BindUsernameLDAP, BindPasswordLDAP)
-		toolkit.Println("Bind with config:", BindUsernameLDAP, "-", BindPasswordLDAP)
+		// toolkit.Println("Bind with config:", BindUsernameLDAP, "-", BindPasswordLDAP)
 		err = l.Bind(BindUsernameLDAP, BindPasswordLDAP)
 		toolkit.Println("with -", err)
 	} else {
 		// defer l.Unbind(username, password)
-		toolkit.Println("Bind without config:", username, "-", password)
+		// toolkit.Println("Bind without config:", username, "-", password)
 		err = l.Bind(username, password)
 		toolkit.Println("without -", err)
 	}
@@ -74,8 +74,8 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 		if err == nil {
 			cond = true
 		} else {
-			toolkit.Println("#ERROR Binding to LDAP with username : ", username)
-			toolkit.Println("#ERROR Binding to LDAP with password : ", password)
+			// toolkit.Println("#ERROR Binding to LDAP with username : ", username)
+			// toolkit.Println("#ERROR Binding to LDAP with password : ", password)
 			toolkit.Println(err.Error())
 		}
 	} else {
@@ -83,8 +83,8 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 		if err == nil {
 			cond = true
 		} else {
-			toolkit.Println("#ERROR Binding to LDAP with username : ", username)
-			toolkit.Println("#ERROR Binding to LDAP with password : ", password)
+			// toolkit.Println("#ERROR Binding to LDAP with username : ", username)
+			// toolkit.Println("#ERROR Binding to LDAP with password : ", password)
 			toolkit.Println(err.Error())
 		}
 	}
@@ -229,8 +229,8 @@ func TryToLoginUsingLDAP(username, password string) (bool, LDAPDataList, error) 
 			toolkit.Println("#UserDNLDAP : ", configLDAPUserDN)
 		}
 
-		toolkit.Println("#Username : ", username)
-		toolkit.Println("#Password : ", password)
+		// toolkit.Println("#Username : ", username)
+		// toolkit.Println("#Password : ", password)
 		loginConf.Set("type", configLDAPType)
 
 		tlsconfig := tls.Config{}

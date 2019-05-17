@@ -868,7 +868,7 @@ export default {
               }, 100);
             }, 100);
           } else {
-            this.selectedDetailsImmediatePrecedingSystem = null;
+            this.selectedDetailsUltimateSourceSystem = null;
           }
 
           if (self.store.DetailsDomainView.length > 0){
