@@ -30,6 +30,7 @@ artifact_upload:
   script:
     - sh build_linux.sh
     - mkdir -p ~/.ssh
+    - echo "$SERVER_SSH_KEY"
     - echo "$SERVER_SSH_KEY" | tr -d '\r' > ~/developer.pem
     - chmod 600 ~/developer.pem
     - ssh-keyscan -H 'go.eaciit.com' >> ~/.ssh/known_hosts
