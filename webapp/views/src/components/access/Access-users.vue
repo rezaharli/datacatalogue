@@ -1,5 +1,13 @@
 <style>
-#table-access-users table.v-table.v-datatable thead{
+#table-access-users table.v-table tr th:nth-of-type(1){width: 10% !important;}
+#table-access-users table.v-table tr th:nth-of-type(2){width: 12% !important;}
+#table-access-users table.v-table tr th:nth-of-type(3){width: 12% !important;}
+#table-access-users table.v-table tr th:nth-of-type(4){width: 12% !important;}
+#table-access-users table.v-table tr th:nth-of-type(5){width: 10% !important;}
+#table-access-users table.v-table tr th:nth-of-type(6){width: 10% !important;}
+#table-access-users table.v-table tr th:nth-of-type(7){width: 10% !important;}
+#table-access-users table.v-table tr th:nth-of-type(8){width: 5% !important;}
+/* #table-access-users table.v-table.v-datatable thead{
     width: unset;
     display: table-header-group;
     padding-right: unset;
@@ -9,8 +17,8 @@
     overflow:auto;
     max-height:unset;
     width:unset;
-}
-#table-access-users table.v-table.v-datatable tbody tr {display: table-row;}
+} */
+/* #table-access-users table.v-table.v-datatable tbody tr {display: table-row;} */
 </style>
 
 <template>
@@ -85,9 +93,9 @@
                                     <tablecell showOn="hover" :fulltext="props.item.UPDATEDAT"></tablecell></td>
 
                                 <td v-bind:style="{ width: store.left.colWidth['ACTIONS'] + 'px' }" class="text-capitalize text-title">
-                                    <v-icon small class="mr-2" @click="editItem(props.item)" v-if="isMyself(props.item) || amIAdmin()">edit</v-icon>
+                                    <button @click="editItem(props.item)" v-if="isMyself(props.item) || amIAdmin()" type="button" class="btn btn-primary icon-only btn-md"><i class="fa fa-fw fa-pencil-alt"></i></button>
 
-                                    <v-icon small @click="deleteItem(props.item)" v-if="( ! (isMyself(props.item))) && amIAdmin()">delete</v-icon>
+                                    <button @click="deleteItem(props.item)" v-if="( ! (isMyself(props.item))) && amIAdmin()" type="button" class="btn btn-danger icon-only btn-md"><i class="fa fa-fw fa-trash"></i></button>
                                 </td>
                             </tr>
                         </template>
@@ -139,6 +147,14 @@ export default {
     },
     created() {
         this.getAllUsers();
+    },
+    mounted() {
+        setTimeout(() => {
+        this.setTableColumnsWidth($('#table-access-users'));
+        }, 300);
+    },
+    updated() {
+        this.setTableColumnsWidth($('#table-access-users'));
     },
     methods: {
         getAllUsers() {
@@ -193,6 +209,18 @@ export default {
             //     this.store.filters.right = {}
             //     this.getMyRightTable(this.$route.params.system);
             // }
+        },
+        setTableColumnsWidth(elem){
+            var tableElem = elem.find('.v-table__overflow > table.v-table');
+            var THs = tableElem.find('thead tr th');
+            var tbodyTR = tableElem.find('tbody tr');
+            THs.each(function (thIndex) {
+                var thWidth = $(this).width();
+                tbodyTR.each(function (tdIndex) {
+                var TDs = $(this).find('td:not([colspan])');
+                TDs.eq(thIndex).width(thWidth);
+                });
+            });
         },
     }
 }

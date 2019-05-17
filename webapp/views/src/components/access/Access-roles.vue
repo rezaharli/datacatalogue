@@ -1,6 +1,9 @@
 <style>
 @import '../../assets/styles/dashboard.css';
-#table-access-role table.v-table.v-datatable thead{
+#table-access-roles table.v-table tr th:nth-of-type(1){width: 10% !important;}
+#table-access-roles table.v-table tr th:nth-of-type(2){width: 10% !important;}
+#table-access-roles table.v-table tr th:nth-of-type(3){width: 10% !important;}
+/* #table-access-role table.v-table.v-datatable thead{
     width: unset;
     display: table-header-group;
     padding-right: unset;
@@ -11,7 +14,8 @@
     max-height:unset;
     width:unset;
 }
-#table-access-role table.v-table.v-datatable tbody tr {display: table-row;}
+#table-access-role table.v-table.v-datatable tbody tr {display: table-row;} */
+
 </style>
 
 <template>
@@ -27,7 +31,7 @@
                         :headers="headers"
                         :items="roles"
                         class="elevation-1 table-v1"
-                        id="table-access-role">
+                        id="table-access-roles">
                         <template slot="items" slot-scope="props">
                             <td>{{ props.item.RoleName }}</td>
                             <td>HOME</td>
@@ -113,6 +117,28 @@ export default {
                 { RoleName: 'RFO' },
             ]
         }
+    },
+    mounted() {
+        setTimeout(() => {
+        this.setTableColumnsWidth($('#table-access-roles'));
+        }, 300);
+    },
+    updated() {
+        this.setTableColumnsWidth($('#table-access-roles'));
+    },
+    methods: {
+        setTableColumnsWidth(elem){
+            var tableElem = elem.find('.v-table__overflow > table.v-table');
+            var THs = tableElem.find('thead tr th');
+            var tbodyTR = tableElem.find('tbody tr');
+            THs.each(function (thIndex) {
+                var thWidth = $(this).width();
+                tbodyTR.each(function (tdIndex) {
+                var TDs = $(this).find('td:not([colspan])');
+                TDs.eq(thIndex).width(thWidth);
+                });
+            });
+        },
     }
 }
 </script>
