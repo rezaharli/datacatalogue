@@ -6,6 +6,7 @@ import (
 
 	"github.com/eaciit/clit"
 	"github.com/eaciit/toolkit"
+	"github.com/novalagung/gubrak"
 
 	h "eaciit/datacatalogue/webapp/helpers"
 	m "eaciit/datacatalogue/webapp/models"
@@ -265,7 +266,7 @@ func (s *DSCService) GetInterfacesCDETable(system, dspName string, colFilter int
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
-func (s *DSCService) GetDDTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+func (s *DSCService) GetDDTable(system string, colFilter interface{}, pagination toolkit.M) (res []toolkit.M, total int, err error) {
 	gridArgs := GridArgs{}
 	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
 	gridArgs.QueryName = "dsc-view-dd"
@@ -344,7 +345,36 @@ func (s *DSCService) GetDDTable(system string, colFilter interface{}, pagination
 	}
 
 	gridArgs.GroupCol = "-"
-	return s.Base.ExecuteGridQueryFromFile(gridArgs)
+	result, total, err := s.Base.ExecuteGridQueryFromFile(gridArgs)
+
+	///////// --------------------------------------------------MODIFY RESULT
+	mappedResult, err := gubrak.Map(result, func(v toolkit.M, i int) toolkit.M {
+		if v.GetInt("CDE_YES_NO") == 1 {
+			v.Set("CDE_YES_NO", "Yes")
+		} else {
+			v.Set("CDE_YES_NO", "No")
+		}
+
+		if v.GetInt("DERIVED_YES_NO") == 1 {
+			v.Set("DERIVED_YES_NO", "Yes")
+		} else {
+			v.Set("DERIVED_YES_NO", "No")
+		}
+
+		if v.GetInt("PII_FLAG") == 1 {
+			v.Set("PII_FLAG", "Yes")
+		} else {
+			v.Set("PII_FLAG", "No")
+		}
+		return v
+	})
+	if err != nil {
+		res = []toolkit.M{}
+		return
+	}
+
+	res = mappedResult.([]toolkit.M)
+	return
 }
 
 func (s *DSCService) GetTableName(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
