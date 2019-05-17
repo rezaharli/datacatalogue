@@ -122,6 +122,7 @@
                       item-key="TMTID"
                       hide-actions
                       hide-headers
+                      @update:pagination="setExpandedTableColumnsWidth"
                     >
                       <template slot="items" slot-scope="props">
                         <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
@@ -149,6 +150,7 @@
                           class=""
                           hide-actions
                           hide-headers
+                          @update:pagination="setExpandedTableColumnsWidth"
                         >
                           <template slot="items" slot-scope="props">
                             <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
@@ -279,6 +281,22 @@ export default {
           TDs.eq(thIndex).width(thWidth);
         });
       });
+    },
+    setExpandedTableColumnsWidth(){
+      setTimeout(() => {
+        var elem = $('.v-datatable__expand-row');
+        var elemExpandedTable = elem.find('.v-datatable__expand-content table.v-table');
+        var THs = elem.closest('table.v-table').find('thead tr:first th');
+        var tbodyTR = elemExpandedTable.find('tbody tr');
+        THs.each(function (thIndex) {
+          $(this).css({'color': 'red'});
+          var thWidth = $(this).width();
+          tbodyTR.each(function (tdIndex) {
+            var TDs = $(this).find('td:not([colspan])');
+            TDs.eq(thIndex).width(thWidth);
+          });
+        });
+      }, 10);
     }
   }
 };
