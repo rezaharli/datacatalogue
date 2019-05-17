@@ -245,6 +245,12 @@ export default {
     this.store.tabName = this.storeName;
     this.store.dspname = this.$route.params.dspname;
     this.resetFilter();
+    setTimeout(() => {
+      this.setTableColumnsWidth($('#table-dpo-dataelements'));
+    }, 300);
+  },
+  updated() {
+    this.setTableColumnsWidth($('#table-dpo-dataelements'));
   },
   methods: {
     getLeftTable() {
@@ -296,6 +302,34 @@ export default {
       this.$router.push(
         this.addressPath + "/" + this.$route.params.dspname + "/" + param.ALIAS_NAME
       );
+    },
+    setTableColumnsWidth(elem){
+      var tableElem = elem.find('.v-table__overflow > table.v-table');
+      var THs = tableElem.find('thead tr th');
+      var tbodyTR = tableElem.find('tbody tr');
+      THs.each(function (thIndex) {
+        var thWidth = $(this).width();
+        tbodyTR.each(function (tdIndex) {
+          var TDs = $(this).find('td:not([colspan])');
+          TDs.eq(thIndex).width(thWidth);
+        });
+      });
+    },
+    setExpandedTableColumnsWidth(){
+      setTimeout(() => {
+        var elem = $('.v-datatable__expand-row');
+        var elemExpandedTable = elem.find('.v-datatable__expand-content table.v-table');
+        var THs = elem.closest('table.v-table').find('thead tr:first th');
+        var tbodyTR = elemExpandedTable.find('tbody tr');
+        THs.each(function (thIndex) {
+          $(this).css({'color': 'red'});
+          var thWidth = $(this).width();
+          tbodyTR.each(function (tdIndex) {
+            var TDs = $(this).find('td:not([colspan])');
+            TDs.eq(thIndex).width(thWidth);
+          });
+        });
+      }, 10);
     }
   }
 };

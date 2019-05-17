@@ -173,8 +173,13 @@ export default {
   mounted() {
     this.store.tabName = this.storeName;
     this.store.dspname = this.$route.params.dspname;
-
     this.resetFilter();
+    setTimeout(() => {
+      this.setTableColumnsWidth($('#table-dpo-datalineage'));
+    }, 300);
+  },
+  updated() {
+    this.setTableColumnsWidth($('#table-dpo-datalineage'));
   },
   methods: {
     getLeftTable() {
@@ -240,6 +245,18 @@ export default {
       this.$router.push(
         this.addressPath + "/" + this.$route.params.dspname + "/" + param.ALIAS_NAME
       );
+    },
+    setTableColumnsWidth(elem){
+      var tableElem = elem.find('.v-table__overflow > table.v-table');
+      var THs = tableElem.find('thead tr th');
+      var tbodyTR = tableElem.find('tbody tr');
+      THs.each(function (thIndex) {
+        var thWidth = $(this).width();
+        tbodyTR.each(function (tdIndex) {
+          var TDs = $(this).find('td:not([colspan])');
+          TDs.eq(thIndex).width(thWidth);
+        });
+      });
     }
   }
 };
