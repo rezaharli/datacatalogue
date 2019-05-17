@@ -137,9 +137,17 @@ export default {
     },
   },
   mounted() {
+    var self = this;
+
     setTimeout(() => {
       this.setTableColumnsWidth($('#table-dsc-dd-technical'));
     }, 300);
+
+    $("#page-tab #tab-technical").on('click', function(){
+      setTimeout(() => {
+        self.setTableColumnsWidth($('#table-dsc-dd-technical'));
+      }, 1);
+    });
   },
   updated() {
     this.setTableColumnsWidth($('#table-dsc-dd-technical'));

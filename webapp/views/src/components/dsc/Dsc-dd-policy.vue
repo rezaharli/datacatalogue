@@ -134,9 +134,17 @@ export default {
     },
   },
   mounted() {
+    var self = this;
+
     setTimeout(() => {
       this.setTableColumnsWidth($('#table-dsc-dd-policy'));
     }, 300);
+
+    $("#page-tab #tab-policy").on('click', function(){
+      setTimeout(() => {
+        self.setTableColumnsWidth($('#table-dsc-dd-policy'));
+      }, 1);
+    });
   },
   updated() {
     this.setTableColumnsWidth($('#table-dsc-dd-policy'));

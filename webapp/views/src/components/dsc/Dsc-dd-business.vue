@@ -125,9 +125,17 @@ export default {
     },
   },
   mounted() {
+    var self = this;
+
     setTimeout(() => {
       this.setTableColumnsWidth($('#table-dsc-dd-business'));
     }, 300);
+
+    $("#page-tab #tab-business").on('click', function(){
+      setTimeout(() => {
+        self.setTableColumnsWidth($('#table-dsc-dd-business'));
+      }, 1);
+    });
   },
   updated() {
     this.setTableColumnsWidth($('#table-dsc-dd-business'));
