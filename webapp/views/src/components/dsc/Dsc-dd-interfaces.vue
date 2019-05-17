@@ -1,6 +1,6 @@
 <style>
 /* #table-dsc-dd-interfaces table.v-table tr {display: block;} */
-#table-dsc-dd-interfaces table.v-table.v-datatable thead{
+/* #table-dsc-dd-interfaces table.v-table.v-datatable thead{
     width: unset;
     display: table-header-group;
     padding-right: unset;
@@ -11,7 +11,7 @@
     max-height:unset;
     width:unset;
 }
-#table-dsc-dd-interfaces table.v-table.v-datatable tbody tr {display: table-row;}
+#table-dsc-dd-interfaces table.v-table.v-datatable tbody tr {display: table-row;} */
 </style>
 
 <template>
@@ -116,5 +116,27 @@ export default {
       return this.$store.state[this.storeName].all;
     },
   },
+  mounted() {
+    setTimeout(() => {
+      this.setTableColumnsWidth($('#table-dsc-dd-interfaces'));
+    }, 300);
+  },
+  updated() {
+    this.setTableColumnsWidth($('#table-dsc-dd-interfaces'));
+  },
+  methods: {
+    setTableColumnsWidth(elem){
+      var tableElem = elem.find('.v-table__overflow > table.v-table');
+      var THs = tableElem.find('thead tr th');
+      var tbodyTR = tableElem.find('tbody tr');
+      THs.each(function (thIndex) {
+        var thWidth = $(this).width();
+        tbodyTR.each(function (tdIndex) {
+          var TDs = $(this).find('td:not([colspan])');
+          TDs.eq(thIndex).width(thWidth);
+        });
+      });
+    },
+  }
 };
 </script>
