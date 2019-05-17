@@ -162,6 +162,12 @@ export default {
     this.store.tabName = this.storeName;
     this.store.system = this.$route.params.subdomain;
     this.resetFilter();
+    setTimeout(() => {
+      this.setTableColumnsWidth($('#table-ddo-systems'));
+    }, 300);
+  },
+  updated() {
+    this.setTableColumnsWidth($('#table-ddo-systems'));
   },
   methods: {
     getLeftTable() {
@@ -198,6 +204,18 @@ export default {
       this.$router.push(
         this.addressPath + "/" + param.TSID + "/" + param.ID + "/" + param.COLID
       );
+    },
+    setTableColumnsWidth(elem){
+      var tableElem = elem.find('.v-table__overflow > table.v-table');
+      var THs = tableElem.find('thead tr th');
+      var tbodyTR = tableElem.find('tbody tr');
+      THs.each(function (thIndex) {
+        var thWidth = $(this).width();
+        tbodyTR.each(function (tdIndex) {
+          var TDs = $(this).find('td:not([colspan])');
+          TDs.eq(thIndex).width(thWidth);
+        });
+      });
     }
   }
 };
