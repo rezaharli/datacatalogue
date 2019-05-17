@@ -15,7 +15,7 @@
 #table-dsc-cde table.v-table tr th:nth-of-type(6){width: 10% !important;}
 #table-dsc-cde table.v-table tr th:nth-of-type(7){width: 12% !important;}
 
-#table-dsc-cde table.v-table.v-datatable tbody tr {display: table-row;}
+/* #table-dsc-cde table.v-table.v-datatable tbody tr {display: table-row;} */
 </style>
 
 <template>
