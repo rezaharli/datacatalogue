@@ -231,6 +231,12 @@ export default {
     mounted() {
       this.store.tabName = this.storeName;
       this.store.isRightTable = this.$route.params.system;
+      setTimeout(() => {
+        this.setTableColumnsWidth($("#table-dsc-all"));
+      }, 300);
+    },
+    updated() {
+      this.setTableColumnsWidth($("#table-dsc-all"));
     },
     methods: {
       getLeftTable () {
@@ -278,6 +284,18 @@ export default {
       },
       showDetails (param) {
         this.$router.push(this.addressPath + "/" + param.TSID + '/' + param.ID + '/' + param.COLID)
+      },
+      setTableColumnsWidth(elem){
+        var tableElem = elem.find('.v-table__overflow > table.v-table');
+        var THs = tableElem.find('thead tr th');
+        var tbodyTR = tableElem.find('tbody tr');
+        THs.each(function (thIndex) {
+          var thWidth = $(this).width();
+          tbodyTR.each(function (tdIndex) {
+            var TDs = $(this).find('td:not([colspan])');
+            TDs.eq(thIndex).width(thWidth);
+          });
+        });
       }
     }
 }

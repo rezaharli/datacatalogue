@@ -14,6 +14,8 @@
 #table-dsc-cde table.v-table tr th:nth-of-type(5){width: 13% !important;}
 #table-dsc-cde table.v-table tr th:nth-of-type(6){width: 10% !important;}
 #table-dsc-cde table.v-table tr th:nth-of-type(7){width: 12% !important;}
+
+#table-dsc-cde table.v-table.v-datatable tbody tr {display: table-row;}
 </style>
 
 <template>
@@ -134,6 +136,7 @@
                       item-key="TMTID"
                       hide-actions
                       hide-headers
+                      @update:pagination="setExpandedTableColumnsWidth"
                     >
                       <template slot="items" slot-scope="props">
                         <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
@@ -169,6 +172,7 @@
                           class=""
                           hide-actions
                           hide-headers
+                          @update:pagination="setExpandedTableColumnsWidth"
                         >
                           <template slot="items" slot-scope="props">
                             <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
@@ -198,6 +202,7 @@
                               class=""
                               hide-actions
                               hide-headers
+                              @update:pagination="setExpandedTableColumnsWidth"
                             >
                               <template slot="items" slot-scope="props">
                                 <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
@@ -206,7 +211,7 @@
                                 <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
                                 <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">&nbsp;</td>
 
-                                <td v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }">
+                                <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }">
                                   <tablecell :fulltext="props.item.DSP_NAME" showOn="hover"></tablecell></td>
                                 
                                 <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }">
@@ -280,6 +285,12 @@ export default {
     this.store.tabName = this.storeName;
     this.store.system = this.$route.params.system;
     this.resetFilter();
+    setTimeout(() => {
+      this.setTableColumnsWidth($('#table-dsc-cde'));
+    }, 300);
+  },
+  updated() {
+    this.setTableColumnsWidth($('#table-dsc-cde'));
   },
   methods: {
     getLeftTable() {
@@ -320,6 +331,34 @@ export default {
       this.$router.push(
         this.addressPath + "/" + param.SYSTEM_NAME + "/" + param.TSID + "/" + param.TMTID + "/" + param.COLID
       );
+    },
+    setTableColumnsWidth(elem){
+      var tableElem = elem.find('.v-table__overflow > table.v-table');
+      var THs = tableElem.find('thead tr th');
+      var tbodyTR = tableElem.find('tbody tr');
+      THs.each(function (thIndex) {
+        var thWidth = $(this).width();
+        tbodyTR.each(function (tdIndex) {
+          var TDs = $(this).find('td:not([colspan])');
+          TDs.eq(thIndex).width(thWidth);
+        });
+      });
+    },
+    setExpandedTableColumnsWidth(){
+      setTimeout(() => {
+        var elem = $('.v-datatable__expand-row');
+        var elemExpandedTable = elem.find('.v-datatable__expand-content table.v-table');
+        var THs = elem.closest('table.v-table').find('thead tr:first th');
+        var tbodyTR = elemExpandedTable.find('tbody tr');
+        THs.each(function (thIndex) {
+          $(this).css({'color': 'red'});
+          var thWidth = $(this).width();
+          tbodyTR.each(function (tdIndex) {
+            var TDs = $(this).find('td:not([colspan])');
+            TDs.eq(thIndex).width(thWidth);
+          });
+        });
+      }, 10);
     }
   }
 };

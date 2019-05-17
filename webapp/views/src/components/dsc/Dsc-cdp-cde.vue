@@ -226,6 +226,12 @@ export default {
     this.store.system = this.$route.params.system;
     this.store.dspName = this.$route.params.dspName;
     this.resetFilter();
+    setTimeout(() => {
+      this.setTableColumnsWidth($('#table-dsc-cdp-cde'));
+    }, 300);
+  },
+  updated() {
+    this.setTableColumnsWidth($('#table-dsc-cdp-cde'));
   },
   methods: {
     getLeftTable() {
@@ -261,6 +267,18 @@ export default {
       this.$router.push(
         this.addressPath + "/" + this.store.system + "/" + this.store.dspName + "/" + param.TSID + "/" + param.TMTID + "/" + param.COLID
       );
+    },
+    setTableColumnsWidth(elem){
+      var tableElem = elem.find('.v-table__overflow > table.v-table');
+      var THs = tableElem.find('thead tr th');
+      var tbodyTR = tableElem.find('tbody tr');
+      THs.each(function (thIndex) {
+        var thWidth = $(this).width();
+        tbodyTR.each(function (tdIndex) {
+          var TDs = $(this).find('td:not([colspan])');
+          TDs.eq(thIndex).width(thWidth);
+        });
+      });
     }
   }
 };
