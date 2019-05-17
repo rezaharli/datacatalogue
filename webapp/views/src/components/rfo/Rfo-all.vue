@@ -178,6 +178,12 @@ export default {
     },
     mounted() {
       this.store.tabName = this.storeName;
+      setTimeout(() => {
+        this.setTableColumnsWidth($('#table-rfo-all'));
+      }, 300);
+    },
+    updated() {
+      this.setTableColumnsWidth($('#table-rfo-all'));
     },
     methods: {
       getLeftTable () {
@@ -205,6 +211,18 @@ export default {
       isDisplayed(name){
         var opts = this.store.leftHeaders.find(v => v.value == name);
         return opts ? opts.display : false;
+      },
+      setTableColumnsWidth(elem){
+        var tableElem = elem.find('.v-table__overflow > table.v-table');
+        var THs = tableElem.find('thead tr th');
+        var tbodyTR = tableElem.find('tbody tr');
+        THs.each(function (thIndex) {
+          var thWidth = $(this).width();
+          tbodyTR.each(function (tdIndex) {
+            var TDs = $(this).find('td:not([colspan])');
+            TDs.eq(thIndex).width(thWidth);
+          });
+        });
       }
     }
 }
