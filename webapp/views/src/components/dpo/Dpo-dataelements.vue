@@ -129,6 +129,7 @@
                       item-key="TMTID"
                       hide-actions
                       hide-headers
+                      @update:pagination="setExpandedTableColumnsWidth"
                     >
                       <template slot="items" slot-scope="props">
                         <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
@@ -166,6 +167,7 @@
                           class=""
                           hide-actions
                           hide-headers
+                          @update:pagination="setExpandedTableColumnsWidth"
                         >
                           <template slot="items" slot-scope="props">
                             <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
