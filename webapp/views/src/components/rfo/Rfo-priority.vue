@@ -2,10 +2,11 @@
 #table-rfo-priority table.v-table.v-datatable tbody tr {display: table-row;}
 #table-rfo-priority table.v-table tr th:nth-of-type(1){width: 10% !important;}
 #table-rfo-priority table.v-table tr th:nth-of-type(2){width: 10% !important;}
-#table-rfo-priority table.v-table tr th:nth-of-type(3){width: 10% !important;}
+#table-rfo-priority table.v-table tr th:nth-of-type(3){width: 10% !important; min-width: 235px;}
 #table-rfo-priority table.v-table tr th:nth-of-type(4){width: 10% !important;}
 #table-rfo-priority table.v-table tr th:nth-of-type(5){width: 10% !important;}
 #table-rfo-priority table.v-table tr th:nth-of-type(6){width: 10% !important;}
+#table-rfo-priority table.v-table thead tr th:first-of-type,
 #table-rfo-priority table.v-table tbody tr td:first-of-type, 
 #table-rfo-priority table.v-table tfoot tr td:first-of-type {
   padding-left: 30px;
@@ -105,7 +106,7 @@
                           :rowspan="props.item.expanded ? (props.item.rowspanAcuan / props.item.CRM_NAMEs.length) : 1"
                           class="text-uppercase">
                         <b-link @click="toggleHighlightCDEName(props.item, props.item)">
-                          <tablecell showOn="hover" :fulltext="props.item.CRM_NAME"></tablecell></b-link></td>
+                          {{props.item.CRM_NAME}}</b-link></td>
 
                       <td 
                           v-bind:style="{ width: store.left.colWidth['CRM_RATIONALE'] + 'px' }"
@@ -141,7 +142,7 @@
                             v-bind:style="{ width: store.left.colWidth['CRM_NAME'] + 'px' }" 
                             class="text-uppercase">
                           <b-link @click="toggleHighlightCDEName(props.item, item)">
-                            <tablecell showOn="hover" :fulltext="item.CRM_NAME"></tablecell></b-link></td>
+                            {{item.CRM_NAME}}</b-link></td>
 
                         <td 
                             v-if="item.CRM_RATIONALE" 

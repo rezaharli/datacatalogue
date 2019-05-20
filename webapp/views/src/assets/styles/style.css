@@ -378,3 +378,5 @@ table.v-table.v-datatable td {
     /* border: 1px solid #f00;  */
     box-sizing: border-box;
 }
+
+.modal-content {display: contents !important;}
