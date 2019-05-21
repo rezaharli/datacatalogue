@@ -209,7 +209,7 @@ export default {
       evt.preventDefault();
     },
     linkDataLineage(){
-      var processName = store.left.source[0] ? store.left.source[0]["PROCESS_NAME"] : "";
+      var processName = this.store.left.source[0] ? this.store.left.source[0]["PROCESS_NAME"] : "";
 
       switch (processName) {
         case "USFRR":
