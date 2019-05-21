@@ -1,8 +1,8 @@
 <style>
 @import '../../assets/styles/dashboard.css';
-#table-ddo-all table.v-table tr th:nth-of-type(1){width: 30% !important;}
-#table-ddo-all table.v-table tr th:nth-of-type(2){width: 30% !important;}
-#table-ddo-all table.v-table tr th:nth-of-type(3){width: 40% !important;}
+#table-ddo-all table.v-table tr th:nth-of-type(1){width: 40% !important; min-width: 270px;}
+#table-ddo-all table.v-table tr th:nth-of-type(2){width: 40% !important; min-width: 270px;}
+#table-ddo-all table.v-table tr th:nth-of-type(3){width: 20% !important;}
 </style>
 
 <template>
@@ -52,8 +52,8 @@
 
               <template slot="items" slot-scope="props">
                 <tr>
-                  <td v-bind:style="{ width: store.left.colWidth['DATA_DOMAIN'] + 'px' }"><tablecell :fulltext="props.item.DATA_DOMAIN" showOn="hover"></tablecell></td>
-                  <td v-bind:style="{ width: store.left.colWidth['SUB_DOMAINS'] + 'px' }"><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SUB_DOMAINS" showOn="hover"></tablecell></b-link></td>
+                  <td v-bind:style="{ width: store.left.colWidth['DATA_DOMAIN'] + 'px' }">{{props.item.DATA_DOMAIN}}</td>
+                  <td v-bind:style="{ width: store.left.colWidth['SUB_DOMAINS'] + 'px' }"><b-link @click="showRightTable(props.item)">{{props.item.SUB_DOMAINS}}</b-link></td>
                   <td v-bind:style="{ width: store.left.colWidth['SUB_DOMAIN_OWNER'] + 'px' }"><tablecell :fulltext="props.item.SUB_DOMAIN_OWNER" showOn="click"></tablecell></td>
                 </tr>
               </template>
