@@ -164,10 +164,12 @@ export default {
     this.resetFilter();
     setTimeout(() => {
       this.setTableColumnsWidth($('#table-ddo-systems'));
+      this.setTableFooterColumnsWidth($('#table-ddo-systems'));
     }, 300);
   },
   updated() {
     this.setTableColumnsWidth($('#table-ddo-systems'));
+    this.setTableFooterColumnsWidth($('#table-ddo-systems'));
   },
   methods: {
     getLeftTable() {
@@ -215,6 +217,29 @@ export default {
           var TDs = $(this).find('td:not([colspan])');
           TDs.eq(thIndex).width(thWidth);
         });
+      });
+    },
+    setTableFooterColumnsWidth(elem){
+      var tableElem = elem.find('.v-table__overflow > table.v-table');
+      var theadTR = tableElem.find('thead tr:first');
+      var THs = theadTR.find('th');
+      var tfootTR = tableElem.find('tfoot tr');
+      var thWidths = [];
+      THs.each(function (thIndex) {
+        thWidths[thIndex] = $(this).outerWidth();
+      });
+      
+      var TDs = tfootTR.find('td');
+      TDs.each(function (tdIndex) {
+        if ($(this)[0].hasAttribute('colspan')){
+          var colspan = $(this).attr('colspan');
+          var colWidth = thWidths[tdIndex] + thWidths[(tdIndex+colspan)-1];
+        }else{
+          var colspan = 1;
+          var colWidth = thWidths[(tdIndex+colspan)-1];
+        }
+        colWidth = colWidth - 75; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+        $(this).width(colWidth);
       });
     }
   }

@@ -179,11 +179,13 @@ export default {
     mounted() {
       this.store.tabName = this.storeName;
       setTimeout(() => {
-        this.setTableColumnsWidth($('#table-rfo-my'));
+        // this.setTableColumnsWidth($('#table-rfo-my'));
+        this.setTableColumnsWidthRowspan($('#table-rfo-my'));
       }, 300);
     },
     updated() {
-      this.setTableColumnsWidth($('#table-rfo-my'));
+      // this.setTableColumnsWidth($('#table-rfo-my'));
+      this.setTableColumnsWidthRowspan($('#table-rfo-my'));
     },
     methods: {
       getLeftTable () {
@@ -223,7 +225,43 @@ export default {
             TDs.eq(thIndex).width(thWidth);
           });
         });
-      }
+      },
+      setTableColumnsWidthRowspan(elem){
+        var tableElem = elem.find('.v-table__overflow > table.v-table');
+        var theadTR = tableElem.find('thead tr:first');
+        var THs = theadTR.find('th');
+        var tbodyTR = tableElem.find('tbody tr');
+        var thWidths = [];
+        THs.each(function (thIndex) {
+          thWidths[thIndex] = $(this).outerWidth();
+        });
+        tbodyTR.each(function (tdIndex) {
+          var TDs = $(this).find('td');
+          TDs.each(function (tdIndex) {
+            if ($(this)[0].hasAttribute('rowspan')){
+              $(this).closest('tr').addClass('has-rowspan');
+            }
+            var colWidth = thWidths[tdIndex];
+            colWidth = colWidth - 47; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+            $(this).width(colWidth);
+          });
+        });
+
+        //untuk menyesuaikan ulang ukuran kolom karena crash dengan rowspan
+        setTimeout(() => {
+          tbodyTR.not(".has-rowspan").each(function (tdIndex) {
+            var TDs = $(this).find('td');
+            TDs.each(function (tdIndex) {
+              if ($(this)[0].hasAttribute('rowspan')){
+                $(this).closest('tr').addClass('has-rowspan');
+              }
+              var colWidth = thWidths[tdIndex+1];
+              colWidth = colWidth - 47; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+              $(this).width(colWidth);
+            });
+          });
+        }, 1);
+      },
     }
 }
 </script>
