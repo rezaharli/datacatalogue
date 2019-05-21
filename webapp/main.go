@@ -25,6 +25,7 @@ func main() {
 	defer clit.Close()
 
 	app := knot.NewApp()
+	app.Register(c.NewDashboardController(), "")
 	app.Register(c.NewUsersController(), "")
 	app.Register(c.NewDSCController(), "")
 	app.Register(c.NewDPOController(), "")

@@ -77,8 +77,9 @@ func NewMongodbConnection(dbConf map[string]interface{}) (dbflex.IConnection, er
 }
 
 func NewOracleConnection(dbConf map[string]interface{}) (dbflex.IConnection, error) {
-	connectionString := "oracle://" + dbConf["connectionString"].(string)
+	decryptedConnectionString := Decrypt(dbConf["connectionString"].(string))
 
+	connectionString := "oracle://" + decryptedConnectionString
 	conn, err := dbflex.NewConnectionFromURI(connectionString, nil)
 	if err != nil {
 		return nil, toolkit.Errorf("Unable to connect to the database server. %s", err.Error())
