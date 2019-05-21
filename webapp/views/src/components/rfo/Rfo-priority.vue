@@ -116,7 +116,7 @@
 
                       <td 
                           v-bind:style="{ width: store.left.colWidth['CDE_NAME'] + 'px' }" 
-                          v-bind:class="{ 'is-highlighted': highlightedCDENames.indexOf(props.item.CDE_NAME) != -1 }"
+                          v-bind:class="{ 'is-highlighted': props.item.PRIORITY_REPORT == highlightedPriorityReport && highlightedCDENames.indexOf(props.item.CDE_NAME) != -1 }"
                           :rowspan="props.item.expanded ? (props.item.rowspanAcuan / props.item.CDE_NAMEs.length) : 1"
                           class="text-uppercase">
                         <tablecell showOn="hover" :fulltext="props.item.CDE_NAME"></tablecell></td>
@@ -154,7 +154,7 @@
                         <td 
                             v-if="item.CDE_NAME" 
                             :rowspan="props.item.rowspanAcuan / props.item.CDE_NAMEs.length"
-                            v-bind:class="{ 'is-highlighted': highlightedCDENames.indexOf(item.CDE_NAME) != -1 }"
+                            v-bind:class="{ 'is-highlighted': props.item.PRIORITY_REPORT == highlightedPriorityReport && highlightedCDENames.indexOf(item.CDE_NAME) != -1 }"
                             v-bind:style="{ width: store.left.colWidth['CDE_NAME'] + 'px' }" class="text-uppercase">
                           <tablecell showOn="hover" :fulltext="item.CDE_NAME"></tablecell></td>
                           
@@ -198,6 +198,7 @@ export default {
   data() {
     return {
       storeName: "rfopriority",
+      highlightedPriorityReport: "",
       highlightedCDENames: []
     };
   },
@@ -244,6 +245,7 @@ export default {
         return v.CRM_NAME == item.CRM_NAME;
       }).map(v => v.CDE_NAME);
 
+      this.highlightedPriorityReport = item.PRIORITY_REPORT;
       this.highlightedCDENames = cdes;
     },
     resetFilter (e) {

@@ -40,10 +40,12 @@ func (s *UserService) HashPassword(password string) string {
 func (s *UserService) Authenticate(username int, password string) (bool, *m.SysUser, error) {
 	users, err := s.authenticate(username, password)
 	if err != nil {
+		toolkit.Println(1, err.Error())
 		return false, m.NewSysUserModel(), err
 	}
 
 	if len(users) == 0 {
+		toolkit.Println(2)
 		//if not found create new user
 		newUser := m.NewSysUserModel()
 		newUser.ID = username
@@ -56,21 +58,27 @@ func (s *UserService) Authenticate(username int, password string) (bool, *m.SysU
 		newUser.CreatedAt = time.Now().String()
 		newUser.UpdatedAt = time.Now().String()
 
+		toolkit.Println(newUser)
+
 		ok, err := NewUserService().Insert(newUser)
 		if !ok && err != nil {
+			toolkit.Println(3)
 			return false, m.NewSysUserModel(), err
 		}
 
 		users, err = s.authenticate(username, password)
 		if err != nil {
+			toolkit.Println(4)
 			return false, m.NewSysUserModel(), err
 		}
 
 		if len(users) == 0 {
+			toolkit.Println(5)
 			return false, m.NewSysUserModel(), nil
 		}
 	}
 
+	toolkit.Println(6)
 	return true, &(users[0]), nil
 }
 
@@ -319,8 +327,7 @@ func (s *UserService) DeleteByUsername(username int) error {
 
 func (s *UserService) SaveUsage(data toolkit.M) error {
 	data.Set("Time", time.Now())
-
-	data.Unset("ID")
+	data.Set("ID", toolkit.ToString(time.Now().UnixNano()))
 
 	err := h.NewDBcmd().Insert(h.InsertParam{
 		TableName: m.NewUserUsageModel().TableName(),
