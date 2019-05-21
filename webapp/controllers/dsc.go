@@ -3,10 +3,13 @@ package controllers
 import (
 	"time"
 
+	"github.com/novalagung/gubrak"
+
 	"github.com/eaciit/toolkit"
 
 	"git.eaciitapp.com/sebar/knot"
 
+	"eaciit/datacatalogue/webapp/helpers"
 	h "eaciit/datacatalogue/webapp/helpers"
 	s "eaciit/datacatalogue/webapp/services"
 )
@@ -314,14 +317,43 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 		return
 	}
 
-	detail, ddSource, err := c.Base.GetDetails(payload, s.NewDSCService().GetDetails, s.NewDSCService().GetddSource)
+	detail, _, err := s.NewDSCService().GetDetails(payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	groupedDetail, err := gubrak.GroupBy(detail, func(each toolkit.M) string {
+		return each.GetString("ID")
+	})
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	mappedDetails, err := gubrak.Map(helpers.ObjectKeys(groupedDetail), func(key string, i int) toolkit.M {
+		tmp := groupedDetail.(map[string]([]toolkit.M))
+
+		ret := toolkit.M{}
+		ret["ID"] = key
+		ret["Values"] = tmp[key]
+		// ret.Set("Values", tmp[key])
+
+		return ret
+	})
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	ddSource, _, err := s.NewDSCService().GetddSource(payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
 	data := toolkit.M{}
-	data.Set("Detail", detail)
+	data.Set("Detail", mappedDetails)
 	data.Set("DDSource", ddSource)
 
 	h.WriteResultOK(k, res, data)
