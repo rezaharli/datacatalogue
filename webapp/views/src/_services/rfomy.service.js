@@ -193,9 +193,9 @@ function getPriorityTable(param) {
 
                 v.childrenRow = [];
                 for (let i = 0; i < v.rowspanAcuan; i++) {
-                    var inject = (valName) => {
+                    var inject = (valName, supersub) => {
                         if (i % (v.rowspanAcuan / v[valName + "s"].length) == 0){
-                            return v[valName + "s"][(i / (v.rowspanAcuan / v[valName + "s"].length))][valName];
+                            return v[valName + "s"][(i / (v.rowspanAcuan / v[valName + "s"].length))][supersub ? supersub : valName];
                         }
 
                         return null;
@@ -206,7 +206,7 @@ function getPriorityTable(param) {
                         CRM_NAME: inject("CRM_NAME"),
                         CRM_RATIONALE: inject("CRM_RATIONALE"),
                         CDE_NAME: inject("CDE_NAME"),
-                        CDE_RATIONALE: inject("CDE_NAME"),
+                        CDE_RATIONALE: inject("CDE_NAME", "CDE_RATIONALE"),
                     }
 
                     v.childrenRow.push(row);
