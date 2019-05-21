@@ -656,6 +656,8 @@ export default {
       this.$router.go(-1)
     },
     runGetDetails (param){
+      var d = Date.now();
+
       var self = this;
 
       param.Which = self.$route.name;
@@ -705,24 +707,37 @@ export default {
             
             self.dscmy.DDSource.map(function(v){
               Object.keys(v).forEach(function(key){
-                v[key] = v[key] ? v[key] : "NA"
+                v[key] = v[key] ? v[key] : "NA";
+                v[key] = v[key] ? v[key].trim() : "NA";
               })
 
               return v
             })
             
             setTimeout(() => {
-              self.ddTableSelected = self.selectedDetails.TABLE_NAME.split(", ")[0];
-              self.ddColumnSelected = self.selectedDetails.COLUMN_NAME.split(", ")[0];
-              self.ddScreenLabelSelected = self.selectedDetails.BUSINESS_ALIAS_NAME.split(", ")[0];
-              self.ddBusinessTermSelected = self.selectedDetails.BUSINESS_TERM.split(", ")[0];
-              self.ddPrecSelected = self.selectedDetails.IMM_PRECEEDING_SYSTEM.split(", ")[0];
-              self.ddPrecIncomingSelected = self.selectedDetails.IMM_PREC_INCOMING.split(", ")[0];
-              self.ddSuccSelected = self.selectedDetails.IMM_SUCCEEDING_SYSTEM.split(", ")[0];
-              self.ddSuccIncomingSelected = self.selectedDetails.IMM_SUCC_INCOMING.split(", ")[0];
+              var decide = function(details, options){
+                var splitted = details.split(", ")
+
+                if(options.indexOf(splitted[0]) != -1){
+                  return splitted[0];
+                } else {
+                  return options[0];
+                }
+              }
+
+              self.ddTableSelected = decide(self.selectedDetails.TABLE_NAME, self.ddTableOptions);
+              self.ddColumnSelected = decide(self.selectedDetails.COLUMN_NAME, self.ddColumnOptions);
+              self.ddScreenLabelSelected = decide(self.selectedDetails.BUSINESS_ALIAS_NAME, self.ddScreenLabelOptions);
+              self.ddBusinessTermSelected = decide(self.selectedDetails.BUSINESS_TERM, self.ddBusinessTermOptions);
+              self.ddPrecSelected = decide(self.selectedDetails.IMM_PRECEEDING_SYSTEM, self.ddPrecOptions);
+              self.ddPrecIncomingSelected = decide(self.selectedDetails.IMM_PREC_INCOMING, self.ddPrecIncomingOptions);
+              self.ddSuccSelected = decide(self.selectedDetails.IMM_SUCCEEDING_SYSTEM, self.ddSuccOptions);
+              self.ddSuccIncomingSelected = decide(self.selectedDetails.IMM_SUCC_INCOMING, self.ddSuccIncomingOptions);
 
               setTimeout(() => {
                 this.firstload = false;
+
+                console.log(Date.now() - d);
               }, 100);
             }, 100);
           } else {
