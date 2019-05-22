@@ -145,7 +145,7 @@ export default {
         this.getLeftTable();
       },
       showRightTable(param){
-        this.$router.push(this.addressPath + '/' + param.SUB_DOMAINS);
+        this.$router.push(this.addressPath + '/' + param.DSP_NAME);
       },
       setTableColumnsWidth(elem){
         var tableElem = elem.find('.v-table__overflow > table.v-table');
