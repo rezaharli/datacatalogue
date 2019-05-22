@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"strings"
 	"time"
 
 	"github.com/novalagung/gubrak"
@@ -337,7 +338,6 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 		ret := toolkit.M{}
 		ret["ID"] = key
 		ret["Values"] = tmp[key]
-		// ret.Set("Values", tmp[key])
 
 		return ret
 	})
@@ -346,15 +346,106 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 		return
 	}
 
+	selectedDetail := toolkit.M{}
+	detailSources := mappedDetails.([]toolkit.M)
+	if len(detailSources) > 0 {
+		detailSource := detailSources[0]
+		detailValues := detailSource.Get("Values").([]toolkit.M)
+
+		doInterrupt := func(v string, conds, expectedreses []string) string {
+			if v == conds[1] {
+				return expectedreses[1]
+			} else if v == conds[0] {
+				return expectedreses[0]
+			}
+
+			return v
+		}
+
+		for _, key := range helpers.ObjectKeys(detailValues[0]) {
+			mappedValues, err := gubrak.Map(detailValues, func(v toolkit.M, i int) string {
+				stringVal := strings.TrimSpace(toolkit.ToString(v[key]))
+
+				switch key {
+				case "CDE_YES_NO":
+					stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"No", "Yes"})
+					break
+				case "STATUS":
+					stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"INACTIVE", "ACTIVE"})
+					break
+				case "DERIVED_YES_NO":
+					stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"No", "Yes"})
+					break
+				case "SOURCED_FROM_UPSTREAM_YES_NO":
+					stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"No", "Yes"})
+					break
+				case "IMM_PREC_DERIVED":
+					stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"No", "Yes"})
+					break
+				case "IMM_SUCC_DERIVED":
+					stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"No", "Yes"})
+					break
+				}
+
+				if stringVal == "" {
+					stringVal = "NA"
+				}
+
+				return stringVal
+			})
+			if err != nil {
+				h.WriteResultError(k, res, err.Error())
+				return
+			}
+
+			uniqueValues, err := gubrak.Uniq(mappedValues)
+			if err != nil {
+				h.WriteResultError(k, res, err.Error())
+				return
+			}
+
+			joinedValues := ""
+			if key == "DATASET_CUSTODIAN" || key == "BANK_ID" {
+				joinedValues = strings.Join(uniqueValues.([]string), "; ")
+			} else {
+				joinedValues = strings.Join(uniqueValues.([]string), ", ")
+			}
+
+			selectedDetail.Set(key, joinedValues)
+		}
+	}
+
 	ddSource, _, err := s.NewDSCService().GetddSource(payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
+	mappedddSource, err := gubrak.Map(ddSource, func(v toolkit.M, i int) toolkit.M {
+		for _, key := range helpers.ObjectKeys(v) {
+			v[key] = strings.TrimSpace(toolkit.ToString(v[key]))
+			if v[key] == "" {
+				v[key] = "NA"
+			}
+		}
+
+		return v
+	})
+
 	data := toolkit.M{}
-	data.Set("Detail", mappedDetails)
-	data.Set("DDSource", ddSource)
+	data.Set("SelectedDetail", selectedDetail)
+	data.Set("DDSource", mappedddSource)
+
+	ddVal := toolkit.M{}
+	ddVal.Set("ddTableSelected", strings.Split(selectedDetail["TABLE_NAME"].(string), ", ")[0])
+	ddVal.Set("ddColumnSelected", strings.Split(selectedDetail["COLUMN_NAME"].(string), ", ")[0])
+	ddVal.Set("ddScreenLabelSelected", strings.Split(selectedDetail["BUSINESS_ALIAS_NAME"].(string), ", ")[0])
+	ddVal.Set("ddBusinessTermSelected", strings.Split(selectedDetail["BUSINESS_TERM"].(string), ", ")[0])
+	ddVal.Set("ddPrecSelected", strings.Split(selectedDetail["IMM_PRECEEDING_SYSTEM"].(string), ", ")[0])
+	ddVal.Set("ddPrecIncomingSelected", strings.Split(selectedDetail["IMM_PREC_INCOMING"].(string), ", ")[0])
+	ddVal.Set("ddSuccSelected", strings.Split(selectedDetail["IMM_SUCCEEDING_SYSTEM"].(string), ", ")[0])
+	ddVal.Set("ddSuccIncomingSelected", strings.Split(selectedDetail["IMM_SUCC_INCOMING"].(string), ", ")[0])
+	data.Set("DDVal", ddVal)
 
 	h.WriteResultOK(k, res, data)
 }

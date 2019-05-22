@@ -31,9 +31,11 @@ const state = {
         //   { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'Columns.CDE_YES_NO', displayCount: true, width: "25%" }
         // ],
         isRightTable: false,
+        firstload: true,
         DDSource: [],
         detailsLoading: true,
-        detailsSource: [],
+        selectedDetails: null,
+        ddVal: {},
         error: null
     }
 };
@@ -166,13 +168,21 @@ const mutations = {
         state.all.error = error;
     },
     getDetailsRequest(state) {
+        state.all.firstload = true;
         state.all.detailsLoading = true;
     },
     getDetailsSuccess(state, data) {
-        state.all.detailsSource = data.Detail;
+        state.all.selectedDetails = data.SelectedDetail;
         state.all.DDSource = data.DDSource;
         
-        state.all.detailsLoading = false;
+        setTimeout(() => {
+            state.all.ddVal = data.DDVal;
+
+            setTimeout(() => {
+                state.all.firstload = false;
+                state.all.detailsLoading = false;
+            }, 100);
+        }, 100);
     },
     getDetailsFailure(state, error) {
         state.all.detailsLoading = false;
