@@ -27,7 +27,7 @@ func Database() dbflex.IConnection {
 	which := dbConf["which"].(string)
 	log.Println("-> connecting to", which, "database server")
 
-	var fn func(dbConf map[string]interface{}) (dbflex.IConnection, error)
+	var fn func(dbConf map[string]interface{}, which string) (dbflex.IConnection, error)
 	switch which {
 	case "oracle":
 		fn = NewOracleConnection
@@ -36,7 +36,7 @@ func Database() dbflex.IConnection {
 	}
 
 	var err error
-	dbConnection, err = fn(dbConf[which].(map[string]interface{}))
+	dbConnection, err = fn(dbConf, which)
 	if err != nil {
 		log.Println("-> failed to connect to the", which, "database server.", err.Error())
 		os.Exit(0)
@@ -45,11 +45,13 @@ func Database() dbflex.IConnection {
 	return dbConnection
 }
 
-func NewMongodbConnection(dbConf map[string]interface{}) (dbflex.IConnection, error) {
-	dbHost := dbConf["host"]
-	dbUsername := dbConf["username"]
-	dbPassword := dbConf["password"]
-	dbName := dbConf["name"]
+func NewMongodbConnection(dbConf map[string]interface{}, which string) (dbflex.IConnection, error) {
+	dbWhichConf := dbConf[which].(map[string]interface{})
+
+	dbHost := dbWhichConf["host"]
+	dbUsername := dbWhichConf["username"]
+	dbPassword := dbWhichConf["password"]
+	dbName := dbWhichConf["name"]
 
 	connectionString := "mongodb://"
 
@@ -76,9 +78,17 @@ func NewMongodbConnection(dbConf map[string]interface{}) (dbflex.IConnection, er
 	return conn, nil
 }
 
-func NewOracleConnection(dbConf map[string]interface{}) (dbflex.IConnection, error) {
-	connectionString := "oracle://" + dbConf["connectionString"].(string)
+func NewOracleConnection(dbConf map[string]interface{}, which string) (dbflex.IConnection, error) {
+	dbWhichConf := dbConf[which].(map[string]interface{})
 
+	var decryptedConnectionString string
+	if dbConf["enableEncryption"] != nil && dbConf["enableEncryption"].(bool) == true {
+		decryptedConnectionString = Decrypt(dbWhichConf["connectionString"].(string))
+	} else {
+		decryptedConnectionString = dbWhichConf["connectionString"].(string)
+	}
+
+	connectionString := "oracle://" + decryptedConnectionString
 	conn, err := dbflex.NewConnectionFromURI(connectionString, nil)
 	if err != nil {
 		return nil, toolkit.Errorf("Unable to connect to the database server. %s", err.Error())

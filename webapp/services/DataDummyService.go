@@ -538,6 +538,16 @@ func (s *DSCService) CreateDSProcessesDummyData() error {
 		mdt.Modified_DateTime = time.Now()
 		mdt.Status = rand.Intn(2)
 
+		if i%1 == 0 {
+			mdt.Name = "USFRR"
+		}
+		if i%2 == 0 {
+			mdt.Name = "LC-FCC | Global Name Screening"
+		}
+		if i%3 == 0 {
+			mdt.Name = "Credit Risk | Risk Reporting | Credit Risk Reporting & MI"
+		}
+
 		data = append(data, mdt)
 	}
 

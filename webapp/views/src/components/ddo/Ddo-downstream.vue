@@ -218,13 +218,20 @@ export default {
       });
       
       var TDs = tfootTR.find('td');
+      var colspan = 1;
+      var usedIndex = 0;
       TDs.each(function (tdIndex) {
+        
         if ($(this)[0].hasAttribute('colspan')){
-          var colspan = $(this).attr('colspan');
+          colspan = $(this).attr('colspan');
           var colWidth = thWidths[tdIndex] + thWidths[(tdIndex+colspan)-1];
         }else{
-          var colspan = 1;
-          var colWidth = thWidths[(tdIndex+colspan)-1];
+          if(colspan>1){
+            usedIndex = parseInt(tdIndex) + parseInt(colspan);
+          }else{
+            usedIndex = parseInt(tdIndex);
+          }
+          var colWidth = thWidths[usedIndex];
         }
         colWidth = colWidth - 75; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
         $(this).width(colWidth);

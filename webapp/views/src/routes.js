@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 import Home from './components/Home';
 
 import Login from './components/Login';
+import Crypto from './components/Crypto';
 
 import Dsc from './components/dsc/Dsc';
 import DscMenu from './components/dsc/Dsc-menu';
@@ -14,16 +15,12 @@ import DscInterfaces from './components/dsc/Dsc-interfaces';
 import DscInterfacesCde from './components/dsc/Dsc-interfaces-cde';
 import DscDd from './components/dsc/Dsc-dd';
 import DscDetails from './components/dsc/Dsc-details';
-import DscMy from './components/dsc/Dsc-my';
-import DscAll from './components/dsc/Dsc-all';
 
 import Dpo from './components/dpo/Dpo';
 import DpoMenu from './components/dpo/Dpo-menu';
 import DpoDataelements from './components/dpo/Dpo-dataelements';
 import DpoDatalineage from './components/dpo/Dpo-datalineage';
 import DpoDetails from './components/dpo/Dpo-details';
-import DpoMy from './components/dpo/Dpo-my';
-import DpoAll from './components/dpo/Dpo-all';
 
 import Ddo from './components/ddo/Ddo';
 import DdoMenu from './components/ddo/Ddo-menu';
@@ -33,13 +30,9 @@ import DdoSystemsBusinessterm from './components/ddo/Ddo-systems-businessterm';
 import DdoDownstream from './components/ddo/Ddo-downstream';
 import DdoDownstreamBusinessterm from './components/ddo/Ddo-downstream-businessterm';
 import DdoDetails from './components/ddo/Ddo-details';
-import DdoMy from './components/ddo/Ddo-my';
-import DdoAll from './components/ddo/Ddo-all';
 
 import Rfo from './components/rfo/Rfo';
 import RfoPriority from './components/rfo/Rfo-priority';
-import RfoMy from './components/rfo/Rfo-my';
-import RfoAll from './components/rfo/Rfo-all';
 
 import Access from './components/access/Access';
 import AccessUsers from './components/access/Access-users';
@@ -270,6 +263,8 @@ const router = new VueRouter({
     }]
   }, {
     path: '/login', name: 'login', component: Login, 
+  }, {
+    path: '/crypto', name: 'crypto', component: Crypto, 
   },
   { path: '*', redirect: '/' }]
 });
@@ -296,33 +291,33 @@ var saveUsage = function(isAuth, to, from, next){
 
 router.beforeEach((to, from, next) => {
   // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ['/login'];
+  const publicPages = ['/login', '/crypto'];
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = localStorage.getItem('user');
   
   if (authRequired && !loggedIn) {
     saveUsage(false, to, from, next);
     return next('/login');
-  }
-
-  if(to.name != "landingpage"){
-    var user = store.state.account.user;
-    if(user)
-      if(to.name.split(".")[0].toLowerCase() == "access"){
-        if(user.Role.toLowerCase().split(",").indexOf("Admin".toLowerCase()) == -1){
-          saveUsage(false, to, from, next);
-          return next('/');
+  } else {
+    if(to.name != "landingpage" && authRequired){
+      var user = store.state.account.user;
+      if(user)
+        if(to.name.split(".")[0].toLowerCase() == "access"){
+          if(user.Role.toLowerCase().split(",").indexOf("Admin".toLowerCase()) == -1){
+            saveUsage(false, to, from, next);
+            return next('/');
+          }
+        } else {
+          if(user.Role.toLowerCase().split(",").indexOf(to.name.split(".")[0].toLowerCase()) == -1){
+            saveUsage(false, to, from, next);
+            return next('/');
+          }
         }
-      } else {
-        if(user.Role.toLowerCase().split(",").indexOf(to.name.split(".")[0].toLowerCase()) == -1){
-          saveUsage(false, to, from, next);
-          return next('/');
-        }
-      }
-  }
+    }
 
-  saveUsage(true, to, from, next)
-  next();
+    saveUsage(true, to, from, next)
+    next();
+  }
 })
 
 export default router

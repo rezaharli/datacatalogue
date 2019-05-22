@@ -329,19 +329,5 @@ function getInterfacesRightTable(param) {
 }
 
 function getDetails(param) {
-    return fetchWHeader(`/dsc/getdetails`, param).then(
-        res => {
-            var tmp = _.groupBy(res.Data.Detail, "ID")
-            
-            res.Data.Detail = _.map(Object.keys(tmp), function(v, i){
-                var ret = tmp[v][0];
-                ret.ID = v;
-                ret.Values = tmp[v];
-
-                return ret
-            });
-
-            return res;
-        }
-    )
+    return fetchWHeader(`/dsc/getdetails`, param);
 }

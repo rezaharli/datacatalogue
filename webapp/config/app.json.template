@@ -4,8 +4,9 @@
     "port": "9001",
     "database": {
         "which": "oracle",
+        "enableEncryption": true,
         "oracle": {
-            "connectionString": "scbdc:Password@localhost:1521/orclcdb"
+            "connectionString": "artRhsjC-DuFkP6Lrg6tTCYSUvX0r9OaUU6qC0N4Zs0VRNG82OQyhG0gf_SgXDO6R-51qhE="
         },
         "mongodb": {
             "host": "example.com:80808",

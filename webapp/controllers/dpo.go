@@ -163,12 +163,6 @@ func (c *DPO) GetDetails(k *knot.WebContext) {
 		return
 	}
 
-	// detail, ddSource, err := c.Base.GetDetails(payload, s.NewDPOService().GetDetails, s.NewDPOService().GetddSource)
-	// if err != nil {
-	// 	h.WriteResultError(k, res, err.Error())
-	// 	return
-	// }
-
 	detailsImmediatePrecedingSystem, ddSourceImmediatePrecedingSystem, err := c.Base.GetDetails(payload, s.NewDPOService().GetDetailsImmediatePrecedingSystem, s.NewDPOService().GetddSourceImmediatePrecedingSystem)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
