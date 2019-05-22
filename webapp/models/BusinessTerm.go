@@ -12,6 +12,7 @@ type BusinessTerm struct {
 	Policy_Guidance            string
 	DQ_Standards               string
 	Threshold                  int
+	Remarks                    string
 	Golden_Source_System_ID    int
 	Golden_Source_ITAM_ID      int
 	Golden_Source_TableName_ID int

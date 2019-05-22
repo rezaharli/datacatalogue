@@ -67,7 +67,7 @@ func (s *DPOService) GetHomepageCounts(payload toolkit.M) (interface{}, int, err
 	args := make([]interface{}, 0)
 
 	system := payload.GetString("System")
-	args = append(args, system, system, system)
+	args = append(args, system, system)
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
 	q, err := h.BuildQueryFromFile(filePath, "dpo-view-homepage", []string{}, args...)

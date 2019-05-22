@@ -9,6 +9,7 @@ type DSProcesses struct {
 	Process_ID        string
 	Owner_ID          int
 	Owner_Name        string
+	System_ID         int
 	Created_DateTime  time.Time
 	Modified_DateTime time.Time
 	Status            int
