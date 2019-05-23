@@ -241,11 +241,12 @@ export default {
       this.$store.dispatch(`${this.storeName}/getLeftTable`);
     },
     toggleHighlightCDEName (propsItem, item) {
-      var cdes = propsItem.CDE_NAMEs.filter(v => {
-        return v.CRM_NAME == item.CRM_NAME;
+      var cdes = this.store.left.source.filter(v => {
+        return v.PRIORITY_REPORT == propsItem.PRIORITY_REPORT &&
+          v.CRM_NAME == item.CRM_NAME
       }).map(v => v.CDE_NAME);
 
-      this.highlightedPriorityReport = item.PRIORITY_REPORT;
+      this.highlightedPriorityReport = propsItem.PRIORITY_REPORT;
       this.highlightedCDENames = cdes;
     },
     resetFilter (e) {
