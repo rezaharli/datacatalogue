@@ -199,12 +199,12 @@ export default {
     },
     showBusinessterms(param) {
       this.$router.push(
-        this.addressPath + "/" + this.$route.params.subdomain + "/" + param.SYSTEM_NAME
+        this.addressPath + "/" + encodeURIComponent(this.$route.params.subdomain) + "/" + encodeURIComponent(param.SYSTEM_NAME)
       );
     },
     showDetails(param) {
       this.$router.push(
-        this.addressPath + "/" + param.TSID + "/" + param.ID + "/" + param.COLID
+        this.addressPath + "/" + encodeURIComponent(param.TSID) + "/" + encodeURIComponent(param.ID) + "/" + encodeURIComponent(param.COLID)
       );
     },
     setTableColumnsWidth(elem){

@@ -438,7 +438,7 @@ export default {
     },
     showDetails(param) {
       this.$router.push(
-        this.addressPath + "/" + this.$route.params.subdomain + "/" + this.$route.params.system + "/" + param.BT_NAME
+        this.addressPath + "/" + encodeURIComponent(this.$route.params.subdomain) + "/" + encodeURIComponent(this.$route.params.system) + "/" + encodeURIComponent(param.BT_NAME)
       );
     },
     setTableColumnsWidth(elem){

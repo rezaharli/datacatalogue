@@ -193,7 +193,7 @@ export default {
     },
     showDetails(param) {
       this.$router.push(
-        this.addressPath + "/" + param.SUB_DOMAINS + "/" + param.BT_NAME
+        this.addressPath + "/" + encodeURIComponent(param.SUB_DOMAINS) + "/" + encodeURIComponent(param.BT_NAME)
       );
     },
     setTableColumnsWidth(elem){
