@@ -416,6 +416,18 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 		}
 	}
 
+	ddVal := toolkit.M{}
+	if len(selectedDetail) > 0 {
+		ddVal.Set("ddTableSelected", strings.Split(selectedDetail["TABLE_NAME"].(string), ", ")[0])
+		ddVal.Set("ddColumnSelected", strings.Split(selectedDetail["COLUMN_NAME"].(string), ", ")[0])
+		ddVal.Set("ddScreenLabelSelected", strings.Split(selectedDetail["BUSINESS_ALIAS_NAME"].(string), ", ")[0])
+		ddVal.Set("ddBusinessTermSelected", strings.Split(selectedDetail["BUSINESS_TERM"].(string), ", ")[0])
+		ddVal.Set("ddPrecSelected", strings.Split(selectedDetail["IMM_PRECEEDING_SYSTEM"].(string), ", ")[0])
+		ddVal.Set("ddPrecIncomingSelected", strings.Split(selectedDetail["IMM_PREC_INCOMING"].(string), ", ")[0])
+		ddVal.Set("ddSuccSelected", strings.Split(selectedDetail["IMM_SUCCEEDING_SYSTEM"].(string), ", ")[0])
+		ddVal.Set("ddSuccIncomingSelected", strings.Split(selectedDetail["IMM_SUCC_INCOMING"].(string), ", ")[0])
+	}
+
 	ddSource, _, err := s.NewDSCService().GetddSource(payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
@@ -436,16 +448,6 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 	data := toolkit.M{}
 	data.Set("SelectedDetail", selectedDetail)
 	data.Set("DDSource", mappedddSource)
-
-	ddVal := toolkit.M{}
-	ddVal.Set("ddTableSelected", strings.Split(selectedDetail["TABLE_NAME"].(string), ", ")[0])
-	ddVal.Set("ddColumnSelected", strings.Split(selectedDetail["COLUMN_NAME"].(string), ", ")[0])
-	ddVal.Set("ddScreenLabelSelected", strings.Split(selectedDetail["BUSINESS_ALIAS_NAME"].(string), ", ")[0])
-	ddVal.Set("ddBusinessTermSelected", strings.Split(selectedDetail["BUSINESS_TERM"].(string), ", ")[0])
-	ddVal.Set("ddPrecSelected", strings.Split(selectedDetail["IMM_PRECEEDING_SYSTEM"].(string), ", ")[0])
-	ddVal.Set("ddPrecIncomingSelected", strings.Split(selectedDetail["IMM_PREC_INCOMING"].(string), ", ")[0])
-	ddVal.Set("ddSuccSelected", strings.Split(selectedDetail["IMM_SUCCEEDING_SYSTEM"].(string), ", ")[0])
-	ddVal.Set("ddSuccIncomingSelected", strings.Split(selectedDetail["IMM_SUCC_INCOMING"].(string), ", ")[0])
 	data.Set("DDVal", ddVal)
 
 	h.WriteResultOK(k, res, data)
