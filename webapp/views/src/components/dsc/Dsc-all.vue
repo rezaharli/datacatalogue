@@ -262,7 +262,7 @@ export default {
         //reset right table filter
         this.store.filters.right = {};
 
-        this.$router.push(this.addressPath + '/' + param.SYSTEM_NAME);
+        this.$router.push(this.addressPath + '/' + encodeURIComponent(param.SYSTEM_NAME));
       },
       toggleDscDrawer(param){
         this.dscStore.drawer = !this.dscStore.drawer;

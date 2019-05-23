@@ -251,10 +251,10 @@ export default {
         //reset right table filter
         this.store.filters.right = {};
 
-        this.$router.push(this.addressPath + '/' + param.SYSTEM_NAME);
+        this.$router.push(this.addressPath + '/' + encodeURIComponent(param.SYSTEM_NAME));
       },
       showDetails (param) {
-        this.$router.push(this.addressPath + "/" + param.TSID + '/' + param.ID + '/' + param.COLID)
+        this.$router.push(this.addressPath + "/" + encodeURIComponent(param.TSID) + '/' + encodeURIComponent(param.ID) + '/' + encodeURIComponent(param.COLID))
       },
       setTableColumnsWidth(elem){
         var tableElem = elem.find('.v-table__overflow > table.v-table');

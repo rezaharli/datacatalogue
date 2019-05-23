@@ -267,7 +267,7 @@ export default {
     },
     showDetails(param) {
       this.$router.push(
-        this.addressPath + "/" + this.store.system + "/" + this.store.dspName + "/" + param.TSID + "/" + param.TMTID + "/" + param.COLID
+        this.addressPath + "/" + encodeURIComponent(this.store.system) + "/" + encodeURIComponent(this.store.dspName) + "/" + encodeURIComponent(param.TSID) + "/" + encodeURIComponent(param.TMTID) + "/" + encodeURIComponent(param.COLID)
       );
     },
     setTableColumnsWidth(elem){

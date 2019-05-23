@@ -329,7 +329,7 @@ export default {
     },
     showDetails(param) {
       this.$router.push(
-        this.addressPath + "/" + param.SYSTEM_NAME + "/" + param.TSID + "/" + param.TMTID + "/" + param.COLID
+        this.addressPath + "/" + encodeURIComponent(param.SYSTEM_NAME) + "/" + encodeURIComponent(param.TSID) + "/" + encodeURIComponent(param.TMTID) + "/" + encodeURIComponent(param.COLID)
       );
     },
     setTableColumnsWidth(elem){

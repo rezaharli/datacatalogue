@@ -184,12 +184,12 @@ export default {
     },
     showCDEs(param) {
       this.$router.push(
-        this.addressPath + "/" + param.SYSTEM_NAME + "/" + param.DSP_NAME
+        this.addressPath + "/" + encodeURIComponent(param.SYSTEM_NAME) + "/" + encodeURIComponent(param.DSP_NAME)
       );
     },
     showDetails(param) {
       this.$router.push(
-        this.addressPath + "/" + param.TSID + "/" + param.ID + "/" + param.COLID
+        this.addressPath + "/" + encodeURIComponent(param.TSID) + "/" + encodeURIComponent(param.ID) + "/" + encodeURIComponent(param.COLID)
       );
     },
     setTableColumnsWidth(elem){
