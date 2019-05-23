@@ -249,7 +249,7 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 		}
 
 		if param.OrderBy != "" {
-			param.OrderBy = `ORDER BY UPPER(` + param.OrderBy + `) `
+			param.OrderBy = `ORDER BY regexp_replace(regexp_replace(UPPER(` + param.OrderBy + `), '(\d+)', lpad('0', 20, '0')||'\1'), '0*?(\d{21}(\D|$))', '\1') `
 		}
 
 		if param.IsDescending {
