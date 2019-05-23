@@ -69,6 +69,12 @@
 			"revisionTime": "2019-01-15T05:28:47Z"
 		},
 		{
+			"checksumSHA1": "YImPVNZRCKOaaReWnFEH+AaP8NM=",
+			"path": "github.com/fsnotify/fsnotify",
+			"revision": "1485a34d5d5723fea214f5710708e19a831720e4",
+			"revisionTime": "2019-03-12T18:14:46Z"
+		},
+		{
 			"checksumSHA1": "y2/wlPsexgYRaTmGgkEWBGNodJM=",
 			"path": "github.com/gchaincl/dotsql",
 			"revision": "f8e452f37f648d9ffee122eeb50bd986dff3c4ca",
@@ -103,6 +109,12 @@
 			"path": "golang.org/x/net/html/atom",
 			"revision": "3a22650c66bd7f4fb6d1e8072ffd7b75c8a27898",
 			"revisionTime": "2019-02-11T12:35:32Z"
+		},
+		{
+			"checksumSHA1": "Oqmld6WjJtLzayQIz88UqPhA42k=",
+			"path": "golang.org/x/sys/unix",
+			"revision": "8097e1b27ff5e40620836729a9584e91b094b062",
+			"revisionTime": "2019-05-21T15:16:17Z"
 		},
 		{
 			"checksumSHA1": "630l2pO7NH+wXMF7SXMGT9vTPcI=",
