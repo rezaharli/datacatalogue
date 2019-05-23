@@ -347,6 +347,7 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 		return
 	}
 
+	ddVal := toolkit.M{}
 	selectedDetail := toolkit.M{}
 	detailSources := mappedDetails.([]toolkit.M)
 	if len(detailSources) > 0 {
@@ -405,6 +406,33 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 				return
 			}
 
+			switch key {
+			case "TABLE_NAME":
+				ddVal.Set("ddTableSelected", uniqueValues.([]string)[0])
+				break
+			case "COLUMN_NAME":
+				ddVal.Set("ddColumnSelected", uniqueValues.([]string)[0])
+				break
+			case "BUSINESS_ALIAS_NAME":
+				ddVal.Set("ddScreenLabelSelected", uniqueValues.([]string)[0])
+				break
+			case "BUSINESS_TERM":
+				ddVal.Set("ddBusinessTermSelected", uniqueValues.([]string)[0])
+				break
+			case "IMM_PRECEEDING_SYSTEM":
+				ddVal.Set("ddPrecSelected", uniqueValues.([]string)[0])
+				break
+			case "IMM_PREC_INCOMING":
+				ddVal.Set("ddPrecIncomingSelected", uniqueValues.([]string)[0])
+				break
+			case "IMM_SUCCEEDING_SYSTEM":
+				ddVal.Set("ddSuccSelected", uniqueValues.([]string)[0])
+				break
+			case "IMM_SUCC_INCOMING":
+				ddVal.Set("ddSuccIncomingSelected", uniqueValues.([]string)[0])
+				break
+			}
+
 			joinedValues := ""
 			if key == "DATASET_CUSTODIAN" || key == "BANK_ID" {
 				joinedValues = strings.Join(uniqueValues.([]string), "; ")
@@ -414,18 +442,6 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 
 			selectedDetail.Set(key, joinedValues)
 		}
-	}
-
-	ddVal := toolkit.M{}
-	if len(selectedDetail) > 0 {
-		ddVal.Set("ddTableSelected", strings.Split(selectedDetail["TABLE_NAME"].(string), ", ")[0])
-		ddVal.Set("ddColumnSelected", strings.Split(selectedDetail["COLUMN_NAME"].(string), ", ")[0])
-		ddVal.Set("ddScreenLabelSelected", strings.Split(selectedDetail["BUSINESS_ALIAS_NAME"].(string), ", ")[0])
-		ddVal.Set("ddBusinessTermSelected", strings.Split(selectedDetail["BUSINESS_TERM"].(string), ", ")[0])
-		ddVal.Set("ddPrecSelected", strings.Split(selectedDetail["IMM_PRECEEDING_SYSTEM"].(string), ", ")[0])
-		ddVal.Set("ddPrecIncomingSelected", strings.Split(selectedDetail["IMM_PREC_INCOMING"].(string), ", ")[0])
-		ddVal.Set("ddSuccSelected", strings.Split(selectedDetail["IMM_SUCCEEDING_SYSTEM"].(string), ", ")[0])
-		ddVal.Set("ddSuccIncomingSelected", strings.Split(selectedDetail["IMM_SUCC_INCOMING"].(string), ", ")[0])
 	}
 
 	ddSource, _, err := s.NewDSCService().GetddSource(payload)
