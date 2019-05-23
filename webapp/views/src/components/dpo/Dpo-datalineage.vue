@@ -238,7 +238,7 @@ export default {
     },
     showDetails(param) {
       this.$router.push(
-        this.addressPath + "/" + this.$route.params.dspname + "/" + param.ALIAS_NAME
+        this.addressPath + "/" + encodeURIComponent(this.$route.params.dspname) + "/" + encodeURIComponent(param.ALIAS_NAME)
       );
     },
     setTableColumnsWidth(elem){
