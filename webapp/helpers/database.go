@@ -3,7 +3,6 @@ package helpers
 import (
 	"errors"
 	"log"
-	"os"
 	"strings"
 
 	"github.com/eaciit/toolkit"
@@ -39,7 +38,7 @@ func Database() dbflex.IConnection {
 	dbConnection, err = fn(dbConf, which)
 	if err != nil {
 		log.Println("-> failed to connect to the", which, "database server.", err.Error())
-		os.Exit(0)
+		// os.Exit(0)
 	}
 
 	return dbConnection
@@ -82,8 +81,12 @@ func NewOracleConnection(dbConf map[string]interface{}, which string) (dbflex.IC
 	dbWhichConf := dbConf[which].(map[string]interface{})
 
 	var decryptedPassword string
+	var err error
 	if dbConf["enableEncryption"] != nil && dbConf["enableEncryption"].(bool) == true {
-		decryptedPassword = Decrypt(dbWhichConf["password"].(string))
+		decryptedPassword, err = Decrypt(dbWhichConf["password"].(string))
+		if err != nil {
+			return nil, err
+		}
 	} else {
 		decryptedPassword = dbWhichConf["password"].(string)
 	}

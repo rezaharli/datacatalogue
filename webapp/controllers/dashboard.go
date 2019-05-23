@@ -26,7 +26,13 @@ func (c *Dashboard) Encrypt(k *knot.WebContext) {
 	}
 
 	plainText := payload.GetString("PlainText")
-	h.WriteResultOK(k, res, h.Encrypt(plainText))
+	encrypted, err := h.Encrypt(plainText)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	h.WriteResultOK(k, res, encrypted)
 }
 
 func (c *Dashboard) Decrypt(k *knot.WebContext) {
@@ -40,5 +46,11 @@ func (c *Dashboard) Decrypt(k *knot.WebContext) {
 	}
 
 	encrypted := payload.GetString("Encrypted")
-	h.WriteResultOK(k, res, h.Decrypt(encrypted))
+	plainText, err := h.Decrypt(encrypted)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	h.WriteResultOK(k, res, plainText)
 }

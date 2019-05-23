@@ -1,6 +1,7 @@
 package main
 
 import (
+	"eaciit/datacatalogue/webapp/helpers"
 	"fmt"
 	"io"
 	"log"
@@ -61,96 +62,99 @@ func main() {
 
 	server.Start(clit.Config("default", "host", "").(string) + ":" + clit.Config("default", "port", "").(string))
 
-	if clit.Config("default", "dataDummy", false).(bool) == true {
-		s.NewDSCService().CreateSystemDummyData()
-		s.NewDSCService().CreateMDResourceDummyData()
-		s.NewDSCService().CreatePeopleDummyData()
-		s.NewDSCService().CreateRoleDummyData()
-		s.NewDSCService().CreateCategoryDummyData()
-		s.NewDSCService().CreateSubCategoryDummyData()
-		s.NewDSCService().CreatePolicyDummyData()
-		s.NewDSCService().CreateBusinessTermDummyData()
-		s.NewDSCService().CreateMDTableDummyData()
-		s.NewDSCService().CreateMDColumnDummyData()
-		s.NewDSCService().CreateMDColumnDetailsDummyData()
-		s.NewDSCService().CreateLinkColumnBusinessTermDummyData()
-		s.NewDSCService().CreateDSProcessesDummyData()
-		s.NewDSCService().CreateSegmentDummyData()
-		s.NewDSCService().CreateDSProcessesDetailDummyData()
-		s.NewDSCService().CreateLinkDSProcessSegmentDummyData()
-		s.NewDSCService().CreateLinkColumnInterfaceDummyData()
-		s.NewDSCService().CreateLinkColumnGoldenSourceDummyData()
-		s.NewDSCService().CreatePriorityReportsDummyData()
-		s.NewDSCService().CreateCRMDummyData()
-		s.NewDSCService().CreateCDEDummyData()
-		s.NewDSCService().CreateLinkRolePeopleDummyData()
-	}
-
-	s.NewDSCService().CreateUserDummyData()
-
-	// creates a new file watcher
-	filename := "nohup.out"
-
-	err := waitUntilFind(filename)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	watcher, err := fsnotify.NewWatcher()
-	if err != nil {
-		log.Fatalln(err)
-	}
-	defer watcher.Close()
-
-	err = watcher.Add(filename)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	renameCh := make(chan bool)
-	removeCh := make(chan bool)
-	errCh := make(chan error)
-
-	go func() {
-		for {
-			select {
-			case event := <-watcher.Events:
-				switch {
-				case event.Op&fsnotify.Write == fsnotify.Write:
-					writeLog()
-				}
-			case err := <-watcher.Errors:
-				errCh <- err
-			}
+	conn := helpers.Database()
+	if conn != nil {
+		if clit.Config("default", "dataDummy", false).(bool) == true {
+			s.NewDSCService().CreateSystemDummyData()
+			s.NewDSCService().CreateMDResourceDummyData()
+			s.NewDSCService().CreatePeopleDummyData()
+			s.NewDSCService().CreateRoleDummyData()
+			s.NewDSCService().CreateCategoryDummyData()
+			s.NewDSCService().CreateSubCategoryDummyData()
+			s.NewDSCService().CreatePolicyDummyData()
+			s.NewDSCService().CreateBusinessTermDummyData()
+			s.NewDSCService().CreateMDTableDummyData()
+			s.NewDSCService().CreateMDColumnDummyData()
+			s.NewDSCService().CreateMDColumnDetailsDummyData()
+			s.NewDSCService().CreateLinkColumnBusinessTermDummyData()
+			s.NewDSCService().CreateDSProcessesDummyData()
+			s.NewDSCService().CreateSegmentDummyData()
+			s.NewDSCService().CreateDSProcessesDetailDummyData()
+			s.NewDSCService().CreateLinkDSProcessSegmentDummyData()
+			s.NewDSCService().CreateLinkColumnInterfaceDummyData()
+			s.NewDSCService().CreateLinkColumnGoldenSourceDummyData()
+			s.NewDSCService().CreatePriorityReportsDummyData()
+			s.NewDSCService().CreateCRMDummyData()
+			s.NewDSCService().CreateCDEDummyData()
+			s.NewDSCService().CreateLinkRolePeopleDummyData()
 		}
-	}()
 
-	go func() {
-		for {
-			select {
-			case <-renameCh:
-				err = waitUntilFind(filename)
-				if err != nil {
-					log.Fatalln(err)
-				}
-				err = watcher.Add(filename)
-				if err != nil {
-					log.Fatalln(err)
-				}
-			case <-removeCh:
-				err = waitUntilFind(filename)
-				if err != nil {
-					log.Fatalln(err)
-				}
-				err = watcher.Add(filename)
-				if err != nil {
-					log.Fatalln(err)
+		s.NewDSCService().CreateUserDummyData()
+
+		// creates a new file watcher
+		filename := "nohup.out"
+
+		err := waitUntilFind(filename)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		watcher, err := fsnotify.NewWatcher()
+		if err != nil {
+			log.Fatalln(err)
+		}
+		defer watcher.Close()
+
+		err = watcher.Add(filename)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		renameCh := make(chan bool)
+		removeCh := make(chan bool)
+		errCh := make(chan error)
+
+		go func() {
+			for {
+				select {
+				case event := <-watcher.Events:
+					switch {
+					case event.Op&fsnotify.Write == fsnotify.Write:
+						writeLog()
+					}
+				case err := <-watcher.Errors:
+					errCh <- err
 				}
 			}
-		}
-	}()
+		}()
 
-	log.Fatalln(<-errCh)
+		go func() {
+			for {
+				select {
+				case <-renameCh:
+					err = waitUntilFind(filename)
+					if err != nil {
+						log.Fatalln(err)
+					}
+					err = watcher.Add(filename)
+					if err != nil {
+						log.Fatalln(err)
+					}
+				case <-removeCh:
+					err = waitUntilFind(filename)
+					if err != nil {
+						log.Fatalln(err)
+					}
+					err = watcher.Add(filename)
+					if err != nil {
+						log.Fatalln(err)
+					}
+				}
+			}
+		}()
+
+		log.Fatalln(<-errCh)
+	}
 
 	toolkit.Println("Done. Waiting.")
 
