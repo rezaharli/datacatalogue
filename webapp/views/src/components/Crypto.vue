@@ -19,7 +19,7 @@ div#app div#login div#form {
                             label=" "
                             label-for="plainText">
                         <div class="passw-container">
-                            <i class="fa fas" v-bind:class="{'fa-eye' : hidePassword, 'fa-eye-slash' : !hidePassword }" @click="hidePassword = !hidePassword"></i>
+                            <!-- <i class="fa fas" v-bind:class="{'fa-eye' : hidePassword, 'fa-eye-slash' : !hidePassword }" @click="hidePassword = !hidePassword"></i> -->
                             <b-form-input id="plainText"
                                 :type="passwordType"
                                 v-model="store.plainText"
