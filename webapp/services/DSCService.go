@@ -496,10 +496,10 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	)
 
 	///////// FILTER
-	q = `SELECT * FROM (
+	q = `SELECT rownum, a.* FROM (
 		` + q + `
-	) 
-	WHERE (
+	) a
+	WHERE ((
 			tmtid = '` + otherArgs[0] + `'
 			AND tmcid = '` + otherArgs[1] + `'
 		) OR (
@@ -523,7 +523,8 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	if otherArgs[9] != "" {
 		q += `AND imm_succ_incoming = '` + otherArgs[9] + `' `
 	}
-	q += `) `
+	q += `)) `
+	// q += `AND rownum = 1 `
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),

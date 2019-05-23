@@ -81,14 +81,14 @@ func NewMongodbConnection(dbConf map[string]interface{}, which string) (dbflex.I
 func NewOracleConnection(dbConf map[string]interface{}, which string) (dbflex.IConnection, error) {
 	dbWhichConf := dbConf[which].(map[string]interface{})
 
-	var decryptedConnectionString string
+	var decryptedPassword string
 	if dbConf["enableEncryption"] != nil && dbConf["enableEncryption"].(bool) == true {
-		decryptedConnectionString = Decrypt(dbWhichConf["connectionString"].(string))
+		decryptedPassword = Decrypt(dbWhichConf["password"].(string))
 	} else {
-		decryptedConnectionString = dbWhichConf["connectionString"].(string)
+		decryptedPassword = dbWhichConf["password"].(string)
 	}
 
-	connectionString := "oracle://" + decryptedConnectionString
+	connectionString := toolkit.Sprintf("oracle://%s:%s@%s:%s/%s", dbWhichConf["username"], decryptedPassword, dbWhichConf["host"], dbWhichConf["port"], dbWhichConf["service"])
 	conn, err := dbflex.NewConnectionFromURI(connectionString, nil)
 	if err != nil {
 		return nil, toolkit.Errorf("Unable to connect to the database server. %s", err.Error())

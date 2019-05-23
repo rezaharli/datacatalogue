@@ -6,7 +6,11 @@
         "which": "oracle",
         "enableEncryption": true,
         "oracle": {
-            "connectionString": "artRhsjC-DuFkP6Lrg6tTCYSUvX0r9OaUU6qC0N4Zs0VRNG82OQyhG0gf_SgXDO6R-51qhE="
+            "username": "scbdc",
+            "password": "fGeOfIt9hH2yWnWhDWkIulSp830458ER",
+            "host": "localhost",
+            "port": "1521",
+            "service": "orclcdb"
         },
         "mongodb": {
             "host": "example.com:80808",

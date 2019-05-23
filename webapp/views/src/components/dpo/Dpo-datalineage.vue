@@ -211,15 +211,10 @@ export default {
     linkDataLineage(){
       var processName = this.store.left.source[0] ? this.store.left.source[0]["PROCESS_NAME"] : "";
 
-      switch (processName) {
-        case "USFRR":
-          window.open("http://hklpadmdm002.global.standardchartered.com:9999/data/view/id/535#!tab-data-relationships");
-          break;
-        case "GNS":
-          window.open("http://hklpadmdm002.global.standardchartered.com:9999/data/view/id/532#!tab-data-relationships");
-          break;
-        default:
-          break;
+      if (processName.toLowerCase().indexOf("USFRR".toLowerCase()) != -1){
+        window.open("http://hklpadmdm002.global.standardchartered.com:9999/data/view/id/535#!tab-data-relationships");
+      } else if (processName.toLowerCase().indexOf("Global Name Screening".toLowerCase()) != -1){
+        window.open("http://hklpadmdm002.global.standardchartered.com:9999/data/view/id/532#!tab-data-relationships");
       }
     },
     resetFilter (e) {

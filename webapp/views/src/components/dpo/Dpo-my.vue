@@ -131,11 +131,11 @@ export default {
     mounted() {
       this.store.tabName = this.storeName;
       setTimeout(() => {
-        this.setTableColumnsWidth($('#table-dsc-cde'));
+        this.setTableColumnsWidth($('#table-dpo-my'));
       }, 300);
     },
     updated() {
-      this.setTableColumnsWidth($('#table-dsc-cde'));
+      this.setTableColumnsWidth($('#table-dpo-my'));
     },
     methods: {
       getLeftTable () {
@@ -145,7 +145,7 @@ export default {
         this.getLeftTable();
       },
       showRightTable(param){
-        this.$router.push(this.addressPath + '/' + param.SUB_DOMAINS);
+        this.$router.push(this.addressPath + '/' + param.DSP_NAME);
       },
       setTableColumnsWidth(elem){
         var tableElem = elem.find('.v-table__overflow > table.v-table');

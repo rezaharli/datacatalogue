@@ -7,6 +7,7 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -34,7 +35,10 @@ func WriteResultOK(k *knot.WebContext, res *toolkit.Result, data interface{}) {
 }
 
 func ObjectKeys(data interface{}) []string {
-	datax := data.(map[string]([]toolkit.M))
+	var datax map[string]interface{}
+
+	dataJson, _ := json.Marshal(data)
+	json.Unmarshal(dataJson, &datax)
 
 	keys := make([]string, 0)
 	for key := range datax {
