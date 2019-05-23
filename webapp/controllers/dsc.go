@@ -309,6 +309,7 @@ func (c *DSC) GetInterfacesRightTable(k *knot.WebContext) {
 }
 
 func (c *DSC) GetDetails(k *knot.WebContext) {
+	processTime := time.Now()
 	res := toolkit.NewResult()
 
 	payload := toolkit.M{}
@@ -448,4 +449,5 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 	data.Set("DDVal", ddVal)
 
 	h.WriteResultOK(k, res, data)
+	toolkit.Println("processTime:", time.Since(processTime).Seconds(), "\n------------------------------------------------------------------------------------")
 }
