@@ -2,10 +2,14 @@ package main
 
 import (
 	"fmt"
+	"io"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/fsnotify/fsnotify"
 
 	"github.com/eaciit/clit"
 	"github.com/eaciit/toolkit"
@@ -84,9 +88,133 @@ func main() {
 
 	s.NewDSCService().CreateUserDummyData()
 
+	// creates a new file watcher
+	filename := "nohup.out"
+
+	err := waitUntilFind(filename)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	watcher, err := fsnotify.NewWatcher()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer watcher.Close()
+
+	err = watcher.Add(filename)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	renameCh := make(chan bool)
+	removeCh := make(chan bool)
+	errCh := make(chan error)
+
+	go func() {
+		for {
+			select {
+			case event := <-watcher.Events:
+				switch {
+				case event.Op&fsnotify.Write == fsnotify.Write:
+					writeLog()
+				}
+			case err := <-watcher.Errors:
+				errCh <- err
+			}
+		}
+	}()
+
+	go func() {
+		for {
+			select {
+			case <-renameCh:
+				err = waitUntilFind(filename)
+				if err != nil {
+					log.Fatalln(err)
+				}
+				err = watcher.Add(filename)
+				if err != nil {
+					log.Fatalln(err)
+				}
+			case <-removeCh:
+				err = waitUntilFind(filename)
+				if err != nil {
+					log.Fatalln(err)
+				}
+				err = watcher.Add(filename)
+				if err != nil {
+					log.Fatalln(err)
+				}
+			}
+		}
+	}()
+
+	log.Fatalln(<-errCh)
+
 	toolkit.Println("Done. Waiting.")
 
 	server.Wait()
+}
+
+func waitUntilFind(filename string) error {
+	for {
+		time.Sleep(1 * time.Second)
+		_, err := os.Stat(filename)
+		if err != nil {
+			if os.IsNotExist(err) {
+				continue
+			} else {
+				return err
+			}
+		}
+		break
+	}
+	return nil
+}
+
+func writeLog() error {
+	copyFile := func(src, dst string) (int64, error) {
+		sourceFileStat, err := os.Stat(src)
+		if err != nil {
+			return 0, err
+		}
+
+		if !sourceFileStat.Mode().IsRegular() {
+			return 0, fmt.Errorf("%s is not a regular file", src)
+		}
+
+		source, err := os.Open(src)
+		if err != nil {
+			return 0, err
+		}
+		defer source.Close()
+
+		destination, err := os.Create(dst)
+		if err != nil {
+			return 0, err
+		}
+		defer destination.Close()
+		nBytes, err := io.Copy(destination, source)
+		return nBytes, err
+	}
+
+	deleteFile := func(path string) error {
+		return os.Remove(path)
+	}
+
+	path := "logfiles"
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		os.Mkdir(path, os.ModePerm)
+	}
+
+	currentTime := time.Now()
+	time4daysAgo := currentTime.AddDate(0, 0, -4)
+
+	_ = deleteFile("logfiles/nohup_" + time4daysAgo.Format("2006-01-02") + ".out")
+	_, err := copyFile("nohup.out", "logfiles/nohup_"+currentTime.Format("2006-01-02")+".out")
+
+	return err
 }
 
 func kill(err error) {
