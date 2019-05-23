@@ -238,7 +238,7 @@ legend.col-form-label, label.col-form-label {
 
           <b-row>
             <b-col>
-              <b-card title="Domain View" tag="article" class="mb-2">
+              <b-card tag="article" class="mb-2">
                 <h4 class="card-title border-0 mb-0 pb-0" v-b-toggle.collapse-3>
                   Domain View
                   <i class="when-opened float-right fa fa-chevron-up"></i>
