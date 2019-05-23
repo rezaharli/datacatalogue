@@ -81,7 +81,7 @@
 
                   <template slot="footer" >
                     <td v-bind:style="{ width: (store.left.colWidth['DSP_NAME']+store.left.colWidth['PROCESS_OWNER']) + 'px' }" :colspan="2" >
-                      <b>*No of Unique CDEs Screen in DSC</b>
+                      <b>No of Unique CDEs Screen in DSC</b>
                     </td>
                     <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }"><b>{{ store.left.display[0] ? store.left.display[0].TOTAL : 0 }}</b></td>
                   </template>
