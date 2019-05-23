@@ -195,7 +195,7 @@ export default {
         this.getLeftTable();
       },
       showRightTable(param){
-        this.$router.push(this.addressPath + '/' + param.RISK_SUB_TYPE);
+        this.$router.push(this.addressPath + '/' + encodeURIComponent(param.RISK_SUB_TYPE));
       },
       toggleFieldDisplay(){
         var toggleFieldName = (name) => {
