@@ -96,7 +96,7 @@
                         <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
                       </td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }" class="text-uppercase">
+                      <td v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }" class="text-capitalize">
                         <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
                       </td>
 
@@ -217,7 +217,7 @@
                           <tablecell showOn="hover" v-if="isSystemLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
                         </td>
 
-                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
+                        <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
                           <tablecell showOn="hover" v-if="isSystemLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
                         </td>
 
@@ -252,7 +252,7 @@
                               <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
                             </td>
 
-                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
+                            <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
                               <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
                             </td>
 
@@ -279,7 +279,7 @@
                                 <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
                                   <tablecell showOn="hover" :fulltext="props.item.COLUMN_NAME"></tablecell></td>
 
-                                <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
+                                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
                                   <tablecell showOn="hover" :fulltext="props.item.GOLDEN_SOURCE"></tablecell></td>
 
                                 <td colspan="3"></td>

@@ -109,6 +109,7 @@ function getDownstreamBusinesstermTable(param) {
     return fetchWHeader(`/ddo/getdownstreambusinesstermtable`, param).then(
         res => {
             res.Data = _.map(res.Data, function(v){
+                v.GOLDEN_SOURCE = v.GOLDEN_SOURCE.toLowerCase();
                 var keys = Object.keys(v);
 
                 keys.forEach(key => {
