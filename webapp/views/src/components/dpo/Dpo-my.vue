@@ -131,11 +131,11 @@ export default {
     mounted() {
       this.store.tabName = this.storeName;
       setTimeout(() => {
-        this.setTableColumnsWidth($('#table-dsc-cde'));
+        this.setTableColumnsWidth($('#table-dpo-my'));
       }, 300);
     },
     updated() {
-      this.setTableColumnsWidth($('#table-dsc-cde'));
+      this.setTableColumnsWidth($('#table-dpo-my'));
     },
     methods: {
       getLeftTable () {

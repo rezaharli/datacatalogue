@@ -1,8 +1,14 @@
 <style>
 @import '../../assets/styles/dashboard.css';
-#table-ddo-my table.v-table tr th:nth-of-type(1){width: 40% !important; min-width: 270px;}
-#table-ddo-my table.v-table tr th:nth-of-type(2){width: 40% !important; min-width: 270px;}
-#table-ddo-my table.v-table tr th:nth-of-type(3){width: 20% !important;}
+#table-ddo-my table.v-table tr th:nth-of-type(1){width: 40% !important;}
+#table-ddo-my table.v-table tr th:nth-of-type(2){width: 40% !important;}
+#table-ddo-my table.v-table tr th:nth-of-type(3){width: 10% !important;}
+#table-ddo-my table.v-table tr th:nth-of-type(1),
+#table-ddo-my table.v-table tr td:nth-of-type(1) {padding: 0 15px;}
+#table-ddo-my table.v-table tr th:nth-of-type(2),
+#table-ddo-my table.v-table tr td:nth-of-type(2) {padding: 0 15px;}
+#table-ddo-my table.v-table tr th:nth-of-type(3),
+#table-ddo-my table.v-table tr td:nth-of-type(3) {padding: 0 5px 0 15px;}
 </style>
 
 <template>

@@ -98,7 +98,7 @@ label.col-form-label {
                       <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BUSINESS_RULES : ''"></text-wrap-dialog>
                     </b-form-group>
 
-                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Mandatory (Y/N)">
+                    <b-form-group horizontal :label-cols="4" breakpoint="md" label="Mandatory (Yes/No)">
                       <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.MANDATORY : ''"></text-wrap-dialog>
                     </b-form-group>
 

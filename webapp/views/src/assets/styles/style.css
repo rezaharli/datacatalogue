@@ -96,6 +96,7 @@ body, .application--wrap{
     display: inline-block;
 }
 .table-header-wrapper  .dropdown-button-wrapper .btn{padding: 0 5px 0 10px;}
+.table-header-wrapper  .dropdown-button-wrapper {position: unset;}
 
 table.v-table thead th > div.btn-group {
     width: auto;
