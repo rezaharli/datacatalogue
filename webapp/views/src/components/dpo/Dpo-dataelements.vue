@@ -98,7 +98,7 @@
                         <tablecell :fulltext="props.item.BT_NAME" showOn="hover" v-if="props.item.Tables.length < 1"></tablecell>
                       </td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-uppercase">
+                      <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-capitalize">
                         {{ props.item.CDE }}</td>
 
                       <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-uppercase">
