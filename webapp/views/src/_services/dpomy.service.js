@@ -24,6 +24,11 @@ function getDataelementsTable(param) {
     return fetchWHeader(`/dpo/getdataelementstable`, param).then(
         res => {
             res.DataFlat = _.cloneDeep(res.Data);
+
+            res.Data = _.map(res.Data, function(v){
+                v.CDE = v.CDE == 0 ? "No" : "Yes";
+                return v;
+            });
             
             var tmp = _.groupBy(res.Data, "ALIAS_NAME")
             res.Data = _.map(Object.keys(tmp), function(v, i){
