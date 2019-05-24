@@ -89,10 +89,14 @@ func (c *Base) GetDropdownSource(payload toolkit.M, dropdownFunction func(payloa
 
 	mappedddSource, err := gubrak.Map(ddSource, func(v toolkit.M, i int) toolkit.M {
 		for _, key := range helpers.ObjectKeys(v) {
-			v[key] = strings.TrimSpace(toolkit.ToString(v[key]))
-			if v[key] == "" {
+			stringVal := toolkit.ToString(v[key])
+			trimmedStringVal := strings.TrimSpace(stringVal)
+
+			if trimmedStringVal == "" {
 				v[key] = "NA"
 			}
+
+			v[key] = stringVal
 		}
 
 		return v
