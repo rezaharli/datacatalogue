@@ -41,15 +41,15 @@ func (c *Base) GetDetailAndDropdown(payload toolkit.M, detailsFunction func(payl
 		return nil, nil, err
 	}
 
-	var ddSource interface{}
+	var mappedddSource interface{}
 	if dropdownFunction != nil {
-		ddSource, _, err = dropdownFunction(payload)
+		mappedddSource, err = c.GetDropdownSource(payload, dropdownFunction)
 		if err != nil {
 			return nil, nil, err
 		}
 	}
 
-	return mappedDetails, ddSource, nil
+	return mappedDetails, mappedddSource, nil
 }
 
 func (c *Base) GetDetail(payload toolkit.M, detailsFunction func(payload toolkit.M) (interface{}, int, error)) (interface{}, error) {
