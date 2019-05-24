@@ -51,7 +51,7 @@ legend.col-form-label, label.col-form-label {
           <b-card tag="article" class="mb-2">
             <b-media class="left-card-media" >
               <h6 class="left-card-title">Downstream Process Name</h6>
-              <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DOWNSTREAM_PROCESS: ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.PROCESS_NAME: ''"></text-wrap-dialog>
             </b-media>
             
             <!-- <b-media class="left-card-media">
@@ -66,7 +66,7 @@ legend.col-form-label, label.col-form-label {
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Data Element</h6>
-              <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.CDE_NAME: ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DATA_ELEMENT: ''"></text-wrap-dialog>
             </b-media>
             
             <!-- <b-media class="left-card-media">
