@@ -65,7 +65,7 @@ legend.col-form-label, label.col-form-label {
             </b-media> -->
             
             <b-media class="left-card-media">
-              <h6 class="left-card-title">CDE Name</h6>
+              <h6 class="left-card-title">Data Element</h6>
               <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.CDE_NAME: ''"></text-wrap-dialog>
             </b-media>
             
