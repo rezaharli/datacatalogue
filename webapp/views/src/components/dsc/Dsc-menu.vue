@@ -151,7 +151,7 @@ export default {
             this.$store.dispatch(`dsc/getCounts`, param)
         },
         goToDscMenuContent(param){
-            this.$router.push(this.addressPathParent + '/' + param + '/' + this.$route.params.system);
+            this.$router.push(this.addressPathParent + '/' + encodeURIComponent(param) + '/' + encodeURIComponent(this.$route.params.system));
         },
     }
 }
