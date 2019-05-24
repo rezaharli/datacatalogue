@@ -145,31 +145,31 @@ export default {
         goToDscMenu(){
             var tmp = this.$route.path.split("/");
             var tmp2 = tmp.slice(0, 2).join("/");
-            var tmp3 = tmp2 + '/' + this.$route.params.system;
+            var tmp3 = tmp2 + '/' + encodeURIComponent(this.$route.params.system);
             return tmp3;
         },
         goToDdoMenu(){
             var tmp = this.$route.path.split("/");
             var tmp2 = tmp.slice(0, 2).join("/");
-            var tmp3 = tmp2 + '/' + this.$route.params.subdomain;
+            var tmp3 = tmp2 + '/' + encodeURIComponent(this.$route.params.subdomain);
             return tmp3;
         },
         goToDpoMenu(){
             var tmp = this.$route.path.split("/");
             var tmp2 = tmp.slice(0, 2).join("/");
-            var tmp3 = tmp2 + '/' + this.$route.params.dspname;
+            var tmp3 = tmp2 + '/' + encodeURIComponent(this.$route.params.dspname);
             return tmp3;
         },
         goToLevel3(){
             var tmp = this.$route.path.split("/");
             var tmp2 = tmp.slice(0, 3).join("/");
-            var tmp3 = tmp2 + '/' + this.$route.params.system;
+            var tmp3 = tmp2 + '/' + encodeURIComponent(this.$route.params.system);
             return tmp3;
         },
         goToLevel3Ddo(){
             var tmp = this.$route.path.split("/");
             var tmp2 = tmp.slice(0, 3).join("/");
-            var tmp3 = tmp2 + '/' + this.$route.params.subdomain;
+            var tmp3 = tmp2 + '/' + encodeURIComponent(this.$route.params.subdomain);
             return tmp3;
         },
     },
