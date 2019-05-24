@@ -198,7 +198,7 @@ SELECT  DISTINCT
 		INNER JOIN TBL_SYSTEM SS ON CI.IMM_SUCC_SYSTEM_ID = SS.ID
 	WHERE UPPER(TS.SYSTEM_NAME) = UPPER('?') AND UPPER(SS.SYSTEM_NAME) = UPPER('?')
 
--- name: details
+-- name: details-left-panel
 SELECT DISTINCT
 		ts.id,
 		tmt.id					as tmtid,
@@ -207,6 +207,26 @@ SELECT DISTINCT
 		ts.itam_id					as itam_id,
 		tp.first_name||' '||tp.last_name			as dataset_custodian,
 		tp.bank_id					as bank_id,
+		tmcd.alias_name				as business_alias_name,
+		tmt.DISPLAY_NAME 				as table_name,
+		tmc.DISPLAY_NAME				as column_name
+	FROM tbl_system ts
+		LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
+		LEFT JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
+		LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
+		inner join tbl_md_resource tmr ON ts.id = tmr.system_id
+		inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
+		inner join tbl_md_column tmc ON tmt.id = tmc.table_id
+		INNER JOIN TBL_MD_COLUMN_DETAILS TMCD ON TMCD.COLUMN_ID = TMC.ID
+	WHERE 
+		ts.id = '?'
+
+-- name: details
+SELECT DISTINCT
+		ts.id,
+		tmt.id					as tmtid,
+		tmc.id					as tmcid,
+		ts.system_name				as system_name,
 		tmcd.alias_name				as business_alias_name,
 		tmt.DISPLAY_NAME 				as table_name,
 		tmc.DISPLAY_NAME				as column_name,

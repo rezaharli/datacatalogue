@@ -51,37 +51,37 @@ legend.col-form-label, label.col-form-label {
           <b-card tag="article" class="mb-2">
             <b-media class="left-card-media" >
               <h6 class="left-card-title">System Name</h6>
-              <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.SYSTEM_NAME: ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetailsLeftPanel ? store.selectedDetailsLeftPanel.SYSTEM_NAME: ''"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">ITAM ID</h6>
-              <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.ITAM_ID: ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetailsLeftPanel ? store.selectedDetailsLeftPanel.ITAM_ID: ''"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Dataset Custodian</h6>
-              <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.DATASET_CUSTODIAN: ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetailsLeftPanel ? store.selectedDetailsLeftPanel.DATASET_CUSTODIAN: ''"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Bank ID</h6>
-              <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.BANK_ID: ''" ></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetailsLeftPanel ? store.selectedDetailsLeftPanel.BANK_ID: ''" ></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Business Alias Name</h6>
-              <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.BUSINESS_ALIAS_NAME: ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetailsLeftPanel ? store.selectedDetailsLeftPanel.BUSINESS_ALIAS_NAME: ''"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Table Name</h6>
-              <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.TABLE_NAME: ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetailsLeftPanel ? store.selectedDetailsLeftPanel.TABLE_NAME: ''"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Column Name</h6>
-              <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.COLUMN_NAME: ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetailsLeftPanel ? store.selectedDetailsLeftPanel.COLUMN_NAME: ''"></text-wrap-dialog>
             </b-media>
           </b-card>
         </b-col>
@@ -322,13 +322,13 @@ export default {
     return {
       showModal: this.$route.meta.showModal,
       excelFields: {
-        'System Name': "selectedDetails.SYSTEM_NAME",
-        'ITAM ID': "selectedDetails.ITAM_ID",
-        'Dataset Custodian': 'selectedDetails.DATASET_CUSTODIAN',
-        'Bank ID' : 'selectedDetails.BANK_ID',
-        'Business Alias Name': "selectedDetails.BUSINESS_ALIAS_NAME",
-        'Table Name': 'selectedDetails.TABLE_NAME',
-        'Column Name': 'selectedDetails.COLUMN_NAME',
+        'System Name': "selectedDetailsLeftPanel.SYSTEM_NAME",
+        'ITAM ID': "selectedDetailsLeftPanel.ITAM_ID",
+        'Dataset Custodian': 'selectedDetailsLeftPanel.DATASET_CUSTODIAN',
+        'Bank ID' : 'selectedDetailsLeftPanel.BANK_ID',
+        'Business Alias Name': "selectedDetailsLeftPanel.BUSINESS_ALIAS_NAME",
+        'Table Name': 'selectedDetailsLeftPanel.TABLE_NAME',
+        'Column Name': 'selectedDetailsLeftPanel.COLUMN_NAME',
         'Business Alias Name*': 'selectedDetails.BUSINESS_ALIAS_NAME',
         'Business Alias Description': 'selectedDetails.BUSINESS_ALIAS_DESCRIPTION',
         'CDE (yes/no)': 'selectedDetails.CDE_YES_NO',
@@ -371,7 +371,7 @@ export default {
       store: state => state.dscmy.all
     }),
     ddTableOptions () {
-      return _.uniq(_.map(this.store.DDSource, (v) => v.TABLE_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(this.store.DDSource, (v) => v.TABLE_NAME.toString())).filter(Boolean);
     },
     ddColumnOptions () {
       var self = this;
@@ -379,7 +379,7 @@ export default {
         return v.TABLE_NAME == self.store.ddVal.ddTableSelected;
       });
 
-      return _.uniq(_.map(filtered, (v) => v.COLUMN_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.COLUMN_NAME.toString())).filter(Boolean);
     },
     ddScreenLabelOptions () {
       var self = this;
@@ -388,7 +388,7 @@ export default {
           && v.COLUMN_NAME == self.store.ddVal.ddColumnSelected;
       });
       
-      return _.uniq(_.map(filtered, (v) => v.BUSINESS_ALIAS_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.BUSINESS_ALIAS_NAME.toString())).filter(Boolean);
     },
     ddBusinessTermOptions () {
       var self = this;
@@ -398,7 +398,7 @@ export default {
           && v.BUSINESS_ALIAS_NAME == self.store.ddVal.ddScreenLabelSelected;
       });
       
-      return _.uniq(_.map(filtered, (v) => v.BUSINESS_TERM.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.BUSINESS_TERM.toString())).filter(Boolean);
     },
     ddPrecOptions () {
       var self = this;
@@ -409,7 +409,7 @@ export default {
           && v.BUSINESS_TERM == self.store.ddVal.ddBusinessTermSelected;
       });
       
-      return _.uniq(_.map(filtered, (v) => v.IMM_PRECEEDING_SYSTEM.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.IMM_PRECEEDING_SYSTEM.toString())).filter(Boolean);
     },
     ddPrecIncomingOptions () {
       var self = this;
@@ -421,7 +421,7 @@ export default {
           && v.IMM_PRECEEDING_SYSTEM == self.store.ddVal.ddPrecSelected;
       });
       
-      return _.uniq(_.map(filtered, (v) => v.IMM_PREC_INCOMING.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.IMM_PREC_INCOMING.toString())).filter(Boolean);
     },
     ddSuccOptions () {
       var self = this;
@@ -434,7 +434,7 @@ export default {
           && v.IMM_PREC_INCOMING == self.store.ddVal.ddPrecIncomingSelected;
       });
       
-      return _.uniq(_.map(filtered, (v) => v.IMM_SUCCEEDING_SYSTEM.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.IMM_SUCCEEDING_SYSTEM.toString())).filter(Boolean);
     },
     ddSuccIncomingOptions () {
       var self = this;
@@ -448,12 +448,13 @@ export default {
           && v.IMM_SUCCEEDING_SYSTEM == self.store.ddVal.ddSuccSelected;
       });
       
-      return _.uniq(_.map(filtered, (v) => v.IMM_SUCC_INCOMING.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.IMM_SUCC_INCOMING.toString())).filter(Boolean);
     },
     exportDatas () {
       if(this.store.selectedDetails){
         return [{
           selectedDetails: this.store.selectedDetails,
+          selectedDetailsLeftPanel: this.store.selectedDetailsLeftPanel,
         }]
       } else {
         return [];

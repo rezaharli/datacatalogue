@@ -33,6 +33,10 @@ func (s *DSCService) CreateSystemDummyData() error {
 		system.Modified_DateTime = time.Now()
 		system.Status = rand.Intn(2)
 
+		if i%2 == 0 {
+			system.System_Name = "USFRR"
+		}
+
 		data = append(data, system)
 	}
 
