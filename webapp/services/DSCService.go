@@ -22,11 +22,16 @@ func NewDSCService() *DSCService {
 }
 
 func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "dsc.sql"
+	queryName := "dsc-view"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
-	gridArgs.QueryName = "dsc-view"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
 
 	if loggedinid != "" {
 		gridArgs.MainArgs = append(gridArgs.MainArgs, "MY", loggedinid)
@@ -61,6 +66,9 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, col
 }
 
 func (s *DSCService) GetHomepageCounts(payload toolkit.M) (interface{}, int, error) {
+	fileName := "dsc.sql"
+	queryName := "dsc-view-homepage"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -70,11 +78,13 @@ func (s *DSCService) GetHomepageCounts(payload toolkit.M) (interface{}, int, err
 	system := payload.GetString("System")
 	args = append(args, system, system, system)
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
-	q, err := h.BuildQueryFromFile(filePath, "dsc-view-homepage", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
@@ -90,11 +100,16 @@ func (s *DSCService) GetHomepageCounts(payload toolkit.M) (interface{}, int, err
 }
 
 func (s *DSCService) GetCDETable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "dsc.sql"
+	queryName := "dsc-view-cde"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
-	gridArgs.QueryName = "dsc-view-cde"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
@@ -126,11 +141,16 @@ func (s *DSCService) GetCDETable(system string, colFilter interface{}, paginatio
 }
 
 func (s *DSCService) GetCDPTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "dsc.sql"
+	queryName := "dsc-view-cdp"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
-	gridArgs.QueryName = "dsc-view-cdp"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
@@ -162,11 +182,16 @@ func (s *DSCService) GetCDPTable(system string, colFilter interface{}, paginatio
 }
 
 func (s *DSCService) GetCDPCDETable(system, dspName string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "dsc.sql"
+	queryName := "dsc-view-cdp-cde"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
-	gridArgs.QueryName = "dsc-view-cdp-cde"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system, dspName)
 
@@ -197,11 +222,16 @@ func (s *DSCService) GetCDPCDETable(system, dspName string, colFilter interface{
 }
 
 func (s *DSCService) GetInterfacesTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "dsc.sql"
+	queryName := "dsc-view-interfaces"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
-	gridArgs.QueryName = "dsc-view-interfaces"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
@@ -232,11 +262,16 @@ func (s *DSCService) GetInterfacesTable(system string, colFilter interface{}, pa
 }
 
 func (s *DSCService) GetInterfacesCDETable(system, dspName string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "dsc.sql"
+	queryName := "dsc-view-interfaces-cde"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
-	gridArgs.QueryName = "dsc-view-interfaces-cde"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system, dspName)
 
@@ -267,11 +302,16 @@ func (s *DSCService) GetInterfacesCDETable(system, dspName string, colFilter int
 }
 
 func (s *DSCService) GetDDTable(system string, colFilter interface{}, pagination toolkit.M) (res []toolkit.M, total int, err error) {
+	fileName := "dsc.sql"
+	queryName := "dsc-view-dd"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
-	gridArgs.QueryName = "dsc-view-dd"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
@@ -378,11 +418,16 @@ func (s *DSCService) GetDDTable(system string, colFilter interface{}, pagination
 }
 
 func (s *DSCService) GetTableName(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
+	fileName := tabs + ".sql"
+	queryName := "right-grid"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	gridArgs.QueryName = "right-grid"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pageNumber
 	gridArgs.RowsPerPage = rowsPerPage
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, toolkit.ToString(systemID))
 	gridArgs.MainArgs = append(gridArgs.MainArgs, toolkit.ToString(systemID))
@@ -423,11 +468,16 @@ func (s *DSCService) GetTableName(tabs string, systemID int, search string, sear
 }
 
 func (s *DSCService) GetInterfacesRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
+	fileName := tabs + ".sql"
+	queryName := "right-grid"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	gridArgs.QueryName = "right-grid"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pageNumber
 	gridArgs.RowsPerPage = rowsPerPage
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, toolkit.ToString(systemID))
 
@@ -463,6 +513,9 @@ func (s *DSCService) GetInterfacesRightTable(tabs string, systemID int, search s
 }
 
 func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
+	fileName := "dsc.sql"
+	queryName := "details"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -471,11 +524,13 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	otherArgs := make([]string, 0)
 	if payload.GetString("TableName") != "" && payload.GetString("ColumnName") != "" {
@@ -540,6 +595,9 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 }
 
 func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
+	fileName := "dsc.sql"
+	queryName := "details"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -548,11 +606,13 @@ func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	///////// FILTER
 	q = `SELECT DISTINCT 

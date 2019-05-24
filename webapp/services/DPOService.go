@@ -20,11 +20,16 @@ func NewDPOService() *DPOService {
 }
 
 func (s *DPOService) GetLeftTable(tabs, loggedinid, search string, searchDD, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "dpo.sql"
+	queryName := "dpo-view"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
-	gridArgs.QueryName = "dpo-view"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
 
 	if loggedinid != "" {
 		gridArgs.MainArgs = append(gridArgs.MainArgs, "MY", loggedinid)
@@ -60,6 +65,9 @@ func (s *DPOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 }
 
 func (s *DPOService) GetHomepageCounts(payload toolkit.M) (interface{}, int, error) {
+	fileName := "dpo.sql"
+	queryName := "dpo-view-homepage"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -69,11 +77,13 @@ func (s *DPOService) GetHomepageCounts(payload toolkit.M) (interface{}, int, err
 	system := payload.GetString("System")
 	args = append(args, system, system)
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
-	q, err := h.BuildQueryFromFile(filePath, "dpo-view-homepage", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
@@ -89,11 +99,16 @@ func (s *DPOService) GetHomepageCounts(payload toolkit.M) (interface{}, int, err
 }
 
 func (s *DPOService) GetDataelementsTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "dpo.sql"
+	queryName := "dpo-dataelements"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
-	gridArgs.QueryName = "dpo-dataelements"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
@@ -125,11 +140,16 @@ func (s *DPOService) GetDataelementsTable(system string, colFilter interface{}, 
 }
 
 func (s *DPOService) GetDatalineageTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "dpo.sql"
+	queryName := "dpo-datalineage"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
-	gridArgs.QueryName = "dpo-datalineage"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
@@ -161,11 +181,16 @@ func (s *DPOService) GetDatalineageTable(system string, colFilter interface{}, p
 }
 
 func (s *DPOService) GetRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
+	fileName := tabs + ".sql"
+	queryName := "right-grid"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	gridArgs.QueryName = "right-grid"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pageNumber
 	gridArgs.RowsPerPage = rowsPerPage
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, toolkit.ToString(systemID))
 
@@ -197,6 +222,9 @@ func (s *DPOService) GetRightTable(tabs string, systemID int, search string, sea
 }
 
 func (s *DPOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
+	fileName := "dpo.sql"
+	queryName := "details"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -205,11 +233,13 @@ func (s *DPOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 
 	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	otherArgs := make([]string, 0)
 	otherArgs = append(otherArgs,
@@ -289,6 +319,9 @@ func (s *DPOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 }
 
 func (s *DPOService) GetddSource(payload toolkit.M) (interface{}, int, error) {
+	fileName := "dpo.sql"
+	queryName := "details"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -297,11 +330,13 @@ func (s *DPOService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 
 	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	///////// FILTER
 	q = `SELECT DISTINCT 
@@ -333,6 +368,9 @@ func (s *DPOService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 }
 
 func (s *DPOService) GetDetailsImmediatePrecedingSystem(payload toolkit.M) (interface{}, int, error) {
+	fileName := "dpo.sql"
+	queryName := "details-immediate-preceding-system"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -341,11 +379,13 @@ func (s *DPOService) GetDetailsImmediatePrecedingSystem(payload toolkit.M) (inte
 
 	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-immediate-preceding-system", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	otherArgs := make([]string, 0)
 	otherArgs = append(otherArgs,
@@ -405,6 +445,9 @@ func (s *DPOService) GetDetailsImmediatePrecedingSystem(payload toolkit.M) (inte
 }
 
 func (s *DPOService) GetddSourceImmediatePrecedingSystem(payload toolkit.M) (interface{}, int, error) {
+	fileName := "dpo.sql"
+	queryName := "details-immediate-preceding-system"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -413,11 +456,13 @@ func (s *DPOService) GetddSourceImmediatePrecedingSystem(payload toolkit.M) (int
 
 	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-immediate-preceding-system", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	///////// FILTER
 	q = `SELECT DISTINCT 
@@ -444,6 +489,9 @@ func (s *DPOService) GetddSourceImmediatePrecedingSystem(payload toolkit.M) (int
 }
 
 func (s *DPOService) GetDetailsUltimateSourceSystem(payload toolkit.M) (interface{}, int, error) {
+	fileName := "dpo.sql"
+	queryName := "details-ultimate-source-system"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -452,11 +500,13 @@ func (s *DPOService) GetDetailsUltimateSourceSystem(payload toolkit.M) (interfac
 
 	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-ultimate-source-system", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	otherArgs := make([]string, 0)
 	otherArgs = append(otherArgs,
@@ -516,6 +566,9 @@ func (s *DPOService) GetDetailsUltimateSourceSystem(payload toolkit.M) (interfac
 }
 
 func (s *DPOService) GetddSourceUltimateSourceSystem(payload toolkit.M) (interface{}, int, error) {
+	fileName := "dpo.sql"
+	queryName := "details-ultimate-source-system"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -524,11 +577,13 @@ func (s *DPOService) GetddSourceUltimateSourceSystem(payload toolkit.M) (interfa
 
 	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-ultimate-source-system", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	///////// FILTER
 	q = `SELECT DISTINCT 
@@ -555,6 +610,9 @@ func (s *DPOService) GetddSourceUltimateSourceSystem(payload toolkit.M) (interfa
 }
 
 func (s *DPOService) GetDetailsDomainView(payload toolkit.M) (interface{}, int, error) {
+	fileName := "dpo.sql"
+	queryName := "details-domain-view"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -563,11 +621,13 @@ func (s *DPOService) GetDetailsDomainView(payload toolkit.M) (interface{}, int, 
 
 	args = append(args, payload.GetString("Right"))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-domain-view", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
@@ -583,6 +643,9 @@ func (s *DPOService) GetDetailsDomainView(payload toolkit.M) (interface{}, int, 
 }
 
 func (s *DPOService) GetddSourceDomainView(payload toolkit.M) (interface{}, int, error) {
+	fileName := "dpo.sql"
+	queryName := "details-domain-view"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -591,11 +654,13 @@ func (s *DPOService) GetddSourceDomainView(payload toolkit.M) (interface{}, int,
 
 	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-domain-view", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
@@ -611,6 +676,9 @@ func (s *DPOService) GetddSourceDomainView(payload toolkit.M) (interface{}, int,
 }
 
 func (s *DPOService) GetDetailsDataStandards(payload toolkit.M) (interface{}, int, error) {
+	fileName := "dpo.sql"
+	queryName := "details-data-standards"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -619,11 +687,13 @@ func (s *DPOService) GetDetailsDataStandards(payload toolkit.M) (interface{}, in
 
 	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-data-standards", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
@@ -639,6 +709,9 @@ func (s *DPOService) GetDetailsDataStandards(payload toolkit.M) (interface{}, in
 }
 
 func (s *DPOService) GetddSourceDataStandards(payload toolkit.M) (interface{}, int, error) {
+	fileName := "dpo.sql"
+	queryName := "details-data-standards"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -647,11 +720,13 @@ func (s *DPOService) GetddSourceDataStandards(payload toolkit.M) (interface{}, i
 
 	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dpo.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-data-standards", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),

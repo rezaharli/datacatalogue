@@ -3,6 +3,8 @@ package services
 import (
 	h "eaciit/datacatalogue/webapp/helpers"
 	m "eaciit/datacatalogue/webapp/models"
+	"fmt"
+	"runtime"
 	"strings"
 
 	"github.com/eaciit/toolkit"
@@ -73,4 +75,13 @@ func (s *Base) ExecuteGridQueryFromFile(gridArgs GridArgs) ([]toolkit.M, int, er
 	}
 
 	return resultRows, resultTotal, nil
+}
+
+func funcName() string {
+	pc, _, _, _ := runtime.Caller(1)
+	return runtime.FuncForPC(pc).Name()
+}
+
+func funcLog(funcName string, fileName string, queryName string) {
+	fmt.Println("--------------------------------------------------------------", "\n", "Function   : ", funcName, "\n", "File Name  : ", fileName, "\n", "Query Name : ", queryName, "\n--------------------------------------------------------------")
 }

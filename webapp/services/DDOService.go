@@ -21,11 +21,16 @@ func NewDDOService() *DDOService {
 }
 
 func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "ddo.sql"
+	queryName := "ddo-view"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "ddo.sql")
-	gridArgs.QueryName = "ddo-view"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
 
 	if loggedinid != "" {
 		gridArgs.MainArgs = append(gridArgs.MainArgs, "MY", loggedinid)
@@ -61,6 +66,9 @@ func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 }
 
 func (s *DDOService) GetHomepageCounts(payload toolkit.M) (interface{}, int, error) {
+	fileName := "ddo.sql"
+	queryName := "ddo-view-homepage"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -70,11 +78,13 @@ func (s *DDOService) GetHomepageCounts(payload toolkit.M) (interface{}, int, err
 	system := payload.GetString("System")
 	args = append(args, system, system, system)
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddo.sql")
-	q, err := h.BuildQueryFromFile(filePath, "ddo-view-homepage", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
@@ -90,11 +100,16 @@ func (s *DDOService) GetHomepageCounts(payload toolkit.M) (interface{}, int, err
 }
 
 func (s *DDOService) GetBusinesstermTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "ddo.sql"
+	queryName := "ddo-businessterm"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "ddo.sql")
-	gridArgs.QueryName = "ddo-businessterm"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
@@ -126,11 +141,16 @@ func (s *DDOService) GetBusinesstermTable(system string, colFilter interface{}, 
 }
 
 func (s *DDOService) GetSystemsTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "ddo.sql"
+	queryName := "ddo-systems"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "ddo.sql")
-	gridArgs.QueryName = "ddo-systems"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
@@ -162,11 +182,16 @@ func (s *DDOService) GetSystemsTable(system string, colFilter interface{}, pagin
 }
 
 func (s *DDOService) GetSystemsBusinesstermTable(subdomain, system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "ddo.sql"
+	queryName := "ddo-systems-businessterm"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "ddo.sql")
-	gridArgs.QueryName = "ddo-systems-businessterm"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, subdomain, system)
 
@@ -198,11 +223,16 @@ func (s *DDOService) GetSystemsBusinesstermTable(subdomain, system string, colFi
 }
 
 func (s *DDOService) GetDownstreamTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "ddo.sql"
+	queryName := "ddo-downstream"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "ddo.sql")
-	gridArgs.QueryName = "ddo-downstream"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
@@ -234,11 +264,16 @@ func (s *DDOService) GetDownstreamTable(system string, colFilter interface{}, pa
 }
 
 func (s *DDOService) GetDownstreamBusinesstermTable(subdomain, system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "ddo.sql"
+	queryName := "ddo-downstream-businessterm"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "ddo.sql")
-	gridArgs.QueryName = "ddo-downstream-businessterm"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system, subdomain)
 
@@ -270,11 +305,16 @@ func (s *DDOService) GetDownstreamBusinesstermTable(subdomain, system string, co
 }
 
 func (s *DDOService) GetRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
+	fileName := tabs + ".sql"
+	queryName := "right-grid"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
-	gridArgs.QueryName = "right-grid"
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pageNumber
 	gridArgs.RowsPerPage = rowsPerPage
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, toolkit.ToString(systemID))
 	gridArgs.MainArgs = append(gridArgs.MainArgs, toolkit.ToString(systemID))
@@ -316,6 +356,9 @@ func (s *DDOService) GetRightTable(tabs string, systemID int, search string, sea
 }
 
 func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
+	fileName := "ddo.sql"
+	queryName := "details"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -326,11 +369,13 @@ func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 
 	args = append(args, payload.GetString("Subdomain"), payload.GetString("BTname"))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddo.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	otherArgs := make([]string, 0)
 	otherArgs = append(otherArgs,
@@ -382,6 +427,9 @@ func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 }
 
 func (s *DDOService) GetddSource(payload toolkit.M) (interface{}, int, error) {
+	fileName := "ddo.sql"
+	queryName := "details"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -390,11 +438,13 @@ func (s *DDOService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 
 	args = append(args, payload.GetString("Subdomain"), payload.GetString("BTname"))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddo.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	///////// FILTER
 	q = `SELECT DISTINCT 
@@ -419,6 +469,9 @@ func (s *DDOService) GetddSource(payload toolkit.M) (interface{}, int, error) {
 }
 
 func (s *DDOService) GetDetailsBusinessMetadataFromDomain(payload toolkit.M) (interface{}, int, error) {
+	fileName := "ddodetails.sql"
+	queryName := "details-business-metadata-from-domain"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -427,11 +480,13 @@ func (s *DDOService) GetDetailsBusinessMetadataFromDomain(payload toolkit.M) (in
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddodetails.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-business-metadata-from-domain", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	otherArgs := make([]string, 0)
 	if payload.GetString("BusinessTerm") != "" {
@@ -483,6 +538,9 @@ func (s *DDOService) GetDetailsBusinessMetadataFromDomain(payload toolkit.M) (in
 }
 
 func (s *DDOService) GetddSourceBusinessMetadataFromDomain(payload toolkit.M) (interface{}, int, error) {
+	fileName := "ddodetails.sql"
+	queryName := "details-business-metadata-from-domain"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -491,11 +549,13 @@ func (s *DDOService) GetddSourceBusinessMetadataFromDomain(payload toolkit.M) (i
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddodetails.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-business-metadata-from-domain", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	///////// FILTER
 	q = `SELECT DISTINCT business_term, business_alias, GS_TABLE_NAME, GS_COLUMN_NAME
@@ -517,6 +577,9 @@ func (s *DDOService) GetddSourceBusinessMetadataFromDomain(payload toolkit.M) (i
 }
 
 func (s *DDOService) GetDetailsDownstreamUsageOfBusinessTerm(payload toolkit.M) (interface{}, int, error) {
+	fileName := "ddodetails.sql"
+	queryName := "details-downstream-usage-of-business-term"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -525,11 +588,13 @@ func (s *DDOService) GetDetailsDownstreamUsageOfBusinessTerm(payload toolkit.M) 
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddodetails.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-downstream-usage-of-business-term", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	otherArgs := make([]string, 0)
 	if payload.GetString("BusinessTerm") != "" {
@@ -570,6 +635,9 @@ func (s *DDOService) GetDetailsDownstreamUsageOfBusinessTerm(payload toolkit.M) 
 }
 
 func (s *DDOService) GetddSourceDownstreamUsageOfBusinessTerm(payload toolkit.M) (interface{}, int, error) {
+	fileName := "ddodetails.sql"
+	queryName := "details-downstream-usage-of-business-term"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -578,11 +646,13 @@ func (s *DDOService) GetddSourceDownstreamUsageOfBusinessTerm(payload toolkit.M)
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddodetails.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-downstream-usage-of-business-term", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	otherArgs := make([]string, 0)
 	if payload.GetString("BusinessTerm") != "" {
@@ -620,6 +690,9 @@ func (s *DDOService) GetddSourceDownstreamUsageOfBusinessTerm(payload toolkit.M)
 }
 
 func (s *DDOService) GetDetailsBTResiding(payload toolkit.M) (interface{}, int, error) {
+	fileName := "ddodetails.sql"
+	queryName := "details-business-term-residing"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -628,11 +701,13 @@ func (s *DDOService) GetDetailsBTResiding(payload toolkit.M) (interface{}, int, 
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddodetails.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-business-term-residing", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	otherArgs := make([]string, 0)
 	if payload.GetString("BusinessTerm") != "" {
@@ -685,6 +760,9 @@ func (s *DDOService) GetDetailsBTResiding(payload toolkit.M) (interface{}, int, 
 }
 
 func (s *DDOService) GetddSourceBTResiding(payload toolkit.M) (interface{}, int, error) {
+	fileName := "ddodetails.sql"
+	queryName := "details-business-term-residing"
+
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -693,11 +771,13 @@ func (s *DDOService) GetddSourceBTResiding(payload toolkit.M) (interface{}, int,
 
 	args = append(args, toolkit.ToString(payload.GetInt("Left")))
 
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "ddodetails.sql")
-	q, err := h.BuildQueryFromFile(filePath, "details-business-term-residing", []string{}, args...)
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
 		return nil, 0, err
 	}
+
+	funcLog(funcName(), fileName, queryName)
 
 	otherArgs := make([]string, 0)
 	if payload.GetString("BusinessTerm") != "" {
