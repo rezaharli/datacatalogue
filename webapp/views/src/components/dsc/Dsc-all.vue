@@ -283,7 +283,7 @@ export default {
         }
       },
       showDetails (param) {
-        this.$router.push(this.addressPath + "/" + param.TSID + '/' + param.ID + '/' + param.COLID)
+        this.$router.push(this.addressPath + "/" + encodeURIComponent(param.TSID) + '/' + encodeURIComponent(param.ID) + '/' + encodeURIComponent(param.COLID))
       },
       setTableColumnsWidth(elem){
         var tableElem = elem.find('.v-table__overflow > table.v-table');

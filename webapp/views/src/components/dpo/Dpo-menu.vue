@@ -108,7 +108,7 @@ export default {
             this.$store.dispatch(`dpo/getCounts`, param)
         },
         goToDpoMenuContent(param){
-            this.$router.push(this.addressPathParent + '/' + param + '/' + this.$route.params.system);
+            this.$router.push(this.addressPathParent + '/' + encodeURIComponent(param) + '/' + encodeURIComponent(this.$route.params.system));
         },
     }
 }
