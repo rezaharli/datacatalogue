@@ -182,6 +182,7 @@ export default {
         // this.setTableColumnsWidth($('#table-rfo-my'));
         this.setTableColumnsWidthRowspan($('#table-rfo-my'));
       }, 300);
+      this.toggleFieldDisplay(false);
     },
     updated() {
       // this.setTableColumnsWidth($('#table-rfo-my'));
@@ -197,18 +198,24 @@ export default {
       showRightTable(param){
         this.$router.push(this.addressPath + '/' + encodeURIComponent(param.RISK_SUB_TYPE));
       },
-      toggleFieldDisplay(){
-        var toggleFieldName = (name) => {
+      toggleFieldDisplay(expanded = true){
+        var toggleFieldName = (name, expanded) => {
           var opts = this.store.leftHeaders.find(v => v.value == name);
           opts.display = !opts.display;
+          if(expanded==false){
+            opts.display = false;
+          }
         }
 
-        toggleFieldName('RISK_REPORTING_LEAD');
-        toggleFieldName('PR_COUNT');
-        toggleFieldName('CRM_COUNT');
-        toggleFieldName('CDE_COUNT');
+        toggleFieldName('RISK_REPORTING_LEAD', expanded);
+        toggleFieldName('PR_COUNT', expanded);
+        toggleFieldName('CRM_COUNT', expanded);
+        toggleFieldName('CDE_COUNT', expanded);
         
         this.hiddenFields = !this.hiddenFields; 
+        if(expanded==false){
+          this.hiddenFields = true;
+        }
       },
       isDisplayed(name){
         var opts = this.store.leftHeaders.find(v => v.value == name);

@@ -32,10 +32,13 @@ const state = {
         // ],
         isRightTable: false,
         firstload: true,
-        DDSource: [],
         detailsLoading: true,
+        DDSource: [],
         selectedDetails: null,
         ddVal: {},
+        DDSourceLeftPanel: [],
+        selectedDetailsLeftPanel: null,
+        ddValLeftPanel: {},
         error: null
     }
 };
@@ -174,9 +177,12 @@ const mutations = {
     getDetailsSuccess(state, data) {
         state.all.selectedDetails = data.SelectedDetail;
         state.all.DDSource = data.DDSource;
+        state.all.selectedDetailsLeftPanel = data.SelectedDetailLeftPanel;
+        state.all.DDSourceLeftPanel = data.DDSourceLeftPanel;
         
         setTimeout(() => {
             state.all.ddVal = data.DDVal;
+            state.all.ddValLeftPanel = data.DDValLeftPanel;
 
             setTimeout(() => {
                 state.all.firstload = false;

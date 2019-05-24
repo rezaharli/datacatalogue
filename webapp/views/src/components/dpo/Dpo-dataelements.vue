@@ -92,13 +92,13 @@
 
                       <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }" class="text-capitalize text-title">
                         <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length > 0">
-                          <tablecell :fulltext="props.item.ALIAS_NAME" showOn="hover"></tablecell>
+                          {{props.item.ALIAS_NAME}}
                         </b-link>
 
-                        <tablecell :fulltext="props.item.BT_NAME" showOn="hover" v-if="props.item.Tables.length < 1"></tablecell>
+                        <span v-if="props.item.Tables.length < 1">{{props.item.BT_NAME}}</span>
                       </td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-uppercase">
+                      <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-capitalize">
                         {{ props.item.CDE }}</td>
 
                       <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-uppercase">
