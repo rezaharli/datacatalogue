@@ -51,37 +51,37 @@ legend.col-form-label, label.col-form-label {
           <b-card tag="article" class="mb-2">
             <b-media class="left-card-media" >
               <h6 class="left-card-title">System Name</h6>
-              <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.SYSTEM_NAME: ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetailsLeftPanel ? store.selectedDetailsLeftPanel.SYSTEM_NAME: ''"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">ITAM ID</h6>
-              <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.ITAM_ID: ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetailsLeftPanel ? store.selectedDetailsLeftPanel.ITAM_ID: ''"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Dataset Custodian</h6>
-              <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.DATASET_CUSTODIAN: ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetailsLeftPanel ? store.selectedDetailsLeftPanel.DATASET_CUSTODIAN: ''"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Bank ID</h6>
-              <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.BANK_ID: ''" ></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetailsLeftPanel ? store.selectedDetailsLeftPanel.BANK_ID: ''" ></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Business Alias Name</h6>
-              <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.BUSINESS_ALIAS_NAME: ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetailsLeftPanel ? store.selectedDetailsLeftPanel.BUSINESS_ALIAS_NAME: ''"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Table Name</h6>
-              <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.TABLE_NAME: ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetailsLeftPanel ? store.selectedDetailsLeftPanel.TABLE_NAME: ''"></text-wrap-dialog>
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Column Name</h6>
-              <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.COLUMN_NAME: ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetailsLeftPanel ? store.selectedDetailsLeftPanel.COLUMN_NAME: ''"></text-wrap-dialog>
             </b-media>
           </b-card>
         </b-col>
@@ -322,13 +322,13 @@ export default {
     return {
       showModal: this.$route.meta.showModal,
       excelFields: {
-        'System Name': "selectedDetails.SYSTEM_NAME",
-        'ITAM ID': "selectedDetails.ITAM_ID",
-        'Dataset Custodian': 'selectedDetails.DATASET_CUSTODIAN',
-        'Bank ID' : 'selectedDetails.BANK_ID',
-        'Business Alias Name': "selectedDetails.BUSINESS_ALIAS_NAME",
-        'Table Name': 'selectedDetails.TABLE_NAME',
-        'Column Name': 'selectedDetails.COLUMN_NAME',
+        'System Name': "selectedDetailsLeftPanel.SYSTEM_NAME",
+        'ITAM ID': "selectedDetailsLeftPanel.ITAM_ID",
+        'Dataset Custodian': 'selectedDetailsLeftPanel.DATASET_CUSTODIAN',
+        'Bank ID' : 'selectedDetailsLeftPanel.BANK_ID',
+        'Business Alias Name': "selectedDetailsLeftPanel.BUSINESS_ALIAS_NAME",
+        'Table Name': 'selectedDetailsLeftPanel.TABLE_NAME',
+        'Column Name': 'selectedDetailsLeftPanel.COLUMN_NAME',
         'Business Alias Name*': 'selectedDetails.BUSINESS_ALIAS_NAME',
         'Business Alias Description': 'selectedDetails.BUSINESS_ALIAS_DESCRIPTION',
         'CDE (yes/no)': 'selectedDetails.CDE_YES_NO',
@@ -454,6 +454,7 @@ export default {
       if(this.store.selectedDetails){
         return [{
           selectedDetails: this.store.selectedDetails,
+          selectedDetailsLeftPanel: this.store.selectedDetailsLeftPanel,
         }]
       } else {
         return [];

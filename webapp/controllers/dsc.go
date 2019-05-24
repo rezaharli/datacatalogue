@@ -319,32 +319,35 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 		return
 	}
 
-	detail, _, err := s.NewDSCService().GetDetails(payload)
+	selectedDetailLeftPanel, ddValLeftPanel, mappedddSourceLeftPanel, err := c.GetDetailsLeftPanel(payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
-	groupedDetail, err := gubrak.GroupBy(detail, func(each toolkit.M) string {
-		return each.GetString("ID")
-	})
+	selectedDetail, ddVal, mappedddSource, err := c.GetDetailsRightPanel(payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
-	mappedDetails, err := gubrak.Map(helpers.ObjectKeys(groupedDetail), func(key string, i int) toolkit.M {
-		tmp := groupedDetail.(map[string]([]toolkit.M))
+	data := toolkit.M{}
+	data.Set("SelectedDetailLeftPanel", selectedDetailLeftPanel)
+	data.Set("DDSourceLeftPanel", mappedddSourceLeftPanel)
+	data.Set("DDValLeftPanel", ddValLeftPanel)
 
-		ret := toolkit.M{}
-		ret["ID"] = key
-		ret["Values"] = tmp[key]
+	data.Set("SelectedDetail", selectedDetail)
+	data.Set("DDSource", mappedddSource)
+	data.Set("DDVal", ddVal)
 
-		return ret
-	})
+	h.WriteResultOK(k, res, data)
+	toolkit.Println("processTime:", time.Since(processTime).Seconds(), "\n------------------------------------------------------------------------------------")
+}
+
+func (c *DSC) GetDetailsLeftPanel(payload toolkit.M) (interface{}, interface{}, interface{}, error) {
+	mappedDetails, mappedddSource, err := c.GetDetailAndDropdown(payload, s.NewDSCService().GetDetailsLeftPanel, nil)
 	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
+		return nil, nil, nil, err
 	}
 
 	ddVal := toolkit.M{}
@@ -354,15 +357,61 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 		detailSource := detailSources[0]
 		detailValues := detailSource.Get("Values").([]toolkit.M)
 
-		doInterrupt := func(v string, conds, expectedreses []string) string {
-			if v == conds[1] {
-				return expectedreses[1]
-			} else if v == conds[0] {
-				return expectedreses[0]
+		for _, key := range helpers.ObjectKeys(detailValues[0]) {
+			mappedValues, err := gubrak.Map(detailValues, func(v toolkit.M, i int) string {
+				stringVal := strings.TrimSpace(toolkit.ToString(v[key]))
+
+				if stringVal == "" {
+					stringVal = "NA"
+				}
+
+				return stringVal
+			})
+			if err != nil {
+				return nil, nil, nil, err
 			}
 
-			return v
+			uniqueValues, err := gubrak.Uniq(mappedValues)
+			if err != nil {
+				return nil, nil, nil, err
+			}
+
+			joinedValues := ""
+			if key == "DATASET_CUSTODIAN" || key == "BANK_ID" {
+				joinedValues = strings.Join(uniqueValues.([]string), "; ")
+			} else {
+				joinedValues = strings.Join(uniqueValues.([]string), ", ")
+			}
+
+			selectedDetail.Set(key, joinedValues)
 		}
+	}
+
+	return selectedDetail, ddVal, mappedddSource, err
+}
+
+func (c *DSC) GetDetailsRightPanel(payload toolkit.M) (interface{}, interface{}, interface{}, error) {
+	doInterrupt := func(v string, conds, expectedreses []string) string {
+		if v == conds[1] {
+			return expectedreses[1]
+		} else if v == conds[0] {
+			return expectedreses[0]
+		}
+
+		return v
+	}
+
+	mappedDetails, mappedddSource, err := c.GetDetailAndDropdown(payload, s.NewDSCService().GetDetailsRightPanel, s.NewDSCService().GetddSourceRightPanel)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	ddVal := toolkit.M{}
+	selectedDetail := toolkit.M{}
+	detailSources := mappedDetails.([]toolkit.M)
+	if len(detailSources) > 0 {
+		detailSource := detailSources[0]
+		detailValues := detailSource.Get("Values").([]toolkit.M)
 
 		for _, key := range helpers.ObjectKeys(detailValues[0]) {
 			mappedValues, err := gubrak.Map(detailValues, func(v toolkit.M, i int) string {
@@ -396,14 +445,12 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 				return stringVal
 			})
 			if err != nil {
-				h.WriteResultError(k, res, err.Error())
-				return
+				return nil, nil, nil, err
 			}
 
 			uniqueValues, err := gubrak.Uniq(mappedValues)
 			if err != nil {
-				h.WriteResultError(k, res, err.Error())
-				return
+				return nil, nil, nil, err
 			}
 
 			switch key {
@@ -444,28 +491,5 @@ func (c *DSC) GetDetails(k *knot.WebContext) {
 		}
 	}
 
-	ddSource, _, err := s.NewDSCService().GetddSource(payload)
-	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
-	}
-
-	mappedddSource, err := gubrak.Map(ddSource, func(v toolkit.M, i int) toolkit.M {
-		for _, key := range helpers.ObjectKeys(v) {
-			v[key] = strings.TrimSpace(toolkit.ToString(v[key]))
-			if v[key] == "" {
-				v[key] = "NA"
-			}
-		}
-
-		return v
-	})
-
-	data := toolkit.M{}
-	data.Set("SelectedDetail", selectedDetail)
-	data.Set("DDSource", mappedddSource)
-	data.Set("DDVal", ddVal)
-
-	h.WriteResultOK(k, res, data)
-	toolkit.Println("processTime:", time.Since(processTime).Seconds(), "\n------------------------------------------------------------------------------------")
+	return selectedDetail, ddVal, mappedddSource, err
 }

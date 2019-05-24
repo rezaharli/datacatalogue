@@ -462,7 +462,60 @@ func (s *DSCService) GetInterfacesRightTable(tabs string, systemID int, search s
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
-func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
+func (s *DSCService) GetDetailsLeftPanel(payload toolkit.M) (interface{}, int, error) {
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, toolkit.ToString(payload.GetInt("Left")))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", "dsc.sql")
+	q, err := h.BuildQueryFromFile(filePath, "details-left-panel", []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	otherArgs := make([]string, 0)
+	if payload.GetString("TableName") != "" && payload.GetString("ColumnName") != "" {
+		otherArgs = append(otherArgs, "", "")
+	} else {
+		otherArgs = append(otherArgs, payload.GetString("Right"), payload.GetString("Column"))
+	}
+
+	otherArgs = append(otherArgs,
+		payload.GetString("TableName"),
+		payload.GetString("ColumnName"),
+	)
+
+	///////// FILTER
+	q = `SELECT rownum, a.* FROM (
+		` + q + `
+	) a
+	WHERE ((
+			tmtid = '` + otherArgs[0] + `'
+			AND tmcid = '` + otherArgs[1] + `'
+		) OR (
+			table_name = '` + otherArgs[2] + `'
+			AND column_name = '` + otherArgs[3] + `' `
+	q += `)) `
+	// q += `AND rownum = 1 `
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DSCService) GetDetailsRightPanel(payload toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
@@ -539,7 +592,7 @@ func (s *DSCService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	return resultRows, resultTotal, nil
 }
 
-func (s *DSCService) GetddSource(payload toolkit.M) (interface{}, int, error) {
+func (s *DSCService) GetddSourceRightPanel(payload toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
