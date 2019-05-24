@@ -371,7 +371,7 @@ export default {
       store: state => state.dscmy.all
     }),
     ddTableOptions () {
-      return _.uniq(_.map(this.store.DDSource, (v) => v.TABLE_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(this.store.DDSource, (v) => v.TABLE_NAME.toString())).filter(Boolean);
     },
     ddColumnOptions () {
       var self = this;
@@ -379,7 +379,7 @@ export default {
         return v.TABLE_NAME == self.store.ddVal.ddTableSelected;
       });
 
-      return _.uniq(_.map(filtered, (v) => v.COLUMN_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.COLUMN_NAME.toString())).filter(Boolean);
     },
     ddScreenLabelOptions () {
       var self = this;
@@ -388,7 +388,7 @@ export default {
           && v.COLUMN_NAME == self.store.ddVal.ddColumnSelected;
       });
       
-      return _.uniq(_.map(filtered, (v) => v.BUSINESS_ALIAS_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.BUSINESS_ALIAS_NAME.toString())).filter(Boolean);
     },
     ddBusinessTermOptions () {
       var self = this;
@@ -398,7 +398,7 @@ export default {
           && v.BUSINESS_ALIAS_NAME == self.store.ddVal.ddScreenLabelSelected;
       });
       
-      return _.uniq(_.map(filtered, (v) => v.BUSINESS_TERM.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.BUSINESS_TERM.toString())).filter(Boolean);
     },
     ddPrecOptions () {
       var self = this;
@@ -409,7 +409,7 @@ export default {
           && v.BUSINESS_TERM == self.store.ddVal.ddBusinessTermSelected;
       });
       
-      return _.uniq(_.map(filtered, (v) => v.IMM_PRECEEDING_SYSTEM.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.IMM_PRECEEDING_SYSTEM.toString())).filter(Boolean);
     },
     ddPrecIncomingOptions () {
       var self = this;
@@ -421,7 +421,7 @@ export default {
           && v.IMM_PRECEEDING_SYSTEM == self.store.ddVal.ddPrecSelected;
       });
       
-      return _.uniq(_.map(filtered, (v) => v.IMM_PREC_INCOMING.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.IMM_PREC_INCOMING.toString())).filter(Boolean);
     },
     ddSuccOptions () {
       var self = this;
@@ -434,7 +434,7 @@ export default {
           && v.IMM_PREC_INCOMING == self.store.ddVal.ddPrecIncomingSelected;
       });
       
-      return _.uniq(_.map(filtered, (v) => v.IMM_SUCCEEDING_SYSTEM.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.IMM_SUCCEEDING_SYSTEM.toString())).filter(Boolean);
     },
     ddSuccIncomingOptions () {
       var self = this;
@@ -448,7 +448,7 @@ export default {
           && v.IMM_SUCCEEDING_SYSTEM == self.store.ddVal.ddSuccSelected;
       });
       
-      return _.uniq(_.map(filtered, (v) => v.IMM_SUCC_INCOMING.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.IMM_SUCC_INCOMING.toString())).filter(Boolean);
     },
     exportDatas () {
       if(this.store.selectedDetails){

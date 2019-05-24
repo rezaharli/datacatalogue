@@ -17,11 +17,16 @@ func NewRFOService() *RFOService {
 }
 
 func (s *RFOService) GetLeftTable(tabs, loggedinid, search string, searchDD, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "rfo.sql"
+	queryName := "rfo-view"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "rfo.sql")
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
 	gridArgs.QueryName = "rfo-view"
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
 
 	if loggedinid != "" {
 		gridArgs.MainArgs = append(gridArgs.MainArgs, "MY", loggedinid)
@@ -56,11 +61,16 @@ func (s *RFOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 }
 
 func (s *RFOService) GetRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
+	fileName := tabs + ".sql"
+	queryName := "right-grid"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", tabs+".sql")
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
 	gridArgs.QueryName = "right-grid"
 	gridArgs.PageNumber = pageNumber
 	gridArgs.RowsPerPage = rowsPerPage
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, toolkit.ToString(systemID))
 
@@ -95,11 +105,16 @@ func (s *RFOService) GetRightTable(tabs string, systemID int, search string, sea
 }
 
 func (s *RFOService) GetPriorityTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "rfo.sql"
+	queryName := "rfo-priority"
+
 	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", "rfo.sql")
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
 	gridArgs.QueryName = "rfo-priority"
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
 
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
 
