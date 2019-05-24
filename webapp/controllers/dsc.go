@@ -359,9 +359,10 @@ func (c *DSC) GetDetailsLeftPanel(payload toolkit.M) (interface{}, interface{}, 
 
 		for _, key := range helpers.ObjectKeys(detailValues[0]) {
 			mappedValues, err := gubrak.Map(detailValues, func(v toolkit.M, i int) string {
-				stringVal := strings.TrimSpace(toolkit.ToString(v[key]))
+				stringVal := toolkit.ToString(v[key])
+				trimmedStringVal := strings.TrimSpace(stringVal)
 
-				if stringVal == "" {
+				if trimmedStringVal == "" {
 					stringVal = "NA"
 				}
 
@@ -415,31 +416,32 @@ func (c *DSC) GetDetailsRightPanel(payload toolkit.M) (interface{}, interface{},
 
 		for _, key := range helpers.ObjectKeys(detailValues[0]) {
 			mappedValues, err := gubrak.Map(detailValues, func(v toolkit.M, i int) string {
-				stringVal := strings.TrimSpace(toolkit.ToString(v[key]))
+				stringVal := toolkit.ToString(v[key])
+				trimmedStringVal := strings.TrimSpace(stringVal)
 
-				switch key {
-				case "CDE_YES_NO":
-					stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"No", "Yes"})
-					break
-				case "STATUS":
-					stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"INACTIVE", "ACTIVE"})
-					break
-				case "DERIVED_YES_NO":
-					stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"No", "Yes"})
-					break
-				case "SOURCED_FROM_UPSTREAM_YES_NO":
-					stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"No", "Yes"})
-					break
-				case "IMM_PREC_DERIVED":
-					stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"No", "Yes"})
-					break
-				case "IMM_SUCC_DERIVED":
-					stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"No", "Yes"})
-					break
-				}
-
-				if stringVal == "" {
+				if trimmedStringVal == "" {
 					stringVal = "NA"
+				} else {
+					switch key {
+					case "CDE_YES_NO":
+						stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"No", "Yes"})
+						break
+					case "STATUS":
+						stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"INACTIVE", "ACTIVE"})
+						break
+					case "DERIVED_YES_NO":
+						stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"No", "Yes"})
+						break
+					case "SOURCED_FROM_UPSTREAM_YES_NO":
+						stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"No", "Yes"})
+						break
+					case "IMM_PREC_DERIVED":
+						stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"No", "Yes"})
+						break
+					case "IMM_SUCC_DERIVED":
+						stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"No", "Yes"})
+						break
+					}
 				}
 
 				return stringVal
