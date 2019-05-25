@@ -93,7 +93,7 @@ func (c *Base) GetDropdownSource(payload toolkit.M, dropdownFunction func(payloa
 			trimmedStringVal := strings.TrimSpace(stringVal)
 
 			if trimmedStringVal == "" {
-				v[key] = "NA"
+				stringVal = "NA"
 			}
 
 			v[key] = stringVal
