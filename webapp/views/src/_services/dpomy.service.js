@@ -27,6 +27,13 @@ function getDataelementsTable(param) {
 
             res.Data = _.map(res.Data, function(v){
                 v.CDE = v.CDE == 0 ? "No" : "Yes";
+                
+                if(v.DATA_SLA){
+                    v.DATA_SLA = v.DATA_SLA == 0 ? "No" : "Yes";
+                }else{
+                    v.DATA_SLA = "NA";
+                }
+
                 return v;
             });
             
