@@ -229,7 +229,10 @@ export default {
     },
     methods: {
       getLeftTable () {
-        this.$store.dispatch(`${this.storeName}/getLeftTable`)
+        var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
+        getLeftTableVal.then(res => {
+          this.removeHypenOnEmptyTables($("#table-dsc-all"));
+        });
       },
       getRightTable (id) {
         this.$store.dispatch(`${this.storeName}/getRightTable`, id)
@@ -266,6 +269,17 @@ export default {
             var TDs = $(this).find('td:not([colspan])');
             TDs.eq(thIndex).width(thWidth);
           });
+        });
+      },
+      removeHypenOnEmptyTables(elem){
+        var paginationElem = elem.find('.v-datatable__actions .v-datatable__actions__range-controls .v-datatable__actions__pagination');
+        paginationElem.each(function () {
+          var paginationText = $(this).text();
+          if(paginationText=="–"){
+            $(this).hide();
+          }else{
+            $(this).show();
+          }
         });
       }
     }
