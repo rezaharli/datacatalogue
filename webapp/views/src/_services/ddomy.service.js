@@ -110,6 +110,7 @@ function getDownstreamBusinesstermTable(param) {
         res => {
             res.Data = _.map(res.Data, function(v){
                 v.GOLDEN_SOURCE = v.GOLDEN_SOURCE.toLowerCase();
+                v.GOLDEN_SOURCE = v.GOLDEN_SOURCE.charAt(0).toUpperCase() + v.GOLDEN_SOURCE.slice(1);
                 var keys = Object.keys(v);
 
                 keys.forEach(key => {
@@ -261,6 +262,8 @@ function getDetails(param) {
             res.Data.Detail = _.map(Object.keys(tmp), function(v, i){
                 var ret = tmp[v][0];
                 ret.ID = v;
+                ret.GOLDEN_SOURCE = ret.GOLDEN_SOURCE.toLowerCase();
+                ret.GOLDEN_SOURCE = ret.GOLDEN_SOURCE.charAt(0).toUpperCase() + ret.GOLDEN_SOURCE.slice(1);
                 ret.Values = tmp[v];
 
                 return ret;
