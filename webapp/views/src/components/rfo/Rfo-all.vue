@@ -69,7 +69,7 @@
                       
                       <td v-bind:style="{ width: store.left.colWidth['PR_COUNT'] + 'px' }" v-if="isDisplayed('PR_COUNT')">
                         <b-link @click.stop="showRightTable(props.item)">
-                          <tablecell :fulltext="props.item.PR_COUNT" showOn="click"></tablecell></b-link></td>
+                          <tablecell :fulltext="props.item.RISK_SUB_TYPEs[0] ? (props.item.RISK_SUB_TYPEs[0].RISK_SUB_TYPEsVal.map(v => v.PR_COUNT).reduce((partial_sum, a) => partial_sum + a,0)) : ''" showOn="click"></tablecell></b-link></td>
                       
                       <td v-bind:style="{ width: store.left.colWidth['CRM_COUNT'] + 'px' }" v-if="isDisplayed('CRM_COUNT')">
                         <tablecell :fulltext="props.item.CRM_COUNT" showOn="click"></tablecell></td>
@@ -92,7 +92,7 @@
                         
                         <td v-bind:style="{ width: store.left.colWidth['PR_COUNT'] + 'px' }" v-if="isDisplayed('PR_COUNT')">
                           <b-link @click.stop="showRightTable(props.item)">
-                            <tablecell :fulltext="item.PR_COUNT" showOn="click"></tablecell></b-link></td>
+                            <tablecell :fulltext="item.RISK_SUB_TYPEsVal.map(v => v.PR_COUNT).reduce((partial_sum, a) => partial_sum + a,0)" showOn="click"></tablecell></b-link></td>
                         
                         <td v-bind:style="{ width: store.left.colWidth['CRM_COUNT'] + 'px' }" v-if="isDisplayed('CRM_COUNT')">
                           <tablecell :fulltext="item.CRM_COUNT" showOn="click"></tablecell></td>
@@ -192,7 +192,10 @@ export default {
     },
     methods: {
       getLeftTable () {
-        this.$store.dispatch(`${this.storeName}/getLeftTable`)
+        var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
+        getLeftTableVal.then(res => {
+          this.removeHypenOnEmptyTables($("#table-rfo-all"));
+        });
       },
       doGetLeftTable () {
         this.getLeftTable();
@@ -271,6 +274,17 @@ export default {
           });
         }, 1);
       },
+      removeHypenOnEmptyTables(elem){
+        var paginationElem = elem.find('.v-datatable__actions .v-datatable__actions__range-controls .v-datatable__actions__pagination');
+        paginationElem.each(function () {
+          var paginationText = $(this).text();
+          if(paginationText=="–"){
+            $(this).hide();
+          }else{
+            $(this).show();
+          }
+        });
+      }
     }
 }
 </script>

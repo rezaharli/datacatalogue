@@ -148,7 +148,10 @@ export default {
     },
     methods: {
       getLeftTable () {
-        this.$store.dispatch(`${this.storeName}/getLeftTable`)
+        var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
+        getLeftTableVal.then(res => {
+          this.removeHypenOnEmptyTables($("#table-ddo-my"));
+        });
       },
       doGetLeftTable () {
         this.getLeftTable();
@@ -168,6 +171,17 @@ export default {
           });
         });
       },
+      removeHypenOnEmptyTables(elem){
+        var paginationElem = elem.find('.v-datatable__actions .v-datatable__actions__range-controls .v-datatable__actions__pagination');
+        paginationElem.each(function () {
+          var paginationText = $(this).text();
+          if(paginationText=="–"){
+            $(this).hide();
+          }else{
+            $(this).show();
+          }
+        });
+      }
     }
 }
 </script>

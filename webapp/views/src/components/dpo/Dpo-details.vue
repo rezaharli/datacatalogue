@@ -175,59 +175,59 @@ legend.col-form-label, label.col-form-label {
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Description">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.DESCRIPTION : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.DESCRIPTION : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived?">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.DERIVED : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.DERIVED : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation Logic">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.DERIVATION_LOGIC : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.DERIVATION_LOGIC : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Quality requirements">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.DQ_STANDARDS : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.DQ_STANDARDS : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.THRESHOLD : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.THRESHOLD : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source (Yes/No)">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GOLDEN_SOURCE : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GOLDEN_SOURCE : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source System Name">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_SYSTEM_NAME : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_SYSTEM_NAME : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source ITAM ID">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GF_ITAM_ID : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GF_ITAM_ID : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Table Name">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_TABLE_NAME : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_TABLE_NAME : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Column Name">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_COLUMN_NAME : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_COLUMN_NAME : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Screen Name">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_DATA_ELEMENT : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_DATA_ELEMENT : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Business Description">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_DESCRIPTION : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_DESCRIPTION : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Derived (Yes/No)">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_DERIVED : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_DERIVED : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Derivation Logic">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_DERIVATION_LOGIC : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_DERIVATION_LOGIC : 'NA'"></text-wrap-dialog>
                       </b-form-group>
                     </b-form>
                   </p>
@@ -248,23 +248,23 @@ legend.col-form-label, label.col-form-label {
                   <p class="card-text">
                     <b-form>
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain">
-                        <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.DOMAIN_NAME : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.DOMAIN_NAME : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Domain">
-                        <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.SUBDOMAIN_NAME : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.SUBDOMAIN_NAME : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain Owner">
-                        <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.SUBDOMAIN_OWNER : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.SUBDOMAIN_OWNER : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term">
-                        <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.BUSINESS_TERM : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.BUSINESS_TERM : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
-                        <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.BUSINESS_TERM_DESCRIPTION : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.BUSINESS_TERM_DESCRIPTION : 'NA'"></text-wrap-dialog>
                       </b-form-group>
                     </b-form>
                   </p>
@@ -434,7 +434,8 @@ export default {
       return _.uniq(_.map(filtered, (v) => v.DATA_ELEMENT.toString().trim())).filter(Boolean);
     },
     ddUltSystemNameOptions () {
-      return _.uniq(_.map(this.store.DDSourceUltimateSourceSystem, (v) => v.SYSTEM_NAME.toString().trim())).filter(Boolean);
+      var ret = _.uniq(_.map(this.store.DDSourceUltimateSourceSystem, (v) => v.SYSTEM_NAME.toString().trim())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
     },
     ddUltItamIDOptions () {
       var self = this;
@@ -442,7 +443,8 @@ export default {
         return v.SYSTEM_NAME == self.ddUltSystemNameSelected;
       });
 
-      return _.uniq(_.map(filtered, (v) => v.ITAM_ID.toString().trim())).filter(Boolean);
+      var ret = _.uniq(_.map(filtered, (v) => v.ITAM_ID.toString().trim())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
     },
     ddUltTableNameOptions () {
       var self = this;
@@ -451,7 +453,8 @@ export default {
           && v.ITAM_ID == self.ddUltItamIDSelected
       });
       
-      return _.uniq(_.map(filtered, (v) => v.TABLE_NAME.toString().trim())).filter(Boolean);
+      var ret = _.uniq(_.map(filtered, (v) => v.TABLE_NAME.toString().trim())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
     },
     ddUltColumnNameOptions () {
       var self = this;
@@ -461,7 +464,8 @@ export default {
           && v.TABLE_NAME == self.ddUltTableNameSelected
       });
       
-      return _.uniq(_.map(filtered, (v) => v.COLUMN_NAME.toString().trim())).filter(Boolean);
+      var ret = _.uniq(_.map(filtered, (v) => v.COLUMN_NAME.toString().trim())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
     },
     ddUltScreenLabelOptions () {
       var self = this;
@@ -472,7 +476,8 @@ export default {
           && v.COLUMN_NAME == self.ddUltColumnNameSelected
       });
       
-      return _.uniq(_.map(filtered, (v) => v.DATA_ELEMENT.toString().trim())).filter(Boolean);
+      var ret = _.uniq(_.map(filtered, (v) => v.DATA_ELEMENT.toString().trim())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
     },
     exportDatas () {
       if(this.selectedDetails){
@@ -887,21 +892,21 @@ export default {
 
               return v
             })
-            
-            setTimeout(() => {
-              self.ddUltSystemNameSelected = self.selectedDetailsUltimateSourceSystem.SYSTEM_NAME;
-              self.ddUltItamIDSelected = self.selectedDetailsUltimateSourceSystem.ITAM_ID;
-              self.ddUltTableNameSelected = self.selectedDetailsUltimateSourceSystem.TABLE_NAME;
-              self.ddUltColumnNameSelected = self.selectedDetailsUltimateSourceSystem.COLUMN_NAME;
-              self.ddUltScreenLabelSelected = self.selectedDetailsUltimateSourceSystem.DATA_ELEMENT;
-
-              setTimeout(() => {
-                this.firstload = false;
-              }, 100);
-            }, 100);
           } else {
             this.selectedDetailsUltimateSourceSystem = null;
           }
+            
+          setTimeout(() => {
+            self.ddUltSystemNameSelected = self.selectedDetailsUltimateSourceSystem ? self.selectedDetailsUltimateSourceSystem.SYSTEM_NAME : "NA";
+            self.ddUltItamIDSelected = self.selectedDetailsUltimateSourceSystem ? self.selectedDetailsUltimateSourceSystem.ITAM_ID : "NA";
+            self.ddUltTableNameSelected = self.selectedDetailsUltimateSourceSystem ? self.selectedDetailsUltimateSourceSystem.TABLE_NAME : "NA";
+            self.ddUltColumnNameSelected = self.selectedDetailsUltimateSourceSystem ? self.selectedDetailsUltimateSourceSystem.COLUMN_NAME : "NA";
+            self.ddUltScreenLabelSelected = self.selectedDetailsUltimateSourceSystem ? self.selectedDetailsUltimateSourceSystem.DATA_ELEMENT : "NA";
+
+            setTimeout(() => {
+              this.firstload = false;
+            }, 100);
+          }, 100);
 
           if (self.store.DetailsDomainView.length > 0){
             var tmp = self.store.DetailsDomainView[0].Values[0];
