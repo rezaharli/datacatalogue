@@ -113,7 +113,7 @@
                         <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.ULT_SYSTEM_NAME"></tablecell>
                       </td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['DATA_SLA'] + 'px' }" class="text-uppercase">
+                      <td v-bind:style="{ width: store.left.colWidth['DATA_SLA'] + 'px' }" class="text-capitalize">
                         <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DATA_SLA"></tablecell>
                       </td>
                     </tr>
