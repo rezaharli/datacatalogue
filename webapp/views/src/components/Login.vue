@@ -33,7 +33,6 @@
                             <b-form-input id="password"
                                 :type="passwordType"
                                 v-model="password"
-                                required
                                 placeholder="Enter password"></b-form-input>
                         </div>
                     </b-form-group>
@@ -95,7 +94,7 @@ export default {
             this.submitted = true;
             const { username, password } = this;
 
-            if (username && password) {
+            if (username) {
                 this.login({ username, password })
             }
         }

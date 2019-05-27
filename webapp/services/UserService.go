@@ -56,6 +56,13 @@ func (s *UserService) Authenticate(username int, password string) (bool, *m.SysU
 		newUser.CreatedAt = time.Now().String()
 		newUser.UpdatedAt = time.Now().String()
 
+		ldapConf := clit.Config("default", "LDAP", "").(map[string]interface{})
+		if ldapConf["IsEnabled"].(string) == "auto" {
+			newUser.Password = toolkit.ToString(username)
+		} else {
+			newUser.Password = password
+		}
+
 		ok, err := NewUserService().Insert(newUser)
 		if !ok && err != nil {
 			return false, m.NewSysUserModel(), err
@@ -81,7 +88,7 @@ func (s *UserService) authenticate(username int, password string) ([]m.SysUser, 
 
 	if clit.Config("default", "LDAP", "") != "" {
 		ldapConf := clit.Config("default", "LDAP", "").(map[string]interface{})
-		if ldapConf["IsEnabled"].(string) == "true" {
+		if ldapConf["IsEnabled"].(string) == "true" || ldapConf["IsEnabled"].(string) == "auto" {
 			//do nothing
 		} else {
 			filter = append(filter, dbflex.Eq("password", s.HashPassword(password)))

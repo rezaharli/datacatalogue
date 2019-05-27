@@ -652,7 +652,7 @@ func (s *DPOService) GetddSourceDomainView(payload toolkit.M) (interface{}, int,
 	q := ""
 	args := make([]interface{}, 0)
 
-	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
+	args = append(args, payload.GetString("Right"))
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
 	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
