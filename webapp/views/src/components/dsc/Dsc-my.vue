@@ -231,7 +231,7 @@ export default {
       getLeftTable () {
         var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
         getLeftTableVal.then(res => {
-          this.removeHypenOnEmptyTables($("#table-dsc-all"));
+          this.removeHypenOnEmptyTables($("#table-dsc-my"));
         });
       },
       getRightTable (id) {
