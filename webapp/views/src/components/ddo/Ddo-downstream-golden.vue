@@ -1,10 +1,19 @@
+<style scoped>
+/* .golden-source-level-1 table.v-table tbody tr td, .table-v1 table.v-table tfoot tr td{padding: 0;} */
+.golden-source-level-1 table.v-table tbody tr td:first-of-type, 
+.golden-source-level-1 table.v-table tfoot tr td:first-of-type {
+  padding-left: 0;
+}
+</style>
+
 <template>
   <v-data-table
       :headers="store.leftHeaders.filter(v => v.display == true && v.forInnerTable == true)"
       :items="props.item.GSSystems"
       :expand="false"
       item-key="ID"
-      class=""
+      class="golden-source-level-1"
+      hide-headers
       hide-actions>
 
     <template slot="items" slot-scope="props">
@@ -32,11 +41,11 @@
         :headers="store.leftHeaders.filter(v => v.display == true && v.forInnerTable == true)"
         :items="props.item.GSTables"
         :expand="false"
-        class=""
+        class="golden-source-level-2"
         item-key="TMTID"
         hide-actions
         hide-headers
-        @update:pagination="setExpandedTableColumnsWidth"
+        @update:pagination="setExpandedTableColumnsWidthGS"
       >
         <template slot="items" slot-scope="props">
           <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
@@ -59,10 +68,10 @@
             :headers="store.leftHeaders.filter(v => v.display == true && v.forInnerTable == true)"
             :items="props.item.GSColumns"
             item-key="COLID"
-            class=""
+            class="golden-source-level-3"
             hide-actions
             hide-headers
-            @update:pagination="setExpandedTableColumnsWidth"
+            @update:pagination="setExpandedTableColumnsWidthGS"
           >
             <template slot="items" slot-scope="props">
               <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
@@ -134,11 +143,11 @@ export default {
     this.store.system = this.$route.params.system;
     this.resetFilter();
     setTimeout(() => {
-      this.setTableColumnsWidth($('#table-ddo-downstream-businessterm'));
+      this.setTableColumnsWidthGS($('.golden-source-level-1'));
     }, 300);
   },
   updated() {
-    this.setTableColumnsWidth($('#table-ddo-downstream-businessterm'));
+    this.setTableColumnsWidthGS($('.golden-source-level-1'));
   },
   methods: {
     getLeftTable() {
@@ -221,31 +230,64 @@ export default {
         this.addressPath + "/" + encodeURIComponent(this.$route.params.subdomain) + "/" + encodeURIComponent(this.$route.params.system) + "/" + encodeURIComponent(param.BT_NAME)
       );
     },
-    setTableColumnsWidth(elem){
+    setTableColumnsWidthGS(elem){
       var tableElem = elem.find('.v-table__overflow > table.v-table');
-      
-      var THs = tableElem.find('thead tr th');
-      var tbodyTR = tableElem.find('tbody tr');
+
+      var theadTR = elem.closest('.table-v1').find('table.v-table:first thead tr:first');
+      var THs = theadTR.find('th');
+      var tbodyTR = tableElem.children('tbody').children('tr');;
+      var thWidths = [];
       THs.each(function (thIndex) {
-        var thWidth = $(this).width();
-        tbodyTR.each(function (tdIndex) {
-          var TDs = $(this).find('td:not([colspan])');
-          TDs.eq(thIndex).width(thWidth);
+        thWidths[thIndex] = $(this).outerWidth();
+      });
+      console.log(thWidths);
+      
+
+      tbodyTR.each(function () {
+        $(this).children('td:not([colspan])').each(function (tdIndex2) {
+          var colWidth = thWidths[parseInt(tdIndex2)+7];
+          // colWidth = colWidth - 80; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+          $(this).width(colWidth);
+          $(this).addClass('tdindex-gs-'+tdIndex2+'-'+colWidth);
         });
       });
+
+      
+      // var THs = tableElem.find('thead tr th');
+      // var tbodyTR = tableElem.find('tbody tr');
+      // THs.each(function (thIndex) {
+      //   var thWidth = $(this).width();
+      //   tbodyTR.each(function (tdIndex) {
+      //     var TDs = $(this).find('td:not([colspan])');
+      //     TDs.eq(thIndex).width(thWidth);
+      //   });
+      // });
     },
-    setExpandedTableColumnsWidth(){
+    setExpandedTableColumnsWidthGS(){
       setTimeout(() => {
         var elem = $('.v-datatable__expand-row');
-        var elemExpandedTable = elem.find('.v-datatable__expand-content table.v-table');
-        var THs = elem.closest('table.v-table').find('thead tr:first th');
-        var tbodyTR = elemExpandedTable.find('tbody tr');
+        var tableElem = elem.find('.v-datatable__expand-content:first table.v-table:first');
+        var theadTR = elem.closest('.table-v1').find('table.v-table:first thead tr:first');
+        var THs = theadTR.find('th');
+        var tbodyTR = tableElem.children('tbody').children('tr');;
+        var thWidths = [];
         THs.each(function (thIndex) {
-          $(this).css({'color': 'red'});
-          var thWidth = $(this).width();
-          tbodyTR.each(function (tdIndex) {
-            var TDs = $(this).find('td:not([colspan])');
-            TDs.eq(thIndex).width(thWidth);
+          thWidths[thIndex] = $(this).outerWidth();
+        });
+        
+        var tableLv2 = $('.golden-source-level-2');
+        var tableLv2TRs = tableLv2.find('table.v-table > tbody > tr');
+        tableLv2TRs.each(function () {
+          $(this).children('td').each(function (tdIndex2) {
+            var colWidth = thWidths[parseInt(tdIndex2)+7];
+            // if(tdIndex2==0){
+            //   colWidth = colWidth - 75; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+            // }else{
+              colWidth = colWidth - 60; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+            // }
+            // $(this).attr('width', '');
+            $(this).width(colWidth);
+            $(this).addClass('tdindex-egs-'+tdIndex2+'-'+colWidth);
           });
         });
       }, 10);

@@ -1,5 +1,5 @@
 <style>
-#table-ddo-downstream-businessterm table.v-table.v-datatable tbody tr {display: table-row;}
+/* #table-ddo-downstream-businessterm table.v-table.v-datatable tbody tr {display: table-row;} */
 
 .table-v1 .v-table__overflow{
   overflow-y: hidden !important;
@@ -121,11 +121,11 @@
                       :headers="store.leftHeaders.filter(v => v.display == true)"
                       :items="props.item.Systems"
                       :expand="false"
-                      class=""
+                      class="expanded-table-level-1"
                       item-key="SYSID"
                       hide-actions
                       hide-headers
-                      @update:pagination="setExpandedTableColumnsWidth"
+                      @update:pagination="setExpandedTableColumnsWidthDBT"
                     >
                       <template slot="items" slot-scope="props">
                         <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
@@ -162,10 +162,10 @@
                           :headers="store.leftHeaders.filter(v => v.display == true)"
                           :items="props.item.Tables"
                           item-key="TMTID"
-                          class=""
+                          class="expanded-table-level-2"
                           hide-actions
                           hide-headers
-                          @update:pagination="setExpandedTableColumnsWidth"
+                          @update:pagination="setExpandedTableColumnsWidthDBT"
                         >
                           <template slot="items" slot-scope="props">
                             <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
@@ -202,7 +202,7 @@
                               class=""
                               hide-actions
                               hide-headers
-                              @update:pagination="setExpandedTableColumnsWidth"
+                              @update:pagination="setExpandedTableColumnsWidthDBT"
                             >
                               <template slot="items" slot-scope="props">
                                 <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
@@ -292,11 +292,11 @@ export default {
     this.store.system = this.$route.params.system;
     this.resetFilter();
     setTimeout(() => {
-      this.setTableColumnsWidth($('#table-ddo-downstream-businessterm'));
+      this.setTableColumnsWidthDBT($('#table-ddo-downstream-businessterm'));
     }, 300);
   },
   updated() {
-    this.setTableColumnsWidth($('#table-ddo-downstream-businessterm'));
+    this.setTableColumnsWidthDBT($('#table-ddo-downstream-businessterm'));
   },
   methods: {
     getLeftTable() {
@@ -379,30 +379,82 @@ export default {
         this.addressPath + "/" + encodeURIComponent(this.$route.params.subdomain) + "/" + encodeURIComponent(this.$route.params.system) + "/" + encodeURIComponent(param.BT_NAME)
       );
     },
-    setTableColumnsWidth(elem){
-      var tableElem = elem.first('.v-table__overflow > table.v-table');
-      var THs = tableElem.find('thead tr th');
-      var tbodyTR = tableElem.find('tbody tr');
+    setTableColumnsWidthDBT(elem){
+      var tableElem = elem.find('.v-table__overflow:first > table.v-table:first');
+
+      var theadTR = elem.closest('.table-v1').find('table.v-table:first thead tr:first');
+      var THs = theadTR.find('th');
+      var tbodyTR = tableElem.children('tbody').children('tr');
+      var thWidths = [];
       THs.each(function (thIndex) {
-        var thWidth = $(this).width();
-        tbodyTR.each(function (tdIndex) {
-          var TDs = $(this).find('td:not([colspan])');
-          TDs.eq(thIndex).width(thWidth);
+        thWidths[thIndex] = $(this).outerWidth();
+      });
+
+      tbodyTR.each(function () {
+        $(this).children('td:not([colspan])').each(function (tdIndex2) {
+          if(tdIndex2==7){
+            var colWidth = thWidths[parseInt(tdIndex2)] + thWidths[parseInt(tdIndex2)+1] + thWidths[parseInt(tdIndex2)+2];
+          }else{
+            var colWidth = thWidths[parseInt(tdIndex2)];
+          }
+          if(tdIndex2==0){
+            colWidth = colWidth - 75; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+          }else{
+            colWidth = colWidth - 60; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+          }
+          $(this).width(colWidth);
+          $(this).addClass('tdindex-dbt-'+tdIndex2+'-'+colWidth);
         });
       });
+
     },
-    setExpandedTableColumnsWidth(){
+    setExpandedTableColumnsWidthDBT(){
       setTimeout(() => {
         var elem = $('.v-datatable__expand-row');
-        var elemExpandedTable = elem.find('.v-datatable__expand-content table.v-table');
-        var THs = elem.closest('table.v-table').find('thead tr:first th');
-        var tbodyTR = elemExpandedTable.find('tbody tr');
+        var tableElem = elem.find('.v-datatable__expand-content:first table.v-table:first');
+        var theadTR = elem.closest('.table-v1').find('table.v-table:first thead tr:first');
+        var THs = theadTR.find('th');
+        var tbodyTR = tableElem.children('tbody').children('tr');
+        var thWidths = [];
         THs.each(function (thIndex) {
-          $(this).css({'color': 'red'});
-          var thWidth = $(this).width();
-          tbodyTR.each(function (tdIndex) {
-            var TDs = $(this).find('td:not([colspan])');
-            TDs.eq(thIndex).width(thWidth);
+          thWidths[thIndex] = $(this).outerWidth();
+        });
+
+        var tableLv1 = $('.expanded-table-level-1');
+        var tableLv1TRs = tableLv1.find('table.v-table > tbody > tr');
+        tableLv1TRs.each(function () {
+          $(this).children('td:not([colspan])').each(function (tdIndex2) {
+            if(tdIndex2==7){
+              var colWidth = thWidths[parseInt(tdIndex2)] + thWidths[parseInt(tdIndex2)+1] + thWidths[parseInt(tdIndex2)+2];
+            }else{
+              var colWidth = thWidths[parseInt(tdIndex2)];
+            }
+            if(tdIndex2==0){
+              colWidth = colWidth - 75; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+            }else{
+              colWidth = colWidth - 60; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+            }
+            $(this).width(colWidth);
+            $(this).addClass('tdindex-dbt-lv1-'+tdIndex2+'-'+colWidth);
+          });
+        });
+
+        var tableLv2 = $('.expanded-table-level-2');
+        var tableLv2TRs = tableLv2.find('table.v-table > tbody > tr');
+        tableLv2TRs.each(function () {
+          $(this).children('td:not([colspan])').each(function (tdIndex2) {
+            if(tdIndex2==7){
+              var colWidth = thWidths[parseInt(tdIndex2)] + thWidths[parseInt(tdIndex2)+1] + thWidths[parseInt(tdIndex2)+2];
+            }else{
+              var colWidth = thWidths[parseInt(tdIndex2)];
+            }
+            if(tdIndex2==0){
+              colWidth = colWidth - 75; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+            }else{
+              colWidth = colWidth - 60; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+            }
+            $(this).width(colWidth);
+            $(this).addClass('tdindex-dbt-lv2-'+tdIndex2+'-'+colWidth);
           });
         });
       }, 10);
