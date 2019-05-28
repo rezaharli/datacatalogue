@@ -108,6 +108,12 @@ function getDownstreamTable(param) {
 function getDownstreamBusinesstermTable(param) {
     return fetchWHeader(`/ddo/getdownstreambusinesstermtable`, param).then(
         res => {
+            res.Data = [
+                {"ALIAS_NAME":"A Overall Risk Rating","BT_NAME":"A Customer Due Diligence (CDD) Risk Rating Code","COLUMN_NAME":"A FINAL_RATING","DATA_DOMAIN":"Client \u0026 Counterparty - Individual\n","GOLDEN_SOURCE":"YES","GS_COLUMN_NAME":"B FINAL_RATING","GS_ITAM_ID":22327,"GS_SYSTEM_NAME":"CuPID II","GS_TABLE_NAME":"B CIF_EDD_SDD","RESULT_COUNT":1,"R__":1,"SUB_DOMAINS":"Client \u0026 Counterparty - Individuals / Entities (for Private Banking)","SYSTEM_CONSUMED":"","TABLE_NAME":"A CIF_EDD_SDD"},
+                {"ALIAS_NAME":"A Current CRA Rating","BT_NAME":"A Customer Due Diligence (CDD) Risk Rating Code","COLUMN_NAME":"A FINAL_RATING","DATA_DOMAIN":"Client \u0026 Counterparty - Individual\n","GOLDEN_SOURCE":"YES","GS_COLUMN_NAME":"B FINAL_RATING","GS_ITAM_ID":22327,"GS_SYSTEM_NAME":"CuPID II","GS_TABLE_NAME":"B PERSONAL_PARTY_SECRET","RESULT_COUNT":1,"R__":1,"SUB_DOMAINS":"Client \u0026 Counterparty - Individuals / Entities (for Private Banking)","SYSTEM_CONSUMED":"","TABLE_NAME":"A PERSONAL_PARTY_SECRET"},
+                {"ALIAS_NAME":"A Current CRA Rating","BT_NAME":"A Customer Due Diligence (CDD) Risk Rating Code","COLUMN_NAME":"A FINAL_RATING","DATA_DOMAIN":"Client \u0026 Counterparty - Individual\n","GOLDEN_SOURCE":"YES","GS_COLUMN_NAME":"B FINAL_RATING","GS_ITAM_ID":22327,"GS_SYSTEM_NAME":"CuPID II","GS_TABLE_NAME":"B NONPERSONAL_PARTY_SECRET","RESULT_COUNT":1,"R__":1,"SUB_DOMAINS":"Client \u0026 Counterparty - Individuals / Entities (for Private Banking)","SYSTEM_CONSUMED":"","TABLE_NAME":"A NONPERSONAL_PARTY_SECRET"}
+            ]
+
             res.Data = _.map(res.Data, function(v){
                 v.GOLDEN_SOURCE = v.GOLDEN_SOURCE.toLowerCase();
                 v.GOLDEN_SOURCE = v.GOLDEN_SOURCE.charAt(0).toUpperCase() + v.GOLDEN_SOURCE.slice(1);

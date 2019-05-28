@@ -1,3 +1,12 @@
+<style>
+#table-ddo-downstream-businessterm table.v-table.v-datatable tbody tr {display: table-row;}
+
+.table-v1 .v-table__overflow{
+  overflow-y: hidden !important;
+}
+</style>
+
+
 <template>
     <v-content class="mx-4 my-5">
         <b-container fluid>
@@ -100,86 +109,8 @@
                         <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
                       </td>
 
-                      <td colspan="3">
-                        <v-data-table
-                            :headers="store.leftHeaders.filter(v => v.display == true)"
-                            :items="props.item.GSSystems"
-                            :expand="false"
-                            item-key="ID"
-                            class=""
-                            hide-actions
-                            hide-headers>
-
-                          <template slot="items" slot-scope="props">
-                            <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                              <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }" class="text-capitalize text-title">
-                                <b-link @click="props.expanded = !props.expanded" v-if="props.item.GSTables.length > 0">
-                                  <tablecell :fulltext="props.item.GS_SYSTEM_NAME" showOn="hover"></tablecell>
-                                </b-link>
-
-                                <tablecell :fulltext="props.item.GS_SYSTEM_NAME" showOn="hover" v-if="props.item.GSTables.length < 1"></tablecell>
-                              </td>
-
-                              <td v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }" class="text-uppercase">
-                                <tablecell showOn="hover" v-if="isGSMainLevelCellShowing(props)" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
-                              </td>
-
-                              <td v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }" class="text-uppercase">
-                                <tablecell showOn="hover" v-if="isGSMainLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
-                              </td>
-                            </tr>
-                          </template>
-
-                          <template slot="expand" slot-scope="props">
-                            <v-data-table
-                              :headers="store.leftHeaders.filter(v => v.display == true)"
-                              :items="props.item.GSTables"
-                              :expand="false"
-                              class=""
-                              item-key="TMTID"
-                              hide-actions
-                              hide-headers
-                              @update:pagination="setExpandedTableColumnsWidth"
-                            >
-                              <template slot="items" slot-scope="props">
-                                <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
-
-                                <td v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
-                                  <b-link @click="props.expanded = !props.expanded" v-if="props.item.GSColumns.length >= 1">
-                                    <tablecell :fulltext="props.item.GS_TABLE_NAME" showOn="hover"></tablecell>
-                                  </b-link>
-
-                                  <tablecell :fulltext="props.item.GS_TABLE_NAME" showOn="hover" v-if="props.item.GSColumns.length < 1"></tablecell>
-                                </td>
-
-                                <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
-                                  <tablecell showOn="hover" v-if="isGSTableLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
-                                </td>
-                              </template>
-
-                              <template slot="expand" slot-scope="props">
-                                <v-data-table
-                                  :headers="store.leftHeaders.filter(v => v.display == true)"
-                                  :items="props.item.GSColumns"
-                                  item-key="COLID"
-                                  class=""
-                                  hide-actions
-                                  hide-headers
-                                  @update:pagination="setExpandedTableColumnsWidth"
-                                >
-                                  <template slot="items" slot-scope="props">
-                                    <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
-                                    <td v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">&nbsp;</td>
-
-                                    <td v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
-                                      <tablecell :fulltext="props.item.GS_COLUMN_NAME" showOn="hover"></tablecell>
-                                    </td>
-                                  </template>
-                                </v-data-table>
-                              </template>
-                            </v-data-table>
-                          </template>
-                        </v-data-table>
+                      <td v-bind:style="{ width: (store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
+                        <downstream-g-s :props="props"></downstream-g-s>
                       </td>
                     </tr>
                   </template>
@@ -221,7 +152,9 @@
                           <tablecell showOn="hover" v-if="isSystemLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
                         </td>
 
-                        <td colspan="3"></td>
+                        <td v-bind:style="{ width: (store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
+                          <!-- <downstream-g-s :props="props"></downstream-g-s> -->
+                        </td>
                       </template>
 
                       <template slot="expand" slot-scope="props">
@@ -256,7 +189,9 @@
                               <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
                             </td>
 
-                            <td colspan="3"></td>
+                            <td v-bind:style="{ width: (store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
+                              <!-- <downstream-g-s :props="props"></downstream-g-s> -->
+                            </td>
                           </template>
 
                           <template slot="expand" slot-scope="props">
@@ -282,7 +217,9 @@
                                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
                                   <tablecell showOn="hover" :fulltext="props.item.GOLDEN_SOURCE"></tablecell></td>
 
-                                <td colspan="3"></td>
+                                <td v-bind:style="{ width: (store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
+                                  <!-- <downstream-g-s :props="props"></downstream-g-s> -->
+                                </td>
                               </template>
                             </v-data-table>
                           </template>
@@ -311,12 +248,13 @@ import pageExport from "../PageExport.vue";
 import tableheader from "../TableHeader.vue";
 import tablecell from "../Tablecell.vue";
 import pageLoader from "../PageLoader.vue";
+import downstreamGS from "./Ddo-downstream-golden.vue";
 
 Vue.component("downloadExcel", JsonExcel);
 
 export default {
   components: {
-    PageHeader, pageSearch, pageExport, tableheader, tablecell, pageLoader
+    PageHeader, pageSearch, pageExport, tableheader, tablecell, pageLoader, downstreamGS
   },
   data() {
     return {
@@ -442,7 +380,7 @@ export default {
       );
     },
     setTableColumnsWidth(elem){
-      var tableElem = elem.find('.v-table__overflow > table.v-table');
+      var tableElem = elem.first('.v-table__overflow > table.v-table');
       var THs = tableElem.find('thead tr th');
       var tbodyTR = tableElem.find('tbody tr');
       THs.each(function (thIndex) {
