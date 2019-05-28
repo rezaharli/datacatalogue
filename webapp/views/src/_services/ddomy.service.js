@@ -158,6 +158,114 @@ function getDownstreamBusinesstermTable(param) {
                             ret.ColumnsVal  = tmpTmp4;
                             ret.COLUMN_NAME = y;
 
+                            var tmp5 = _.groupBy(tmp[v], "GS_SYSTEM_NAME")
+                            ret.GSSystems = _.map(Object.keys(tmp5), function(w, j){
+                                var tmpTmp5 = _.cloneDeep(tmp5[w]);
+        
+                                var ret             = tmpTmp5[0];
+                                ret.ID              = j;
+                                ret.GSSystemsVal    = tmpTmp5;
+                                ret.GS_SYSTEM_NAME  = w;
+        
+                                var tmp6 = _.groupBy(tmp5[w], "GS_TABLE_NAME");  
+                                ret.GSTables = _.map(Object.keys(tmp6), function(x, k){
+                                    var tmpTmp6 = _.cloneDeep(tmp6[x]);
+        
+                                    var ret             = tmpTmp6[0];
+                                    ret.TMTID           = k;
+                                    ret.GSTablesVal     = tmpTmp6;
+                                    ret.GS_TABLE_NAME   = x;
+        
+                                    var tmp7 = _.groupBy(tmp6[x], "GS_COLUMN_NAME");
+                                    ret.GSColumns = _.map(Object.keys(tmp7), function(y, l){
+                                        var tmpTmp7 = _.cloneDeep(tmp7[y]);
+        
+                                        var ret             = tmpTmp7[0];
+                                        ret.COLID           = l;
+                                        ret.GSColumnsVal    = tmpTmp7;
+                                        ret.GS_COLUMN_NAME  = y;
+        
+                                        return ret;
+                                    });
+        
+                                    return ret;
+                                });
+        
+                                return ret;
+                            });
+
+                            return ret;
+                        });
+
+                        var tmp5 = _.groupBy(tmp[v], "GS_SYSTEM_NAME")
+                        ret.GSSystems = _.map(Object.keys(tmp5), function(w, j){
+                            var tmpTmp5 = _.cloneDeep(tmp5[w]);
+    
+                            var ret             = tmpTmp5[0];
+                            ret.ID              = j;
+                            ret.GSSystemsVal    = tmpTmp5;
+                            ret.GS_SYSTEM_NAME  = w;
+    
+                            var tmp6 = _.groupBy(tmp5[w], "GS_TABLE_NAME");  
+                            ret.GSTables = _.map(Object.keys(tmp6), function(x, k){
+                                var tmpTmp6 = _.cloneDeep(tmp6[x]);
+    
+                                var ret             = tmpTmp6[0];
+                                ret.TMTID           = k;
+                                ret.GSTablesVal     = tmpTmp6;
+                                ret.GS_TABLE_NAME   = x;
+    
+                                var tmp7 = _.groupBy(tmp6[x], "GS_COLUMN_NAME");
+                                ret.GSColumns = _.map(Object.keys(tmp7), function(y, l){
+                                    var tmpTmp7 = _.cloneDeep(tmp7[y]);
+    
+                                    var ret             = tmpTmp7[0];
+                                    ret.COLID           = l;
+                                    ret.GSColumnsVal    = tmpTmp7;
+                                    ret.GS_COLUMN_NAME  = y;
+    
+                                    return ret;
+                                });
+    
+                                return ret;
+                            });
+    
+                            return ret;
+                        });
+
+                        return ret;
+                    });
+
+                    var tmp5 = _.groupBy(tmp[v], "GS_SYSTEM_NAME")
+                    ret.GSSystems = _.map(Object.keys(tmp5), function(w, j){
+                        var tmpTmp5 = _.cloneDeep(tmp5[w]);
+
+                        var ret             = tmpTmp5[0];
+                        ret.ID              = j;
+                        ret.GSSystemsVal    = tmpTmp5;
+                        ret.GS_SYSTEM_NAME  = w;
+
+                        var tmp6 = _.groupBy(tmp5[w], "GS_TABLE_NAME");  
+                        ret.GSTables = _.map(Object.keys(tmp6), function(x, k){
+                            var tmpTmp6 = _.cloneDeep(tmp6[x]);
+
+                            var ret             = tmpTmp6[0];
+                            ret.TMTID           = k;
+                            ret.GSTablesVal     = tmpTmp6;
+                            ret.GS_TABLE_NAME   = x;
+
+                            var tmp7 = _.groupBy(tmp6[x], "GS_COLUMN_NAME");
+                            ret.GSColumns = _.map(Object.keys(tmp7), function(y, l){
+                                var tmpTmp7 = _.cloneDeep(tmp7[y]);
+
+                                var ret             = tmpTmp7[0];
+                                ret.COLID           = l;
+                                ret.GSColumnsVal    = tmpTmp7;
+                                ret.GS_COLUMN_NAME  = y;
+
+                                return ret;
+                            });
+
                             return ret;
                         });
 
@@ -167,31 +275,31 @@ function getDownstreamBusinesstermTable(param) {
                     return ret;
                 });
 
-                var tmp4 = _.groupBy(tmp[v], "GS_SYSTEM_NAME")
-                ret.GSSystems = _.map(Object.keys(tmp4), function(w, j){
-                    var tmpTmp4 = _.cloneDeep(tmp4[w]);
+                var tmp5 = _.groupBy(tmp[v], "GS_SYSTEM_NAME")
+                ret.GSSystems = _.map(Object.keys(tmp5), function(w, j){
+                    var tmpTmp5 = _.cloneDeep(tmp5[w]);
 
-                    var ret             = tmpTmp4[0];
+                    var ret             = tmpTmp5[0];
                     ret.ID              = j;
-                    ret.GSSystemsVal    = tmpTmp4;
+                    ret.GSSystemsVal    = tmpTmp5;
                     ret.GS_SYSTEM_NAME  = w;
 
-                    var tmp5 = _.groupBy(tmp4[w], "GS_TABLE_NAME");  
-                    ret.GSTables = _.map(Object.keys(tmp5), function(x, k){
-                        var tmpTmp5 = _.cloneDeep(tmp5[x]);
+                    var tmp6 = _.groupBy(tmp5[w], "GS_TABLE_NAME");  
+                    ret.GSTables = _.map(Object.keys(tmp6), function(x, k){
+                        var tmpTmp6 = _.cloneDeep(tmp6[x]);
 
-                        var ret             = tmpTmp5[0];
+                        var ret             = tmpTmp6[0];
                         ret.TMTID           = k;
-                        ret.GSTablesVal     = tmpTmp5;
+                        ret.GSTablesVal     = tmpTmp6;
                         ret.GS_TABLE_NAME   = x;
 
-                        var tmp6 = _.groupBy(tmp5[x], "GS_COLUMN_NAME");
-                        ret.GSColumns = _.map(Object.keys(tmp6), function(y, l){
-                            var tmpTmp6 = _.cloneDeep(tmp6[y]);
+                        var tmp7 = _.groupBy(tmp6[x], "GS_COLUMN_NAME");
+                        ret.GSColumns = _.map(Object.keys(tmp7), function(y, l){
+                            var tmpTmp7 = _.cloneDeep(tmp7[y]);
 
-                            var ret             = tmpTmp6[0];
+                            var ret             = tmpTmp7[0];
                             ret.COLID           = l;
-                            ret.GSColumnsVal    = tmpTmp6;
+                            ret.GSColumnsVal    = tmpTmp7;
                             ret.GS_COLUMN_NAME  = y;
 
                             return ret;

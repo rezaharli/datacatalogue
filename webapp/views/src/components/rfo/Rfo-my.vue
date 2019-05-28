@@ -72,10 +72,10 @@
                           <tablecell :fulltext="props.item.RISK_SUB_TYPEs[0] ? (props.item.RISK_SUB_TYPEs[0].RISK_SUB_TYPEsVal.map(v => v.PR_COUNT).reduce((partial_sum, a) => partial_sum + a,0)) : ''" showOn="click"></tablecell></b-link></td>
                       
                       <td v-bind:style="{ width: store.left.colWidth['CRM_COUNT'] + 'px' }" v-if="isDisplayed('CRM_COUNT')">
-                        <tablecell :fulltext="props.item.CRM_COUNT" showOn="click"></tablecell></td>
+                        <tablecell :fulltext="props.item.RISK_SUB_TYPEs[0] ? (props.item.RISK_SUB_TYPEs[0].RISK_SUB_TYPEsVal.map(v => v.CRM_COUNT).reduce((partial_sum, a) => partial_sum + a,0)) : ''" showOn="click"></tablecell></td>
                       
                       <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }" v-if="isDisplayed('CDE_COUNT')">
-                        <tablecell :fulltext="props.item.CDE_COUNT" showOn="click"></tablecell></td>
+                        <tablecell :fulltext="props.item.RISK_SUB_TYPEs[0] ? (props.item.RISK_SUB_TYPEs[0].RISK_SUB_TYPEsVal.map(v => v.CDE_COUNT).reduce((partial_sum, a) => partial_sum + a,0)) : ''" showOn="click"></tablecell></td>
                     </tr>
 
                     <tr :key="props.item.ID + '' + i" v-for="(item, i) in props.item.PRINCIPAL_RISK_TYPESsVal">
@@ -94,10 +94,10 @@
                           <tablecell :fulltext="item.RISK_SUB_TYPEsVal.map(v => v.PR_COUNT).reduce((partial_sum, a) => partial_sum + a,0)" showOn="click"></tablecell></b-link></td>
                       
                       <td v-bind:style="{ width: store.left.colWidth['CRM_COUNT'] + 'px' }" v-if="isDisplayed('CRM_COUNT')">
-                        <tablecell :fulltext="item.CRM_COUNT" showOn="click"></tablecell></td>
+                        <tablecell :fulltext="item.RISK_SUB_TYPEsVal.map(v => v.CRM_COUNT).reduce((partial_sum, a) => partial_sum + a,0)" showOn="click"></tablecell></td>
                       
                       <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }" v-if="isDisplayed('CDE_COUNT')">
-                        <tablecell :fulltext="item.CDE_COUNT" showOn="click"></tablecell></td>
+                        <tablecell :fulltext="item.RISK_SUB_TYPEsVal.map(v => v.CDE_COUNT).reduce((partial_sum, a) => partial_sum + a,0)" showOn="click"></tablecell></td>
                     </tr>
                   </template>
                 </v-data-table>

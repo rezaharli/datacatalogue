@@ -3,6 +3,7 @@ package helpers
 import (
 	"reflect"
 	"strconv"
+	"strings"
 	"time"
 
 	_ "gopkg.in/goracle.v2"
@@ -273,7 +274,8 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 
 				intVal, err := strconv.Atoi(toolkit.ToString(val))
 				if err != nil {
-					sqlQuery += `upper(NVL(` + key + `, ' ')) LIKE upper('%` + toolkit.ToString(val) + `%') `
+					replacedVal := strings.ReplaceAll(toolkit.ToString(val), "'", "''")
+					sqlQuery += `upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
 				} else {
 					sqlQuery += `upper(` + key + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
 				}

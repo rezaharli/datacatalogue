@@ -4,6 +4,7 @@ import (
 	h "eaciit/datacatalogue/webapp/helpers"
 
 	"git.eaciitapp.com/sebar/knot"
+	"github.com/eaciit/clit"
 	"github.com/eaciit/toolkit"
 )
 
@@ -53,4 +54,24 @@ func (c *Dashboard) Decrypt(k *knot.WebContext) {
 	}
 
 	h.WriteResultOK(k, res, plainText)
+}
+
+func (c *Dashboard) GetConfig(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	attr := payload.GetString("Attr")
+	if attr != "" {
+		h.WriteResultOK(k, res, clit.Config("default", attr, ""))
+		return
+	} else {
+		h.WriteResultOK(k, res, false)
+		return
+	}
 }

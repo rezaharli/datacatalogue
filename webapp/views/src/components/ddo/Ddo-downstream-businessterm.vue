@@ -1,3 +1,12 @@
+<style>
+/* #table-ddo-downstream-businessterm table.v-table.v-datatable tbody tr {display: table-row;} */
+
+.table-v1 .v-table__overflow{
+  overflow-y: hidden !important;
+}
+</style>
+
+
 <template>
     <v-content class="mx-4 my-5">
         <b-container fluid>
@@ -100,86 +109,8 @@
                         <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
                       </td>
 
-                      <td colspan="3">
-                        <v-data-table
-                            :headers="store.leftHeaders.filter(v => v.display == true)"
-                            :items="props.item.GSSystems"
-                            :expand="false"
-                            item-key="ID"
-                            class=""
-                            hide-actions
-                            hide-headers>
-
-                          <template slot="items" slot-scope="props">
-                            <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                              <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }" class="text-capitalize text-title">
-                                <b-link @click="props.expanded = !props.expanded" v-if="props.item.GSTables.length > 0">
-                                  <tablecell :fulltext="props.item.GS_SYSTEM_NAME" showOn="hover"></tablecell>
-                                </b-link>
-
-                                <tablecell :fulltext="props.item.GS_SYSTEM_NAME" showOn="hover" v-if="props.item.GSTables.length < 1"></tablecell>
-                              </td>
-
-                              <td v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }" class="text-uppercase">
-                                <tablecell showOn="hover" v-if="isGSMainLevelCellShowing(props)" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
-                              </td>
-
-                              <td v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }" class="text-uppercase">
-                                <tablecell showOn="hover" v-if="isGSMainLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
-                              </td>
-                            </tr>
-                          </template>
-
-                          <template slot="expand" slot-scope="props">
-                            <v-data-table
-                              :headers="store.leftHeaders.filter(v => v.display == true)"
-                              :items="props.item.GSTables"
-                              :expand="false"
-                              class=""
-                              item-key="TMTID"
-                              hide-actions
-                              hide-headers
-                              @update:pagination="setExpandedTableColumnsWidth"
-                            >
-                              <template slot="items" slot-scope="props">
-                                <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
-
-                                <td v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
-                                  <b-link @click="props.expanded = !props.expanded" v-if="props.item.GSColumns.length >= 1">
-                                    <tablecell :fulltext="props.item.GS_TABLE_NAME" showOn="hover"></tablecell>
-                                  </b-link>
-
-                                  <tablecell :fulltext="props.item.GS_TABLE_NAME" showOn="hover" v-if="props.item.GSColumns.length < 1"></tablecell>
-                                </td>
-
-                                <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
-                                  <tablecell showOn="hover" v-if="isGSTableLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
-                                </td>
-                              </template>
-
-                              <template slot="expand" slot-scope="props">
-                                <v-data-table
-                                  :headers="store.leftHeaders.filter(v => v.display == true)"
-                                  :items="props.item.GSColumns"
-                                  item-key="COLID"
-                                  class=""
-                                  hide-actions
-                                  hide-headers
-                                  @update:pagination="setExpandedTableColumnsWidth"
-                                >
-                                  <template slot="items" slot-scope="props">
-                                    <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
-                                    <td v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">&nbsp;</td>
-
-                                    <td v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
-                                      <tablecell :fulltext="props.item.GS_COLUMN_NAME" showOn="hover"></tablecell>
-                                    </td>
-                                  </template>
-                                </v-data-table>
-                              </template>
-                            </v-data-table>
-                          </template>
-                        </v-data-table>
+                      <td v-bind:style="{ width: (store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
+                        <downstream-g-s :props="props"></downstream-g-s>
                       </td>
                     </tr>
                   </template>
@@ -190,11 +121,11 @@
                       :headers="store.leftHeaders.filter(v => v.display == true)"
                       :items="props.item.Systems"
                       :expand="false"
-                      class=""
+                      class="expanded-table-level-1"
                       item-key="SYSID"
                       hide-actions
                       hide-headers
-                      @update:pagination="setExpandedTableColumnsWidth"
+                      @update:pagination="setExpandedTableColumnsWidthDBT"
                     >
                       <template slot="items" slot-scope="props">
                         <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
@@ -221,7 +152,9 @@
                           <tablecell showOn="hover" v-if="isSystemLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
                         </td>
 
-                        <td colspan="3"></td>
+                        <td v-bind:style="{ width: (store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
+                          <!-- <downstream-g-s :props="props"></downstream-g-s> -->
+                        </td>
                       </template>
 
                       <template slot="expand" slot-scope="props">
@@ -229,10 +162,10 @@
                           :headers="store.leftHeaders.filter(v => v.display == true)"
                           :items="props.item.Tables"
                           item-key="TMTID"
-                          class=""
+                          class="expanded-table-level-2"
                           hide-actions
                           hide-headers
-                          @update:pagination="setExpandedTableColumnsWidth"
+                          @update:pagination="setExpandedTableColumnsWidthDBT"
                         >
                           <template slot="items" slot-scope="props">
                             <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
@@ -256,7 +189,9 @@
                               <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
                             </td>
 
-                            <td colspan="3"></td>
+                            <td v-bind:style="{ width: (store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
+                              <!-- <downstream-g-s :props="props"></downstream-g-s> -->
+                            </td>
                           </template>
 
                           <template slot="expand" slot-scope="props">
@@ -267,7 +202,7 @@
                               class=""
                               hide-actions
                               hide-headers
-                              @update:pagination="setExpandedTableColumnsWidth"
+                              @update:pagination="setExpandedTableColumnsWidthDBT"
                             >
                               <template slot="items" slot-scope="props">
                                 <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
@@ -282,7 +217,9 @@
                                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
                                   <tablecell showOn="hover" :fulltext="props.item.GOLDEN_SOURCE"></tablecell></td>
 
-                                <td colspan="3"></td>
+                                <td v-bind:style="{ width: (store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
+                                  <!-- <downstream-g-s :props="props"></downstream-g-s> -->
+                                </td>
                               </template>
                             </v-data-table>
                           </template>
@@ -311,12 +248,13 @@ import pageExport from "../PageExport.vue";
 import tableheader from "../TableHeader.vue";
 import tablecell from "../Tablecell.vue";
 import pageLoader from "../PageLoader.vue";
+import downstreamGS from "./Ddo-downstream-golden.vue";
 
 Vue.component("downloadExcel", JsonExcel);
 
 export default {
   components: {
-    PageHeader, pageSearch, pageExport, tableheader, tablecell, pageLoader
+    PageHeader, pageSearch, pageExport, tableheader, tablecell, pageLoader, downstreamGS
   },
   data() {
     return {
@@ -354,11 +292,11 @@ export default {
     this.store.system = this.$route.params.system;
     this.resetFilter();
     setTimeout(() => {
-      this.setTableColumnsWidth($('#table-ddo-downstream-businessterm'));
+      this.setTableColumnsWidthDBT($('#table-ddo-downstream-businessterm'));
     }, 300);
   },
   updated() {
-    this.setTableColumnsWidth($('#table-ddo-downstream-businessterm'));
+    this.setTableColumnsWidthDBT($('#table-ddo-downstream-businessterm'));
   },
   methods: {
     getLeftTable() {
@@ -441,30 +379,82 @@ export default {
         this.addressPath + "/" + encodeURIComponent(this.$route.params.subdomain) + "/" + encodeURIComponent(this.$route.params.system) + "/" + encodeURIComponent(param.BT_NAME)
       );
     },
-    setTableColumnsWidth(elem){
-      var tableElem = elem.find('.v-table__overflow > table.v-table');
-      var THs = tableElem.find('thead tr th');
-      var tbodyTR = tableElem.find('tbody tr');
+    setTableColumnsWidthDBT(elem){
+      var tableElem = elem.find('.v-table__overflow:first > table.v-table:first');
+
+      var theadTR = elem.closest('.table-v1').find('table.v-table:first thead tr:first');
+      var THs = theadTR.find('th');
+      var tbodyTR = tableElem.children('tbody').children('tr');
+      var thWidths = [];
       THs.each(function (thIndex) {
-        var thWidth = $(this).width();
-        tbodyTR.each(function (tdIndex) {
-          var TDs = $(this).find('td:not([colspan])');
-          TDs.eq(thIndex).width(thWidth);
+        thWidths[thIndex] = $(this).outerWidth();
+      });
+
+      tbodyTR.each(function () {
+        $(this).children('td:not([colspan])').each(function (tdIndex2) {
+          if(tdIndex2==7){
+            var colWidth = thWidths[parseInt(tdIndex2)] + thWidths[parseInt(tdIndex2)+1] + thWidths[parseInt(tdIndex2)+2];
+          }else{
+            var colWidth = thWidths[parseInt(tdIndex2)];
+          }
+          if(tdIndex2==0){
+            colWidth = colWidth - 75; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+          }else{
+            colWidth = colWidth - 60; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+          }
+          $(this).width(colWidth);
+          $(this).addClass('tdindex-dbt-'+tdIndex2+'-'+colWidth);
         });
       });
+
     },
-    setExpandedTableColumnsWidth(){
+    setExpandedTableColumnsWidthDBT(){
       setTimeout(() => {
         var elem = $('.v-datatable__expand-row');
-        var elemExpandedTable = elem.find('.v-datatable__expand-content table.v-table');
-        var THs = elem.closest('table.v-table').find('thead tr:first th');
-        var tbodyTR = elemExpandedTable.find('tbody tr');
+        var tableElem = elem.find('.v-datatable__expand-content:first table.v-table:first');
+        var theadTR = elem.closest('.table-v1').find('table.v-table:first thead tr:first');
+        var THs = theadTR.find('th');
+        var tbodyTR = tableElem.children('tbody').children('tr');
+        var thWidths = [];
         THs.each(function (thIndex) {
-          $(this).css({'color': 'red'});
-          var thWidth = $(this).width();
-          tbodyTR.each(function (tdIndex) {
-            var TDs = $(this).find('td:not([colspan])');
-            TDs.eq(thIndex).width(thWidth);
+          thWidths[thIndex] = $(this).outerWidth();
+        });
+
+        var tableLv1 = $('.expanded-table-level-1');
+        var tableLv1TRs = tableLv1.find('table.v-table > tbody > tr');
+        tableLv1TRs.each(function () {
+          $(this).children('td:not([colspan])').each(function (tdIndex2) {
+            if(tdIndex2==7){
+              var colWidth = thWidths[parseInt(tdIndex2)] + thWidths[parseInt(tdIndex2)+1] + thWidths[parseInt(tdIndex2)+2];
+            }else{
+              var colWidth = thWidths[parseInt(tdIndex2)];
+            }
+            if(tdIndex2==0){
+              colWidth = colWidth - 75; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+            }else{
+              colWidth = colWidth - 60; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+            }
+            $(this).width(colWidth);
+            $(this).addClass('tdindex-dbt-lv1-'+tdIndex2+'-'+colWidth);
+          });
+        });
+
+        var tableLv2 = $('.expanded-table-level-2');
+        var tableLv2TRs = tableLv2.find('table.v-table > tbody > tr');
+        tableLv2TRs.each(function () {
+          $(this).children('td:not([colspan])').each(function (tdIndex2) {
+            if(tdIndex2==7){
+              var colWidth = thWidths[parseInt(tdIndex2)] + thWidths[parseInt(tdIndex2)+1] + thWidths[parseInt(tdIndex2)+2];
+            }else{
+              var colWidth = thWidths[parseInt(tdIndex2)];
+            }
+            if(tdIndex2==0){
+              colWidth = colWidth - 75; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+            }else{
+              colWidth = colWidth - 60; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+            }
+            $(this).width(colWidth);
+            $(this).addClass('tdindex-dbt-lv2-'+tdIndex2+'-'+colWidth);
           });
         });
       }, 10);
