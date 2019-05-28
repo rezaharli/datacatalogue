@@ -152,6 +152,9 @@ const mutations = {
     },
     getLeftTableRequest(state) {
         state.all.left.isLoading = true;
+        state.all.left.source = [];
+        state.all.left.display = [];
+        state.all.left.totalItems = 0;
     },
     getLeftTableSuccess(state, res) {
         state.all.left.source = res.Data.Flat;
