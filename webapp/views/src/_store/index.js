@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import { alert } from './alert.module';
 import { account } from './account.module';
 import { crypto } from './crypto.module';
+import { config } from './config.module';
 import { users } from './users.module';
 import { usersusage } from './usersusage.module';
 import { dsc } from './dsc.module';
@@ -40,6 +41,7 @@ export const store = new Vuex.Store({
         alert,
         account,
         crypto,
+        config,
         users, usersusage,
         dsc, dscmy, dscall, dsccde, dsccdp, dsccdpcde, dscinterfaces, dscinterfacescde, dscdd,
         dpo, dpomy, dpoall, dpodataelements, dpodatalineage,

@@ -32,6 +32,7 @@
                             <i class="fa fas" v-bind:class="{'fa-eye' : hidePassword, 'fa-eye-slash' : !hidePassword }" @click="hidePassword = !hidePassword"></i>
                             <b-form-input id="password"
                                 :type="passwordType"
+                                :disabled="isPasswordDisabled"
                                 v-model="password"
                                 placeholder="Enter password"></b-form-input>
                         </div>
@@ -61,10 +62,13 @@ export default {
         };
     },
     computed: {
-        ...mapState('account', ['status']),
-        ...mapState({
-            alert: state => state.alert
-        }),
+        status () { return this.$store.state.account.status },
+        alert () { return this.$store.state.alert },
+        configStore () { return this.$store.state.config.all },
+        isPasswordDisabled () {
+            var isLDAPEnabled = this.configStore.config.IsEnabled
+            return isLDAPEnabled == "true" || isLDAPEnabled == "false" ? false : true;
+        },
         passwordType() {
             return this.hidePassword ? 'password' : 'text'
         },
@@ -73,6 +77,8 @@ export default {
         },
     },
     created () {
+        this.getConfig("LDAP");
+
         jQuery('form').on('focus', 'input[type=number]', function () {
             jQuery(this).on('mousewheel.disableScroll', function (e) {
                 e.preventDefault()
@@ -89,7 +95,8 @@ export default {
         }
     },
     methods: {
-        ...mapActions('account', ['login']),
+        login (param) { this.$store.dispatch(`account/login`, param) },
+        getConfig (param) { this.$store.dispatch(`config/getConfig`, param) },
         doLogin() {
             this.submitted = true;
             const { username, password } = this;
