@@ -246,7 +246,13 @@ export default {
       tbodyTR.each(function () {
         $(this).children('td:not([colspan])').each(function (tdIndex2) {
           var colWidth = thWidths[parseInt(tdIndex2)+7];
-          // colWidth = colWidth - 80; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+          if(tdIndex2==0){
+            // colWidth = colWidth - 0; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+          }else if(tdIndex2==1){
+            colWidth = colWidth - 20; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+          }else{
+            colWidth = colWidth - 60; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+          }
           $(this).width(colWidth);
           $(this).addClass('tdindex-gs-'+tdIndex2+'-'+colWidth);
         });
@@ -278,16 +284,34 @@ export default {
         var tableLv2 = $('.golden-source-level-2');
         var tableLv2TRs = tableLv2.find('table.v-table > tbody > tr');
         tableLv2TRs.each(function () {
-          $(this).children('td').each(function (tdIndex2) {
+          $(this).children('td:not([colspan])').each(function (tdIndex2) {
             var colWidth = thWidths[parseInt(tdIndex2)+7];
-            // if(tdIndex2==0){
-            //   colWidth = colWidth - 75; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
-            // }else{
+           if(tdIndex2==0){
+              // colWidth = colWidth + 25; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+            }else if(tdIndex2==1){
+              colWidth = colWidth - 20; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+            }else{
               colWidth = colWidth - 60; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
-            // }
-            // $(this).attr('width', '');
+            }
             $(this).width(colWidth);
-            $(this).addClass('tdindex-egs-'+tdIndex2+'-'+colWidth);
+            $(this).addClass('tdindex-egs-2-'+tdIndex2+'-'+colWidth);
+          });
+        });
+
+        var tableLv3 = $('.golden-source-level-3');
+        var tableLv3TRs = tableLv3.find('table.v-table > tbody > tr');
+        tableLv3TRs.each(function () {
+          $(this).children('td:not([colspan])').each(function (tdIndex2) {
+            var colWidth = thWidths[parseInt(tdIndex2)+7];
+           if(tdIndex2==0){
+              // colWidth = colWidth + 25; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+            }else if(tdIndex2==1){
+              colWidth = colWidth - 20; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+            }else{
+              colWidth = colWidth - 60; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+            }
+            $(this).width(colWidth);
+            $(this).addClass('tdindex-egs-3-'+tdIndex2+'-'+colWidth);
           });
         });
       }, 10);
