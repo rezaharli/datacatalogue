@@ -1,10 +1,15 @@
 package controllers
 
 import (
+	"strings"
+	"time"
+
 	"github.com/eaciit/toolkit"
+	"github.com/novalagung/gubrak"
 
 	"git.eaciitapp.com/sebar/knot"
 
+	"eaciit/datacatalogue/webapp/helpers"
 	h "eaciit/datacatalogue/webapp/helpers"
 	s "eaciit/datacatalogue/webapp/services"
 )
@@ -237,6 +242,7 @@ func (c *DDO) GetRightTable(k *knot.WebContext) {
 }
 
 func (c *DDO) GetDetails(k *knot.WebContext) {
+	processTime := time.Now()
 	res := toolkit.NewResult()
 
 	payload := toolkit.M{}
@@ -246,129 +252,98 @@ func (c *DDO) GetDetails(k *knot.WebContext) {
 		return
 	}
 
-	detail, ddSource, err := c.Base.GetDetails(payload, s.NewDDOService().GetDetails, s.NewDDOService().GetddSource)
+	selectedDetail, ddVal, mappedddSource, err := c.getDetails(payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
 	data := toolkit.M{}
-	data.Set("Detail", detail)
-	data.Set("DDSource", ddSource)
+	data.Set("SelectedDetail", selectedDetail)
+	data.Set("DDSource", mappedddSource)
+	data.Set("DDVal", ddVal)
 
 	h.WriteResultOK(k, res, data)
+	toolkit.Println("processTime:", time.Since(processTime).Seconds(), "\n------------------------------------------------------------------------------------")
 }
 
-func (c *DDO) GetDetailsBusinessMetadataFromDomain(k *knot.WebContext) {
-	res := toolkit.NewResult()
+func (c *DDO) getDetails(payload toolkit.M) (interface{}, interface{}, interface{}, error) {
+	doInterrupt := func(v string, conds, expectedreses []string) string {
+		if v == conds[1] {
+			return expectedreses[1]
+		} else if v == conds[0] {
+			return expectedreses[0]
+		}
 
-	payload := toolkit.M{}
-	err := k.GetPayload(&payload)
-	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
+		return v
 	}
 
-	data, _, err := s.NewDDOService().GetDetailsBusinessMetadataFromDomain(payload)
+	mappedDetails, mappedddSource, err := c.GetDetailAndDropdown(payload, s.NewDDOService().GetDetails, s.NewDDOService().GetddSource)
 	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
+		return nil, nil, nil, err
 	}
 
-	h.WriteResultOK(k, res, data)
-}
+	ddVal := toolkit.M{}
+	selectedDetail := toolkit.M{}
+	detailSources := mappedDetails.([]toolkit.M)
+	if len(detailSources) > 0 {
+		detailSource := detailSources[0]
+		detailValues := detailSource.Get("Values").([]toolkit.M)
 
-func (c *DDO) GetddSourceBusinessMetadataFromDomain(k *knot.WebContext) {
-	res := toolkit.NewResult()
+		for _, key := range helpers.ObjectKeys(detailValues[0]) {
+			mappedValues, err := gubrak.Map(detailValues, func(v toolkit.M, i int) string {
+				stringVal := toolkit.ToString(v[key])
+				trimmedStringVal := strings.TrimSpace(stringVal)
 
-	payload := toolkit.M{}
-	err := k.GetPayload(&payload)
-	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
+				if trimmedStringVal == "" {
+					stringVal = "NA"
+				} else {
+					switch key {
+					case "MANDATORY":
+						stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"No", "Yes"})
+						break
+					case "CDE":
+						stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"No", "Yes"})
+						break
+					case "GOLDEN_SOURCE":
+						stringVal = doInterrupt(stringVal, []string{"NO", "YES"}, []string{"No", "Yes"})
+						break
+					}
+				}
+
+				return stringVal
+			})
+			if err != nil {
+				return nil, nil, nil, err
+			}
+
+			uniqueValues, err := gubrak.Uniq(mappedValues)
+			if err != nil {
+				return nil, nil, nil, err
+			}
+
+			switch key {
+			case "SYSTEM_NAME":
+				ddVal.Set("ddSystemNameSelected", uniqueValues.([]string)[0])
+				break
+			case "TABLE_NAME":
+				ddVal.Set("ddTableNameSelected", uniqueValues.([]string)[0])
+				break
+			case "ALIAS_NAME":
+				ddVal.Set("ddBusinessAliasNameSelected", uniqueValues.([]string)[0])
+				break
+			}
+
+			joinedValues := ""
+			if key == "DATASET_CUSTODIAN" || key == "BANK_ID" {
+				joinedValues = strings.Join(uniqueValues.([]string), "; ")
+			} else {
+				joinedValues = strings.Join(uniqueValues.([]string), ", ")
+			}
+
+			selectedDetail.Set(key, joinedValues)
+		}
 	}
 
-	data, _, err := s.NewDDOService().GetddSourceBusinessMetadataFromDomain(payload)
-	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
-	}
-
-	h.WriteResultOK(k, res, data)
-}
-
-func (c *DDO) GetDetailsDownstreamUsageOfBusinessTerm(k *knot.WebContext) {
-	res := toolkit.NewResult()
-
-	payload := toolkit.M{}
-	err := k.GetPayload(&payload)
-	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
-	}
-
-	data, _, err := s.NewDDOService().GetDetailsDownstreamUsageOfBusinessTerm(payload)
-	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
-	}
-
-	h.WriteResultOK(k, res, data)
-}
-
-func (c *DDO) GetddSourceDownstreamUsageOfBusinessTerm(k *knot.WebContext) {
-	res := toolkit.NewResult()
-
-	payload := toolkit.M{}
-	err := k.GetPayload(&payload)
-	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
-	}
-
-	data, _, err := s.NewDDOService().GetddSourceDownstreamUsageOfBusinessTerm(payload)
-	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
-	}
-
-	h.WriteResultOK(k, res, data)
-}
-
-func (c *DDO) GetDetailsBTResiding(k *knot.WebContext) {
-	res := toolkit.NewResult()
-
-	payload := toolkit.M{}
-	err := k.GetPayload(&payload)
-	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
-	}
-
-	data, _, err := s.NewDDOService().GetDetailsBTResiding(payload)
-	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
-	}
-
-	h.WriteResultOK(k, res, data)
-}
-
-func (c *DDO) GetddSourceBTResiding(k *knot.WebContext) {
-	res := toolkit.NewResult()
-
-	payload := toolkit.M{}
-	err := k.GetPayload(&payload)
-	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
-	}
-
-	data, _, err := s.NewDDOService().GetddSourceBTResiding(payload)
-	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
-	}
-
-	h.WriteResultOK(k, res, data)
+	return selectedDetail, ddVal, mappedddSource, err
 }
