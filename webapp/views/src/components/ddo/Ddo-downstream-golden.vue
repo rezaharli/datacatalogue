@@ -240,7 +240,6 @@ export default {
       THs.each(function (thIndex) {
         thWidths[thIndex] = $(this).outerWidth();
       });
-      console.log(thWidths);
       
 
       tbodyTR.each(function () {
