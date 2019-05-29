@@ -124,6 +124,11 @@ func BuildQueryFromFile(filePath, queryName string, Colnames []string, args ...i
 		return "", err
 	}
 
+	for key, arg := range args {
+		replacedArg := strings.ReplaceAll(toolkit.ToString(arg), "'", "''")
+		args[key] = replacedArg
+	}
+
 	replaced := strings.ReplaceAll(raw, "%", "%%")
 	replaced = strings.ReplaceAll(replaced, "?", "%s")
 
