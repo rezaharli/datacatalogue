@@ -1,4 +1,10 @@
 <style>
+#table-access-usage table.v-table thead tr th:first-of-type,
+#table-access-usage table.v-table tbody tr td:first-of-type{padding-left: 20px !important;}
+#table-access-usage table.v-table thead tr th:last-of-type,
+#table-access-usage table.v-table tbody tr td:last-of-type{padding-right: 20px;}
+#table-access-usage table.v-table thead tr th,
+#table-access-usage table.v-table tbody tr td {padding-left: 10px; padding-right: 10px; }
 #table-access-usage table.v-table tr th:nth-of-type(1){width: 10% !important;}
 #table-access-usage table.v-table tr th:nth-of-type(2){width: 12% !important;}
 #table-access-usage table.v-table tr th:nth-of-type(3){width: 12% !important;}
@@ -77,27 +83,27 @@
                         </template>
 
                         <template slot="items" slot-scope="props">
-                            <tr>
+                            <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
                                 <td v-bind:style="{ width: store.left.colWidth['USERNAME'] + 'px' }" class="text-capitalize text-title">
-                                    {{ props.item.USERNAME }}</td>
+                                  <tablecell :fulltext="props.item.USERNAME" showOn="hover"></tablecell></td>
 
                                 <td v-bind:style="{ width: store.left.colWidth['FULLNAME'] + 'px' }" class="text-capitalize text-title">
-                                    {{ props.item.FULLNAME }}</td>
+                                  <tablecell :fulltext="props.item.FULLNAME" showOn="hover"></tablecell></td>
 
                                 <td v-bind:style="{ width: store.left.colWidth['ROLE'] + 'px' }" class="text-capitalize text-title">
-                                    {{ props.item.ROLE }}</td>
+                                  <tablecell :fulltext="props.item.ROLE" showOn="hover"></tablecell></td>
 
                                 <td v-bind:style="{ width: store.left.colWidth['MODULE'] + 'px' }" class="text-capitalize text-title">
-                                    {{ props.item.MODULE }}</td>
+                                  <tablecell :fulltext="props.item.MODULE" showOn="hover"></tablecell></td>
 
                                 <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }" class="text-capitalize text-title">
-                                    {{ props.item.DESCRIPTION }}</td>
+                                  <tablecell :fulltext="props.item.DESCRIPTION" showOn="hover"></tablecell></td>
 
                                 <td v-bind:style="{ width: store.left.colWidth['TIME'] + 'px' }" class="text-capitalize text-title">
-                                    {{ props.item.TIME }}</td>
+                                  <tablecell :fulltext="props.item.TIME" showOn="hover"></tablecell></td>
 
                                 <td v-bind:style="{ width: store.left.colWidth['RESOURCEURL'] + 'px' }" class="text-capitalize text-title">
-                                    {{ props.item.RESOURCEURL }}</td>
+                                  <tablecell :fulltext="props.item.RESOURCEURL" showOn="hover"></tablecell></td>
                             </tr>
                         </template>
                     </v-data-table>    
@@ -204,17 +210,17 @@ export default {
       );
     },
     setTableColumnsWidth(elem){
-        var tableElem = elem.find('.v-table__overflow > table.v-table');
-        var THs = tableElem.find('thead tr th');
-        var tbodyTR = tableElem.find('tbody tr');
-        THs.each(function (thIndex) {
-            var thWidth = $(this).width();
-            tbodyTR.each(function (tdIndex) {
-            var TDs = $(this).find('td:not([colspan])');
-            TDs.eq(thIndex).width(thWidth);
-            });
+      var tableElem = elem.find('.v-table__overflow > table.v-table');
+      var THs = tableElem.find('thead tr th');
+      var tbodyTR = tableElem.find('tbody tr');
+      THs.each(function (thIndex) {
+        var thWidth = $(this).width();
+        tbodyTR.each(function (tdIndex) {
+          var TDs = $(this).find('td:not([colspan])');
+          TDs.eq(thIndex).width(thWidth);
         });
-    }
+      });
+    },
   }
 };
 </script>
