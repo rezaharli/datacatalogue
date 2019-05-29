@@ -382,21 +382,33 @@ func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 		payload.GetString("BusinessAliasName"),
 	)
 
+	checkNotEmpty := func(s []string) bool {
+		for _, v := range s {
+			if v != "" {
+				return true
+			}
+		}
+		return false
+	}
+
 	///////// FILTER
 	q = `SELECT rownum, a.* FROM (
 		` + q + `
-	) a 
-	WHERE ( ID IS NOT NULL `
-	if otherArgs[0] != "" {
-		q += `AND SYSTEM_NAME = '` + otherArgs[0] + `' `
+	) a `
+
+	if checkNotEmpty(otherArgs) == true {
+		q += `WHERE ( ID IS NOT NULL `
+		if otherArgs[0] != "" {
+			q += `AND SYSTEM_NAME = '` + otherArgs[0] + `' `
+		}
+		if otherArgs[1] != "" {
+			q += `AND TABLE_NAME = '` + otherArgs[1] + `' `
+		}
+		if otherArgs[2] != "" {
+			q += `AND ALIAS_NAME = '` + otherArgs[2] + `' `
+		}
+		q += `) `
 	}
-	if otherArgs[1] != "" {
-		q += `AND TABLE_NAME = '` + otherArgs[1] + `' `
-	}
-	if otherArgs[2] != "" {
-		q += `AND ALIAS_NAME = '` + otherArgs[2] + `' `
-	}
-	q += `) `
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
