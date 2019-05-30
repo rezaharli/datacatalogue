@@ -426,9 +426,7 @@ func (s *DPOService) GetDetailsImmediatePrecedingSystem(payload toolkit.M) (inte
 		if otherArgs[4] != "" {
 			q += `AND DATA_ELEMENT = '` + otherArgs[4] + `' `
 		}
-		q += `)) AND rownum = 1 `
-	} else {
-		q += `WHERE rownum = 1 `
+		q += `)) `
 	}
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
@@ -547,9 +545,7 @@ func (s *DPOService) GetDetailsUltimateSourceSystem(payload toolkit.M) (interfac
 		if otherArgs[4] != "" {
 			q += `AND DATA_ELEMENT = '` + otherArgs[4] + `' `
 		}
-		q += `)) AND rownum = 1 `
-	} else {
-		q += `WHERE rownum = 1 `
+		q += `)) `
 	}
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
@@ -642,73 +638,7 @@ func (s *DPOService) GetDetailsDomainView(payload toolkit.M) (interface{}, int, 
 	return resultRows, resultTotal, nil
 }
 
-func (s *DPOService) GetddSourceDomainView(payload toolkit.M) (interface{}, int, error) {
-	fileName := "dpo.sql"
-	queryName := "details-domain-view"
-
-	resultRows := make([]toolkit.M, 0)
-	resultTotal := 0
-
-	q := ""
-	args := make([]interface{}, 0)
-
-	args = append(args, payload.GetString("Right"))
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
-	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	funcLog(funcName(), fileName, queryName)
-
-	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName: m.NewCategoryModel().TableName(),
-		SqlQuery:  q,
-		Results:   &resultRows,
-	})
-
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return resultRows, resultTotal, nil
-}
-
 func (s *DPOService) GetDetailsDataStandards(payload toolkit.M) (interface{}, int, error) {
-	fileName := "dpo.sql"
-	queryName := "details-data-standards"
-
-	resultRows := make([]toolkit.M, 0)
-	resultTotal := 0
-
-	q := ""
-	args := make([]interface{}, 0)
-
-	args = append(args, payload.GetString("Left"), payload.GetString("Right"))
-
-	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
-	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	funcLog(funcName(), fileName, queryName)
-
-	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName: m.NewCategoryModel().TableName(),
-		SqlQuery:  q,
-		Results:   &resultRows,
-	})
-
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return resultRows, resultTotal, nil
-}
-
-func (s *DPOService) GetddSourceDataStandards(payload toolkit.M) (interface{}, int, error) {
 	fileName := "dpo.sql"
 	queryName := "details-data-standards"
 

@@ -11,14 +11,26 @@ const state = {
             itamID: "",
             owners: []
         },
-        DetailsImmediatePrecedingSystem: [],
+        firstload: true,
+        detailsLoading: true,
+
         DDSourceImmediatePrecedingSystem: [],
-        DetailsUltimateSourceSystem: [],
+        selectedDetailsImmediatePrecedingSystem: null,
+        ddValImmediatePrecedingSystem: {},
+
         DDSourceUltimateSourceSystem: [],
-        DetailsDomainView: [],
+        selectedDetailsUltimateSourceSystem: null,
+        ddValUltimateSourceSystem: {},
+
         DDSourceDomainView: [],
-        DetailsDataStandards: [],
+        selectedDetailsDomainView: null,
+        ddValDomainView: {},
+
         DDSourceDataStandards: [],
+        selectedDetailsDataStandards: null,
+        ddValDataStandards: {},
+
+        error: null
     }
 };
 
@@ -68,16 +80,29 @@ const mutations = {
         state.all.detailsLoading = true;
     },
     getDetailsSuccess(state, data) {
-        state.all.DetailsImmediatePrecedingSystem = data.DetailsImmediatePrecedingSystem;
+        state.all.selectedDetailsImmediatePrecedingSystem = data.SelectedDetailImmediatePrecedingSystem;
         state.all.DDSourceImmediatePrecedingSystem = data.DDSourceImmediatePrecedingSystem;
-        state.all.DetailsUltimateSourceSystem = data.DetailsUltimateSourceSystem;
+
+        state.all.selectedDetailsUltimateSourceSystem = data.SelectedDetailUltimateSourceSystem;
         state.all.DDSourceUltimateSourceSystem = data.DDSourceUltimateSourceSystem;
-        state.all.DetailsDomainView = data.DetailsDomainView;
+
+        state.all.selectedDetailsDomainView = data.SelectedDetailDomainView;
         state.all.DDSourceDomainView = data.DDSourceDomainView;
-        state.all.DetailsDataStandards = data.DetailsDataStandards;
+
+        state.all.selectedDetailsDataStandards = data.SelectedDetailDataStandards;
         state.all.DDSourceDataStandards = data.DDSourceDataStandards;
         
-        state.all.detailsLoading = false;
+        setTimeout(() => {
+            state.all.ddValImmediatePrecedingSystem = data.DDValImmediatePrecedingSystem;
+            state.all.ddValUltimateSourceSystem = data.DDValUltimateSourceSystem;
+            state.all.ddValDomainView = data.DDValDomainView;
+            state.all.ddValDataStandards = data.DDValDataStandards;
+
+            setTimeout(() => {
+                state.all.firstload = false;
+                state.all.detailsLoading = false;
+            }, 100);
+        }, 100);
     },
     getDetailsFailure(state, error) {
         state.all.detailsLoading = false;

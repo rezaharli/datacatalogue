@@ -51,7 +51,7 @@ legend.col-form-label, label.col-form-label {
           <b-card tag="article" class="mb-2">
             <b-media class="left-card-media" >
               <h6 class="left-card-title">Downstream Process Name</h6>
-              <text-wrap-dialog :fulltext="selectedDetailsImmediatePrecedingSystem ? selectedDetailsImmediatePrecedingSystem.PROCESS_NAME: ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetailsImmediatePrecedingSystem ? store.selectedDetailsImmediatePrecedingSystem.PROCESS_NAME: ''"></text-wrap-dialog>
             </b-media>
             
             <!-- <b-media class="left-card-media">
@@ -66,7 +66,7 @@ legend.col-form-label, label.col-form-label {
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Data Element</h6>
-              <text-wrap-dialog :fulltext="selectedDetailsImmediatePrecedingSystem ? selectedDetailsImmediatePrecedingSystem.DATA_ELEMENT: ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetailsImmediatePrecedingSystem ? store.selectedDetailsImmediatePrecedingSystem.DATA_ELEMENT: ''"></text-wrap-dialog>
             </b-media>
             
             <!-- <b-media class="left-card-media">
@@ -93,47 +93,47 @@ legend.col-form-label, label.col-form-label {
                   <p class="card-text">
                     <b-form>
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Name" label-for="systemName">
-                        <b-form-select id="systemName" class="col-8" v-model="ddImmSystemNameSelected" :options="ddImmSystemNameOptions"></b-form-select>
+                        <b-form-select id="systemName" class="col-8" v-model="store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected" :options="ddImmSystemNameOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="ITAM ID" label-for="itamid">
-                        <b-form-select id="itamid" class="col-8" v-model="ddImmItamIDSelected" :options="ddImmItamIDOptions"></b-form-select>
+                        <b-form-select id="itamid" class="col-8" v-model="store.ddValImmediatePrecedingSystem.ddImmItamIDSelected" :options="ddImmItamIDOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="TableName" label-for="tablename">
-                        <b-form-select id="tablename" class="col-8" v-model="ddImmTableNameSelected" :options="ddImmTableNameOptions"></b-form-select>
+                        <b-form-select id="tablename" class="col-8" v-model="store.ddValImmediatePrecedingSystem.ddImmTableNameSelected" :options="ddImmTableNameOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnname">
-                        <b-form-select id="columnname" class="col-8" v-model="ddImmColumnNameSelected" :options="ddImmColumnNameOptions"></b-form-select>
+                        <b-form-select id="columnname" class="col-8" v-model="store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected" :options="ddImmColumnNameOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Name" label-for="screenlabelname">
-                        <b-form-select id="screenlabelname" class="col-8" v-model="ddImmScreenLabelSelected" :options="ddImmScreenLabelOptions"></b-form-select>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected" :options="ddImmScreenLabelOptions"></b-form-select>
                       </b-form-group>
                       
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Description">
-                        <text-wrap-dialog :fulltext="selectedDetailsImmediatePrecedingSystem ? selectedDetailsImmediatePrecedingSystem.DESCRIPTION : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsImmediatePrecedingSystem ? store.selectedDetailsImmediatePrecedingSystem.DESCRIPTION : ''"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived (Yes/No)">
-                        <text-wrap-dialog :fulltext="selectedDetailsImmediatePrecedingSystem ? selectedDetailsImmediatePrecedingSystem.DERIVED : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsImmediatePrecedingSystem ? store.selectedDetailsImmediatePrecedingSystem.DERIVED : ''"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation Logic">
-                        <text-wrap-dialog :fulltext="selectedDetailsImmediatePrecedingSystem ? selectedDetailsImmediatePrecedingSystem.DERIVATION_LOGIC : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsImmediatePrecedingSystem ? store.selectedDetailsImmediatePrecedingSystem.DERIVATION_LOGIC : ''"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Quality Requirements">
-                        <text-wrap-dialog :fulltext="selectedDetailsImmediatePrecedingSystem ? selectedDetailsImmediatePrecedingSystem.DQ_STANDARDS : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsImmediatePrecedingSystem ? store.selectedDetailsImmediatePrecedingSystem.DQ_STANDARDS : ''"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds">
-                        <text-wrap-dialog :fulltext="selectedDetailsImmediatePrecedingSystem ? selectedDetailsImmediatePrecedingSystem.THRESHOLD : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsImmediatePrecedingSystem ? store.selectedDetailsImmediatePrecedingSystem.THRESHOLD : ''"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data SLA signed?">
-                        <text-wrap-dialog :fulltext="selectedDetailsImmediatePrecedingSystem ? selectedDetailsImmediatePrecedingSystem.DATA_SLA : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsImmediatePrecedingSystem ? store.selectedDetailsImmediatePrecedingSystem.DATA_SLA : ''"></text-wrap-dialog>
                       </b-form-group>
                     </b-form>
                   </p>
@@ -154,80 +154,80 @@ legend.col-form-label, label.col-form-label {
                   <p class="card-text">
                     <b-form>
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Name" label-for="systemName">
-                        <b-form-select id="systemName" class="col-8" v-model="ddUltSystemNameSelected" :options="ddUltSystemNameOptions">
+                        <b-form-select id="systemName" class="col-8" v-model="store.ddValUltimateSourceSystem.ddUltSystemNameSelected" :options="ddUltSystemNameOptions">
                         </b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="ITAM ID" label-for="itamid">
-                        <b-form-select id="itamid" class="col-8" v-model="ddUltItamIDSelected" :options="ddUltItamIDOptions"></b-form-select>
+                        <b-form-select id="itamid" class="col-8" v-model="store.ddValUltimateSourceSystem.ddUltItamIDSelected" :options="ddUltItamIDOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="TableName" label-for="tablename">
-                        <b-form-select id="tablename" class="col-8" v-model="ddUltTableNameSelected" :options="ddUltTableNameOptions"></b-form-select>
+                        <b-form-select id="tablename" class="col-8" v-model="store.ddValUltimateSourceSystem.ddUltTableNameSelected" :options="ddUltTableNameOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name" label-for="columnname">
-                        <b-form-select id="columnname" class="col-8" v-model="ddUltColumnNameSelected" :options="ddUltColumnNameOptions"></b-form-select>
+                        <b-form-select id="columnname" class="col-8" v-model="store.ddValUltimateSourceSystem.ddUltColumnNameSelected" :options="ddUltColumnNameOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Name" label-for="screenlabelname">
-                        <b-form-select id="screenlabelname" class="col-8" v-model="ddUltScreenLabelSelected" :options="ddUltScreenLabelOptions"></b-form-select>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValUltimateSourceSystem.ddUltScreenLabelSelected" :options="ddUltScreenLabelOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Description">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.DESCRIPTION : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.DESCRIPTION : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derived?">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.DERIVED : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.DERIVED : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Derivation Logic">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.DERIVATION_LOGIC : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.DERIVATION_LOGIC : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Data Quality requirements">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.DQ_STANDARDS : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.DQ_STANDARDS : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.THRESHOLD : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.THRESHOLD : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source (Yes/No)">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GOLDEN_SOURCE : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.GOLDEN_SOURCE : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source System Name">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_SYSTEM_NAME : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.GS_SYSTEM_NAME : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source ITAM ID">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GF_ITAM_ID : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.GF_ITAM_ID : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Table Name">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_TABLE_NAME : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.GS_TABLE_NAME : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Column Name">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_COLUMN_NAME : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.GS_COLUMN_NAME : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Screen Name">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_DATA_ELEMENT : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.GS_DATA_ELEMENT : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Business Description">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_DESCRIPTION : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.GS_DESCRIPTION : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Derived (Yes/No)">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_DERIVED : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.GS_DERIVED : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Derivation Logic">
-                        <text-wrap-dialog :fulltext="selectedDetailsUltimateSourceSystem ? selectedDetailsUltimateSourceSystem.GS_DERIVATION_LOGIC : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.GS_DERIVATION_LOGIC : 'NA'"></text-wrap-dialog>
                       </b-form-group>
                     </b-form>
                   </p>
@@ -248,23 +248,23 @@ legend.col-form-label, label.col-form-label {
                   <p class="card-text">
                     <b-form>
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain">
-                        <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.DOMAIN_NAME : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsDomainView ? store.selectedDetailsDomainView.DOMAIN_NAME : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Domain">
-                        <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.SUBDOMAIN_NAME : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsDomainView ? store.selectedDetailsDomainView.SUBDOMAIN_NAME : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain Owner">
-                        <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.SUBDOMAIN_OWNER : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsDomainView ? store.selectedDetailsDomainView.SUBDOMAIN_OWNER : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term">
-                        <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.BUSINESS_TERM : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsDomainView ? store.selectedDetailsDomainView.BUSINESS_TERM : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
-                        <text-wrap-dialog :fulltext="selectedDetailsDomainView ? selectedDetailsDomainView.BUSINESS_TERM_DESCRIPTION : 'NA'"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsDomainView ? store.selectedDetailsDomainView.BUSINESS_TERM_DESCRIPTION : 'NA'"></text-wrap-dialog>
                       </b-form-group>
                     </b-form>
                   </p>
@@ -285,19 +285,19 @@ legend.col-form-label, label.col-form-label {
                   <p class="card-text">
                     <b-form>
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards set by DPO">
-                        <text-wrap-dialog :fulltext="selectedDetailsDataStandards ? selectedDetailsDataStandards.DPO_DQ_STANDARDS : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsDataStandards ? store.selectedDetailsDataStandards.DPO_DQ_STANDARDS : ''"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards set at Business Term Level">
-                        <text-wrap-dialog :fulltext="selectedDetailsDataStandards ? selectedDetailsDataStandards.DQ_STANDARDS_BT_LEVEL : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsDataStandards ? store.selectedDetailsDataStandards.DQ_STANDARDS_BT_LEVEL : ''"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds defined by DPO">
-                        <text-wrap-dialog :fulltext="selectedDetailsDataStandards ? selectedDetailsDataStandards.DPO_THRESHOLD : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsDataStandards ? store.selectedDetailsDataStandards.DPO_THRESHOLD : ''"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds set at Business term level">
-                        <text-wrap-dialog :fulltext="selectedDetailsDataStandards ? selectedDetailsDataStandards.THRESHOLD_BT_LEVEL : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsDataStandards ? store.selectedDetailsDataStandards.THRESHOLD_BT_LEVEL : ''"></text-wrap-dialog>
                       </b-form-group>
                     </b-form>
                   </p>
@@ -325,23 +325,7 @@ export default {
   },
   data () {
     return {
-      firstload: true,
       showModal: this.$route.meta.showModal,
-      selectedDetails: null,
-      selectedDetailsImmediatePrecedingSystem: null,
-      selectedDetailsUltimateSourceSystem: null,
-      selectedDetailsDomainView: null,
-      selectedDetailsDataStandards: null,
-      ddImmSystemNameSelected: null,
-      ddImmItamIDSelected: null,
-      ddImmTableNameSelected: null,
-      ddImmColumnNameSelected: null,
-      ddImmScreenLabelSelected: null,
-      ddUltSystemNameSelected: null,
-      ddUltItamIDSelected: null,
-      ddUltTableNameSelected: null,
-      ddUltColumnNameSelected: null,
-      ddUltScreenLabelSelected: null,
       excelFields: {
         'Downstream Process Name': "selectedDetails.DOWNSTREAM_PROCESS",
         'Process Owner': "selectedDetails.PROCESS_OWNER",
@@ -398,7 +382,7 @@ export default {
     ddImmItamIDOptions () {
       var self = this;
       var filtered = _.filter(self.store.DDSourceImmediatePrecedingSystem, (v) => {
-        return v.SYSTEM_NAME == self.ddImmSystemNameSelected;
+        return v.SYSTEM_NAME == self.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected;
       });
 
       return _.uniq(_.map(filtered, (v) => v.ITAM_ID.toString().trim())).filter(Boolean);
@@ -406,8 +390,8 @@ export default {
     ddImmTableNameOptions () {
       var self = this;
       var filtered = _.filter(self.store.DDSourceImmediatePrecedingSystem, (v) => {
-        return v.SYSTEM_NAME == self.ddImmSystemNameSelected 
-          && v.ITAM_ID == self.ddImmItamIDSelected
+        return v.SYSTEM_NAME == self.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected 
+          && v.ITAM_ID == self.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected
       });
       
       return _.uniq(_.map(filtered, (v) => v.TABLE_NAME.toString().trim())).filter(Boolean);
@@ -415,9 +399,9 @@ export default {
     ddImmColumnNameOptions () {
       var self = this;
       var filtered = _.filter(self.store.DDSourceImmediatePrecedingSystem, (v) => {
-        return v.SYSTEM_NAME == self.ddImmSystemNameSelected 
-          && v.ITAM_ID == self.ddImmItamIDSelected
-          && v.TABLE_NAME == self.ddImmTableNameSelected
+        return v.SYSTEM_NAME == self.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected 
+          && v.ITAM_ID == self.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected
+          && v.TABLE_NAME == self.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected
       });
       
       return _.uniq(_.map(filtered, (v) => v.COLUMN_NAME.toString().trim())).filter(Boolean);
@@ -425,10 +409,10 @@ export default {
     ddImmScreenLabelOptions () {
       var self = this;
       var filtered = _.filter(self.store.DDSourceImmediatePrecedingSystem, (v) => {
-        return v.SYSTEM_NAME == self.ddImmSystemNameSelected 
-          && v.ITAM_ID == self.ddImmItamIDSelected
-          && v.TABLE_NAME == self.ddImmTableNameSelected
-          && v.COLUMN_NAME == self.ddImmColumnNameSelected
+        return v.SYSTEM_NAME == self.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected 
+          && v.ITAM_ID == self.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected
+          && v.TABLE_NAME == self.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected
+          && v.COLUMN_NAME == self.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected
       });
       
       return _.uniq(_.map(filtered, (v) => v.DATA_ELEMENT.toString().trim())).filter(Boolean);
@@ -440,7 +424,7 @@ export default {
     ddUltItamIDOptions () {
       var self = this;
       var filtered = _.filter(self.store.DDSourceUltimateSourceSystem, (v) => {
-        return v.SYSTEM_NAME == self.ddUltSystemNameSelected;
+        return v.SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltSystemNameSelected;
       });
 
       var ret = _.uniq(_.map(filtered, (v) => v.ITAM_ID.toString().trim())).filter(Boolean);
@@ -449,8 +433,8 @@ export default {
     ddUltTableNameOptions () {
       var self = this;
       var filtered = _.filter(self.store.DDSourceUltimateSourceSystem, (v) => {
-        return v.SYSTEM_NAME == self.ddUltSystemNameSelected 
-          && v.ITAM_ID == self.ddUltItamIDSelected
+        return v.SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltSystemNameSelected 
+          && v.ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltItamIDSelected
       });
       
       var ret = _.uniq(_.map(filtered, (v) => v.TABLE_NAME.toString().trim())).filter(Boolean);
@@ -459,9 +443,9 @@ export default {
     ddUltColumnNameOptions () {
       var self = this;
       var filtered = _.filter(self.store.DDSourceUltimateSourceSystem, (v) => {
-        return v.SYSTEM_NAME == self.ddUltSystemNameSelected 
-          && v.ITAM_ID == self.ddUltItamIDSelected
-          && v.TABLE_NAME == self.ddUltTableNameSelected
+        return v.SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltSystemNameSelected 
+          && v.ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltItamIDSelected
+          && v.TABLE_NAME == self.store.ddValUltimateSourceSystem.ddUltTableNameSelected
       });
       
       var ret = _.uniq(_.map(filtered, (v) => v.COLUMN_NAME.toString().trim())).filter(Boolean);
@@ -470,10 +454,10 @@ export default {
     ddUltScreenLabelOptions () {
       var self = this;
       var filtered = _.filter(self.store.DDSourceUltimateSourceSystem, (v) => {
-        return v.SYSTEM_NAME == self.ddUltSystemNameSelected 
-          && v.ITAM_ID == self.ddUltItamIDSelected
-          && v.TABLE_NAME == self.ddUltTableNameSelected
-          && v.COLUMN_NAME == self.ddUltColumnNameSelected
+        return v.SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltSystemNameSelected 
+          && v.ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltItamIDSelected
+          && v.TABLE_NAME == self.store.ddValUltimateSourceSystem.ddUltTableNameSelected
+          && v.COLUMN_NAME == self.store.ddValUltimateSourceSystem.ddUltColumnNameSelected
       });
       
       var ret = _.uniq(_.map(filtered, (v) => v.DATA_ELEMENT.toString().trim())).filter(Boolean);
@@ -493,266 +477,266 @@ export default {
     '$route.meta' ({showModal}) {
       this.showModal = showModal;
     },
-    ddImmSystemNameSelected () {
+    'store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected' () {
       if(this.firstload) return;
 
       if (!this.firstload) {
         var param = {};
 
-        if (this.ddImmSystemNameSelected && this.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.ddImmSystemNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
+          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
         }
 
         this.runGetDetails(param);
       }
     },
-    ddImmItamIDSelected () {
+    'store.ddValImmediatePrecedingSystem.ddImmItamIDSelected' () {
       if(this.firstload) return;
       
       if (!this.firstload) {
         var param = {};
 
-        if (this.ddImmSystemNameSelected && this.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.ddImmSystemNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
+          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
         }
-        if (this.ddImmItamIDSelected && this.ddImmItamIDSelected != "NA") {
-          param.ImmItamID = this.ddImmItamIDSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected && this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected != "NA") {
+          param.ImmItamID = this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected.toString();
         }
 
         this.runGetDetails(param);
       }
     },
-    ddImmTableNameSelected () {
+    'store.ddValImmediatePrecedingSystem.ddImmTableNameSelected' () {
       if(this.firstload) return;
       
       if (!this.firstload) {
         var param = {};
 
-        if (this.ddImmSystemNameSelected && this.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.ddImmSystemNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
+          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
         }
-        if (this.ddImmItamIDSelected && this.ddImmItamIDSelected != "NA") {
-          param.ImmItamID = this.ddImmItamIDSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected && this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected != "NA") {
+          param.ImmItamID = this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected.toString();
         }
-        if (this.ddImmTableNameSelected && this.ddImmTableNameSelected != "NA") {
-          param.ImmTableName = this.ddImmTableNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected != "NA") {
+          param.ImmTableName = this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected.toString();
         }
 
         this.runGetDetails(param);
       }
     },
-    ddImmColumnNameSelected () {
+    'store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected' () {
       if(this.firstload) return;
       
       if (!this.firstload) {
         var param = {};
 
-        if (this.ddImmSystemNameSelected && this.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.ddImmSystemNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
+          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
         }
-        if (this.ddImmItamIDSelected && this.ddImmItamIDSelected != "NA") {
-          param.ImmItamID = this.ddImmItamIDSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected && this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected != "NA") {
+          param.ImmItamID = this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected.toString();
         }
-        if (this.ddImmTableNameSelected && this.ddImmTableNameSelected != "NA") {
-          param.ImmTableName = this.ddImmTableNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected != "NA") {
+          param.ImmTableName = this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected.toString();
         }
-        if (this.ddImmColumnNameSelected && this.ddImmColumnNameSelected != "NA") {
-          param.ImmColumnName = this.ddImmColumnNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected != "NA") {
+          param.ImmColumnName = this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected.toString();
         }
 
         this.runGetDetails(param);
       }
     },
-    ddImmScreenLabelSelected () {
+    'store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected' () {
       if(this.firstload) return;
       
       if (!this.firstload) {
         var param = {};
 
-        if (this.ddImmSystemNameSelected && this.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.ddImmSystemNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
+          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
         }
-        if (this.ddImmItamIDSelected && this.ddImmItamIDSelected != "NA") {
-          param.ImmItamID = this.ddImmItamIDSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected && this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected != "NA") {
+          param.ImmItamID = this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected.toString();
         }
-        if (this.ddImmTableNameSelected && this.ddImmTableNameSelected != "NA") {
-          param.ImmTableName = this.ddImmTableNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected != "NA") {
+          param.ImmTableName = this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected.toString();
         }
-        if (this.ddImmColumnNameSelected && this.ddImmColumnNameSelected != "NA") {
-          param.ImmColumnName = this.ddImmColumnNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected != "NA") {
+          param.ImmColumnName = this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected.toString();
         }
-        if (this.ddImmScreenLabelSelected && this.ddImmScreenLabelSelected != "NA") {
-          param.ImmScreenLabel = this.ddImmScreenLabelSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected && this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected != "NA") {
+          param.ImmScreenLabel = this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected.toString();
         }
 
         this.runGetDetails(param);
       }
     },
-    ddUltSystemNameSelected () {
+    'store.ddValUltimateSourceSystem.ddUltSystemNameSelected' () {
       if(this.firstload) return;
       
       if (!this.firstload) {
         var param = {};
 
-        if (this.ddImmSystemNameSelected && this.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.ddImmSystemNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
+          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
         }
-        if (this.ddImmItamIDSelected && this.ddImmItamIDSelected != "NA") {
-          param.ImmItamID = this.ddImmItamIDSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected && this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected != "NA") {
+          param.ImmItamID = this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected.toString();
         }
-        if (this.ddImmTableNameSelected && this.ddImmTableNameSelected != "NA") {
-          param.ImmTableName = this.ddImmTableNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected != "NA") {
+          param.ImmTableName = this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected.toString();
         }
-        if (this.ddImmColumnNameSelected && this.ddImmColumnNameSelected != "NA") {
-          param.ImmColumnName = this.ddImmColumnNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected != "NA") {
+          param.ImmColumnName = this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected.toString();
         }
-        if (this.ddImmScreenLabelSelected && this.ddImmScreenLabelSelected != "NA") {
-          param.ImmScreenLabel = this.ddImmScreenLabelSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected && this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected != "NA") {
+          param.ImmScreenLabel = this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected.toString();
         }
-        if (this.ddUltSystemNameSelected && this.ddUltSystemNameSelected != "NA") {
-          param.UltSystemName = this.ddUltSystemNameSelected.toString();
+        if (this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected && this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected != "NA") {
+          param.UltSystemName = this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected.toString();
         }
 
         this.runGetDetails(param);
       }
     },
-    ddUltItamIDSelected () {
+    'store.ddValUltimateSourceSystem.ddUltItamIDSelected' () {
       if(this.firstload) return;
       
       if (!this.firstload) {
         var param = {};
 
-        if (this.ddImmSystemNameSelected && this.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.ddImmSystemNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
+          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
         }
-        if (this.ddImmItamIDSelected && this.ddImmItamIDSelected != "NA") {
-          param.ImmItamID = this.ddImmItamIDSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected && this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected != "NA") {
+          param.ImmItamID = this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected.toString();
         }
-        if (this.ddImmTableNameSelected && this.ddImmTableNameSelected != "NA") {
-          param.ImmTableName = this.ddImmTableNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected != "NA") {
+          param.ImmTableName = this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected.toString();
         }
-        if (this.ddImmColumnNameSelected && this.ddImmColumnNameSelected != "NA") {
-          param.ImmColumnName = this.ddImmColumnNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected != "NA") {
+          param.ImmColumnName = this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected.toString();
         }
-        if (this.ddImmScreenLabelSelected && this.ddImmScreenLabelSelected != "NA") {
-          param.ImmScreenLabel = this.ddImmScreenLabelSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected && this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected != "NA") {
+          param.ImmScreenLabel = this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected.toString();
         }
-        if (this.ddUltSystemNameSelected && this.ddUltSystemNameSelected != "NA") {
-          param.UltSystemName = this.ddUltSystemNameSelected.toString();
+        if (this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected && this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected != "NA") {
+          param.UltSystemName = this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected.toString();
         }
-        if (this.ddUltItamIDSelected && this.ddUltItamIDSelected != "NA") {
-          param.UltItamID = this.ddUltItamIDSelected.toString();
+        if (this.store.ddValUltimateSourceSystem.ddUltItamIDSelected && this.store.ddValUltimateSourceSystem.ddUltItamIDSelected != "NA") {
+          param.UltItamID = this.store.ddValUltimateSourceSystem.ddUltItamIDSelected.toString();
         }
 
         this.runGetDetails(param);
       }
     },
-    ddUltTableNameSelected () {
+    'store.ddValUltimateSourceSystem.ddUltTableNameSelected' () {
       if(this.firstload) return;
       
       if (!this.firstload) {
         var param = {};
 
-        if (this.ddImmSystemNameSelected && this.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.ddImmSystemNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
+          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
         }
-        if (this.ddImmItamIDSelected && this.ddImmItamIDSelected != "NA") {
-          param.ImmItamID = this.ddImmItamIDSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected && this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected != "NA") {
+          param.ImmItamID = this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected.toString();
         }
-        if (this.ddImmTableNameSelected && this.ddImmTableNameSelected != "NA") {
-          param.ImmTableName = this.ddImmTableNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected != "NA") {
+          param.ImmTableName = this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected.toString();
         }
-        if (this.ddImmColumnNameSelected && this.ddImmColumnNameSelected != "NA") {
-          param.ImmColumnName = this.ddImmColumnNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected != "NA") {
+          param.ImmColumnName = this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected.toString();
         }
-        if (this.ddImmScreenLabelSelected && this.ddImmScreenLabelSelected != "NA") {
-          param.ImmScreenLabel = this.ddImmScreenLabelSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected && this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected != "NA") {
+          param.ImmScreenLabel = this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected.toString();
         }
-        if (this.ddUltSystemNameSelected && this.ddUltSystemNameSelected != "NA") {
-          param.UltSystemName = this.ddUltSystemNameSelected.toString();
+        if (this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected && this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected != "NA") {
+          param.UltSystemName = this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected.toString();
         }
-        if (this.ddUltItamIDSelected && this.ddUltItamIDSelected != "NA") {
-          param.UltItamID = this.ddUltItamIDSelected.toString();
+        if (this.store.ddValUltimateSourceSystem.ddUltItamIDSelected && this.store.ddValUltimateSourceSystem.ddUltItamIDSelected != "NA") {
+          param.UltItamID = this.store.ddValUltimateSourceSystem.ddUltItamIDSelected.toString();
         }
-        if (this.ddUltTableNameSelected && this.ddUltTableNameSelected != "NA") {
-          param.UltTableName = this.ddUltTableNameSelected.toString();
+        if (this.store.ddValUltimateSourceSystem.ddUltTableNameSelected && this.store.ddValUltimateSourceSystem.ddUltTableNameSelected != "NA") {
+          param.UltTableName = this.store.ddValUltimateSourceSystem.ddUltTableNameSelected.toString();
         }
 
         this.runGetDetails(param);
       }
     },
-    ddUltColumnNameSelected () {
+    'store.ddValUltimateSourceSystem.ddUltColumnNameSelected' () {
       if(this.firstload) return;
       
       if (!this.firstload) {
         var param = {};
 
-        if (this.ddImmSystemNameSelected && this.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.ddImmSystemNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
+          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
         }
-        if (this.ddImmItamIDSelected && this.ddImmItamIDSelected != "NA") {
-          param.ImmItamID = this.ddImmItamIDSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected && this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected != "NA") {
+          param.ImmItamID = this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected.toString();
         }
-        if (this.ddImmTableNameSelected && this.ddImmTableNameSelected != "NA") {
-          param.ImmTableName = this.ddImmTableNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected != "NA") {
+          param.ImmTableName = this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected.toString();
         }
-        if (this.ddImmColumnNameSelected && this.ddImmColumnNameSelected != "NA") {
-          param.ImmColumnName = this.ddImmColumnNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected != "NA") {
+          param.ImmColumnName = this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected.toString();
         }
-        if (this.ddImmScreenLabelSelected && this.ddImmScreenLabelSelected != "NA") {
-          param.ImmScreenLabel = this.ddImmScreenLabelSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected && this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected != "NA") {
+          param.ImmScreenLabel = this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected.toString();
         }
-        if (this.ddUltSystemNameSelected && this.ddUltSystemNameSelected != "NA") {
-          param.UltSystemName = this.ddUltSystemNameSelected.toString();
+        if (this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected && this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected != "NA") {
+          param.UltSystemName = this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected.toString();
         }
-        if (this.ddUltItamIDSelected && this.ddUltItamIDSelected != "NA") {
-          param.UltItamID = this.ddUltItamIDSelected.toString();
+        if (this.store.ddValUltimateSourceSystem.ddUltItamIDSelected && this.store.ddValUltimateSourceSystem.ddUltItamIDSelected != "NA") {
+          param.UltItamID = this.store.ddValUltimateSourceSystem.ddUltItamIDSelected.toString();
         }
-        if (this.ddUltTableNameSelected && this.ddUltTableNameSelected != "NA") {
-          param.UltTableName = this.ddUltTableNameSelected.toString();
+        if (this.store.ddValUltimateSourceSystem.ddUltTableNameSelected && this.store.ddValUltimateSourceSystem.ddUltTableNameSelected != "NA") {
+          param.UltTableName = this.store.ddValUltimateSourceSystem.ddUltTableNameSelected.toString();
         }
-        if (this.ddUltColumnNameSelected && this.ddUltColumnNameSelected != "NA") {
-          param.UltColumnName = this.ddUltColumnNameSelected.toString();
+        if (this.store.ddValUltimateSourceSystem.ddUltColumnNameSelected && this.store.ddValUltimateSourceSystem.ddUltColumnNameSelected != "NA") {
+          param.UltColumnName = this.store.ddValUltimateSourceSystem.ddUltColumnNameSelected.toString();
         }
 
         this.runGetDetails(param);
       }
     },
-    ddUltScreenLabelSelected (){
+    'store.ddValUltimateSourceSystem.ddUltScreenLabelSelected' (){
       if(this.firstload) return;
 
       if (!this.firstload) {
         var param = {};
 
-        if (this.ddImmSystemNameSelected && this.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.ddImmSystemNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
+          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
         }
-        if (this.ddImmItamIDSelected && this.ddImmItamIDSelected != "NA") {
-          param.ImmItamID = this.ddImmItamIDSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected && this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected != "NA") {
+          param.ImmItamID = this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected.toString();
         }
-        if (this.ddImmTableNameSelected && this.ddImmTableNameSelected != "NA") {
-          param.ImmTableName = this.ddImmTableNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected != "NA") {
+          param.ImmTableName = this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected.toString();
         }
-        if (this.ddImmColumnNameSelected && this.ddImmColumnNameSelected != "NA") {
-          param.ImmColumnName = this.ddImmColumnNameSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected != "NA") {
+          param.ImmColumnName = this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected.toString();
         }
-        if (this.ddImmScreenLabelSelected && this.ddImmScreenLabelSelected != "NA") {
-          param.ImmScreenLabel = this.ddImmScreenLabelSelected.toString();
+        if (this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected && this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected != "NA") {
+          param.ImmScreenLabel = this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected.toString();
         }
-        if (this.ddUltSystemNameSelected && this.ddUltSystemNameSelected != "NA") {
-          param.UltSystemName = this.ddUltSystemNameSelected.toString();
+        if (this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected && this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected != "NA") {
+          param.UltSystemName = this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected.toString();
         }
-        if (this.ddUltItamIDSelected && this.ddUltItamIDSelected != "NA") {
-          param.UltItamID = this.ddUltItamIDSelected.toString();
+        if (this.store.ddValUltimateSourceSystem.ddUltItamIDSelected && this.store.ddValUltimateSourceSystem.ddUltItamIDSelected != "NA") {
+          param.UltItamID = this.store.ddValUltimateSourceSystem.ddUltItamIDSelected.toString();
         }
-        if (this.ddUltTableNameSelected && this.ddUltTableNameSelected != "NA") {
-          param.UltTableName = this.ddUltTableNameSelected.toString();
+        if (this.store.ddValUltimateSourceSystem.ddUltTableNameSelected && this.store.ddValUltimateSourceSystem.ddUltTableNameSelected != "NA") {
+          param.UltTableName = this.store.ddValUltimateSourceSystem.ddUltTableNameSelected.toString();
         }
-        if (this.ddUltColumnNameSelected && this.ddUltColumnNameSelected != "NA") {
-          param.UltColumnName = this.ddUltColumnNameSelected.toString();
+        if (this.store.ddValUltimateSourceSystem.ddUltColumnNameSelected && this.store.ddValUltimateSourceSystem.ddUltColumnNameSelected != "NA") {
+          param.UltColumnName = this.store.ddValUltimateSourceSystem.ddUltColumnNameSelected.toString();
         }
-        if (this.ddUltScreenLabelSelected && this.ddUltScreenLabelSelected != "NA") {
-          param.UltScreenLabel = this.ddUltScreenLabelSelected.toString();
+        if (this.store.ddValUltimateSourceSystem.ddUltScreenLabelSelected && this.store.ddValUltimateSourceSystem.ddUltScreenLabelSelected != "NA") {
+          param.UltScreenLabel = this.store.ddValUltimateSourceSystem.ddUltScreenLabelSelected.toString();
         }
 
         this.runGetDetails(param);
@@ -779,193 +763,7 @@ export default {
       param.Left = self.$route.params.dspname;
       param.Right = self.$route.params.cdename;
 
-      return self.getDetails(param).then(
-        res => {
-          this.firstload = true;
-
-          // if (self.store.detailsSource.length > 0){
-          //   var tmp = self.store.detailsSource[0].Values[0];
-
-          //   self.selectedDetails = {}
-          //   _.each(Object.keys(tmp), function(v, i){
-          //       self.selectedDetails[v] = _.uniq(
-          //         _.map(self.store.detailsSource[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)
-          //       );
-
-          //       self.selectedDetails[v] = self.selectedDetails[v].join(", ");
-          //   });
-
-          //   // make falsy NA
-          //   Object.keys(self.selectedDetails).forEach((val) => {
-          //     self.selectedDetails[val] = !!self.selectedDetails[val].trim() ? self.selectedDetails[val] : "NA";
-          //   });
-
-          //   self.store.DDSource.map(function(v){
-          //     Object.keys(v).forEach(function(key){
-          //       v[key] = v[key] ? v[key] : "NA"
-          //     })
-
-          //     return v
-          //   })
-            
-          //   setTimeout(() => {
-          //     self.ddImmSystemNameSelected = self.selectedDetails.SYSTEM_NAME;
-          //     self.ddImmItamIDSelected = self.selectedDetails.ITAM_ID;
-          //     self.ddImmTableNameSelected = self.selectedDetails.TABLE_NAME;
-          //     self.ddImmColumnNameSelected = self.selectedDetails.COLUMN_NAME;
-          //     self.ddImmScreenLabelSelected = self.selectedDetails.DATA_ELEMENT;
-          //     self.ddUltSystemNameSelected = self.selectedDetails.ULT_SYSTEM;
-          //     self.ddUltItamIDSelected = self.selectedDetails.ULT_ITAM_ID;
-          //     self.ddUltTableNameSelected = self.selectedDetails.ULT_TABLE_NAME;
-          //     self.ddUltColumnNameSelected = self.selectedDetails.ULT_COLUMN_NAME;
-          //     self.ddUltScreenLabelSelected = self.selectedDetails.ULT_SCREEN_LABEL_NAME;
-
-          //     setTimeout(() => {
-          //       this.firstload = false;
-          //     }, 100);
-          //   }, 100);
-          // } else {
-          //   this.selectedDetails = null;
-          // }
-
-          if (self.store.DetailsImmediatePrecedingSystem.length > 0){
-            var tmp = self.store.DetailsImmediatePrecedingSystem[0].Values[0];
-
-            self.selectedDetailsImmediatePrecedingSystem = {}
-            _.each(Object.keys(tmp), function(v, i){
-                self.selectedDetailsImmediatePrecedingSystem[v] = _.uniq(
-                  _.map(self.store.DetailsImmediatePrecedingSystem[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)
-                );
-
-                self.selectedDetailsImmediatePrecedingSystem[v] = self.selectedDetailsImmediatePrecedingSystem[v].join(", ");
-            });
-
-            // make falsy NA
-            Object.keys(self.selectedDetailsImmediatePrecedingSystem).forEach((val) => {
-              self.selectedDetailsImmediatePrecedingSystem[val] = !!self.selectedDetailsImmediatePrecedingSystem[val].trim() ? self.selectedDetailsImmediatePrecedingSystem[val] : "NA";
-            });
-
-            self.store.DDSourceImmediatePrecedingSystem.map(function(v){
-              Object.keys(v).forEach(function(key){
-                v[key] = v[key] ? v[key] : "NA"
-              })
-
-              return v
-            })
-            
-            setTimeout(() => {
-              self.ddImmSystemNameSelected = self.selectedDetailsImmediatePrecedingSystem.SYSTEM_NAME;
-              self.ddImmItamIDSelected = self.selectedDetailsImmediatePrecedingSystem.ITAM_ID;
-              self.ddImmTableNameSelected = self.selectedDetailsImmediatePrecedingSystem.TABLE_NAME;
-              self.ddImmColumnNameSelected = self.selectedDetailsImmediatePrecedingSystem.COLUMN_NAME;
-              self.ddImmScreenLabelSelected = self.selectedDetailsImmediatePrecedingSystem.DATA_ELEMENT;
-
-              setTimeout(() => {
-                this.firstload = false;
-              }, 100);
-            }, 100);
-          } else {
-            this.selectedDetailsImmediatePrecedingSystem = null;
-          }
-
-          if (self.store.DetailsUltimateSourceSystem.length > 0){
-            var tmp = self.store.DetailsUltimateSourceSystem[0].Values[0];
-
-            self.selectedDetailsUltimateSourceSystem = {}
-            _.each(Object.keys(tmp), function(v, i){
-                self.selectedDetailsUltimateSourceSystem[v] = _.uniq(
-                  _.map(self.store.DetailsUltimateSourceSystem[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)
-                );
-
-                self.selectedDetailsUltimateSourceSystem[v] = self.selectedDetailsUltimateSourceSystem[v].join(", ");
-            });
-
-            // make falsy NA
-            Object.keys(self.selectedDetailsUltimateSourceSystem).forEach((val) => {
-              self.selectedDetailsUltimateSourceSystem[val] = !!self.selectedDetailsUltimateSourceSystem[val].trim() ? self.selectedDetailsUltimateSourceSystem[val] : "NA";
-            });
-
-            self.store.DDSourceImmediatePrecedingSystem.map(function(v){
-              Object.keys(v).forEach(function(key){
-                v[key] = v[key] ? v[key] : "NA"
-              })
-
-              return v
-            })
-          } else {
-            this.selectedDetailsUltimateSourceSystem = null;
-          }
-            
-          setTimeout(() => {
-            self.ddUltSystemNameSelected = self.selectedDetailsUltimateSourceSystem ? self.selectedDetailsUltimateSourceSystem.SYSTEM_NAME : "NA";
-            self.ddUltItamIDSelected = self.selectedDetailsUltimateSourceSystem ? self.selectedDetailsUltimateSourceSystem.ITAM_ID : "NA";
-            self.ddUltTableNameSelected = self.selectedDetailsUltimateSourceSystem ? self.selectedDetailsUltimateSourceSystem.TABLE_NAME : "NA";
-            self.ddUltColumnNameSelected = self.selectedDetailsUltimateSourceSystem ? self.selectedDetailsUltimateSourceSystem.COLUMN_NAME : "NA";
-            self.ddUltScreenLabelSelected = self.selectedDetailsUltimateSourceSystem ? self.selectedDetailsUltimateSourceSystem.DATA_ELEMENT : "NA";
-
-            setTimeout(() => {
-              this.firstload = false;
-            }, 100);
-          }, 100);
-
-          if (self.store.DetailsDomainView.length > 0){
-            var tmp = self.store.DetailsDomainView[0].Values[0];
-
-            self.selectedDetailsDomainView = {}
-            _.each(Object.keys(tmp), function(v, i){
-                self.selectedDetailsDomainView[v] = _.uniq(
-                  _.map(self.store.DetailsDomainView[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)
-                );
-                
-                self.selectedDetailsDomainView[v] = self.selectedDetailsDomainView[v].join(", ");
-            });
-
-            // make falsy NA
-            Object.keys(self.selectedDetailsDomainView).forEach((val) => {
-              self.selectedDetailsDomainView[val] = !!self.selectedDetailsDomainView[val].trim() ? self.selectedDetailsDomainView[val] : "NA";
-            });
-
-            self.store.DDSourceDomainView.map(function(v){
-              Object.keys(v).forEach(function(key){
-                v[key] = v[key] ? v[key] : "NA"
-              })
-
-              return v
-            })
-          } else {
-            this.selectedDetailsDomainView = null;
-          }
-
-          if (self.store.DetailsDataStandards.length > 0){
-            var tmp = self.store.DetailsDataStandards[0].Values[0];
-
-            self.selectedDetailsDataStandards = {}
-            _.each(Object.keys(tmp), function(v, i){
-                self.selectedDetailsDataStandards[v] = _.uniq(
-                  _.map(self.store.DetailsDataStandards[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)
-                );
-                
-                self.selectedDetailsDataStandards[v] = self.selectedDetailsDataStandards[v].join(", ");
-            });
-
-            // make falsy NA
-            Object.keys(self.selectedDetailsDataStandards).forEach((val) => {
-              self.selectedDetailsDataStandards[val] = !!self.selectedDetailsDataStandards[val].trim() ? self.selectedDetailsDataStandards[val] : "NA";
-            });
-
-            self.store.DDSourceDataStandards.map(function(v){
-              Object.keys(v).forEach(function(key){
-                v[key] = v[key] ? v[key] : "NA"
-              })
-
-              return v
-            })
-          } else {
-            this.selectedDetailsDataStandards = null;
-          }
-        },
-        err => err
-      );
+      return self.getDetails(param);
     }
   },
 }
