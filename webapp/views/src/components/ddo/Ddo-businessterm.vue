@@ -92,8 +92,8 @@
                         <b-button size="sm" class="green-tosca-gradient icon-only" @click="showDetails(props.item)">
                           <i class="fa fa-fw fa-external-link-alt"></i></b-button></td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }" class="text-uppercase">{{ props.item.BT_NAME }}</td>
-                      <td v-bind:style="{ width: store.left.colWidth['BT_DESCRIPTION'] + 'px' }" class="text-capitalize">{{ props.item.BT_DESCRIPTION }}</td>
+                      <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }">{{ props.item.BT_NAME }}</td>
+                      <td v-bind:style="{ width: store.left.colWidth['BT_DESCRIPTION'] + 'px' }">{{ props.item.BT_DESCRIPTION }}</td>
                     </tr>
                   </template>
                 </v-data-table>
