@@ -89,6 +89,7 @@ export default {
     },
   },
   mounted (){
+    this.makeTableAlertFull();
     setTimeout(() => {
       var $dropdownWrapper = $(this.$refs.widthAcuan).closest("th.column.sortable").find(".dropdown-menu");
       if($dropdownWrapper[0]){
@@ -191,6 +192,12 @@ export default {
 
         this.sticky = $('table.v-table thead').offset().top;    
         $(window).scroll(this.onScrollListener);
+    },
+
+    makeTableAlertFull(){
+      var elemAlert = $('table.v-table > tbody > tr > td >  .v-alert');
+      var theadWidth = elemAlert.closest('table.v-table').find('thead > tr:first').width() - 50;
+      elemAlert.parent('td').width(theadWidth);
     },
   }
 };
