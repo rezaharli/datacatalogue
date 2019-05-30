@@ -74,8 +74,8 @@
 
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                      <td v-bind:style="{ width: store.left.colWidth['DP_NAME'] + 'px' }" class="text-uppercase">{{props.item.DP_NAME}}</td>
-                      <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }" class="text-uppercase">{{props.item.PROCESS_OWNER}}</td>
+                      <td v-bind:style="{ width: store.left.colWidth['DP_NAME'] + 'px' }" class="text-uppercase">{{ props.item.DP_NAME.toString().trim() ? props.item.DP_NAME : 'NA' }}</td>
+                      <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }" class="text-uppercase">{{ props.item.PROCESS_OWNER.toString().trim() ? props.item.PROCESS_OWNER : 'NA' }}</td>
                       <td v-bind:style="{ width: store.left.colWidth['BT_COUNT'] + 'px' }" class="text-capitalize">
                         <b-link @click.stop="showBusinessterms(props.item)">
                           <tablecell :fulltext="props.item.BT_COUNT" showOn="click"></tablecell></b-link></td>
