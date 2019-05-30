@@ -362,8 +362,6 @@ func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	resultRows := make([]toolkit.M, 0)
 	resultTotal := 0
 
-	toolkit.MtoStruct(payload, m.MDColumn{})
-
 	q := ""
 	args := make([]interface{}, 0)
 
@@ -393,6 +391,7 @@ func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 		return false
 	}
 
+	///////// FILTER
 	q = `SELECT rownum, a.* FROM (
 		` + q + `
 	) a `
@@ -408,9 +407,7 @@ func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 		if otherArgs[2] != "" {
 			q += `AND ALIAS_NAME = '` + otherArgs[2] + `' `
 		}
-		q += `) AND rownum = 1 `
-	} else {
-		q += `WHERE rownum = 1 `
+		q += `) `
 	}
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{

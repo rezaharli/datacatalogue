@@ -255,21 +255,5 @@ function getRightTable(param) {
 }
 
 function getDetails(param) {
-    return fetchWHeader(`/ddo/getdetails`, param).then(
-        res => {
-            var tmp = _.groupBy(res.Data.Detail, "ID")
-            
-            res.Data.Detail = _.map(Object.keys(tmp), function(v, i){
-                var ret = tmp[v][0];
-                ret.ID = v;
-                ret.GOLDEN_SOURCE = ret.GOLDEN_SOURCE.toLowerCase();
-                ret.GOLDEN_SOURCE = ret.GOLDEN_SOURCE.charAt(0).toUpperCase() + ret.GOLDEN_SOURCE.slice(1);
-                ret.Values = tmp[v];
-
-                return ret;
-            });
-
-            return res;
-        }
-    )
+    return fetchWHeader(`/ddo/getdetails`, param);
 }

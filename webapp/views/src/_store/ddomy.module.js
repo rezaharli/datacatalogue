@@ -24,16 +24,12 @@ const state = {
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Domain / Sub domain owner', value: 'SUB_DOMAIN_OWNER' },
         ],
         isRightTable: false,
-        detailsSource: [],
-        DDSource: [],
-
-        DetailsBusinessMetadata: [],
-        DDSourceBusinessMetadata: [],
-        DetailsDownstreamUsage: [],
-        DDSourceDownstreamUsage: [],
-        DetailsBTResiding: [],
-        DDSourceBTResiding: [],
         detailsLoading: true,
+        
+        DDSource: [],
+        selectedDetails: null,
+        ddVal: {},
+
         error: null
     }
 };
@@ -133,17 +129,17 @@ const mutations = {
         state.all.detailsLoading = true;
     },
     getDetailsSuccess(state, data) {
-        state.all.detailsSource = data.Detail;
+        state.all.selectedDetails = data.SelectedDetail;
         state.all.DDSource = data.DDSource;
-
-        state.all.DetailsBusinessMetadata = data.DetailsBusinessMetadata;
-        state.all.DDSourceBusinessMetadata = data.DDSourceBusinessMetadata;
-        state.all.DetailsDownstreamUsage = data.DetailsDownstreamUsage;
-        state.all.DDSourceDownstreamUsage = data.DDSourceDownstreamUsage;
-        state.all.DetailsBTResiding = data.DetailsBTResiding;
-        state.all.DDSourceBTResiding = data.DDSourceBTResiding;
         
-        state.all.detailsLoading = false;
+        setTimeout(() => {
+            state.all.ddVal = data.DDVal;
+
+            setTimeout(() => {
+                state.all.firstload = false;
+                state.all.detailsLoading = false;
+            }, 100);
+        }, 100);
     },
     getDetailsFailure(state, error) {
         state.all.detailsLoading = false;

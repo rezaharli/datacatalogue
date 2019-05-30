@@ -1,10 +1,15 @@
 package controllers
 
 import (
+	"strings"
+	"time"
+
 	"github.com/eaciit/toolkit"
+	"github.com/novalagung/gubrak"
 
 	"git.eaciitapp.com/sebar/knot"
 
+	"eaciit/datacatalogue/webapp/helpers"
 	h "eaciit/datacatalogue/webapp/helpers"
 	s "eaciit/datacatalogue/webapp/services"
 )
@@ -154,6 +159,7 @@ func (c *DPO) GetRightTable(k *knot.WebContext) {
 }
 
 func (c *DPO) GetDetails(k *knot.WebContext) {
+	processTime := time.Now()
 	res := toolkit.NewResult()
 
 	payload := toolkit.M{}
@@ -163,39 +169,291 @@ func (c *DPO) GetDetails(k *knot.WebContext) {
 		return
 	}
 
-	detailsImmediatePrecedingSystem, ddSourceImmediatePrecedingSystem, err := c.Base.GetDetails(payload, s.NewDPOService().GetDetailsImmediatePrecedingSystem, s.NewDPOService().GetddSourceImmediatePrecedingSystem)
+	selectedDetailImmediatePrecedingSystem, ddValImmediatePrecedingSystem, mappedddSourceImmediatePrecedingSystem, err := c.GetDetailsImmediatePrecedingSystem(payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
-	detailsUltimateSourceSystem, ddSourceUltimateSourceSystem, err := c.Base.GetDetails(payload, s.NewDPOService().GetDetailsUltimateSourceSystem, s.NewDPOService().GetddSourceUltimateSourceSystem)
+	selectedDetailUltimateSourceSystem, ddValUltimateSourceSystem, mappedddSourceUltimateSourceSystem, err := c.GetDetailsUltimateSourceSystem(payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
-	detailsDomainView, ddSourceDomainView, err := c.Base.GetDetails(payload, s.NewDPOService().GetDetailsDomainView, s.NewDPOService().GetddSourceDomainView)
+	selectedDetailDomainView, ddValDomainView, mappedddSourceDomainView, err := c.GetDetailsDomainView(payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
-	detailsDataStandards, ddSourceDataStandards, err := c.Base.GetDetails(payload, s.NewDPOService().GetDetailsDataStandards, s.NewDPOService().GetddSourceDataStandards)
+	selectedDetailDataStandards, ddValDataStandards, mappedddSourceDataStandards, err := c.GetDetailsDataStandards(payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
 	data := toolkit.M{}
-	data.Set("DetailsImmediatePrecedingSystem", detailsImmediatePrecedingSystem)
-	data.Set("DDSourceImmediatePrecedingSystem", ddSourceImmediatePrecedingSystem)
-	data.Set("DetailsUltimateSourceSystem", detailsUltimateSourceSystem)
-	data.Set("DDSourceUltimateSourceSystem", ddSourceUltimateSourceSystem)
-	data.Set("DetailsDomainView", detailsDomainView)
-	data.Set("DDSourceDomainView", ddSourceDomainView)
-	data.Set("DetailsDataStandards", detailsDataStandards)
-	data.Set("DDSourceDataStandards", ddSourceDataStandards)
+	data.Set("SelectedDetailImmediatePrecedingSystem", selectedDetailImmediatePrecedingSystem)
+	data.Set("DDSourceImmediatePrecedingSystem", mappedddSourceImmediatePrecedingSystem)
+	data.Set("DDValImmediatePrecedingSystem", ddValImmediatePrecedingSystem)
+
+	data.Set("SelectedDetailUltimateSourceSystem", selectedDetailUltimateSourceSystem)
+	data.Set("DDSourceUltimateSourceSystem", mappedddSourceUltimateSourceSystem)
+	data.Set("DDValUltimateSourceSystem", ddValUltimateSourceSystem)
+
+	data.Set("SelectedDetailDomainView", selectedDetailDomainView)
+	data.Set("DDSourceDomainView", mappedddSourceDomainView)
+	data.Set("DDValDomainView", ddValDomainView)
+
+	data.Set("SelectedDetailDataStandards", selectedDetailDataStandards)
+	data.Set("DDSourceDataStandards", mappedddSourceDataStandards)
+	data.Set("DDValDataStandards", ddValDataStandards)
 
 	h.WriteResultOK(k, res, data)
+	toolkit.Println("processTime:", time.Since(processTime).Seconds(), "\n------------------------------------------------------------------------------------")
+}
+
+func (c *DPO) GetDetailsImmediatePrecedingSystem(payload toolkit.M) (interface{}, interface{}, interface{}, error) {
+	mappedDetails, mappedddSource, err := c.GetDetailAndDropdown(payload, s.NewDPOService().GetDetailsImmediatePrecedingSystem, s.NewDPOService().GetddSourceImmediatePrecedingSystem)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	ddVal := toolkit.M{}
+	selectedDetail := toolkit.M{}
+	detailSources := mappedDetails.([]toolkit.M)
+	if len(detailSources) > 0 {
+		detailSource := detailSources[0]
+		detailValues := detailSource.Get("Values").([]toolkit.M)
+
+		for _, key := range helpers.ObjectKeys(detailValues[0]) {
+			mappedValues, err := gubrak.Map(detailValues, func(v toolkit.M, i int) string {
+				stringVal := toolkit.ToString(v[key])
+				trimmedStringVal := strings.TrimSpace(stringVal)
+
+				if trimmedStringVal == "" {
+					stringVal = "NA"
+				}
+
+				return stringVal
+			})
+			if err != nil {
+				return nil, nil, nil, err
+			}
+
+			uniqueValues, err := gubrak.Uniq(mappedValues)
+			if err != nil {
+				return nil, nil, nil, err
+			}
+
+			switch key {
+			case "SYSTEM_NAME":
+				ddVal.Set("ddImmSystemNameSelected", uniqueValues.([]string)[0])
+				break
+			case "ITAM_ID":
+				ddVal.Set("ddImmItamIDSelected", uniqueValues.([]string)[0])
+				break
+			case "TABLE_NAME":
+				ddVal.Set("ddImmTableNameSelected", uniqueValues.([]string)[0])
+				break
+			case "COLUMN_NAME":
+				ddVal.Set("ddImmColumnNameSelected", uniqueValues.([]string)[0])
+				break
+			case "DATA_ELEMENT":
+				ddVal.Set("ddImmScreenLabelSelected", uniqueValues.([]string)[0])
+				break
+			}
+
+			joinedValues := ""
+			if key == "DATASET_CUSTODIAN" || key == "BANK_ID" {
+				joinedValues = strings.Join(uniqueValues.([]string), "; ")
+			} else {
+				joinedValues = strings.Join(uniqueValues.([]string), ", ")
+			}
+
+			selectedDetail.Set(key, joinedValues)
+		}
+	} else {
+		selectedDetail = nil
+
+		ddVal.Set("ddImmSystemNameSelected", "NA")
+		ddVal.Set("ddImmItamIDSelected", "NA")
+		ddVal.Set("ddImmTableNameSelected", "NA")
+		ddVal.Set("ddImmColumnNameSelected", "NA")
+		ddVal.Set("ddImmScreenLabelSelected", "NA")
+	}
+
+	return selectedDetail, ddVal, mappedddSource, err
+}
+
+func (c *DPO) GetDetailsUltimateSourceSystem(payload toolkit.M) (interface{}, interface{}, interface{}, error) {
+	mappedDetails, mappedddSource, err := c.GetDetailAndDropdown(payload, s.NewDPOService().GetDetailsUltimateSourceSystem, s.NewDPOService().GetddSourceUltimateSourceSystem)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	ddVal := toolkit.M{}
+	selectedDetail := toolkit.M{}
+	detailSources := mappedDetails.([]toolkit.M)
+	if len(detailSources) > 0 {
+		detailSource := detailSources[0]
+		detailValues := detailSource.Get("Values").([]toolkit.M)
+
+		for _, key := range helpers.ObjectKeys(detailValues[0]) {
+			mappedValues, err := gubrak.Map(detailValues, func(v toolkit.M, i int) string {
+				stringVal := toolkit.ToString(v[key])
+				trimmedStringVal := strings.TrimSpace(stringVal)
+
+				if trimmedStringVal == "" {
+					stringVal = "NA"
+				}
+
+				return stringVal
+			})
+			if err != nil {
+				return nil, nil, nil, err
+			}
+
+			uniqueValues, err := gubrak.Uniq(mappedValues)
+			if err != nil {
+				return nil, nil, nil, err
+			}
+
+			switch key {
+			case "SYSTEM_NAME":
+				ddVal.Set("ddUltSystemNameSelected", uniqueValues.([]string)[0])
+				break
+			case "ITAM_ID":
+				ddVal.Set("ddUltItamIDSelected", uniqueValues.([]string)[0])
+				break
+			case "TABLE_NAME":
+				ddVal.Set("ddUltTableNameSelected", uniqueValues.([]string)[0])
+				break
+			case "COLUMN_NAME":
+				ddVal.Set("ddUltColumnNameSelected", uniqueValues.([]string)[0])
+				break
+			case "DATA_ELEMENT":
+				ddVal.Set("ddUltScreenLabelSelected", uniqueValues.([]string)[0])
+				break
+			}
+
+			joinedValues := ""
+			if key == "DATASET_CUSTODIAN" || key == "BANK_ID" {
+				joinedValues = strings.Join(uniqueValues.([]string), "; ")
+			} else {
+				joinedValues = strings.Join(uniqueValues.([]string), ", ")
+			}
+
+			selectedDetail.Set(key, joinedValues)
+		}
+	} else {
+		selectedDetail = nil
+
+		ddVal.Set("ddUltSystemNameSelected", "NA")
+		ddVal.Set("ddUltItamIDSelected", "NA")
+		ddVal.Set("ddUltTableNameSelected", "NA")
+		ddVal.Set("ddUltColumnNameSelected", "NA")
+		ddVal.Set("ddUltScreenLabelSelected", "NA")
+	}
+
+	return selectedDetail, ddVal, mappedddSource, err
+}
+
+func (c *DPO) GetDetailsDomainView(payload toolkit.M) (interface{}, interface{}, interface{}, error) {
+	mappedDetails, mappedddSource, err := c.GetDetailAndDropdown(payload, s.NewDPOService().GetDetailsDomainView, nil)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	ddVal := toolkit.M{}
+	selectedDetail := toolkit.M{}
+	detailSources := mappedDetails.([]toolkit.M)
+	if len(detailSources) > 0 {
+		detailSource := detailSources[0]
+		detailValues := detailSource.Get("Values").([]toolkit.M)
+
+		for _, key := range helpers.ObjectKeys(detailValues[0]) {
+			mappedValues, err := gubrak.Map(detailValues, func(v toolkit.M, i int) string {
+				stringVal := toolkit.ToString(v[key])
+				trimmedStringVal := strings.TrimSpace(stringVal)
+
+				if trimmedStringVal == "" {
+					stringVal = "NA"
+				}
+
+				return stringVal
+			})
+			if err != nil {
+				return nil, nil, nil, err
+			}
+
+			uniqueValues, err := gubrak.Uniq(mappedValues)
+			if err != nil {
+				return nil, nil, nil, err
+			}
+
+			joinedValues := ""
+			if key == "DATASET_CUSTODIAN" || key == "BANK_ID" {
+				joinedValues = strings.Join(uniqueValues.([]string), "; ")
+			} else {
+				joinedValues = strings.Join(uniqueValues.([]string), ", ")
+			}
+
+			selectedDetail.Set(key, joinedValues)
+		}
+	} else {
+		selectedDetail = nil
+	}
+
+	return selectedDetail, ddVal, mappedddSource, err
+}
+
+func (c *DPO) GetDetailsDataStandards(payload toolkit.M) (interface{}, interface{}, interface{}, error) {
+	mappedDetails, mappedddSource, err := c.GetDetailAndDropdown(payload, s.NewDPOService().GetDetailsDataStandards, nil)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	ddVal := toolkit.M{}
+	selectedDetail := toolkit.M{}
+	detailSources := mappedDetails.([]toolkit.M)
+	if len(detailSources) > 0 {
+		detailSource := detailSources[0]
+		detailValues := detailSource.Get("Values").([]toolkit.M)
+
+		for _, key := range helpers.ObjectKeys(detailValues[0]) {
+			mappedValues, err := gubrak.Map(detailValues, func(v toolkit.M, i int) string {
+				stringVal := toolkit.ToString(v[key])
+				trimmedStringVal := strings.TrimSpace(stringVal)
+
+				if trimmedStringVal == "" {
+					stringVal = "NA"
+				}
+
+				return stringVal
+			})
+			if err != nil {
+				return nil, nil, nil, err
+			}
+
+			uniqueValues, err := gubrak.Uniq(mappedValues)
+			if err != nil {
+				return nil, nil, nil, err
+			}
+
+			joinedValues := ""
+			if key == "DATASET_CUSTODIAN" || key == "BANK_ID" {
+				joinedValues = strings.Join(uniqueValues.([]string), "; ")
+			} else {
+				joinedValues = strings.Join(uniqueValues.([]string), ", ")
+			}
+
+			selectedDetail.Set(key, joinedValues)
+		}
+	} else {
+		selectedDetail = nil
+	}
+
+	return selectedDetail, ddVal, mappedddSource, err
 }

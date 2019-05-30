@@ -31,7 +31,7 @@ label.col-form-label {
     size="lg"
     @hidden="handleClose"
   >
-    <page-loader v-if="ddomy.detailsLoading" />
+    <page-loader v-if="store.detailsLoading" />
     
     <b-container fluid class="row-kasijarak">
       <b-row>
@@ -56,22 +56,22 @@ label.col-form-label {
           <b-card tag="article" class="mb-2">
             <b-media class="left-card-media">
               <h6 class="left-card-title">Data Domain</h6>
-              <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.DATA_DOMAIN : ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.DATA_DOMAIN : ''"></text-wrap-dialog>
             </b-media>
 
             <b-media class="left-card-media">
               <h6 class="left-card-title">Sub Domain</h6>
-              <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.SUB_DOMAINS : ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.SUB_DOMAINS : ''"></text-wrap-dialog>
             </b-media>
 
             <b-media class="left-card-media">
               <h6 class="left-card-title">Sub Domain Owner</h6>
-              <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.SUB_DOMAIN_OWNER : ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.SUB_DOMAIN_OWNER : ''"></text-wrap-dialog>
             </b-media>
 
             <b-media class="left-card-media">
               <h6 class="left-card-title">Bank ID</h6>
-              <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BANK_ID : ''"></text-wrap-dialog>
+              <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.BANK_ID : ''"></text-wrap-dialog>
             </b-media>
           </b-card>
         </b-col>
@@ -83,83 +83,83 @@ label.col-form-label {
                 <p class="card-text">
                   <b-form>
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BT_NAME : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.BT_NAME : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Description">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BT_DESCRIPTION : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.BT_DESCRIPTION : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Policy Guidance (if any)">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.POLICY_GUIDANCE : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.POLICY_GUIDANCE : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Rules (Documents, Domain Values, Derivation Logic, etc.)">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.BUSINESS_RULES : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.BUSINESS_RULES : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Mandatory (Yes/No)">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.MANDATORY : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.MANDATORY : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source(s) ITAM ID">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.GS_ITAM_ID : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.GS_ITAM_ID : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source(s)">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.GS_SYSTEM_NAME : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.GS_SYSTEM_NAME : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Target Golden Source ITAM ID">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.TGS_ITAM_ID : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.TGS_ITAM_ID : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Target Golden Source">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.TGS_SYSTEM_NAME : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.TGS_SYSTEM_NAME : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Remarks">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.REMARKS : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.REMARKS : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="System ITAM ID">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.ITAM_ID : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.ITAM_ID : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="System Name" label-for="systemname">
-                      <b-form-select id="systemname" class="col-8" v-model="ddSystemNameSelected" :options="ddSystemNameOptions"></b-form-select>
+                      <b-form-select id="systemname" class="col-8" v-model="store.ddVal.ddSystemNameSelected" :options="ddSystemNameOptions"></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Table Name" label-for="tablename">
-                      <b-form-select id="tablename" class="col-8" v-model="ddTableNameSelected" :options="ddTableNameOptions"></b-form-select>
+                      <b-form-select id="tablename" class="col-8" v-model="store.ddVal.ddTableNameSelected" :options="ddTableNameOptions"></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Column Name">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.COLUMN_NAME : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.COLUMN_NAME : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Alias Name" label-for="businessaliasname">
-                      <b-form-select id="businessaliasname" class="col-8" v-model="ddBusinessAliasNameSelected" :options="ddBusinessAliasNameOptions"></b-form-select>
+                      <b-form-select id="businessaliasname" class="col-8" v-model="store.ddVal.ddBusinessAliasNameSelected" :options="ddBusinessAliasNameOptions"></b-form-select>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="CDE (Yes/No)">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.CDE : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.CDE : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden source (Yes / No)">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.GOLDEN_SOURCE : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.GOLDEN_SOURCE : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="PII">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.PII_FLAG : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.PII_FLAG : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="CIA ratings (overall)">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.CIA_RATING : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.CIA_RATING : ''"></text-wrap-dialog>
                     </b-form-group>
 
                     <b-form-group horizontal :label-cols="4" breakpoint="md" label="Record Category">
-                      <text-wrap-dialog :fulltext="selectedDetails ? selectedDetails.RECORD_CATEGORY : ''"></text-wrap-dialog>
+                      <text-wrap-dialog :fulltext="store.selectedDetails ? store.selectedDetails.RECORD_CATEGORY : ''"></text-wrap-dialog>
                     </b-form-group>
                   </b-form>
                 </p>
@@ -185,12 +185,7 @@ export default {
   },
   data () {
     return {
-      firstload: true,
       showModal: this.$route.meta.showModal,
-      selectedDetails: null,
-      ddSystemNameSelected: null,
-      ddTableNameSelected: null,
-      ddBusinessAliasNameSelected: null,
       excelFields: {
         'Data Domain': "selectedDetails.DATA_DOMAIN",
         'Sub Domain': "selectedDetails.SUB_DOMAINS",
@@ -221,32 +216,32 @@ export default {
   },
   computed: {
     ...mapState({
-      ddomy: state => state.ddomy.all
+      store: state => state.ddomy.all
     }),
     ddSystemNameOptions () {
-      return _.uniq(_.map(this.ddomy.DDSource, (v) => v.SYSTEM_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(this.store.DDSource, (v) => v.SYSTEM_NAME.toString().trim())).filter(Boolean);
     },
     ddTableNameOptions () {
       var self = this;
-      var filtered = _.filter(self.ddomy.DDSource, (v) => {
-        return v.SYSTEM_NAME == self.ddSystemNameSelected;
+      var filtered = _.filter(self.store.DDSource, (v) => {
+        return v.SYSTEM_NAME == self.store.ddVal.ddSystemNameSelected;
       });
 
       return _.uniq(_.map(filtered, (v) => v.TABLE_NAME.toString().trim())).filter(Boolean);
     },
     ddBusinessAliasNameOptions () {
       var self = this;
-      var filtered = _.filter(self.ddomy.DDSource, (v) => {
-        return v.SYSTEM_NAME == self.ddSystemNameSelected 
-          && v.TABLE_NAME == self.ddTableNameSelected;
+      var filtered = _.filter(self.store.DDSource, (v) => {
+        return v.SYSTEM_NAME == self.store.ddVal.ddSystemNameSelected 
+          && v.TABLE_NAME == self.store.ddVal.ddTableNameSelected;
       });
       
       return _.uniq(_.map(filtered, (v) => v.ALIAS_NAME.toString().trim())).filter(Boolean);
     },
     exportDatas () {
-      if(this.selectedDetails){
+      if(this.store.selectedDetails){
         return [{
-          selectedDetails: this.selectedDetails,
+          selectedDetails: this.store.selectedDetails,
         }]
       } else {
         return [];
@@ -257,52 +252,52 @@ export default {
     '$route.meta' ({showModal}) {
       this.showModal = showModal;
     },
-    ddSystemNameSelected () {
+    'store.ddVal.ddSystemNameSelected' () {
       if(this.firstload) return;
 
       if (!this.firstload) {
         var param = {};
 
-        if (this.ddSystemNameSelected && this.ddSystemNameSelected != "NA") {
-          param.SystemName = this.ddSystemNameSelected.toString();
+        if (this.store.ddVal.ddSystemNameSelected && this.store.ddVal.ddSystemNameSelected != "NA") {
+          param.SystemName = this.store.ddVal.ddSystemNameSelected.toString();
         }
 
         this.runGetDetails(param);
       }
     },
-    ddTableNameSelected () {
+    'store.ddVal.ddTableNameSelected' () {
       if(this.firstload) return;
       
       if (!this.firstload) {
         var param = {};
 
-        if (this.ddSystemNameSelected && this.ddSystemNameSelected != "NA") {
-          param.SystemName = this.ddSystemNameSelected.toString();
+        if (this.store.ddVal.ddSystemNameSelected && this.store.ddVal.ddSystemNameSelected != "NA") {
+          param.SystemName = this.store.ddVal.ddSystemNameSelected.toString();
         }
 
-        if (this.ddTableNameSelected && this.ddTableNameSelected != "NA") {
-          param.ImmItamID = this.ddTableNameSelected.toString();
+        if (this.store.ddVal.ddTableNameSelected && this.store.ddVal.ddTableNameSelected != "NA") {
+          param.ImmItamID = this.store.ddVal.ddTableNameSelected.toString();
         }
 
         this.runGetDetails(param);
       }
     },
-    ddBusinessAliasNameSelected () {
+    'store.ddVal.ddBusinessAliasNameSelected' () {
       if(this.firstload) return;
       
       if (!this.firstload) {
         var param = {};
 
-        if (this.ddSystemNameSelected && this.ddSystemNameSelected != "NA") {
-          param.SystemName = this.ddSystemNameSelected.toString();
+        if (this.store.ddVal.ddSystemNameSelected && this.store.ddVal.ddSystemNameSelected != "NA") {
+          param.SystemName = this.store.ddVal.ddSystemNameSelected.toString();
         }
 
-        if (this.ddTableNameSelected && this.ddTableNameSelected != "NA") {
-          param.TableName = this.ddTableNameSelected.toString();
+        if (this.store.ddVal.ddTableNameSelected && this.store.ddVal.ddTableNameSelected != "NA") {
+          param.TableName = this.store.ddVal.ddTableNameSelected.toString();
         }
 
-        if (this.ddBusinessAliasNameSelected && this.ddBusinessAliasNameSelected != "NA") {
-          param.BusinessAliasName = this.ddBusinessAliasNameSelected.toString();
+        if (this.store.ddVal.ddBusinessAliasNameSelected && this.store.ddVal.ddBusinessAliasNameSelected != "NA") {
+          param.BusinessAliasName = this.store.ddVal.ddBusinessAliasNameSelected.toString();
         }
 
         this.runGetDetails(param);
@@ -329,59 +324,7 @@ export default {
       param.Subdomain = self.$route.params.subdomain.toString();
       param.BTname = self.$route.params.btname.toString();
 
-      return self.getDetails(param).then(
-        res => {
-          this.firstload = true;
-
-          if (self.ddomy.detailsSource.length > 0){
-            var tmp = self.ddomy.detailsSource[0].Values[0];
-
-            self.selectedDetails = {}
-            _.each(Object.keys(tmp), function(v, i){
-                self.selectedDetails[v] = _.uniq(
-                  _.map(self.ddomy.detailsSource[0].Values, (val) => val[v] ? val[v].toString().trim() : "").filter(Boolean)
-                );
-                if(v == "DATASET_CUSTODIAN" || v == "BANK_ID"){
-                  self.selectedDetails[v] = self.selectedDetails[v].join('; ');
-                } else {
-                  self.selectedDetails[v] = self.selectedDetails[v].join(', ');
-                }
-            });
-            
-            // interrupt
-            var doInterrupt = (v, cond, expectedres) => v == cond[1] ? expectedres[1] : (v == cond[0] ? expectedres[0] : v);
-
-            self.selectedDetails.MANDATORY = doInterrupt(self.selectedDetails.MANDATORY, [0, 1], ["No", "Yes"]);
-            self.selectedDetails.CDE = doInterrupt(self.selectedDetails.CDE, [0, 1], ["No", "Yes"]);
-
-            // make falsy NA
-            Object.keys(self.selectedDetails).forEach((val) => {
-              self.selectedDetails[val] = !!self.selectedDetails[val].trim() ? self.selectedDetails[val] : "NA";
-            });
-            
-            self.ddomy.DDSource.map(function(v){
-              Object.keys(v).forEach(function(key){
-                v[key] = v[key] ? v[key] : "NA"
-              })
-
-              return v
-            })
-            
-            setTimeout(() => {
-              self.ddSystemNameSelected = self.selectedDetails.SYSTEM_NAME.split(", ")[0];
-              self.ddTableNameSelected = self.selectedDetails.TABLE_NAME.split(", ")[0];
-              self.ddBusinessAliasNameSelected = self.selectedDetails.ALIAS_NAME.split(", ")[0];
-
-              setTimeout(() => {
-                this.firstload = false;
-              }, 100);
-            }, 100);
-          } else {
-            this.selectedDetails = null;
-          }
-        },
-        err => err
-      );
+      return self.getDetails(param);
     }
   },
 }
