@@ -219,7 +219,7 @@ export default {
       store: state => state.ddomy.all
     }),
     ddSystemNameOptions () {
-      return _.uniq(_.map(this.store.DDSource, (v) => v.SYSTEM_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(this.store.DDSource, (v) => v.SYSTEM_NAME.toString())).filter(Boolean);
     },
     ddTableNameOptions () {
       var self = this;
@@ -227,7 +227,7 @@ export default {
         return v.SYSTEM_NAME == self.store.ddVal.ddSystemNameSelected;
       });
 
-      return _.uniq(_.map(filtered, (v) => v.TABLE_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.TABLE_NAME.toString())).filter(Boolean);
     },
     ddBusinessAliasNameOptions () {
       var self = this;
@@ -236,7 +236,7 @@ export default {
           && v.TABLE_NAME == self.store.ddVal.ddTableNameSelected;
       });
       
-      return _.uniq(_.map(filtered, (v) => v.ALIAS_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.ALIAS_NAME.toString())).filter(Boolean);
     },
     exportDatas () {
       if(this.store.selectedDetails){

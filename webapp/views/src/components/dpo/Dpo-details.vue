@@ -377,7 +377,7 @@ export default {
       store: state => state.dpo.all
     }),
     ddImmSystemNameOptions () {
-      return _.uniq(_.map(this.store.DDSourceImmediatePrecedingSystem, (v) => v.SYSTEM_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(this.store.DDSourceImmediatePrecedingSystem, (v) => v.SYSTEM_NAME.toString())).filter(Boolean);
     },
     ddImmItamIDOptions () {
       var self = this;
@@ -385,7 +385,7 @@ export default {
         return v.SYSTEM_NAME == self.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected;
       });
 
-      return _.uniq(_.map(filtered, (v) => v.ITAM_ID.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.ITAM_ID.toString())).filter(Boolean);
     },
     ddImmTableNameOptions () {
       var self = this;
@@ -394,7 +394,7 @@ export default {
           && v.ITAM_ID == self.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected
       });
       
-      return _.uniq(_.map(filtered, (v) => v.TABLE_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.TABLE_NAME.toString())).filter(Boolean);
     },
     ddImmColumnNameOptions () {
       var self = this;
@@ -404,7 +404,7 @@ export default {
           && v.TABLE_NAME == self.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected
       });
       
-      return _.uniq(_.map(filtered, (v) => v.COLUMN_NAME.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.COLUMN_NAME.toString())).filter(Boolean);
     },
     ddImmScreenLabelOptions () {
       var self = this;
@@ -415,10 +415,10 @@ export default {
           && v.COLUMN_NAME == self.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected
       });
       
-      return _.uniq(_.map(filtered, (v) => v.DATA_ELEMENT.toString().trim())).filter(Boolean);
+      return _.uniq(_.map(filtered, (v) => v.DATA_ELEMENT.toString())).filter(Boolean);
     },
     ddUltSystemNameOptions () {
-      var ret = _.uniq(_.map(this.store.DDSourceUltimateSourceSystem, (v) => v.SYSTEM_NAME.toString().trim())).filter(Boolean);
+      var ret = _.uniq(_.map(this.store.DDSourceUltimateSourceSystem, (v) => v.SYSTEM_NAME.toString())).filter(Boolean);
       return ret.length > 0 ? ret : ["NA"];
     },
     ddUltItamIDOptions () {
@@ -427,7 +427,7 @@ export default {
         return v.SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltSystemNameSelected;
       });
 
-      var ret = _.uniq(_.map(filtered, (v) => v.ITAM_ID.toString().trim())).filter(Boolean);
+      var ret = _.uniq(_.map(filtered, (v) => v.ITAM_ID.toString())).filter(Boolean);
       return ret.length > 0 ? ret : ["NA"];
     },
     ddUltTableNameOptions () {
@@ -437,7 +437,7 @@ export default {
           && v.ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltItamIDSelected
       });
       
-      var ret = _.uniq(_.map(filtered, (v) => v.TABLE_NAME.toString().trim())).filter(Boolean);
+      var ret = _.uniq(_.map(filtered, (v) => v.TABLE_NAME.toString())).filter(Boolean);
       return ret.length > 0 ? ret : ["NA"];
     },
     ddUltColumnNameOptions () {
@@ -448,7 +448,7 @@ export default {
           && v.TABLE_NAME == self.store.ddValUltimateSourceSystem.ddUltTableNameSelected
       });
       
-      var ret = _.uniq(_.map(filtered, (v) => v.COLUMN_NAME.toString().trim())).filter(Boolean);
+      var ret = _.uniq(_.map(filtered, (v) => v.COLUMN_NAME.toString())).filter(Boolean);
       return ret.length > 0 ? ret : ["NA"];
     },
     ddUltScreenLabelOptions () {
@@ -460,7 +460,7 @@ export default {
           && v.COLUMN_NAME == self.store.ddValUltimateSourceSystem.ddUltColumnNameSelected
       });
       
-      var ret = _.uniq(_.map(filtered, (v) => v.DATA_ELEMENT.toString().trim())).filter(Boolean);
+      var ret = _.uniq(_.map(filtered, (v) => v.DATA_ELEMENT.toString())).filter(Boolean);
       return ret.length > 0 ? ret : ["NA"];
     },
     exportDatas () {
