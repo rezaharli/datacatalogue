@@ -20,6 +20,14 @@ func NewUsersController() *Users {
 	return new(Users)
 }
 
+func (c *Users) CheckSession(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	isSession := k.GetSession("IsSession", false)
+
+	h.WriteResultOK(k, res, isSession)
+}
+
 func (c *Users) Authenticate(k *knot.WebContext) {
 	res := toolkit.NewResult()
 
@@ -56,6 +64,7 @@ func (c *Users) Authenticate(k *knot.WebContext) {
 		return
 	}
 
+	k.SetSession("IsSession", true)
 	h.WriteResultOK(k, res, user)
 }
 
