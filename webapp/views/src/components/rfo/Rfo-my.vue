@@ -182,6 +182,9 @@ export default {
         // this.setTableColumnsWidth($('#table-rfo-my'));
         this.setTableColumnsWidthRowspan($('#table-rfo-my'));
       }, 300);
+      setTimeout(() => {
+        this.makeTableAlertFull();
+      }, 400);
       this.toggleFieldDisplay(false);
     },
     updated() {
@@ -282,7 +285,12 @@ export default {
             $(this).show();
           }
         });
-      }
+      },
+      makeTableAlertFull(){
+        var elemAlert = $('table.v-table > tbody > tr > td >  .v-alert');
+        var theadWidth = elemAlert.closest('table.v-table').find('thead > tr:first').width() - 50;
+        elemAlert.parent('td').width(theadWidth);
+      },
     }
 }
 </script>
