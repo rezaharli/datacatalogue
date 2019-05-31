@@ -18,8 +18,25 @@ Vue.config.productionTip = process.env.NODE_ENV == 'production';
 Vue.use(BootstrapVue);
 Vue.use(VueLodash);
 
+import IdleVue from 'idle-vue'
+ 
+const eventsHub = new Vue()
+ 
+Vue.use(IdleVue, {
+  eventEmitter: eventsHub,
+  idleTime: 15 * 60 * 1000 //15 minutes
+})
+
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  onIdle() {
+    localStorage.removeItem('user');
+    location.reload(true);
+  },
+  watch: {
+    isAppIdle() {
+    }
+  }
 }).$mount('#app')

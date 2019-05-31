@@ -3,6 +3,7 @@ import { fetchWHeader } from '../_helpers/auth-header';
 import moment from 'moment'
 
 export const userService = {
+    checkSession,
     login,
     logout,
     register,
@@ -12,6 +13,10 @@ export const userService = {
     saveLog,
     getUsageTable
 };
+
+function checkSession() {
+    return fetchWHeader(`/users/checksession`);
+}
 
 function login(username, password) {
     return fetchWHeader(`/users/authenticate`, { username: username, password: password })

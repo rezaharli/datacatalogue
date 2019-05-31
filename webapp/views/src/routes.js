@@ -274,6 +274,10 @@ router.beforeEach((to, from, next) => {
   next()
 });
 
+var checkSession = () => {
+  return store.dispatch(`account/checkSession`);
+}
+
 var saveUsage = function(isAuth, to, from, next){
   var saveLog = (param) => { store.dispatch(`users/saveLog`, param); }
   
@@ -290,34 +294,44 @@ var saveUsage = function(isAuth, to, from, next){
 }
 
 router.beforeEach((to, from, next) => {
-  // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ['/login', '/crypto'];
-  const authRequired = !publicPages.includes(to.path);
-  const loggedIn = localStorage.getItem('user');
-  
-  if (authRequired && !loggedIn) {
-    saveUsage(false, to, from, next);
-    return next('/login');
-  } else {
-    if(to.name != "landingpage" && authRequired){
-      var user = store.state.account.user;
-      if(user)
-        if(to.name.split(".")[0].toLowerCase() == "access"){
-          if(user.Role.toLowerCase().split(",").indexOf("Admin".toLowerCase()) == -1){
-            saveUsage(false, to, from, next);
-            return next('/');
-          }
-        } else {
-          if(user.Role.toLowerCase().split(",").indexOf(to.name.split(".")[0].toLowerCase()) == -1){
-            saveUsage(false, to, from, next);
-            return next('/');
-          }
-        }
-    }
+  checkSession().then(
+    res => {
+      var isSession = store.state.account.isSession;
+      
+      if( ! isSession){
+        localStorage.removeItem('user');
+      }
 
-    saveUsage(true, to, from, next)
-    next();
-  }
+      // redirect to login page if not logged in and trying to access a restricted page
+      const publicPages = ['/login', '/crypto'];
+      const authRequired = !publicPages.includes(to.path);
+      const loggedIn = localStorage.getItem('user');
+      
+      if (authRequired && !loggedIn) {
+        saveUsage(false, to, from, next);
+        return next('/login');
+      } else {
+        if(to.name != "landingpage" && authRequired){
+          var user = store.state.account.user;
+          if(user)
+            if(to.name.split(".")[0].toLowerCase() == "access"){
+              if(user.Role.toLowerCase().split(",").indexOf("Admin".toLowerCase()) == -1){
+                saveUsage(false, to, from, next);
+                return next('/');
+              }
+            } else {
+              if(user.Role.toLowerCase().split(",").indexOf(to.name.split(".")[0].toLowerCase()) == -1){
+                saveUsage(false, to, from, next);
+                return next('/');
+              }
+            }
+        }
+
+        saveUsage(true, to, from, next)
+        next();
+      }
+    }
+  )
 })
 
 export default router

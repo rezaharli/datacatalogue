@@ -4,10 +4,19 @@ import router from '../routes'
 
 const user = JSON.parse(localStorage.getItem('user'));
 const state = user
-    ? { status: { loggedIn: true }, user }
-    : { status: {}, user: null };
+    ? { status: { loggedIn: true }, user, isSession: false }
+    : { status: {}, user: null, isSession: false };
 
 const actions = {
+    checkSession({ commit }) {
+        commit('checkSessionRequest');
+
+        return userService.checkSession()
+            .then(
+                res => commit('checkSessionSuccess', res),
+                error => commit('checkSessionFailure', error)
+            );
+    },
     login({ dispatch, commit }, { username, password }) {
         commit('loginRequest', { username });
     
@@ -31,6 +40,13 @@ const actions = {
 };
 
 const mutations = {
+    checkSessionRequest(state) {
+    },
+    checkSessionSuccess(state, res) {
+        state.isSession = res.Data;
+    },
+    checkSessionFailure(state, error) {
+    },
     loginRequest(state, user) {
         state.status = { loggingIn: true };
         state.user = user;
