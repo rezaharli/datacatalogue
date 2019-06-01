@@ -308,6 +308,11 @@ func (c *DDO) getDetails(payload toolkit.M) (interface{}, interface{}, interface
 					case "GOLDEN_SOURCE":
 						stringVal = doInterrupt(stringVal, []string{"NO", "YES"}, []string{"No", "Yes"})
 						break
+					case "GS_ITAM_ID":
+						if stringVal == "0" {
+							stringVal = "NA"
+						}
+						break
 					}
 				}
 
