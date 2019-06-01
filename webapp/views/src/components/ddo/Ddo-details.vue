@@ -253,9 +253,9 @@ export default {
       this.showModal = showModal;
     },
     'store.ddVal.ddSystemNameSelected' () {
-      if(this.firstload) return;
+      if(this.store.firstload) return;
 
-      if (!this.firstload) {
+      if (!this.store.firstload) {
         var param = {};
 
         if (this.store.ddVal.ddSystemNameSelected && this.store.ddVal.ddSystemNameSelected != "NA") {
@@ -266,9 +266,9 @@ export default {
       }
     },
     'store.ddVal.ddTableNameSelected' () {
-      if(this.firstload) return;
+      if(this.store.firstload) return;
       
-      if (!this.firstload) {
+      if (!this.store.firstload) {
         var param = {};
 
         if (this.store.ddVal.ddSystemNameSelected && this.store.ddVal.ddSystemNameSelected != "NA") {
@@ -283,9 +283,9 @@ export default {
       }
     },
     'store.ddVal.ddBusinessAliasNameSelected' () {
-      if(this.firstload) return;
+      if(this.store.firstload) return;
       
-      if (!this.firstload) {
+      if (!this.store.firstload) {
         var param = {};
 
         if (this.store.ddVal.ddSystemNameSelected && this.store.ddVal.ddSystemNameSelected != "NA") {
