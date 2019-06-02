@@ -69,13 +69,13 @@
                       
                       <td v-bind:style="{ width: store.left.colWidth['PR_COUNT'] + 'px' }" v-if="isDisplayed('PR_COUNT')">
                         <b-link @click.stop="showRightTable(props.item)">
-                          <tablecell :fulltext="props.item.PR_COUNT" showOn="click"></tablecell></b-link></td>
+                          <tablecell :fulltext="props.item.RISK_SUB_TYPEs[0] ? (props.item.RISK_SUB_TYPEs[0].RISK_SUB_TYPEsVal[0].PR_COUNT) : ''" showOn="click"></tablecell></b-link></td>
                       
                       <td v-bind:style="{ width: store.left.colWidth['CRM_COUNT'] + 'px' }" v-if="isDisplayed('CRM_COUNT')">
-                        <tablecell :fulltext="props.item.CRM_COUNT" showOn="click"></tablecell></td>
+                        <tablecell :fulltext="props.item.RISK_SUB_TYPEs[0] ? (props.item.RISK_SUB_TYPEs[0].RISK_SUB_TYPEsVal[0].CRM_COUNT) : ''" showOn="click"></tablecell></td>
                       
                       <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }" v-if="isDisplayed('CDE_COUNT')">
-                        <tablecell :fulltext="props.item.CDE_COUNT" showOn="click"></tablecell></td>
+                        <tablecell :fulltext="props.item.RISK_SUB_TYPEs[0] ? (props.item.RISK_SUB_TYPEs[0].RISK_SUB_TYPEsVal[0].CDE_COUNT) : ''" showOn="click"></tablecell></td>
                     </tr>
 
                     <tr :key="props.item.ID + '' + i" v-for="(item, i) in props.item.RISK_SUB_TYPEs">
@@ -92,13 +92,13 @@
                         
                         <td v-bind:style="{ width: store.left.colWidth['PR_COUNT'] + 'px' }" v-if="isDisplayed('PR_COUNT')">
                           <b-link @click.stop="showRightTable(props.item)">
-                            <tablecell :fulltext="props.item.PR_COUNT" showOn="click"></tablecell></b-link></td>
+                            <tablecell :fulltext="props.item.RISK_SUB_TYPEs[0] ? (props.item.RISK_SUB_TYPEs[i].RISK_SUB_TYPEsVal[0].PR_COUNT) : ''" showOn="click"></tablecell></b-link></td>
                         
                         <td v-bind:style="{ width: store.left.colWidth['CRM_COUNT'] + 'px' }" v-if="isDisplayed('CRM_COUNT')">
-                          <tablecell :fulltext="props.item.CRM_COUNT" showOn="click"></tablecell></td>
+                          <tablecell :fulltext="props.item.RISK_SUB_TYPEs[0] ? (props.item.RISK_SUB_TYPEs[i].RISK_SUB_TYPEsVal[0].CRM_COUNT) : ''" showOn="click"></tablecell></td>
                         
                         <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }" v-if="isDisplayed('CDE_COUNT')">
-                          <tablecell :fulltext="props.item.CDE_COUNT" showOn="click"></tablecell></td>
+                          <tablecell :fulltext="props.item.RISK_SUB_TYPEs[0] ? (props.item.RISK_SUB_TYPEs[i].RISK_SUB_TYPEsVal[0].CDE_COUNT) : ''" showOn="click"></tablecell></td>
                       </template>
                     </tr>
                   </template>
