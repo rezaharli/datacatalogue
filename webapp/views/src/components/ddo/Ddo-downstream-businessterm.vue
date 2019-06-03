@@ -370,13 +370,16 @@ export default {
 
       tbodyTR.each(function () {
         $(this).children('td:not([colspan])').each(function (tdIndex2) {
-          if(tdIndex2==7){
-            var colWidth = thWidths[parseInt(tdIndex2)] + thWidths[parseInt(tdIndex2)+1] + thWidths[parseInt(tdIndex2)+2];
+          if(tdIndex2==5){
+            var colWidth = thWidths[parseInt(tdIndex2)] + thWidths[parseInt(tdIndex2)+1] + thWidths[parseInt(tdIndex2)+2] + thWidths[parseInt(tdIndex2)+3] + thWidths[parseInt(tdIndex2)+4];
+            $(this).css({'padding': '0'});
           }else{
             var colWidth = thWidths[parseInt(tdIndex2)];
           }
           if(tdIndex2==0){
-            colWidth = colWidth - 75; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+            colWidth = colWidth - 70; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+          }else if(tdIndex2==5){
+            colWidth = colWidth - 0; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
           }else{
             colWidth = colWidth - 60; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
           }
@@ -402,8 +405,8 @@ export default {
         var tableLv1TRs = tableLv1.find('table.v-table > tbody > tr');
         tableLv1TRs.each(function () {
           $(this).children('td:not([colspan])').each(function (tdIndex2) {
-            if(tdIndex2==7){
-              var colWidth = thWidths[parseInt(tdIndex2)] + thWidths[parseInt(tdIndex2)+1] + thWidths[parseInt(tdIndex2)+2];
+            if(tdIndex2==5){
+              var colWidth = thWidths[parseInt(tdIndex2)] + thWidths[parseInt(tdIndex2)+1] + thWidths[parseInt(tdIndex2)+2] + thWidths[parseInt(tdIndex2)+3] + thWidths[parseInt(tdIndex2)+4];
             }else{
               var colWidth = thWidths[parseInt(tdIndex2)];
             }
@@ -421,8 +424,8 @@ export default {
         var tableLv2TRs = tableLv2.find('table.v-table > tbody > tr');
         tableLv2TRs.each(function () {
           $(this).children('td:not([colspan])').each(function (tdIndex2) {
-            if(tdIndex2==7){
-              var colWidth = thWidths[parseInt(tdIndex2)] + thWidths[parseInt(tdIndex2)+1] + thWidths[parseInt(tdIndex2)+2];
+            if(tdIndex2==5){
+              var colWidth = thWidths[parseInt(tdIndex2)] + thWidths[parseInt(tdIndex2)+1] + thWidths[parseInt(tdIndex2)+2] + thWidths[parseInt(tdIndex2)+3] + thWidths[parseInt(tdIndex2)+4];
             }else{
               var colWidth = thWidths[parseInt(tdIndex2)];
             }
