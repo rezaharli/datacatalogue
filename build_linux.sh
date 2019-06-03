@@ -23,7 +23,10 @@ cp -a "queryfiles/." "../builds/${foldername}/webapp/queryfiles/"
 
 cd ../builds/
 zip -r "${foldername}.zip" "${foldername}"
-echo "${foldername}"
+echo ""
+echo "Build:"
+echo "http://go.eaciit.com/files/datacatalogue/${foldername}.zip"
+echo ""
 rm -r "${foldername}"
 
 export GOOS=darwin
