@@ -73,8 +73,8 @@
 
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                      <td v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }" class="text-uppercase">{{props.item.DSP_NAME}}</td>
-                      <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }" class="text-capitalize"><tablecell :fulltext="props.item.PROCESS_OWNER" showOn="click"></tablecell></td>
+                      <td v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }" class="text-uppercase">{{ props.item.DSP_NAME.toString().trim() ? props.item.DSP_NAME : 'NA' }}</td>
+                      <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }" class="text-capitalize"><tablecell :fulltext="props.item.PROCESS_OWNER.toString().trim() ? props.item.PROCESS_OWNER : 'NA'" showOn="click"></tablecell></td>
                       <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }" class="text-capitalize"><b-link @click.stop="showCDEs(props.item)"><tablecell :fulltext="props.item.CDE_COUNT" showOn="hover"></tablecell></b-link></td>
                     </tr>
                   </template>
