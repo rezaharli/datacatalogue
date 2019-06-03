@@ -313,6 +313,11 @@ func (c *DDO) getDetails(payload toolkit.M) (interface{}, interface{}, interface
 							stringVal = "NA"
 						}
 						break
+					case "TGS_ITAM_ID":
+						if stringVal == "0" {
+							stringVal = "NA"
+						}
+						break
 					}
 				}
 
