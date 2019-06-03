@@ -9,7 +9,7 @@
 <template>
   <v-data-table
       :headers="store.leftHeaders.filter(v => v.display == true && v.forInnerTable == true)"
-      :items="props.item.GSSystems"
+      :items="props.item.AliasName"
       :expand="false"
       item-key="ID"
       class="golden-source-level-1"
@@ -18,20 +18,28 @@
 
     <template slot="items" slot-scope="props">
       <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-        <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }" class="text-capitalize text-title">
-          <b-link @click="props.expanded = !props.expanded" v-if="props.item.GSTables.length > 0">
-            <tablecell :fulltext="props.item.GS_SYSTEM_NAME" showOn="hover"></tablecell>
+        <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }" class="text-capitalize text-title">
+          <b-link @click="props.expanded = !props.expanded" v-if="props.item.GoldenSource.length > 0">
+            <tablecell :fulltext="props.item.ALIAS_NAME" showOn="hover"></tablecell>
           </b-link>
 
-          <tablecell :fulltext="props.item.GS_SYSTEM_NAME" showOn="hover" v-if="props.item.GSTables.length < 1"></tablecell>
+          <tablecell :fulltext="props.item.ALIAS_NAME" showOn="hover" v-if="props.item.GoldenSource.length < 1"></tablecell>
+        </td>
+
+        <td v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }" class="text-uppercase">
+          <tablecell showOn="hover" v-if="isGSMainLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
+        </td>
+
+        <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }" class="text-uppercase">
+          <tablecell showOn="hover" v-if="isGSMainLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
         </td>
 
         <td v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }" class="text-uppercase">
-          <tablecell showOn="hover" v-if="isGSMainLevelCellShowing(props)" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
+          <tablecell showOn="hover" v-if="isGSMainLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
         </td>
 
         <td v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }" class="text-uppercase">
-          <tablecell showOn="hover" v-if="isGSMainLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
+          <tablecell showOn="hover" v-if="isGSMainLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
         </td>
       </tr>
     </template>
@@ -39,47 +47,128 @@
     <template slot="expand" slot-scope="props">
       <v-data-table
         :headers="store.leftHeaders.filter(v => v.display == true && v.forInnerTable == true)"
-        :items="props.item.GSTables"
+        :items="props.item.GoldenSource"
         :expand="false"
         class="golden-source-level-2"
-        item-key="TMTID"
+        item-key="GSID"
         hide-actions
         hide-headers
         @update:pagination="setExpandedTableColumnsWidthGS"
       >
         <template slot="items" slot-scope="props">
-          <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
+          <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
 
-          <td v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
-            <b-link @click="props.expanded = !props.expanded" v-if="props.item.GSColumns.length >= 1">
-              <tablecell :fulltext="props.item.GS_TABLE_NAME" showOn="hover"></tablecell>
-            </b-link>
+          <td v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
+            <template v-if="props.item.GOLDEN_SOURCE.toLowerCase() == 'no'">
+              <b-link @click="props.expanded = !props.expanded" v-if="props.item.GSSystemName.length >= 1">
+                <tablecell :fulltext="props.item.GOLDEN_SOURCE" showOn="hover"></tablecell>
+              </b-link>
 
-            <tablecell :fulltext="props.item.GS_TABLE_NAME" showOn="hover" v-if="props.item.GSColumns.length < 1"></tablecell>
+              <tablecell :fulltext="props.item.GOLDEN_SOURCE" showOn="hover" v-if="props.item.GSSystemName.length < 1"></tablecell>
+            </template>
+
+            <template v-if="props.item.GOLDEN_SOURCE.toLowerCase() == 'yes'">
+              <tablecell :fulltext="props.item.GOLDEN_SOURCE" showOn="hover"></tablecell>
+            </template>
+          </td>
+
+          <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">
+            <tablecell showOn="hover" v-if="isGSSecondLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
+          </td>
+
+          <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
+            <tablecell showOn="hover" v-if="isGSSecondLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
           </td>
 
           <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
-            <tablecell showOn="hover" v-if="isGSTableLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
+            <tablecell showOn="hover" v-if="isGSSecondLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
           </td>
         </template>
 
         <template slot="expand" slot-scope="props">
           <v-data-table
             :headers="store.leftHeaders.filter(v => v.display == true && v.forInnerTable == true)"
-            :items="props.item.GSColumns"
-            item-key="COLID"
+            :items="props.item.GSSystemName"
+            :expand="false"
             class="golden-source-level-3"
+            item-key="SYSID"
             hide-actions
             hide-headers
             @update:pagination="setExpandedTableColumnsWidthGS"
           >
             <template slot="items" slot-scope="props">
-              <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
-              <td v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">&nbsp;</td>
+              <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
+              <td v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">&nbsp;</td>
 
-              <td v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
-                <tablecell :fulltext="props.item.GS_COLUMN_NAME" showOn="hover"></tablecell>
+              <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">
+                <b-link @click="props.expanded = !props.expanded" v-if="props.item.GSTableName.length >= 1">
+                  <tablecell :fulltext="props.item.GS_SYSTEM_NAME" showOn="hover"></tablecell>
+                </b-link>
+
+                <tablecell :fulltext="props.item.GS_SYSTEM_NAME" showOn="hover" v-if="props.item.GSTableName.length < 1"></tablecell>
               </td>
+
+              <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
+                <tablecell showOn="hover" v-if="isGSThirdLevelCellShowing(props)" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
+              </td>
+
+              <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
+                <tablecell showOn="hover" v-if="isGSThirdLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
+              </td>
+            </template>
+
+            <template slot="expand" slot-scope="props">
+              <v-data-table
+                :headers="store.leftHeaders.filter(v => v.display == true && v.forInnerTable == true)"
+                :items="props.item.GSTableName"
+                :expand="false"
+                class="golden-source-level-3"
+                item-key="TBTID"
+                hide-actions
+                hide-headers
+                @update:pagination="setExpandedTableColumnsWidthGS"
+              >
+                <template slot="items" slot-scope="props">
+                  <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
+                  <td v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">&nbsp;</td>
+                  <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
+
+                  <td v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
+                    <b-link @click="props.expanded = !props.expanded" v-if="props.item.GSColumnName.length >= 1">
+                      <tablecell :fulltext="props.item.GS_TABLE_NAME" showOn="hover"></tablecell>
+                    </b-link>
+
+                    <tablecell :fulltext="props.item.GS_TABLE_NAME" showOn="hover" v-if="props.item.GSColumnName.length < 1"></tablecell>
+                  </td>
+
+                  <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
+                    <tablecell showOn="hover" v-if="isGSTableLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
+                  </td>
+                </template>
+
+                <template slot="expand" slot-scope="props">
+                  <v-data-table
+                    :headers="store.leftHeaders.filter(v => v.display == true && v.forInnerTable == true)"
+                    :items="props.item.GSColumnName"
+                    item-key="COLID"
+                    class="golden-source-level-3"
+                    hide-actions
+                    hide-headers
+                    @update:pagination="setExpandedTableColumnsWidthGS"
+                  >
+                    <template slot="items" slot-scope="props">
+                      <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
+                      <td v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">&nbsp;</td>
+                      <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
+                      <td v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">&nbsp;</td>
+
+                      <td v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
+                        <tablecell :fulltext="props.item.GS_COLUMN_NAME" showOn="hover"></tablecell>
+                      </td>
+                    </template>
+                  </v-data-table>
+                </template>
+              </v-data-table>
             </template>
           </v-data-table>
         </template>
@@ -186,8 +275,28 @@ export default {
     isGSMainLevelCellShowing (props){
       if( ! props.expanded) return true;
       else {
-        if(props.item.GSTables.length > 0) {
-          if(props.item.GSTables[0].GSColumns.length == 0) return true;
+        if(props.item.GoldenSource.length > 0) {
+          if(props.item.GoldenSource[0].GSSystemName.length == 0) return true;
+        }
+        
+        return false;
+      }
+    },
+    isGSSecondLevelCellShowing (props){
+      if( ! props.expanded) return true;
+      else {
+        if(props.item.GSSystemName.length > 0) {
+          if(props.item.GSSystemName[0].GSTableName.length == 0) return true;
+        }
+        
+        return false;
+      }
+    },
+    isGSThirdLevelCellShowing (props){
+      if( ! props.expanded) return true;
+      else {
+        if(props.item.GSTableName.length > 0) {
+          if(props.item.GSTableName[0].GSColumnName.length == 0) return true;
         }
         
         return false;
@@ -196,7 +305,7 @@ export default {
     isGSTableLevelCellShowing (props){
       if( ! props.expanded) return true;
       else {
-        if(props.item.GSColumns.length > 0) {
+        if(props.item.GSColumnName.length > 0) {
           return true;
         }
         

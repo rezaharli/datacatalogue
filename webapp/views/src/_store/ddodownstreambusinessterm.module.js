@@ -15,11 +15,11 @@ const state = {
         leftHeaders: [
             { align: 'left', display: true, filterable: false, exportable: false, displayCount: false, sortable: false, forInnerTable: false, text: 'Details', value: 'Details' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, forInnerTable: false, text: 'Business Term', value: 'BT_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, forInnerTable: false, text: 'Business Alias Name', value: 'ALIAS_NAME' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, forInnerTable: false, text: 'System Consumed from', value: 'SYSTEM_CONSUMED' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, forInnerTable: false, text: 'System Table Name', value: 'TABLE_NAME' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, forInnerTable: false, text: 'System Column Name', value: 'COLUMN_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, forInnerTable: false, text: 'Golden source (Yes / No)', value: 'GOLDEN_SOURCE' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, forInnerTable: true, text: 'Business Alias Name', value: 'ALIAS_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, forInnerTable: true, text: 'Golden source (Yes / No)', value: 'GOLDEN_SOURCE' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, forInnerTable: true, text: 'Golden Source System name', value: 'GS_SYSTEM_NAME' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, forInnerTable: true, text: 'Golden Source Table Name', value: 'GS_TABLE_NAME' },
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, forInnerTable: true, text: 'Golden Source Column Name', value: 'GS_COLUMN_NAME' },

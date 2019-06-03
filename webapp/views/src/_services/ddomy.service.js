@@ -108,6 +108,13 @@ function getDownstreamTable(param) {
 function getDownstreamBusinesstermTable(param) {
     return fetchWHeader(`/ddo/getdownstreambusinesstermtable`, param).then(
         res => {
+            res.Data = [
+                {"ALIAS_NAME":"Overall Risk Rating","BT_NAME":"Customer Due Diligence (CDD) Risk Rating Code","COLUMN_NAME":"FINAL_RATING","DATA_DOMAIN":"Client \u0026 Counterparty - Individual\n","GOLDEN_SOURCE":"YES","GS_COLUMN_NAME":"FINAL_RATING","GS_ITAM_ID":22327,"GS_SYSTEM_NAME":"CuPID II","GS_TABLE_NAME":"CIF_EDD_SDD","RESULT_COUNT":1,"R__":1,"SUB_DOMAINS":"Client \u0026 Counterparty - Individuals / Entities (for Private Banking)","SYSTEM_CONSUMED":"","TABLE_NAME":"CIF_EDD_SDD"},
+                {"ALIAS_NAME":"Current CRA Rating","BT_NAME":"Customer Due Diligence (CDD) Risk Rating Code","COLUMN_NAME":"FINAL_RATING","DATA_DOMAIN":"Client \u0026 Counterparty - Individual\n","GOLDEN_SOURCE":"NO","GS_COLUMN_NAME":"FINAL_RATING","GS_ITAM_ID":22327,"GS_SYSTEM_NAME":"CuPID II","GS_TABLE_NAME":"PERSONAL_PARTY_SECRET","RESULT_COUNT":1,"R__":1,"SUB_DOMAINS":"Client \u0026 Counterparty - Individuals / Entities (for Private Banking)","SYSTEM_CONSUMED":"","TABLE_NAME":"PERSONAL_PARTY_SECRET"},
+                {"ALIAS_NAME":"Current CRA Rating","BT_NAME":"Customer Due Diligence (CDD) Risk Rating Code","COLUMN_NAME":"FINAL_RATING","DATA_DOMAIN":"Client \u0026 Counterparty - Individual\n","GOLDEN_SOURCE":"NO","GS_COLUMN_NAME":"FINAL_RATING","GS_ITAM_ID":22327,"GS_SYSTEM_NAME":"CuPID II","GS_TABLE_NAME":"NONPERSONAL_PARTY_SECRET","RESULT_COUNT":1,"R__":1,"SUB_DOMAINS":"Client \u0026 Counterparty - Individuals / Entities (for Private Banking)","SYSTEM_CONSUMED":"","TABLE_NAME":"NONPERSONAL_PARTY_SECRET"},
+                {"ALIAS_NAME":"Current CRA Rating","BT_NAME":"Customer Due Diligence (CDD) Risk Rating Code","COLUMN_NAME":"FINAL_RATING","DATA_DOMAIN":"Client \u0026 Counterparty - Individual\n","GOLDEN_SOURCE":"NO","GS_COLUMN_NAME":"FINAL_RATING 2","GS_ITAM_ID":22327,"GS_SYSTEM_NAME":"CuPID II","GS_TABLE_NAME":"NONPERSONAL_PARTY_SECRET","RESULT_COUNT":1,"R__":1,"SUB_DOMAINS":"Client \u0026 Counterparty - Individuals / Entities (for Private Banking)","SYSTEM_CONSUMED":"","TABLE_NAME":"NONPERSONAL_PARTY_SECRET"},
+            ]
+
             res.Data = _.map(res.Data, function(v){
                 v.GOLDEN_SOURCE = v.GOLDEN_SOURCE.toLowerCase();
                 v.GOLDEN_SOURCE = v.GOLDEN_SOURCE.charAt(0).toUpperCase() + v.GOLDEN_SOURCE.slice(1);
@@ -167,32 +174,56 @@ function getDownstreamBusinesstermTable(param) {
                     return ret;
                 });
 
-                var tmp5 = _.groupBy(tmp[v], "GS_SYSTEM_NAME")
-                ret.GSSystems = _.map(Object.keys(tmp5), function(w, j){
+                var tmp5 = _.groupBy(tmp[v], "ALIAS_NAME")
+                ret.AliasName = _.map(Object.keys(tmp5), function(w, j){
                     var tmpTmp5 = _.cloneDeep(tmp5[w]);
 
                     var ret             = tmpTmp5[0];
                     ret.ID              = j;
-                    ret.GSSystemsVal    = tmpTmp5;
-                    ret.GS_SYSTEM_NAME  = w;
+                    ret.AliasNameVal    = tmpTmp5;
+                    ret.ALIAS_NAME  = w;
 
-                    var tmp6 = _.groupBy(tmp5[w], "GS_TABLE_NAME");  
-                    ret.GSTables = _.map(Object.keys(tmp6), function(x, k){
+                    var tmp6 = _.groupBy(tmp5[w], "GOLDEN_SOURCE");  
+                    ret.GoldenSource = _.map(Object.keys(tmp6), function(x, k){
                         var tmpTmp6 = _.cloneDeep(tmp6[x]);
 
                         var ret             = tmpTmp6[0];
-                        ret.TMTID           = k;
-                        ret.GSTablesVal     = tmpTmp6;
-                        ret.GS_TABLE_NAME   = x;
+                        ret.GSID           = k;
+                        ret.GoldenSourceVal = tmpTmp6;
+                        ret.GOLDEN_SOURCE   = x;
 
-                        var tmp7 = _.groupBy(tmp6[x], "GS_COLUMN_NAME");
-                        ret.GSColumns = _.map(Object.keys(tmp7), function(y, l){
+                        var tmp7 = _.groupBy(tmp6[x], "GS_SYSTEM_NAME");
+                        ret.GSSystemName = _.map(Object.keys(tmp7), function(y, l){
                             var tmpTmp7 = _.cloneDeep(tmp7[y]);
 
                             var ret             = tmpTmp7[0];
-                            ret.COLID           = l;
-                            ret.GSColumnsVal    = tmpTmp7;
-                            ret.GS_COLUMN_NAME  = y;
+                            ret.SYSID           = l;
+                            ret.GSSystemNameVal    = tmpTmp7;
+                            ret.GS_SYSTEM_NAME  = y;
+
+                            var tmp8 = _.groupBy(tmp7[y], "GS_TABLE_NAME");
+                            ret.GSTableName = _.map(Object.keys(tmp8), function(z, m){
+                                var tmpTmp8 = _.cloneDeep(tmp8[z]);
+
+                                var ret             = tmpTmp8[0];
+                                ret.TBTID           = m;
+                                ret.GSTableNameVal  = tmpTmp8;
+                                ret.GS_TABLE_NAME   = z;
+
+                                var tmp9 = _.groupBy(tmp8[z], "GS_COLUMN_NAME");
+                                ret.GSColumnName = _.map(Object.keys(tmp9), function(a, n){
+                                    var tmpTmp9 = _.cloneDeep(tmp9[a]);
+    
+                                    var ret             = tmpTmp9[0];
+                                    ret.COLID           = n;
+                                    ret.GSColumnNameVal  = tmpTmp9;
+                                    ret.GS_COLUMN_NAME   = a;
+    
+                                    return ret;
+                                });
+
+                                return ret;
+                            });
 
                             return ret;
                         });
@@ -222,13 +253,25 @@ function getDownstreamBusinesstermTable(param) {
                     v.Systems.shift();
                 }
 
-                v.GSSystems.forEach(w => {
-                    w.GSTables.forEach(x => {
-                        x.GSColumns.shift();
+                v.AliasName.forEach(w => {
+                    w.GoldenSource.forEach(x => {
+                        x.GSSystemName.forEach(y => {
+                            y.GSTableName.forEach(z => {
+                                z.GSColumnName.shift();
+                            });
+        
+                            if(y.GSTableName[0].GSColumnName.length == 0){
+                                y.GSTableName.shift();
+                            }
+                        });
+    
+                        if(x.GSSystemName[0].GSTableName.length == 0){
+                            x.GSSystemName.shift();
+                        }
                     });
 
-                    if(w.GSTables[0].GSColumns.length == 0){
-                        w.GSTables.shift();
+                    if(w.GoldenSource[0].GSSystemName.length == 0){
+                        w.GoldenSource.shift();
                     }
                 });
             });
