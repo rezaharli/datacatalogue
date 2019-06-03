@@ -478,9 +478,9 @@ export default {
       this.showModal = showModal;
     },
     'store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected' () {
-      if(this.firstload) return;
+      if(this.store.firstload) return;
 
-      if (!this.firstload) {
+      if (!this.store.firstload) {
         var param = {};
 
         if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
@@ -491,9 +491,9 @@ export default {
       }
     },
     'store.ddValImmediatePrecedingSystem.ddImmItamIDSelected' () {
-      if(this.firstload) return;
+      if(this.store.firstload) return;
       
-      if (!this.firstload) {
+      if (!this.store.firstload) {
         var param = {};
 
         if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
@@ -507,9 +507,9 @@ export default {
       }
     },
     'store.ddValImmediatePrecedingSystem.ddImmTableNameSelected' () {
-      if(this.firstload) return;
+      if(this.store.firstload) return;
       
-      if (!this.firstload) {
+      if (!this.store.firstload) {
         var param = {};
 
         if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
@@ -526,9 +526,9 @@ export default {
       }
     },
     'store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected' () {
-      if(this.firstload) return;
+      if(this.store.firstload) return;
       
-      if (!this.firstload) {
+      if (!this.store.firstload) {
         var param = {};
 
         if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
@@ -548,9 +548,9 @@ export default {
       }
     },
     'store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected' () {
-      if(this.firstload) return;
+      if(this.store.firstload) return;
       
-      if (!this.firstload) {
+      if (!this.store.firstload) {
         var param = {};
 
         if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
@@ -573,9 +573,9 @@ export default {
       }
     },
     'store.ddValUltimateSourceSystem.ddUltSystemNameSelected' () {
-      if(this.firstload) return;
+      if(this.store.firstload) return;
       
-      if (!this.firstload) {
+      if (!this.store.firstload) {
         var param = {};
 
         if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
@@ -601,9 +601,9 @@ export default {
       }
     },
     'store.ddValUltimateSourceSystem.ddUltItamIDSelected' () {
-      if(this.firstload) return;
+      if(this.store.firstload) return;
       
-      if (!this.firstload) {
+      if (!this.store.firstload) {
         var param = {};
 
         if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
@@ -632,9 +632,9 @@ export default {
       }
     },
     'store.ddValUltimateSourceSystem.ddUltTableNameSelected' () {
-      if(this.firstload) return;
+      if(this.store.firstload) return;
       
-      if (!this.firstload) {
+      if (!this.store.firstload) {
         var param = {};
 
         if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
@@ -666,9 +666,9 @@ export default {
       }
     },
     'store.ddValUltimateSourceSystem.ddUltColumnNameSelected' () {
-      if(this.firstload) return;
+      if(this.store.firstload) return;
       
-      if (!this.firstload) {
+      if (!this.store.firstload) {
         var param = {};
 
         if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
@@ -703,9 +703,9 @@ export default {
       }
     },
     'store.ddValUltimateSourceSystem.ddUltScreenLabelSelected' (){
-      if(this.firstload) return;
+      if(this.store.firstload) return;
 
-      if (!this.firstload) {
+      if (!this.store.firstload) {
         var param = {};
 
         if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
