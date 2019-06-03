@@ -89,10 +89,6 @@
                         <span v-if="props.item.Systems.length < 1">{{ props.item.BT_NAME }}</span>
                       </td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" :fulltext="props.item.ALIAS_NAME"></tablecell>
-                      </td>
-
                       <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CONSUMED'] + 'px' }" class="text-uppercase">
                         <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.SYSTEM_CONSUMED"></tablecell>
                       </td>
@@ -105,11 +101,7 @@
                         <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
                       </td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }" class="text-capitalize">
-                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
-                      </td>
-
-                      <td v-bind:style="{ width: (store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
+                      <td v-bind:style="{ width: (store.left.colWidth['ALIAS_NAME'] + store.left.colWidth['GOLDEN_SOURCE'] + store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
                         <downstream-g-s :props="props"></downstream-g-s>
                       </td>
                     </tr>
@@ -130,7 +122,6 @@
                       <template slot="items" slot-scope="props">
                         <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
                         <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }">&nbsp;</td>
-                        <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
 
                         <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CONSUMED'] + 'px' }">
                           <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length >= 1">
@@ -148,11 +139,7 @@
                           <tablecell showOn="hover" v-if="isSystemLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
                         </td>
 
-                        <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
-                          <tablecell showOn="hover" v-if="isSystemLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
-                        </td>
-
-                        <td v-bind:style="{ width: (store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
+                        <td v-bind:style="{ width: (store.left.colWidth['ALIAS_NAME'] + store.left.colWidth['GOLDEN_SOURCE'] +store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
                           <!-- <downstream-g-s :props="props"></downstream-g-s> -->
                         </td>
                       </template>
@@ -170,7 +157,6 @@
                           <template slot="items" slot-scope="props">
                             <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
                             <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }">&nbsp;</td>
-                            <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
                             <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CONSUMED'] + 'px' }">&nbsp;</td>
 
                             <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
@@ -185,11 +171,7 @@
                               <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
                             </td>
 
-                            <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
-                              <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
-                            </td>
-
-                            <td v-bind:style="{ width: (store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
+                            <td v-bind:style="{ width: (store.left.colWidth['ALIAS_NAME'] + store.left.colWidth['GOLDEN_SOURCE'] +store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
                               <!-- <downstream-g-s :props="props"></downstream-g-s> -->
                             </td>
                           </template>
@@ -207,17 +189,13 @@
                               <template slot="items" slot-scope="props">
                                 <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
                                 <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }">&nbsp;</td>
-                                <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
                                 <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CONSUMED'] + 'px' }">&nbsp;</td>
                                 <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
 
                                 <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
                                   <tablecell showOn="hover" :fulltext="props.item.COLUMN_NAME"></tablecell></td>
 
-                                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
-                                  <tablecell showOn="hover" :fulltext="props.item.GOLDEN_SOURCE"></tablecell></td>
-
-                                <td v-bind:style="{ width: (store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
+                                <td v-bind:style="{ width: (store.left.colWidth['ALIAS_NAME'] + store.left.colWidth['GOLDEN_SOURCE'] +store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
                                   <!-- <downstream-g-s :props="props"></downstream-g-s> -->
                                 </td>
                               </template>
