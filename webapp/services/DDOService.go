@@ -238,7 +238,7 @@ func (s *DDOService) GetDownstreamTable(system string, colFilter interface{}, pa
 
 	///////// --------------------------------------------------COLUMN FILTER
 	gridArgs.Colnames = append(gridArgs.Colnames,
-		"DATA_DOMAIN", "DP_NAME", "BT_COUNT",
+		"DP_NAME", "PROCESS_OWNER", "BT_COUNT",
 	)
 
 	colFilterM, err := toolkit.ToM(colFilter)
