@@ -281,8 +281,10 @@ export default {
     isGSMainLevelCellShowing (props){
       if( ! props.expanded) return true;
       else {
-        if(props.item.GoldenSource.length > 0) {
-          if(props.item.GoldenSource[0].GSSystemName.length == 0) return true;
+        if(props.item.GOLDEN_SOURCE.toLowerCase() == 'yes') return true;
+
+        if(props.item.GoldenSourceVal.length > 0) {
+          if(props.item.GoldenSourceVal[0].GSSystemName.length == 0) return true;
         }
         
         return false;
@@ -291,8 +293,8 @@ export default {
     isGSSecondLevelCellShowing (props){
       if( ! props.expanded) return true;
       else {
-        if(props.item.GSSystemName.length > 0) {
-          if(props.item.GSSystemName[0].GSTableName.length == 0) return true;
+        if(props.item.GSSystemNameVal.length > 0) {
+          if(props.item.GSSystemNameVal[0].GSTableName.length == 0) return true;
         }
         
         return false;
@@ -301,8 +303,8 @@ export default {
     isGSThirdLevelCellShowing (props){
       if( ! props.expanded) return true;
       else {
-        if(props.item.GSTableName.length > 0) {
-          if(props.item.GSTableName[0].GSColumnName.length == 0) return true;
+        if(props.item.GSTableNameVal.length > 0) {
+          if(props.item.GSTableNameVal[0].GSColumnName.length == 0) return true;
         }
         
         return false;
@@ -311,7 +313,7 @@ export default {
     isGSTableLevelCellShowing (props){
       if( ! props.expanded) return true;
       else {
-        if(props.item.GSColumnName.length > 0) {
+        if(props.item.GSColumnNameVal.length > 0) {
           return true;
         }
         
