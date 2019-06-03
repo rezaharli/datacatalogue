@@ -111,7 +111,8 @@ function getDownstreamBusinesstermTable(param) {
             res.Data = [
                 {"ALIAS_NAME":"Overall Risk Rating","BT_NAME":"Customer Due Diligence (CDD) Risk Rating Code","COLUMN_NAME":"FINAL_RATING","DATA_DOMAIN":"Client \u0026 Counterparty - Individual\n","GOLDEN_SOURCE":"YES","GS_COLUMN_NAME":"FINAL_RATING","GS_ITAM_ID":22327,"GS_SYSTEM_NAME":"CuPID II","GS_TABLE_NAME":"CIF_EDD_SDD","RESULT_COUNT":1,"R__":1,"SUB_DOMAINS":"Client \u0026 Counterparty - Individuals / Entities (for Private Banking)","SYSTEM_CONSUMED":"","TABLE_NAME":"CIF_EDD_SDD"},
                 {"ALIAS_NAME":"Current CRA Rating","BT_NAME":"Customer Due Diligence (CDD) Risk Rating Code","COLUMN_NAME":"FINAL_RATING","DATA_DOMAIN":"Client \u0026 Counterparty - Individual\n","GOLDEN_SOURCE":"NO","GS_COLUMN_NAME":"FINAL_RATING","GS_ITAM_ID":22327,"GS_SYSTEM_NAME":"CuPID II","GS_TABLE_NAME":"PERSONAL_PARTY_SECRET","RESULT_COUNT":1,"R__":1,"SUB_DOMAINS":"Client \u0026 Counterparty - Individuals / Entities (for Private Banking)","SYSTEM_CONSUMED":"","TABLE_NAME":"PERSONAL_PARTY_SECRET"},
-                {"ALIAS_NAME":"Current CRA Rating","BT_NAME":"Customer Due Diligence (CDD) Risk Rating Code","COLUMN_NAME":"FINAL_RATING","DATA_DOMAIN":"Client \u0026 Counterparty - Individual\n","GOLDEN_SOURCE":"NO","GS_COLUMN_NAME":"FINAL_RATING","GS_ITAM_ID":22327,"GS_SYSTEM_NAME":"CuPID II","GS_TABLE_NAME":"NONPERSONAL_PARTY_SECRET","RESULT_COUNT":1,"R__":1,"SUB_DOMAINS":"Client \u0026 Counterparty - Individuals / Entities (for Private Banking)","SYSTEM_CONSUMED":"","TABLE_NAME":"NONPERSONAL_PARTY_SECRET"}
+                {"ALIAS_NAME":"Current CRA Rating","BT_NAME":"Customer Due Diligence (CDD) Risk Rating Code","COLUMN_NAME":"FINAL_RATING","DATA_DOMAIN":"Client \u0026 Counterparty - Individual\n","GOLDEN_SOURCE":"NO","GS_COLUMN_NAME":"FINAL_RATING","GS_ITAM_ID":22327,"GS_SYSTEM_NAME":"CuPID II","GS_TABLE_NAME":"NONPERSONAL_PARTY_SECRET","RESULT_COUNT":1,"R__":1,"SUB_DOMAINS":"Client \u0026 Counterparty - Individuals / Entities (for Private Banking)","SYSTEM_CONSUMED":"","TABLE_NAME":"NONPERSONAL_PARTY_SECRET"},
+                {"ALIAS_NAME":"Current CRA Rating","BT_NAME":"Customer Due Diligence (CDD) Risk Rating Code","COLUMN_NAME":"FINAL_RATING","DATA_DOMAIN":"Client \u0026 Counterparty - Individual\n","GOLDEN_SOURCE":"NO","GS_COLUMN_NAME":"FINAL_RATING 2","GS_ITAM_ID":22327,"GS_SYSTEM_NAME":"CuPID II","GS_TABLE_NAME":"NONPERSONAL_PARTY_SECRET","RESULT_COUNT":1,"R__":1,"SUB_DOMAINS":"Client \u0026 Counterparty - Individuals / Entities (for Private Banking)","SYSTEM_CONSUMED":"","TABLE_NAME":"NONPERSONAL_PARTY_SECRET"},
             ]
 
             res.Data = _.map(res.Data, function(v){
@@ -187,7 +188,7 @@ function getDownstreamBusinesstermTable(param) {
                         var tmpTmp6 = _.cloneDeep(tmp6[x]);
 
                         var ret             = tmpTmp6[0];
-                        ret.TMTID           = k;
+                        ret.GSID           = k;
                         ret.GoldenSourceVal = tmpTmp6;
                         ret.GOLDEN_SOURCE   = x;
 
@@ -196,7 +197,7 @@ function getDownstreamBusinesstermTable(param) {
                             var tmpTmp7 = _.cloneDeep(tmp7[y]);
 
                             var ret             = tmpTmp7[0];
-                            ret.COLID           = l;
+                            ret.SYSID           = l;
                             ret.GSSystemNameVal    = tmpTmp7;
                             ret.GS_SYSTEM_NAME  = y;
 
@@ -205,9 +206,21 @@ function getDownstreamBusinesstermTable(param) {
                                 var tmpTmp8 = _.cloneDeep(tmp8[z]);
 
                                 var ret             = tmpTmp8[0];
-                                ret.TBLID           = m;
+                                ret.TBTID           = m;
                                 ret.GSTableNameVal  = tmpTmp8;
                                 ret.GS_TABLE_NAME   = z;
+
+                                var tmp9 = _.groupBy(tmp8[z], "GS_COLUMN_NAME");
+                                ret.GSColumnName = _.map(Object.keys(tmp9), function(a, n){
+                                    var tmpTmp9 = _.cloneDeep(tmp9[a]);
+    
+                                    var ret             = tmpTmp9[0];
+                                    ret.COLID           = n;
+                                    ret.GSColumnNameVal  = tmpTmp9;
+                                    ret.GS_COLUMN_NAME   = a;
+    
+                                    return ret;
+                                });
 
                                 return ret;
                             });
@@ -243,7 +256,13 @@ function getDownstreamBusinesstermTable(param) {
                 v.AliasName.forEach(w => {
                     w.GoldenSource.forEach(x => {
                         x.GSSystemName.forEach(y => {
-                            y.GSTableName.shift();
+                            y.GSTableName.forEach(z => {
+                                z.GSColumnName.shift();
+                            });
+        
+                            if(y.GSTableName[0].GSColumnName.length == 0){
+                                y.GSTableName.shift();
+                            }
                         });
     
                         if(x.GSSystemName[0].GSTableName.length == 0){
