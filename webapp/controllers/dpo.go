@@ -215,6 +215,16 @@ func (c *DPO) GetDetails(k *knot.WebContext) {
 }
 
 func (c *DPO) GetDetailsImmediatePrecedingSystem(payload toolkit.M) (interface{}, interface{}, interface{}, error) {
+	doInterrupt := func(v string, conds, expectedreses []string) string {
+		if v == conds[1] {
+			return expectedreses[1]
+		} else if v == conds[0] {
+			return expectedreses[0]
+		}
+
+		return v
+	}
+
 	mappedDetails, mappedddSource, err := c.GetDetailAndDropdown(payload, s.NewDPOService().GetDetailsImmediatePrecedingSystem, s.NewDPOService().GetddSourceImmediatePrecedingSystem)
 	if err != nil {
 		return nil, nil, nil, err
@@ -234,6 +244,22 @@ func (c *DPO) GetDetailsImmediatePrecedingSystem(payload toolkit.M) (interface{}
 
 				if trimmedStringVal == "" {
 					stringVal = "NA"
+				} else {
+					switch key {
+					case "DERIVED":
+						stringVal = doInterrupt(stringVal, []string{"0", "1"}, []string{"No", "Yes"})
+						break
+					case "THRESHOLD":
+						if stringVal == "0" {
+							stringVal = "NA"
+						}
+						break
+					case "DATA_SLA":
+						if stringVal == "0" {
+							stringVal = "NA"
+						}
+						break
+					}
 				}
 
 				return stringVal
