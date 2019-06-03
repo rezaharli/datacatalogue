@@ -72,8 +72,8 @@ SELECT DISTINCT
 SELECT DISTINCT 
         DSP.NAME                                                                        AS PROCESS_NAME,
         COUNT(DISTINCT SYS.SYSTEM_NAME) OVER ()                                         AS UPSTREAM_COUNT,
-        COUNT(DISTINCT '') OVER ()                                                      AS PR_NAME_COUNT,
-        ' '                                                                             AS PR_NAME,
+        COUNT(DISTINCT PR.NAME) OVER (PARTITION BY SYS.SYSTEM_NAME)                     AS PR_NAME_COUNT,
+        PR.NAME                                                                         AS PR_NAME,
         SYS.SYSTEM_NAME                                                                 AS SYSTEM_NAME, 
         COUNT(DISTINCT CD.ALIAS_NAME) OVER (PARTITION BY SYS.SYSTEM_NAME)               AS CDE_COUNT
     FROM TBL_DS_PROCESSES DSP
@@ -83,8 +83,12 @@ SELECT DISTINCT
         INNER JOIN TBL_MD_TABLE TAB ON COL.TABLE_ID = TAB.ID
         INNER JOIN TBL_MD_RESOURCE RES ON TAB.RESOURCE_ID = RES.ID
         INNER JOIN TBL_SYSTEM SYS ON RES.SYSTEM_ID = SYS.ID
+        LEFT OUTER JOIN TBL_CDE CDE ON CDE.NAME = CD.ALIAS_NAME
+        LEFT OUTER JOIN TBL_CRM CRM ON CDE.CRM_ID = CRM.ID
+        LEFT OUTER JOIN TBL_PRIORITY_REPORTS PR ON CRM.PRORITY_REPORT_ID = PR.ID
     WHERE 
         DSP.NAME = '?' -- DOWNSTREAM PROCESS NAME
+      ORDER BY SYS.SYSTEM_NAME
 
 -- name: details-immediate-preceding-system
 SELECT DISTINCT 
