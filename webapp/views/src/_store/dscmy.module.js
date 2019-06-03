@@ -181,6 +181,7 @@ const mutations = {
         state.all.DDSourceLeftPanel = data.DDSourceLeftPanel;
         
         setTimeout(() => {
+            state.all.firstload = true;
             state.all.ddVal = data.DDVal;
             state.all.ddValLeftPanel = data.DDValLeftPanel;
 

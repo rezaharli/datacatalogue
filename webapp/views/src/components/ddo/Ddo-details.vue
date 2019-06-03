@@ -276,7 +276,7 @@ export default {
         }
 
         if (this.store.ddVal.ddTableNameSelected && this.store.ddVal.ddTableNameSelected != "NA") {
-          param.ImmItamID = this.store.ddVal.ddTableNameSelected.toString();
+          param.TableName = this.store.ddVal.ddTableNameSelected.toString();
         }
 
         this.runGetDetails(param);

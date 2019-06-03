@@ -24,6 +24,8 @@ const state = {
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Domain / Sub domain owner', value: 'SUB_DOMAIN_OWNER' },
         ],
         isRightTable: false,
+
+        firstload: true,
         detailsLoading: true,
         
         DDSource: [],
@@ -133,6 +135,7 @@ const mutations = {
         state.all.DDSource = data.DDSource;
         
         setTimeout(() => {
+            state.all.firstload = true;
             state.all.ddVal = data.DDVal;
 
             setTimeout(() => {

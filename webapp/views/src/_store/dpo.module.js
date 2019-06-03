@@ -93,6 +93,7 @@ const mutations = {
         state.all.DDSourceDataStandards = data.DDSourceDataStandards;
         
         setTimeout(() => {
+            state.all.firstload = true;
             state.all.ddValImmediatePrecedingSystem = data.DDValImmediatePrecedingSystem;
             state.all.ddValUltimateSourceSystem = data.DDValUltimateSourceSystem;
             state.all.ddValDomainView = data.DDValDomainView;
