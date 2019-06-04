@@ -91,7 +91,7 @@
                           <tablecell :fulltext="item.RISK_SUB_TYPEsVal.map(v => v.RISK_REPORTING_LEAD).join(' | ')" showOn="click"></tablecell></td>
                         
                         <td v-bind:style="{ width: store.left.colWidth['PR_COUNT'] + 'px' }" v-if="isDisplayed('PR_COUNT')">
-                          <b-link @click.stop="showRightTable(props.item)">
+                          <b-link @click.stop="showRightTable(item)">
                             <tablecell :fulltext="props.item.RISK_SUB_TYPEs[0] ? (props.item.RISK_SUB_TYPEs[i].RISK_SUB_TYPEsVal[0].PR_COUNT) : ''" showOn="click"></tablecell></b-link></td>
                         
                         <td v-bind:style="{ width: store.left.colWidth['CRM_COUNT'] + 'px' }" v-if="isDisplayed('CRM_COUNT')">
