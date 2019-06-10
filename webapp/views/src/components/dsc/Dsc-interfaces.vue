@@ -90,13 +90,13 @@
                         <tablecell :fulltext="props.item.IMM_INTERFACE" showOn="hover" v-if="props.item.Owners.length < 1"></tablecell>
                       </td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }" class="text-uppercase">
+                      <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }" class="text-capitalize">
                         <b-link @click.stop="showCDEs(props.item)">
                           <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.CDE_COUNT"></tablecell>
                         </b-link>
                       </td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }" class="text-uppercase">
+                      <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }" class="text-capitalize">
                         <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PROCESS_OWNER"></tablecell>
                       </td>
                     </tr>
@@ -113,9 +113,9 @@
                       @update:pagination="setExpandedTableColumnsWidth"
                     >
                       <template slot="items" slot-scope="props">
-                        <td v-bind:style="{ width: store.left.colWidth['IMM_INTERFACE'] + 'px' }">&nbsp;</td>
-                        <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }">&nbsp;</td>
-                        <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }">
+                        <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['IMM_INTERFACE'] + 'px' }">&nbsp;</td>
+                        <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }">&nbsp;</td>
+                        <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }">
                           <tablecell :fulltext="props.item.PROCESS_OWNER" showOn="hover"></tablecell>
                         </td>
                       </template>
