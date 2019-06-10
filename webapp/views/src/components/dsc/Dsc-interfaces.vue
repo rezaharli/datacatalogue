@@ -84,20 +84,20 @@
                       
                       <td v-bind:style="{ width: store.left.colWidth['IMM_INTERFACE'] + 'px' }" class="text-capitalize text-title">
                         <b-link @click="props.expanded = !props.expanded" v-if="props.item.Owners.length > 0">
-                          <tablecell :fulltext="props.item.IMM_INTERFACE" showOn="hover"></tablecell>
+                          <tablecell :fulltext="props.item.IMM_INTERFACE.toString().trim() ? props.item.IMM_INTERFACE : 'NA'" showOn="hover"></tablecell>
                         </b-link>
 
-                        <tablecell :fulltext="props.item.IMM_INTERFACE" showOn="hover" v-if="props.item.Owners.length < 1"></tablecell>
+                        <tablecell :fulltext="props.item.IMM_INTERFACE.toString().trim() ? props.item.IMM_INTERFACE : 'NA'" showOn="hover" v-if="props.item.Owners.length < 1"></tablecell>
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }" class="text-capitalize">
                         <b-link @click.stop="showCDEs(props.item)">
-                          <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.CDE_COUNT"></tablecell>
+                          <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.CDE_COUNT.toString().trim() ? props.item.CDE_COUNT : 'NA'"></tablecell>
                         </b-link>
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }" class="text-capitalize">
-                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PROCESS_OWNER"></tablecell>
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PROCESS_OWNER.toString().trim() ? props.item.PROCESS_OWNER : 'NA'"></tablecell>
                       </td>
                     </tr>
                   </template>
@@ -116,7 +116,7 @@
                         <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['IMM_INTERFACE'] + 'px' }">&nbsp;</td>
                         <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }">&nbsp;</td>
                         <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }">
-                          <tablecell :fulltext="props.item.PROCESS_OWNER" showOn="hover"></tablecell>
+                          <tablecell :fulltext="props.item.PROCESS_OWNER.toString().trim() ? props.item.PROCESS_OWNER : 'NA'" showOn="hover"></tablecell>
                         </td>
                       </template>
                     </v-data-table>
