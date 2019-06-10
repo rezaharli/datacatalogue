@@ -97,7 +97,7 @@
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.Owners.map(v => v.PROCESS_OWNER).join(', ')"></tablecell>
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PROCESS_OWNER"></tablecell>
                       </td>
                     </tr>
                   </template>
