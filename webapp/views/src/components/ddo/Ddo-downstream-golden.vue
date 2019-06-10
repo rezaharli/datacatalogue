@@ -32,7 +32,7 @@
           <tablecell :fulltext="props.item.ALIAS_NAME" showOn="hover" v-if="props.item.GoldenSource.length < 1"></tablecell>
         </td>
 
-        <td v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }" class="text-uppercase">
+        <td v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }" class="text-capitalize">
           <tablecell showOn="hover" v-if="isGSMainLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
         </td>
 
