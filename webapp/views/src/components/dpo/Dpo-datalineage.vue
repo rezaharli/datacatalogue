@@ -90,7 +90,7 @@
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
                       <td v-if="displayPRName" v-bind:style="{ width: store.left.colWidth['PR_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" :fulltext="props.item.PR_NAME"></tablecell></td>
+                        <tablecell showOn="hover" :fulltext="props.item.PR_NAMEs.map(v => v.PR_NAME).join(' | ')"></tablecell></td>
 
                       <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }" class="text-uppercase">
                         <tablecell showOn="hover" :fulltext="props.item.SYSTEM_NAME"></tablecell></td>
@@ -145,15 +145,26 @@ export default {
     displayPRName() {
       var prNameHeader = this.store.leftHeaders.find(v => v.value == "PR_NAME");
 
-      if(parseInt(this.store.left.source[0] ? this.store.left.source[0]["PR_NAME_COUNT"] : "0") == 0){
-        prNameHeader.display = false;
-        prNameHeader.exportable = false;
-        return false;
-      } else {
+      console.log(this.store.left.source[0]["PROCESS_NAME"]);
+      if(this.store.left.source[0]["PROCESS_NAME"].toLowerCase() == "Risk Reporting | Critical Reports".toLowerCase()){
         prNameHeader.display = true;
         prNameHeader.exportable = true;
         return true;
+      } else {
+        prNameHeader.display = false;
+        prNameHeader.exportable = false;
+        return false;
       }
+
+      // if(parseInt(this.store.left.source[0] ? this.store.left.source[0]["PR_NAME_COUNT"] : "0") == 0){
+      //   prNameHeader.display = false;
+      //   prNameHeader.exportable = false;
+      //   return false;
+      // } else {
+      //   prNameHeader.display = true;
+      //   prNameHeader.exportable = true;
+      //   return true;
+      // }
     }
   },
   watch: {
