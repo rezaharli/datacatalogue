@@ -7,7 +7,7 @@
     <v-container fluid fill-height back>
         <div id="login">
             <div id="description">
-                <h1>Metadata Catalogue</h1>
+                <h1>Metadata Smart View</h1>
                 <p>Sign in to your account.</p>
             </div>
 
