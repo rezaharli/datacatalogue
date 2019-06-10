@@ -221,11 +221,14 @@ export default {
     },
     linkDataLineage(){
       var processName = this.store.left.source[0] ? this.store.left.source[0]["PROCESS_NAME"] : "";
-
+      
+      console.log(processName);
       if (processName.toLowerCase().indexOf("USFRR".toLowerCase()) != -1){
         window.open("http://hklpadmdm002.global.standardchartered.com:9999/data/view/id/535#!tab-data-relationships");
       } else if (processName.toLowerCase().indexOf("Global Name Screening".toLowerCase()) != -1){
         window.open("http://hklpadmdm002.global.standardchartered.com:9999/data/view/id/532#!tab-data-relationships");
+      } else if (processName.toLowerCase().indexOf("Risk Reporting | Critical Reports".toLowerCase()) != -1){
+        window.open("http://hklpadmdm002.global.standardchartered.com:9999/system/view/id/369#!tab-system-data-map");
       }
     },
     resetFilter (e) {
