@@ -176,7 +176,7 @@ func (s *DPOService) GetDatalineageTable(system string, colFilter interface{}, p
 		gridArgs.IsDescending = descending.(bool)
 	}
 
-	gridArgs.GroupCol = "-"
+	gridArgs.GroupCol = "SYSTEM_NAME"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
