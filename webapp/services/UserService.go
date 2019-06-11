@@ -52,7 +52,7 @@ func (s *UserService) Authenticate(username int, password string) (bool, *m.SysU
 		newUser.Email = toolkit.ToString(username)
 		newUser.Name = toolkit.ToString(username)
 		newUser.Status = 1
-		newUser.Role = "Admin,DSC,DDO,DPO,RFO"
+		newUser.Role = "DSC,DDO,DPO,RFO"
 		newUser.CreatedAt = time.Now().String()
 		newUser.UpdatedAt = time.Now().String()
 

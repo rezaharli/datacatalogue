@@ -155,7 +155,7 @@ SELECT DISTINCT
         TC.NAME                                                     AS DATA_DOMAIN,
         TSC.NAME                                                    AS SUB_DOMAINS,
         BT.BT_NAME                                                  AS BT_NAME,
-        TGS.SYSTEM_NAME                                             AS SYSTEM_CONSUMED,
+        S.SYSTEM_NAME                                               AS SYSTEM_CONSUMED,
         T.NAME                                                      AS TABLE_NAME,
         C.NAME                                                      AS COLUMN_NAME,
         CASE WHEN S.ITAM_ID = GS.ITAM_ID THEN 'YES' ELSE 'NO' END   AS GOLDEN_SOURCE,
@@ -187,7 +187,7 @@ SELECT DISTINCT
         LEFT OUTER JOIN TBL_SYSTEM TGS ON TGS.ID = BT.TARGET_GOLDEN_SOURCE_ID
     WHERE NVL(DP.NAME, ' ') = '?' -- DP NAME -- LC-FCC |Transaction Monitoring
 	    AND TSC.NAME = '?'
-    ORDER BY BT.BT_NAME, TGS.SYSTEM_NAME, T.NAME, C.NAME
+    ORDER BY BT.BT_NAME, S.SYSTEM_NAME, T.NAME, C.NAME, CASE WHEN S.ITAM_ID = GS.ITAM_ID THEN 'YES' ELSE 'NO' END DESC
 
 -- name: details
 SELECT 

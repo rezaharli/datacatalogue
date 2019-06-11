@@ -89,7 +89,41 @@ function getDataelementsTable(param) {
 }
 
 function getDatalineageTable(param) {
-    return fetchWHeader(`/dpo/getdatalineagetable`, param);
+    return fetchWHeader(`/dpo/getdatalineagetable`, param).then(
+        res => {
+            res.DataFlat = _.cloneDeep(res.Data);
+
+            var tmp = _.groupBy(res.Data, "SYSTEM_NAME")
+            res.Data = _.map(Object.keys(tmp), function(v, i){
+                var tmpTmp = _.cloneDeep(tmp[v]);
+
+                var ret = tmpTmp[0];
+                ret.ID = i;
+                ret.SYSTEM_NAMEsVal = tmpTmp;
+                ret.SYSTEM_NAME = v;
+
+                var tmp2 = _.groupBy(tmp[v], "PR_NAME");  
+                ret.PR_NAMEs = _.map(Object.keys(tmp2), function(w, j){
+                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
+
+                    var ret = tmpTmp2[0];
+                    ret.ID = j;
+                    ret.PR_NAMEsVal = tmpTmp2;
+                    ret.PR_NAME = w;
+
+                    return ret;
+                });
+
+                return ret;
+            });
+
+            res.Data.forEach(v => {
+                v.SYSTEM_NAMEsVal.shift();
+            });
+            
+            return res;
+        },
+    );
 }
 
 function getRightTable(param) {
