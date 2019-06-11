@@ -135,6 +135,9 @@ export default {
     },
     filterClick (keyModel, val) {
       this.store.filters[this.which][keyModel.value.split('.').reverse()[0]] = val;
+      
+      this.store.filters[this.which].filterTypes = {};
+      this.store.filters[this.which].filterTypes[keyModel.value.split('.').reverse()[0]] = "eq"
 
       this.filterProcess();
     },

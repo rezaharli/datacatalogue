@@ -21,11 +21,12 @@ type GridArgs struct {
 	QueryFilePath string
 	QueryName     string
 
-	MainArgs       []interface{}
-	ColumnFilter   []interface{}
-	DropdownFilter []interface{}
-	Colnames       []string
-	GroupCol       string
+	MainArgs         []interface{}
+	ColumnFilter     []interface{}
+	ColumnFilterType []interface{}
+	DropdownFilter   []interface{}
+	Colnames         []string
+	GroupCol         string
 
 	PageNumber   int
 	RowsPerPage  int
@@ -47,6 +48,7 @@ func (s *Base) ExecuteGridQueryFromFile(gridArgs GridArgs) ([]toolkit.M, int, er
 		return nil, 0, err
 	}
 
+	toolkit.Println(gridArgs.Colnames)
 	additionalWhere := make(map[string]interface{}, len(gridArgs.Colnames))
 	for i, colname := range gridArgs.Colnames {
 		if toolkit.ToString(gridArgs.ColumnFilter[i]) != "" {

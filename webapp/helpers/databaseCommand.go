@@ -275,15 +275,18 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 				intVal, err := strconv.Atoi(toolkit.ToString(val))
 				if err != nil {
 					replacedVal := strings.ReplaceAll(toolkit.ToString(val), "'", "''")
-					sqlQuery += `upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
+					sqlQuery += `
+						upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
 				} else {
-					sqlQuery += `upper(` + key + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
+					sqlQuery += `
+						upper(` + key + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
 				}
 
 				i++
 			}
 
-			sqlQuery += `) `
+			sqlQuery += `
+				) `
 		}
 
 		sqlQuery += param.OrderBy

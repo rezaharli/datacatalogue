@@ -33,7 +33,7 @@ const actions = {
         commit('getExportDataRequest');
 
         Object.keys(state.all.filters.left).map(function(key, index) {
-            state.all.filters.left[key] = state.all.filters.left[key] ? state.all.filters.left[key].toString() : "";
+            state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
         var param = {
@@ -54,7 +54,7 @@ const actions = {
         commit('getLeftTableRequest');
 
         Object.keys(state.all.filters.left).map(function(key, index) {
-            state.all.filters.left[key] = state.all.filters.left[key] ? state.all.filters.left[key].toString() : "";
+            state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
         var param = {
