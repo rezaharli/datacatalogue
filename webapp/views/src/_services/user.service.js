@@ -80,5 +80,16 @@ function saveLog(param) {
 }
 
 function getUsageTable(param) {
-    return fetchWHeader(`/users/getusagetable`, param);
+    return fetchWHeader(`/users/getusagetable`, param).then(
+        res => {
+            res.Data = res.Data.map(v => {
+                v.THEDATE = moment(v.TIME.substring(0, 19)).format('DD MMM YYYY')
+                v.TIME = moment(v.TIME.substring(0, 19)).format('hh:mm a')
+
+                return v;
+            })
+
+            return res;
+        }
+    );
 }

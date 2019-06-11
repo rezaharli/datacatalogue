@@ -99,6 +99,9 @@
                                 <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }" class="text-capitalize text-title">
                                   <tablecell :fulltext="props.item.DESCRIPTION" showOn="hover"></tablecell></td>
 
+                                <td v-bind:style="{ width: store.left.colWidth['THEDATE'] + 'px' }" class="text-capitalize text-title">
+                                  <tablecell :fulltext="props.item.THEDATE" showOn="hover"></tablecell></td>
+
                                 <td v-bind:style="{ width: store.left.colWidth['TIME'] + 'px' }" class="text-capitalize text-title">
                                   <tablecell :fulltext="props.item.TIME" showOn="hover"></tablecell></td>
 
