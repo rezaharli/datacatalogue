@@ -146,7 +146,7 @@ export default {
       var prNameHeader = this.store.leftHeaders.find(v => v.value == "PR_NAME");
 
       console.log(this.store.left.source[0]["PROCESS_NAME"]);
-      if(this.store.left.source[0]["PROCESS_NAME"].toLowerCase() == "Risk Reporting | Critical Reports".toLowerCase()){
+      if(this.store.left.source[0]["PROCESS_NAME"].toLowerCase().indexOf("Risk Reporting | Critical Reports".toLowerCase()) != -1){
         prNameHeader.display = true;
         prNameHeader.exportable = true;
         return true;
