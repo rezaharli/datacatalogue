@@ -47,22 +47,34 @@ function getDataelementsTable(param) {
                 ret.BT_NAME     = v;
 
                 var tmp2 = _.groupBy(tmp[v], "TABLE_NAME");  
-                ret.Tables = _.map(Object.keys(tmp2), function(w, i){
+                ret.Tables = _.map(Object.keys(tmp2), function(w, j){
                     var tmpTmp2 = _.cloneDeep(tmp2[w]);
 
                     var ret         = tmpTmp2[0];
-                    ret.TMTID       = tmpTmp2[0].TMTID;
+                    ret.TMTID       = j;
                     ret.TablesVal   = tmpTmp2;
                     ret.TABLE_NAME  = w;
 
                     var tmp3 = _.groupBy(tmp2[w], "COLUMN_NAME");
-                    ret.Columns = _.map(Object.keys(tmp3), function(x, i){
+                    ret.Columns = _.map(Object.keys(tmp3), function(x, k){
                         var tmpTmp3 = _.cloneDeep(tmp3[x]);
 
                         var ret         = tmpTmp3[0];
-                        ret.COLID       = tmpTmp3[0].COLID;
+                        ret.COLID       = k;
                         ret.ColumnsVal  = tmpTmp3;
                         ret.COLUMN_NAME = x;
+
+                        var tmp4 = _.groupBy(tmp3[x], "ULT_SYSTEM_NAME");
+                        ret.ULT_SYSTEM_NAMEs = _.map(Object.keys(tmp4), function(y, l){
+                            var tmpTmp4 = _.cloneDeep(tmp4[y]);
+
+                            var ret         = tmpTmp4[0];
+                            ret.ULTSYSID       = l;
+                            ret.ULT_SYSTEM_NAMEsVal  = tmpTmp4;
+                            ret.ULT_SYSTEM_NAME = y;
+
+                            return ret;
+                        });
 
                         return ret;
                     });
@@ -75,7 +87,13 @@ function getDataelementsTable(param) {
 
             res.Data.forEach(v => {
                 v.Tables.forEach(w => {
-                    w.Columns.shift();
+                    w.Columns.forEach(x => {
+                        x.ULT_SYSTEM_NAMEs.shift();
+                    });
+
+                    if(w.Columns[0].ULT_SYSTEM_NAMEs.length == 0){
+                        w.Columns.shift();
+                    }
                 });
 
                 if(v.Tables[0].Columns.length == 0){

@@ -216,14 +216,15 @@ func (DBcmd) Delete(param DeleteParam) error {
 }
 
 type SqlQueryParam struct {
-	TableName       string
-	SqlQuery        string
-	PageNumber      int
-	RowsPerPage     int
-	OrderBy         string
-	IsDescending    bool
-	GroupCol        string
-	AdditionalWhere map[string]interface{}
+	TableName        string
+	SqlQuery         string
+	PageNumber       int
+	RowsPerPage      int
+	OrderBy          string
+	IsDescending     bool
+	GroupCol         string
+	AdditionalWhere  map[string]interface{}
+	ColumnFilterType map[string]interface{}
 
 	Results     interface{}
 	ResultTotal int
@@ -271,19 +272,31 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 				if i != 0 {
 					sqlQuery += `AND `
 				}
+				i++
+
+				if filterType, ok := param.ColumnFilterType[key]; ok && filterType != nil {
+					if filterType.(string) == "eq" {
+						replacedVal := strings.ReplaceAll(toolkit.ToString(val), "'", "''")
+						sqlQuery += `
+							upper(NVL(` + key + `, ' ')) = upper('` + replacedVal + `') `
+
+						continue
+					}
+				}
 
 				intVal, err := strconv.Atoi(toolkit.ToString(val))
 				if err != nil {
 					replacedVal := strings.ReplaceAll(toolkit.ToString(val), "'", "''")
-					sqlQuery += `upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
+					sqlQuery += `
+						upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
 				} else {
-					sqlQuery += `upper(` + key + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
+					sqlQuery += `
+						upper(` + key + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
 				}
-
-				i++
 			}
 
-			sqlQuery += `) `
+			sqlQuery += `
+				) `
 		}
 
 		sqlQuery += param.OrderBy
