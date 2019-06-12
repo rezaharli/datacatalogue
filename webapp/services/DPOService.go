@@ -670,6 +670,92 @@ func (s *DPOService) GetDetailsDomainView(payload toolkit.M) (interface{}, int, 
 
 	funcLog(funcName(), fileName, queryName)
 
+	otherArgs := make([]string, 0)
+	otherArgs = append(otherArgs,
+		payload.GetString("DomainName"),
+		payload.GetString("SubdomainName"),
+		payload.GetString("SubdomainOwner"),
+		payload.GetString("BusinessTerm"),
+		payload.GetString("BusinessTermDescription"),
+	)
+
+	checkNotEmpty := func(s []string) bool {
+		for _, v := range s {
+			if v != "" {
+				return true
+			}
+		}
+		return false
+	}
+
+	q = `SELECT rownum, a.* FROM (
+		` + q + `
+	) a `
+
+	if checkNotEmpty(otherArgs) == true {
+		q += `WHERE (( ID IS NOT NULL `
+		if otherArgs[0] != "" {
+			q += `AND DOMAIN_NAME = '` + otherArgs[0] + `' `
+		}
+		if otherArgs[1] != "" {
+			q += `AND SUBDOMAIN_NAME = '` + otherArgs[1] + `' `
+		}
+		if otherArgs[2] != "" {
+			q += `AND SUBDOMAIN_OWNER = '` + otherArgs[2] + `' `
+		}
+		if otherArgs[3] != "" {
+			q += `AND BUSINESS_TERM = '` + otherArgs[3] + `' `
+		}
+		if otherArgs[4] != "" {
+			q += `AND BUSINESS_TERM_DESCRIPTION = '` + otherArgs[4] + `' `
+		}
+		q += `)) `
+	}
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DPOService) GetddDetailsDomainView(payload toolkit.M) (interface{}, int, error) {
+	fileName := "dpo.sql"
+	queryName := "details-domain-view"
+
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, payload.GetString("Right"))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	funcLog(funcName(), fileName, queryName)
+
+	///////// FILTER
+	q = `SELECT DISTINCT 
+			DOMAIN_NAME, 
+			SUBDOMAIN_NAME, 
+			SUBDOMAIN_OWNER,
+			BUSINESS_TERM,
+			BUSINESS_TERM_DESCRIPTION
+		FROM (
+		` + q + `
+	) `
+
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
 		SqlQuery:  q,

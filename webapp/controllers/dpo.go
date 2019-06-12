@@ -423,7 +423,7 @@ func (c *DPO) GetDetailsUltimateSourceSystem(payload toolkit.M) (interface{}, in
 }
 
 func (c *DPO) GetDetailsDomainView(payload toolkit.M) (interface{}, interface{}, interface{}, error) {
-	mappedDetails, mappedddSource, err := c.GetDetailAndDropdown(payload, s.NewDPOService().GetDetailsDomainView, nil)
+	mappedDetails, mappedddSource, err := c.GetDetailAndDropdown(payload, s.NewDPOService().GetDetailsDomainView, s.NewDPOService().GetddDetailsDomainView)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -455,6 +455,24 @@ func (c *DPO) GetDetailsDomainView(payload toolkit.M) (interface{}, interface{},
 				return nil, nil, nil, err
 			}
 
+			switch key {
+			case "DOMAIN_NAME":
+				ddVal.Set("ddDomainNameSelected", uniqueValues.([]string)[0])
+				break
+			case "SUBDOMAIN_NAME":
+				ddVal.Set("ddSubdomainNameSelected", uniqueValues.([]string)[0])
+				break
+			case "SUBDOMAIN_OWNER":
+				ddVal.Set("ddSubdomainOwnerSelected", uniqueValues.([]string)[0])
+				break
+			case "BUSINESS_TERM":
+				ddVal.Set("ddBusinessTermSelected", uniqueValues.([]string)[0])
+				break
+			case "BUSINESS_TERM_DESCRIPTION":
+				ddVal.Set("ddBusinessTermDescriptionSelected", uniqueValues.([]string)[0])
+				break
+			}
+
 			joinedValues := ""
 			if key == "DATASET_CUSTODIAN" || key == "BANK_ID" {
 				joinedValues = strings.Join(uniqueValues.([]string), "; ")
@@ -466,6 +484,12 @@ func (c *DPO) GetDetailsDomainView(payload toolkit.M) (interface{}, interface{},
 		}
 	} else {
 		selectedDetail = nil
+
+		ddVal.Set("ddDomainNameSelected", "NA")
+		ddVal.Set("ddSubdomainNameSelected", "NA")
+		ddVal.Set("ddSubdomainOwnerSelected", "NA")
+		ddVal.Set("ddBusinessTermSelected", "NA")
+		ddVal.Set("ddBusinessTermDescriptionSelected", "NA")
 	}
 
 	return selectedDetail, ddVal, mappedddSource, err

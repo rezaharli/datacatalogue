@@ -248,23 +248,23 @@ legend.col-form-label, label.col-form-label {
                   <p class="card-text">
                     <b-form>
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsDomainView ? store.selectedDetailsDomainView.DOMAIN_NAME : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValDomainView.ddDomainNameSelected" :options="ddDomainNameOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Domain">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsDomainView ? store.selectedDetailsDomainView.SUBDOMAIN_NAME : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValDomainView.ddSubdomainNameSelected" :options="ddSubdomainNameOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain Owner">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsDomainView ? store.selectedDetailsDomainView.SUBDOMAIN_OWNER : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValDomainView.ddSubdomainOwnerSelected" :options="ddSubdomainOwnerOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsDomainView ? store.selectedDetailsDomainView.BUSINESS_TERM : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValDomainView.ddBusinessTermSelected" :options="ddBusinessTermOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsDomainView ? store.selectedDetailsDomainView.BUSINESS_TERM_DESCRIPTION : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValDomainView.ddBusinessTermDescriptionSelected" :options="ddBusinessTermDescriptionOptions"></b-form-select>
                       </b-form-group>
                     </b-form>
                   </p>
@@ -615,6 +615,47 @@ export default {
       
       var ret = _.uniq(_.map(filtered, (v) => v.GS_DERIVATION_LOGIC.toString())).filter(Boolean);
       return ret.length > 0 ? ret : ["NA"];
+    },
+    ddDomainNameOptions () {
+      return _.uniq(_.map(this.store.DDSourceDomainView, (v) => v.DOMAIN_NAME.toString())).filter(Boolean);
+    },
+    ddSubdomainNameOptions () {
+      var self = this;
+      var filtered = _.filter(self.store.DDSourceDomainView, (v) => {
+        return v.DOMAIN_NAME == self.store.ddValDomainView.ddDomainNameSelected;
+      });
+
+      return _.uniq(_.map(filtered, (v) => v.SUBDOMAIN_NAME.toString())).filter(Boolean);
+    },
+    ddSubdomainOwnerOptions () {
+      var self = this;
+      var filtered = _.filter(self.store.DDSourceDomainView, (v) => {
+        return v.DOMAIN_NAME == self.store.ddValDomainView.ddDomainNameSelected
+          && v.SUBDOMAIN_NAME == self.store.ddValDomainView.ddSubdomainNameSelected
+      });
+
+      return _.uniq(_.map(filtered, (v) => v.SUBDOMAIN_OWNER.toString())).filter(Boolean);
+    },
+    ddBusinessTermOptions () {
+      var self = this;
+      var filtered = _.filter(self.store.DDSourceDomainView, (v) => {
+        return v.DOMAIN_NAME == self.store.ddValDomainView.ddDomainNameSelected
+          && v.SUBDOMAIN_NAME == self.store.ddValDomainView.ddSubdomainNameSelected
+          && v.SUBDOMAIN_OWNER == self.store.ddValDomainView.ddSubdomainOwnerSelected
+      });
+
+      return _.uniq(_.map(filtered, (v) => v.BUSINESS_TERM.toString())).filter(Boolean);
+    },
+    ddBusinessTermDescriptionOptions () {
+      var self = this;
+      var filtered = _.filter(self.store.DDSourceDomainView, (v) => {
+        return v.DOMAIN_NAME == self.store.ddValDomainView.ddDomainNameSelected
+          && v.SUBDOMAIN_NAME == self.store.ddValDomainView.ddSubdomainNameSelected
+          && v.SUBDOMAIN_OWNER == self.store.ddValDomainView.ddSubdomainOwnerSelected
+          && v.BUSINESS_TERM == self.store.ddValDomainView.ddBusinessTermSelected
+      });
+
+      return _.uniq(_.map(filtered, (v) => v.BUSINESS_TERM_DESCRIPTION.toString())).filter(Boolean);
     },
     exportDatas () {
       if(this.selectedDetails){
@@ -1001,6 +1042,111 @@ export default {
         
         setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
         setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName", "UltGsItamId", "UltGsTableName", "UltGsColumnName", "UltGsDataElement", "UltGsDescription", "UltGsDerived", "UltGsDerivationLogic"])
+
+        this.runGetDetails(param);
+      }
+    },
+    'store.ddValDomainView.ddDomainNameSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName", "UltGsItamId", "UltGsTableName", "UltGsColumnName", "UltGsDataElement", "UltGsDescription", "UltGsDerived", "UltGsDerivationLogic"])
+        setParam("ddValDomainView", ["DomainName"])
+
+        this.runGetDetails(param);
+      }
+    },
+    'store.ddValDomainView.ddSubdomainNameSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName", "UltGsItamId", "UltGsTableName", "UltGsColumnName", "UltGsDataElement", "UltGsDescription", "UltGsDerived", "UltGsDerivationLogic"])
+        setParam("ddValDomainView", ["DomainName", "SubdomainName"])
+
+        this.runGetDetails(param);
+      }
+    },
+    'store.ddValDomainView.ddSubdomainOwnerSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName", "UltGsItamId", "UltGsTableName", "UltGsColumnName", "UltGsDataElement", "UltGsDescription", "UltGsDerived", "UltGsDerivationLogic"])
+        setParam("ddValDomainView", ["DomainName", "SubdomainName", "SubdomainOwner"])
+
+        this.runGetDetails(param);
+      }
+    },
+    'store.ddValDomainView.ddBusinessTermSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName", "UltGsItamId", "UltGsTableName", "UltGsColumnName", "UltGsDataElement", "UltGsDescription", "UltGsDerived", "UltGsDerivationLogic"])
+        setParam("ddValDomainView", ["DomainName", "SubdomainName", "SubdomainOwner", "BusinessTerm"])
+
+        this.runGetDetails(param);
+      }
+    },
+    'store.ddValDomainView.ddBusinessTermDescriptionSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName", "UltGsItamId", "UltGsTableName", "UltGsColumnName", "UltGsDataElement", "UltGsDescription", "UltGsDerived", "UltGsDerivationLogic"])
+        setParam("ddValDomainView", ["DomainName", "SubdomainName", "SubdomainOwner", "BusinessTerm", "BusinessTermDescription"])
 
         this.runGetDetails(param);
       }
