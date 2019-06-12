@@ -54,6 +54,11 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, col
 		for _, colname := range gridArgs.Colnames {
 			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
 		}
+
+		filterTypes := colFilterM.Get("filterTypes")
+		if filterTypes != nil {
+			gridArgs.ColumnFilterType = colFilterM.Get("filterTypes").(map[string]interface{})
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -128,6 +133,11 @@ func (s *DSCService) GetCDETable(system string, colFilter interface{}, paginatio
 		for _, colname := range gridArgs.Colnames {
 			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
 		}
+
+		filterTypes := colFilterM.Get("filterTypes")
+		if filterTypes != nil {
+			gridArgs.ColumnFilterType = colFilterM.Get("filterTypes").(map[string]interface{})
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -168,6 +178,11 @@ func (s *DSCService) GetCDPTable(system string, colFilter interface{}, paginatio
 	} else {
 		for _, colname := range gridArgs.Colnames {
 			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
+
+		filterTypes := colFilterM.Get("filterTypes")
+		if filterTypes != nil {
+			gridArgs.ColumnFilterType = colFilterM.Get("filterTypes").(map[string]interface{})
 		}
 	}
 
@@ -210,6 +225,11 @@ func (s *DSCService) GetCDPCDETable(system, dspName string, colFilter interface{
 		for _, colname := range gridArgs.Colnames {
 			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
 		}
+
+		filterTypes := colFilterM.Get("filterTypes")
+		if filterTypes != nil {
+			gridArgs.ColumnFilterType = colFilterM.Get("filterTypes").(map[string]interface{})
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -250,6 +270,11 @@ func (s *DSCService) GetInterfacesTable(system string, colFilter interface{}, pa
 		for _, colname := range gridArgs.Colnames {
 			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
 		}
+
+		filterTypes := colFilterM.Get("filterTypes")
+		if filterTypes != nil {
+			gridArgs.ColumnFilterType = colFilterM.Get("filterTypes").(map[string]interface{})
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -289,6 +314,11 @@ func (s *DSCService) GetInterfacesCDETable(system, dspName string, colFilter int
 	} else {
 		for _, colname := range gridArgs.Colnames {
 			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
+
+		filterTypes := colFilterM.Get("filterTypes")
+		if filterTypes != nil {
+			gridArgs.ColumnFilterType = colFilterM.Get("filterTypes").(map[string]interface{})
 		}
 	}
 
@@ -374,6 +404,11 @@ func (s *DSCService) GetDDTable(system string, colFilter interface{}, pagination
 				gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, piiYesNo)
 			} else {
 				gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+			}
+
+			filterTypes := colFilterM.Get("filterTypes")
+			if filterTypes != nil {
+				gridArgs.ColumnFilterType = colFilterM.Get("filterTypes").(map[string]interface{})
 			}
 		}
 	}

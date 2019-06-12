@@ -53,6 +53,11 @@ func (s *DDOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 		for _, colname := range gridArgs.Colnames {
 			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
 		}
+
+		filterTypes := colFilterM.Get("filterTypes")
+		if filterTypes != nil {
+			gridArgs.ColumnFilterType = colFilterM.Get("filterTypes").(map[string]interface{})
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -128,6 +133,11 @@ func (s *DDOService) GetBusinesstermTable(system string, colFilter interface{}, 
 		for _, colname := range gridArgs.Colnames {
 			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
 		}
+
+		filterTypes := colFilterM.Get("filterTypes")
+		if filterTypes != nil {
+			gridArgs.ColumnFilterType = colFilterM.Get("filterTypes").(map[string]interface{})
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -168,6 +178,11 @@ func (s *DDOService) GetSystemsTable(system string, colFilter interface{}, pagin
 	} else {
 		for _, colname := range gridArgs.Colnames {
 			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
+
+		filterTypes := colFilterM.Get("filterTypes")
+		if filterTypes != nil {
+			gridArgs.ColumnFilterType = colFilterM.Get("filterTypes").(map[string]interface{})
 		}
 	}
 
@@ -210,6 +225,11 @@ func (s *DDOService) GetSystemsBusinesstermTable(subdomain, system string, colFi
 		for _, colname := range gridArgs.Colnames {
 			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
 		}
+
+		filterTypes := colFilterM.Get("filterTypes")
+		if filterTypes != nil {
+			gridArgs.ColumnFilterType = colFilterM.Get("filterTypes").(map[string]interface{})
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -251,6 +271,11 @@ func (s *DDOService) GetDownstreamTable(system string, colFilter interface{}, pa
 		for _, colname := range gridArgs.Colnames {
 			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
 		}
+
+		filterTypes := colFilterM.Get("filterTypes")
+		if filterTypes != nil {
+			gridArgs.ColumnFilterType = colFilterM.Get("filterTypes").(map[string]interface{})
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -291,6 +316,11 @@ func (s *DDOService) GetDownstreamBusinesstermTable(subdomain, system string, co
 	} else {
 		for _, colname := range gridArgs.Colnames {
 			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
+
+		filterTypes := colFilterM.Get("filterTypes")
+		if filterTypes != nil {
+			gridArgs.ColumnFilterType = colFilterM.Get("filterTypes").(map[string]interface{})
 		}
 	}
 

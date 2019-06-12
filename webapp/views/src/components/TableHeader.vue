@@ -153,6 +153,7 @@ export default {
       // console.log(this.store.filters[which][fieldName]);
       
       this.store.filters[which][fieldName] = "";
+      this.store.filters[which].filterTypes = {};
       this.filterProcess ();
       this.$refs.columnFilter.hide(true);
     },

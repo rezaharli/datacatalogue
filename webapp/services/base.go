@@ -23,7 +23,7 @@ type GridArgs struct {
 
 	MainArgs         []interface{}
 	ColumnFilter     []interface{}
-	ColumnFilterType []interface{}
+	ColumnFilterType map[string]interface{}
 	DropdownFilter   []interface{}
 	Colnames         []string
 	GroupCol         string
@@ -48,7 +48,6 @@ func (s *Base) ExecuteGridQueryFromFile(gridArgs GridArgs) ([]toolkit.M, int, er
 		return nil, 0, err
 	}
 
-	toolkit.Println(gridArgs.Colnames)
 	additionalWhere := make(map[string]interface{}, len(gridArgs.Colnames))
 	for i, colname := range gridArgs.Colnames {
 		if toolkit.ToString(gridArgs.ColumnFilter[i]) != "" {
@@ -61,16 +60,17 @@ func (s *Base) ExecuteGridQueryFromFile(gridArgs GridArgs) ([]toolkit.M, int, er
 
 	///////// --------------------------------------------------EXECUTE
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName:       m.NewSystemModel().TableName(),
-		SqlQuery:        q,
-		Results:         &resultRows,
-		ResultTotal:     resultTotal,
-		PageNumber:      gridArgs.PageNumber,
-		RowsPerPage:     gridArgs.RowsPerPage,
-		OrderBy:         orderBy,
-		IsDescending:    gridArgs.IsDescending,
-		GroupCol:        gridArgs.GroupCol,
-		AdditionalWhere: additionalWhere,
+		TableName:        m.NewSystemModel().TableName(),
+		SqlQuery:         q,
+		Results:          &resultRows,
+		ResultTotal:      resultTotal,
+		PageNumber:       gridArgs.PageNumber,
+		RowsPerPage:      gridArgs.RowsPerPage,
+		OrderBy:          orderBy,
+		IsDescending:     gridArgs.IsDescending,
+		GroupCol:         gridArgs.GroupCol,
+		AdditionalWhere:  additionalWhere,
+		ColumnFilterType: gridArgs.ColumnFilterType,
 	})
 	if err != nil {
 		return nil, 0, err
