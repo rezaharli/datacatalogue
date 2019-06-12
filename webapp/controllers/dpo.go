@@ -362,6 +362,33 @@ func (c *DPO) GetDetailsUltimateSourceSystem(payload toolkit.M) (interface{}, in
 			case "DATA_ELEMENT":
 				ddVal.Set("ddUltScreenLabelSelected", uniqueValues.([]string)[0])
 				break
+			case "GOLDEN_SOURCE":
+				ddVal.Set("ddUltGoldenSourceSelected", uniqueValues.([]string)[0])
+				break
+			case "GS_SYSTEM_NAME":
+				ddVal.Set("ddUltGsSystemNameSelected", uniqueValues.([]string)[0])
+				break
+			case "GF_ITAM_ID":
+				ddVal.Set("ddUltGsItamIdSelected", uniqueValues.([]string)[0])
+				break
+			case "GS_TABLE_NAME":
+				ddVal.Set("ddUltGsTableNameSelected", uniqueValues.([]string)[0])
+				break
+			case "GS_COLUMN_NAME":
+				ddVal.Set("ddUltGsColumnNameSelected", uniqueValues.([]string)[0])
+				break
+			case "GS_DATA_ELEMENT":
+				ddVal.Set("ddUltGsDataElementSelected", uniqueValues.([]string)[0])
+				break
+			case "GS_DESCRIPTION":
+				ddVal.Set("ddUltGsDescriptionSelected", uniqueValues.([]string)[0])
+				break
+			case "GS_DERIVED":
+				ddVal.Set("ddUltGsDerivedSelected", uniqueValues.([]string)[0])
+				break
+			case "GS_DERIVATION_LOGIC":
+				ddVal.Set("ddUltGsDerivationLogicSelected", uniqueValues.([]string)[0])
+				break
 			}
 
 			joinedValues := ""
@@ -381,6 +408,15 @@ func (c *DPO) GetDetailsUltimateSourceSystem(payload toolkit.M) (interface{}, in
 		ddVal.Set("ddUltTableNameSelected", "NA")
 		ddVal.Set("ddUltColumnNameSelected", "NA")
 		ddVal.Set("ddUltScreenLabelSelected", "NA")
+		ddVal.Set("ddUltGoldenSourceSelected", "NA")
+		ddVal.Set("ddUltGsSystemNameSelected", "NA")
+		ddVal.Set("ddUltGsItamIdSelected", "NA")
+		ddVal.Set("ddUltGsTableNameSelected", "NA")
+		ddVal.Set("ddUltGsColumnNameSelected", "NA")
+		ddVal.Set("ddUltGsDataElementSelected", "NA")
+		ddVal.Set("ddUltGsDescriptionSelected", "NA")
+		ddVal.Set("ddUltGsDerivedSelected", "NA")
+		ddVal.Set("ddUltGsDerivationLogicSelected", "NA")
 	}
 
 	return selectedDetail, ddVal, mappedddSource, err
