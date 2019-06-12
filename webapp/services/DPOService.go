@@ -135,7 +135,7 @@ func (s *DPOService) GetDataelementsTable(system string, colFilter interface{}, 
 		gridArgs.IsDescending = descending.(bool)
 	}
 
-	gridArgs.GroupCol = "-"
+	gridArgs.GroupCol = "ALIAS_NAME"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
@@ -176,7 +176,7 @@ func (s *DPOService) GetDatalineageTable(system string, colFilter interface{}, p
 		gridArgs.IsDescending = descending.(bool)
 	}
 
-	gridArgs.GroupCol = "-"
+	gridArgs.GroupCol = "SYSTEM_NAME"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 

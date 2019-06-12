@@ -1,5 +1,5 @@
 <style> 
-#table-dpo-datalineage table.v-table tr th:nth-of-type(1){width: 10% !important;}
+#table-dpo-datalineage table.v-table tr th:nth-of-type(1){width: 30% !important;}
 #table-dpo-datalineage table.v-table tr th:nth-of-type(2){width: 10% !important;}
 </style>
 
@@ -90,10 +90,12 @@
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
                       <td v-if="displayPRName" v-bind:style="{ width: store.left.colWidth['PR_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" :fulltext="props.item.PR_NAMEs.map(v => v.PR_NAME).join(' | ')"></tablecell></td>
+                        {{ props.item.PR_NAMEs.map(v => v.PR_NAME).join(' | ') }}
+                      </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" :fulltext="props.item.SYSTEM_NAME"></tablecell></td>
+                        {{ props.item.SYSTEM_NAME }}
+                      </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }" class="text-uppercase">
                         <tablecell showOn="hover" :fulltext="props.item.CDE_COUNT"></tablecell></td>

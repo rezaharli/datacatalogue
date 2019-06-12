@@ -400,6 +400,7 @@ func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 		q += `WHERE ( ID IS NOT NULL `
 		if otherArgs[0] != "" {
 			q += `AND SYSTEM_NAME = '` + otherArgs[0] + `' `
+			q += `AND GS_SYSTEM_NAME = '` + otherArgs[0] + `' `
 		}
 		if otherArgs[1] != "" {
 			q += `AND TABLE_NAME = '` + otherArgs[1] + `' `
