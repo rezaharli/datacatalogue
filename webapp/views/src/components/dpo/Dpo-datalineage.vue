@@ -1,6 +1,7 @@
 <style> 
-#table-dpo-datalineage table.v-table tr th:nth-of-type(1){width: 30% !important;}
-#table-dpo-datalineage table.v-table tr th:nth-of-type(2){width: 10% !important;}
+#table-dpo-datalineage table.v-table tr th:nth-of-type(1){width: 37% !important;}
+#table-dpo-datalineage table.v-table tr th:nth-of-type(2){width: 27% !important;}
+#table-dpo-datalineage table.v-table tr th:nth-of-type(3){width: 10% !important;}
 </style>
 
 <template>
@@ -187,9 +188,6 @@ export default {
     this.store.tabName = this.storeName;
     this.store.dspname = this.$route.params.dspname;
     this.resetFilter();
-    setTimeout(() => {
-      this.setTableColumnsWidth($('#table-dpo-datalineage'));
-    }, 300);
   },
   updated() {
     this.setTableColumnsWidth($('#table-dpo-datalineage'));
@@ -197,6 +195,9 @@ export default {
   methods: {
     getLeftTable() {
       this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      setTimeout(() => {
+        this.setTableColumnsWidth($('#table-dpo-datalineage'));
+      }, 100);
     },
     isMainLevelCellShowing (props){
       if( ! props.expanded) return true;
