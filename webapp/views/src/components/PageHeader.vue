@@ -73,7 +73,8 @@
                 </b-dropdown-item>
 
                 <b-dropdown-item v-if="
-                    $route.name == 'dpo.dataelements'
+                    $route.name == 'dpo.dataelements' ||
+                    $route.name == 'dpo.datalineage'
                     ">
                     <router-link :to="goToDpoMenu" class="standard-a">DPO Landing Page</router-link>
                 </b-dropdown-item>
