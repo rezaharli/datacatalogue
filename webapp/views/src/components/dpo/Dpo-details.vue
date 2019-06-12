@@ -195,39 +195,39 @@ legend.col-form-label, label.col-form-label {
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source (Yes/No)">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.GOLDEN_SOURCE : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValUltimateSourceSystem.ddUltGoldenSourceSelected" :options="ddUltGoldenSourceOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source System Name">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.GS_SYSTEM_NAME : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValUltimateSourceSystem.ddUltGsSystemNameSelected" :options="ddUltGsSystemNameOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source ITAM ID">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.GF_ITAM_ID : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValUltimateSourceSystem.ddUltGsItamIdSelected" :options="ddUltGsItamIdOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Table Name">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.GS_TABLE_NAME : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValUltimateSourceSystem.ddUltGsTableNameSelected" :options="ddUltGsTableNameOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Column Name">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.GS_COLUMN_NAME : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValUltimateSourceSystem.ddUltGsColumnNameSelected" :options="ddUltGsColumnNameOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Screen Name">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.GS_DATA_ELEMENT : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValUltimateSourceSystem.ddUltGsDataElementSelected" :options="ddUltGsDataElementOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Business Description">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.GS_DESCRIPTION : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValUltimateSourceSystem.ddUltGsDescriptionSelected" :options="ddUltGsDescriptionOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Derived (Yes/No)">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.GS_DERIVED : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValUltimateSourceSystem.ddUltGsDerivedSelected" :options="ddUltGsDerivedOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Golden Source Derivation Logic">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsUltimateSourceSystem ? store.selectedDetailsUltimateSourceSystem.GS_DERIVATION_LOGIC : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValUltimateSourceSystem.ddUltGsDerivationLogicSelected" :options="ddUltGsDerivationLogicOptions"></b-form-select>
                       </b-form-group>
                     </b-form>
                   </p>
@@ -248,23 +248,23 @@ legend.col-form-label, label.col-form-label {
                   <p class="card-text">
                     <b-form>
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsDomainView ? store.selectedDetailsDomainView.DOMAIN_NAME : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValDomainView.ddDomainNameSelected" :options="ddDomainNameOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Sub Domain">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsDomainView ? store.selectedDetailsDomainView.SUBDOMAIN_NAME : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValDomainView.ddSubdomainNameSelected" :options="ddSubdomainNameOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Domain Owner">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsDomainView ? store.selectedDetailsDomainView.SUBDOMAIN_OWNER : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValDomainView.ddSubdomainOwnerSelected" :options="ddSubdomainOwnerOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsDomainView ? store.selectedDetailsDomainView.BUSINESS_TERM : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValDomainView.ddBusinessTermSelected" :options="ddBusinessTermOptions"></b-form-select>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsDomainView ? store.selectedDetailsDomainView.BUSINESS_TERM_DESCRIPTION : 'NA'"></text-wrap-dialog>
+                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValDomainView.ddBusinessTermDescriptionSelected" :options="ddBusinessTermDescriptionOptions"></b-form-select>
                       </b-form-group>
                     </b-form>
                   </p>
@@ -463,6 +463,200 @@ export default {
       var ret = _.uniq(_.map(filtered, (v) => v.DATA_ELEMENT.toString())).filter(Boolean);
       return ret.length > 0 ? ret : ["NA"];
     },
+    ddUltGoldenSourceOptions () {
+      var self = this;
+      var filtered = _.filter(self.store.DDSourceUltimateSourceSystem, (v) => {
+        return v.SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltSystemNameSelected 
+          && v.ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltItamIDSelected
+          && v.TABLE_NAME == self.store.ddValUltimateSourceSystem.ddUltTableNameSelected
+          && v.COLUMN_NAME == self.store.ddValUltimateSourceSystem.ddUltColumnNameSelected
+          && v.DATA_ELEMENT == self.store.ddValUltimateSourceSystem.ddUltScreenLabelSelected
+      });
+      
+      var ret = _.uniq(_.map(filtered, (v) => v.GOLDEN_SOURCE.toString())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
+    },
+    ddUltGsSystemNameOptions () {
+      var self = this;
+      var filtered = _.filter(self.store.DDSourceUltimateSourceSystem, (v) => {
+        return v.SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltSystemNameSelected 
+          && v.ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltItamIDSelected
+          && v.TABLE_NAME == self.store.ddValUltimateSourceSystem.ddUltTableNameSelected
+          && v.COLUMN_NAME == self.store.ddValUltimateSourceSystem.ddUltColumnNameSelected
+          && v.DATA_ELEMENT == self.store.ddValUltimateSourceSystem.ddUltScreenLabelSelected
+          && v.GOLDEN_SOURCE == self.store.ddValUltimateSourceSystem.ddUltGoldenSourceSelected
+      });
+      
+      var ret = _.uniq(_.map(filtered, (v) => v.GS_SYSTEM_NAME.toString())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
+    },
+    ddUltGsItamIdOptions () {
+      var self = this;
+      var filtered = _.filter(self.store.DDSourceUltimateSourceSystem, (v) => {
+        return v.SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltSystemNameSelected 
+          && v.ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltItamIDSelected
+          && v.TABLE_NAME == self.store.ddValUltimateSourceSystem.ddUltTableNameSelected
+          && v.COLUMN_NAME == self.store.ddValUltimateSourceSystem.ddUltColumnNameSelected
+          && v.DATA_ELEMENT == self.store.ddValUltimateSourceSystem.ddUltScreenLabelSelected
+          && v.GOLDEN_SOURCE == self.store.ddValUltimateSourceSystem.ddUltGoldenSourceSelected
+          && v.GS_SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltGsSystemNameSelected
+      });
+      
+      var ret = _.uniq(_.map(filtered, (v) => v.GF_ITAM_ID.toString())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
+    },
+    ddUltGsTableNameOptions () {
+      var self = this;
+      var filtered = _.filter(self.store.DDSourceUltimateSourceSystem, (v) => {
+        return v.SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltSystemNameSelected 
+          && v.ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltItamIDSelected
+          && v.TABLE_NAME == self.store.ddValUltimateSourceSystem.ddUltTableNameSelected
+          && v.COLUMN_NAME == self.store.ddValUltimateSourceSystem.ddUltColumnNameSelected
+          && v.DATA_ELEMENT == self.store.ddValUltimateSourceSystem.ddUltScreenLabelSelected
+          && v.GOLDEN_SOURCE == self.store.ddValUltimateSourceSystem.ddUltGoldenSourceSelected
+          && v.GS_SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltGsSystemNameSelected
+          && v.GF_ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltGsItamIdSelected
+      });
+      
+      var ret = _.uniq(_.map(filtered, (v) => v.GS_TABLE_NAME.toString())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
+    },
+    ddUltGsColumnNameOptions () {
+      var self = this;
+      var filtered = _.filter(self.store.DDSourceUltimateSourceSystem, (v) => {
+        return v.SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltSystemNameSelected 
+          && v.ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltItamIDSelected
+          && v.TABLE_NAME == self.store.ddValUltimateSourceSystem.ddUltTableNameSelected
+          && v.COLUMN_NAME == self.store.ddValUltimateSourceSystem.ddUltColumnNameSelected
+          && v.DATA_ELEMENT == self.store.ddValUltimateSourceSystem.ddUltScreenLabelSelected
+          && v.GOLDEN_SOURCE == self.store.ddValUltimateSourceSystem.ddUltGoldenSourceSelected
+          && v.GS_SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltGsSystemNameSelected
+          && v.GF_ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltGsItamIdSelected
+          && v.GS_TABLE_NAME == self.store.ddValUltimateSourceSystem.ddUltGsTableNameSelected
+      });
+      
+      var ret = _.uniq(_.map(filtered, (v) => v.GS_COLUMN_NAME.toString())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
+    },
+    ddUltGsDataElementOptions () {
+      var self = this;
+      var filtered = _.filter(self.store.DDSourceUltimateSourceSystem, (v) => {
+        return v.SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltSystemNameSelected 
+          && v.ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltItamIDSelected
+          && v.TABLE_NAME == self.store.ddValUltimateSourceSystem.ddUltTableNameSelected
+          && v.COLUMN_NAME == self.store.ddValUltimateSourceSystem.ddUltColumnNameSelected
+          && v.DATA_ELEMENT == self.store.ddValUltimateSourceSystem.ddUltScreenLabelSelected
+          && v.GOLDEN_SOURCE == self.store.ddValUltimateSourceSystem.ddUltGoldenSourceSelected
+          && v.GS_SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltGsSystemNameSelected
+          && v.GF_ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltGsItamIdSelected
+          && v.GS_TABLE_NAME == self.store.ddValUltimateSourceSystem.ddUltGsTableNameSelected
+          && v.GS_COLUMN_NAME == self.store.ddValUltimateSourceSystem.ddUltGsColumnNameSelected
+      });
+      
+      var ret = _.uniq(_.map(filtered, (v) => v.GS_DATA_ELEMENT.toString())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
+    },
+    ddUltGsDescriptionOptions () {
+      var self = this;
+      var filtered = _.filter(self.store.DDSourceUltimateSourceSystem, (v) => {
+        return v.SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltSystemNameSelected 
+          && v.ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltItamIDSelected
+          && v.TABLE_NAME == self.store.ddValUltimateSourceSystem.ddUltTableNameSelected
+          && v.COLUMN_NAME == self.store.ddValUltimateSourceSystem.ddUltColumnNameSelected
+          && v.DATA_ELEMENT == self.store.ddValUltimateSourceSystem.ddUltScreenLabelSelected
+          && v.GOLDEN_SOURCE == self.store.ddValUltimateSourceSystem.ddUltGoldenSourceSelected
+          && v.GS_SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltGsSystemNameSelected
+          && v.GF_ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltGsItamIdSelected
+          && v.GS_TABLE_NAME == self.store.ddValUltimateSourceSystem.ddUltGsTableNameSelected
+          && v.GS_COLUMN_NAME == self.store.ddValUltimateSourceSystem.ddUltGsColumnNameSelected
+          && v.GS_DATA_ELEMENT == self.store.ddValUltimateSourceSystem.ddUltGsDataElementSelected
+      });
+      
+      var ret = _.uniq(_.map(filtered, (v) => v.GS_DESCRIPTION.toString())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
+    },
+    ddUltGsDerivedOptions () {
+      var self = this;
+      var filtered = _.filter(self.store.DDSourceUltimateSourceSystem, (v) => {
+        return v.SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltSystemNameSelected 
+          && v.ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltItamIDSelected
+          && v.TABLE_NAME == self.store.ddValUltimateSourceSystem.ddUltTableNameSelected
+          && v.COLUMN_NAME == self.store.ddValUltimateSourceSystem.ddUltColumnNameSelected
+          && v.DATA_ELEMENT == self.store.ddValUltimateSourceSystem.ddUltScreenLabelSelected
+          && v.GOLDEN_SOURCE == self.store.ddValUltimateSourceSystem.ddUltGoldenSourceSelected
+          && v.GS_SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltGsSystemNameSelected
+          && v.GF_ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltGsItamIdSelected
+          && v.GS_TABLE_NAME == self.store.ddValUltimateSourceSystem.ddUltGsTableNameSelected
+          && v.GS_COLUMN_NAME == self.store.ddValUltimateSourceSystem.ddUltGsColumnNameSelected
+          && v.GS_DATA_ELEMENT == self.store.ddValUltimateSourceSystem.ddUltGsDataElementSelected
+          && v.GS_DESCRIPTION == self.store.ddValUltimateSourceSystem.ddUltGsDescriptionSelected
+      });
+      
+      var ret = _.uniq(_.map(filtered, (v) => v.GS_DERIVED.toString())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
+    },
+    ddUltGsDerivationLogicOptions () {
+      var self = this;
+      var filtered = _.filter(self.store.DDSourceUltimateSourceSystem, (v) => {
+        return v.SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltSystemNameSelected 
+          && v.ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltItamIDSelected
+          && v.TABLE_NAME == self.store.ddValUltimateSourceSystem.ddUltTableNameSelected
+          && v.COLUMN_NAME == self.store.ddValUltimateSourceSystem.ddUltColumnNameSelected
+          && v.DATA_ELEMENT == self.store.ddValUltimateSourceSystem.ddUltScreenLabelSelected
+          && v.GOLDEN_SOURCE == self.store.ddValUltimateSourceSystem.ddUltGoldenSourceSelected
+          && v.GS_SYSTEM_NAME == self.store.ddValUltimateSourceSystem.ddUltGsSystemNameSelected
+          && v.GF_ITAM_ID == self.store.ddValUltimateSourceSystem.ddUltGsItamIdSelected
+          && v.GS_TABLE_NAME == self.store.ddValUltimateSourceSystem.ddUltGsTableNameSelected
+          && v.GS_COLUMN_NAME == self.store.ddValUltimateSourceSystem.ddUltGsColumnNameSelected
+          && v.GS_DATA_ELEMENT == self.store.ddValUltimateSourceSystem.ddUltGsDataElementSelected
+          && v.GS_DESCRIPTION == self.store.ddValUltimateSourceSystem.ddUltGsDescriptionSelected
+          && v.GS_DERIVED == self.store.ddValUltimateSourceSystem.ddUltGsDerivedSelected
+      });
+      
+      var ret = _.uniq(_.map(filtered, (v) => v.GS_DERIVATION_LOGIC.toString())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
+    },
+    ddDomainNameOptions () {
+      return _.uniq(_.map(this.store.DDSourceDomainView, (v) => v.DOMAIN_NAME.toString())).filter(Boolean);
+    },
+    ddSubdomainNameOptions () {
+      var self = this;
+      var filtered = _.filter(self.store.DDSourceDomainView, (v) => {
+        return v.DOMAIN_NAME == self.store.ddValDomainView.ddDomainNameSelected;
+      });
+
+      return _.uniq(_.map(filtered, (v) => v.SUBDOMAIN_NAME.toString())).filter(Boolean);
+    },
+    ddSubdomainOwnerOptions () {
+      var self = this;
+      var filtered = _.filter(self.store.DDSourceDomainView, (v) => {
+        return v.DOMAIN_NAME == self.store.ddValDomainView.ddDomainNameSelected
+          && v.SUBDOMAIN_NAME == self.store.ddValDomainView.ddSubdomainNameSelected
+      });
+
+      return _.uniq(_.map(filtered, (v) => v.SUBDOMAIN_OWNER.toString())).filter(Boolean);
+    },
+    ddBusinessTermOptions () {
+      var self = this;
+      var filtered = _.filter(self.store.DDSourceDomainView, (v) => {
+        return v.DOMAIN_NAME == self.store.ddValDomainView.ddDomainNameSelected
+          && v.SUBDOMAIN_NAME == self.store.ddValDomainView.ddSubdomainNameSelected
+          && v.SUBDOMAIN_OWNER == self.store.ddValDomainView.ddSubdomainOwnerSelected
+      });
+
+      return _.uniq(_.map(filtered, (v) => v.BUSINESS_TERM.toString())).filter(Boolean);
+    },
+    ddBusinessTermDescriptionOptions () {
+      var self = this;
+      var filtered = _.filter(self.store.DDSourceDomainView, (v) => {
+        return v.DOMAIN_NAME == self.store.ddValDomainView.ddDomainNameSelected
+          && v.SUBDOMAIN_NAME == self.store.ddValDomainView.ddSubdomainNameSelected
+          && v.SUBDOMAIN_OWNER == self.store.ddValDomainView.ddSubdomainOwnerSelected
+          && v.BUSINESS_TERM == self.store.ddValDomainView.ddBusinessTermSelected
+      });
+
+      return _.uniq(_.map(filtered, (v) => v.BUSINESS_TERM_DESCRIPTION.toString())).filter(Boolean);
+    },
     exportDatas () {
       if(this.selectedDetails){
         return [{
@@ -483,9 +677,15 @@ export default {
       if (!this.store.firstload) {
         var param = {};
 
-        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
         }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName"]);
 
         this.runGetDetails(param);
       }
@@ -496,12 +696,15 @@ export default {
       if (!this.store.firstload) {
         var param = {};
 
-        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
         }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected && this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected != "NA") {
-          param.ImmItamID = this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected.toString();
-        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID"]);
 
         this.runGetDetails(param);
       }
@@ -512,15 +715,15 @@ export default {
       if (!this.store.firstload) {
         var param = {};
 
-        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
         }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected && this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected != "NA") {
-          param.ImmItamID = this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected != "NA") {
-          param.ImmTableName = this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected.toString();
-        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName"]);
 
         this.runGetDetails(param);
       }
@@ -531,18 +734,15 @@ export default {
       if (!this.store.firstload) {
         var param = {};
 
-        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
         }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected && this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected != "NA") {
-          param.ImmItamID = this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected != "NA") {
-          param.ImmTableName = this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected != "NA") {
-          param.ImmColumnName = this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected.toString();
-        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName"]);
 
         this.runGetDetails(param);
       }
@@ -553,21 +753,15 @@ export default {
       if (!this.store.firstload) {
         var param = {};
 
-        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
         }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected && this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected != "NA") {
-          param.ImmItamID = this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected != "NA") {
-          param.ImmTableName = this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected != "NA") {
-          param.ImmColumnName = this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected && this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected != "NA") {
-          param.ImmScreenLabel = this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected.toString();
-        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"]);
 
         this.runGetDetails(param);
       }
@@ -578,24 +772,16 @@ export default {
       if (!this.store.firstload) {
         var param = {};
 
-        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
         }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected && this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected != "NA") {
-          param.ImmItamID = this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected != "NA") {
-          param.ImmTableName = this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected != "NA") {
-          param.ImmColumnName = this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected && this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected != "NA") {
-          param.ImmScreenLabel = this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected.toString();
-        }
-        if (this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected && this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected != "NA") {
-          param.UltSystemName = this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected.toString();
-        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"]);
+        setParam("ddValUltimateSourceSystem", ["UltSystemName"]);
 
         this.runGetDetails(param);
       }
@@ -606,27 +792,16 @@ export default {
       if (!this.store.firstload) {
         var param = {};
 
-        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
         }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected && this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected != "NA") {
-          param.ImmItamID = this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected != "NA") {
-          param.ImmTableName = this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected != "NA") {
-          param.ImmColumnName = this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected && this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected != "NA") {
-          param.ImmScreenLabel = this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected.toString();
-        }
-        if (this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected && this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected != "NA") {
-          param.UltSystemName = this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected.toString();
-        }
-        if (this.store.ddValUltimateSourceSystem.ddUltItamIDSelected && this.store.ddValUltimateSourceSystem.ddUltItamIDSelected != "NA") {
-          param.UltItamID = this.store.ddValUltimateSourceSystem.ddUltItamIDSelected.toString();
-        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"]);
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID"]);
 
         this.runGetDetails(param);
       }
@@ -637,30 +812,16 @@ export default {
       if (!this.store.firstload) {
         var param = {};
 
-        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
         }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected && this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected != "NA") {
-          param.ImmItamID = this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected != "NA") {
-          param.ImmTableName = this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected != "NA") {
-          param.ImmColumnName = this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected && this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected != "NA") {
-          param.ImmScreenLabel = this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected.toString();
-        }
-        if (this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected && this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected != "NA") {
-          param.UltSystemName = this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected.toString();
-        }
-        if (this.store.ddValUltimateSourceSystem.ddUltItamIDSelected && this.store.ddValUltimateSourceSystem.ddUltItamIDSelected != "NA") {
-          param.UltItamID = this.store.ddValUltimateSourceSystem.ddUltItamIDSelected.toString();
-        }
-        if (this.store.ddValUltimateSourceSystem.ddUltTableNameSelected && this.store.ddValUltimateSourceSystem.ddUltTableNameSelected != "NA") {
-          param.UltTableName = this.store.ddValUltimateSourceSystem.ddUltTableNameSelected.toString();
-        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"]);
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName"]);
 
         this.runGetDetails(param);
       }
@@ -671,33 +832,16 @@ export default {
       if (!this.store.firstload) {
         var param = {};
 
-        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
         }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected && this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected != "NA") {
-          param.ImmItamID = this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected != "NA") {
-          param.ImmTableName = this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected != "NA") {
-          param.ImmColumnName = this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected && this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected != "NA") {
-          param.ImmScreenLabel = this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected.toString();
-        }
-        if (this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected && this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected != "NA") {
-          param.UltSystemName = this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected.toString();
-        }
-        if (this.store.ddValUltimateSourceSystem.ddUltItamIDSelected && this.store.ddValUltimateSourceSystem.ddUltItamIDSelected != "NA") {
-          param.UltItamID = this.store.ddValUltimateSourceSystem.ddUltItamIDSelected.toString();
-        }
-        if (this.store.ddValUltimateSourceSystem.ddUltTableNameSelected && this.store.ddValUltimateSourceSystem.ddUltTableNameSelected != "NA") {
-          param.UltTableName = this.store.ddValUltimateSourceSystem.ddUltTableNameSelected.toString();
-        }
-        if (this.store.ddValUltimateSourceSystem.ddUltColumnNameSelected && this.store.ddValUltimateSourceSystem.ddUltColumnNameSelected != "NA") {
-          param.UltColumnName = this.store.ddValUltimateSourceSystem.ddUltColumnNameSelected.toString();
-        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"]);
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName"]);
 
         this.runGetDetails(param);
       }
@@ -708,40 +852,305 @@ export default {
       if (!this.store.firstload) {
         var param = {};
 
-        if (this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected != "NA") {
-          param.ImmSystemName = this.store.ddValImmediatePrecedingSystem.ddImmSystemNameSelected.toString();
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
         }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected && this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected != "NA") {
-          param.ImmItamID = this.store.ddValImmediatePrecedingSystem.ddImmItamIDSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected != "NA") {
-          param.ImmTableName = this.store.ddValImmediatePrecedingSystem.ddImmTableNameSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected && this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected != "NA") {
-          param.ImmColumnName = this.store.ddValImmediatePrecedingSystem.ddImmColumnNameSelected.toString();
-        }
-        if (this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected && this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected != "NA") {
-          param.ImmScreenLabel = this.store.ddValImmediatePrecedingSystem.ddImmScreenLabelSelected.toString();
-        }
-        if (this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected && this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected != "NA") {
-          param.UltSystemName = this.store.ddValUltimateSourceSystem.ddUltSystemNameSelected.toString();
-        }
-        if (this.store.ddValUltimateSourceSystem.ddUltItamIDSelected && this.store.ddValUltimateSourceSystem.ddUltItamIDSelected != "NA") {
-          param.UltItamID = this.store.ddValUltimateSourceSystem.ddUltItamIDSelected.toString();
-        }
-        if (this.store.ddValUltimateSourceSystem.ddUltTableNameSelected && this.store.ddValUltimateSourceSystem.ddUltTableNameSelected != "NA") {
-          param.UltTableName = this.store.ddValUltimateSourceSystem.ddUltTableNameSelected.toString();
-        }
-        if (this.store.ddValUltimateSourceSystem.ddUltColumnNameSelected && this.store.ddValUltimateSourceSystem.ddUltColumnNameSelected != "NA") {
-          param.UltColumnName = this.store.ddValUltimateSourceSystem.ddUltColumnNameSelected.toString();
-        }
-        if (this.store.ddValUltimateSourceSystem.ddUltScreenLabelSelected && this.store.ddValUltimateSourceSystem.ddUltScreenLabelSelected != "NA") {
-          param.UltScreenLabel = this.store.ddValUltimateSourceSystem.ddUltScreenLabelSelected.toString();
-        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"]);
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel"]);
 
         this.runGetDetails(param);
       }
-    }
+    },
+    'store.ddValUltimateSourceSystem.ddUltGoldenSourceSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"]);
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource"]);
+
+        this.runGetDetails(param);
+      }
+    },
+    'store.ddValUltimateSourceSystem.ddUltGsSystemNameSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName"])
+
+        this.runGetDetails(param);
+      }
+    },
+    'store.ddValUltimateSourceSystem.ddUltGsItamIdSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName", "UltGsItamId"])
+
+        this.runGetDetails(param);
+      }
+    },
+    'store.ddValUltimateSourceSystem.ddUltGsTableNameSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName", "UltGsItamId", "UltGsTableName"])
+
+        this.runGetDetails(param);
+      }
+    },
+    'store.ddValUltimateSourceSystem.ddUltGsColumnNameSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName", "UltGsItamId", "UltGsTableName", "UltGsColumnName"])
+
+        this.runGetDetails(param);
+      }
+    },
+    'store.ddValUltimateSourceSystem.ddUltGsDataElementSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName", "UltGsItamId", "UltGsTableName", "UltGsColumnName", "UltGsDataElement"])
+
+        this.runGetDetails(param);
+      }
+    },
+    'store.ddValUltimateSourceSystem.ddUltGsDescriptionSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName", "UltGsItamId", "UltGsTableName", "UltGsColumnName", "UltGsDataElement", "UltGsDescription"])
+
+        this.runGetDetails(param);
+      }
+    },
+    'store.ddValUltimateSourceSystem.ddUltGsDerivedSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName", "UltGsItamId", "UltGsTableName", "UltGsColumnName", "UltGsDataElement", "UltGsDescription", "UltGsDerived"])
+
+        this.runGetDetails(param);
+      }
+    },
+    'store.ddValUltimateSourceSystem.ddUltGsDerivationLogicSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName", "UltGsItamId", "UltGsTableName", "UltGsColumnName", "UltGsDataElement", "UltGsDescription", "UltGsDerived", "UltGsDerivationLogic"])
+
+        this.runGetDetails(param);
+      }
+    },
+    'store.ddValDomainView.ddDomainNameSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName", "UltGsItamId", "UltGsTableName", "UltGsColumnName", "UltGsDataElement", "UltGsDescription", "UltGsDerived", "UltGsDerivationLogic"])
+        setParam("ddValDomainView", ["DomainName"])
+
+        this.runGetDetails(param);
+      }
+    },
+    'store.ddValDomainView.ddSubdomainNameSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName", "UltGsItamId", "UltGsTableName", "UltGsColumnName", "UltGsDataElement", "UltGsDescription", "UltGsDerived", "UltGsDerivationLogic"])
+        setParam("ddValDomainView", ["DomainName", "SubdomainName"])
+
+        this.runGetDetails(param);
+      }
+    },
+    'store.ddValDomainView.ddSubdomainOwnerSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName", "UltGsItamId", "UltGsTableName", "UltGsColumnName", "UltGsDataElement", "UltGsDescription", "UltGsDerived", "UltGsDerivationLogic"])
+        setParam("ddValDomainView", ["DomainName", "SubdomainName", "SubdomainOwner"])
+
+        this.runGetDetails(param);
+      }
+    },
+    'store.ddValDomainView.ddBusinessTermSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName", "UltGsItamId", "UltGsTableName", "UltGsColumnName", "UltGsDataElement", "UltGsDescription", "UltGsDerived", "UltGsDerivationLogic"])
+        setParam("ddValDomainView", ["DomainName", "SubdomainName", "SubdomainOwner", "BusinessTerm"])
+
+        this.runGetDetails(param);
+      }
+    },
+    'store.ddValDomainView.ddBusinessTermDescriptionSelected' (){
+      if(this.store.firstload) return;
+
+      if (!this.store.firstload) {
+        var param = {};
+
+        var setParam = (ddValGroup, names) => {
+          names.forEach(name => {
+            if (this.store[ddValGroup]["dd" + name + "Selected"] && this.store[ddValGroup]["dd" + name + "Selected"] != "NA") {
+              param[name] = this.store[ddValGroup]["dd" + name + "Selected"].toString();
+            }
+          });
+        }
+        
+        setParam("ddValImmediatePrecedingSystem", ["ImmSystemName", "ImmItamID", "ImmTableName", "ImmColumnName", "ImmScreenLabel"])
+        setParam("ddValUltimateSourceSystem", ["UltSystemName", "UltItamID", "UltTableName", "UltColumnName", "UltScreenLabel", "UltGoldenSource", "UltGsSystemName", "UltGsItamId", "UltGsTableName", "UltGsColumnName", "UltGsDataElement", "UltGsDescription", "UltGsDerived", "UltGsDerivationLogic"])
+        setParam("ddValDomainView", ["DomainName", "SubdomainName", "SubdomainOwner", "BusinessTerm", "BusinessTermDescription"])
+
+        this.runGetDetails(param);
+      }
+    },
   },
   mounted() {
     this.$refs.modalDetails.show();

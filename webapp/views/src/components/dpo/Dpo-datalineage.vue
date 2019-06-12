@@ -1,6 +1,7 @@
 <style> 
-#table-dpo-datalineage table.v-table tr th:nth-of-type(1){width: 10% !important;}
-#table-dpo-datalineage table.v-table tr th:nth-of-type(2){width: 10% !important;}
+#table-dpo-datalineage table.v-table tr th:nth-of-type(1){width: 37% !important;}
+#table-dpo-datalineage table.v-table tr th:nth-of-type(2){width: 27% !important;}
+#table-dpo-datalineage table.v-table tr th:nth-of-type(3){width: 10% !important;}
 </style>
 
 <template>
@@ -90,10 +91,12 @@
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
                       <td v-if="displayPRName" v-bind:style="{ width: store.left.colWidth['PR_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" :fulltext="props.item.PR_NAMEs.map(v => v.PR_NAME).join(' | ')"></tablecell></td>
+                        {{ props.item.PR_NAMEs.map(v => v.PR_NAME).join(' | ') }}
+                      </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" :fulltext="props.item.SYSTEM_NAME"></tablecell></td>
+                        {{ props.item.SYSTEM_NAME }}
+                      </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['CDE_COUNT'] + 'px' }" class="text-uppercase">
                         <tablecell showOn="hover" :fulltext="props.item.CDE_COUNT"></tablecell></td>
@@ -146,7 +149,7 @@ export default {
       var prNameHeader = this.store.leftHeaders.find(v => v.value == "PR_NAME");
 
       console.log(this.store.left.source[0]["PROCESS_NAME"]);
-      if(this.store.left.source[0]["PROCESS_NAME"].toLowerCase() == "Risk Reporting | Critical Reports".toLowerCase()){
+      if(this.store.left.source[0]["PROCESS_NAME"].toLowerCase().indexOf("Risk Reporting | Critical Reports".toLowerCase()) != -1){
         prNameHeader.display = true;
         prNameHeader.exportable = true;
         return true;
@@ -185,9 +188,6 @@ export default {
     this.store.tabName = this.storeName;
     this.store.dspname = this.$route.params.dspname;
     this.resetFilter();
-    setTimeout(() => {
-      this.setTableColumnsWidth($('#table-dpo-datalineage'));
-    }, 300);
   },
   updated() {
     this.setTableColumnsWidth($('#table-dpo-datalineage'));
@@ -195,6 +195,9 @@ export default {
   methods: {
     getLeftTable() {
       this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      setTimeout(() => {
+        this.setTableColumnsWidth($('#table-dpo-datalineage'));
+      }, 100);
     },
     isMainLevelCellShowing (props){
       if( ! props.expanded) return true;

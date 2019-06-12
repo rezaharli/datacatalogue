@@ -176,7 +176,7 @@ func (s *DPOService) GetDatalineageTable(system string, colFilter interface{}, p
 		gridArgs.IsDescending = descending.(bool)
 	}
 
-	gridArgs.GroupCol = "-"
+	gridArgs.GroupCol = "SYSTEM_NAME"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
@@ -513,6 +513,15 @@ func (s *DPOService) GetDetailsUltimateSourceSystem(payload toolkit.M) (interfac
 		payload.GetString("UltTableName"),
 		payload.GetString("UltColumnName"),
 		payload.GetString("UltScreenLabel"),
+		payload.GetString("UltGoldenSource"),
+		payload.GetString("UltGsSystemName"),
+		payload.GetString("UltGsItamId"),
+		payload.GetString("UltGsTableName"),
+		payload.GetString("UltGsColumnName"),
+		payload.GetString("UltGsDataElement"),
+		payload.GetString("UltGsDescription"),
+		payload.GetString("UltGsDerived"),
+		payload.GetString("UltGsDerivationLogic"),
 	)
 
 	checkNotEmpty := func(s []string) bool {
@@ -544,6 +553,33 @@ func (s *DPOService) GetDetailsUltimateSourceSystem(payload toolkit.M) (interfac
 		}
 		if otherArgs[4] != "" {
 			q += `AND DATA_ELEMENT = '` + otherArgs[4] + `' `
+		}
+		if otherArgs[5] != "" {
+			q += `AND GOLDEN_SOURCE = '` + otherArgs[5] + `' `
+		}
+		if otherArgs[6] != "" {
+			q += `AND GS_SYSTEM_NAME = '` + otherArgs[6] + `' `
+		}
+		if otherArgs[7] != "" {
+			q += `AND GF_ITAM_ID = '` + otherArgs[7] + `' `
+		}
+		if otherArgs[8] != "" {
+			q += `AND GS_TABLE_NAME = '` + otherArgs[8] + `' `
+		}
+		if otherArgs[9] != "" {
+			q += `AND GS_COLUMN_NAME = '` + otherArgs[9] + `' `
+		}
+		if otherArgs[10] != "" {
+			q += `AND GS_DATA_ELEMENT = '` + otherArgs[10] + `' `
+		}
+		if otherArgs[11] != "" {
+			q += `AND GS_DESCRIPTION = '` + otherArgs[11] + `' `
+		}
+		if otherArgs[12] != "" {
+			q += `AND GS_DERIVED = '` + otherArgs[12] + `' `
+		}
+		if otherArgs[13] != "" {
+			q += `AND GS_DERIVATION_LOGIC = '` + otherArgs[13] + `' `
 		}
 		q += `)) `
 	}
@@ -587,7 +623,16 @@ func (s *DPOService) GetddSourceUltimateSourceSystem(payload toolkit.M) (interfa
 			ITAM_ID, 
 			TABLE_NAME, 
 			COLUMN_NAME, 
-			DATA_ELEMENT
+			DATA_ELEMENT,
+			GOLDEN_SOURCE,
+			GS_SYSTEM_NAME,
+			GF_ITAM_ID,
+			GS_TABLE_NAME,
+			GS_COLUMN_NAME,
+			GS_DATA_ELEMENT,
+			GS_DESCRIPTION,
+			GS_DERIVED,
+			GS_DERIVATION_LOGIC
 		FROM (
 		` + q + `
 	) `
@@ -624,6 +669,92 @@ func (s *DPOService) GetDetailsDomainView(payload toolkit.M) (interface{}, int, 
 	}
 
 	funcLog(funcName(), fileName, queryName)
+
+	otherArgs := make([]string, 0)
+	otherArgs = append(otherArgs,
+		payload.GetString("DomainName"),
+		payload.GetString("SubdomainName"),
+		payload.GetString("SubdomainOwner"),
+		payload.GetString("BusinessTerm"),
+		payload.GetString("BusinessTermDescription"),
+	)
+
+	checkNotEmpty := func(s []string) bool {
+		for _, v := range s {
+			if v != "" {
+				return true
+			}
+		}
+		return false
+	}
+
+	q = `SELECT rownum, a.* FROM (
+		` + q + `
+	) a `
+
+	if checkNotEmpty(otherArgs) == true {
+		q += `WHERE (( ID IS NOT NULL `
+		if otherArgs[0] != "" {
+			q += `AND DOMAIN_NAME = '` + otherArgs[0] + `' `
+		}
+		if otherArgs[1] != "" {
+			q += `AND SUBDOMAIN_NAME = '` + otherArgs[1] + `' `
+		}
+		if otherArgs[2] != "" {
+			q += `AND SUBDOMAIN_OWNER = '` + otherArgs[2] + `' `
+		}
+		if otherArgs[3] != "" {
+			q += `AND BUSINESS_TERM = '` + otherArgs[3] + `' `
+		}
+		if otherArgs[4] != "" {
+			q += `AND BUSINESS_TERM_DESCRIPTION = '` + otherArgs[4] + `' `
+		}
+		q += `)) `
+	}
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *DPOService) GetddDetailsDomainView(payload toolkit.M) (interface{}, int, error) {
+	fileName := "dpo.sql"
+	queryName := "details-domain-view"
+
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, payload.GetString("Right"))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	funcLog(funcName(), fileName, queryName)
+
+	///////// FILTER
+	q = `SELECT DISTINCT 
+			DOMAIN_NAME, 
+			SUBDOMAIN_NAME, 
+			SUBDOMAIN_OWNER,
+			BUSINESS_TERM,
+			BUSINESS_TERM_DESCRIPTION
+		FROM (
+		` + q + `
+	) `
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
 		TableName: m.NewCategoryModel().TableName(),
