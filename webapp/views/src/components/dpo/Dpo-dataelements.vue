@@ -160,11 +160,13 @@
                       </template>
 
                       <template slot="expand" slot-scope="props">
+                        <!-- <table-rows-sub :storeName="storeName" :props="props" /> -->
                         <v-data-table
                           :headers="store.leftHeaders.filter(v => v.display == true)"
                           :items="props.item.Columns"
-                          item-key="COLID"
+                          :expand="false"
                           class=""
+                          item-key="COLID"
                           hide-actions
                           hide-headers
                           @update:pagination="setExpandedTableColumnsWidth"
@@ -176,10 +178,52 @@
                             <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
                             <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
                             <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
-                            
+
                             <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                              <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover"></tablecell>
+                              <b-link @click="props.expanded = !props.expanded" v-if="props.item.ULT_SYSTEM_NAMEs.length >= 1">
+                                <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover"></tablecell>
+                              </b-link>
+
+                              <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover" v-if="props.item.ULT_SYSTEM_NAMEs.length < 1"></tablecell>
                             </td>
+
+                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['ULT_SYSTEM_NAME'] + 'px' }">
+                              <tablecell showOn="hover" v-if="isColumnLevelCellShowing(props)" :fulltext="props.item.ULT_SYSTEM_NAME"></tablecell>
+                            </td>
+
+                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['DATA_SLA'] + 'px' }">
+                              <tablecell showOn="hover" v-if="isColumnLevelCellShowing(props)" :fulltext="props.item.DATA_SLA"></tablecell>
+                            </td>
+                          </template>
+
+                          <template slot="expand" slot-scope="props">
+                            <v-data-table
+                              :headers="store.leftHeaders.filter(v => v.display == true)"
+                              :items="props.item.ULT_SYSTEM_NAMEs"
+                              item-key="ULTSYSID"
+                              class=""
+                              hide-actions
+                              hide-headers
+                              @update:pagination="setExpandedTableColumnsWidth"
+                            >
+                              <template slot="items" slot-scope="props">
+                                <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
+                                <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }">&nbsp;</td>
+                                <td v-bind:style="{ width: store.left.colWidth['ITAM_ID'] + 'px' }">&nbsp;</td>
+                                <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
+                                <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
+                                <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
+                                <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">&nbsp;</td>
+                                
+                                <td v-bind:style="{ width: store.left.colWidth['ULT_SYSTEM_NAME'] + 'px' }">
+                                  <tablecell :fulltext="props.item.ULT_SYSTEM_NAME" showOn="hover"></tablecell>
+                                </td>
+                                
+                                <td v-bind:style="{ width: store.left.colWidth['DATA_SLA'] + 'px' }">
+                                  <tablecell :fulltext="props.item.DATA_SLA" showOn="hover"></tablecell>
+                                </td>
+                              </template>
+                            </v-data-table>
                           </template>
                         </v-data-table>
                       </template>
@@ -272,6 +316,16 @@ export default {
       if( ! props.expanded) return true;
       else {
         if(props.item.Columns.length > 0) {
+          if(props.item.Columns[0].ULT_SYSTEM_NAMEs.length == 0) return true;
+        }
+        
+        return false;
+      }
+    },
+    isColumnLevelCellShowing (props){
+      if( ! props.expanded) return true;
+      else {
+        if(props.item.ULT_SYSTEM_NAMEs.length > 0) {
           return true;
         }
         
