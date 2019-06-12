@@ -68,6 +68,7 @@
                     :must-sort="true"
                     item-key="ID"
                     class="table-v1"
+                    ref="dTable"
                     id="table-ddo-systems-businessterm">
                   <template slot="headerCell" slot-scope="props">
                     <tableheader :storeName="storeName" :props="props" :which="'left'"/>
@@ -237,16 +238,24 @@ export default {
     this.store.subdomain = this.$route.params.subdomain;
     this.store.system = this.$route.params.system;
     this.resetFilter();
+    this.closeAllDrillDown();
     setTimeout(() => {
       this.setTableColumnsWidth($('#table-ddo-systems-businessterm'));
     }, 300);
   },
   updated() {
+    this.closeAllDrillDown();
     this.setTableColumnsWidth($('#table-ddo-systems-businessterm'));
   },
   methods: {
     getLeftTable() {
       this.$store.dispatch(`${this.storeName}/getLeftTable`);
+    },
+    closeAllDrillDown(){
+      var objExpanded = this.$refs.dTable.expanded;
+      for (let i = 0; i < Object.entries(objExpanded).length; i++) {
+        this.$set(this.$refs.dTable.expanded, i, false)
+      }
     },
     isMainLevelCellShowing (props){
       if( ! props.expanded) return true;
@@ -276,6 +285,8 @@ export default {
             this.store.filters.left = {};
             this.getLeftTable();
         }
+
+        this.closeAllDrillDown();
 
         // if(Object.keys(this.store.filters.right).length > 0){
         //     this.store.filters.right = {}
@@ -314,7 +325,6 @@ export default {
         var THs = elem.closest('table.v-table').find('thead tr:first th');
         var tbodyTR = elemExpandedTable.find('tbody tr');
         THs.each(function (thIndex) {
-          $(this).css({'color': 'red'});
           var thWidth = $(this).width();
           tbodyTR.each(function (tdIndex) {
             var TDs = $(this).find('td:not([colspan])');
