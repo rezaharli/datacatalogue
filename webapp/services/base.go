@@ -21,11 +21,12 @@ type GridArgs struct {
 	QueryFilePath string
 	QueryName     string
 
-	MainArgs       []interface{}
-	ColumnFilter   []interface{}
-	DropdownFilter []interface{}
-	Colnames       []string
-	GroupCol       string
+	MainArgs         []interface{}
+	ColumnFilter     []interface{}
+	ColumnFilterType map[string]interface{}
+	DropdownFilter   []interface{}
+	Colnames         []string
+	GroupCol         string
 
 	PageNumber   int
 	RowsPerPage  int
@@ -59,16 +60,17 @@ func (s *Base) ExecuteGridQueryFromFile(gridArgs GridArgs) ([]toolkit.M, int, er
 
 	///////// --------------------------------------------------EXECUTE
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName:       m.NewSystemModel().TableName(),
-		SqlQuery:        q,
-		Results:         &resultRows,
-		ResultTotal:     resultTotal,
-		PageNumber:      gridArgs.PageNumber,
-		RowsPerPage:     gridArgs.RowsPerPage,
-		OrderBy:         orderBy,
-		IsDescending:    gridArgs.IsDescending,
-		GroupCol:        gridArgs.GroupCol,
-		AdditionalWhere: additionalWhere,
+		TableName:        m.NewSystemModel().TableName(),
+		SqlQuery:         q,
+		Results:          &resultRows,
+		ResultTotal:      resultTotal,
+		PageNumber:       gridArgs.PageNumber,
+		RowsPerPage:      gridArgs.RowsPerPage,
+		OrderBy:          orderBy,
+		IsDescending:     gridArgs.IsDescending,
+		GroupCol:         gridArgs.GroupCol,
+		AdditionalWhere:  additionalWhere,
+		ColumnFilterType: gridArgs.ColumnFilterType,
 	})
 	if err != nil {
 		return nil, 0, err

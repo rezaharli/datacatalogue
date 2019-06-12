@@ -362,6 +362,33 @@ func (c *DPO) GetDetailsUltimateSourceSystem(payload toolkit.M) (interface{}, in
 			case "DATA_ELEMENT":
 				ddVal.Set("ddUltScreenLabelSelected", uniqueValues.([]string)[0])
 				break
+			case "GOLDEN_SOURCE":
+				ddVal.Set("ddUltGoldenSourceSelected", uniqueValues.([]string)[0])
+				break
+			case "GS_SYSTEM_NAME":
+				ddVal.Set("ddUltGsSystemNameSelected", uniqueValues.([]string)[0])
+				break
+			case "GF_ITAM_ID":
+				ddVal.Set("ddUltGsItamIdSelected", uniqueValues.([]string)[0])
+				break
+			case "GS_TABLE_NAME":
+				ddVal.Set("ddUltGsTableNameSelected", uniqueValues.([]string)[0])
+				break
+			case "GS_COLUMN_NAME":
+				ddVal.Set("ddUltGsColumnNameSelected", uniqueValues.([]string)[0])
+				break
+			case "GS_DATA_ELEMENT":
+				ddVal.Set("ddUltGsDataElementSelected", uniqueValues.([]string)[0])
+				break
+			case "GS_DESCRIPTION":
+				ddVal.Set("ddUltGsDescriptionSelected", uniqueValues.([]string)[0])
+				break
+			case "GS_DERIVED":
+				ddVal.Set("ddUltGsDerivedSelected", uniqueValues.([]string)[0])
+				break
+			case "GS_DERIVATION_LOGIC":
+				ddVal.Set("ddUltGsDerivationLogicSelected", uniqueValues.([]string)[0])
+				break
 			}
 
 			joinedValues := ""
@@ -381,13 +408,22 @@ func (c *DPO) GetDetailsUltimateSourceSystem(payload toolkit.M) (interface{}, in
 		ddVal.Set("ddUltTableNameSelected", "NA")
 		ddVal.Set("ddUltColumnNameSelected", "NA")
 		ddVal.Set("ddUltScreenLabelSelected", "NA")
+		ddVal.Set("ddUltGoldenSourceSelected", "NA")
+		ddVal.Set("ddUltGsSystemNameSelected", "NA")
+		ddVal.Set("ddUltGsItamIdSelected", "NA")
+		ddVal.Set("ddUltGsTableNameSelected", "NA")
+		ddVal.Set("ddUltGsColumnNameSelected", "NA")
+		ddVal.Set("ddUltGsDataElementSelected", "NA")
+		ddVal.Set("ddUltGsDescriptionSelected", "NA")
+		ddVal.Set("ddUltGsDerivedSelected", "NA")
+		ddVal.Set("ddUltGsDerivationLogicSelected", "NA")
 	}
 
 	return selectedDetail, ddVal, mappedddSource, err
 }
 
 func (c *DPO) GetDetailsDomainView(payload toolkit.M) (interface{}, interface{}, interface{}, error) {
-	mappedDetails, mappedddSource, err := c.GetDetailAndDropdown(payload, s.NewDPOService().GetDetailsDomainView, nil)
+	mappedDetails, mappedddSource, err := c.GetDetailAndDropdown(payload, s.NewDPOService().GetDetailsDomainView, s.NewDPOService().GetddDetailsDomainView)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -419,6 +455,24 @@ func (c *DPO) GetDetailsDomainView(payload toolkit.M) (interface{}, interface{},
 				return nil, nil, nil, err
 			}
 
+			switch key {
+			case "DOMAIN_NAME":
+				ddVal.Set("ddDomainNameSelected", uniqueValues.([]string)[0])
+				break
+			case "SUBDOMAIN_NAME":
+				ddVal.Set("ddSubdomainNameSelected", uniqueValues.([]string)[0])
+				break
+			case "SUBDOMAIN_OWNER":
+				ddVal.Set("ddSubdomainOwnerSelected", uniqueValues.([]string)[0])
+				break
+			case "BUSINESS_TERM":
+				ddVal.Set("ddBusinessTermSelected", uniqueValues.([]string)[0])
+				break
+			case "BUSINESS_TERM_DESCRIPTION":
+				ddVal.Set("ddBusinessTermDescriptionSelected", uniqueValues.([]string)[0])
+				break
+			}
+
 			joinedValues := ""
 			if key == "DATASET_CUSTODIAN" || key == "BANK_ID" {
 				joinedValues = strings.Join(uniqueValues.([]string), "; ")
@@ -430,6 +484,12 @@ func (c *DPO) GetDetailsDomainView(payload toolkit.M) (interface{}, interface{},
 		}
 	} else {
 		selectedDetail = nil
+
+		ddVal.Set("ddDomainNameSelected", "NA")
+		ddVal.Set("ddSubdomainNameSelected", "NA")
+		ddVal.Set("ddSubdomainOwnerSelected", "NA")
+		ddVal.Set("ddBusinessTermSelected", "NA")
+		ddVal.Set("ddBusinessTermDescriptionSelected", "NA")
 	}
 
 	return selectedDetail, ddVal, mappedddSource, err

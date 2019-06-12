@@ -49,6 +49,11 @@ func (s *RFOService) GetLeftTable(tabs, loggedinid, search string, searchDD, col
 		for _, colname := range gridArgs.Colnames {
 			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
 		}
+
+		filterTypes := colFilterM.Get("filterTypes")
+		if filterTypes != nil {
+			gridArgs.ColumnFilterType = colFilterM.Get("filterTypes").(map[string]interface{})
+		}
 	}
 
 	gridArgs.OrderBy = pagination.GetString("sortBy")
@@ -132,6 +137,11 @@ func (s *RFOService) GetPriorityTable(system string, colFilter interface{}, pagi
 	} else {
 		for _, colname := range gridArgs.Colnames {
 			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
+
+		filterTypes := colFilterM.Get("filterTypes")
+		if filterTypes != nil {
+			gridArgs.ColumnFilterType = colFilterM.Get("filterTypes").(map[string]interface{})
 		}
 	}
 
