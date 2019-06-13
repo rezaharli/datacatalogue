@@ -108,7 +108,7 @@ function getDownstreamTable(param) {
 function getDownstreamBusinesstermTable(param) {
     return fetchWHeader(`/ddo/getdownstreambusinesstermtable`, param).then(
         res => {
-            res.Data = _.sortBy(res.Data, ["GOLDEN_SOURCE"])
+            res.Data = _.orderBy(res.Data, ["GOLDEN_SOURCE"], ["desc"])
 
             res.Data = _.map(res.Data, function(v){
                 v.GOLDEN_SOURCE = v.GOLDEN_SOURCE.toLowerCase();
