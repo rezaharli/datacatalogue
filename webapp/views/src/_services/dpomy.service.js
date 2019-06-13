@@ -109,6 +109,7 @@ function getDataelementsTable(param) {
 function getDatalineageTable(param) {
     return fetchWHeader(`/dpo/getdatalineagetable`, param).then(
         res => {
+            res.Data = res.Data.filter(v => v.PR_NAME != "");
             res.DataFlat = _.cloneDeep(res.Data);
 
             var tmp = _.groupBy(res.Data, "SYSTEM_NAME")
