@@ -536,6 +536,19 @@ func (c *DPO) GetDetailsDataStandards(payload toolkit.M) (interface{}, interface
 
 				if trimmedStringVal == "" {
 					stringVal = "NA"
+				} else {
+					switch key {
+					case "DPO_THRESHOLD":
+						if stringVal == "0" {
+							stringVal = "NA"
+						}
+						break
+					case "THRESHOLD_BT_LEVEL":
+						if stringVal == "0" {
+							stringVal = "NA"
+						}
+						break
+					}
 				}
 
 				return stringVal
