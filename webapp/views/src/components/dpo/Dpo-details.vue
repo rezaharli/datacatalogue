@@ -264,7 +264,8 @@ legend.col-form-label, label.col-form-label {
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
-                        <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValDomainView.ddBusinessTermDescriptionSelected" :options="ddBusinessTermDescriptionOptions"></b-form-select>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsDomainView ? store.selectedDetailsDomainView.BUSINESS_TERM_DESCRIPTION : ''"></text-wrap-dialog>
+                        <!-- <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValDomainView.ddBusinessTermDescriptionSelected" :options="ddBusinessTermDescriptionOptions"></b-form-select> -->
                       </b-form-group>
                     </b-form>
                   </p>
