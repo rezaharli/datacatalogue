@@ -264,7 +264,7 @@ legend.col-form-label, label.col-form-label {
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Business Term Description">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsDomainView ? store.selectedDetailsDomainView.BUSINESS_TERM_DESCRIPTION : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsDomainView ? store.selectedDetailsDomainView.BUSINESS_TERM_DESCRIPTION : 'NA'"></text-wrap-dialog>
                         <!-- <b-form-select id="screenlabelname" class="col-8" v-model="store.ddValDomainView.ddBusinessTermDescriptionSelected" :options="ddBusinessTermDescriptionOptions"></b-form-select> -->
                       </b-form-group>
                     </b-form>
@@ -286,19 +286,19 @@ legend.col-form-label, label.col-form-label {
                   <p class="card-text">
                     <b-form>
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards set by DPO">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsDataStandards ? store.selectedDetailsDataStandards.DPO_DQ_STANDARDS : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsDataStandards ? store.selectedDetailsDataStandards.DPO_DQ_STANDARDS : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="DQ Standards set at Business Term Level">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsDataStandards ? store.selectedDetailsDataStandards.DQ_STANDARDS_BT_LEVEL : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsDataStandards ? store.selectedDetailsDataStandards.DQ_STANDARDS_BT_LEVEL : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds defined by DPO">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsDataStandards ? store.selectedDetailsDataStandards.DPO_THRESHOLD : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsDataStandards ? store.selectedDetailsDataStandards.DPO_THRESHOLD : 'NA'"></text-wrap-dialog>
                       </b-form-group>
 
                       <b-form-group horizontal :label-cols="4" breakpoint="md" label="Thresholds set at Business term level">
-                        <text-wrap-dialog :fulltext="store.selectedDetailsDataStandards ? store.selectedDetailsDataStandards.THRESHOLD_BT_LEVEL : ''"></text-wrap-dialog>
+                        <text-wrap-dialog :fulltext="store.selectedDetailsDataStandards ? store.selectedDetailsDataStandards.THRESHOLD_BT_LEVEL : 'NA'"></text-wrap-dialog>
                       </b-form-group>
                     </b-form>
                   </p>
@@ -618,7 +618,8 @@ export default {
       return ret.length > 0 ? ret : ["NA"];
     },
     ddDomainNameOptions () {
-      return _.uniq(_.map(this.store.DDSourceDomainView, (v) => v.DOMAIN_NAME.toString())).filter(Boolean);
+      var ret = _.uniq(_.map(this.store.DDSourceDomainView, (v) => v.DOMAIN_NAME.toString())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
     },
     ddSubdomainNameOptions () {
       var self = this;
@@ -626,7 +627,8 @@ export default {
         return v.DOMAIN_NAME == self.store.ddValDomainView.ddDomainNameSelected;
       });
 
-      return _.uniq(_.map(filtered, (v) => v.SUBDOMAIN_NAME.toString())).filter(Boolean);
+      var ret = _.uniq(_.map(filtered, (v) => v.SUBDOMAIN_NAME.toString())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
     },
     ddSubdomainOwnerOptions () {
       var self = this;
@@ -635,7 +637,8 @@ export default {
           && v.SUBDOMAIN_NAME == self.store.ddValDomainView.ddSubdomainNameSelected
       });
 
-      return _.uniq(_.map(filtered, (v) => v.SUBDOMAIN_OWNER.toString())).filter(Boolean);
+      var ret = _.uniq(_.map(filtered, (v) => v.SUBDOMAIN_OWNER.toString())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
     },
     ddBusinessTermOptions () {
       var self = this;
@@ -645,7 +648,8 @@ export default {
           && v.SUBDOMAIN_OWNER == self.store.ddValDomainView.ddSubdomainOwnerSelected
       });
 
-      return _.uniq(_.map(filtered, (v) => v.BUSINESS_TERM.toString())).filter(Boolean);
+      var ret = _.uniq(_.map(filtered, (v) => v.BUSINESS_TERM.toString())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
     },
     ddBusinessTermDescriptionOptions () {
       var self = this;
@@ -656,7 +660,8 @@ export default {
           && v.BUSINESS_TERM == self.store.ddValDomainView.ddBusinessTermSelected
       });
 
-      return _.uniq(_.map(filtered, (v) => v.BUSINESS_TERM_DESCRIPTION.toString())).filter(Boolean);
+      var ret = _.uniq(_.map(filtered, (v) => v.BUSINESS_TERM_DESCRIPTION.toString())).filter(Boolean);
+      return ret.length > 0 ? ret : ["NA"];
     },
     exportDatas () {
       if(this.selectedDetails){
