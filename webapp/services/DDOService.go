@@ -421,12 +421,12 @@ func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 		return false
 	}
 
-	///////// FILTER
-	q = `SELECT rownum, a.* FROM (
-		` + q + `
-	) a `
-
 	if checkNotEmpty(otherArgs) == true {
+		///////// FILTER
+		q = `SELECT filtered.* FROM (
+			` + q + `
+		) filtered `
+
 		q += `WHERE ( ID IS NOT NULL `
 		if otherArgs[0] != "" {
 			q += `AND SYSTEM_NAME = '` + otherArgs[0] + `' `
@@ -442,9 +442,12 @@ func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	}
 
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
-		TableName: m.NewCategoryModel().TableName(),
-		SqlQuery:  q,
-		Results:   &resultRows,
+		TableName:   m.NewCategoryModel().TableName(),
+		SqlQuery:    q,
+		Results:     &resultRows,
+		PageNumber:  1,
+		RowsPerPage: 1,
+		GroupCol:    "system_name",
 	})
 
 	if err != nil {
