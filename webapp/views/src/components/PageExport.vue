@@ -1,5 +1,5 @@
 <template>
-    <download-excel
+    <!-- <download-excel
         :fields     = "excelFields"
         :fetch      = "fetchData"
         worksheet   = "My Worksheet"
@@ -8,10 +8,15 @@
         <b-button class="float-right icon-only green-tosca">
             <i class="fa fa-fw fa-file-excel"></i>
         </b-button>
-    </download-excel>
+    </download-excel> -->
+
+    <b-button v-on:click="onExport" class="float-right icon-only green-tosca">
+        <i class="fa fa-fw fa-file-excel"></i>
+    </b-button>
 </template>
 
 <script>
+import XLSX from 'xlsx'
 export default {
     name: "pageExport",
     props: ["storeName", "leftTableCols", "rightTableCols", "forceRightAtFirstLevel"],
@@ -151,6 +156,39 @@ export default {
 
             return res
         },
+        onExport () {
+            this.fetchData().then(res => {
+                
+                // --- swap object keys with object values ---
+                function swap(json){
+                    var ret = {};
+                    for(var key in json){
+                        ret[json[key]] = key;
+                    }
+                    return ret;
+                }
+                var excelFieldsSwapped = swap(this.excelFields);
+
+                // --- rename keys with display text ---
+                const renameKeys = (keysMap, obj) =>
+                    Object.keys(obj).reduce(
+                        (acc, key) => ({
+                        ...acc,
+                        ...{ [keysMap[key] || key]: obj[key] }
+                        }),
+                        {}
+                    );
+                var excelDataFinal = [];
+                _.each(res, function(v, i){
+                    excelDataFinal[i] = renameKeys(excelFieldsSwapped, v);
+                });
+                
+                var excelWS = XLSX.utils.json_to_sheet(excelDataFinal);
+                var wb = XLSX.utils.book_new() // make Workbook of Excel
+                XLSX.utils.book_append_sheet(wb, excelWS, 'My Worksheet') // sheetAName is name of Worksheet
+                XLSX.writeFile(wb, this.storeName+'.xlsx') // name of the file is 'book.xlsx'
+            });
+        }
     }
 };
 </script>
