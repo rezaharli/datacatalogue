@@ -421,12 +421,15 @@ func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 		return false
 	}
 
-	if checkNotEmpty(otherArgs) == true {
-		///////// FILTER
-		q = `SELECT filtered.* FROM (
-			` + q + `
-		) filtered `
+	///////// FILTER
+	q = `SELECT 
+		filtered.*,
+		SYSTEM_NAME||' '||GS_SYSTEM_NAME AS CUSTOM_GROUP
+	FROM (
+		` + q + `
+	) filtered `
 
+	if checkNotEmpty(otherArgs) == true {
 		q += `WHERE ( ID IS NOT NULL `
 		if otherArgs[0] != "" {
 			q += `AND SYSTEM_NAME = '` + otherArgs[0] + `' `
@@ -447,7 +450,7 @@ func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 		Results:     &resultRows,
 		PageNumber:  1,
 		RowsPerPage: 1,
-		GroupCol:    "system_name",
+		GroupCol:    "CUSTOM_GROUP",
 	})
 
 	if err != nil {
