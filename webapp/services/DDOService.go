@@ -424,7 +424,7 @@ func (s *DDOService) GetDetails(payload toolkit.M) (interface{}, int, error) {
 	///////// FILTER
 	q = `SELECT 
 		filtered.*,
-		SYSTEM_NAME||' '||GS_SYSTEM_NAME AS CUSTOM_GROUP
+		SYSTEM_NAME||' '||GS_SYSTEM_NAME||' '||TABLE_NAME||' '||ALIAS_NAME AS CUSTOM_GROUP
 	FROM (
 		` + q + `
 	) filtered `
