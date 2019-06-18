@@ -91,7 +91,7 @@
                   <template slot="items" slot-scope="props">
                     <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
                       <td v-if="displayPRName" v-bind:style="{ width: store.left.colWidth['PR_NAME'] + 'px' }" class="text-uppercase">
-                        {{ props.item.PR_NAMEs.map(v => v.PR_NAME).join(' | ') }}
+                        {{ props.item.PR_NAMEs.map(v => v.PR_NAME).filter(Boolean).join(' | ') }}
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }" class="text-uppercase">
@@ -148,7 +148,6 @@ export default {
     displayPRName() {
       var prNameHeader = this.store.leftHeaders.find(v => v.value == "PR_NAME");
 
-      console.log(this.store.left.source[0]["PROCESS_NAME"]);
       if(this.store.left.source[0]["PROCESS_NAME"].toLowerCase().indexOf("Risk Reporting | Critical Reports".toLowerCase()) != -1){
         prNameHeader.display = true;
         prNameHeader.exportable = true;
