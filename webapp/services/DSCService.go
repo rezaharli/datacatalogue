@@ -6,7 +6,6 @@ import (
 
 	"github.com/eaciit/clit"
 	"github.com/eaciit/toolkit"
-	"github.com/novalagung/gubrak"
 
 	h "eaciit/datacatalogue/webapp/helpers"
 	m "eaciit/datacatalogue/webapp/models"
@@ -361,50 +360,7 @@ func (s *DSCService) GetDDTable(system string, colFilter interface{}, pagination
 		}
 	} else {
 		for _, colname := range gridArgs.Colnames {
-
-			if colname == "CDE_YES_NO" {
-				cdeYesNo := colFilterM.GetString("CDE_YES_NO")
-				if cdeYesNo != "" {
-					if strings.EqualFold(cdeYesNo, "yes") {
-						cdeYesNo = "1"
-					} else {
-						cdeYesNo = "0"
-					}
-				}
-				gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, cdeYesNo)
-			} else if colname == "DERIVED_YES_NO" {
-				derivedYesNo := colFilterM.GetString("DERIVED_YES_NO")
-				if derivedYesNo != "" {
-					if strings.EqualFold(derivedYesNo, "yes") {
-						derivedYesNo = "1"
-					} else {
-						derivedYesNo = "0"
-					}
-				}
-				gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, derivedYesNo)
-			} else if colname == "SOURCED_FROM_UPSTREAM_YES_NO" {
-				sfoYesNo := colFilterM.GetString("SOURCED_FROM_UPSTREAM_YES_NO")
-				if sfoYesNo != "" {
-					if strings.EqualFold(sfoYesNo, "yes") {
-						sfoYesNo = "1"
-					} else {
-						sfoYesNo = "0"
-					}
-				}
-				gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, sfoYesNo)
-			} else if colname == "PII_FLAG" {
-				piiYesNo := colFilterM.GetString("PII_FLAG")
-				if piiYesNo != "" {
-					if strings.EqualFold(piiYesNo, "yes") {
-						piiYesNo = "1"
-					} else {
-						piiYesNo = "0"
-					}
-				}
-				gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, piiYesNo)
-			} else {
-				gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
-			}
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
 
 			filterTypes := colFilterM.Get("filterTypes")
 			if filterTypes != nil {
@@ -422,33 +378,7 @@ func (s *DSCService) GetDDTable(system string, colFilter interface{}, pagination
 	gridArgs.GroupCol = "-"
 	result, total, err := s.Base.ExecuteGridQueryFromFile(gridArgs)
 
-	///////// --------------------------------------------------MODIFY RESULT
-	mappedResult, err := gubrak.Map(result, func(v toolkit.M, i int) toolkit.M {
-		if v.GetInt("CDE_YES_NO") == 1 {
-			v.Set("CDE_YES_NO", "Yes")
-		} else {
-			v.Set("CDE_YES_NO", "No")
-		}
-
-		if v.GetInt("DERIVED_YES_NO") == 1 {
-			v.Set("DERIVED_YES_NO", "Yes")
-		} else {
-			v.Set("DERIVED_YES_NO", "No")
-		}
-
-		if v.GetInt("PII_FLAG") == 1 {
-			v.Set("PII_FLAG", "Yes")
-		} else {
-			v.Set("PII_FLAG", "No")
-		}
-		return v
-	})
-	if err != nil {
-		res = []toolkit.M{}
-		return
-	}
-
-	res = mappedResult.([]toolkit.M)
+	res = result
 	return
 }
 
