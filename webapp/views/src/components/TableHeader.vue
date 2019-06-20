@@ -78,13 +78,13 @@ export default {
           a = this._.flattenDeep(this._.map(this._.sortBy(a, c), c));
         });
 
-        var ret = this._.uniq(a).map(v => v.toString().trim()).filter(Boolean);
+        var ret = this._.uniq(a).map(v => v.toString()).filter(Boolean);
 
         return ret;
       }
       
       return this._.uniq(
-        this._.map(this._.sortBy(datax, headerValueField), headerValueField).map(v => v.toString().trim())
+        this._.map(this._.sortBy(datax, headerValueField), headerValueField).map(v => v.toString())
       ).filter(Boolean);
     },
   },
