@@ -125,98 +125,98 @@ function getDownstreamBusinesstermTable(param) {
             res.DataFlat = _.cloneDeep(res.Data);
             
             var tmp = _.groupBy(res.Data, "BT_NAME")
-            res.Data = _.map(Object.keys(tmp), function(v, i){
-                var tmpTmp = _.cloneDeep(tmp[v]);
+            res.Data = _.map(Object.keys(tmp), function(v1, i1){
+                var tmpTmp = _.cloneDeep(tmp[v1]);
 
                 var ret         = tmpTmp[0];
-                ret.ID          = i;
+                ret.ID          = i1;
                 ret.BT_NAMEsVal = tmpTmp;
-                ret.BT_NAME     = v;
+                ret.BT_NAME     = v1;
 
-                var tmp2 = _.groupBy(tmp[v], "SYSTEM_CONSUMED");  
-                ret.Systems = _.map(Object.keys(tmp2), function(w, j){
-                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
+                var tmp2 = _.groupBy(tmp[v1], "ALIAS_NAME");  
+                ret.ALIAS_NAMEs = _.map(Object.keys(tmp2), function(v2, i2){
+                    var tmpTmp2 = _.cloneDeep(tmp2[v2]);
 
-                    var ret         = tmpTmp2[0];
-                    ret.SYSID       = j;
-                    ret.SystemsVal   = tmpTmp2;
-                    ret.SYSTEM_CONSUMED  = w;
+                    var ret             = tmpTmp2[0];
+                    ret.ALIAS_NAMEID    = i2;
+                    ret.ALIAS_NAMEsVal  = tmpTmp2;
+                    ret.ALIAS_NAME      = v2;
 
-                    var tmp3 = _.groupBy(tmp2[w], "TABLE_NAME");
-                    ret.Tables = _.map(Object.keys(tmp3), function(x, k){
-                        var tmpTmp3 = _.cloneDeep(tmp3[x]);
+                    var tmp3 = _.groupBy(tmp2[v2], "SYSTEM_CONSUMED");
+                    ret.SYSTEM_CONSUMEDs = _.map(Object.keys(tmp3), function(v3, i3){
+                        var tmpTmp3 = _.cloneDeep(tmp3[v3]);
 
-                        var ret         = tmpTmp3[0];
-                        ret.TMTID       = k;
-                        ret.TablesVal  = tmpTmp3;
-                        ret.TABLE_NAME = x;
+                        var ret                 = tmpTmp3[0];
+                        ret.SYSTEM_CONSUMEDID   = i3;
+                        ret.SYSTEM_CONSUMEDsVal = tmpTmp3;
+                        ret.SYSTEM_CONSUMED     = v3;
 
-                        var tmp4 = _.groupBy(tmp3[x], "COLUMN_NAME");
-                        ret.Columns = _.map(Object.keys(tmp4), function(y, l){
-                            var tmpTmp4 = _.cloneDeep(tmp4[y]);
+                        var tmp4 = _.groupBy(tmp3[v3], "TABLE_NAME");
+                        ret.TABLE_NAMEs = _.map(Object.keys(tmp4), function(v4, i4){
+                            var tmpTmp4 = _.cloneDeep(tmp4[v4]);
 
-                            var ret         = tmpTmp4[0];
-                            ret.COLID       = l;
-                            ret.ColumnsVal  = tmpTmp4;
-                            ret.COLUMN_NAME = y;
+                            var ret             = tmpTmp4[0];
+                            ret.TABLE_NAMEID    = i4;
+                            ret.TABLE_NAMEsVal  = tmpTmp4;
+                            ret.TABLE_NAME      = v4;
 
-                            return ret;
-                        });
-
-                        return ret;
-                    });
-
-                    return ret;
-                });
-
-                var tmp5 = _.groupBy(tmp[v], "ALIAS_NAME")
-                ret.AliasName = _.map(Object.keys(tmp5), function(w, j){
-                    var tmpTmp5 = _.cloneDeep(tmp5[w]);
-
-                    var ret             = tmpTmp5[0];
-                    ret.ID              = j;
-                    ret.AliasNameVal    = tmpTmp5;
-                    ret.ALIAS_NAME  = w;
-
-                    var tmp6 = _.groupBy(tmp5[w], "GOLDEN_SOURCE");  
-                    ret.GoldenSource = _.map(Object.keys(tmp6), function(x, k){
-                        var tmpTmp6 = _.cloneDeep(tmp6[x]);
-
-                        var ret             = tmpTmp6[0];
-                        ret.GSID           = k;
-                        ret.GoldenSourceVal = tmpTmp6;
-                        ret.GOLDEN_SOURCE   = x;
-
-                        var tmp7 = _.groupBy(tmp6[x], "GS_SYSTEM_NAME");
-                        ret.GSSystemName = _.map(Object.keys(tmp7), function(y, l){
-                            var tmpTmp7 = _.cloneDeep(tmp7[y]);
-
-                            var ret             = tmpTmp7[0];
-                            ret.SYSID           = l;
-                            ret.GSSystemNameVal    = tmpTmp7;
-                            ret.GS_SYSTEM_NAME  = y;
-
-                            var tmp8 = _.groupBy(tmp7[y], "GS_TABLE_NAME");
-                            ret.GSTableName = _.map(Object.keys(tmp8), function(z, m){
-                                var tmpTmp8 = _.cloneDeep(tmp8[z]);
-
-                                var ret             = tmpTmp8[0];
-                                ret.TBTID           = m;
-                                ret.GSTableNameVal  = tmpTmp8;
-                                ret.GS_TABLE_NAME   = z;
-
-                                var tmp9 = _.groupBy(tmp8[z], "GS_COLUMN_NAME");
-                                ret.GSColumnName = _.map(Object.keys(tmp9), function(a, n){
-                                    var tmpTmp9 = _.cloneDeep(tmp9[a]);
+                            var tmp5 = _.groupBy(tmp4[v4], "COLUMN_NAME");
+                            ret.COLUMN_NAMEs = _.map(Object.keys(tmp5), function(v5, i5){
+                                var tmpTmp5 = _.cloneDeep(tmp5[v5]);
     
-                                    var ret             = tmpTmp9[0];
-                                    ret.COLID           = n;
-                                    ret.GSColumnNameVal  = tmpTmp9;
-                                    ret.GS_COLUMN_NAME   = a;
-    
+                                var ret                 = tmpTmp5[0];
+                                ret.COLUMN_NAMEID       = i5;
+                                ret.COLUMN_NAMEsVal     = tmpTmp5;
+                                ret.COLUMN_NAME         = v5;
+
+                                var tmp6 = _.groupBy(tmp5[v5], "GOLDEN_SOURCE");
+                                ret.GOLDEN_SOURCEs = _.map(Object.keys(tmp6), function(v6, i6){
+                                    var tmpTmp6 = _.cloneDeep(tmp6[v6]);
+        
+                                    var ret                 = tmpTmp6[0];
+                                    ret.GOLDEN_SOURCEID     = i6;
+                                    ret.GOLDEN_SOURCEsVal   = tmpTmp6;
+                                    ret.GOLDEN_SOURCE       = v6;
+
+                                    var tmp7 = _.groupBy(tmp6[v6], "GS_SYSTEM_NAME");
+                                    ret.GS_SYSTEM_NAMEs = _.map(Object.keys(tmp7), function(v7, i7){
+                                        var tmpTmp7 = _.cloneDeep(tmp7[v7]);
+            
+                                        var ret                 = tmpTmp7[0];
+                                        ret.GS_SYSTEM_NAMEID     = i7;
+                                        ret.GS_SYSTEM_NAMEsVal   = tmpTmp7;
+                                        ret.GS_SYSTEM_NAME       = v7;
+
+                                        var tmp8 = _.groupBy(tmp7[v7], "GS_TABLE_NAME");
+                                        ret.GS_TABLE_NAMEs = _.map(Object.keys(tmp8), function(v8, i8){
+                                            var tmpTmp8 = _.cloneDeep(tmp8[v8]);
+                
+                                            var ret                 = tmpTmp8[0];
+                                            ret.GS_TABLE_NAMEID     = i8;
+                                            ret.GS_TABLE_NAMEsVal   = tmpTmp8;
+                                            ret.GS_TABLE_NAME       = v8;
+
+                                            var tmp9 = _.groupBy(tmp8[v8], "GS_COLUMN_NAME");
+                                            ret.GS_COLUMN_NAMEs = _.map(Object.keys(tmp9), function(v9, i9){
+                                                var tmpTmp9 = _.cloneDeep(tmp9[v9]);
+                    
+                                                var ret                 = tmpTmp9[0];
+                                                ret.GS_COLUMN_NAMEID     = i9;
+                                                ret.GS_COLUMN_NAMEsVal   = tmpTmp9;
+                                                ret.GS_COLUMN_NAME       = v9;
+                    
+                                                return ret;
+                                            });
+                
+                                            return ret;
+                                        });
+            
+                                        return ret;
+                                    });
+        
                                     return ret;
                                 });
-
+    
                                 return ret;
                             });
 
@@ -229,51 +229,53 @@ function getDownstreamBusinesstermTable(param) {
                     return ret;
                 });
 
-
                 return ret;
             });
 
             res.Data.forEach(v => {
-                v.Systems.forEach(w => {
-                    w.Tables.forEach(x => {
-                        x.Columns.shift();
-                    });
-
-                    if(w.Tables[0].Columns.length == 0){
-                        w.Tables.shift();
-                    }
-                });
-
-                if(v.Systems[0].Tables.length == 0){
-                    v.Systems.shift();
-                }
-
-                v.AliasName.forEach(w => {
-                    w.GoldenSource.forEach(x => {
-                        x.GSSystemName.forEach(y => {
-                            y.GSTableName.forEach(z => {
-                                z.GSColumnNameVal = _.cloneDeep(z.GSColumnName);
-                                z.GSColumnName.shift();
+                v.ALIAS_NAMEs.forEach(w => {
+                    w.SYSTEM_CONSUMEDs.forEach(x => {
+                        x.TABLE_NAMEs.forEach(y => {
+                            y.COLUMN_NAMEs.forEach(z => {
+                                z.GOLDEN_SOURCEs.forEach(ww => {
+                                    ww.GS_SYSTEM_NAMEs.forEach(wx => {
+                                        wx.GS_TABLE_NAMEs.forEach(wy => {
+                                            wy.GS_COLUMN_NAMEs.shift();
+                                        });
+                    
+                                        if(wx.GS_TABLE_NAMEs[0].GS_COLUMN_NAMEs.length == 0){
+                                            wx.GS_TABLE_NAMEs.shift();
+                                        }
+                                    });
+                
+                                    if(ww.GS_SYSTEM_NAMEs[0].GS_TABLE_NAMEs.length == 0){
+                                        ww.GS_SYSTEM_NAMEs.shift();
+                                    }
+                                });
+            
+                                if(z.GOLDEN_SOURCEs[0].GS_SYSTEM_NAMEs.length == 0){
+                                    z.GOLDEN_SOURCEs.shift();
+                                }
                             });
         
-                            y.GSTableNameVal = _.cloneDeep(y.GSTableName);
-                            if(y.GSTableName[0].GSColumnName.length == 0){
-                                y.GSTableName.shift();
+                            if(y.COLUMN_NAMEs[0].GOLDEN_SOURCEs.length == 0){
+                                y.COLUMN_NAMEs.shift();
                             }
                         });
     
-                        x.GSSystemNameVal = _.cloneDeep(x.GSSystemName);
-                        if(x.GSSystemName[0].GSTableName.length == 0){
-                            x.GSSystemName.shift();
+                        if(x.TABLE_NAMEs[0].COLUMN_NAMEs.length == 0){
+                            x.TABLE_NAMEs.shift();
                         }
                     });
 
-
-                    w.GoldenSourceVal = _.cloneDeep(w.GoldenSource);
-                    if(w.GoldenSource[0].GSSystemName.length == 0){
-                        w.GoldenSource.shift();
+                    if(w.SYSTEM_CONSUMEDs[0].TABLE_NAMEs.length == 0){
+                        w.SYSTEM_CONSUMEDs.shift();
                     }
                 });
+
+                if(v.ALIAS_NAMEs[0].SYSTEM_CONSUMEDs.length == 0){
+                    v.ALIAS_NAMEs.shift();
+                }
             });
             
             return res;
