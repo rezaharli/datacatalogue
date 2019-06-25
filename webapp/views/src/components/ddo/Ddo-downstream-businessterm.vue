@@ -185,7 +185,7 @@
                           :headers="store.leftHeaders.filter(v => v.display == true)"
                           :items="props.item.SYSTEM_CONSUMEDs"
                           item-key="SYSTEM_CONSUMEDID"
-                          class="expanded-table-level-2"
+                          class="expanded-table-level-1"
                           hide-actions
                           hide-headers
                           @update:pagination="setExpandedTableColumnsWidthDBT"
@@ -233,7 +233,7 @@
                               :headers="store.leftHeaders.filter(v => v.display == true)"
                               :items="props.item.TABLE_NAMEs"
                               item-key="TABLE_NAMEID"
-                              class="expanded-table-level-2"
+                              class="expanded-table-level-1"
                               hide-actions
                               hide-headers
                               @update:pagination="setExpandedTableColumnsWidthDBT"
@@ -278,7 +278,7 @@
                                   :headers="store.leftHeaders.filter(v => v.display == true)"
                                   :items="props.item.COLUMN_NAMEs"
                                   item-key="COLUMN_NAMEID"
-                                  class="expanded-table-level-2"
+                                  class="expanded-table-level-1"
                                   hide-actions
                                   hide-headers
                                   @update:pagination="setExpandedTableColumnsWidthDBT"
@@ -320,7 +320,7 @@
                                       :headers="store.leftHeaders.filter(v => v.display == true)"
                                       :items="props.item.GOLDEN_SOURCEs"
                                       item-key="GOLDEN_SOURCEID"
-                                      class="expanded-table-level-2"
+                                      class="expanded-table-level-1"
                                       hide-actions
                                       hide-headers
                                       @update:pagination="setExpandedTableColumnsWidthDBT"
@@ -359,7 +359,7 @@
                                           :headers="store.leftHeaders.filter(v => v.display == true)"
                                           :items="props.item.GS_SYSTEM_NAMEs"
                                           item-key="GS_SYSTEM_NAMEID"
-                                          class="expanded-table-level-2"
+                                          class="expanded-table-level-1"
                                           hide-actions
                                           hide-headers
                                           @update:pagination="setExpandedTableColumnsWidthDBT"
@@ -395,7 +395,7 @@
                                               :headers="store.leftHeaders.filter(v => v.display == true)"
                                               :items="props.item.GS_TABLE_NAMEs"
                                               item-key="GS_TABLE_NAMEID"
-                                              class="expanded-table-level-2"
+                                              class="expanded-table-level-1"
                                               hide-actions
                                               hide-headers
                                               @update:pagination="setExpandedTableColumnsWidthDBT"
@@ -428,7 +428,7 @@
                                                   :headers="store.leftHeaders.filter(v => v.display == true)"
                                                   :items="props.item.GS_COLUMN_NAMEs"
                                                   item-key="GS_COLUMN_NAMEID"
-                                                  class=""
+                                                  class="expanded-table-level-1"
                                                   hide-actions
                                                   hide-headers
                                                   @update:pagination="setExpandedTableColumnsWidthDBT"
@@ -658,16 +658,9 @@ export default {
 
       tbodyTR.each(function () {
         $(this).children('td:not([colspan])').each(function (tdIndex2) {
-          if(tdIndex2==5){
-            var colWidth = thWidths[parseInt(tdIndex2)] + thWidths[parseInt(tdIndex2)+1] + thWidths[parseInt(tdIndex2)+2] + thWidths[parseInt(tdIndex2)+3] + thWidths[parseInt(tdIndex2)+4];
-            $(this).css({'padding': '0'});
-          }else{
-            var colWidth = thWidths[parseInt(tdIndex2)];
-          }
+          var colWidth = thWidths[parseInt(tdIndex2)];
           if(tdIndex2==0){
-            colWidth = colWidth - 70; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
-          }else if(tdIndex2==5){
-            colWidth = colWidth - 0; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
+            colWidth = colWidth - 76; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
           }else{
             colWidth = colWidth - 60; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
           }
@@ -693,11 +686,7 @@ export default {
         var tableLv1TRs = tableLv1.find('table.v-table > tbody > tr');
         tableLv1TRs.each(function () {
           $(this).children('td:not([colspan])').each(function (tdIndex2) {
-            if(tdIndex2==5){
-              var colWidth = thWidths[parseInt(tdIndex2)] + thWidths[parseInt(tdIndex2)+1] + thWidths[parseInt(tdIndex2)+2] + thWidths[parseInt(tdIndex2)+3] + thWidths[parseInt(tdIndex2)+4];
-            }else{
-              var colWidth = thWidths[parseInt(tdIndex2)];
-            }
+            var colWidth = thWidths[parseInt(tdIndex2)];
             if(tdIndex2==0){
               colWidth = colWidth - 75; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
             }else{
@@ -705,25 +694,6 @@ export default {
             }
             $(this).width(colWidth);
             $(this).addClass('tdindex-dbt-lv1-'+tdIndex2+'-'+colWidth);
-          });
-        });
-
-        var tableLv2 = $('.expanded-table-level-2');
-        var tableLv2TRs = tableLv2.find('table.v-table > tbody > tr');
-        tableLv2TRs.each(function () {
-          $(this).children('td:not([colspan])').each(function (tdIndex2) {
-            if(tdIndex2==5){
-              var colWidth = thWidths[parseInt(tdIndex2)] + thWidths[parseInt(tdIndex2)+1] + thWidths[parseInt(tdIndex2)+2] + thWidths[parseInt(tdIndex2)+3] + thWidths[parseInt(tdIndex2)+4];
-            }else{
-              var colWidth = thWidths[parseInt(tdIndex2)];
-            }
-            if(tdIndex2==0){
-              colWidth = colWidth - 75; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
-            }else{
-              colWidth = colWidth - 60; // untuk mengurangi additional width yang datang tiba2 seperti syaiton, xixixi
-            }
-            $(this).width(colWidth);
-            $(this).addClass('tdindex-dbt-lv2-'+tdIndex2+'-'+colWidth);
           });
         });
       }, 10);
