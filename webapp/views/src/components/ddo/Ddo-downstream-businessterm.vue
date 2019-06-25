@@ -82,11 +82,15 @@
                           <i class="fa fa-fw fa-external-link-alt"></i></b-button></td>
 
                       <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }" class="text-capitalize text-title">
-                        <b-link @click="props.expanded = !props.expanded" v-if="props.item.Systems.length > 0">
+                        <b-link @click="props.expanded = !props.expanded" v-if="props.item.ALIAS_NAMEs.length > 0">
                           {{ props.item.BT_NAME }}
                         </b-link>
 
-                        <span v-if="props.item.Systems.length < 1">{{ props.item.BT_NAME }}</span>
+                        <span v-if="props.item.ALIAS_NAMEs.length < 1">{{ props.item.BT_NAME }}</span>
+                      </td>
+
+                      <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.ALIAS_NAME"></tablecell>
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CONSUMED'] + 'px' }" class="text-uppercase">
@@ -101,9 +105,25 @@
                         <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
                       </td>
 
-                      <td v-bind:style="{ width: (store.left.colWidth['ALIAS_NAME'] + store.left.colWidth['GOLDEN_SOURCE'] + store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
-                        <downstream-g-s :props="props"></downstream-g-s>
+                      <td v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
                       </td>
+
+                      <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
+                      </td>
+
+                      <td v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
+                      </td>
+
+                      <td v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
+                      </td>
+
+                      <!-- <td v-bind:style="{ width: (store.left.colWidth['ALIAS_NAME'] + store.left.colWidth['GOLDEN_SOURCE'] + store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
+                        <downstream-g-s :props="props"></downstream-g-s>
+                      </td> -->
                     </tr>
                   </template>
 
@@ -111,10 +131,10 @@
                     <!-- <table-rows-sub :storeName="storeName" :props="props" /> -->
                     <v-data-table
                       :headers="store.leftHeaders.filter(v => v.display == true)"
-                      :items="props.item.Systems"
+                      :items="props.item.ALIAS_NAMEs"
                       :expand="false"
                       class="expanded-table-level-1"
-                      item-key="SYSID"
+                      item-key="ALIAS_NAMEID"
                       hide-actions
                       hide-headers
                       @update:pagination="setExpandedTableColumnsWidthDBT"
@@ -123,32 +143,48 @@
                         <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
                         <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }">&nbsp;</td>
 
-                        <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CONSUMED'] + 'px' }">
-                          <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length >= 1">
-                            <tablecell :fulltext="props.item.SYSTEM_CONSUMED" showOn="hover"></tablecell>
+                        <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">
+                          <b-link @click="props.expanded = !props.expanded" v-if="props.item.SYSTEM_CONSUMEDs.length >= 1">
+                            <tablecell :fulltext="props.item.ALIAS_NAME" showOn="hover"></tablecell>
                           </b-link>
 
-                          <tablecell :fulltext="props.item.SYSTEM_CONSUMED" showOn="hover" v-if="props.item.Tables.length < 1"></tablecell>
+                          <tablecell :fulltext="props.item.ALIAS_NAME" showOn="hover" v-if="props.item.SYSTEM_CONSUMEDs.length < 1"></tablecell>
+                        </td>
+
+                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['SYSTEM_CONSUMED'] + 'px' }">
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.SYSTEM_CONSUMED"></tablecell>
                         </td>
 
                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
-                          <tablecell showOn="hover" v-if="isSystemLevelCellShowing(props)" :fulltext="props.item.TABLE_NAME"></tablecell>
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.TABLE_NAME"></tablecell>
                         </td>
 
                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                          <tablecell showOn="hover" v-if="isSystemLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
                         </td>
 
-                        <td v-bind:style="{ width: (store.left.colWidth['ALIAS_NAME'] + store.left.colWidth['GOLDEN_SOURCE'] +store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
-                          <!-- <downstream-g-s :props="props"></downstream-g-s> -->
+                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
+                        </td>
+
+                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
+                        </td>
+
+                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
+                        </td>
+
+                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
                         </td>
                       </template>
 
                       <template slot="expand" slot-scope="props">
                         <v-data-table
                           :headers="store.leftHeaders.filter(v => v.display == true)"
-                          :items="props.item.Tables"
-                          item-key="TMTID"
+                          :items="props.item.SYSTEM_CONSUMEDs"
+                          item-key="SYSTEM_CONSUMEDID"
                           class="expanded-table-level-2"
                           hide-actions
                           hide-headers
@@ -157,31 +193,47 @@
                           <template slot="items" slot-scope="props">
                             <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
                             <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }">&nbsp;</td>
-                            <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CONSUMED'] + 'px' }">&nbsp;</td>
+                            <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
 
-                            <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
-                              <b-link @click="props.expanded = !props.expanded" v-if="props.item.Columns.length >= 1">
-                                <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover"></tablecell>
+                            <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CONSUMED'] + 'px' }">
+                              <b-link @click="props.expanded = !props.expanded" v-if="props.item.TABLE_NAMEs.length >= 1">
+                                <tablecell :fulltext="props.item.SYSTEM_CONSUMED" showOn="hover"></tablecell>
                               </b-link>
 
-                              <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover" v-if="props.item.Columns.length < 1"></tablecell>
+                              <tablecell :fulltext="props.item.SYSTEM_CONSUMED" showOn="hover" v-if="props.item.TABLE_NAMEs.length < 1"></tablecell>
+                            </td>
+
+                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
+                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props)" :fulltext="props.item.TABLE_NAME"></tablecell>
                             </td>
 
                             <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                              <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
+                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
                             </td>
 
-                            <td v-bind:style="{ width: (store.left.colWidth['ALIAS_NAME'] + store.left.colWidth['GOLDEN_SOURCE'] +store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
-                              <!-- <downstream-g-s :props="props"></downstream-g-s> -->
+                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
+                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
+                            </td>
+
+                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">
+                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props)" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
+                            </td>
+
+                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
+                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props)" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
+                            </td>
+
+                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
+                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
                             </td>
                           </template>
 
                           <template slot="expand" slot-scope="props">
                             <v-data-table
                               :headers="store.leftHeaders.filter(v => v.display == true)"
-                              :items="props.item.Columns"
-                              item-key="COLID"
-                              class=""
+                              :items="props.item.TABLE_NAMEs"
+                              item-key="TABLE_NAMEID"
+                              class="expanded-table-level-2"
                               hide-actions
                               hide-headers
                               @update:pagination="setExpandedTableColumnsWidthDBT"
@@ -189,15 +241,221 @@
                               <template slot="items" slot-scope="props">
                                 <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
                                 <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }">&nbsp;</td>
+                                <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
                                 <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CONSUMED'] + 'px' }">&nbsp;</td>
-                                <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
+
+                                <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
+                                  <b-link @click="props.expanded = !props.expanded" v-if="props.item.COLUMN_NAMEs.length >= 1">
+                                    <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover"></tablecell>
+                                  </b-link>
+
+                                  <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover" v-if="props.item.COLUMN_NAMEs.length < 1"></tablecell>
+                                </td>
 
                                 <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                                  <tablecell showOn="hover" :fulltext="props.item.COLUMN_NAME"></tablecell></td>
-
-                                <td v-bind:style="{ width: (store.left.colWidth['ALIAS_NAME'] + store.left.colWidth['GOLDEN_SOURCE'] +store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
-                                  <!-- <downstream-g-s :props="props"></downstream-g-s> -->
+                                  <tablecell showOn="hover" v-if="isFourthLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
                                 </td>
+
+                                <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
+                                  <tablecell showOn="hover" v-if="isFourthLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
+                                </td>
+
+                                <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">
+                                  <tablecell showOn="hover" v-if="isFourthLevelCellShowing(props)" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
+                                </td>
+
+                                <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
+                                  <tablecell showOn="hover" v-if="isFourthLevelCellShowing(props)" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
+                                </td>
+
+                                <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
+                                  <tablecell showOn="hover" v-if="isFourthLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
+                                </td>
+                              </template>
+
+                              <template slot="expand" slot-scope="props">
+                                <v-data-table
+                                  :headers="store.leftHeaders.filter(v => v.display == true)"
+                                  :items="props.item.COLUMN_NAMEs"
+                                  item-key="COLUMN_NAMEID"
+                                  class="expanded-table-level-2"
+                                  hide-actions
+                                  hide-headers
+                                  @update:pagination="setExpandedTableColumnsWidthDBT"
+                                >
+                                  <template slot="items" slot-scope="props">
+                                    <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
+                                    <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }">&nbsp;</td>
+                                    <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
+                                    <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CONSUMED'] + 'px' }">&nbsp;</td>
+                                    <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
+
+                                    <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
+                                      <b-link @click="props.expanded = !props.expanded" v-if="props.item.GOLDEN_SOURCEs.length >= 1">
+                                        <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover"></tablecell>
+                                      </b-link>
+
+                                      <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover" v-if="props.item.GOLDEN_SOURCEs.length < 1"></tablecell>
+                                    </td>
+
+                                    <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
+                                      <tablecell showOn="hover" v-if="isFifthLevelCellShowing(props)" :fulltext="props.item.GOLDEN_SOURCE"></tablecell>
+                                    </td>
+
+                                    <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">
+                                      <tablecell showOn="hover" v-if="isFifthLevelCellShowing(props)" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
+                                    </td>
+
+                                    <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
+                                      <tablecell showOn="hover" v-if="isFifthLevelCellShowing(props)" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
+                                    </td>
+
+                                    <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
+                                      <tablecell showOn="hover" v-if="isFifthLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
+                                    </td>
+                                  </template>
+
+                                  <template slot="expand" slot-scope="props">
+                                    <v-data-table
+                                      :headers="store.leftHeaders.filter(v => v.display == true)"
+                                      :items="props.item.GOLDEN_SOURCEs"
+                                      item-key="GOLDEN_SOURCEID"
+                                      class="expanded-table-level-2"
+                                      hide-actions
+                                      hide-headers
+                                      @update:pagination="setExpandedTableColumnsWidthDBT"
+                                    >
+                                      <template slot="items" slot-scope="props">
+                                        <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
+                                        <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }">&nbsp;</td>
+                                        <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
+                                        <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CONSUMED'] + 'px' }">&nbsp;</td>
+                                        <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
+                                        <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">&nbsp;</td>
+
+                                        <td v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">
+                                          <b-link @click="props.expanded = !props.expanded" v-if="props.item.GS_SYSTEM_NAMEs.length >= 1">
+                                            <tablecell :fulltext="props.item.GOLDEN_SOURCE" showOn="hover"></tablecell>
+                                          </b-link>
+
+                                          <tablecell :fulltext="props.item.GOLDEN_SOURCE" showOn="hover" v-if="props.item.GS_SYSTEM_NAMEs.length < 1"></tablecell>
+                                        </td>
+
+                                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">
+                                          <tablecell showOn="hover" v-if="isSixthLevelCellShowing(props)" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
+                                        </td>
+
+                                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
+                                          <tablecell showOn="hover" v-if="isSixthLevelCellShowing(props)" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
+                                        </td>
+
+                                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
+                                          <tablecell showOn="hover" v-if="isSixthLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
+                                        </td>
+                                      </template>
+
+                                      <template slot="expand" slot-scope="props">
+                                        <v-data-table
+                                          :headers="store.leftHeaders.filter(v => v.display == true)"
+                                          :items="props.item.GS_SYSTEM_NAMEs"
+                                          item-key="GS_SYSTEM_NAMEID"
+                                          class="expanded-table-level-2"
+                                          hide-actions
+                                          hide-headers
+                                          @update:pagination="setExpandedTableColumnsWidthDBT"
+                                        >
+                                          <template slot="items" slot-scope="props">
+                                            <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
+                                            <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }">&nbsp;</td>
+                                            <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
+                                            <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CONSUMED'] + 'px' }">&nbsp;</td>
+                                            <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
+                                            <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">&nbsp;</td>
+                                            <td v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">&nbsp;</td>
+
+                                            <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">
+                                              <b-link @click="props.expanded = !props.expanded" v-if="props.item.GS_TABLE_NAMEs.length >= 1">
+                                                <tablecell :fulltext="props.item.GS_SYSTEM_NAME" showOn="hover"></tablecell>
+                                              </b-link>
+
+                                              <tablecell :fulltext="props.item.GS_SYSTEM_NAME" showOn="hover" v-if="props.item.GS_TABLE_NAMEs.length < 1"></tablecell>
+                                            </td>
+
+                                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
+                                              <tablecell showOn="hover" v-if="isSeventhLevelCellShowing(props)" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
+                                            </td>
+
+                                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
+                                              <tablecell showOn="hover" v-if="isSeventhLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
+                                            </td>
+                                          </template>
+
+                                          <template slot="expand" slot-scope="props">
+                                            <v-data-table
+                                              :headers="store.leftHeaders.filter(v => v.display == true)"
+                                              :items="props.item.GS_TABLE_NAMEs"
+                                              item-key="GS_TABLE_NAMEID"
+                                              class="expanded-table-level-2"
+                                              hide-actions
+                                              hide-headers
+                                              @update:pagination="setExpandedTableColumnsWidthDBT"
+                                            >
+                                              <template slot="items" slot-scope="props">
+                                                <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
+                                                <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }">&nbsp;</td>
+                                                <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
+                                                <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CONSUMED'] + 'px' }">&nbsp;</td>
+                                                <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
+                                                <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">&nbsp;</td>
+                                                <td v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">&nbsp;</td>
+                                                <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
+
+                                                <td v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
+                                                  <b-link @click="props.expanded = !props.expanded" v-if="props.item.GS_COLUMN_NAMEs.length >= 1">
+                                                    <tablecell :fulltext="props.item.GS_TABLE_NAME" showOn="hover"></tablecell>
+                                                  </b-link>
+
+                                                  <tablecell :fulltext="props.item.GS_TABLE_NAME" showOn="hover" v-if="props.item.GS_COLUMN_NAMEs.length < 1"></tablecell>
+                                                </td>
+
+                                                <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
+                                                  <tablecell showOn="hover" v-if="isEighthLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
+                                                </td>
+                                              </template>
+
+                                              <template slot="expand" slot-scope="props">
+                                                <v-data-table
+                                                  :headers="store.leftHeaders.filter(v => v.display == true)"
+                                                  :items="props.item.GS_COLUMN_NAMEs"
+                                                  item-key="GS_COLUMN_NAMEID"
+                                                  class=""
+                                                  hide-actions
+                                                  hide-headers
+                                                  @update:pagination="setExpandedTableColumnsWidthDBT"
+                                                >
+                                                  <template slot="items" slot-scope="props">
+                                                    <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
+                                                    <td v-bind:style="{ width: store.left.colWidth['BT_NAME'] + 'px' }">&nbsp;</td>
+                                                    <td v-bind:style="{ width: store.left.colWidth['ALIAS_NAME'] + 'px' }">&nbsp;</td>
+                                                    <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CONSUMED'] + 'px' }">&nbsp;</td>
+                                                    <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
+                                                    <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">&nbsp;</td>
+                                                    <td v-bind:style="{ width: store.left.colWidth['GOLDEN_SOURCE'] + 'px' }">&nbsp;</td>
+                                                    <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
+                                                    <td v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">&nbsp;</td>
+
+                                                    <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
+                                                      <tablecell showOn="hover" :fulltext="props.item.GS_COLUMN_NAME"></tablecell></td>
+                                                  </template>
+                                                </v-data-table>
+                                              </template>
+                                            </v-data-table>
+                                          </template>
+                                        </v-data-table>
+                                      </template>
+                                    </v-data-table>
+                                  </template>
+                                </v-data-table>
                               </template>
                             </v-data-table>
                           </template>
@@ -283,47 +541,77 @@ export default {
     isMainLevelCellShowing (props){
       if( ! props.expanded) return true;
       else {
-        if(props.item.Systems.length > 0) {
-          if(props.item.Systems[0].Tables.length == 0) return true;
+        if(props.item.ALIAS_NAMEs.length > 0) {
+          if(props.item.ALIAS_NAMEs[0].SYSTEM_CONSUMEDs.length == 0) return true;
         }
         
         return false;
       }
     },
-    isSystemLevelCellShowing (props){
+    isSecondLevelCellShowing (props){
       if( ! props.expanded) return true;
       else {
-        if(props.item.Tables.length > 0) {
-          if(props.item.Tables[0].Columns.length == 0) return true;
+        if(props.item.SYSTEM_CONSUMEDs.length > 0) {
+          if(props.item.SYSTEM_CONSUMEDs[0].TABLE_NAMEs.length == 0) return true;
         }
         
         return false;
       }
     },
-    isTableLevelCellShowing (props){
+    isThirdLevelCellShowing (props){
       if( ! props.expanded) return true;
       else {
-        if(props.item.Columns.length > 0) {
-          return true;
+        if(props.item.TABLE_NAMEs.length > 0) {
+          if(props.item.TABLE_NAMEs[0].COLUMN_NAMEs.length == 0) return true;
         }
         
         return false;
       }
     },
-    isGSMainLevelCellShowing (props){
+    isFourthLevelCellShowing (props){
       if( ! props.expanded) return true;
       else {
-        if(props.item.GSTables.length > 0) {
-          if(props.item.GSTables[0].GSColumns.length == 0) return true;
+        if(props.item.COLUMN_NAMEs.length > 0) {
+          if(props.item.COLUMN_NAMEs[0].GOLDEN_SOURCEs.length == 0) return true;
         }
         
         return false;
       }
     },
-    isGSTableLevelCellShowing (props){
+    isFifthLevelCellShowing (props){
       if( ! props.expanded) return true;
       else {
-        if(props.item.GSColumns.length > 0) {
+        if(props.item.GOLDEN_SOURCEs.length > 0) {
+          if(props.item.GOLDEN_SOURCEs[0].GS_SYSTEM_NAMEs.length == 0) return true;
+        }
+        
+        return false;
+      }
+    },
+    isSixthLevelCellShowing (props){
+      if( ! props.expanded) return true;
+      else {
+        if(props.item.GS_SYSTEM_NAMEs.length > 0) {
+          if(props.item.GS_SYSTEM_NAMEs[0].GS_TABLE_NAMEs.length == 0) return true;
+        }
+        
+        return false;
+      }
+    },
+    isSeventhLevelCellShowing (props){
+      if( ! props.expanded) return true;
+      else {
+        if(props.item.GS_TABLE_NAMEs.length > 0) {
+          if(props.item.GS_TABLE_NAMEs[0].GS_COLUMN_NAMEs.length == 0) return true;
+        }
+        
+        return false;
+      }
+    },
+    isEighthLevelCellShowing (props){
+      if( ! props.expanded) return true;
+      else {
+        if(props.item.GS_COLUMN_NAMEs.length > 0) {
           return true;
         }
         
