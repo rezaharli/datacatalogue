@@ -333,7 +333,14 @@ table.v-table tbody tr td.hidden{display: none;} */
 .table-v2 table.v-table thead tr th .dropdown {position: unset;}
 .table-v2 table.v-table thead tr th .dropdown .btn {line-height: unset !important; padding: 0 10px; position: unset;}
 /* .table-v2 table.v-table thead tr th .v-icon.icon-filter {display: none;} */
-/* .table-v2 table.v-table thead tr th .v-icon.icon-filter.icon-active {color: #397fa4 !important; } */
+.table-v2 table.v-table thead tr th .v-icon.icon-filter.icon-active {
+    color: #56B8BB !important;
+    font-size: 14px !important;
+    /* color: #fff !important; */
+    /* background-color: #56B8BB !important; */
+    /* border-radius: 50%; */
+    /* padding: 5px; */
+}
 .table-v2 table.v-table tbody tr {border-bottom: none !important;}
 .table-v2 > .v-table__overflow > table.v-table > tbody > tr.odd,
 .table-v2 > .v-table__overflow > table.v-table > tbody > tr.odd + .v-datatable__expand-row .v-table {background-color: #ffffff;}
