@@ -20,7 +20,7 @@
         <!-- Main content -->
         <div class="table-v2-title">Policy Related Information</div>
         <v-data-table
-            :headers="store.leftHeaders.policy.filter(v => v.display == true)"
+            :headers="store.leftHeaders.filter(v => v.display == true)"
             :items="store.left.display"
             :pagination.sync="store.left.pagination"
             :total-items="store.left.totalItems"
@@ -125,13 +125,27 @@ export default {
   },
   data() {
     return {
-      storeName: "dscdd",
+      storeName: "dscddPolicy",
     };
   },
   computed: {
     store() {
       return this.$store.state[this.storeName].all;
     },
+  },
+  watch: {
+    $route(to) {},
+    "store.left.pagination": {
+      handler() {
+        this.getLeftTable();
+      },
+      deep: true
+    },
+    "store.searchMain"(val, oldVal) {
+      if (val || oldVal) {
+        this.getLeftTable();
+      }
+    }
   },
   mounted() {
     var self = this;
@@ -150,6 +164,10 @@ export default {
     this.setTableColumnsWidth($('#table-dsc-dd-policy'));
   },
   methods: {
+    getLeftTable() {
+      this.store.system = this.$route.params.system;
+      this.$store.dispatch(`${this.storeName}/getLeftTable`);
+    },
     setTableColumnsWidth(elem){
       var tableElem = elem.find('.v-table__overflow > table.v-table');
       var THs = tableElem.find('thead tr th');
