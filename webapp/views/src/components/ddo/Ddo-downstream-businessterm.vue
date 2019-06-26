@@ -110,15 +110,15 @@
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
                       </td>
 
                       <!-- <td v-bind:style="{ width: (store.left.colWidth['ALIAS_NAME'] + store.left.colWidth['GOLDEN_SOURCE'] + store.left.colWidth['GS_SYSTEM_NAME'] + store.left.colWidth['GS_TABLE_NAME'] + store.left.colWidth['GS_COLUMN_NAME']) + 'px' }">
@@ -168,15 +168,15 @@
                         </td>
 
                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">
-                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
                         </td>
 
                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
-                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
                         </td>
 
                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
-                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
                         </td>
                       </template>
 
@@ -216,15 +216,15 @@
                             </td>
 
                             <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">
-                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props)" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
+                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
                             </td>
 
                             <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
-                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props)" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
+                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
                             </td>
 
                             <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
-                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
+                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
                             </td>
                           </template>
 
@@ -261,15 +261,15 @@
                                 </td>
 
                                 <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">
-                                  <tablecell showOn="hover" v-if="isFourthLevelCellShowing(props)" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
+                                  <tablecell showOn="hover" v-if="isFourthLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
                                 </td>
 
                                 <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
-                                  <tablecell showOn="hover" v-if="isFourthLevelCellShowing(props)" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
+                                  <tablecell showOn="hover" v-if="isFourthLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
                                 </td>
 
                                 <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
-                                  <tablecell showOn="hover" v-if="isFourthLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
+                                  <tablecell showOn="hover" v-if="isFourthLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
                                 </td>
                               </template>
 
@@ -303,15 +303,15 @@
                                     </td>
 
                                     <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">
-                                      <tablecell showOn="hover" v-if="isFifthLevelCellShowing(props)" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
+                                      <tablecell showOn="hover" v-if="isFifthLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
                                     </td>
 
                                     <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
-                                      <tablecell showOn="hover" v-if="isFifthLevelCellShowing(props)" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
+                                      <tablecell showOn="hover" v-if="isFifthLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
                                     </td>
 
                                     <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
-                                      <tablecell showOn="hover" v-if="isFifthLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
+                                      <tablecell showOn="hover" v-if="isFifthLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
                                     </td>
                                   </template>
 
@@ -342,15 +342,15 @@
                                         </td>
 
                                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_SYSTEM_NAME'] + 'px' }">
-                                          <tablecell showOn="hover" v-if="isSixthLevelCellShowing(props)" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
+                                          <tablecell showOn="hover" v-if="isSixthLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_SYSTEM_NAME"></tablecell>
                                         </td>
 
                                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
-                                          <tablecell showOn="hover" v-if="isSixthLevelCellShowing(props)" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
+                                          <tablecell showOn="hover" v-if="isSixthLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
                                         </td>
 
                                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
-                                          <tablecell showOn="hover" v-if="isSixthLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
+                                          <tablecell showOn="hover" v-if="isSixthLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
                                         </td>
                                       </template>
 
@@ -382,11 +382,11 @@
                                             </td>
 
                                             <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_TABLE_NAME'] + 'px' }">
-                                              <tablecell showOn="hover" v-if="isSeventhLevelCellShowing(props)" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
+                                              <tablecell showOn="hover" v-if="isSeventhLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_TABLE_NAME"></tablecell>
                                             </td>
 
                                             <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
-                                              <tablecell showOn="hover" v-if="isSeventhLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
+                                              <tablecell showOn="hover" v-if="isSeventhLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
                                             </td>
                                           </template>
 
@@ -419,7 +419,7 @@
                                                 </td>
 
                                                 <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['GS_COLUMN_NAME'] + 'px' }">
-                                                  <tablecell showOn="hover" v-if="isEighthLevelCellShowing(props)" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
+                                                  <tablecell showOn="hover" v-if="isEighthLevelCellShowing(props) && props.item.GOLDEN_SOURCE.toLowerCase() == 'no'" :fulltext="props.item.GS_COLUMN_NAME"></tablecell>
                                                 </td>
                                               </template>
 
