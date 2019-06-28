@@ -383,7 +383,7 @@ table.v-table.v-datatable tfoot tr {
 }
 table.v-table.v-datatable th,
 table.v-table.v-datatable td {
-    /* border: 1px solid #f00;  */
+    border: 1px solid transparent; 
     box-sizing: border-box;
 }
 
