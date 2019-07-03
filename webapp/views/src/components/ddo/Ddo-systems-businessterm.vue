@@ -238,10 +238,6 @@ export default {
     this.store.subdomain = this.$route.params.subdomain;
     this.store.system = this.$route.params.system;
     this.resetFilter();
-    this.closeAllDrillDown();
-    setTimeout(() => {
-      this.setTableColumnsWidth($('#table-ddo-systems-businessterm'));
-    }, 300);
   },
   updated() {
     this.closeAllDrillDown();
@@ -249,7 +245,11 @@ export default {
   },
   methods: {
     getLeftTable() {
-      this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      getLeftTableVal.then(res => {
+        this.closeAllDrillDown();
+        this.setTableColumnsWidth($('#table-ddo-systems-businessterm'));
+      });
     },
     closeAllDrillDown(){
       var objExpanded = this.$refs.dTable.expanded;
