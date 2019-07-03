@@ -193,10 +193,10 @@ export default {
   },
   methods: {
     getLeftTable() {
-      this.$store.dispatch(`${this.storeName}/getLeftTable`);
-      setTimeout(() => {
+      var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      getLeftTableVal.then(res => {
         this.setTableColumnsWidth($('#table-dpo-datalineage'));
-      }, 100);
+      });
     },
     isMainLevelCellShowing (props){
       if( ! props.expanded) return true;
