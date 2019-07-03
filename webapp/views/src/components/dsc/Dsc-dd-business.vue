@@ -141,10 +141,6 @@ export default {
   mounted() {
     var self = this;
 
-    setTimeout(() => {
-      this.setTableColumnsWidth($('#table-dsc-dd-business'));
-    }, 300);
-
     $("#page-tab #tab-business").on('click', function(){
       setTimeout(() => {
         self.setTableColumnsWidth($('#table-dsc-dd-business'));
@@ -157,7 +153,10 @@ export default {
   methods: {
     getLeftTable() {
       this.store.system = this.$route.params.system;
-      this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      getLeftTableVal.then(res => {
+        this.setTableColumnsWidth($('#table-dsc-dd-business'));
+      });
     },
     setTableColumnsWidth(elem){
       var tableElem = elem.find('.v-table__overflow > table.v-table');

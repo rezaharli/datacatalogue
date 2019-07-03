@@ -147,10 +147,6 @@ export default {
     this.store.tabName = this.storeName;
     this.store.system = this.$route.params.system;
     this.resetFilter();
-    setTimeout(() => {
-      this.setTableColumnsWidth($('#table-dsc-cdp'));
-      this.setTableFooterColumnsWidth($('#table-dsc-cdp'));
-    }, 300);
   },
   updated() {
     this.setTableColumnsWidth($('#table-dsc-cdp'));
@@ -158,7 +154,11 @@ export default {
   },
   methods: {
     getLeftTable() {
-      this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      getLeftTableVal.then(res => {
+        this.setTableColumnsWidth($('#table-dsc-cdp'));
+        this.setTableFooterColumnsWidth($('#table-dsc-cdp'));
+      });
     },
     systemRowClick(evt) {
       evt.preventDefault();

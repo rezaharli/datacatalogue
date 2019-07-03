@@ -220,9 +220,6 @@ export default {
     mounted() {
       this.store.tabName = this.storeName;
       this.store.isRightTable = this.$route.params.system;
-      setTimeout(() => {
-        this.setTableColumnsWidth($("#table-dsc-my"));
-      }, 300);
     },
     updated() {
       this.setTableColumnsWidth($("#table-dsc-my"));
@@ -232,6 +229,7 @@ export default {
         var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
         getLeftTableVal.then(res => {
           this.removeHypenOnEmptyTables($("#table-dsc-my"));
+          this.setTableColumnsWidth($("#table-dsc-my"));
         });
       },
       getRightTable (id) {

@@ -285,16 +285,16 @@ export default {
     this.store.tabName = this.storeName;
     this.store.system = this.$route.params.system;
     this.resetFilter();
-    setTimeout(() => {
-      this.setTableColumnsWidth($('#table-dsc-cde'));
-    }, 300);
   },
   updated() {
     this.setTableColumnsWidth($('#table-dsc-cde'));
   },
   methods: {
     getLeftTable() {
-      this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      getLeftTableVal.then(res => {
+        this.setTableColumnsWidth($('#table-dsc-cde'));
+      });
     },
     isMainLevelCellShowing (props){
       if( ! props.expanded) return true;
