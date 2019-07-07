@@ -88,6 +88,23 @@
                 </v-card>
               </v-flex>
 
+              <v-flex xs3 sm3 md3 card-container>
+                <v-card flat id="tooltipButton-EDMp" class="rounded-card" 
+                  :class="{ [`elevation-${elevation.edmp}`]: true }" 
+                  @click="edmpClick()" 
+                  @mouseover="cardMouseover('edmp')"
+                  @mouseleave="cardMouseleave('edmp')">
+                  <v-img :src="images.edmp" class="menu-image"></v-img>
+
+                  <v-card-title primary-title class="justify-center">
+                    <div>
+                      <h3 class="mb-0">EDMp</h3>
+                      <h3 class="mb-0">Catalogue</h3>
+                    </div>
+                  </v-card-title>
+                </v-card>
+              </v-flex>
+
               <b-tooltip :show.sync="showTooltip.DSC" target="tooltipButton-DSC" placement="bottom" v-if="this.user.Role.split(',').indexOf('DSC') == -1">
                 You dont have access for DSC!
               </b-tooltip>
@@ -143,6 +160,7 @@ export default {
         dpo: 12,
         ddo: 12,
         rfo: 12,
+        edmp: 12,
         user: 12,
       },
       images: {
@@ -150,6 +168,7 @@ export default {
         dpo: require('../assets/images/u27.png'),
         ddo: require('../assets/images/u29.png'),
         rfo: require('../assets/images/u31.png'),
+        edmp: require('../assets/images/u24.png'),
       }
     };
   },
@@ -190,6 +209,11 @@ export default {
       if(this.user.Role.split(",").indexOf("RFO") != -1){
         this.$router.push('/rfo');
       }
+    },
+    edmpClick: function () {
+      // if(this.user.Role.split(",").indexOf("RFO") != -1){
+        this.$router.push('/edmp');
+      // }
     },
     cardMouseover: function(type){
       this.elevation[type] = 24;

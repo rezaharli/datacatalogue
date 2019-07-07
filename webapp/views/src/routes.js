@@ -34,6 +34,9 @@ import DdoDetails from './components/ddo/Ddo-details';
 import Rfo from './components/rfo/Rfo';
 import RfoPriority from './components/rfo/Rfo-priority';
 
+import Edmp from './components/edmp/Edmp';
+import EdmpDd from './components/edmp/Edmp-dd';
+
 import Access from './components/access/Access';
 import AccessUsers from './components/access/Access-users';
 import AccessRoles from './components/access/Access-roles';
@@ -234,6 +237,18 @@ const router = new VueRouter({
       title: "RFO - Data Catalogue",
       permission: "RFO"
     },
+  }, { // edmp
+    path: '/edmp', name: 'edmp', component: Edmp, 
+    meta: { 
+      title: "EDMp Catalogue - Data Catalogue",
+      permission: "EDMp Catalogue"
+    },
+  }, { // edmp.dd
+    path: '/edmp/dd', name: 'edmp.dd', component: EdmpDd, 
+    meta: { 
+      title: "EDMp Catalogue - Data Catalogue",
+      permission: "EDMp Catalogue"
+    },
   }, { // access
     path: '/access', component: Access, 
     meta: { 
@@ -303,7 +318,7 @@ router.beforeEach((to, from, next) => {
       }
 
       // redirect to login page if not logged in and trying to access a restricted page
-      const publicPages = ['/login', '/crypto'];
+      const publicPages = ['/login', '/crypto', '/edmp'];
       const authRequired = !publicPages.find(v => to.path.indexOf(v) != -1);
       const loggedIn = localStorage.getItem('user');
       
