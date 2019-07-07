@@ -527,16 +527,16 @@ export default {
     this.store.subdomain = this.$route.params.subdomain;
     this.store.system = this.$route.params.system;
     this.resetFilter();
-    setTimeout(() => {
-      this.setTableColumnsWidthDBT($('#table-ddo-downstream-businessterm'));
-    }, 300);
   },
   updated() {
     this.setTableColumnsWidthDBT($('#table-ddo-downstream-businessterm'));
   },
   methods: {
     getLeftTable() {
-      this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      getLeftTableVal.then(res => {
+        this.setTableColumnsWidthDBT($('#table-ddo-downstream-businessterm'));
+      });
     },
     isMainLevelCellShowing (props){
       if( ! props.expanded) return true;

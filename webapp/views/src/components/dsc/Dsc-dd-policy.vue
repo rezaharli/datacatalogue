@@ -150,10 +150,6 @@ export default {
   mounted() {
     var self = this;
 
-    setTimeout(() => {
-      this.setTableColumnsWidth($('#table-dsc-dd-policy'));
-    }, 300);
-
     $("#page-tab #tab-policy").on('click', function(){
       setTimeout(() => {
         self.setTableColumnsWidth($('#table-dsc-dd-policy'));
@@ -166,7 +162,10 @@ export default {
   methods: {
     getLeftTable() {
       this.store.system = this.$route.params.system;
-      this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      getLeftTableVal.then(res => {
+        this.setTableColumnsWidth($('#table-dsc-dd-policy'));
+      });
     },
     setTableColumnsWidth(elem){
       var tableElem = elem.find('.v-table__overflow > table.v-table');

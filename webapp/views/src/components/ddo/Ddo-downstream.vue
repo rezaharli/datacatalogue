@@ -150,10 +150,6 @@ export default {
     this.store.tabName = this.storeName;
     this.store.system = this.$route.params.subdomain;
     this.resetFilter();
-    setTimeout(() => {
-      this.setTableColumnsWidth($('#table-ddo-downstream'));
-      this.setTableFooterColumnsWidth($('#table-ddo-downstream'));
-    }, 300);
   },
   updated() {
     this.setTableColumnsWidth($('#table-ddo-downstream'));
@@ -161,7 +157,11 @@ export default {
   },
   methods: {
     getLeftTable() {
-      this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      getLeftTableVal.then(res => {
+        this.setTableColumnsWidth($('#table-ddo-downstream'));
+        this.setTableFooterColumnsWidth($('#table-ddo-downstream'));
+      });
     },
     systemRowClick(evt) {
       evt.preventDefault();

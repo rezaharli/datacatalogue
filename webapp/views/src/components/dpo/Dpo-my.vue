@@ -130,9 +130,6 @@ export default {
     },
     mounted() {
       this.store.tabName = this.storeName;
-      setTimeout(() => {
-        this.setTableColumnsWidth($('#table-dpo-my'));
-      }, 300);
     },
     updated() {
       this.setTableColumnsWidth($('#table-dpo-my'));
@@ -142,6 +139,7 @@ export default {
         var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
         getLeftTableVal.then(res => {
           this.removeHypenOnEmptyTables($("#table-dpo-my"));
+          this.setTableColumnsWidth($('#table-dpo-my'));
         });
       },
       doGetLeftTable () {

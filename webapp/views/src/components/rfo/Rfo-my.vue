@@ -181,16 +181,11 @@ export default {
     mounted() {
       this.store.tabName = this.storeName;
       setTimeout(() => {
-        // this.setTableColumnsWidth($('#table-rfo-my'));
-        this.setTableColumnsWidthRowspan($('#table-rfo-my'));
-      }, 300);
-      setTimeout(() => {
         this.makeTableAlertFull();
       }, 400);
       this.toggleFieldDisplay(false);
     },
     updated() {
-      // this.setTableColumnsWidth($('#table-rfo-my'));
       this.setTableColumnsWidthRowspan($('#table-rfo-my'));
     },
     methods: {
@@ -198,6 +193,7 @@ export default {
         var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
         getLeftTableVal.then(res => {
           this.removeHypenOnEmptyTables($("#table-rfo-my"));
+          this.setTableColumnsWidthRowspan($('#table-rfo-my'));
         });
       },
       doGetLeftTable () {

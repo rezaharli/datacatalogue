@@ -228,16 +228,16 @@ export default {
     this.store.system = this.$route.params.system;
     this.store.dspName = this.$route.params.dspName;
     this.resetFilter();
-    setTimeout(() => {
-      this.setTableColumnsWidth($('#table-dsc-cdp-cde'));
-    }, 300);
   },
   updated() {
     this.setTableColumnsWidth($('#table-dsc-cdp-cde'));
   },
   methods: {
     getLeftTable() {
-      this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      getLeftTableVal.then(res => {
+        this.setTableColumnsWidth($('#table-dsc-cdp-cde'));
+      });
     },
     isMainLevelCellShowing (props){
       if( ! props.expanded) return true;
