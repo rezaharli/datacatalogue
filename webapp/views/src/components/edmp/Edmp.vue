@@ -68,8 +68,8 @@ export default {
     data () {
         return {
             images: {
-                dd: require('../../assets/images/icon-dd.png'),
-                cr: require('../../assets/images/icon-imi.png'),
+                dd: require('../../assets/images/icon-edmp-dd.png'),
+                cr: require('../../assets/images/icon-edmp-cr.png'),
             }
         }
     },
