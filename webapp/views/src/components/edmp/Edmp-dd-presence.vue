@@ -12,10 +12,10 @@
     width:unset;
 }
 #table-edmp-dd-presence table.v-table.v-datatable tbody tr {display: table-row;} */
-#table-edmp-dd-presence table.v-table tr th:nth-of-type(1){width: 10% !important; display: table-cell;}
-#table-edmp-dd-presence table.v-table tr th:nth-of-type(2){width: 10% !important; display: table-cell;}
-#table-edmp-dd-presence table.v-table tr th:nth-of-type(3){width: 10% !important; display: table-cell;}
-#table-edmp-dd-presence table.v-table tr th:nth-of-type(4){width: 10% !important; display: table-cell;}
+#table-edmp-dd-presence table.v-table tr th:nth-of-type(1){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-presence table.v-table tr th:nth-of-type(2){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-presence table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-presence table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
 </style>
 
 <template>
