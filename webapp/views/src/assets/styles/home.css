@@ -3,6 +3,19 @@
     background-size: cover;
 }
 
+@media (min-width: 1200px){
+    .card-container > .container {
+        max-width: 1280px;
+    }
+}
+
+.home-title .title-1 {font-weight: 100;}
+.home-title .title-2 {font-weight: 600;}
+
+.container.grid-list-md .layout .flex{
+    padding: 15px;
+}
+
 .rounded-card{
     border-radius: 50%;
     padding-top: 100%;
@@ -11,15 +24,18 @@
 
 .rounded-card .menu-image{
     position: absolute;
-    top: 14%;
-    width: 50%;
-    left: 25%;
+    top: 15%;
+    width: 45%;
+    left: 50%;
+    transform: translateX(-50%);
     border-radius: 0px !important;
 }
 
 .rounded-card .v-card__title{
     position: absolute;
-    bottom: 10%;
+    bottom: 8%;
     width: 100%;
     color: #666666;
+    font-weight: 600;
+    font-size: 16px;
 }
