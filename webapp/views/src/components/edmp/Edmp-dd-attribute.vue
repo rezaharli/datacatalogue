@@ -12,6 +12,13 @@
     width:unset;
 }
 #table-edmp-dd-attribute table.v-table.v-datatable tbody tr {display: table-row;} */
+#table-edmp-dd-attribute table.v-table tr th:nth-of-type(1){width: 10% !important; display: table-cell;}
+#table-edmp-dd-attribute table.v-table tr th:nth-of-type(2){width: 10% !important; display: table-cell;}
+#table-edmp-dd-attribute table.v-table tr th:nth-of-type(3){width: 10% !important; display: table-cell;}
+#table-edmp-dd-attribute table.v-table tr th:nth-of-type(4){width: 10% !important; display: table-cell;}
+#table-edmp-dd-attribute table.v-table tr th:nth-of-type(5){width: 10% !important; display: table-cell;}
+#table-edmp-dd-attribute table.v-table tr th:nth-of-type(6){width: 10% !important; display: table-cell;}
+#table-edmp-dd-attribute table.v-table tr th:nth-of-type(7){width: 10% !important; display: table-cell;}
 </style>
 
 <template>
