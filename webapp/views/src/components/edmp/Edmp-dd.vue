@@ -8,12 +8,52 @@
             <PageHeader />
             
             <b-row class="my-4">
+                <b-col class="ml-5">
+                  <b-row class="ml-3">
+                    <b-col>
+                      <v-select
+                        :items="itamIDs"
+                        label="ITAM ID"
+                        box
+                      ></v-select>
+                    </b-col>
+                    <b-col>
+                      <v-select
+                        :items="systemNames"
+                        label="System Name"
+                        box
+                      ></v-select>
+                    </b-col>
+                    <b-col>
+                      <v-select
+                        :items="tiers"
+                        label="Tier"
+                        box
+                      ></v-select>
+                    </b-col>
+                    <b-col>
+                      <v-select
+                        :items="countries"
+                        label="Country"
+                        box
+                      ></v-select>
+                    </b-col>
+                    <b-col>
+                      <v-select
+                        :items="productsCovereds"
+                        label="Products Covered"
+                        box
+                      ></v-select>
+                    </b-col>
+                  </b-row>
+                  
+                </b-col>
                 <b-col>
-                    <b-button class="float-right red-neon icon-only ml-3" @click="resetFilter">
-                        <i class="fa fa-filter"></i>
-                    </b-button>
+                  <b-button class="float-right red-neon icon-only ml-3 shadow-sm" @click="resetFilter">
+                    <i class="fa fa-filter"></i>
+                  </b-button>
 
-                    <page-export class="float-right" :storeName="storeName" :leftTableCols="store.leftHeaders" :rightTableCols="[]"/>
+                  <page-export class="float-right shadow-sm" :storeName="storeName" :leftTableCols="store.leftHeaders" :rightTableCols="[]"/>
                 </b-col>
             </b-row>
 
@@ -75,6 +115,11 @@ export default {
     data() {
       return {
         storeName: "dscdd",
+        itamIDs: ["3128","1531","2211","1456","1279","1290","1489"],
+        systemNames: ["a","adiuw","jikut","lorem","iosum","dolor","sitamet"],
+        tiers: ["Tier 1","Tier 2","Tier 3"],
+        countries: ["Singapore","Malaysia","Indonesia","India","USA"],
+        productsCovereds: ["Product 1","Product 2","Product 3","Product 4","Product 5","Product 6"]
       };
     },
     computed: {
