@@ -37,9 +37,6 @@ import DdoDetails from './components/ddo/Ddo-details';
 import Rfo from './components/rfo/Rfo';
 import RfoPriority from './components/rfo/Rfo-priority';
 
-import Edmp from './components/edmp/Edmp';
-import EdmpDd from './components/edmp/Edmp-dd';
-
 import Access from './components/access/Access';
 import AccessUsers from './components/access/Access-users';
 import AccessRoles from './components/access/Access-roles';
@@ -262,18 +259,6 @@ const router = new VueRouter({
     meta: { 
       title: "RFO - Data Catalogue",
       permission: "RFO"
-    },
-  }, { // edmp
-    path: '/edmp', name: 'edmp', component: Edmp, 
-    meta: { 
-      title: "EDMp Catalogue - Data Catalogue",
-      permission: "EDMp Catalogue"
-    },
-  }, { // edmp.dd
-    path: '/edmp/dd', name: 'edmp.dd', component: EdmpDd, 
-    meta: { 
-      title: "EDMp Catalogue - Data Catalogue",
-      permission: "EDMp Catalogue"
     },
   }, { // access
     path: '/access', component: Access, 
