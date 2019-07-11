@@ -139,9 +139,6 @@ export default {
     },
     mounted() {
       this.store.tabName = this.storeName;
-      setTimeout(() => {
-        this.setTableColumnsWidth($('#table-ddo-my'));
-      }, 300);
     },
     updated() {
       this.setTableColumnsWidth($('#table-ddo-my'));
@@ -151,6 +148,7 @@ export default {
         var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
         getLeftTableVal.then(res => {
           this.removeHypenOnEmptyTables($("#table-ddo-my"));
+          this.setTableColumnsWidth($('#table-ddo-my'));
         });
       },
       doGetLeftTable () {

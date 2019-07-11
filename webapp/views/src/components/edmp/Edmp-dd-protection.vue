@@ -1,34 +1,28 @@
 <style>
-/* #table-dsc-dd-business table.v-table tr {display: block;} */
-/* #table-dsc-dd-business table.v-table.v-datatable thead{
+/* #table-edmp-dd-protection table.v-table tbody tr {display: block;} */
+/* #table-edmp-dd-protection table.v-table.v-datatable thead{
     width: unset;
     display: table-header-group;
     padding-right: unset;
 }
-#table-dsc-dd-business table.v-table.v-datatable tbody{
+#table-edmp-dd-protection table.v-table.v-datatable tbody{
     display:table-row-group;
     overflow:auto;
     max-height:unset;
     width:unset;
 }
-#table-dsc-dd-business table.v-table.v-datatable tbody tr {display: table-row;} */
-#table-dsc-dd-business table.v-table tr th:nth-of-type(1){width: calc(100%/20) !important; display: table-cell;}
-#table-dsc-dd-business table.v-table tr th:nth-of-type(2){width: calc(100%/20) !important; display: table-cell;}
-#table-dsc-dd-business table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
-#table-dsc-dd-business table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
-#table-dsc-dd-business table.v-table tr th:nth-of-type(5){width: calc(100%/20) !important; display: table-cell;}
-#table-dsc-dd-business table.v-table tr th:nth-of-type(6){width: calc(100%/20) !important; display: table-cell;}
-#table-dsc-dd-business table.v-table tr th:nth-of-type(7){width: calc(100%/20) !important; display: table-cell;}
-#table-dsc-dd-business table.v-table tr th:nth-of-type(8){width: calc(100%/20) !important; display: table-cell;}
-#table-dsc-dd-business table.v-table tr th:nth-of-type(9){width: calc(100%/20) !important; display: table-cell;}
-#table-dsc-dd-business table.v-table tr th:nth-of-type(10){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-protection table.v-table.v-datatable tbody tr {display: table-row;} */
+#table-edmp-dd-protection table.v-table tr th:nth-of-type(1){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-protection table.v-table tr th:nth-of-type(2){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-protection table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-protection table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
 </style>
 
 <template>
     <b-row style="margin-top: 10px;margin-bottom: 10px;">
       <b-col>
         <!-- Main content -->
-        <div class="table-v2-title">Business Metadata</div>
+        <div class="table-v2-title">Protection Metadata</div>
         <v-data-table
             :headers="store.leftHeaders.filter(v => v.display == true)"
             :items="store.left.display"
@@ -40,7 +34,7 @@
             :rows-per-page-items="[25, 50, 75, 100]"
             item-key="ID"
             class="table-v2"
-            id="table-dsc-dd-business">
+            id="table-edmp-dd-protection">
           <template slot="headerCell" slot-scope="props">
             <tableheader :storeName="storeName" :props="props" :which="'left'"/>
           </template>
@@ -78,24 +72,6 @@
               
               <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_DESCRIPTION'] + 'px' }">
                 <tablecell :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['CDE_YES_NO'] + 'px' }">
-                <tablecell :fulltext="props.item.CDE_YES_NO" showOn="click"></tablecell></td>
-                
-              <td v-bind:style="{ width: store.left.colWidth['DOMAIN'] + 'px' }">
-                <tablecell :fulltext="props.item.DOMAIN" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['SUBDOMAIN'] + 'px' }">
-                <tablecell :fulltext="props.item.SUBDOMAIN" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['DOMAIN_OWNER'] + 'px' }">
-                <tablecell :fulltext="props.item.DOMAIN_OWNER" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_TERM'] + 'px' }">
-                <tablecell :fulltext="props.item.BUSINESS_TERM" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_TERM_DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.BUSINESS_TERM_DESCRIPTION" showOn="click"></tablecell></td>
             </tr>
           </template>
         </v-data-table>
@@ -120,13 +96,13 @@ import pageLoader from "../PageLoader.vue";
 Vue.component("downloadExcel", JsonExcel);
 
 export default {
-  name: "DscDdBusiness",
+  name: "EdmpDdProtection",
   components: {
     PageHeader, pageSearch, pageExport, tableheader, tablecell, pageLoader
   },
   data() {
     return {
-      storeName: "dscddBusiness",
+      storeName: "edmpddProtection",
     };
   },
   computed: {
@@ -151,22 +127,23 @@ export default {
   mounted() {
     var self = this;
 
-    $("#page-tab #tab-business").on('click', function(){
+    setTimeout(() => {
+      this.setTableColumnsWidth($('#table-edmp-dd-protection'));
+    }, 300);
+
+    $("#page-tab #tab-protection").on('click', function(){
       setTimeout(() => {
-        self.setTableColumnsWidth($('#table-dsc-dd-business'));
+        self.setTableColumnsWidth($('#table-edmp-dd-protection'));
       }, 1);
     });
   },
   updated() {
-    this.setTableColumnsWidth($('#table-dsc-dd-business'));
+    this.setTableColumnsWidth($('#table-edmp-dd-protection'));
   },
   methods: {
     getLeftTable() {
       this.store.system = this.$route.params.system;
-      var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
-      getLeftTableVal.then(res => {
-        this.setTableColumnsWidth($('#table-dsc-dd-business'));
-      });
+      this.$store.dispatch(`${this.storeName}/getLeftTable`);
     },
     setTableColumnsWidth(elem){
       var tableElem = elem.find('.v-table__overflow > table.v-table');

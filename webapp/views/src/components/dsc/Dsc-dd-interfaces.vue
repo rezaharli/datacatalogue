@@ -12,6 +12,15 @@
     width:unset;
 }
 #table-dsc-dd-interfaces table.v-table.v-datatable tbody tr {display: table-row;} */
+#table-dsc-dd-interfaces table.v-table tr th:nth-of-type(1){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-interfaces table.v-table tr th:nth-of-type(2){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-interfaces table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-interfaces table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-interfaces table.v-table tr th:nth-of-type(5){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-interfaces table.v-table tr th:nth-of-type(6){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-interfaces table.v-table tr th:nth-of-type(7){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-interfaces table.v-table tr th:nth-of-type(8){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-interfaces table.v-table tr th:nth-of-type(9){width: calc(100%/20) !important; display: table-cell;}
 </style>
 
 <template>

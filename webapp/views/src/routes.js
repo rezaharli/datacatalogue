@@ -14,6 +14,9 @@ import DscCdpCde from './components/dsc/Dsc-cdp-cde';
 import DscInterfaces from './components/dsc/Dsc-interfaces';
 import DscInterfacesCde from './components/dsc/Dsc-interfaces-cde';
 import DscDd from './components/dsc/Dsc-dd';
+import DscDdTechnical from './components/dsc/Dsc-dd-technical';
+import DscDdBusiness from './components/dsc/Dsc-dd-business';
+import DscDdPolicy from './components/dsc/Dsc-dd-policy';
 import DscDetails from './components/dsc/Dsc-details';
 
 import Dpo from './components/dpo/Dpo';
@@ -33,6 +36,9 @@ import DdoDetails from './components/ddo/Ddo-details';
 
 import Rfo from './components/rfo/Rfo';
 import RfoPriority from './components/rfo/Rfo-priority';
+
+import Edmp from './components/edmp/Edmp';
+import EdmpDd from './components/edmp/Edmp-dd';
 
 import Access from './components/access/Access';
 import AccessUsers from './components/access/Access-users';
@@ -122,7 +128,30 @@ const router = new VueRouter({
       title: "DSC - Data Catalogue",
       permission: "DSC"
     },
-  },  
+    children: [
+      { 
+        path: '', name: 'dsc.dd', redirect: { name: 'dsc.dd.technical' }
+      }, { // dsc.dd.technical
+        path: '/dsc/dd/technical-metadata/:system', name: 'dsc.dd.technical', component: DscDdTechnical, 
+        meta: { 
+          title: "DSC - Data Catalogue",
+          permission: "DSC"
+        },
+      }, { // dsc.dd.business
+        path: '/dsc/dd/business-metadata/:system', name: 'dsc.dd.business', component: DscDdBusiness, 
+        meta: { 
+          title: "DSC - Data Catalogue",
+          permission: "DSC"
+        },
+      }, { // dsc.dd.policy
+        path: '/dsc/dd/policy-related/:system', name: 'dsc.dd.policy', component: DscDdPolicy, 
+        meta: { 
+          title: "DSC - Data Catalogue",
+          permission: "DSC"
+        },
+      }, 
+    ]
+  }, 
   { // dpo
     path: '/dpo', name: 'dpo', component: Dpo, 
     meta: { 
@@ -234,6 +263,18 @@ const router = new VueRouter({
       title: "RFO - Data Catalogue",
       permission: "RFO"
     },
+  }, { // edmp
+    path: '/edmp', name: 'edmp', component: Edmp, 
+    meta: { 
+      title: "EDMp Catalogue - Data Catalogue",
+      permission: "EDMp Catalogue"
+    },
+  }, { // edmp.dd
+    path: '/edmp/dd', name: 'edmp.dd', component: EdmpDd, 
+    meta: { 
+      title: "EDMp Catalogue - Data Catalogue",
+      permission: "EDMp Catalogue"
+    },
   }, { // access
     path: '/access', component: Access, 
     meta: { 
@@ -303,8 +344,8 @@ router.beforeEach((to, from, next) => {
       }
 
       // redirect to login page if not logged in and trying to access a restricted page
-      const publicPages = ['/login', '/crypto'];
-      const authRequired = !publicPages.includes(to.path);
+      const publicPages = ['/login', '/crypto', '/edmp'];
+      const authRequired = !publicPages.find(v => to.path.indexOf(v) != -1);
       const loggedIn = localStorage.getItem('user');
       
       if (authRequired && !loggedIn) {

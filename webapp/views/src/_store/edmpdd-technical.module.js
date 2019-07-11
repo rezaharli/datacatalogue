@@ -1,4 +1,4 @@
-import { dscMyService } from '../_services/dscmy.service';
+import { edmpService } from '../_services/edmp.service';
 import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
@@ -14,17 +14,21 @@ const state = {
         leftHeaders: [
             // { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Sytem Name', value: 'SYSTEM_NAME' },
             // { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'ITAM ID', value: 'ITAM_ID' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Table Name', value: 'TABLE_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Name', value: 'COLUMN_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Alias Name', value: 'BUSINESS_ALIAS_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Alias Description', value: 'BUSINESS_ALIAS_DESCRIPTION' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'CDE (Yes/No)', value: 'CDE_YES_NO' },
-
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Domain', value: 'DOMAIN' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Sub Domain', value: 'SUBDOMAIN' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Domain Owner', value: 'DOMAIN_OWNER' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Term', value: 'BUSINESS_TERM' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Term Description', value: 'BUSINESS_TERM_DESCRIPTION' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Source System Name', value: 'TABLE_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Database Name', value: 'COLUMN_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Table Name', value: 'BUSINESS_ALIAS_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Name', value: 'BUSINESS_ALIAS_DESCRIPTION' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Description', value: 'CDE_YES_NO' },
+            // { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Status', value: 'STATUS' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'PK / FK', value: 'DATA_TYPE' },
+            // { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Data Format', value: 'DATA_FORMAT' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Format', value: 'DATA_LENGTH' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Type', value: 'EXAMPLE' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Length', value: 'DERIVED_YES_NO' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Nullable (Y/N)', value: 'DERIVATION_LOGIC' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Decimal', value: 'SOURCED_FROM_UPSTREAM_YES_NO' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Total Digits', value: 'SYSTEM_CHECKS' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Decimal Fractional Digits (Decimal Places)', value: 'SYSTEM_CHECKS' },
         ],
         isRightTable: false,
         DDSource: [],
@@ -50,7 +54,7 @@ const actions = {
 
         param.Pagination.rowsPerPage = -1;
 
-        return dscMyService.getDdTable(param)
+        return edmpService.getDdTable(param)
             .then(
                 res => commit('getExportDataSuccess', res),
                 error => commit('getExportDataFailure', error)
@@ -69,7 +73,7 @@ const actions = {
             Pagination: state.all.left.pagination
         }
 
-        return dscMyService.getDdTable(param)
+        return edmpService.getDdTable(param)
             .then(
                 res => {
                     console.log(res);
@@ -113,7 +117,7 @@ const mutations = {
     },
 };
 
-export const dscddBusiness = {
+export const edmpddTechnical = {
     namespaced: true,
     state,
     actions,

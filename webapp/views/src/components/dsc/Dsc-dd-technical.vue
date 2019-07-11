@@ -12,6 +12,19 @@
     width:unset;
 }
 #table-dsc-dd-technical table.v-table.v-datatable tbody tr {display: table-row;} */
+#table-dsc-dd-technical table.v-table tr th:nth-of-type(1){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-technical table.v-table tr th:nth-of-type(2){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-technical table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-technical table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-technical table.v-table tr th:nth-of-type(5){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-technical table.v-table tr th:nth-of-type(6){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-technical table.v-table tr th:nth-of-type(7){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-technical table.v-table tr th:nth-of-type(8){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-technical table.v-table tr th:nth-of-type(9){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-technical table.v-table tr th:nth-of-type(10){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-technical table.v-table tr th:nth-of-type(11){width: calc(100%/20) !important; display: table-cell;}
+#table-dsc-dd-technical table.v-table tr th:nth-of-type(12){width: calc(100%/20) !important; display: table-cell;}
+
 </style>
 
 <template>
@@ -153,10 +166,6 @@ export default {
   mounted() {
     var self = this;
 
-    setTimeout(() => {
-      this.setTableColumnsWidth($('#table-dsc-dd-technical'));
-    }, 300);
-
     $("#page-tab #tab-technical").on('click', function(){
       setTimeout(() => {
         self.setTableColumnsWidth($('#table-dsc-dd-technical'));
@@ -169,7 +178,10 @@ export default {
   methods: {
     getLeftTable() {
       this.store.system = this.$route.params.system;
-      this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      getLeftTableVal.then(res => {
+        this.setTableColumnsWidth($('#table-dsc-dd-technical'));
+      });
     },
     setTableColumnsWidth(elem){
       var tableElem = elem.find('.v-table__overflow > table.v-table');

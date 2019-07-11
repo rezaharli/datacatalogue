@@ -9,18 +9,18 @@
         <v-flex xs12 sm12 md12 card-container>
           <v-container grid-list-md text-xs-center>
             <v-layout row wrap align-center>
-              <v-flex xs12>
+              <v-flex xs12 mb-3>
                 <v-card class="force-elevation-0" color="transparent">
                   <v-card-title primary-title class="justify-center white--text">
-                    <div>
-                      <h1 class="mb-0">Welcome To</h1>
-                      <h1 class="mb-0">Metadata Smart View</h1>
+                    <div class="home-title">
+                      <h2 class="title-1 mb-0">Welcome to</h2>
+                      <h1 class="title-2 mb-0">Metadata Smart View</h1>
                     </div>
                   </v-card-title>
                 </v-card>
               </v-flex>
 
-              <v-flex xs3 sm3 md3 card-container>
+              <v-flex xs2 sm3 md2 offset-xs1 card-wrapper>
                 <v-card flat id="tooltipButton-DSC" class="rounded-card" 
                   :class="{ [`elevation-${elevation.dsc}`]: true }" 
                   @click="dscClick()" 
@@ -29,15 +29,13 @@
                   <v-img :src="images.dsc" class="menu-image"></v-img>
                   
                   <v-card-title primary-title class="justify-center">
-                    <div>
-                      <h3 class="mb-0">Dataset</h3>
-                      <h3 class="mb-0">Custodian</h3>
-                    </div>
+                    Dataset<br>
+                    Custodian
                   </v-card-title>
                 </v-card>
               </v-flex>
 
-              <v-flex xs3 sm3 md3 card-container>
+              <v-flex xs2 sm3 md2 card-wrapper>
                 <v-card flat id="tooltipButton-DPO" class="rounded-card" 
                   :class="{ [`elevation-${elevation.dpo}`]: true }" 
                   @click="dpoClick()" 
@@ -46,15 +44,13 @@
                   <v-img :src="images.dpo" class="menu-image"></v-img>
 
                   <v-card-title primary-title class="justify-center">
-                    <div>
-                      <h3 class="mb-0">Downstream</h3>
-                      <h3 class="mb-0">Process Owner</h3>
-                    </div>
+                    Downstream<br>
+                    Process Owner
                   </v-card-title>
                 </v-card>
               </v-flex>
 
-              <v-flex xs3 sm3 md3 card-container>
+              <v-flex xs2 sm3 md2 card-wrapper>
                 <v-card flat id="tooltipButton-DDO" class="rounded-card" 
                   :class="{ [`elevation-${elevation.ddo}`]: true }" 
                   @click="ddoClick()" 
@@ -63,15 +59,13 @@
                   <v-img :src="images.ddo" class="menu-image"></v-img>
 
                   <v-card-title primary-title class="justify-center">
-                    <div>
-                      <h3 class="mb-0">Data Domain</h3>
-                      <h3 class="mb-0">Owner</h3>
-                    </div>
+                    Data Domain<br>
+                    Owner
                   </v-card-title>
                 </v-card>
               </v-flex>
 
-              <v-flex xs3 sm3 md3 card-container>
+              <v-flex xs2 sm3 md2 card-wrapper>
                 <v-card flat id="tooltipButton-RFO" class="rounded-card" 
                   :class="{ [`elevation-${elevation.rfo}`]: true }" 
                   @click="rfoClick()" 
@@ -80,10 +74,23 @@
                   <v-img :src="images.rfo" class="menu-image"></v-img>
 
                   <v-card-title primary-title class="justify-center">
-                    <div>
-                      <h3 class="mb-0">Risk Framework</h3>
-                      <h3 class="mb-0">Owner</h3>
-                    </div>
+                    Risk Framework<br>
+                    Owner
+                  </v-card-title>
+                </v-card>
+              </v-flex>
+
+              <v-flex xs2 sm3 md2 card-wrapper>
+                <v-card flat id="tooltipButton-EDMp" class="rounded-card" 
+                  :class="{ [`elevation-${elevation.edmp}`]: true }" 
+                  @click="edmpClick()" 
+                  @mouseover="cardMouseover('edmp')"
+                  @mouseleave="cardMouseleave('edmp')">
+                  <v-img :src="images.edmp" class="menu-image"></v-img>
+
+                  <v-card-title primary-title class="justify-center">
+                    EDMp<br>
+                    Catalogue
                   </v-card-title>
                 </v-card>
               </v-flex>
@@ -104,7 +111,7 @@
                 You dont have access for RFO!
               </b-tooltip>
 
-              <v-flex xs12 sm12 md12 card-container v-if="isAdmin">
+              <v-flex xs12 sm12 md12 card-wrapper v-if="isAdmin">
                 <v-btn 
                   :class="{ [`elevation-${elevation.user}`]: true }" 
                   @mouseover="cardMouseover('user')"
@@ -143,6 +150,7 @@ export default {
         dpo: 12,
         ddo: 12,
         rfo: 12,
+        edmp: 12,
         user: 12,
       },
       images: {
@@ -150,6 +158,7 @@ export default {
         dpo: require('../assets/images/u27.png'),
         ddo: require('../assets/images/u29.png'),
         rfo: require('../assets/images/u31.png'),
+        edmp: require('../assets/images/u24.png'),
       }
     };
   },
@@ -190,6 +199,11 @@ export default {
       if(this.user.Role.split(",").indexOf("RFO") != -1){
         this.$router.push('/rfo');
       }
+    },
+    edmpClick: function () {
+      // if(this.user.Role.split(",").indexOf("RFO") != -1){
+        this.$router.push('/edmp');
+      // }
     },
     cardMouseover: function(type){
       this.elevation[type] = 24;
