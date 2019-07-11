@@ -19,28 +19,13 @@
 
             <b-row>
                 <b-col>
-                    <v-tabs left id="page-tab" class="page-tab">
-                      <v-tab class="px-2 mx-5" key="technical-metadata" id="tab-technical" ref="technical">Technical Metadata</v-tab>
-                      <v-tab class="px-2 mx-5" key="business-metadata" id="tab-business" ref="business">Business Metadata</v-tab>
-                      <v-tab class="px-2 mx-5" key="policy-related" id="tab-policy" ref="policy">Policy Related Information</v-tab>
-                      <!-- <v-tab class="px-2 mx-5" key="interfaces">Interfaces</v-tab> -->
-
-                      <v-tab-item key="technical-metadata">
-                        <dsc-dd-technical />
-                      </v-tab-item>
-
-                      <v-tab-item key="business-metadata">
-                        <dsc-dd-business />
-                      </v-tab-item>
-
-                      <v-tab-item key="policy-related">
-                        <dsc-dd-policy />
-                      </v-tab-item>
-
-                      <!-- <v-tab-item key="interfaces">
-                        <dsc-dd-interfaces />
-                      </v-tab-item> -->
+                    <v-tabs id="page-tab" class="page-tab" v-model="activeTab">
+                        <v-tab v-for="tab in tabs" class="px-2 mx-5" :id="'tab-' + tab.id" :key="tab.key" :to="addressPath + '/' + tab.key + '/' + urlParam1" :ref="tab.id">{{ tab.name }}</v-tab>
                     </v-tabs>
+                    
+                    <transition name="fade" mode="out-in">
+                      <router-view />
+                    </transition>
                 </b-col>
             </b-row>
         </b-container>
@@ -60,12 +45,25 @@ export default {
     data() {
       return {
         storeName: "dscdd",
+        activeTab: '',
+        tabs: [
+            { id: 'technical', key: 'technical-metadata', name: 'Technical Metadata', route: this.addressPath + '/technical-metadata/' + this.urlParam1 },
+            { id: 'business', key: 'business-metadata', name: 'Business Metadata', route: this.addressPath + '/business-metadata/' + this.urlParam1 },
+            { id: 'policy', key: 'policy-related', name: 'Policy Related Information', route: this.addressPath + '/policy-related/' + this.urlParam1 },
+        ]
       };
     },
     computed: {
       store() {
         return this.$store.state[this.storeName].all;
       },
+      addressPath() {
+        var tmp = this.$route.path.split("/");
+        return tmp.slice(0, 3).join("/");
+      },
+      urlParam1() {
+        return this.$route.params.system;
+      }
     },
     watch: {
       $route(to) {},
@@ -88,6 +86,9 @@ export default {
     methods: {
       getLeftTable() {
         this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      },
+      updateRouter(val){
+        this.$router.push(val);
       },
       resetFilter (e) {
         if(Object.keys(this.store.filters.left).length > 0){

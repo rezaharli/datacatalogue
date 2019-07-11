@@ -14,6 +14,9 @@ import DscCdpCde from './components/dsc/Dsc-cdp-cde';
 import DscInterfaces from './components/dsc/Dsc-interfaces';
 import DscInterfacesCde from './components/dsc/Dsc-interfaces-cde';
 import DscDd from './components/dsc/Dsc-dd';
+import DscDdTechnical from './components/dsc/Dsc-dd-technical';
+import DscDdBusiness from './components/dsc/Dsc-dd-business';
+import DscDdPolicy from './components/dsc/Dsc-dd-policy';
 import DscDetails from './components/dsc/Dsc-details';
 
 import Dpo from './components/dpo/Dpo';
@@ -125,7 +128,30 @@ const router = new VueRouter({
       title: "DSC - Data Catalogue",
       permission: "DSC"
     },
-  },  
+    children: [
+      { 
+        path: '', name: 'dsc.dd', redirect: { name: 'dsc.dd.technical' }
+      }, { // dsc.dd.technical
+        path: '/dsc/dd/technical-metadata/:system', name: 'dsc.dd.technical', component: DscDdTechnical, 
+        meta: { 
+          title: "DSC - Data Catalogue",
+          permission: "DSC"
+        },
+      }, { // dsc.dd.business
+        path: '/dsc/dd/business-metadata/:system', name: 'dsc.dd.business', component: DscDdBusiness, 
+        meta: { 
+          title: "DSC - Data Catalogue",
+          permission: "DSC"
+        },
+      }, { // dsc.dd.policy
+        path: '/dsc/dd/policy-related/:system', name: 'dsc.dd.policy', component: DscDdPolicy, 
+        meta: { 
+          title: "DSC - Data Catalogue",
+          permission: "DSC"
+        },
+      }, 
+    ]
+  }, 
   { // dpo
     path: '/dpo', name: 'dpo', component: Dpo, 
     meta: { 
