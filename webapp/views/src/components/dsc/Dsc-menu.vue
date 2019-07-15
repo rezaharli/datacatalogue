@@ -24,15 +24,14 @@
             <div class="">
                 
                 <b-row>
-                    <b-col sm=12 md=1 lg=1 />
-                    <b-col sm=12 md=5 lg=5 class="my-3">
+                    <b-col sm=12 md=4 lg=4 class="my-3">
                         <div class="card card-v3 transition link" @click="goToDscMenuContent('cde')">
                             <b-row>
-                                <b-col cols=4 class="transition">
+                                <b-col cols=5 class="transition">
                                     <v-img :src="images.cde" :contain="true" class="card-icon"></v-img>
                                 </b-col>
 
-                                <b-col cols=8 class="">
+                                <b-col cols=7 class="">
                                     <div class="card-content">
                                         <div class="text">
                                             <h6 class="title-1">Critical Data Elements</h6>
@@ -46,14 +45,14 @@
                         </div>
                     </b-col>
                 
-                    <b-col sm=12 md=5 lg=5 class="my-3">
+                    <b-col sm=12 md=4 lg=4 class="my-3">
                         <div class="card card-v3 transition link" @click="goToDscMenuContent('cdp')">
                             <b-row>
-                                <b-col cols=4 class="transition">
+                                <b-col cols=5 class="transition">
                                     <v-img :src="images.cdsp" :contain="true" class="card-icon"></v-img>
                                 </b-col>
 
-                                <b-col cols=8 class="">
+                                <b-col cols=7 class="">
                                     <div class="card-content">
                                         <div class="text">
                                             <h6 class="title-1">Critical Downstream Processes</h6>
@@ -66,18 +65,39 @@
                             <div class="card-circle-left transition"></div>
                         </div>
                     </b-col>
-                    <b-col sm=12 md=1 lg=1 />
+
+                    <b-col sm=12 md=4 lg=4 class="my-3">
+                        <div class="card card-v3 transition link" @click="goToDscMenuContent('iarc')">
+                            <b-row>
+                                <b-col cols=5 class="transition">
+                                    <v-img :src="images.iarc" :contain="true" class="card-icon"></v-img>
+                                </b-col>
+
+                                <b-col cols=7 class="">
+                                    <div class="card-content">
+                                        <div class="text">
+                                            <h6 class="title-1">Information Asset &amp; Record Categories</h6>
+                                        </div>
+                                    </div>
+                                </b-col>
+                            </b-row>
+
+                            <!-- <h4 class="title-2">{{ store.counts ? store.counts.DSP_COUNT : 0 }}</h4> -->
+                            <div class="card-circle-left transition"></div>
+                        </div>
+                    </b-col>
+
                     <div class="clearfix"></div>
                 </b-row><b-row>
-                    <b-col sm=12 md=1 lg=1 />
-                    <b-col sm=12 md=5 lg=5 class="my-3">
+
+                    <b-col sm=12 md=4 lg=4 class="my-3">
                         <div class="card card-v3 transition link" @click="goToDscMenuContent('interfaces')">
                             <b-row>
-                                <b-col cols=4 class="transition">
+                                <b-col cols=5 class="transition">
                                     <v-img :src="images.imi" :contain="true" class="card-icon"></v-img>
                                 </b-col>
 
-                                <b-col cols=8 class="">
+                                <b-col cols=7 class="">
                                     <div class="card-content">
                                         <div class="text">
                                             <h6 class="title-1">Immediate Interfaces</h6>
@@ -91,14 +111,14 @@
                         </div>
                     </b-col>
 
-                    <b-col sm=12 md=5 lg=5 class="my-3">
+                    <b-col sm=12 md=4 lg=4 class="my-3">
                         <div class="card card-v3 transition link" @click="goToDscMenuContent('dd')">
                             <b-row>
-                                <b-col cols=4 class="transition">
+                                <b-col cols=5 class="transition">
                                     <v-img :src="images.dd" :contain="true" class="card-icon"></v-img>
                                 </b-col>
 
-                                <b-col cols=8 class="">
+                                <b-col cols=7 class="">
                                     <div class="card-content">
                                         <div class="text">
                                             <h6 class="title-1">Data Dictionary</h6>
@@ -110,7 +130,7 @@
                             <div class="card-circle-left transition"></div>
                         </div>
                     </b-col>
-                    <b-col sm=12 md=1 lg=1 />
+                    <b-col sm=12 md=4 lg=4 />
                 </b-row>
             </div>
 
@@ -129,6 +149,7 @@ export default {
             images: {
                 cde: require('../../assets/images/icon-cde.png'),
                 cdsp: require('../../assets/images/icon-cdsp.png'),
+                iarc: require('../../assets/images/icon-all-system.png'),
                 dd: require('../../assets/images/icon-dd.png'),
                 imi: require('../../assets/images/icon-imi.png'),
             }
