@@ -42,43 +42,71 @@ function getHomepageCounts(param) {
 function getCdeTable(param) {
     return fetchWHeader(`/dsc/getcdetable`, param).then(
         res => {
+            res.Data = res.Data.map(v => {
+                v.UPSTREAM_SYSTEM = "asdfasdf"
+
+                return v;
+            });
+
+            res.Data = _.map(res.Data, function(v){
+                var keys = Object.keys(v);
+
+                keys.forEach(key => {
+                    v[key] = v[key].toString().trim() ? v[key] : "-";
+                })
+                
+                return v;
+            });
+
             res.DataFlat = _.cloneDeep(res.Data);
             
             var tmp = _.groupBy(res.Data, "CDE")
-            res.Data = _.map(Object.keys(tmp), function(v, i){
-                var tmpTmp = _.cloneDeep(tmp[v]);
+            res.Data = _.map(Object.keys(tmp), function(v1, i1){
+                var tmpTmp = _.cloneDeep(tmp[v1]);
 
                 var ret         = tmpTmp[0];
-                ret.ID          = i;
-                ret.CDEsVal     = tmpTmp;
-                ret.CDE         = v;
+                ret.ID          = i1;
+                ret.CDEsVal = tmpTmp;
+                ret.CDE     = v1;
 
-                var tmp2 = _.groupBy(tmp[v], "TABLE_NAME");  
-                ret.Tables = _.map(Object.keys(tmp2), function(w, i){
-                    var tmpTmp2 = _.cloneDeep(tmp2[w]);
+                var tmp2 = _.groupBy(tmp[v1], "UPSTREAM_SYSTEM");  
+                ret.UPSTREAM_SYSTEMs = _.map(Object.keys(tmp2), function(v2, i2){
+                    var tmpTmp2 = _.cloneDeep(tmp2[v2]);
 
-                    var ret         = tmpTmp2[0];
-                    ret.TMTID       = tmpTmp2[0].TMTID;
-                    ret.TablesVal   = tmpTmp2;
-                    ret.TABLE_NAME  = w;
+                    var ret             = tmpTmp2[0];
+                    ret.UPSTREAM_SYSTEMID    = i2;
+                    ret.UPSTREAM_SYSTEMsVal  = tmpTmp2;
+                    ret.UPSTREAM_SYSTEM      = v2;
 
-                    var tmp3 = _.groupBy(tmp2[w], "COLUMN_NAME");
-                    ret.Columns = _.map(Object.keys(tmp3), function(x, i){
-                        var tmpTmp3 = _.cloneDeep(tmp3[x]);
+                    var tmp3 = _.groupBy(tmp2[v2], "TABLE_NAME");
+                    ret.TABLE_NAMEs = _.map(Object.keys(tmp3), function(v3, i3){
+                        var tmpTmp3 = _.cloneDeep(tmp3[v3]);
 
-                        var ret         = tmpTmp3[0];
-                        ret.COLID       = tmpTmp3[0].COLID;
-                        ret.ColumnsVal  = tmpTmp3;
-                        ret.COLUMN_NAME = x;
+                        var ret                 = tmpTmp3[0];
+                        ret.TABLE_NAMEID   = i3;
+                        ret.TABLE_NAMEsVal = tmpTmp3;
+                        ret.TABLE_NAME     = v3;
 
-                        var tmp4 = _.groupBy(tmp3[x], "DSP_NAME");  
-                        ret.Dsps = _.map(Object.keys(tmp4), function(x, i){
-                            var tmpTmp4 = _.cloneDeep(tmp4[x]);
+                        var tmp4 = _.groupBy(tmp3[v3], "COLUMN_NAME");
+                        ret.COLUMN_NAMEs = _.map(Object.keys(tmp4), function(v4, i4){
+                            var tmpTmp4 = _.cloneDeep(tmp4[v4]);
 
-                            var ret         = tmpTmp4[0];
-                            ret.DSPID       = i;
-                            ret.DspsVal     = tmpTmp4;
-                            ret.DSP_NAME    = x;
+                            var ret             = tmpTmp4[0];
+                            ret.COLUMN_NAMEID    = i4;
+                            ret.COLUMN_NAMEsVal  = tmpTmp4;
+                            ret.COLUMN_NAME      = v4;
+
+                            var tmp5 = _.groupBy(tmp4[v4], "DSP_NAME");
+                            ret.DSP_NAMEs = _.map(Object.keys(tmp5), function(v5, i5){
+                                var tmpTmp5 = _.cloneDeep(tmp5[v5]);
+    
+                                var ret                 = tmpTmp5[0];
+                                ret.DSP_NAMEID       = i5;
+                                ret.DSP_NAMEsVal     = tmpTmp5;
+                                ret.DSP_NAME         = v5;
+    
+                                return ret;
+                            });
 
                             return ret;
                         });
@@ -93,18 +121,24 @@ function getCdeTable(param) {
             });
 
             res.Data.forEach(v => {
-                v.Tables.forEach(w => {
-                    w.Columns.forEach(x => {
-                        x.Dsps.shift();
+                v.UPSTREAM_SYSTEMs.forEach(w => {
+                    w.TABLE_NAMEs.forEach(x => {
+                        x.COLUMN_NAMEs.forEach(y => {
+                            y.DSP_NAMEs.shift();
+                        });
+    
+                        if(x.COLUMN_NAMEs[0].DSP_NAMEs.length == 0){
+                            x.COLUMN_NAMEs.shift();
+                        }
                     });
 
-                    if(w.Columns[0].Dsps.length == 0){
-                        w.Columns.shift();
+                    if(w.TABLE_NAMEs[0].COLUMN_NAMEs.length == 0){
+                        w.TABLE_NAMEs.shift();
                     }
                 });
 
-                if(v.Tables[0].Columns.length == 0){
-                    v.Tables.shift();
+                if(v.UPSTREAM_SYSTEMs[0].TABLE_NAMEs.length == 0){
+                    v.UPSTREAM_SYSTEMs.shift();
                 }
             });
             
