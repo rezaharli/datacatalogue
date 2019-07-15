@@ -11,6 +11,7 @@ import DscMenu from './components/dsc/Dsc-menu';
 import DscCde from './components/dsc/Dsc-cde';
 import DscCdp from './components/dsc/Dsc-cdp';
 import DscCdpCde from './components/dsc/Dsc-cdp-cde';
+import DscIarc from './components/dsc/Dsc-iarc';
 import DscInterfaces from './components/dsc/Dsc-interfaces';
 import DscInterfacesCde from './components/dsc/Dsc-interfaces-cde';
 import DscDd from './components/dsc/Dsc-dd';
@@ -98,7 +99,13 @@ const router = new VueRouter({
         showModal: true,
         permission: "DSC"
       }
-    }] 
+    }]
+  }, { // dsc.iarc
+    path: '/dsc/iarc/:system', name: 'dsc.iarc', component: DscIarc, 
+    meta: { 
+      title: "DSC - Data Catalogue",
+      permission: "DSC"
+    }
   }, { // dsc.interfaces
     path: '/dsc/interfaces/:system', name: 'dsc.interfaces', component: DscInterfaces, 
     meta: { 
