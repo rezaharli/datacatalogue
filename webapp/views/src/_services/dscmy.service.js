@@ -17,6 +17,8 @@ export const dscMyService = {
 function getLeftTable(param) {
     return fetchWHeader(`/dsc/getallsystems`, param).then(
         res => {
+            res.DataFlat = _.cloneDeep(res.Data);
+
             var tmp = _.groupBy(res.Data, "SYSTEM_NAME")
             
             res.Data = _.map(Object.keys(tmp), function(v, i){
