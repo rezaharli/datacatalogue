@@ -4,6 +4,7 @@ export const rfoMyService = {
     getLeftTable,
     getRightTable,
     getAllRisk,
+    getHomepageCounts,
     getPriorityTable,
 };
 
@@ -118,6 +119,13 @@ function getAllRisk(param) {
             return res;
         },
     );
+}
+
+function getHomepageCounts(param) {
+    return fetchWHeader(`/rfo/gethomepagecounts`, param).then(res => {
+        res.Data = res.Data[0] ? res.Data[0] : null;
+        return res;
+    });
 }
 
 function getPriorityTable(param) {

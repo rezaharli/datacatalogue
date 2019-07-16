@@ -36,6 +36,8 @@ import DdoDownstreamBusinessterm from './components/ddo/Ddo-downstream-businesst
 import DdoDetails from './components/ddo/Ddo-details';
 
 import Rfo from './components/rfo/Rfo';
+import RfoMenu from './components/rfo/Rfo-menu';
+import RfoSummary from './components/rfo/Rfo-summary';
 import RfoPriority from './components/rfo/Rfo-priority';
 
 import Access from './components/access/Access';
@@ -261,8 +263,20 @@ const router = new VueRouter({
       title: "RFO - Data Catalogue",
       permission: "RFO"
     },
+  }, { // rfo.menu
+    path: '/rfo/:type', name: 'rfo.menu', component: RfoMenu, 
+    meta: { 
+      title: "RFO - Data Catalogue",
+      permission: "RFO"
+    },
+  }, { // rfo.summary
+    path: '/rfo/summary/:type', name: 'rfo.summary', component: RfoSummary, 
+    meta: { 
+      title: "RFO - Data Catalogue",
+      permission: "RFO"
+    },
   }, { // rfo.priority
-    path: '/rfo/:type', name: 'rfo.priority', component: RfoPriority, 
+    path: '/rfo/hierarchy/:type', name: 'rfo.priority', component: RfoPriority, 
     meta: { 
       title: "RFO - Data Catalogue",
       permission: "RFO"

@@ -1,6 +1,8 @@
 package services
 
 import (
+	h "eaciit/datacatalogue/webapp/helpers"
+	m "eaciit/datacatalogue/webapp/models"
 	"path/filepath"
 
 	"github.com/eaciit/clit"
@@ -109,13 +111,47 @@ func (s *RFOService) GetRightTable(tabs string, systemID int, search string, sea
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
+func (s *RFOService) GetHomepageCounts(payload toolkit.M) (interface{}, int, error) {
+	fileName := "rfo.sql"
+	queryName := "rfo-home-view"
+
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	system := payload.GetString("System")
+	args = append(args, system, system, system)
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	funcLog(funcName(), fileName, queryName)
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
 func (s *RFOService) GetPriorityTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
 	fileName := "rfo.sql"
-	queryName := "rfo-priority"
+	queryName := "rfo-hierarchy-view"
 
 	gridArgs := GridArgs{}
 	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
-	gridArgs.QueryName = "rfo-priority"
+	gridArgs.QueryName = "rfo-hierarchy-view"
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 
