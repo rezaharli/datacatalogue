@@ -269,12 +269,12 @@ const router = new VueRouter({
       title: "RFO - Data Catalogue",
       permission: "RFO"
     },
-  }, { // rfo.summary
-    path: '/rfo/summary/:type', name: 'rfo.summary', component: RfoSummary, 
-    meta: { 
-      title: "RFO - Data Catalogue",
-      permission: "RFO"
-    },
+  // }, { // rfo.summary
+  //   path: '/rfo/summary/:type', name: 'rfo.summary', component: RfoSummary, 
+  //   meta: { 
+  //     title: "RFO - Data Catalogue",
+  //     permission: "RFO"
+  //   },
   }, { // rfo.priority
     path: '/rfo/hierarchy/:type', name: 'rfo.priority', component: RfoPriority, 
     meta: { 
