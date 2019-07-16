@@ -49,7 +49,7 @@ export default {
         tabs: [
             { id: 'technical', key: 'technical-metadata', name: 'Technical Metadata', route: this.addressPath + '/technical-metadata/' + this.urlParam1 },
             { id: 'business', key: 'business-metadata', name: 'Business Metadata', route: this.addressPath + '/business-metadata/' + this.urlParam1 },
-            { id: 'policy', key: 'policy-related', name: 'Policy Related Information', route: this.addressPath + '/policy-related/' + this.urlParam1 },
+            // { id: 'policy', key: 'policy-related', name: 'Policy Related Information', route: this.addressPath + '/policy-related/' + this.urlParam1 },
         ]
       };
     },
