@@ -80,7 +80,7 @@ func (s *DSCService) GetHomepageCounts(payload toolkit.M) (interface{}, int, err
 	args := make([]interface{}, 0)
 
 	system := payload.GetString("System")
-	args = append(args, system, system, system)
+	args = append(args, system, system, system, system)
 
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
 	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
