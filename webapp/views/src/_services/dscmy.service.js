@@ -244,10 +244,8 @@ function getInterfacesTable(param) {
 function getInterfacesCdeTable(param) {
     return fetchWHeader(`/dsc/getinterfacescdetable`, param).then(
         res => {
-            res.Data = res.Data.concat(resData)
-
             res.DataFlat = _.cloneDeep(res.Data);
-            
+
             var tmp = _.groupBy(res.Data, "CDE")
             res.Data = _.map(Object.keys(tmp), function(v1, i1){
                 var tmpTmp = _.cloneDeep(tmp[v1]);
@@ -275,23 +273,23 @@ function getInterfacesCdeTable(param) {
                         ret.COLUMN_NAMEsVal = tmpTmp3;
                         ret.COLUMN_NAME     = v3;
 
-                        var tmp4 = _.groupBy(tmp3[v3], "PRECEDING_SYSTEM");
-                        ret.PRECEDING_SYSTEMs = _.map(Object.keys(tmp4), function(v4, i4){
+                        var tmp4 = _.groupBy(tmp3[v3], "IMM_PREC_SYSTEM");
+                        ret.IMM_PREC_SYSTEMs = _.map(Object.keys(tmp4), function(v4, i4){
                             var tmpTmp4 = _.cloneDeep(tmp4[v4]);
 
                             var ret             = tmpTmp4[0];
-                            ret.PRECEDING_SYSTEMID    = i4;
-                            ret.PRECEDING_SYSTEMsVal  = tmpTmp4;
-                            ret.PRECEDING_SYSTEM      = v4;
+                            ret.IMM_PREC_SYSTEMID    = i4;
+                            ret.IMM_PREC_SYSTEMsVal  = tmpTmp4;
+                            ret.IMM_PREC_SYSTEM      = v4;
 
-                            var tmp5 = _.groupBy(tmp4[v4], "SUCCEDING_SYSTEM");
-                            ret.SUCCEDING_SYSTEMs = _.map(Object.keys(tmp5), function(v5, i5){
+                            var tmp5 = _.groupBy(tmp4[v4], "IMM_SUCC_SYSTEM");
+                            ret.IMM_SUCC_SYSTEMs = _.map(Object.keys(tmp5), function(v5, i5){
                                 var tmpTmp5 = _.cloneDeep(tmp5[v5]);
     
                                 var ret                 = tmpTmp5[0];
-                                ret.SUCCEDING_SYSTEMID       = i5;
-                                ret.SUCCEDING_SYSTEMsVal     = tmpTmp5;
-                                ret.SUCCEDING_SYSTEM         = v5;
+                                ret.IMM_SUCC_SYSTEMID       = i5;
+                                ret.IMM_SUCC_SYSTEMsVal     = tmpTmp5;
+                                ret.IMM_SUCC_SYSTEM         = v5;
     
                                 return ret;
                             });
@@ -311,16 +309,16 @@ function getInterfacesCdeTable(param) {
             res.Data.forEach(v => {
                 v.TABLE_NAMEs.forEach(w => {
                     w.COLUMN_NAMEs.forEach(x => {
-                        x.PRECEDING_SYSTEMs.forEach(y => {
-                            y.SUCCEDING_SYSTEMs.shift();
+                        x.IMM_PREC_SYSTEMs.forEach(y => {
+                            y.IMM_SUCC_SYSTEMs.shift();
                         });
     
-                        if(x.PRECEDING_SYSTEMs[0].SUCCEDING_SYSTEMs.length == 0){
-                            x.PRECEDING_SYSTEMs.shift();
+                        if(x.IMM_PREC_SYSTEMs[0].IMM_SUCC_SYSTEMs.length == 0){
+                            x.IMM_PREC_SYSTEMs.shift();
                         }
                     });
 
-                    if(w.COLUMN_NAMEs[0].PRECEDING_SYSTEMs.length == 0){
+                    if(w.COLUMN_NAMEs[0].IMM_PREC_SYSTEMs.length == 0){
                         w.COLUMN_NAMEs.shift();
                     }
                 });

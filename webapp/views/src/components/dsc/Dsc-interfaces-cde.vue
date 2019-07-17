@@ -104,12 +104,12 @@
                         <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
                       </td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['PRECEDING_SYSTEM'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PRECEDING_SYSTEM"></tablecell>
+                      <td v-bind:style="{ width: store.left.colWidth['IMM_PREC_SYSTEM'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.IMM_PREC_SYSTEM"></tablecell>
                       </td>
 
-                      <td v-bind:style="{ width: store.left.colWidth['SUCCEDING_SYSTEM'] + 'px' }" class="text-uppercase">
-                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.SUCCEDING_SYSTEM"></tablecell>
+                      <td v-bind:style="{ width: store.left.colWidth['IMM_SUCC_SYSTEM'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.IMM_SUCC_SYSTEM"></tablecell>
                       </td>
                     </tr>
                   </template>
@@ -143,12 +143,12 @@
                           <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
                         </td>
 
-                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['PRECEDING_SYSTEM'] + 'px' }">
-                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.PRECEDING_SYSTEM"></tablecell>
+                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['IMM_PREC_SYSTEM'] + 'px' }">
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.IMM_PREC_SYSTEM"></tablecell>
                         </td>
 
-                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['SUCCEDING_SYSTEM'] + 'px' }">
-                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.SUCCEDING_SYSTEM"></tablecell>
+                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['IMM_SUCC_SYSTEM'] + 'px' }">
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.IMM_SUCC_SYSTEM"></tablecell>
                         </td>
                       </template>
 
@@ -171,19 +171,19 @@
                             <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
 
                             <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                              <b-link @click="props.expanded = !props.expanded" v-if="props.item.PRECEDING_SYSTEMs.length >= 1">
+                              <b-link @click="props.expanded = !props.expanded" v-if="props.item.IMM_PREC_SYSTEMs.length >= 1">
                                 <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover"></tablecell>
                               </b-link>
 
-                              <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover" v-if="props.item.PRECEDING_SYSTEMs.length < 1"></tablecell>
+                              <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover" v-if="props.item.IMM_PREC_SYSTEMs.length < 1"></tablecell>
                             </td>
 
-                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['PRECEDING_SYSTEM'] + 'px' }">
-                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props)" :fulltext="props.item.PRECEDING_SYSTEM"></tablecell>
+                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['IMM_PREC_SYSTEM'] + 'px' }">
+                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props)" :fulltext="props.item.IMM_PREC_SYSTEM"></tablecell>
                             </td>
 
-                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['SUCCEDING_SYSTEM'] + 'px' }">
-                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props)" :fulltext="props.item.SUCCEDING_SYSTEM"></tablecell>
+                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['IMM_SUCC_SYSTEM'] + 'px' }">
+                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props)" :fulltext="props.item.IMM_SUCC_SYSTEM"></tablecell>
                             </td>
                           </template>
 
@@ -191,10 +191,10 @@
                             <!-- <table-rows-sub :storeName="storeName" :props="props" /> -->
                             <v-data-table
                               :headers="store.leftHeaders.filter(v => v.display == true)"
-                              :items="props.item.PRECEDING_SYSTEMs"
+                              :items="props.item.IMM_PREC_SYSTEMs"
                               :expand="false"
                               class=""
-                              item-key="PRECEDING_SYSTEMID"
+                              item-key="IMM_PREC_SYSTEMID"
                               hide-actions
                               hide-headers
                               @update:pagination="setExpandedTableColumnsWidth"
@@ -206,24 +206,24 @@
                                 <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
                                 <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">&nbsp;</td>
 
-                                <td v-bind:style="{ width: store.left.colWidth['PRECEDING_SYSTEM'] + 'px' }">
-                                  <b-link @click="props.expanded = !props.expanded" v-if="props.item.SUCCEDING_SYSTEMs.length >= 1">
-                                    <tablecell :fulltext="props.item.PRECEDING_SYSTEM" showOn="hover"></tablecell>
+                                <td v-bind:style="{ width: store.left.colWidth['IMM_PREC_SYSTEM'] + 'px' }">
+                                  <b-link @click="props.expanded = !props.expanded" v-if="props.item.IMM_SUCC_SYSTEMs.length >= 1">
+                                    <tablecell :fulltext="props.item.IMM_PREC_SYSTEM" showOn="hover"></tablecell>
                                   </b-link>
 
-                                  <tablecell :fulltext="props.item.PRECEDING_SYSTEM" showOn="hover" v-if="props.item.SUCCEDING_SYSTEMs.length < 1"></tablecell>
+                                  <tablecell :fulltext="props.item.IMM_PREC_SYSTEM" showOn="hover" v-if="props.item.IMM_SUCC_SYSTEMs.length < 1"></tablecell>
                                 </td>
 
-                                <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['SUCCEDING_SYSTEM'] + 'px' }">
-                                  <tablecell showOn="hover" v-if="isFourthLevelCellShowing(props)" :fulltext="props.item.SUCCEDING_SYSTEM"></tablecell>
+                                <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['IMM_SUCC_SYSTEM'] + 'px' }">
+                                  <tablecell showOn="hover" v-if="isFourthLevelCellShowing(props)" :fulltext="props.item.IMM_SUCC_SYSTEM"></tablecell>
                                 </td>
                               </template>
 
                               <template slot="expand" slot-scope="props">
                                 <v-data-table
                                   :headers="store.leftHeaders.filter(v => v.display == true)"
-                                  :items="props.item.SUCCEDING_SYSTEMs"
-                                  item-key="SUCCEDING_SYSTEMID"
+                                  :items="props.item.IMM_SUCC_SYSTEMs"
+                                  item-key="IMM_SUCC_SYSTEMID"
                                   class=""
                                   hide-actions
                                   hide-headers
@@ -235,10 +235,10 @@
                                     <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
                                     <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
                                     <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">&nbsp;</td>
-                                    <td v-bind:style="{ width: store.left.colWidth['PRECEDING_SYSTEM'] + 'px' }">&nbsp;</td>
+                                    <td v-bind:style="{ width: store.left.colWidth['IMM_PREC_SYSTEM'] + 'px' }">&nbsp;</td>
 
-                                    <td v-bind:style="{ width: store.left.colWidth['SUCCEDING_SYSTEM'] + 'px' }">
-                                      <tablecell :fulltext="props.item.SUCCEDING_SYSTEM" showOn="hover"></tablecell>
+                                    <td v-bind:style="{ width: store.left.colWidth['IMM_SUCC_SYSTEM'] + 'px' }">
+                                      <tablecell :fulltext="props.item.IMM_SUCC_SYSTEM" showOn="hover"></tablecell>
                                     </td>
                                   </template>
                                 </v-data-table>
@@ -337,7 +337,7 @@ export default {
       if( ! props.expanded) return true;
       else {
         if(props.item.COLUMN_NAMEs.length > 0) {
-          if(props.item.COLUMN_NAMEs[0].PRECEDING_SYSTEMs.length == 0) return true;
+          if(props.item.COLUMN_NAMEs[0].IMM_PREC_SYSTEMs.length == 0) return true;
         }
         
         return false;
@@ -346,8 +346,8 @@ export default {
     isThirdLevelCellShowing (props){
       if( ! props.expanded) return true;
       else {
-        if(props.item.PRECEDING_SYSTEMs.length > 0) {
-          if(props.item.PRECEDING_SYSTEMs[0].SUCCEDING_SYSTEMs.length == 0) return true;
+        if(props.item.IMM_PREC_SYSTEMs.length > 0) {
+          if(props.item.IMM_PREC_SYSTEMs[0].IMM_SUCC_SYSTEMs.length == 0) return true;
         }
         
         return false;
@@ -356,7 +356,7 @@ export default {
     isFourthLevelCellShowing (props){
       if( ! props.expanded) return true;
       else {
-        if(props.item.SUCCEDING_SYSTEMs.length > 0) {
+        if(props.item.IMM_SUCC_SYSTEMs.length > 0) {
           return true;
         }
         
