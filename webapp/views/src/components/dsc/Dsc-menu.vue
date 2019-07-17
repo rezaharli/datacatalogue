@@ -82,7 +82,7 @@
                                 </b-col>
                             </b-row>
 
-                            <!-- <h4 class="title-2">{{ store.counts ? store.counts.DSP_COUNT : 0 }}</h4> -->
+                            <h4 class="title-2">{{ store.counts ? store.counts.POLICY_COUNT : 0 }}</h4>
                             <div class="card-circle-left transition"></div>
                         </div>
                     </b-col>
