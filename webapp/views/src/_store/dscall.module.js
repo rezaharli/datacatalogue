@@ -20,7 +20,7 @@ const state = {
         exportDatas: [],
         leftHeaders: [
             { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'System Name', value: 'SYSTEM_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'ITAM ID', value: 'Custodians.ITAM_ID' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'ITAM ID', value: 'ITAM_ID' },
             { align: 'left', display: false, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Dataset Custodian', value: 'Custodians.DATASET_CUSTODIAN' },
             { align: 'left', display: false, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Bank ID', value: 'Custodians.BANK_ID' }
         ],
@@ -58,7 +58,7 @@ const actions = {
 
         return dscMyService.getLeftTable(param)
             .then(
-                res => commit('getExportDataSuccess', res.Data),
+                res => commit('getExportDataSuccess', res),
                 error => commit('getExportDataFailure', error)
             );
     },
@@ -79,7 +79,7 @@ const actions = {
 
         return dscMyService.getLeftTable(param)
             .then(
-                res => commit('getLeftTableSuccess', res.Data),
+                res => commit('getLeftTableSuccess', res),
                 error => commit('getLeftTableFailure', error)
             );
     },
@@ -122,8 +122,8 @@ const mutations = {
     getExportDataRequest(state) {
         state.all.left.isLoading = true;
     },
-    getExportDataSuccess(state, data) {
-        state.all.exportDatas = data;
+    getExportDataSuccess(state, res) {
+        state.all.exportDatas = res.DataFlat;
 
         state.all.left.isLoading = false;
     },
@@ -134,10 +134,10 @@ const mutations = {
     getLeftTableRequest(state) {
         state.all.left.isLoading = true;
     },
-    getLeftTableSuccess(state, data) {
-        state.all.left.source = data;
-        state.all.left.display = data;
-        state.all.left.totalItems = data[0] ? data[0].RESULT_COUNT : 0;
+    getLeftTableSuccess(state, res) {
+        state.all.left.source = res.DataFlat;
+        state.all.left.display = res.Data;
+        state.all.left.totalItems = res.Data[0] ? res.Data[0].RESULT_COUNT : 0;
 
         state.all.left.isLoading = false;
     },
