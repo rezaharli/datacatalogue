@@ -5,6 +5,7 @@ export const rfoMyService = {
     getRightTable,
     getAllRisk,
     getHomepageCounts,
+    getSummaryTable,
     getPriorityTable,
 };
 
@@ -128,6 +129,15 @@ function getHomepageCounts(param) {
     });
 }
 
+function getSummaryTable(param) {
+    return fetchWHeader(`/rfo/getsummarytable`, param).then(
+        res => {
+            res.DataFlat = _.cloneDeep(res.Data);
+            return res;
+        },
+    );
+}
+
 function getPriorityTable(param) {
     return fetchWHeader(`/rfo/getprioritytable`, param).then(
         res => {
@@ -155,7 +165,7 @@ function getPriorityTable(param) {
                 });
 
                 var tmp3 = _.groupBy(tmp[v], "CRM_NAME");  
-                console.log(tmp3);
+                // console.log(tmp3);
                 
                 ret.CRM_NAMEs = _.map(Object.keys(tmp3), function(w, j){
                     var tmpTmp3 = (tmp3[w]);
@@ -224,7 +234,7 @@ function getPriorityTable(param) {
                 v.expanded = false;
             });
             
-            console.log(res.Data);
+            // console.log(res.Data);
             
             return res;
         },
