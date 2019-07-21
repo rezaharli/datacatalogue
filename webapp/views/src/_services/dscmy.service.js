@@ -6,6 +6,7 @@ export const dscMyService = {
     getCdeTable,
     getCdpTable,
     getCdpCdeTable,
+    getIarcTable,
     getInterfacesTable,
     getInterfacesCdeTable,
     getRightTable,
@@ -201,6 +202,10 @@ function getCdpCdeTable(param) {
             return res;
         }
     );
+}
+
+function getIarcTable(param) {
+    return fetchWHeader(`/dsc/getiarctable`, param);
 }
 
 function getInterfacesTable(param) {

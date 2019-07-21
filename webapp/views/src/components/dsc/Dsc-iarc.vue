@@ -107,7 +107,7 @@
                 <td v-bind:style="{ width: store.left.colWidth['ITAM_ID'] + 'px' }">
                   <tablecell :fulltext="props.item.ITAM_ID" showOn="click"></tablecell></td> -->
 
-                <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
+                <!-- <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
                   <tablecell :fulltext="props.item.TABLE_NAME" showOn="click"></tablecell></td>
                 
                 <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
@@ -120,7 +120,7 @@
                   <tablecell :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION" showOn="click"></tablecell></td>
                 
                 <td v-bind:style="{ width: store.left.colWidth['CDE_YES_NO'] + 'px' }">
-                  <tablecell :fulltext="props.item.CDE_YES_NO" showOn="click"></tablecell></td>
+                  <tablecell :fulltext="props.item.CDE_YES_NO" showOn="click"></tablecell></td> -->
                   
                 <td v-bind:style="{ width: store.left.colWidth['INFORMATION_ASSET_NAMES'] + 'px' }">
                   <tablecell :fulltext="props.item.INFORMATION_ASSET_NAMES" showOn="click"></tablecell></td>
@@ -140,11 +140,11 @@
                 <td v-bind:style="{ width: store.left.colWidth['OVERALL_CIA_RATING'] + 'px' }">
                   <tablecell :fulltext="props.item.OVERALL_CIA_RATING" showOn="click"></tablecell></td>
                 
-                <td v-bind:style="{ width: store.left.colWidth['RECORD_CATEGORIES'] + 'px' }">
+                <!-- <td v-bind:style="{ width: store.left.colWidth['RECORD_CATEGORIES'] + 'px' }">
                   <tablecell :fulltext="props.item.RECORD_CATEGORIES" showOn="click"></tablecell></td>
                 
                 <td v-bind:style="{ width: store.left.colWidth['PII_FLAG'] + 'px' }">
-                  <tablecell :fulltext="props.item.PII_FLAG" showOn="click"></tablecell></td>
+                  <tablecell :fulltext="props.item.PII_FLAG" showOn="click"></tablecell></td> -->
               </tr>
             </template>
           </v-data-table>

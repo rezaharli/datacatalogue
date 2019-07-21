@@ -14,11 +14,11 @@ const state = {
         leftHeaders: [
             // { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Sytem Name', value: 'SYSTEM_NAME' },
             // { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'ITAM ID', value: 'ITAM_ID' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Table Name', value: 'TABLE_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Name', value: 'COLUMN_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Alias Name', value: 'BUSINESS_ALIAS_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Alias Description', value: 'BUSINESS_ALIAS_DESCRIPTION' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'CDE (Yes/No)', value: 'CDE_YES_NO' },
+            // { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Table Name', value: 'TABLE_NAME' },
+            // { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Name', value: 'COLUMN_NAME' },
+            // { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Alias Name', value: 'BUSINESS_ALIAS_NAME' },
+            // { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Alias Description', value: 'BUSINESS_ALIAS_DESCRIPTION' },
+            // { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'CDE (Yes/No)', value: 'CDE_YES_NO' },
             
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Information Asset Names', value: 'INFORMATION_ASSET_NAMES' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Information Asset Description', value: 'INFORMATION_ASSET_DESCRIPTION' },
@@ -26,8 +26,8 @@ const state = {
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'I - Integrity', value: 'INTEGRITY' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'A - Availability', value: 'AVAILABILITY' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Overall CIA Rating', value: 'OVERALL_CIA_RATING' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Record Categories', value: 'RECORD_CATEGORIES' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'PII Flag', value: 'PII_FLAG' },
+            // { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Record Categories', value: 'RECORD_CATEGORIES' },
+            // { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'PII Flag', value: 'PII_FLAG' },
         ],
         isRightTable: false,
         DDSource: [],
@@ -53,7 +53,7 @@ const actions = {
 
         param.Pagination.rowsPerPage = -1;
 
-        return dscMyService.getDdTable(param)
+        return dscMyService.getIarcTable(param)
             .then(
                 res => commit('getExportDataSuccess', res),
                 error => commit('getExportDataFailure', error)
@@ -72,7 +72,7 @@ const actions = {
             Pagination: state.all.left.pagination
         }
 
-        return dscMyService.getDdTable(param)
+        return dscMyService.getIarcTable(param)
             .then(
                 res => commit('getLeftTableSuccess', res),
                 error => commit('getLeftTableFailure', error)
