@@ -28,8 +28,11 @@
                     $route.name == 'dsc.cdp' || 
                     $route.name == 'dsc.interfaces' || 
                     $route.name == 'dsc.cdp.cde' || 
+                    $route.name == 'dsc.iarc' ||
                     $route.name == 'dsc.interfaces.cde' ||
-                    $route.name == 'dsc.dd'
+                    $route.name == 'dsc.dd.technical' ||
+                    $route.name == 'dsc.dd.business' ||
+                    $route.name == 'dsc.dd.policy'
                     ">
                     <router-link :to="goToDscMenu" class="standard-a">DSC Landing Page</router-link>
                 </b-dropdown-item>
@@ -42,8 +45,12 @@
                     <router-link :to="goToLevel3" class="standard-a">Immediate Interface View</router-link>
                 </b-dropdown-item>
 
-                <b-dropdown-item v-if="$route.name == 'rfo.priority' || $route.name.indexOf('rfo.') != -1">
+                <b-dropdown-item v-if="$route.name.indexOf('rfo.') != -1">
                     <router-link to="/rfo" class="standard-a">RFO View</router-link>
+                </b-dropdown-item>
+
+                <b-dropdown-item v-if="$route.name == 'rfo.summary' || $route.name == 'rfo.priority'">
+                    <router-link :to="goToRfoMenu" class="standard-a">RFO Landing Page</router-link>
                 </b-dropdown-item>
 
                 <b-dropdown-item v-if="$route.name == 'ddo.menu' || $route.name.indexOf('ddo.') != -1">
@@ -171,6 +178,12 @@ export default {
             var tmp = this.$route.path.split("/");
             var tmp2 = tmp.slice(0, 3).join("/");
             var tmp3 = tmp2 + '/' + encodeURIComponent(this.$route.params.subdomain);
+            return tmp3;
+        },
+        goToRfoMenu(){
+            var tmp = this.$route.path.split("/");
+            var tmp2 = tmp.slice(0, 2).join("/");
+            var tmp3 = tmp2 + '/' + encodeURIComponent(this.$route.params.type);
             return tmp3;
         },
     },

@@ -86,11 +86,11 @@
                           <i class="fa fa-fw fa-external-link-alt"></i></b-button></td>
 
                       <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-capitalize text-title">
-                        <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length > 0">
+                        <b-link @click="props.expanded = !props.expanded" v-if="props.item.TABLE_NAMEs.length > 0">
                           {{ props.item.CDE }}
                         </b-link>
 
-                        <span v-if="props.item.Tables.length < 1">{{ props.item.CDE }}</span>
+                        <span v-if="props.item.TABLE_NAMEs.length < 1">{{ props.item.CDE }}</span>
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }" class="text-description">
@@ -103,6 +103,14 @@
                       <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-uppercase">
                         <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
                       </td>
+
+                      <td v-bind:style="{ width: store.left.colWidth['IMM_PREC_SYSTEM'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.IMM_PREC_SYSTEM"></tablecell>
+                      </td>
+
+                      <td v-bind:style="{ width: store.left.colWidth['IMM_SUCC_SYSTEM'] + 'px' }" class="text-uppercase">
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.IMM_SUCC_SYSTEM"></tablecell>
+                      </td>
                     </tr>
                   </template>
 
@@ -110,10 +118,10 @@
                     <!-- <table-rows-sub :storeName="storeName" :props="props" /> -->
                     <v-data-table
                       :headers="store.leftHeaders.filter(v => v.display == true)"
-                      :items="props.item.Tables"
+                      :items="props.item.TABLE_NAMEs"
                       :expand="false"
                       class=""
-                      item-key="TMTID"
+                      item-key="TABLE_NAMEID"
                       hide-actions
                       hide-headers
                       @update:pagination="setExpandedTableColumnsWidth"
@@ -124,24 +132,34 @@
                         <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
 
                         <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
-                          <b-link @click="props.expanded = !props.expanded" v-if="props.item.Columns.length >= 1">
+                          <b-link @click="props.expanded = !props.expanded" v-if="props.item.COLUMN_NAMEs.length >= 1">
                             <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover"></tablecell>
                           </b-link>
 
-                          <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover" v-if="props.item.Columns.length < 1"></tablecell>
+                          <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover" v-if="props.item.COLUMN_NAMEs.length < 1"></tablecell>
                         </td>
 
                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                          <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
+                        </td>
+
+                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['IMM_PREC_SYSTEM'] + 'px' }">
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.IMM_PREC_SYSTEM"></tablecell>
+                        </td>
+
+                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['IMM_SUCC_SYSTEM'] + 'px' }">
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.IMM_SUCC_SYSTEM"></tablecell>
                         </td>
                       </template>
 
                       <template slot="expand" slot-scope="props">
+                        <!-- <table-rows-sub :storeName="storeName" :props="props" /> -->
                         <v-data-table
                           :headers="store.leftHeaders.filter(v => v.display == true)"
-                          :items="props.item.Columns"
-                          item-key="COLID"
+                          :items="props.item.COLUMN_NAMEs"
+                          :expand="false"
                           class=""
+                          item-key="COLUMN_NAMEID"
                           hide-actions
                           hide-headers
                           @update:pagination="setExpandedTableColumnsWidth"
@@ -151,9 +169,81 @@
                             <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
                             <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
                             <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
+
                             <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                              <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover"></tablecell>
+                              <b-link @click="props.expanded = !props.expanded" v-if="props.item.IMM_PREC_SYSTEMs.length >= 1">
+                                <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover"></tablecell>
+                              </b-link>
+
+                              <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover" v-if="props.item.IMM_PREC_SYSTEMs.length < 1"></tablecell>
                             </td>
+
+                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['IMM_PREC_SYSTEM'] + 'px' }">
+                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props)" :fulltext="props.item.IMM_PREC_SYSTEM"></tablecell>
+                            </td>
+
+                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['IMM_SUCC_SYSTEM'] + 'px' }">
+                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props)" :fulltext="props.item.IMM_SUCC_SYSTEM"></tablecell>
+                            </td>
+                          </template>
+
+                          <template slot="expand" slot-scope="props">
+                            <!-- <table-rows-sub :storeName="storeName" :props="props" /> -->
+                            <v-data-table
+                              :headers="store.leftHeaders.filter(v => v.display == true)"
+                              :items="props.item.IMM_PREC_SYSTEMs"
+                              :expand="false"
+                              class=""
+                              item-key="IMM_PREC_SYSTEMID"
+                              hide-actions
+                              hide-headers
+                              @update:pagination="setExpandedTableColumnsWidth"
+                            >
+                              <template slot="items" slot-scope="props">
+                                <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
+                                <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
+                                <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
+                                <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
+                                <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">&nbsp;</td>
+
+                                <td v-bind:style="{ width: store.left.colWidth['IMM_PREC_SYSTEM'] + 'px' }">
+                                  <b-link @click="props.expanded = !props.expanded" v-if="props.item.IMM_SUCC_SYSTEMs.length >= 1">
+                                    <tablecell :fulltext="props.item.IMM_PREC_SYSTEM" showOn="hover"></tablecell>
+                                  </b-link>
+
+                                  <tablecell :fulltext="props.item.IMM_PREC_SYSTEM" showOn="hover" v-if="props.item.IMM_SUCC_SYSTEMs.length < 1"></tablecell>
+                                </td>
+
+                                <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['IMM_SUCC_SYSTEM'] + 'px' }">
+                                  <tablecell showOn="hover" v-if="isFourthLevelCellShowing(props)" :fulltext="props.item.IMM_SUCC_SYSTEM"></tablecell>
+                                </td>
+                              </template>
+
+                              <template slot="expand" slot-scope="props">
+                                <v-data-table
+                                  :headers="store.leftHeaders.filter(v => v.display == true)"
+                                  :items="props.item.IMM_SUCC_SYSTEMs"
+                                  item-key="IMM_SUCC_SYSTEMID"
+                                  class=""
+                                  hide-actions
+                                  hide-headers
+                                  @update:pagination="setExpandedTableColumnsWidth"
+                                >
+                                  <template slot="items" slot-scope="props">
+                                    <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
+                                    <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
+                                    <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
+                                    <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
+                                    <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">&nbsp;</td>
+                                    <td v-bind:style="{ width: store.left.colWidth['IMM_PREC_SYSTEM'] + 'px' }">&nbsp;</td>
+
+                                    <td v-bind:style="{ width: store.left.colWidth['IMM_SUCC_SYSTEM'] + 'px' }">
+                                      <tablecell :fulltext="props.item.IMM_SUCC_SYSTEM" showOn="hover"></tablecell>
+                                    </td>
+                                  </template>
+                                </v-data-table>
+                              </template>
+                            </v-data-table>
                           </template>
                         </v-data-table>
                       </template>
@@ -236,17 +326,37 @@ export default {
     isMainLevelCellShowing (props){
       if( ! props.expanded) return true;
       else {
-        if(props.item.Tables.length > 0) {
-          if(props.item.Tables[0].Columns.length == 0) return true;
+        if(props.item.TABLE_NAMEs.length > 0) {
+          if(props.item.TABLE_NAMEs[0].COLUMN_NAMEs.length == 0) return true;
         }
         
         return false;
       }
     },
-    isTableLevelCellShowing (props){
+    isSecondLevelCellShowing (props){
       if( ! props.expanded) return true;
       else {
-        if(props.item.Columns.length > 0) {
+        if(props.item.COLUMN_NAMEs.length > 0) {
+          if(props.item.COLUMN_NAMEs[0].IMM_PREC_SYSTEMs.length == 0) return true;
+        }
+        
+        return false;
+      }
+    },
+    isThirdLevelCellShowing (props){
+      if( ! props.expanded) return true;
+      else {
+        if(props.item.IMM_PREC_SYSTEMs.length > 0) {
+          if(props.item.IMM_PREC_SYSTEMs[0].IMM_SUCC_SYSTEMs.length == 0) return true;
+        }
+        
+        return false;
+      }
+    },
+    isFourthLevelCellShowing (props){
+      if( ! props.expanded) return true;
+      else {
+        if(props.item.IMM_SUCC_SYSTEMs.length > 0) {
           return true;
         }
         

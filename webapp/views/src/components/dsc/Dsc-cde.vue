@@ -98,15 +98,19 @@
                           <i class="fa fa-fw fa-external-link-alt"></i></b-button></td>
 
                       <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-capitalize text-title">
-                        <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length > 0">
+                        <b-link @click="props.expanded = !props.expanded" v-if="props.item.UPSTREAM_SYSTEMs.length > 0">
                           {{props.item.CDE}}
                         </b-link>
 
-                        <span v-if="props.item.Tables.length < 1">{{props.item.CDE}}</span>
+                        <span v-if="props.item.UPSTREAM_SYSTEMs.length < 1">{{props.item.CDE}}</span>
                       </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }" class="text-description">
                         <tablecell :fulltext="props.item.DESCRIPTION" showOn="hover"></tablecell></td>
+
+                      <td v-bind:style="{ width: store.left.colWidth['UPSTREAM_SYSTEM'] + 'px' }" class="text-description">
+                        <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.UPSTREAM_SYSTEM"></tablecell>
+                      </td>
 
                       <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-uppercase">
                         <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.TABLE_NAME"></tablecell>
@@ -130,7 +134,7 @@
                     <!-- <table-rows-sub :storeName="storeName" :props="props" /> -->
                     <v-data-table
                       :headers="store.leftHeaders.filter(v => v.display == true)"
-                      :items="props.item.Tables"
+                      :items="props.item.UPSTREAM_SYSTEMs"
                       :expand="false"
                       class=""
                       item-key="TMTID"
@@ -143,31 +147,35 @@
                         <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
                         <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
 
-                        <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
-                          <b-link @click="props.expanded = !props.expanded" v-if="props.item.Columns.length >= 1">
-                            <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover"></tablecell>
+                        <td v-bind:style="{ width: store.left.colWidth['UPSTREAM_SYSTEM'] + 'px' }">
+                          <b-link @click="props.expanded = !props.expanded" v-if="props.item.TABLE_NAMEs.length >= 1">
+                            <tablecell :fulltext="props.item.UPSTREAM_SYSTEM" showOn="hover"></tablecell>
                           </b-link>
 
-                          <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover" v-if="props.item.Columns.length < 1"></tablecell>
+                          <tablecell :fulltext="props.item.UPSTREAM_SYSTEM" showOn="hover" v-if="props.item.TABLE_NAMEs.length < 1"></tablecell>
+                        </td>
+
+                        <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.TABLE_NAME"></tablecell>
                         </td>
 
                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                          <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>
                         </td>
 
                         <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }">
-                          <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.DSP_NAME"></tablecell>  
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.DSP_NAME"></tablecell>  
                         </td>
 
                         <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }">
-                          <tablecell showOn="hover" v-if="isTableLevelCellShowing(props)" :fulltext="props.item.PROCESS_OWNER"></tablecell></td>
+                          <tablecell showOn="hover" v-if="isSecondLevelCellShowing(props)" :fulltext="props.item.PROCESS_OWNER"></tablecell></td>
                           <!-- <tablecell v-if="!props.expanded" showOn="hover" :fulltext="props.item.Columns[0] ? (props.item.Columns[0].Dsps[0] ? _.uniq(_.map(props.item.Columns[0].Dsps[0].DspsVal, 'PROCESS_OWNER')).filter(Boolean).join(', ') : props.item.PROCESS_OWNER) : props.item.PROCESS_OWNER"></tablecell></td> -->
                       </template>
 
                       <template slot="expand" slot-scope="props">
                         <v-data-table
                           :headers="store.leftHeaders.filter(v => v.display == true)"
-                          :items="props.item.Columns"
+                          :items="props.item.TABLE_NAMEs"
                           item-key="COLID"
                           class=""
                           hide-actions
@@ -178,27 +186,34 @@
                             <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
                             <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
                             <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
-                            <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
-                            <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                              <b-link @click="props.expanded = !props.expanded" v-if="props.item.Dsps.length >= 1">
-                                <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover"></tablecell>
+                            <td v-bind:style="{ width: store.left.colWidth['UPSTREAM_SYSTEM'] + 'px' }">&nbsp;</td>
+                            
+                            <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
+                              <b-link @click="props.expanded = !props.expanded" v-if="props.item.COLUMN_NAMEs.length >= 1">
+                                <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover"></tablecell>
                               </b-link>
 
-                              <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover" v-if="props.item.Dsps.length < 1"></tablecell>
+                              <tablecell :fulltext="props.item.TABLE_NAME" showOn="hover" v-if="props.item.COLUMN_NAMEs.length < 1"></tablecell>
+                            </td>
+
+                            <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
+                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME"></tablecell>  
                             </td>
 
                             <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }">
-                              <tablecell :fulltext="props.item.DSP_NAME" showOn="hover"></tablecell></td>
+                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props)" :fulltext="props.item.DSP_NAME"></tablecell>  
+                            </td>
 
                             <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }">
-                              <tablecell showOn="hover" :fulltext="props.item.PROCESS_OWNER"></tablecell></td>
+                              <tablecell showOn="hover" v-if="isThirdLevelCellShowing(props)" :fulltext="props.item.PROCESS_OWNER"></tablecell></td>
                               <!-- <tablecell showOn="hover" :fulltext="props.item.Dsps[0] ? _.uniq(_.map(props.item.Dsps[0].DspsVal, 'PROCESS_OWNER')).filter(Boolean).join(', ') : props.item.PROCESS_OWNER"></tablecell></td> -->
                           </template>
 
                           <template slot="expand" slot-scope="props">
                             <v-data-table
                               :headers="store.leftHeaders.filter(v => v.display == true)"
-                              :items="props.item.Dsps"
+                              :items="props.item.COLUMN_NAMEs"
+                              item-key="COLID"
                               class=""
                               hide-actions
                               hide-headers
@@ -208,14 +223,49 @@
                                 <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
                                 <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
                                 <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
+                                <td v-bind:style="{ width: store.left.colWidth['UPSTREAM_SYSTEM'] + 'px' }">&nbsp;</td>
                                 <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
-                                <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">&nbsp;</td>
+
+                                <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
+                                  <b-link @click="props.expanded = !props.expanded" v-if="props.item.DSP_NAMEs.length >= 1">
+                                    <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover"></tablecell>
+                                  </b-link>
+
+                                  <tablecell :fulltext="props.item.COLUMN_NAME" showOn="hover" v-if="props.item.DSP_NAMEs.length < 1"></tablecell>
+                                </td>
 
                                 <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }">
                                   <tablecell :fulltext="props.item.DSP_NAME" showOn="hover"></tablecell></td>
-                                
+
                                 <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }">
-                                  <tablecell :fulltext="(_.uniq(_.map(props.item.DspsVal, 'PROCESS_OWNER')).filter(Boolean).join(', '))" showOn="hover"></tablecell></td>
+                                  <tablecell showOn="hover" :fulltext="props.item.PROCESS_OWNER"></tablecell></td>
+                                  <!-- <tablecell showOn="hover" :fulltext="props.item.Dsps[0] ? _.uniq(_.map(props.item.Dsps[0].DspsVal, 'PROCESS_OWNER')).filter(Boolean).join(', ') : props.item.PROCESS_OWNER"></tablecell></td> -->
+                              </template>
+
+                              <template slot="expand" slot-scope="props">
+                                <v-data-table
+                                  :headers="store.leftHeaders.filter(v => v.display == true)"
+                                  :items="props.item.DSP_NAMEs"
+                                  class=""
+                                  hide-actions
+                                  hide-headers
+                                  @update:pagination="setExpandedTableColumnsWidth"
+                                >
+                                  <template slot="items" slot-scope="props">
+                                    <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
+                                    <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">&nbsp;</td>
+                                    <td v-bind:style="{ width: store.left.colWidth['DESCRIPTION'] + 'px' }">&nbsp;</td>
+                                    <td v-bind:style="{ width: store.left.colWidth['UPSTREAM_SYSTEM'] + 'px' }">&nbsp;</td>
+                                    <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
+                                    <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">&nbsp;</td>
+
+                                    <td class="text-uppercase" v-bind:style="{ width: store.left.colWidth['DSP_NAME'] + 'px' }">
+                                      <tablecell :fulltext="props.item.DSP_NAME" showOn="hover"></tablecell></td>
+                                    
+                                    <td v-bind:style="{ width: store.left.colWidth['PROCESS_OWNER'] + 'px' }">
+                                      <tablecell :fulltext="(_.uniq(_.map(props.item.DSP_NAMEsVal, 'PROCESS_OWNER')).filter(Boolean).join(', '))" showOn="hover"></tablecell></td>
+                                  </template>
+                                </v-data-table>
                               </template>
                             </v-data-table>
                           </template>
@@ -299,18 +349,38 @@ export default {
     isMainLevelCellShowing (props){
       if( ! props.expanded) return true;
       else {
-        if(props.item.Tables.length > 0) {
-          if(props.item.Tables[0].Columns.length == 0) return true;
+        if(props.item.UPSTREAM_SYSTEMs.length > 0) {
+          if(props.item.UPSTREAM_SYSTEMs[0].TABLE_NAMEs.length == 0) return true;
         }
         
         return false;
       }
     },
-    isTableLevelCellShowing (props){
+    isSecondLevelCellShowing (props){
       if( ! props.expanded) return true;
       else {
-        if(props.item.Columns.length > 0) {
-          if(props.item.Columns[0].Dsps.length == 0) return true;
+        if(props.item.TABLE_NAMEs.length > 0) {
+          if(props.item.TABLE_NAMEs[0].COLUMN_NAMEs.length == 0) return true;
+        }
+        
+        return false;
+      }
+    },
+    isThirdLevelCellShowing (props){
+      if( ! props.expanded) return true;
+      else {
+        if(props.item.COLUMN_NAMEs.length > 0) {
+          if(props.item.COLUMN_NAMEs[0].DSP_NAMEs.length == 0) return true;
+        }
+        
+        return false;
+      }
+    },
+    isFourthLevelCellShowing (props){
+      if( ! props.expanded) return true;
+      else {
+        if(props.item.DSP_NAMEs.length > 0) {
+          return true;
         }
         
         return false;

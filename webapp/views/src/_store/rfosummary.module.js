@@ -1,4 +1,4 @@
-import { dscMyService } from '../_services/dscmy.service';
+import { rfoMyService } from '../_services/rfomy.service';
 import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
@@ -9,17 +9,15 @@ const state = {
             right: {}
         },
         system: '',
-        dspName: '',
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
-            { align: 'left', display: true, filterable: false, exportable: false, displayCount: false, sortable: false, text: 'Details', value: 'Details' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'CDE Name', value: 'CDE' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Description', value: 'DESCRIPTION' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Table Name', value: 'TABLE_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Column Name', value: 'COLUMN_NAME' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Preceding System', value: 'IMM_PREC_SYSTEM' },
-            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Succeding System', value: 'IMM_SUCC_SYSTEM' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Priority Reports', value: 'PRIORITY_REPORT' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'Priority Report Rationale', value: 'PRIORITY_REPORT_RATIONALE' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'CRM Name', value: 'CRM_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'CRM Rationale', value: 'CRM_RATIONALE' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'CDE Name', value: 'CDE_NAME' },
+            { align: 'left', display: true, filterable: true, exportable: true, displayCount: false, sortable: true, text: 'CDE Rationale', value: 'CDE_RATIONALE' },
         ],
         isRightTable: false,
         DDSource: [],
@@ -39,14 +37,13 @@ const actions = {
 
         var param = {
             System: state.all.system,
-            DspName: state.all.dspName,
             Filters: state.all.filters.left,
             Pagination: _.cloneDeep(state.all.left.pagination)
         }
 
         param.Pagination.rowsPerPage = -1;
 
-        return dscMyService.getInterfacesCdeTable(param)
+        return rfoMyService.getSummaryTable(param)
             .then(
                 res => commit('getExportDataSuccess', res),
                 error => commit('getExportDataFailure', error)
@@ -54,35 +51,21 @@ const actions = {
     },
     getLeftTable({ commit }, system) {
         commit('getLeftTableRequest');
-
+        
         Object.keys(state.all.filters.left).map(function(key, index) {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
         var param = {
             System: state.all.system,
-            DspName: state.all.dspName,
             Filters: state.all.filters.left,
             Pagination: state.all.left.pagination
         }
 
-        return dscMyService.getInterfacesCdeTable(param)
+        return rfoMyService.getSummaryTable(param)
             .then(
                 res => commit('getLeftTableSuccess', res),
                 error => commit('getLeftTableFailure', error)
-            );
-    },
-    getDetails({ commit }, param) {
-        commit('getDetailsRequest');
-
-        return dscMyService.getDetails(param)
-            .then(
-                res => {
-                    commit('getDetailsSuccess', res.Data)
-
-                    return res;
-                },
-                error => commit('getDetailsFailure', error)
             );
     },
 };
@@ -106,30 +89,17 @@ const mutations = {
     getLeftTableSuccess(state, res) {
         state.all.left.source = res.DataFlat;
         state.all.left.display = res.Data;
-        state.all.left.totalItems = res.Data[0] ? res.Data[0].RESULT_COUNT : 0;
-
+        state.all.left.totalItems = res.Data[0] ? res.Data[0].COUNT_CDE : 0;
+        
         state.all.left.isLoading = false;
     },
     getLeftTableFailure(state, error) {
         state.all.left.isLoading = false;
         state.all.error = error;
     },
-    getDetailsRequest(state) {
-        state.all.detailsLoading = true;
-    },
-    getDetailsSuccess(state, data) {
-        state.all.detailsSource = data.Detail;
-        state.all.DDSource = data.DDSource;
-        
-        state.all.detailsLoading = false;
-    },
-    getDetailsFailure(state, error) {
-        state.all.detailsLoading = false;
-        state.all.error = error;
-    },
 };
 
-export const dscinterfacescde = {
+export const rfosummary = {
     namespaced: true,
     state,
     actions,

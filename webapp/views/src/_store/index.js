@@ -13,6 +13,7 @@ import { dscall } from './dscall.module';
 import { dsccde } from './dsccde.module';
 import { dsccdp } from './dsccdp.module';
 import { dsccdpcde } from './dsccdpcde.module';
+import { dsciarc } from './dsciarc.module';
 import { dscinterfaces } from './dscinterfaces.module';
 import { dscinterfacescde } from './dscinterfacescde.module';
 import { dscdd } from './dscdd.module';
@@ -35,6 +36,7 @@ import { ddodownstreambusinessterm } from './ddodownstreambusinessterm.module';
 import { rfo } from './rfo.module';
 import { rfomy } from './rfomy.module';
 import { rfoall } from './rfoall.module';
+import { rfosummary } from './rfosummary.module';
 import { rfopriority } from './rfopriority.module';
 
 Vue.use(Vuex);
@@ -46,9 +48,9 @@ export const store = new Vuex.Store({
         crypto,
         config,
         users, usersusage,
-        dsc, dscmy, dscall, dsccde, dsccdp, dsccdpcde, dscinterfaces, dscinterfacescde, dscdd, dscddTechnical, dscddBusiness, dscddPolicy,
+        dsc, dscmy, dscall, dsccde, dsccdp, dsccdpcde, dscinterfaces, dscinterfacescde, dsciarc, dscdd, dscddTechnical, dscddBusiness, dscddPolicy,
         dpo, dpomy, dpoall, dpodataelements, dpodatalineage,
         ddo, ddomy, ddoall, ddobusinessterm, ddosystems, ddosystemsbusinessterm, ddodownstream, ddodownstreambusinessterm,
-        rfo, rfomy, rfoall, rfopriority,
+        rfo, rfomy, rfoall, rfosummary, rfopriority,
     }
 });

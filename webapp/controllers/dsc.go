@@ -126,6 +126,39 @@ func (c *DSC) GetCDPTable(k *knot.WebContext) {
 	h.WriteResultOK(k, res, systems)
 }
 
+func (c *DSC) GetIARCTable(k *knot.WebContext) {
+	queryTime := time.Now()
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	system := payload.GetString("System")
+	colFilter := payload.Get("Filters")
+	pagination, err := toolkit.ToM(payload.Get("Pagination"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	tableRows, _, err := s.NewDSCService().GetIARCTable(system, colFilter, pagination)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	ret := toolkit.M{}
+	ret.Set("Flat", tableRows)
+	ret.Set("Grouped", tableRows)
+
+	h.WriteResultOK(k, res, ret)
+	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
+}
+
 func (c *DSC) GetCDPCDETable(k *knot.WebContext) {
 	res := toolkit.NewResult()
 

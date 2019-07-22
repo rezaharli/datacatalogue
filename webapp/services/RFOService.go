@@ -1,6 +1,8 @@
 package services
 
 import (
+	h "eaciit/datacatalogue/webapp/helpers"
+	m "eaciit/datacatalogue/webapp/models"
 	"path/filepath"
 
 	"github.com/eaciit/clit"
@@ -109,13 +111,92 @@ func (s *RFOService) GetRightTable(tabs string, systemID int, search string, sea
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
-func (s *RFOService) GetPriorityTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+func (s *RFOService) GetHomepageCounts(payload toolkit.M) (interface{}, int, error) {
 	fileName := "rfo.sql"
-	queryName := "rfo-priority"
+	queryName := "rfo-home-view"
+
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	system := payload.GetString("System")
+	args = append(args, system, system, system)
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	funcLog(funcName(), fileName, queryName)
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
+func (s *RFOService) GetSummaryTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "rfo.sql"
+	queryName := "rfo-summary-view"
 
 	gridArgs := GridArgs{}
 	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
-	gridArgs.QueryName = "rfo-priority"
+	gridArgs.QueryName = "rfo-summary-view"
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
+
+	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
+
+	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"PRIORITY_REPORT", "PR_COUNT", "CRM_NAME", "CRM_COUNT", "CDE_NAME", "CDE_COUNT",
+	)
+
+	colFilterM, err := toolkit.ToM(colFilter)
+	if err != nil {
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
+	} else {
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+		}
+
+		filterTypes := colFilterM.Get("filterTypes")
+		if filterTypes != nil {
+			gridArgs.ColumnFilterType = colFilterM.Get("filterTypes").(map[string]interface{})
+		}
+	}
+
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
+	return s.Base.ExecuteGridQueryFromFile(gridArgs)
+}
+
+func (s *RFOService) GetPriorityTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
+	fileName := "rfo.sql"
+	queryName := "rfo-hierarchy-view"
+
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = "rfo-hierarchy-view"
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
 

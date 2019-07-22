@@ -11,6 +11,7 @@ import DscMenu from './components/dsc/Dsc-menu';
 import DscCde from './components/dsc/Dsc-cde';
 import DscCdp from './components/dsc/Dsc-cdp';
 import DscCdpCde from './components/dsc/Dsc-cdp-cde';
+import DscIarc from './components/dsc/Dsc-iarc';
 import DscInterfaces from './components/dsc/Dsc-interfaces';
 import DscInterfacesCde from './components/dsc/Dsc-interfaces-cde';
 import DscDd from './components/dsc/Dsc-dd';
@@ -35,6 +36,8 @@ import DdoDownstreamBusinessterm from './components/ddo/Ddo-downstream-businesst
 import DdoDetails from './components/ddo/Ddo-details';
 
 import Rfo from './components/rfo/Rfo';
+import RfoMenu from './components/rfo/Rfo-menu';
+import RfoSummary from './components/rfo/Rfo-summary';
 import RfoPriority from './components/rfo/Rfo-priority';
 
 import Access from './components/access/Access';
@@ -98,7 +101,13 @@ const router = new VueRouter({
         showModal: true,
         permission: "DSC"
       }
-    }] 
+    }]
+  }, { // dsc.iarc
+    path: '/dsc/iarc/:system', name: 'dsc.iarc', component: DscIarc, 
+    meta: { 
+      title: "DSC - Data Catalogue",
+      permission: "DSC"
+    }
   }, { // dsc.interfaces
     path: '/dsc/interfaces/:system', name: 'dsc.interfaces', component: DscInterfaces, 
     meta: { 
@@ -254,8 +263,20 @@ const router = new VueRouter({
       title: "RFO - Data Catalogue",
       permission: "RFO"
     },
+  }, { // rfo.menu
+    path: '/rfo/:type', name: 'rfo.menu', component: RfoMenu, 
+    meta: { 
+      title: "RFO - Data Catalogue",
+      permission: "RFO"
+    },
+  }, { // rfo.summary
+    path: '/rfo/summary/:type', name: 'rfo.summary', component: RfoSummary, 
+    meta: { 
+      title: "RFO - Data Catalogue",
+      permission: "RFO"
+    },
   }, { // rfo.priority
-    path: '/rfo/:type', name: 'rfo.priority', component: RfoPriority, 
+    path: '/rfo/hierarchy/:type', name: 'rfo.priority', component: RfoPriority, 
     meta: { 
       title: "RFO - Data Catalogue",
       permission: "RFO"
