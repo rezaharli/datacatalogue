@@ -8,7 +8,7 @@ mkdir "builds/${foldername}"
 mkdir "builds/${foldername}/source-code"
 
 echo ""
-ls
+ls webapp
 pwd
 echo ""
 
