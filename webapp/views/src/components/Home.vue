@@ -19,11 +19,8 @@
                   </v-card-title>
                 </v-card>
               </v-flex>
-
-              <v-flex xs2 sm2 md2 card-wrapper>
-              </v-flex>
               
-              <v-flex xs2 sm2 md2 card-wrapper>
+              <v-flex xs2 sm3 md2 offset-xs1 card-wrapper>
                 <v-card flat id="tooltipButton-DSC" class="rounded-card" 
                   :class="{ [`elevation-${elevation.dsc}`]: true }" 
                   @click="dscClick()" 
@@ -83,7 +80,19 @@
                 </v-card>
               </v-flex>
 
-              <v-flex xs2 sm2 md2 card-wrapper>
+              <v-flex xs2 sm3 md2 card-wrapper>
+                <v-card flat id="tooltipButton-EDMp" class="rounded-card" 
+                  :class="{ [`elevation-${elevation.edmp}`]: true }" 
+                  @click="edmpClick()" 
+                  @mouseover="cardMouseover('edmp')"
+                  @mouseleave="cardMouseleave('edmp')">
+                  <v-img :src="images.edmp" class="menu-image"></v-img>
+
+                  <v-card-title primary-title class="justify-center">
+                    EDMp<br>
+                    Catalogue
+                  </v-card-title>
+                </v-card>
               </v-flex>
 
               <b-tooltip :show.sync="showTooltip.DSC" target="tooltipButton-DSC" placement="bottom" v-if="this.user.Role.split(',').indexOf('DSC') == -1">
@@ -141,6 +150,7 @@ export default {
         dpo: 12,
         ddo: 12,
         rfo: 12,
+        edmp: 12,
         user: 12,
       },
       images: {
@@ -148,6 +158,7 @@ export default {
         dpo: require('../assets/images/u27.png'),
         ddo: require('../assets/images/u29.png'),
         rfo: require('../assets/images/u31.png'),
+        edmp: require('../assets/images/u24.png'),
       }
     };
   },
@@ -188,6 +199,11 @@ export default {
       if(this.user.Role.split(",").indexOf("RFO") != -1){
         this.$router.push('/rfo');
       }
+    },
+    edmpClick: function () {
+      // if(this.user.Role.split(",").indexOf("RFO") != -1){
+        this.$router.push('/edmp');
+      // }
     },
     cardMouseover: function(type){
       this.elevation[type] = 24;
