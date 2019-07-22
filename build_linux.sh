@@ -12,6 +12,13 @@ ls webapp
 pwd
 echo ""
 
+cp -r webapp "builds/${foldername}/source-code/"
+
+echo ""
+ls "builds/${foldername}/source-code"
+pwd
+echo ""
+
 mkdir "builds/${foldername}/build"
 mkdir "builds/${foldername}/build/webapp"
 mkdir "builds/${foldername}/build/webapp/config"
