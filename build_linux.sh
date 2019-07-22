@@ -5,10 +5,10 @@ foldername="$CI_PROJECT_NAME-$tanggal"
 rm -r "builds"
 mkdir "builds"
 mkdir "builds/${foldername}"
-mkdir "builds/${foldername}/webapp"
-mkdir "builds/${foldername}/webapp/config"
-mkdir "builds/${foldername}/webapp/views"
-mkdir "builds/${foldername}/webapp/queryfiles"
+mkdir "builds/${foldername}/build/webapp"
+mkdir "builds/${foldername}/build/webapp/config"
+mkdir "builds/${foldername}/build/webapp/views"
+mkdir "builds/${foldername}/build/webapp/queryfiles"
 
 cd webapp
 
