@@ -13,13 +13,13 @@ mkdir "builds/${foldername}/webapp/queryfiles"
 cd webapp
 
 go build -o datacatalogue
-mv datacatalogue "../builds/${foldername}/webapp"
+mv datacatalogue "../builds/${foldername}/build/webapp"
 
-cp -r views/dist/ "../builds/${foldername}/webapp/views"
+cp -r views/dist/ "../builds/${foldername}/build/webapp/views"
 
-cp config/app.json.template "../builds/${foldername}/webapp/config/"
+cp config/app.json.template "../builds/${foldername}/build/webapp/config/"
 
-cp -a "queryfiles/." "../builds/${foldername}/webapp/queryfiles/"
+cp -a "queryfiles/." "../builds/${foldername}/build/webapp/queryfiles/"
 
 cd ../builds/
 zip -r "${foldername}.zip" "${foldername}"
