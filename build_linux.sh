@@ -7,22 +7,8 @@ mkdir "builds"
 mkdir "builds/${foldername}"
 mkdir "builds/${foldername}/source-code"
 
-echo ""
-ls webapp
-pwd
-echo ""
-
 cp -r webapp "builds/${foldername}/source-code/"
-
-echo ""
-ls "builds/${foldername}/source-code/webapp"
-echo ""
-
 rm -r "builds/${foldername}/source-code/webapp/vendor"
-
-echo ""
-ls "builds/${foldername}/source-code/webapp"
-echo ""
 
 mkdir "builds/${foldername}/build"
 mkdir "builds/${foldername}/build/webapp"
@@ -44,7 +30,7 @@ cp -a "queryfiles/." "../builds/${foldername}/build/webapp/queryfiles/"
 cd ../builds/
 zip -r "${foldername}.zip" "${foldername}"
 echo ""
-echo "Build:"
+echo "Build + source code:"
 echo "http://go.eaciit.com/files/datacatalogue/${foldername}.zip"
 echo ""
 rm -r "${foldername}"
