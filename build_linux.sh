@@ -5,6 +5,13 @@ foldername="$CI_PROJECT_NAME-$tanggal"
 rm -r "builds"
 mkdir "builds"
 mkdir "builds/${foldername}"
+mkdir "builds/${foldername}/source-code"
+
+echo ""
+ls
+pwd
+echo ""
+
 mkdir "builds/${foldername}/build"
 mkdir "builds/${foldername}/build/webapp"
 mkdir "builds/${foldername}/build/webapp/config"
