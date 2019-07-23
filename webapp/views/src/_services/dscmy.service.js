@@ -249,8 +249,6 @@ function getInterfacesTable(param) {
 function getInterfacesCdeTable(param) {
     return fetchWHeader(`/dsc/getinterfacescdetable`, param).then(
         res => {
-            res.Data = res.Data.concat(resData)
-
             res.DataFlat = _.cloneDeep(res.Data);
 
             var tmp = _.groupBy(res.Data, "CDE")
