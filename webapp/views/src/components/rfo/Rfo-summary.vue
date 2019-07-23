@@ -90,7 +90,7 @@ ol {
                   <i class="when-opened float-right fa fa-chevron-up"></i>
                   <i class="when-closed float-right fa fa-chevron-down"></i>
                 </h4>
-                <b-collapse id="collapse-2" class="mt-3 pt-4 border-top">
+                <b-collapse id="collapse-2" class="mt-3 pt-4 border-top" visible>
                   <p class="card-text pl-2">
                     <ol>
                       <li v-bind:key="i" v-for="(crm,i) in rfoSummaries.CRM_NAMEs">
@@ -111,7 +111,7 @@ ol {
                   <i class="when-opened float-right fa fa-chevron-up"></i>
                   <i class="when-closed float-right fa fa-chevron-down"></i>
                 </h4>
-                <b-collapse id="collapse-3" class="mt-3 pt-4 border-top">
+                <b-collapse id="collapse-3" class="mt-3 pt-4 border-top" visible>
                   <p class="card-text pl-2">
                     <ol>
                       <li v-bind:key="i" v-for="(cde,i) in rfoSummaries.CDE_NAMEs">
