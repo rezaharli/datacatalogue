@@ -155,7 +155,7 @@ func (c *DSC) GetIARCTable(k *knot.WebContext) {
 	ret.Set("Flat", tableRows)
 	ret.Set("Grouped", tableRows)
 
-	h.WriteResultOK(k, res, ret)
+	h.WriteResultOK(k, res, tableRows)
 	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
 }
 
