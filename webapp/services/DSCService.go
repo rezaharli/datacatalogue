@@ -351,7 +351,7 @@ func (s *DSCService) GetInterfacesCDETable(system, dspName string, colFilter int
 
 	///////// --------------------------------------------------COLUMN FILTER
 	gridArgs.Colnames = append(gridArgs.Colnames,
-		"CDE", "DESCRIPTION", "TABLE_NAME", "COLUMN_NAME",
+		"CDE", "DESCRIPTION", "TABLE_NAME", "COLUMN_NAME", "IMM_PREC_SYSTEM", "IMM_SUCC_SYSTEM",
 	)
 
 	colFilterM, err := toolkit.ToM(colFilter)
