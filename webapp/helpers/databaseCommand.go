@@ -278,9 +278,14 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 					if filterType.(string) == "eq" {
 						intVal, err := strconv.Atoi(toolkit.ToString(val))
 						if err != nil {
-							replacedVal := strings.ReplaceAll(toolkit.ToString(val), "'", "''")
-							sqlQuery += `
-								upper(NVL(` + key + `, ' ')) = upper('` + replacedVal + `') `
+							if val == "NA" {
+								sqlQuery += `
+								upper(` + key + `) IS NULL `
+							} else {
+								replacedVal := strings.ReplaceAll(toolkit.ToString(val), "'", "''")
+								sqlQuery += `
+									upper(NVL(` + key + `, ' ')) = upper('` + replacedVal + `') `
+							}
 						} else {
 							sqlQuery += `
 								upper(` + key + `) = upper('` + toolkit.ToString(intVal) + `') `
@@ -292,9 +297,15 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 
 				intVal, err := strconv.Atoi(toolkit.ToString(val))
 				if err != nil {
-					replacedVal := strings.ReplaceAll(toolkit.ToString(val), "'", "''")
-					sqlQuery += `
-						upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
+					if val == "NA" {
+						sqlQuery += `
+						upper(` + key + `) IS NULL `
+					} else {
+						replacedVal := strings.ReplaceAll(toolkit.ToString(val), "'", "''")
+						sqlQuery += `
+							upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
+					}
+
 				} else {
 					sqlQuery += `
 						upper(` + key + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
