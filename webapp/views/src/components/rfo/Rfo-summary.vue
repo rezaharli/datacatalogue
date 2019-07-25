@@ -65,7 +65,7 @@ ol {
             <b-col>
               <b-card tag="article" class="mb-2">
                 <h4 class="card-title border-0 mb-0 pb-0" v-b-toggle.collapse-1>
-                  Reports
+                  Reports <span class="text-muted pl-2 small">({{store.left.display[0].PR_COUNT}})</span>
                   <i class="when-opened float-right fa fa-chevron-up"></i>
                   <i class="when-closed float-right fa fa-chevron-down"></i>
                 </h4>
@@ -86,11 +86,11 @@ ol {
             <b-col>
               <b-card tag="article" class="mb-2">
                 <h4 class="card-title border-0 mb-0 pb-0" v-b-toggle.collapse-2>
-                  Critical Risk Measures
+                  Critical Risk Measures <span class="text-muted pl-2 small">({{store.left.display[0].CRM_COUNT}})</span>
                   <i class="when-opened float-right fa fa-chevron-up"></i>
                   <i class="when-closed float-right fa fa-chevron-down"></i>
                 </h4>
-                <b-collapse id="collapse-2" class="mt-3 pt-4 border-top">
+                <b-collapse id="collapse-2" class="mt-3 pt-4 border-top" visible>
                   <p class="card-text pl-2">
                     <ol>
                       <li v-bind:key="i" v-for="(crm,i) in rfoSummaries.CRM_NAMEs">
@@ -107,11 +107,11 @@ ol {
             <b-col>
               <b-card tag="article" class="mb-2">
                 <h4 class="card-title border-0 mb-0 pb-0" v-b-toggle.collapse-3>
-                  Critical Data Elements 
+                  Critical Data Elements <span class="text-muted pl-2 small">({{store.left.display[0].CDE_COUNT}})</span>
                   <i class="when-opened float-right fa fa-chevron-up"></i>
                   <i class="when-closed float-right fa fa-chevron-down"></i>
                 </h4>
-                <b-collapse id="collapse-3" class="mt-3 pt-4 border-top">
+                <b-collapse id="collapse-3" class="mt-3 pt-4 border-top" visible>
                   <p class="card-text pl-2">
                     <ol>
                       <li v-bind:key="i" v-for="(cde,i) in rfoSummaries.CDE_NAMEs">

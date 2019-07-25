@@ -1,29 +1,32 @@
 <style>
   @import '../../assets/styles/dashboard.css';
+  #rfo-menu .v-content__wrap {position: unset;}
+  #rfo-menu .label-wrapper {top: 0;}
 </style>
 
+
 <template>
-    <v-content class="bg-2 card-v3-wrapper px-1 py-5">
+    <v-content id="rfo-menu" class="bg-2 card-v3-wrapper px-1 py-5">
         <PageHeader />
-        <!-- <b-container fluid class="mt-5">
-            <b-row>
+        <b-container fluid class="label-wrapper mt-5 position-absolute">
+            <b-row class="mt-5 px-3 py-4">
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
                         <h6 class="title-1">Principle Risk Type</h6>
-                        <h3 class="title-2 text-capitalize">{{$route.params.system}}</h3>
+                        <h3 class="title-2 text-capitalize">{{ store.counts ? store.counts.PRINCIPAL_RISK : "" }}</h3>
                     </div>
                 </b-col>
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
                         <h6 class="title-1">Sub-Risk Type</h6>
-                        <h3 class="title-2 text-capitalize">{{$route.params.system}}</h3>
+                        <h3 class="title-2 text-capitalize">{{ store.counts ? store.counts.RISK_SUB : "" }}</h3>
                     </div>
                 </b-col>
             </b-row>
-        </b-container> -->
+        </b-container>
         <b-container>
             <div class="">
-                <b-row class="mb-3">
+                <!-- <b-row class="mb-3">
                     <b-col sm=12 md=1 lg=1 />
                     <b-col sm=12 md=5 lg=5>
                         <div class="card card-v2 transition">
@@ -38,7 +41,7 @@
                         </div>
                     </b-col>
                     <b-col sm=12 md=1 lg=1 />
-                </b-row>
+                </b-row> -->
                 <b-row>
                     <b-col sm=12 md=1 lg=1 />
                     <b-col sm=12 md=5 lg=5 class="my-3">

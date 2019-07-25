@@ -205,7 +205,21 @@ function getCdpCdeTable(param) {
 }
 
 function getIarcTable(param) {
-    return fetchWHeader(`/dsc/getiarctable`, param);
+    return fetchWHeader(`/dsc/getiarctable`, param).then(
+        res => {
+            res.Data = _.map(res.Data, function(v){
+                v.INFORMATION_ASSET_NAMES = v.INFORMATION_ASSET_NAMES.toString().trim() ? v.INFORMATION_ASSET_NAMES : "NA";
+                v.INFORMATION_ASSET_DESCRIPTION = v.INFORMATION_ASSET_DESCRIPTION.toString().trim() ? v.INFORMATION_ASSET_DESCRIPTION : "NA";
+                v.CONFIDENTIALITY = v.CONFIDENTIALITY ? v.CONFIDENTIALITY : "NA";
+                v.INTEGRITY = v.INTEGRITY ? v.INTEGRITY : "NA";
+                v.AVAILABILITY = v.AVAILABILITY ? v.AVAILABILITY : "NA";
+                v.OVERALL_CIA_RATING = v.OVERALL_CIA_RATING ? v.OVERALL_CIA_RATING : "NA";
+                return v;
+            });
+            res.DataFlat = _.cloneDeep(res.Data);
+            return res;
+        }
+    );
 }
 
 function getInterfacesTable(param) {
@@ -249,8 +263,6 @@ function getInterfacesTable(param) {
 function getInterfacesCdeTable(param) {
     return fetchWHeader(`/dsc/getinterfacescdetable`, param).then(
         res => {
-            res.Data = res.Data.concat(resData)
-
             res.DataFlat = _.cloneDeep(res.Data);
 
             var tmp = _.groupBy(res.Data, "CDE")

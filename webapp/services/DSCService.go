@@ -119,7 +119,7 @@ func (s *DSCService) GetCDETable(system string, colFilter interface{}, paginatio
 
 	///////// --------------------------------------------------COLUMN FILTER
 	gridArgs.Colnames = append(gridArgs.Colnames,
-		"CDE", "DESCRIPTION", "TABLE_NAME", "COLUMN_NAME", "DSP_NAME", "PROCESS_OWNER",
+		"CDE", "DESCRIPTION", "UPSTREAM_SYSTEM", "TABLE_NAME", "COLUMN_NAME", "DSP_NAME", "PROCESS_OWNER",
 	)
 
 	colFilterM, err := toolkit.ToM(colFilter)
@@ -256,7 +256,7 @@ func (s *DSCService) GetIARCTable(system string, colFilter interface{}, paginati
 
 	///////// --------------------------------------------------COLUMN FILTER
 	gridArgs.Colnames = append(gridArgs.Colnames,
-		"SYSTEM_NAME", "ITAM_ID", "TABLE_NAME", "COLUMN_NAME", "BUSINESS_ALIAS_NAME", "BUSINESS_ALIAS_DESCRIPTION", "CDE_YES_NO", 
+		"SYSTEM_NAME", "ITAM_ID", "TABLE_NAME", "COLUMN_NAME", "BUSINESS_ALIAS_NAME", "BUSINESS_ALIAS_DESCRIPTION", "CDE_YES_NO",
 		"INFORMATION_ASSET_NAMES", "INFORMATION_ASSET_DESCRIPTION", "CONFIDENTIALITY", "INTEGRITY", "AVAILABILITY", "OVERALL_CIA_RATING", "RECORD_CATEGORIES", "PII_FLAG",
 	)
 
@@ -351,7 +351,7 @@ func (s *DSCService) GetInterfacesCDETable(system, dspName string, colFilter int
 
 	///////// --------------------------------------------------COLUMN FILTER
 	gridArgs.Colnames = append(gridArgs.Colnames,
-		"CDE", "DESCRIPTION", "TABLE_NAME", "COLUMN_NAME",
+		"CDE", "DESCRIPTION", "TABLE_NAME", "COLUMN_NAME", "IMM_PREC_SYSTEM", "IMM_SUCC_SYSTEM",
 	)
 
 	colFilterM, err := toolkit.ToM(colFilter)
