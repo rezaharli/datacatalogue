@@ -414,3 +414,6 @@ table.v-table.v-datatable td {
 .v-list__tile{height: 34px;}
 .v-list__tile__title {height: 14px; line-height: 10px; font-size: 12px;}
 .v-select__selection--comma{font-size: 13px; margin-top: 18px;}
+
+.v-select__selection--comma {margin-top: 12px;}
+.v-text-field .v-input__prepend-inner, .v-text-field .v-input__append-inner {margin-top: 8px;}
