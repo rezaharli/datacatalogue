@@ -76,7 +76,7 @@
                                 <b-col cols=7 class="">
                                     <div class="card-content">
                                         <div class="text">
-                                            <h6 class="title-1">Information Asset &amp; Record Categories</h6>
+                                            <h6 class="title-1">Policy Requirements (Information Asset, Personal Data &amp; Record Categories)</h6>
                                         </div>
                                     </div>
                                 </b-col>
