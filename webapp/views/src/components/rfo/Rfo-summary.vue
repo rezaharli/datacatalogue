@@ -34,43 +34,41 @@ ol {
 
       <b-row>
         <b-col cols="3">           
-          <!-- <div class="card card-v2 transition mb-4">
+          <div class="card card-v2 transition mb-4">
               <h6 class="title-1">Principal Risk Type</h6>
               <h3 class="title-2 text-capitalize">{{ store.left.display[0] ? store.left.display[0].PRINCIPAL_RISK : "" }}</h3>
           </div>
 
           <div class="card card-v2 transition">
               <h6 class="title-1">Risk Sub Type</h6>
-              <h3 class="title-2 text-capitalize">{{ $route.params.type }}</h3>
-          </div> -->
+              <h3 class="title-2 text-capitalize">{{ store.left.display[0] ? store.left.display[0].RISK_SUB : "" }}</h3>
+          </div>
           
-          <b-card tag="article" class="mb-2">
+          <!-- <b-card tag="article" class="mb-2">
             <b-media class="left-card-media mb-4" >
               <h6 class="left-card-title">Principal Risk Type</h6>
-              <!-- <text-wrap-dialog :fulltext="store.left.display[0] ? store.left.display[0].PRINCIPAL_RISK: ''"></text-wrap-dialog> -->
               {{ store.left.display[0] ? store.left.display[0].PRINCIPAL_RISK : "" }}
             </b-media>
             
             <b-media class="left-card-media">
               <h6 class="left-card-title">Risk Sub Type</h6>
-              <!-- <text-wrap-dialog :fulltext="store.left.display[0] ? store.left.display[0].RISK_SUB: ''"></text-wrap-dialog> -->
               {{ store.left.display[0] ? store.left.display[0].RISK_SUB : "" }}
             </b-media>
-          </b-card>
+          </b-card> -->
         </b-col>
 
         <b-col cols="9"> 
           
           <b-row>
             <b-col>
-              <b-card tag="article" class="mb-2">
-                <h4 class="card-title border-0 mb-0 pb-0" v-b-toggle.collapse-1>
+              <div class="card card-v4 mb-2">
+                <h4 class="title-wrapper" v-b-toggle.collapse-1>
                   Reports <span class="text-muted pl-2 small">({{store.left.display[0].PR_COUNT}})</span>
                   <i class="when-opened float-right fa fa-chevron-up"></i>
                   <i class="when-closed float-right fa fa-chevron-down"></i>
                 </h4>
-                <b-collapse id="collapse-1" class="mt-3 pt-4 border-top" visible>
-                  <p class="card-text pl-2">
+                <b-collapse id="collapse-1" class="content-wrapper" visible>
+                  <p class="card-text">
                     <ol>
                       <li v-bind:key="i" v-for="(pr,i) in rfoSummaries.PRIORITY_REPORTs">
                         {{ pr }}
@@ -78,20 +76,20 @@ ol {
                     </ol>
                   </p>
                 </b-collapse>
-              </b-card>
+              </div>
             </b-col>
           </b-row>
 
           <b-row>
             <b-col>
-              <b-card tag="article" class="mb-2">
-                <h4 class="card-title border-0 mb-0 pb-0" v-b-toggle.collapse-2>
+              <div class="card card-v4 mb-2">
+                <h4 class="title-wrapper" v-b-toggle.collapse-2>
                   Critical Risk Measures <span class="text-muted pl-2 small">({{store.left.display[0].CRM_COUNT}})</span>
                   <i class="when-opened float-right fa fa-chevron-up"></i>
                   <i class="when-closed float-right fa fa-chevron-down"></i>
                 </h4>
-                <b-collapse id="collapse-2" class="mt-3 pt-4 border-top" visible>
-                  <p class="card-text pl-2">
+                <b-collapse id="collapse-2" class="content-wrapper" visible>
+                  <p class="card-text">
                     <ol>
                       <li v-bind:key="i" v-for="(crm,i) in rfoSummaries.CRM_NAMEs">
                         {{ crm }}
@@ -99,20 +97,20 @@ ol {
                     </ol>
                   </p>
                 </b-collapse>
-              </b-card>
+              </div>
             </b-col>
           </b-row>
 
           <b-row>
             <b-col>
-              <b-card tag="article" class="mb-2">
-                <h4 class="card-title border-0 mb-0 pb-0" v-b-toggle.collapse-3>
+              <div class="card card-v4 mb-2">
+                <h4 class="title-wrapper" v-b-toggle.collapse-3>
                   Critical Data Elements <span class="text-muted pl-2 small">({{store.left.display[0].CDE_COUNT}})</span>
                   <i class="when-opened float-right fa fa-chevron-up"></i>
                   <i class="when-closed float-right fa fa-chevron-down"></i>
                 </h4>
-                <b-collapse id="collapse-3" class="mt-3 pt-4 border-top" visible>
-                  <p class="card-text pl-2">
+                <b-collapse id="collapse-3" class="content-wrapper" visible>
+                  <p class="card-text">
                     <ol>
                       <li v-bind:key="i" v-for="(cde,i) in rfoSummaries.CDE_NAMEs">
                         {{ cde }}
@@ -120,7 +118,7 @@ ol {
                     </ol>
                   </p>
                 </b-collapse>
-              </b-card>
+              </div>
             </b-col>
           </b-row>
           

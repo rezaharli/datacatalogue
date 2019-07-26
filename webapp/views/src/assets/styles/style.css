@@ -265,9 +265,15 @@ table.v-table tbody tr td.hidden{display: none;} */
     border-radius: 25px 0px 0px 0px;
 }
 
+.card.card-v4 {padding: 0px;}
+.card.card-v4 .title-wrapper {padding: 15px 20px; margin-bottom: 0; color: #fff; font-weight: 600;}
+.card.card-v4 .title-wrapper .text-muted {color: #fff !important; font-weight: 200;}
+.card.card-v4 .content-wrapper {padding: 15px; margin: 0;}
+
 .table-v1,
 .table-v2 {box-shadow: 3px 3px 5px rgba(204, 204, 204, 0.349019607843137);}
-.table-v1 table.v-table thead {background: linear-gradient(240deg, rgba(86, 184, 187, 1) 0%, rgba(86, 184, 187, 1) 0%, rgba(87, 202, 157, 1) 90%, rgba(87, 202, 157, 1) 100%);}
+.table-v1 table.v-table thead,
+.card-v4 .title-wrapper {background: linear-gradient(240deg, rgba(86, 184, 187, 1) 0%, rgba(86, 184, 187, 1) 0%, rgba(87, 202, 157, 1) 90%, rgba(87, 202, 157, 1) 100%);}
 .table-v1 table.v-table thead tr:first-child {border-bottom: none;}
 .table-v1 table.v-table thead tr th {color: #ffffff !important; padding: 20px 30px; font-size: 14px;}
 .table-v1 table.v-table thead tr th:first-of-type {border-top-left-radius: 7px; padding-left: 45px;}
