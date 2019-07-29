@@ -12,13 +12,13 @@
             <b-row class="mt-5 px-3 py-4">
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
-                        <h6 class="title-1">Principle Risk Type</h6>
+                        <h6 class="title-1">Principal Risk Type</h6>
                         <h3 class="title-2 text-capitalize">{{ store.counts ? store.counts.PRINCIPAL_RISK : "" }}</h3>
                     </div>
                 </b-col>
                 <b-col sm=12 md=3>
                     <div class="card card-v2 transition">
-                        <h6 class="title-1">Sub-Risk Type</h6>
+                        <h6 class="title-1">Risk Sub Type</h6>
                         <h3 class="title-2 text-capitalize">{{ store.counts ? store.counts.RISK_SUB : "" }}</h3>
                     </div>
                 </b-col>

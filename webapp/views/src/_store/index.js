@@ -14,6 +14,7 @@ import { dsccde } from './dsccde.module';
 import { dsccdp } from './dsccdp.module';
 import { dsccdpcde } from './dsccdpcde.module';
 import { dsciarc } from './dsciarc.module';
+import { dsciarcpersonal } from './dsciarcpersonal.module';
 import { dscinterfaces } from './dscinterfaces.module';
 import { dscinterfacescde } from './dscinterfacescde.module';
 import { dscdd } from './dscdd.module';
@@ -48,7 +49,7 @@ export const store = new Vuex.Store({
         crypto,
         config,
         users, usersusage,
-        dsc, dscmy, dscall, dsccde, dsccdp, dsccdpcde, dscinterfaces, dscinterfacescde, dsciarc, dscdd, dscddTechnical, dscddBusiness, dscddPolicy,
+        dsc, dscmy, dscall, dsccde, dsccdp, dsccdpcde, dscinterfaces, dscinterfacescde, dsciarc, dsciarcpersonal, dscdd, dscddTechnical, dscddBusiness, dscddPolicy,
         dpo, dpomy, dpoall, dpodataelements, dpodatalineage,
         ddo, ddomy, ddoall, ddobusinessterm, ddosystems, ddosystemsbusinessterm, ddodownstream, ddodownstreambusinessterm,
         rfo, rfomy, rfoall, rfosummary, rfopriority,
