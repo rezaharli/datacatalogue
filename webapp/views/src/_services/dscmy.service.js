@@ -49,8 +49,8 @@ function getCdeTable(param) {
                 var keys = Object.keys(v);
 
                 keys.forEach(key => {
-                    v[key] = v[key].toString().trim() ? v[key] : "-";
-                })
+                    v[key] = v[key].toString().trim() ? v[key] : "NA";
+                });
                 
                 return v;
             });
