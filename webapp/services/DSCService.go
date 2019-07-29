@@ -290,6 +290,56 @@ func (s *DSCService) GetIARCTable(system string, colFilter interface{}, paginati
 	return
 }
 
+func (s *DSCService) GetIARCPersonalDataTable(system string, colFilter interface{}, pagination toolkit.M) (res []toolkit.M, total int, err error) {
+	fileName := "dsc.sql"
+	queryName := "dsc-view-policy"
+
+	gridArgs := GridArgs{}
+	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	gridArgs.QueryName = queryName
+	gridArgs.PageNumber = pagination.GetInt("page")
+	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+
+	funcLog(funcName(), fileName, queryName)
+
+	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
+
+	///////// --------------------------------------------------COLUMN FILTER
+	gridArgs.Colnames = append(gridArgs.Colnames,
+		"SYSTEM_NAME", "ITAM_ID", "TABLE_NAME", "COLUMN_NAME", "BUSINESS_ALIAS_NAME", "BUSINESS_ALIAS_DESCRIPTION", "CDE_YES_NO",
+		"INFORMATION_ASSET_NAMES", "INFORMATION_ASSET_DESCRIPTION", "CONFIDENTIALITY", "INTEGRITY", "AVAILABILITY", "OVERALL_CIA_RATING", "RECORD_CATEGORIES", "PII_FLAG",
+	)
+
+	colFilterM, err := toolkit.ToM(colFilter)
+	if err != nil {
+		for _, colname := range gridArgs.Colnames {
+			colname = ""
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+		}
+	} else {
+		for _, colname := range gridArgs.Colnames {
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+
+			filterTypes := colFilterM.Get("filterTypes")
+			if filterTypes != nil {
+				gridArgs.ColumnFilterType = colFilterM.Get("filterTypes").(map[string]interface{})
+			}
+		}
+	}
+
+	gridArgs.OrderBy = pagination.GetString("sortBy")
+	descending := pagination.Get("descending")
+	if descending != nil {
+		gridArgs.IsDescending = descending.(bool)
+	}
+
+	gridArgs.GroupCol = "-"
+	result, total, err := s.Base.ExecuteGridQueryFromFile(gridArgs)
+
+	res = result
+	return
+}
+
 func (s *DSCService) GetInterfacesTable(system string, colFilter interface{}, pagination toolkit.M) ([]toolkit.M, int, error) {
 	fileName := "dsc.sql"
 	queryName := "dsc-view-interfaces"
