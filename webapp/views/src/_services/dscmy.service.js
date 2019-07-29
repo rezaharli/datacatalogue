@@ -49,8 +49,8 @@ function getCdeTable(param) {
                 var keys = Object.keys(v);
 
                 keys.forEach(key => {
-                    v[key] = v[key].toString().trim() ? v[key] : "-";
-                })
+                    v[key] = v[key].toString().trim() ? v[key] : "NA";
+                });
                 
                 return v;
             });
@@ -263,6 +263,17 @@ function getInterfacesTable(param) {
 function getInterfacesCdeTable(param) {
     return fetchWHeader(`/dsc/getinterfacescdetable`, param).then(
         res => {
+
+            res.Data = _.map(res.Data, function(v){
+                var keys = Object.keys(v);
+
+                keys.forEach(key => {
+                    v[key] = v[key].toString().trim() ? v[key] : "NA";
+                });
+                
+                return v;
+            });
+            
             res.DataFlat = _.cloneDeep(res.Data);
 
             var tmp = _.groupBy(res.Data, "CDE")
