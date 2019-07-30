@@ -242,7 +242,7 @@ func (s *DSCService) GetCDPCDETable(system, dspName string, colFilter interface{
 
 func (s *DSCService) GetIARCTable(system string, colFilter interface{}, pagination toolkit.M) (res []toolkit.M, total int, err error) {
 	fileName := "dsc.sql"
-	queryName := "dsc-view-policy"
+	queryName := "dsc-view-policy-ia"
 
 	gridArgs := GridArgs{}
 	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
@@ -256,8 +256,7 @@ func (s *DSCService) GetIARCTable(system string, colFilter interface{}, paginati
 
 	///////// --------------------------------------------------COLUMN FILTER
 	gridArgs.Colnames = append(gridArgs.Colnames,
-		"SYSTEM_NAME", "ITAM_ID", "TABLE_NAME", "COLUMN_NAME", "BUSINESS_ALIAS_NAME", "BUSINESS_ALIAS_DESCRIPTION", "CDE_YES_NO",
-		"INFORMATION_ASSET_NAMES", "INFORMATION_ASSET_DESCRIPTION", "CONFIDENTIALITY", "INTEGRITY", "AVAILABILITY", "OVERALL_CIA_RATING", "RECORD_CATEGORIES", "PII_FLAG",
+		"INFORMATION_ASSET_NAMES", "INFORMATION_ASSET_DESCRIPTION", "CONFIDENTIALITY", "INTEGRITY", "AVAILABILITY", "OVERALL_CIA_RATING",
 	)
 
 	colFilterM, err := toolkit.ToM(colFilter)
@@ -306,8 +305,7 @@ func (s *DSCService) GetIARCPersonalDataTable(system string, colFilter interface
 
 	///////// --------------------------------------------------COLUMN FILTER
 	gridArgs.Colnames = append(gridArgs.Colnames,
-		"SYSTEM_NAME", "ITAM_ID", "TABLE_NAME", "COLUMN_NAME", "BUSINESS_ALIAS_NAME", "BUSINESS_ALIAS_DESCRIPTION", "CDE_YES_NO",
-		"INFORMATION_ASSET_NAMES", "INFORMATION_ASSET_DESCRIPTION", "CONFIDENTIALITY", "INTEGRITY", "AVAILABILITY", "OVERALL_CIA_RATING", "RECORD_CATEGORIES", "PII_FLAG",
+		"TABLE_NAME", "COLUMN_NAME", "BUSINESS_ALIAS_NAME", "BUSINESS_ALIAS_DESCRIPTION", "CDE_YES_NO", "PII_FLAG",
 	)
 
 	colFilterM, err := toolkit.ToM(colFilter)

@@ -178,7 +178,7 @@ func (c *DSC) GetIARCPersonalDataTable(k *knot.WebContext) {
 		return
 	}
 
-	tableRows, _, err := s.NewDSCService().GetIARCTable(system, colFilter, pagination)
+	tableRows, _, err := s.NewDSCService().GetIARCPersonalDataTable(system, colFilter, pagination)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
