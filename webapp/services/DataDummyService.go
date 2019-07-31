@@ -921,6 +921,41 @@ func (s *DSCService) CreateLinkRolePeopleDummyData() error {
 	return nil
 }
 
+func (s *DSCService) CreateLinkPolicySystemDummyData() error {
+	toolkit.Println("CreateLinkPolicySystemDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewLinkPolicySystemModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.LinkPolicySystem, 0)
+	for i := 0; i < 10000; i++ {
+		mdt := m.NewLinkPolicySystemModel()
+		mdt.ID = i
+		mdt.System_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Policy_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Created_DateTime = time.Now()
+		mdt.Modified_DateTime = time.Now()
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewLinkPolicySystemModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
 func (s *DSCService) CreateUserDummyData() error {
 	toolkit.Println("CreateUserAdminData")
 

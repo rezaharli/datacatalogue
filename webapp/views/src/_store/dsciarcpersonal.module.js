@@ -43,7 +43,7 @@ const actions = {
 
         param.Pagination.rowsPerPage = -1;
 
-        return dscMyService.getIarcTable(param)
+        return dscMyService.getIarcPersonalTable(param)
             .then(
                 res => commit('getExportDataSuccess', res),
                 error => commit('getExportDataFailure', error)
@@ -62,7 +62,7 @@ const actions = {
             Pagination: state.all.left.pagination
         }
 
-        return dscMyService.getIarcTable(param)
+        return dscMyService.getIarcPersonalTable(param)
             .then(
                 res => commit('getLeftTableSuccess', res),
                 error => commit('getLeftTableFailure', error)

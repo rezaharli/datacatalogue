@@ -7,6 +7,7 @@ export const dscMyService = {
     getCdpTable,
     getCdpCdeTable,
     getIarcTable,
+    getIarcPersonalTable,
     getInterfacesTable,
     getInterfacesCdeTable,
     getRightTable,
@@ -216,6 +217,15 @@ function getIarcTable(param) {
                 v.OVERALL_CIA_RATING = v.OVERALL_CIA_RATING ? v.OVERALL_CIA_RATING : "NA";
                 return v;
             });
+            res.DataFlat = _.cloneDeep(res.Data);
+            return res;
+        }
+    );
+}
+
+function getIarcPersonalTable(param) {
+    return fetchWHeader(`/dsc/getiarcpersonaldatatable`, param).then(
+        res => {
             res.DataFlat = _.cloneDeep(res.Data);
             return res;
         }

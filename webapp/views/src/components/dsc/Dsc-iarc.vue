@@ -14,37 +14,13 @@
 
       <b-row>
         <b-col>
-          <b-card tag="article" class="mb-2">
-            <h5 class="card-title border-0 mb-0 pb-0" v-b-toggle.collapse-1>
-              Information Asset Category
-              <i class="when-opened float-right fa fa-chevron-up"></i>
-              <i class="when-closed float-right fa fa-chevron-down"></i>
-            </h5>
+          <v-tabs id="page-tab" class="page-tab" v-model="activeTab">
+              <v-tab v-for="tab in tabs" class="px-2 mx-5" :id="'tab-' + tab.id" :key="tab.key" :to="addressPath + '/' + tab.key + '/' + urlParam1" :ref="tab.id">{{ tab.name }}</v-tab>
+          </v-tabs>
 
-            <b-collapse id="collapse-1" class="mt-3 pt-4 border-top" visible>
-              <p class="card-text">
-                <dsc-iarc-information />
-              </p>
-            </b-collapse>
-          </b-card>
-        </b-col>
-      </b-row>
-
-      <b-row>
-        <b-col>
-          <b-card tag="article" class="mb-2">
-            <h5 class="card-title border-0 mb-0 pb-0" v-b-toggle.collapse-2>
-              Personal Data
-              <i class="when-opened float-right fa fa-chevron-up"></i>
-              <i class="when-closed float-right fa fa-chevron-down"></i>
-            </h5>
-
-            <b-collapse id="collapse-2" class="mt-3 pt-4 border-top" visible>
-              <p class="card-text">
-                <dsc-iarc-personal />
-              </p>
-            </b-collapse>
-          </b-card>
+          <transition name="fade" mode="out-in">
+            <router-view />
+          </transition>
         </b-col>
       </b-row>
     </b-container>
@@ -66,7 +42,22 @@ export default {
     PageHeader, DscIarcInformation, DscIarcPersonal
   },
   data() {
-    return {};
+    return {
+      activeTab: '',
+      tabs: [
+          { id: 'information', key: 'information', name: 'Information Asset Category' },
+          { id: 'personal', key: 'personal', name: 'Personal Data' },
+      ]
+    };
+  },
+  computed: {
+    addressPath() {
+      var tmp = this.$route.path.split("/");
+      return tmp.slice(0, 3).join("/");
+    },
+    urlParam1() {
+      return this.$route.params.system;
+    }
   },
 };
 </script>

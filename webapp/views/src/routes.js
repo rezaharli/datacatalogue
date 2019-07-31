@@ -12,6 +12,8 @@ import DscCde from './components/dsc/Dsc-cde';
 import DscCdp from './components/dsc/Dsc-cdp';
 import DscCdpCde from './components/dsc/Dsc-cdp-cde';
 import DscIarc from './components/dsc/Dsc-iarc';
+import DscIarcInformation from './components/dsc/Dsc-iarc-information';
+import DscIarcPersonal from './components/dsc/Dsc-iarc-personal';
 import DscInterfaces from './components/dsc/Dsc-interfaces';
 import DscInterfacesCde from './components/dsc/Dsc-interfaces-cde';
 import DscDd from './components/dsc/Dsc-dd';
@@ -107,7 +109,24 @@ const router = new VueRouter({
     meta: { 
       title: "DSC - Data Catalogue",
       permission: "DSC"
-    }
+    },
+    children: [
+      { 
+        path: '', name: 'dsc.iarc', redirect: { name: 'dsc.iarc.information' }
+      }, { // dsc.iarc.information
+        path: '/dsc/iarc/information/:system', name: 'dsc.iarc.information', component: DscIarcInformation, 
+        meta: { 
+          title: "DSC - Data Catalogue",
+          permission: "DSC"
+        },
+      }, { // dsc.iarc.personal
+        path: '/dsc/iarc/personal/:system', name: 'dsc.iarc.personal', component: DscIarcPersonal, 
+        meta: { 
+          title: "DSC - Data Catalogue",
+          permission: "DSC"
+        },
+      },
+    ]
   }, { // dsc.interfaces
     path: '/dsc/interfaces/:system', name: 'dsc.interfaces', component: DscInterfaces, 
     meta: { 
