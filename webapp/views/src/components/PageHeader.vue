@@ -29,6 +29,8 @@
                     $route.name == 'dsc.interfaces' || 
                     $route.name == 'dsc.cdp.cde' || 
                     $route.name == 'dsc.iarc' ||
+                    $route.name == 'dsc.iarc.personal' ||
+                    $route.name == 'dsc.iarc.information' ||
                     $route.name == 'dsc.interfaces.cde' ||
                     $route.name == 'dsc.dd.technical' ||
                     $route.name == 'dsc.dd.business' ||
