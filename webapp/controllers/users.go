@@ -50,6 +50,9 @@ func (c *Users) Authenticate(k *knot.WebContext) {
 				h.WriteResultErrorOK(k, res, "LDAP login fail.")
 				return
 			}
+
+			// toolkit.Println("--------------LDAP FETCH DATA TEST----------------")
+			// // h.FindDataLdap()
 		}
 	}
 
