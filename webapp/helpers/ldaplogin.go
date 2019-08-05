@@ -52,15 +52,23 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 		return
 	}
 
+	usernameTobind, passwordToBind := "", ""
+
 	if strings.Trim(BindUsernameLDAP, " ") != "" {
 		// Bind Through Config
 		// defer l.Unbind(BindUsernameLDAP, BindPasswordLDAP)
 		// toolkit.Println("Bind with config:", BindUsernameLDAP, "-", BindPasswordLDAP)
+
+		usernameTobind, passwordToBind = BindUsernameLDAP, BindPasswordLDAP
+
 		err = l.Bind(BindUsernameLDAP, BindPasswordLDAP)
 		toolkit.Println("with -", err)
 	} else {
 		// defer l.Unbind(username, password)
 		// toolkit.Println("Bind without config:", username, "-", password)
+
+		usernameTobind, passwordToBind = "", ""
+
 		err = l.Bind(username, password)
 		toolkit.Println("without -", err)
 	}
@@ -89,10 +97,20 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 		}
 	}
 
+	param := toolkit.M{}
+	param.Set("username", usernameTobind)
+	param.Set("password", passwordToBind)
+
+	toolkit.Println("======================test=====================")
+
+	toolkit.Println("BaseDN:", loginconf.GetString("basedn"))
+	data, _ := FindDataLdap(address, loginconf.GetString("basedn"), "", param)
+	toolkit.Println("trydata:", data)
+
 	toolkit.Println("# Closing LDAP Connection")
 	toolkit.Println("# Connection Time : ", time.Since(connectTime).Seconds(), "s")
 
-	// return
+	return
 
 	if cond {
 		toolkit.Println("# Getting some Information from LDAP ")
