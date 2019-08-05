@@ -104,7 +104,8 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 	toolkit.Println("======================test=====================")
 
 	toolkit.Println("BaseDN:", loginconf.GetString("basedn"))
-	FindDataLdap(address, loginconf.GetString("basedn"), "", param)
+	data, _ := FindDataLdap(address, loginconf.GetString("basedn"), "", param)
+	toolkit.Println("trydata:", data)
 
 	toolkit.Println("# Closing LDAP Connection")
 	toolkit.Println("# Connection Time : ", time.Since(connectTime).Seconds(), "s")
