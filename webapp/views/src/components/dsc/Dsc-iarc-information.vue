@@ -101,7 +101,7 @@
                     <tablecell :fulltext="props.item.CDE_YES_NO" showOn="click"></tablecell></td> -->
                     
                   <td v-bind:style="{ width: store.left.colWidth['INFORMATION_ASSET_NAMES'] + 'px' }">
-                    <tablecell :fulltext="props.item.INFORMATION_ASSET_NAMES" showOn="click"></tablecell></td>
+                    {{props.item.INFORMATION_ASSET_NAMES}}</td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['INFORMATION_ASSET_DESCRIPTION'] + 'px' }">
                     <tablecell :fulltext="props.item.INFORMATION_ASSET_DESCRIPTION" showOn="click"></tablecell></td>
