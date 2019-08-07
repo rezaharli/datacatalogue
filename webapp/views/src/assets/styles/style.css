@@ -393,6 +393,11 @@ table.v-table.v-datatable td {
     box-sizing: border-box;
 }
 
+td {
+  white-space: pre-wrap; 
+  word-wrap: break-word;
+}
+
 .modal-content {display: contents !important;}
 
 .v-text-field--box > .v-input__control > .v-input__slot:before{border: none;}
