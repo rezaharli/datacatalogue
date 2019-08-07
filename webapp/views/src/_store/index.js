@@ -39,6 +39,13 @@ import { rfomy } from './rfomy.module';
 import { rfoall } from './rfoall.module';
 import { rfosummary } from './rfosummary.module';
 import { rfopriority } from './rfopriority.module';
+import { edmp } from './edmp.module';
+import { edmpddTechnical } from './edmpdd-technical.module';
+import { edmpddBusiness } from './edmpdd-business.module';
+import { edmpddOriginal } from './edmpdd-original.module';
+import { edmpddPresence } from './edmpdd-presence.module';
+import { edmpddProtection } from './edmpdd-protection.module';
+import { edmpddAttribute } from './edmpdd-attribute.module';
 
 Vue.use(Vuex);
 
@@ -53,5 +60,6 @@ export const store = new Vuex.Store({
         dpo, dpomy, dpoall, dpodataelements, dpodatalineage,
         ddo, ddomy, ddoall, ddobusinessterm, ddosystems, ddosystemsbusinessterm, ddodownstream, ddodownstreambusinessterm,
         rfo, rfomy, rfoall, rfosummary, rfopriority,
+        edmp, edmpddTechnical, edmpddBusiness, edmpddOriginal, edmpddPresence, edmpddProtection, edmpddAttribute,
     }
 });

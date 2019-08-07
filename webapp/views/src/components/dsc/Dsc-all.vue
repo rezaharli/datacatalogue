@@ -62,7 +62,7 @@
                   </template>
 
                   <template slot="items" slot-scope="props">
-                      <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }"><b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SYSTEM_NAME" showOn="hover"></tablecell></b-link></td>
+                      <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }"><b-link @click="edmpClick()">EDMp</b-link> - <b-link @click="showRightTable(props.item)"><tablecell :fulltext="props.item.SYSTEM_NAME" showOn="hover"></tablecell></b-link></td>
                       <td v-bind:style="{ width: store.left.colWidth['ITAM_ID'] + 'px' }"><b-link @click.stop="toggleDscDrawer(props.item)"><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'ITAM_ID').filter(Boolean)).join(', '))" showOn="hover"></tablecell></b-link></td>
                       <!-- <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'DATASET_CUSTODIAN').filter(Boolean)).join('; '))" showOn="click"></tablecell></td>
                       <td><tablecell :fulltext="(_.uniq(_.map(props.item.Custodians, 'BANK_ID').filter(Boolean)).join('; '))" showOn="click"></tablecell></td> -->
@@ -308,7 +308,12 @@ export default {
             $(this).show();
           }
         });
-      }
+      },
+      edmpClick: function () {
+        // if(this.user.Role.split(",").indexOf("RFO") != -1){
+          this.$router.push('/edmp');
+        // }
+      },
     }
 }
 </script>
