@@ -1,5 +1,5 @@
 <template>
-  <p slot="activator" class="col-form-label">
+  <p slot="activator" class="col-form-label text-prewrap">
     <span v-html="truncatedText"></span>
 
     <v-dialog v-model="dialog" width="500" style="margin-top: -4px;" v-if="isTruncated">

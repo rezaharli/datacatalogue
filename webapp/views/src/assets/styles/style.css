@@ -393,7 +393,9 @@ table.v-table.v-datatable td {
     box-sizing: border-box;
 }
 
-td {
+table.v-table.v-datatable td, 
+.text-prewrap > span,
+.v-dialog > .v-card > .v-card__text {
   white-space: pre-wrap; 
   word-wrap: break-word;
 }
