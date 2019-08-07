@@ -62,15 +62,15 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 		usernameTobind, passwordToBind = BindUsernameLDAP, BindPasswordLDAP
 
 		err = l.Bind(BindUsernameLDAP, BindPasswordLDAP)
-		toolkit.Println("with -", err)
+		toolkit.Println("with -", BindUsernameLDAP, BindPasswordLDAP, ": ", err)
 	} else {
 		// defer l.Unbind(username, password)
 		// toolkit.Println("Bind without config:", username, "-", password)
 
-		usernameTobind, passwordToBind = "", ""
+		usernameTobind, passwordToBind = username, password
 
 		err = l.Bind(username, password)
-		toolkit.Println("without -", err)
+		toolkit.Println("without -", username, password, ": ", err)
 	}
 
 	toolkit.Println("BindUsernameLDAP", BindUsernameLDAP, "|", strings.Trim(BindUsernameLDAP, " "), "|", strings.Trim(BindUsernameLDAP, " ") != "", "|", strings.Trim(BindUsernameLDAP, " ") != "" && err == nil)
@@ -101,11 +101,23 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 	param.Set("username", usernameTobind)
 	param.Set("password", passwordToBind)
 
-	toolkit.Println("======================test=====================")
+	toolkit.Println("======================test1=====================")
 
 	toolkit.Println("BaseDN:", loginconf.GetString("basedn"))
-	data, _ := FindDataLdap(address, loginconf.GetString("basedn"), "", param)
-	toolkit.Println("trydata:", data)
+	toolkit.Println("username:", usernameTobind)
+	toolkit.Println("password:", passwordToBind)
+
+	data1, _ := FindDataLdap(address, loginconf.GetString("basedn"), "", param)
+	toolkit.Println("trydata:", data1)
+
+	toolkit.Println("======================test2=====================")
+
+	toolkit.Println("BaseDN:", loginconf.GetString("basedn"))
+	toolkit.Println("username:", usernameTobind)
+	toolkit.Println("password:", passwordToBind)
+
+	data2, _ := SimpleFindDataLdap(address, loginconf.GetString("basedn"), "", param)
+	toolkit.Println("trydata:", data2)
 
 	toolkit.Println("# Closing LDAP Connection")
 	toolkit.Println("# Connection Time : ", time.Since(connectTime).Seconds(), "s")
@@ -337,6 +349,8 @@ func FindDataLdap(addr, basedn, filter string, param toolkit.M) (arrtkm []toolki
 
 	if param.Has("username") {
 		// defer l.Unbind(toolkit.ToString(param["username"]), toolkit.ToString(param["password"]))
+
+		toolkit.Println("Trying to bind with: ", toolkit.ToString(param["username"]), " ||||| ", toolkit.ToString(param["password"]))
 		err = l.Bind(toolkit.ToString(param["username"]), toolkit.ToString(param["password"]))
 		if err != nil {
 			toolkit.Println("#ERROR Bind", err.Error())
@@ -358,6 +372,59 @@ func FindDataLdap(addr, basedn, filter string, param toolkit.M) (arrtkm []toolki
 		filter,
 		attributes,
 		nil)
+
+	sr, err := l.Search(search)
+
+	for _, v := range sr.Entries {
+		tkm := toolkit.M{}
+
+		for _, str := range attributes {
+			if len(v.GetAttributeValues(str)) > 1 {
+				tkm.Set(str, v.GetAttributeValues(str))
+			} else {
+				tkm.Set(str, v.GetAttributeValue(str))
+			}
+		}
+
+		if len(tkm) > 0 {
+			arrtkm = append(arrtkm, tkm)
+		}
+	}
+
+	return
+}
+
+func SimpleFindDataLdap(addr, basedn, filter string, param toolkit.M) (arrtkm []toolkit.M, err error) {
+	arrtkm = make([]toolkit.M, 0, 0)
+
+	l := getLDAPConnection(addr, param)
+	err = l.Connect()
+	if err != nil {
+		toolkit.Println("#ERROR Connecting to LDAP", err.Error())
+		return
+	}
+	defer l.Close()
+
+	if param.Has("username") {
+		// defer l.Unbind(toolkit.ToString(param["username"]), toolkit.ToString(param["password"]))
+
+		toolkit.Println("Trying to bind with: ", toolkit.ToString(param["username"]), " ||||| ", toolkit.ToString(param["password"]))
+		err = l.Bind(toolkit.ToString(param["username"]), toolkit.ToString(param["password"]))
+		if err != nil {
+			toolkit.Println("#ERROR Bind", err.Error())
+			return
+		}
+	}
+
+	attributes := make([]string, 0, 0)
+	if param.Has("attributes") {
+		attributes = param["attributes"].([]string)
+	}
+	// filter = "(*" + filter + "*)"
+	search := ldap.NewSimpleSearchRequest(basedn,
+		ldap.ScopeWholeSubtree,
+		filter,
+		attributes)
 
 	sr, err := l.Search(search)
 
