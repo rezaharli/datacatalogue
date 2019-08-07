@@ -330,6 +330,7 @@ func FindDataLdap(addr, basedn, filter string, param toolkit.M) (arrtkm []toolki
 	l := getLDAPConnection(addr, param)
 	err = l.Connect()
 	if err != nil {
+		toolkit.Println("#ERROR Connecting to LDAP", err.Error())
 		return
 	}
 	defer l.Close()
@@ -338,6 +339,7 @@ func FindDataLdap(addr, basedn, filter string, param toolkit.M) (arrtkm []toolki
 		// defer l.Unbind(toolkit.ToString(param["username"]), toolkit.ToString(param["password"]))
 		err = l.Bind(toolkit.ToString(param["username"]), toolkit.ToString(param["password"]))
 		if err != nil {
+			toolkit.Println("#ERROR Bind", err.Error())
 			return
 		}
 	}
