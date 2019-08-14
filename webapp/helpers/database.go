@@ -5,14 +5,16 @@ import (
 	"log"
 	"strings"
 
-	"github.com/eaciit/toolkit"
+	"github.com/gchaincl/dotsql"
 
 	"github.com/eaciit/clit"
 	_ "github.com/eaciit/gora"
-	"github.com/gchaincl/dotsql"
+	"github.com/eaciit/toolkit"
 
 	"git.eaciitapp.com/sebar/dbflex"
 	_ "git.eaciitapp.com/sebar/dbflex/drivers/mongodb"
+
+	m "eaciit/datacatalogue/webapp/models"
 )
 
 var dbConnection dbflex.IConnection
@@ -22,23 +24,44 @@ func Database() dbflex.IConnection {
 		return dbConnection
 	}
 
-	dbConf := clit.Config("default", "database", "").(map[string]interface{})
-	which := dbConf["which"].(string)
-	log.Println("-> connecting to", which, "database server")
+	dbConfs := clit.Config("default", "database", "").([]interface{})
 
-	var fn func(dbConf map[string]interface{}, which string) (dbflex.IConnection, error)
-	switch which {
-	case "oracle":
-		fn = NewOracleConnection
-	case "mongodb":
-		fn = NewMongodbConnection
-	}
+	for i, val := range dbConfs {
+		toolkit.Println("Attempt: config", (i + 1))
 
-	var err error
-	dbConnection, err = fn(dbConf, which)
-	if err != nil {
-		log.Println("-> failed to connect to the", which, "database server.", err.Error())
-		// os.Exit(0)
+		dbConf := val.(map[string]interface{})
+
+		which := dbConf["which"].(string)
+		log.Println("-> connecting to", which, "database server")
+
+		var fn func(dbConf map[string]interface{}, which string) (dbflex.IConnection, error)
+		switch which {
+		case "oracle":
+			fn = NewOracleConnection
+		case "mongodb":
+			fn = NewMongodbConnection
+		}
+
+		var err error
+		dbConnection, err = fn(dbConf, which)
+		if err != nil {
+			log.Println("-> failed to connect to the", which, "database server.", err.Error())
+			// os.Exit(0)
+		} else {
+			// test connection by random select into any table
+			users := make([]m.SysUser, 0)
+			err = NewDBcmd().GetBy(GetByParam{
+				TableName: "tbl_users",
+				Clause:    dbflex.Eq("username", 123),
+				Result:    &users,
+			})
+			if err != nil {
+				continue
+			} else {
+				toolkit.Println("Database connection successful")
+				break
+			}
+		}
 	}
 
 	return dbConnection
