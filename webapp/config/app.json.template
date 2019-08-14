@@ -2,23 +2,27 @@
     "environment": "prod",
     "host": "localhost",
     "port": "9001",
-    "database": {
+    "database": [{
         "which": "oracle",
         "enableEncryption": true,
         "oracle": {
             "username": "scbdc",
-            "password": "fGeOfIt9hH2yWnWhDWkIulSp830458ER",
+            "password": "hdY7hK8C_975C7YbSzUMDozVobpL8hpF",
+            "host": "localhost",
+            "port": "1522",
+            "service": "orclcdb"
+        }
+    }, {
+        "which": "oracle",
+        "enableEncryption": true,
+        "oracle": {
+            "username": "scbdc",
+            "password": "hdY7hK8C_975C7YbSzUMDozVobpL8hpF",
             "host": "localhost",
             "port": "1521",
             "service": "orclcdb"
-        },
-        "mongodb": {
-            "host": "example.com:80808",
-            "username": "example",
-            "password": "example",
-            "name": "scbdc"
         }
-    },
+    }],
     "LDAP": {
         "IsEnabled": "true",
         "Type": "ssl",
