@@ -394,6 +394,9 @@ func FindDataLdap(addr, basedn, filter string, param toolkit.M) (arrtkm []toolki
 		nil)
 
 	sr, err := l.Search(search)
+	if err != nil {
+		toolkit.Println("#ERROR Search", err.Error())
+	}
 	toolkit.Println("sr from function: ", sr)
 
 	for _, v := range sr.Entries {
@@ -448,6 +451,9 @@ func SimpleFindDataLdap(addr, basedn, filter string, param toolkit.M) (arrtkm []
 		attributes)
 
 	sr, err := l.Search(search)
+	if err != nil {
+		toolkit.Println("#ERROR Search", err.Error())
+	}
 	toolkit.Println("sr from simple function: ", sr)
 
 	for _, v := range sr.Entries {
@@ -507,6 +513,9 @@ func FindDataLdapWobe(addr, basedn, filter string, param toolkit.M) (arrtkm []to
 		nil)
 
 	sr, err := l.Search(search)
+	if err != nil {
+		toolkit.Println("#ERROR Search", err.Error())
+	}
 	toolkit.Println("sr from function: ", sr)
 
 	for _, v := range sr.Entries {
@@ -561,6 +570,9 @@ func SimpleFindDataLdapWobe(addr, basedn, filter string, param toolkit.M) (arrtk
 		attributes)
 
 	sr, err := l.Search(search)
+	if err != nil {
+		toolkit.Println("#ERROR Search", err.Error())
+	}
 	toolkit.Println("sr from simple function: ", sr)
 
 	for _, v := range sr.Entries {
