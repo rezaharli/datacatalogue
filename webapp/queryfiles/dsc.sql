@@ -64,27 +64,22 @@ SELECT DISTINCT
 	)
 
 -- name: dsc-view-cde
-SELECT DISTINCT 
+SELECT 
 		TMC.ID,
-		TMT.ID					AS TMTID,
-		TS.ID					AS TSID,
-		TMC.ID					AS COLID,
-		TS.SYSTEM_NAME				AS SYSTEM_NAME,
-		TMCD.ALIAS_NAME                        			AS CDE,
-		TMCD.DESCRIPTION                       			AS DESCRIPTION,
-		IPS.SYSTEM_NAME				AS UPSTREAM_SYSTEM,
-		TMT.DISPLAY_NAME                              			AS TABLE_NAME,
-		TMC.DISPLAY_NAME                              			AS COLUMN_NAME,
-		NVL(TDP.NAME,' ')                              				AS DSP_NAME,
-		TP.FIRST_NAME||' '|| TP.LAST_NAME     			AS PROCESS_OWNER,
-		TP.BANK_ID                            				AS BANK_ID,
-		COUNT(DISTINCT TMCD.ALIAS_NAME) OVER () 		AS CDE_COUNT,
-		COUNT(DISTINCT TMCD.ALIAS_NAME) OVER ()		AS COUNT_CDE,
-		COUNT(DISTINCT TMCD.DESCRIPTION) OVER ()		AS COUNT_DESCRIPTION,
-		COUNT(DISTINCT TMT.DISPLAY_NAME) OVER ()		AS COUNT_TABLE_NAME,
-		COUNT(DISTINCT TMC.DISPLAY_NAME) OVER ()		AS COUNT_COLUMN_NAME,
-		COUNT(DISTINCT NVL(TDP.NAME,' ')) OVER ()			AS COUNT_DSP_NAME,
-		COUNT(DISTINCT TP.FIRST_NAME||' '|| TP.LAST_NAME) OVER ()	AS COUNT_PROCESS_OWNER
+		TMT.ID                                 		AS TMTID,
+		TS.ID                                   		AS TSID,
+		TMC.ID                                  		AS COLID,
+		TS.SYSTEM_NAME                          	AS SYSTEM_NAME,
+		TMCD.ALIAS_NAME                                         	AS CDE,
+		TMCD.DESCRIPTION                                        	AS DESCRIPTION,
+		IPS.SYSTEM_NAME                         	AS UPSTREAM_SYSTEM,
+		TMT.DISPLAY_NAME                                             AS TABLE_NAME,
+		TMC.DISPLAY_NAME                                             AS COLUMN_NAME,
+		NVL(TDP.NAME,' ')                                                   AS DSP_NAME,
+		TP.FIRST_NAME||' '|| TP.LAST_NAME        AS PROCESS_OWNER,
+		TP.BANK_ID                                                      	AS BANK_ID,
+		COUNT(DISTINCT TMCD.ALIAS_NAME) OVER ()         AS COUNT_CDE,
+		COUNT(DISTINCT NVL(TDP.NAME,' ')) OVER ()              AS COUNT_DSP_NAME
 	FROM 
 		TBL_SYSTEM TS
 		INNER JOIN TBL_MD_RESOURCE TMR ON TS.ID = TMR.SYSTEM_ID
@@ -99,6 +94,8 @@ SELECT DISTINCT
 		LEFT OUTER JOIN TBL_LINK_COLUMN_INTERFACE CI ON CI.COLUMN_ID = TMC.ID
 		LEFT OUTER JOIN TBL_SYSTEM IPS ON IPS.ID = CI.IMM_PREC_SYSTEM_ID
 	WHERE UPPER(TS.SYSTEM_NAME) = UPPER('?') AND CDE = 1
+	GROUP BY TMC.ID,TMT.ID,TS.ID,TMC.ID,TS.SYSTEM_NAME,TMCD.ALIAS_NAME,TMCD.DESCRIPTION,IPS.SYSTEM_NAME,TMT.DISPLAY_NAME,TMC.DISPLAY_NAME,NVL(TDP.NAME,' '),TP.FIRST_NAME||' '||TP.LAST_NAME, TP.BANK_ID
+	
 
 -- name: dsc-view-cdp
 SELECT  DISTINCT
