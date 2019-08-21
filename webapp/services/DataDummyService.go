@@ -956,6 +956,55 @@ func (s *DSCService) CreateLinkPolicySystemDummyData() error {
 	return nil
 }
 
+func (s *DSCService) CreateReferenceLinkDummyData() error {
+	toolkit.Println("CreateReferenceLinkDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewReferenceLinkModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.ReferenceLink, 0)
+	for i := 0; i < 10000; i++ {
+		mdt := m.NewReferenceLinkModel()
+		mdt.ID = i
+		mdt.Object_Type = fake.Words()
+		mdt.Object_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.URL = fake.ProductName() + ".com"
+		mdt.Created_DateTime = time.Now()
+		mdt.Modified_DateTime = time.Now()
+
+		if i%1 == 0 {
+			mdt.Object_Type = "SYSTEM"
+		}
+		if i%2 == 0 {
+			mdt.Object_Type = "DOMAIN"
+		}
+		if i%3 == 0 {
+			mdt.Object_Type = "SUBDOMAIN"
+		}
+		if i%4 == 0 {
+			mdt.Object_Type = "BUSINESSTERM"
+		}
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewReferenceLinkModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
 func (s *DSCService) CreateUserDummyData() error {
 	toolkit.Println("CreateUserAdminData")
 

@@ -128,7 +128,7 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 		toolkit.Println("username:", usernameTobind)
 		toolkit.Println("password:", passwordToBind)
 
-		data3, _ := FindDataLdapWobe(address, loginconf.GetString("basedn"), "", param)
+		data3, _ := SimpleFindDataLdapWobe(address, loginconf.GetString("basedn"), "", param)
 		toolkit.Println("trydata:", data3)
 
 		toolkit.Println("======================test4=====================")
@@ -137,7 +137,7 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 		toolkit.Println("username:", usernameTobind)
 		toolkit.Println("password:", passwordToBind)
 
-		data4, _ := SimpleFindDataLdapWobe(address, loginconf.GetString("basedn"), "", param)
+		data4, _ := FindDataLdapWobe(address, loginconf.GetString("basedn"), "", param)
 		toolkit.Println("trydata:", data4)
 
 		toolkit.Println("# Closing LDAP Connection")
