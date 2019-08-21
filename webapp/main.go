@@ -88,6 +88,7 @@ func main() {
 			s.NewDSCService().CreateCDEDummyData()
 			s.NewDSCService().CreateLinkRolePeopleDummyData()
 			s.NewDSCService().CreateLinkPolicySystemDummyData()
+			s.NewDSCService().CreateReferenceLinkDummyData()
 		}
 
 		s.NewDSCService().CreateUserDummyData()
