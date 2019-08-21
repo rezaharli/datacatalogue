@@ -383,6 +383,12 @@ func FindDataLdap(addr, basedn, filter string, param toolkit.M) (arrtkm []toolki
 		attributes = param["attributes"].([]string)
 	}
 	// filter = "(*" + filter + "*)"
+	toolkit.Println("basedn", basedn)
+	toolkit.Println("ScopeWholeSubtree", ldap.ScopeWholeSubtree)
+	toolkit.Println("DerefAlways", ldap.DerefAlways)
+	toolkit.Println("filter", filter)
+	toolkit.Println("attributes", attributes)
+
 	search := ldap.NewSearchRequest(basedn,
 		ldap.ScopeWholeSubtree,
 		ldap.DerefAlways,
@@ -445,6 +451,10 @@ func SimpleFindDataLdap(addr, basedn, filter string, param toolkit.M) (arrtkm []
 		attributes = param["attributes"].([]string)
 	}
 	// filter = "(*" + filter + "*)"
+	toolkit.Println("basedn", basedn)
+	toolkit.Println("ScopeWholeSubtree", ldap.ScopeWholeSubtree)
+	toolkit.Println("filter", filter)
+	toolkit.Println("attributes", attributes)
 	search := ldap.NewSimpleSearchRequest(basedn,
 		ldap.ScopeWholeSubtree,
 		filter,
@@ -502,6 +512,11 @@ func FindDataLdapWobe(addr, basedn, filter string, param toolkit.M) (arrtkm []to
 		attributes = param["attributes"].([]string)
 	}
 	// filter = "(*" + filter + "*)"
+	toolkit.Println("basedn", basedn)
+	toolkit.Println("ScopeWholeSubtree", ldap.ScopeWholeSubtree)
+	toolkit.Println("DerefAlways", ldap.DerefAlways)
+	toolkit.Println("filter", filter)
+	toolkit.Println("attributes", attributes)
 	search := ldap.NewSearchRequest(basedn,
 		ldap.ScopeWholeSubtree,
 		ldap.DerefAlways,
@@ -564,6 +579,10 @@ func SimpleFindDataLdapWobe(addr, basedn, filter string, param toolkit.M) (arrtk
 		attributes = param["attributes"].([]string)
 	}
 	// filter = "(*" + filter + "*)"
+	toolkit.Println("basedn", basedn)
+	toolkit.Println("ScopeWholeSubtree", ldap.ScopeWholeSubtree)
+	toolkit.Println("filter", filter)
+	toolkit.Println("attributes", attributes)
 	search := ldap.NewSimpleSearchRequest(basedn,
 		ldap.ScopeWholeSubtree,
 		filter,
