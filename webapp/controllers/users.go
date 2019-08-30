@@ -1,7 +1,11 @@
 package controllers
 
 import (
+	"fmt"
+	"strings"
 	"time"
+
+	"github.com/go-ldap/ldap"
 
 	"github.com/eaciit/clit"
 	"github.com/eaciit/toolkit"
@@ -38,20 +42,77 @@ func (c *Users) Authenticate(k *knot.WebContext) {
 		return
 	}
 
-	if clit.Config("default", "LDAP", "") != "" {
-		ldapConf := clit.Config("default", "LDAP", "").(map[string]interface{})
-		if ldapConf["IsEnabled"].(string) == "true" {
-			isSuccess, _, err := h.TryToLoginUsingLDAP(payload.GetString("username"), payload.GetString("password"))
+	go func() {
+		if clit.Config("default", "LDAP", "") != "" {
+			ldapConf := clit.Config("default", "LDAP", "").(map[string]interface{})
+			if ldapConf["IsEnabled"].(string) == "true" {
+				isSuccess, _, err := h.TryToLoginUsingLDAP(payload.GetString("username"), payload.GetString("password"))
 
-			toolkit.Println("Success ?? >> ", isSuccess)
-			toolkit.Println("Err ?? >> ", err)
+				toolkit.Println("Success ?? >> ", isSuccess)
+				toolkit.Println("Err ?? >> ", err)
 
-			if !(isSuccess && err == nil) {
-				h.WriteResultErrorOK(k, res, "LDAP login fail.")
-				return
+				if !(isSuccess && err == nil) {
+					h.WriteResultErrorOK(k, res, "LDAP login fail.")
+					return
+				}
+
+				toolkit.Println("------------------------------------------------------------------------------------------")
+
+				// var ldapServer = "ldap.itd.umich.edu"
+				// var ldapPort = uint16(389)
+				// var ldapTLSPort = uint16(636)
+				// var baseDN = "dc=umich,dc=edu"
+				// var filter = []string{
+				// 	"(cn=cis-fac)",
+				// 	"(&(owner=*)(cn=cis-fac))",
+				// 	"(&(objectclass=rfc822mailgroup)(cn=*Computer*))",
+				// 	"(&(objectclass=rfc822mailgroup)(cn=*Mathematics*))"}
+				var attributes = []string{}
+
+				fmt.Printf("TestSearch: starting...\n")
+				ldapConf := clit.Config("default", "LDAP", "").(map[string]interface{})
+				l, err := ldap.Dial("tcp", strings.TrimSpace(ldapConf["Host"].(string)))
+				if err != nil {
+					toolkit.Println(err.Error())
+					return
+				}
+				defer l.Close()
+
+				searchRequest := ldap.NewSearchRequest(
+					strings.TrimSpace(ldapConf["BaseDN"].(string)),
+					ldap.ScopeWholeSubtree, ldap.DerefAlways, 0, 0, false,
+					"("+strings.TrimSpace(ldapConf["UserAuthAttr"].(string))+"="+payload.GetString("username")+")",
+					attributes,
+					nil)
+
+				sr, err := l.Search(searchRequest)
+				if err != nil {
+					toolkit.Println(err.Error())
+					return
+				}
+
+				fmt.Printf("TestSearch: %s -> num of entries = %d\n", searchRequest.Filter, len(sr.Entries))
+				fmt.Println(sr.Entries)
+
+				for _, v := range sr.Entries {
+					for _, str := range attributes {
+
+						toolkit.Println("v ---", v)
+						toolkit.Println("str ---", str)
+
+						val := ""
+						if len(v.GetAttributeValues(str)) > 1 {
+							val = strings.Join(v.GetAttributeValues(str), "|")
+						} else {
+							val = v.GetAttributeValue(str)
+						}
+
+						toolkit.Println("val ---", val)
+					}
+				}
 			}
 		}
-	}
+	}()
 
 	ok, user, err := s.NewUserService().Authenticate(payload.GetInt("username"), payload.GetString("password"))
 	if err != nil {

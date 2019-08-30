@@ -43,6 +43,7 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 	connectTime := time.Now()
 	address := loginconf.GetString("address")
 
+	toolkit.Println("getLDAPConnection1", address, loginconf)
 	l := getLDAPConnection(address, loginconf)
 	defer l.Close()
 
@@ -82,8 +83,8 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 		if err == nil {
 			cond = true
 		} else {
-			// toolkit.Println("#ERROR Binding to LDAP with username : ", username)
-			// toolkit.Println("#ERROR Binding to LDAP with password : ", password)
+			toolkit.Println("#ERROR Binding to LDAP with username : ", username)
+			toolkit.Println("#ERROR Binding to LDAP with password : ", password)
 			toolkit.Println(err.Error())
 		}
 	} else {
@@ -91,57 +92,50 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 		if err == nil {
 			cond = true
 		} else {
-			// toolkit.Println("#ERROR Binding to LDAP with username : ", username)
-			// toolkit.Println("#ERROR Binding to LDAP with password : ", password)
+			toolkit.Println("#ERROR Binding to LDAP with username : ", username)
+			toolkit.Println("#ERROR Binding to LDAP with password : ", password)
 			toolkit.Println(err.Error())
 		}
 	}
 
-	// return
+	return
 
 	go func() {
 		param := toolkit.M{}
 		param.Set("username", usernameTobind)
 		param.Set("password", passwordToBind)
 
-		toolkit.Println("======================test1=====================")
+		attributes := []string{}
+		param.Set("attributes", attributes)
 
-		toolkit.Println("BaseDN:", loginconf.GetString("basedn"))
-		toolkit.Println("username:", usernameTobind)
-		toolkit.Println("password:", passwordToBind)
+		data2 := []toolkit.M{}
+		toolkit.Println("\n-------------------------------------------")
+		toolkit.Println("Try to retrieve data")
+		toolkit.Println("-------------------------------------------")
 
-		data1, _ := FindDataLdap(address, loginconf.GetString("basedn"), "", param)
-		toolkit.Println("trydata:", data1)
+		for i := 1; i <= 5; i++ {
+			toolkit.Println("---------------------------------Attempt:", i)
 
-		toolkit.Println("======================test2=====================")
+			toolkit.Println("BaseDN:", loginconf.GetString("basedn"))
+			toolkit.Println("username:", usernameTobind)
+			toolkit.Println("password:", passwordToBind)
 
-		toolkit.Println("BaseDN:", loginconf.GetString("basedn"))
-		toolkit.Println("username:", usernameTobind)
-		toolkit.Println("password:", passwordToBind)
+			data2, _ = SimpleFindDataLdap(address, loginconf.GetString("basedn"), "(dn="+username+")", param)
+			if len(data2) > 0 {
+				break
+			}
+		}
 
-		data2, _ := SimpleFindDataLdap(address, loginconf.GetString("basedn"), "", param)
 		toolkit.Println("trydata:", data2)
+		for key, val := range data2 {
+			toolkit.Println(key, val["sn"], val["mail"], val["telephoneNumber"])
+		}
 
-		toolkit.Println("======================test3=====================")
-
-		toolkit.Println("BaseDN:", loginconf.GetString("basedn"))
-		toolkit.Println("username:", usernameTobind)
-		toolkit.Println("password:", passwordToBind)
-
-		data3, _ := SimpleFindDataLdapWobe(address, loginconf.GetString("basedn"), "", param)
-		toolkit.Println("trydata:", data3)
-
-		toolkit.Println("======================test4=====================")
-
-		toolkit.Println("BaseDN:", loginconf.GetString("basedn"))
-		toolkit.Println("username:", usernameTobind)
-		toolkit.Println("password:", passwordToBind)
-
-		data4, _ := FindDataLdapWobe(address, loginconf.GetString("basedn"), "", param)
-		toolkit.Println("trydata:", data4)
-
+		// 	toolkit.Println("\n# End of retrieving data")
 		toolkit.Println("# Closing LDAP Connection")
 		toolkit.Println("# Connection Time : ", time.Since(connectTime).Seconds(), "s")
+
+		return
 
 		if cond {
 			toolkit.Println("# Getting some Information from LDAP ")
@@ -359,6 +353,7 @@ func TryToLoginUsingLDAP(username, password string) (bool, LDAPDataList, error) 
 func FindDataLdap(addr, basedn, filter string, param toolkit.M) (arrtkm []toolkit.M, err error) {
 	arrtkm = make([]toolkit.M, 0, 0)
 
+	toolkit.Println("getLDAPConnection", addr, param)
 	l := getLDAPConnection(addr, param)
 	err = l.Connect()
 	if err != nil {
