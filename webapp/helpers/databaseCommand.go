@@ -335,7 +335,9 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 
 	err := cursor.Fetchs(param.Results, 0)
 
-	toolkit.Println(sqlQuery, "\nqueryTime:", time.Since(queryTime).Seconds(), "\n--------------------------------------------------------------")
+	toolkit.Println(sqlQuery, "\nqueryTime:", time.Since(queryTime).Seconds())
+	a := param.Results.(*[]toolkit.M)
+	toolkit.Println("fetched results:", len(*a), "\n--------------------------------------------------------------")
 	return err
 }
 
