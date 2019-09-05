@@ -50,64 +50,68 @@ func (c *Users) Authenticate(k *knot.WebContext) {
 				h.WriteResultErrorOK(k, res, "LDAP login fail.")
 				return
 			}
+			
+			go func() {
+				toolkit.Println("------------------------------------------------------------------------------------------")
 
-			// go func() {
-			// 	toolkit.Println("------------------------------------------------------------------------------------------")
+				// var ldapServer = "ldap.itd.umich.edu"
+				// var ldapPort = uint16(389)
+				// var ldapTLSPort = uint16(636)
+				// var baseDN = "dc=umich,dc=edu"
+				// var filter = []string{
+				// 	"(cn=cis-fac)",
+				// 	"(&(owner=*)(cn=cis-fac))",
+				// 	"(&(objectclass=rfc822mailgroup)(cn=*Computer*))",
+				// 	"(&(objectclass=rfc822mailgroup)(cn=*Mathematics*))"}
+				var attributes = []string{}
 
-			// 	// var ldapServer = "ldap.itd.umich.edu"
-			// 	// var ldapPort = uint16(389)
-			// 	// var ldapTLSPort = uint16(636)
-			// 	// var baseDN = "dc=umich,dc=edu"
-			// 	// var filter = []string{
-			// 	// 	"(cn=cis-fac)",
-			// 	// 	"(&(owner=*)(cn=cis-fac))",
-			// 	// 	"(&(objectclass=rfc822mailgroup)(cn=*Computer*))",
-			// 	// 	"(&(objectclass=rfc822mailgroup)(cn=*Mathematics*))"}
+				fmt.Printf("TestSearch: starting...\n")
+				ldapConf := clit.Config("default", "LDAP", "").(map[string]interface{})
+				l, err := ldap.Dial("tcp", strings.TrimSpace(ldapConf["Host"].(string)))
+				if err != nil {
+					toolkit.Println("1", err.Error())
+				}
+				defer l.Close()
 
-			// 	var attributes = []string{}
+				toolkit.Println(strings.TrimSpace(ldapConf["BaseDN"].(string)))
+				toolkit.Println(ldap.ScopeWholeSubtree, ldap.DerefAlways, 0, 0, false)
+				toolkit.Println("(" + strings.TrimSpace(ldapConf["UserAuthAttr"].(string)) + "=" + payload.GetString("username") + ")")
+				toolkit.Println(attributes)
 
-			// 	fmt.Printf("TestSearch: starting...\n")
-			// 	ldapConf := clit.Config("default", "LDAP", "").(map[string]interface{})
-			// 	l, err := ldap.Dial("tcp", strings.TrimSpace(ldapConf["Host"].(string)))
-			// 	if err != nil {
-			// 		toolkit.Println(err.Error())
-			// 		return
-			// 	}
-			// 	defer l.Close()
+				searchRequest := ldap.NewSearchRequest(
+					strings.TrimSpace(ldapConf["BaseDN"].(string)),
+					ldap.ScopeWholeSubtree, ldap.DerefAlways, 0, 0, false,
+					"("+strings.TrimSpace(ldapConf["UserAuthAttr"].(string))+"="+payload.GetString("username")+")",
+					attributes,
+					nil)
 
-			// 	searchRequest := ldap.NewSearchRequest(
-			// 		strings.TrimSpace(ldapConf["BaseDN"].(string)),
-			// 		ldap.ScopeWholeSubtree, ldap.DerefAlways, 0, 0, false,
-			// 		"("+strings.TrimSpace(ldapConf["UserAuthAttr"].(string))+"="+payload.GetString("username")+")",
-			// 		attributes,
-			// 		nil)
+				toolkit.Println("--", searchRequest)
 
-			// 	sr, err := l.Search(searchRequest)
-			// 	if err != nil {
-			// 		toolkit.Println(err.Error())
-			// 		return
-			// 	}
+				sr, err := l.Search(searchRequest)
+				if err != nil {
+					toolkit.Println("2", err.Error())
+				}
 
-			// 	fmt.Printf("TestSearch: %s -> num of entries = %d\n", searchRequest.Filter, len(sr.Entries))
-			// 	fmt.Println(sr.Entries)
+				fmt.Printf("TestSearch: %s -> num of entries = %d\n", searchRequest.Filter, len(sr.Entries))
+				fmt.Println(sr.Entries)
 
-			// 	for _, v := range sr.Entries {
-			// 		for _, str := range attributes {
+				for _, v := range sr.Entries {
+					for _, str := range attributes {
 
-			// 			toolkit.Println("v ---", v)
-			// 			toolkit.Println("str ---", str)
+						toolkit.Println("v ---", v)
+						toolkit.Println("str ---", str)
 
-			// 			val := ""
-			// 			if len(v.GetAttributeValues(str)) > 1 {
-			// 				val = strings.Join(v.GetAttributeValues(str), "|")
-			// 			} else {
-			// 				val = v.GetAttributeValue(str)
-			// 			}
+						val := ""
+						if len(v.GetAttributeValues(str)) > 1 {
+							val = strings.Join(v.GetAttributeValues(str), "|")
+						} else {
+							val = v.GetAttributeValue(str)
+						}
 
-			// 			toolkit.Println("val ---", val)
-			// 		}
-			// 	}
-			// }()
+						toolkit.Println("val ---", val)
+					}
+				}
+			}
 		}
 	}
 
