@@ -73,10 +73,14 @@ func (c *Users) Authenticate(k *knot.WebContext) {
 				ldapConf := clit.Config("default", "LDAP", "").(map[string]interface{})
 				l, err := ldap.Dial("tcp", strings.TrimSpace(ldapConf["Host"].(string)))
 				if err != nil {
-					toolkit.Println(err.Error())
-					return
+					toolkit.Println("1", err.Error())
 				}
 				defer l.Close()
+
+				toolkit.Println(strings.TrimSpace(ldapConf["BaseDN"].(string)))
+				toolkit.Println(ldap.ScopeWholeSubtree, ldap.DerefAlways, 0, 0, false)
+				toolkit.Println("(" + strings.TrimSpace(ldapConf["UserAuthAttr"].(string)) + "=" + payload.GetString("username") + ")")
+				toolkit.Println(attributes)
 
 				searchRequest := ldap.NewSearchRequest(
 					strings.TrimSpace(ldapConf["BaseDN"].(string)),
@@ -85,10 +89,11 @@ func (c *Users) Authenticate(k *knot.WebContext) {
 					attributes,
 					nil)
 
+				toolkit.Println("--", searchRequest)
+
 				sr, err := l.Search(searchRequest)
 				if err != nil {
-					toolkit.Println(err.Error())
-					return
+					toolkit.Println("2", err.Error())
 				}
 
 				fmt.Printf("TestSearch: %s -> num of entries = %d\n", searchRequest.Filter, len(sr.Entries))
