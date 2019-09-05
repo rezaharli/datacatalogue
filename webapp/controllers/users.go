@@ -1,10 +1,13 @@
 package controllers
 
 import (
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/eaciit/clit"
 	"github.com/eaciit/toolkit"
+	"github.com/go-ldap/ldap"
 
 	"git.eaciitapp.com/sebar/knot"
 
@@ -50,7 +53,7 @@ func (c *Users) Authenticate(k *knot.WebContext) {
 				h.WriteResultErrorOK(k, res, "LDAP login fail.")
 				return
 			}
-			
+
 			go func() {
 				toolkit.Println("------------------------------------------------------------------------------------------")
 
@@ -111,7 +114,7 @@ func (c *Users) Authenticate(k *knot.WebContext) {
 						toolkit.Println("val ---", val)
 					}
 				}
-			}
+			}()
 		}
 	}
 
