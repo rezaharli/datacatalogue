@@ -394,6 +394,13 @@ table.v-table.v-datatable td {
     box-sizing: border-box;
 }
 
+table.v-table.v-datatable td.text-prewrap, 
+.text-prewrap > span,
+.v-dialog > .v-card > .v-card__text {
+  white-space: pre-wrap; 
+  word-wrap: break-word;
+}
+
 .modal-content {display: contents !important;}
 
 .v-text-field--box > .v-input__control > .v-input__slot:before{border: none;}

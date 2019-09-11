@@ -626,7 +626,7 @@ export default {
         } 
 
         if(this.store.ddVal.ddSuccIncomingSelected && this.store.ddVal.ddSuccIncomingSelected != "NA"){
-          param.PrecIncoming = this.store.ddVal.ddSuccIncomingSelected.toString();
+          param.SuccIncoming = this.store.ddVal.ddSuccIncomingSelected.toString();
         } 
         
         this.runGetDetails(param);

@@ -64,28 +64,23 @@ SELECT DISTINCT
 	)
 
 -- name: dsc-view-cde
-SELECT DISTINCT 
+SELECT 
 		TMC.ID,
-		TMT.ID					AS TMTID,
-		TS.ID					AS TSID,
-		TMC.ID					AS COLID,
-		TS.SYSTEM_NAME				AS SYSTEM_NAME,
-		TMCD.ALIAS_NAME                        			AS CDE,
-		TMCD.DESCRIPTION                       			AS DESCRIPTION,
-		IPS.SYSTEM_NAME				AS UPSTREAM_SYSTEM,
-		TMT.DISPLAY_NAME                              			AS TABLE_NAME,
-		TMC.DISPLAY_NAME                              			AS COLUMN_NAME,
-		NVL(TDP.NAME,' ')                              				AS DSP_NAME,
-		TP.FIRST_NAME||' '|| TP.LAST_NAME     			AS PROCESS_OWNER,
-		TP.BANK_ID                            				AS BANK_ID,
-		COUNT(DISTINCT TMCD.ALIAS_NAME) OVER () 		AS CDE_COUNT,
-		COUNT(DISTINCT TMCD.ALIAS_NAME) OVER ()		AS COUNT_CDE,
-		COUNT(DISTINCT TMCD.DESCRIPTION) OVER ()		AS COUNT_DESCRIPTION,
-		COUNT(DISTINCT TMT.DISPLAY_NAME) OVER ()		AS COUNT_TABLE_NAME,
-		COUNT(DISTINCT TMC.DISPLAY_NAME) OVER ()		AS COUNT_COLUMN_NAME,
-		COUNT(DISTINCT NVL(TDP.NAME,' ')) OVER ()			AS COUNT_DSP_NAME,
-		COUNT(DISTINCT TP.FIRST_NAME||' '|| TP.LAST_NAME) OVER ()	AS COUNT_PROCESS_OWNER
-	FROM 
+		TMT.ID                                 			AS TMTID,
+		TS.ID                                   			AS TSID,
+		TMC.ID                                  			AS COLID,
+		TS.SYSTEM_NAME                          		AS SYSTEM_NAME,
+		TMCD.ALIAS_NAME                                         		AS CDE,
+		TMCD.DESCRIPTION                                        		AS DESCRIPTION,
+		IPS.SYSTEM_NAME                         		AS UPSTREAM_SYSTEM,
+		TMT.DISPLAY_NAME                                            		AS TABLE_NAME,
+		TMC.DISPLAY_NAME                                             	AS COLUMN_NAME,
+		NVL(TDP.NAME,' ')                                                   	AS DSP_NAME,
+		TP.FIRST_NAME||' '|| TP.LAST_NAME        	AS PROCESS_OWNER,
+		TP.BANK_ID                                                      		AS BANK_ID,
+		COUNT(DISTINCT TMCD.ALIAS_NAME) OVER ()         	AS COUNT_CDE,
+		COUNT(DISTINCT NVL(TDP.NAME,' ')) OVER ()              	AS COUNT_DSP_NAME
+	FROM
 		TBL_SYSTEM TS
 		INNER JOIN TBL_MD_RESOURCE TMR ON TS.ID = TMR.SYSTEM_ID
 		INNER JOIN TBL_MD_TABLE TMT ON TMR.ID = TMT.RESOURCE_ID
@@ -98,18 +93,19 @@ SELECT DISTINCT
 		LEFT OUTER JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
 		LEFT OUTER JOIN TBL_LINK_COLUMN_INTERFACE CI ON CI.COLUMN_ID = TMC.ID
 		LEFT OUTER JOIN TBL_SYSTEM IPS ON IPS.ID = CI.IMM_PREC_SYSTEM_ID
-	WHERE UPPER(TS.SYSTEM_NAME) = UPPER('?') AND CDE = 1
+		WHERE UPPER(TS.SYSTEM_NAME) = UPPER('?') AND CDE = 1
+		GROUP BY TMC.ID,TMT.ID,TS.ID,TMC.ID,TS.SYSTEM_NAME,TMCD.ALIAS_NAME,TMCD.DESCRIPTION,IPS.SYSTEM_NAME,TMT.DISPLAY_NAME,TMC.DISPLAY_NAME,NVL(TDP.NAME,' '),TP.FIRST_NAME||' '||TP.LAST_NAME, TP.BANK_ID
 
 -- name: dsc-view-cdp
 SELECT  DISTINCT
 		TDP.ID,
 		TS.SYSTEM_NAME					AS SYSTEM_NAME,
-		NVL(TDP.NAME, ' ')                              					AS DSP_NAME,
+		NVL(TDP.NAME, ' ')                              				AS DSP_NAME,
 		TP.FIRST_NAME||' '|| TP.LAST_NAME     				AS PROCESS_OWNER,
 		TP.BANK_ID                            					AS BANK_ID,
 		COUNT(DISTINCT TMCD.ALIAS_NAME) OVER (PARTITION BY TDP.NAME)	AS CDE_COUNT,
-		COUNT(DISTINCT TMCD.ALIAS_NAME) OVER () 				AS TOTAL,
-		COUNT(DISTINCT NVL(TDP.NAME, ' ')) OVER ()	  			AS COUNT_DSP_NAME
+		COUNT(DISTINCT TMCD.ALIAS_NAME) OVER () 			AS TOTAL,
+		COUNT(DISTINCT NVL(TDP.NAME, ' ')) OVER ()	  		AS COUNT_DSP_NAME
 	FROM 
 		TBL_SYSTEM TS
 		INNER JOIN TBL_MD_RESOURCE TMR ON TS.ID = TMR.SYSTEM_ID
@@ -138,10 +134,7 @@ SELECT  DISTINCT
 		TMCD.DESCRIPTION                       			AS DESCRIPTION,
 		TMT.DISPLAY_NAME                              			AS TABLE_NAME,
 		TMC.DISPLAY_NAME                              			AS COLUMN_NAME,
-		COUNT(DISTINCT NVL(TMCD.ALIAS_NAME, ' ')) OVER ()		AS COUNT_CDE,
-		COUNT(DISTINCT TMCD.DESCRIPTION) OVER ()		AS COUNT_DESCRIPTION,
-		COUNT(DISTINCT TMT.DISPLAY_NAME) OVER ()		AS COUNT_TABLE_NAME,
-		COUNT(DISTINCT TMC.DISPLAY_NAME) OVER ()		AS COUNT_COLUMN_NAME
+		COUNT(DISTINCT NVL(TMCD.ALIAS_NAME, ' ')) OVER ()		AS COUNT_CDE
 	FROM 
 		TBL_SYSTEM TS
 		INNER JOIN TBL_MD_RESOURCE TMR ON TS.ID = TMR.SYSTEM_ID
@@ -165,7 +158,7 @@ SELECT  DISTINCT
 		SS.SYSTEM_NAME                            		AS IMM_INTERFACE,
 		COUNT(DISTINCT TMCD.ALIAS_NAME) OVER(PARTITION BY SS.SYSTEM_NAME)      	   	AS CDE_COUNT,
 		COUNT(DISTINCT SS.SYSTEM_NAME) OVER ()	AS COUNT_IMM_INTERFACE,
-		TP.FIRST_NAME||' '||TP.LAST_NAME     			AS PROCESS_OWNER
+		TP.FIRST_NAME||' '||TP.LAST_NAME     		AS PROCESS_OWNER
 	FROM 
 		TBL_SYSTEM TS
 		INNER JOIN TBL_MD_RESOURCE TMR ON TS.ID = TMR.SYSTEM_ID
@@ -195,9 +188,6 @@ SELECT  DISTINCT
 		TMT.DISPLAY_NAME                              			AS TABLE_NAME,
 		TMC.DISPLAY_NAME                              			AS COLUMN_NAME,
 		COUNT(DISTINCT TMCD.ALIAS_NAME) OVER ()		AS COUNT_CDE,
-		COUNT(DISTINCT TMCD.DESCRIPTION) OVER ()		AS COUNT_DESCRIPTION,
-		COUNT(DISTINCT TMT.DISPLAY_NAME) OVER ()		AS COUNT_TABLE_NAME,
-		COUNT(DISTINCT TMC.DISPLAY_NAME) OVER ()		AS COUNT_COLUMN_NAME,
 		PS.SYSTEM_NAME				AS IMM_PREC_SYSTEM,
 		SS.SYSTEM_NAME				AS IMM_SUCC_SYSTEM		
 	FROM 
@@ -213,128 +203,131 @@ SELECT  DISTINCT
 
 -- name: details-left-panel
 SELECT DISTINCT
-		ts.id,
-		tmt.id					as tmtid,
-		tmc.id					as tmcid,
-		ts.system_name				as system_name,
-		ts.itam_id					as itam_id,
-		tp.first_name||' '||tp.last_name			as dataset_custodian,
-		tp.bank_id					as bank_id,
-		tmcd.alias_name				as business_alias_name,
-		tmt.DISPLAY_NAME 				as table_name,
-		tmc.DISPLAY_NAME				as column_name
-	FROM tbl_system ts
-		LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
-		LEFT JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
-		LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
-		inner join tbl_md_resource tmr ON ts.id = tmr.system_id
-		inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
-		inner join tbl_md_column tmc ON tmt.id = tmc.table_id
+		TS.ID,
+		TMT.ID					AS TMTID,
+		TMC.ID					AS TMCID,
+		TS.SYSTEM_NAME				AS SYSTEM_NAME,
+		TS.ITAM_ID					AS ITAM_ID,
+		TP.FIRST_NAME||' '||TP.LAST_NAME			AS DATASET_CUSTODIAN,
+		TP.BANK_ID					AS BANK_ID,
+		TMCD.ALIAS_NAME				AS BUSINESS_ALIAS_NAME,
+		TMT.DISPLAY_NAME 				AS TABLE_NAME,
+		TMC.DISPLAY_NAME				AS COLUMN_NAME
+	FROM
+		TBL_SYSTEM TS
+		LEFT JOIN TBL_LINK_ROLE_PEOPLE TLRP ON TLRP.OBJECT_ID = TS.ID AND TLRP.OBJECT_TYPE = 'SYSTEM'
+		LEFT JOIN TBL_ROLE RL_SYS ON TLRP.ROLE_ID = RL_SYS.ID AND RL_SYS.ROLE_NAME = 'DATASET CUSTODIAN'
+		LEFT JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
+		INNER JOIN TBL_MD_RESOURCE TMR ON TS.ID = TMR.SYSTEM_ID
+		INNER JOIN TBL_MD_TABLE TMT ON TMR.ID = TMT.RESOURCE_ID
+		INNER JOIN TBL_MD_COLUMN TMC ON TMT.ID = TMC.TABLE_ID
 		INNER JOIN TBL_MD_COLUMN_DETAILS TMCD ON TMCD.COLUMN_ID = TMC.ID
 	WHERE 
-		ts.id = '?'
+		TS.ID = '?'
 
 -- name: details
 SELECT DISTINCT
-		ts.id,
-		tmt.id					as tmtid,
-		tmc.id					as tmcid,
-		ts.system_name				as system_name,
-		tmcd.alias_name				as business_alias_name,
-		tmt.DISPLAY_NAME 				as table_name,
-		tmc.DISPLAY_NAME				as column_name,
-		tmcd.description 				as business_alias_description,
-		tmcd.cde					as cde_yes_no,
-		tmcd.status					as status,
-		tmc.data_type					as data_type,
-		tmc.data_format				as data_format,
-		tmc.data_length				as data_length,
-		tmcd.example					as example,
-		tmcd.derived					as derived_yes_no,
-		tmcd.Derivation_Logic				as derivation_logic,
-		tmcd.Sourced_from_Upstream				as sourced_from_upstream_yes_no,
-		tmcd.System_Checks				as system_checks,
-		tc.Name 					as domain,
-		tsc.name 					as subdomain,
-		ppl.first_name||' '||ppl.last_name 			as domain_owner,
-		tbt.bt_name					as business_term,
-		tbt.description 					as business_term_description,
-		tpol.info_asset_name				as information_asset_names,
-		tpol.description 				as information_asset_description,
-		tpol.confidentiality				as confidentiality,
-		tpol.integrity					as integrity,
-		tpol.availability				as availability,
-		tpol.overall_cia_rating				as overall_cia_rating,
-		tmt.record_category				as record_categories,
-		tmcd.pii_flag					as pii_flag,
-		ips.system_name 				as imm_preceeding_system,
-		ci.INCOMING_CDE_NAME				as imm_prec_incoming,
-		ci.INCOMING_DERIVED				as imm_prec_derived,
-		ci.INCOMING_DERIVATION_LOGIC			as imm_prec_derivation_logic,
-		iss.system_name 				as imm_succeeding_system,
-		ci.OUTGOING_CDE_NAME				as imm_succ_incoming,
-		ci.OUTGOING_DERIVED				as imm_succ_derived,
-		ci.OUTGOING_DERIVATION_LOGIC			as imm_succ_derivation_logic,
-		tmcd.DQ_STANDARDS||' '||tmcd.threshold		as threshold
-	FROM tbl_system ts
-		LEFT JOIN Tbl_Link_Role_People tlrp ON tlrp.Object_ID = ts.id and tlrp.Object_type = 'SYSTEM'
-		LEFT JOIN Tbl_Role rl_sys ON tlrp.role_id = rl_sys.id and rl_sys.role_name = 'Dataset Custodian'
-		LEFT JOIN tbl_people tp ON tlrp.people_id = tp.id
-		inner join tbl_md_resource tmr ON ts.id = tmr.system_id
-		inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
-		inner join tbl_md_column tmc ON tmt.id = tmc.table_id
+		TS.ID,
+		TMT.ID					AS TMTID,
+		TMC.ID					AS TMCID,
+		TS.SYSTEM_NAME				AS SYSTEM_NAME,
+		TMCD.ALIAS_NAME				AS BUSINESS_ALIAS_NAME,
+		TMT.DISPLAY_NAME 				AS TABLE_NAME,
+		TMC.DISPLAY_NAME				AS COLUMN_NAME,
+		TMCD.DESCRIPTION 				AS BUSINESS_ALIAS_DESCRIPTION,
+		TMCD.CDE					AS CDE_YES_NO,
+		TMCD.STATUS				AS STATUS,
+		TMC.DATA_TYPE				AS DATA_TYPE,
+		TMC.DATA_FORMAT				AS DATA_FORMAT,
+		TMC.DATA_LENGTH				AS DATA_LENGTH,
+		TMCD.EXAMPLE				AS EXAMPLE,
+		TMCD.DERIVED				AS DERIVED_YES_NO,
+		TMCD.DERIVATION_LOGIC				AS DERIVATION_LOGIC,
+		TMCD.SOURCED_FROM_UPSTREAM			AS SOURCED_FROM_UPSTREAM_YES_NO,
+		TMCD.SYSTEM_CHECKS				AS SYSTEM_CHECKS,
+		TC.NAME 					AS DOMAIN,
+		TSC.NAME 					AS SUBDOMAIN,
+		PPL.FIRST_NAME||' '||PPL.LAST_NAME 			AS DOMAIN_OWNER,
+		TBT.BT_NAME				AS BUSINESS_TERM,
+		TBT.DESCRIPTION 				AS BUSINESS_TERM_DESCRIPTION,
+		TPOL.INFO_ASSET_NAME				AS INFORMATION_ASSET_NAMES,
+		TPOL.DESCRIPTION 				AS INFORMATION_ASSET_DESCRIPTION,
+		TPOL.CONFIDENTIALITY				AS CONFIDENTIALITY,
+		TPOL.INTEGRITY				AS INTEGRITY,
+		TPOL.AVAILABILITY				AS AVAILABILITY,
+		TPOL.OVERALL_CIA_RATING			AS OVERALL_CIA_RATING,
+		TMT.RECORD_CATEGORY				AS RECORD_CATEGORIES,
+		TMCD.PII_FLAG				AS PII_FLAG,
+		IPS.SYSTEM_NAME 				AS IMM_PRECEEDING_SYSTEM,
+		CI.INCOMING_CDE_NAME				AS IMM_PREC_INCOMING,
+		CI.INCOMING_DERIVED				AS IMM_PREC_DERIVED,
+		CI.INCOMING_DERIVATION_LOGIC			AS IMM_PREC_DERIVATION_LOGIC,
+		ISS.SYSTEM_NAME 				AS IMM_SUCCEEDING_SYSTEM,
+		CI.OUTGOING_CDE_NAME				AS IMM_SUCC_INCOMING,
+		CI.OUTGOING_DERIVED				AS IMM_SUCC_DERIVED,
+		CI.OUTGOING_DERIVATION_LOGIC			AS IMM_SUCC_DERIVATION_LOGIC,
+		TMCD.DQ_STANDARDS||' '||TMCD.THRESHOLD		AS THRESHOLD
+	FROM  
+		TBL_SYSTEM TS
+		LEFT JOIN TBL_LINK_ROLE_PEOPLE TLRP ON TLRP.OBJECT_ID = TS.ID AND TLRP.OBJECT_TYPE = 'SYSTEM'
+		LEFT JOIN TBL_ROLE RL_SYS ON TLRP.ROLE_ID = RL_SYS.ID AND RL_SYS.ROLE_NAME = 'DATASET CUSTODIAN'
+		LEFT JOIN TBL_PEOPLE TP ON TLRP.PEOPLE_ID = TP.ID
+		INNER JOIN TBL_MD_RESOURCE TMR ON TS.ID = TMR.SYSTEM_ID
+		INNER JOIN TBL_MD_TABLE TMT ON TMR.ID = TMT.RESOURCE_ID
+		INNER JOIN TBL_MD_COLUMN TMC ON TMT.ID = TMC.TABLE_ID
     		INNER JOIN TBL_MD_COLUMN_DETAILS TMCD ON TMCD.COLUMN_ID = TMC.ID
-		LEFT JOIN tbl_link_column_business_term LCBT ON TMC.ID = LCBT.COLUMN_ID 
-		LEFT JOIN tbl_business_term tbt ON LCBT.business_term_id = tbt.id
-		LEFT JOIN Tbl_Subcategory tsc ON tbt.parent_id = tsc.id
-		LEFT JOIN Tbl_Link_Role_People tlrp_sdo ON tlrp_sdo.Object_ID = tsc.id AND tlrp_sdo.object_type = 'SUBCATEGORY'
-		LEFT JOIN Tbl_Role rl ON tlrp_sdo.role_id = rl.id and rl.role_name = 'Data Domain Owner'
-		LEFT JOIN Tbl_People ppl ON tlrp_sdo.people_id = ppl.id
-		LEFT JOIN tbl_policy tpol ON tbt.policy_id = tpol.id
-		left join tbl_link_column_interface ci on tmc.id = ci.column_id
-		left join tbl_system ips on ci.imm_prec_system_id = ips.id
-		left join tbl_system iss on ci.imm_succ_system_id = iss.id
-		LEFT JOIN tbl_category tc ON tsc.category_id = tc.id
-		inner join
+		LEFT JOIN TBL_LINK_COLUMN_BUSINESS_TERM LCBT ON TMC.ID = LCBT.COLUMN_ID 
+		LEFT JOIN TBL_BUSINESS_TERM TBT ON LCBT.BUSINESS_TERM_ID = TBT.ID
+		LEFT JOIN TBL_SUBCATEGORY TSC ON TBT.PARENT_ID = TSC.ID
+		LEFT JOIN TBL_LINK_ROLE_PEOPLE TLRP_SDO ON TLRP_SDO.OBJECT_ID = TSC.ID AND TLRP_SDO.OBJECT_TYPE = 'SUBCATEGORY'
+		LEFT JOIN TBL_ROLE RL ON TLRP_SDO.ROLE_ID = RL.ID AND RL.ROLE_NAME = 'DATA DOMAIN OWNER'
+		LEFT JOIN TBL_PEOPLE PPL ON TLRP_SDO.PEOPLE_ID = PPL.ID
+		LEFT JOIN TBL_POLICY TPOL ON TBT.POLICY_ID = TPOL.ID
+		LEFT JOIN TBL_LINK_COLUMN_INTERFACE CI ON TMC.ID = CI.COLUMN_ID
+		LEFT JOIN TBL_SYSTEM IPS ON CI.IMM_PREC_SYSTEM_ID = IPS.ID
+		LEFT JOIN TBL_SYSTEM ISS ON CI.IMM_SUCC_SYSTEM_ID = ISS.ID
+		LEFT JOIN TBL_CATEGORY TC ON TSC.CATEGORY_ID = TC.ID
+		INNER JOIN
 		(
 			SELECT
-			DISTINCT ts.id as sys_id, tmr.id as res_id, tmt.id as tab_id
-			FROM tbl_system ts
-				inner join tbl_md_resource tmr ON ts.id = tmr.system_id
-				inner join tbl_md_table tmt ON tmr.id = tmt.resource_id
-				inner join tbl_md_column tmc ON tmt.id = tmc.table_id
+			DISTINCT TS.ID AS SYS_ID, TMR.ID AS RES_ID, TMT.ID AS TAB_ID
+			FROM TBL_SYSTEM TS
+				INNER JOIN TBL_MD_RESOURCE TMR ON TS.ID = TMR.SYSTEM_ID
+				INNER JOIN TBL_MD_TABLE TMT ON TMR.ID = TMT.RESOURCE_ID
+				INNER JOIN TBL_MD_COLUMN TMC ON TMT.ID = TMC.TABLE_ID
         				INNER JOIN TBL_MD_COLUMN_DETAILS TMCD ON TMCD.COLUMN_ID = TMC.ID
 			WHERE 
-				ts.id = '?'
+				TS.ID = '?'
 				AND CDE = 1
-		) cde ON ts.id = cde.sys_id and tmr.id = cde.res_id and tmt.id = cde.tab_id
-	ORDER BY tmt.DISPLAY_NAME, tmc.DISPLAY_NAME
+		) CDE ON TS.ID = CDE.SYS_ID AND TMR.ID = CDE.RES_ID AND TMT.ID = CDE.TAB_ID
+	ORDER BY TMT.DISPLAY_NAME, TMC.DISPLAY_NAME
 
 
 -- name: dsc-view-dd
 SELECT DISTINCT
-		ts.id,
-		tmt.id				as tmtid,
-		tmc.id				as tmcid,
+		TS.ID,
+		TMT.ID				AS TMTID,
+		TMC.ID				AS TMCID,
 		TS.SYSTEM_NAME			AS SYSTEM_NAME,
 		TMCD.ALIAS_NAME			AS BUSINESS_ALIAS_NAME,
 		TMT.DISPLAY_NAME			AS TABLE_NAME,
 		TMC.DISPLAY_NAME			AS COLUMN_NAME,
 		TMCD.DESCRIPTION			AS BUSINESS_ALIAS_DESCRIPTION,
-		CASE WHEN TMCD.CDE = 1 THEN 'Yes' ELSE 'No' END				AS CDE_YES_NO,
-		TMC.DATA_TYPE				AS DATA_TYPE,
+		CASE WHEN TMCD.CDE = 1 THEN 'Yes' ELSE 'No' END	AS CDE_YES_NO,
+		TMC.DATA_TYPE			AS DATA_TYPE,
 		TMC.DATA_LENGTH			AS DATA_LENGTH,
-		TMCD.EXAMPLE				AS EXAMPLE,
-		CASE WHEN TMCD.DERIVED = 1 THEN 'Yes' ELSE 'No' END				AS DERIVED_YES_NO,
+		TMCD.EXAMPLE			AS EXAMPLE,
+		CASE WHEN TMCD.DERIVED = 1 THEN 'Yes' ELSE 'No' END		AS DERIVED_YES_NO,
 		TMCD.DERIVATION_LOGIC			AS DERIVATION_LOGIC,
 		CASE WHEN TMCD.SOURCED_FROM_UPSTREAM = 1 THEN 'Yes' ELSE 'No' END	AS SOURCED_FROM_UPSTREAM_YES_NO,
 		TMCD.SYSTEM_CHECKS			AS SYSTEM_CHECKS,
 		TC.NAME				AS DOMAIN,
 		TSC.NAME				AS SUBDOMAIN,
 		PPL.FIRST_NAME||' '||PPL.LAST_NAME		AS DOMAIN_OWNER,
-		TBT.BT_NAME				AS BUSINESS_TERM,
-		TBT.DESCRIPTION 				AS BUSINESS_TERM_DESCRIPTION
-	FROM TBL_SYSTEM TS
+		TBT.BT_NAME			AS BUSINESS_TERM,
+		TBT.DESCRIPTION 			AS BUSINESS_TERM_DESCRIPTION
+	FROM 
+		TBL_SYSTEM TS
 		INNER JOIN TBL_MD_RESOURCE TMR ON TS.ID = TMR.SYSTEM_ID
 		INNER JOIN TBL_MD_TABLE TMT ON TMR.ID = TMT.RESOURCE_ID
 		INNER JOIN TBL_MD_COLUMN TMC ON TMT.ID = TMC.TABLE_ID
@@ -363,29 +356,31 @@ SELECT DISTINCT
 	
 -- name: dsc-view-policy-ia
 SELECT
-  TPOL.INFO_ASSET_NAME			AS INFORMATION_ASSET_NAMES,
+  		TPOL.INFO_ASSET_NAME			AS INFORMATION_ASSET_NAMES,
 		TPOL.DESCRIPTION 			AS INFORMATION_ASSET_DESCRIPTION,
 		TPOL.CONFIDENTIALITY			AS CONFIDENTIALITY,
-		TPOL.INTEGRITY				AS INTEGRITY,
+		TPOL.INTEGRITY			AS INTEGRITY,
 		TPOL.AVAILABILITY			AS AVAILABILITY,
-		TPOL.OVERALL_CIA_RATING			AS OVERALL_CIA_RATING
-FROM TBL_POLICY TPOL 
+		TPOL.OVERALL_CIA_RATING		AS OVERALL_CIA_RATING
+FROM 
+	TBL_POLICY TPOL 
 	INNER JOIN TBL_LINK_POLICY_SYSTEM PSYS ON TPOL.ID = PSYS.POLICY_ID 
 	INNER JOIN TBL_SYSTEM SYS ON PSYS.SYSTEM_ID = SYS.ID
 	WHERE UPPER(SYS.SYSTEM_NAME) = UPPER('?')
 
 -- name: dsc-view-policy
 SELECT DISTINCT
-		ts.id,
-		tmt.id				as tmtid,
-		tmc.id				as tmcid,
+		TS.ID,
+		TMT.ID				AS TMTID,
+		TMC.ID				AS TMCID,
 		TMT.DISPLAY_NAME			AS TABLE_NAME,
 		TMC.DISPLAY_NAME			AS COLUMN_NAME,
 		TMCD.ALIAS_NAME			AS BUSINESS_ALIAS_NAME,
 		TMCD.DESCRIPTION			AS BUSINESS_ALIAS_DESCRIPTION,
-		CASE WHEN TMCD.CDE = 1 THEN 'Yes' ELSE 'No' END				AS CDE_YES_NO,
-		CASE WHEN TMCD.PII_FLAG = 1 THEN 'Yes' ELSE 'No' END				AS PII_FLAG
-	FROM TBL_SYSTEM TS
+		CASE WHEN TMCD.CDE = 1 THEN 'Yes' ELSE 'No' END	AS CDE_YES_NO,
+		CASE WHEN TMCD.PII_FLAG = 1 THEN 'Yes' ELSE 'No' END	AS PII_FLAG
+	FROM 
+		TBL_SYSTEM TS
 		INNER JOIN TBL_MD_RESOURCE TMR ON TS.ID = TMR.SYSTEM_ID
 		INNER JOIN TBL_MD_TABLE TMT ON TMR.ID = TMT.RESOURCE_ID
 		INNER JOIN TBL_MD_COLUMN TMC ON TMT.ID = TMC.TABLE_ID

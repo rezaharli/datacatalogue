@@ -1,7 +1,6 @@
 package main
 
 import (
-	"eaciit/datacatalogue/webapp/helpers"
 	"fmt"
 	"io"
 	"log"
@@ -18,6 +17,7 @@ import (
 	"git.eaciitapp.com/sebar/knot"
 
 	c "eaciit/datacatalogue/webapp/controllers"
+	"eaciit/datacatalogue/webapp/helpers"
 	s "eaciit/datacatalogue/webapp/services"
 )
 
@@ -88,6 +88,7 @@ func main() {
 			s.NewDSCService().CreateCDEDummyData()
 			s.NewDSCService().CreateLinkRolePeopleDummyData()
 			s.NewDSCService().CreateLinkPolicySystemDummyData()
+			s.NewDSCService().CreateReferenceLinkDummyData()
 		}
 
 		s.NewDSCService().CreateUserDummyData()

@@ -81,6 +81,12 @@
 			"revisionTime": "2018-10-22T06:31:18Z"
 		},
 		{
+			"checksumSHA1": "tX9ssBa92G8PPlY2C7R6CCOp8dg=",
+			"path": "github.com/go-ldap/ldap",
+			"revision": "9f0d712775a0973b7824a1585a86a4ea1d5263d9",
+			"revisionTime": "2019-04-17T17:18:12Z"
+		},
+		{
 			"checksumSHA1": "Yz0zzyHN8gfkFB0ShiF7JAzBgAY=",
 			"path": "github.com/icrowley/fake",
 			"revision": "4178557ae428460c3780a381c824a1f3aceb6325",
@@ -115,6 +121,12 @@
 			"path": "golang.org/x/sys/unix",
 			"revision": "8097e1b27ff5e40620836729a9584e91b094b062",
 			"revisionTime": "2019-05-21T15:16:17Z"
+		},
+		{
+			"checksumSHA1": "byf5Y5rhCcKhBjzTk4yUkqfXr6c=",
+			"path": "gopkg.in/asn1-ber.v1",
+			"revision": "f715ec2f112d1e4195b827ad68cf44017a3ef2b1",
+			"revisionTime": "2018-10-15T20:05:46Z"
 		},
 		{
 			"checksumSHA1": "630l2pO7NH+wXMF7SXMGT9vTPcI=",
