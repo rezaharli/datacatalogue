@@ -66,6 +66,7 @@ func (s *DSCService) GetAllSystem(tabs, loggedinid, search string, searchDD, col
 		gridArgs.IsDescending = descending.(bool)
 	}
 
+	gridArgs.GroupCol = "SYSTEM_NAME"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
