@@ -64,6 +64,12 @@ const router = new VueRouter({
       title: "DSC - Data Catalogue",
       permission: "DSC"
     },
+  }, { // dsc.edmp
+    path: '/dsc/edmp', name: 'dsc.menu', component: DscMenu, 
+    meta: { 
+      title: "EDMp - Data Catalogue",
+      permission: "DSC"
+    },
   }, { // dsc.menu
     path: '/dsc/:system', name: 'dsc.menu', component: DscMenu, 
     meta: { 
