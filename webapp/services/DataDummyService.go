@@ -37,6 +37,10 @@ func (s *DSCService) CreateSystemDummyData() error {
 			system.System_Name = "USFRR"
 		}
 
+		if i%3 == 0 {
+			system.System_Name = "EDMp"
+		}
+
 		data = append(data, system)
 	}
 

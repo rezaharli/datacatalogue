@@ -63,7 +63,8 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 		usernameTobind, passwordToBind = BindUsernameLDAP, BindPasswordLDAP
 
 		err = l.Bind(BindUsernameLDAP, BindPasswordLDAP)
-		toolkit.Println("with -", BindUsernameLDAP, BindPasswordLDAP, ": ", err)
+		// toolkit.Println("with -", BindUsernameLDAP, BindPasswordLDAP, ": ", err)
+		toolkit.Println("with -", err)
 	} else {
 		// defer l.Unbind(username, password)
 		// toolkit.Println("Bind without config:", username, "-", password)
@@ -71,7 +72,8 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 		usernameTobind, passwordToBind = username, password
 
 		err = l.Bind(username, password)
-		toolkit.Println("without -", username, password, ": ", err)
+		// toolkit.Println("without -", username, password, ": ", err)
+		toolkit.Println("without -", err)
 	}
 
 	toolkit.Println("BindUsernameLDAP", BindUsernameLDAP, "|", strings.Trim(BindUsernameLDAP, " "), "|", strings.Trim(BindUsernameLDAP, " ") != "", "|", strings.Trim(BindUsernameLDAP, " ") != "" && err == nil)
@@ -83,8 +85,8 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 		if err == nil {
 			cond = true
 		} else {
-			toolkit.Println("#ERROR Binding to LDAP with username : ", username)
-			toolkit.Println("#ERROR Binding to LDAP with password : ", password)
+			// toolkit.Println("#ERROR Binding to LDAP with username : ", username)
+			// toolkit.Println("#ERROR Binding to LDAP with password : ", password)
 			toolkit.Println(err.Error())
 		}
 	} else {
@@ -92,8 +94,8 @@ func checkloginldap(username string, password string, loginconf toolkit.M, BindU
 		if err == nil {
 			cond = true
 		} else {
-			toolkit.Println("#ERROR Binding to LDAP with username : ", username)
-			toolkit.Println("#ERROR Binding to LDAP with password : ", password)
+			// toolkit.Println("#ERROR Binding to LDAP with username : ", username)
+			// toolkit.Println("#ERROR Binding to LDAP with password : ", password)
 			toolkit.Println(err.Error())
 		}
 	}
