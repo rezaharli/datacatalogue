@@ -63,6 +63,7 @@ body, .application--wrap{
 .btn.green-tosca-gradient {background: rgb(85,180,183);
     background: linear-gradient(210deg, rgba(86, 184, 187, 1) 0%, rgba(86, 184, 187, 1) 0%, rgba(87, 202, 157, 1) 90%, rgba(87, 202, 157, 1) 100%);}
 .btn.red-neon {background-color: #FF0033 !important;}
+.btn.dark-blue {background-color: rgba(4, 105, 149, 1);}
 
 /* .v-icon.icon-active::before {
     content: "";
@@ -424,3 +425,7 @@ table.v-table.v-datatable td.text-prewrap,
 
 .v-select__selection--comma {margin-top: 12px;}
 .v-text-field .v-input__prepend-inner, .v-text-field .v-input__append-inner {margin-top: 8px;}
+
+.edmp-search > .v-input__control > .v-input__slot {border-radius: 30px !important; padding: 0 15px 0 20px !important;}
+.edmp-search > .v-input__control > .v-input__slot > .v-input__append-inner {margin-top: 0 !important;}
+.edmp-search > .v-input__control > .v-input__slot .v-icon{font-size: 20px !important;}

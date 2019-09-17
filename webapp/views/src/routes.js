@@ -42,6 +42,9 @@ import RfoMenu from './components/rfo/Rfo-menu';
 import RfoSummary from './components/rfo/Rfo-summary';
 import RfoPriority from './components/rfo/Rfo-priority';
 
+import Edmp from './components/edmp/Edmp';
+import EdmpDd from './components/edmp/Edmp-dd';
+
 import Access from './components/access/Access';
 import AccessUsers from './components/access/Access-users';
 import AccessRoles from './components/access/Access-roles';
@@ -65,7 +68,13 @@ const router = new VueRouter({
       permission: "DSC"
     },
   }, { // dsc.edmp
-    path: '/dsc/edmp', name: 'dsc.menu', component: DscMenu, 
+    path: '/dsc/edmp', name: 'dsc.edmp', component: Edmp, 
+    meta: { 
+      title: "EDMp - Data Catalogue",
+      permission: "DSC"
+    },
+  }, { // dsc.edmp
+    path: '/dsc/edmp/dd', name: 'dsc.edmp.dd', component: EdmpDd, 
     meta: { 
       title: "EDMp - Data Catalogue",
       permission: "DSC"
@@ -305,6 +314,18 @@ const router = new VueRouter({
     meta: { 
       title: "RFO - Data Catalogue",
       permission: "RFO"
+    },
+  }, { // edmp
+    path: '/edmp', name: 'edmp', component: Edmp, 
+    meta: { 
+      title: "EDMp Catalogue - Data Catalogue",
+      permission: "EDMp Catalogue"
+    },
+  }, { // edmp.dd
+    path: '/edmp/dd', name: 'edmp.dd', component: EdmpDd, 
+    meta: { 
+      title: "EDMp Catalogue - Data Catalogue",
+      permission: "EDMp Catalogue"
     },
   }, { // access
     path: '/access', component: Access, 
