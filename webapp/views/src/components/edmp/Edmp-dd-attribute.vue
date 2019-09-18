@@ -58,11 +58,6 @@
 
           <template slot="items" slot-scope="props">
             <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-              <!-- <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }">
-                <tablecell :fulltext="props.item.SYSTEM_NAME" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['ITAM_ID'] + 'px' }">
-                <tablecell :fulltext="props.item.ITAM_ID" showOn="click"></tablecell></td> -->
 
               <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.TABLE_NAME" showOn="click"></tablecell></td>
@@ -79,14 +74,8 @@
               <td v-bind:style="{ width: store.left.colWidth['CDE_YES_NO'] + 'px' }">
                 <tablecell :fulltext="props.item.CDE_YES_NO" showOn="click"></tablecell></td>
               
-              <!-- <td v-bind:style="{ width: store.left.colWidth['STATUS'] + 'px' }">
-                <tablecell :fulltext="props.item.STATUS" showOn="click"></tablecell></td> -->
-              
               <td v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }">
                 <tablecell :fulltext="props.item.DATA_TYPE" showOn="click"></tablecell></td>
-              
-              <!-- <td v-bind:style="{ width: store.left.colWidth['DATA_FORMAT'] + 'px' }">
-                <tablecell :fulltext="props.item.DATA_FORMAT" showOn="click"></tablecell></td> -->
               
               <td v-bind:style="{ width: store.left.colWidth['DATA_LENGTH'] + 'px' }">
                 <tablecell :fulltext="props.item.DATA_LENGTH" showOn="click"></tablecell></td>

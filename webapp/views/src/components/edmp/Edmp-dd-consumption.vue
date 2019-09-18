@@ -1,22 +1,22 @@
 <style>
-/* #table-edmp-dd-original table.v-table tbody tr {display: block;} */
-/* #table-edmp-dd-original table.v-table.v-datatable thead{
+/* #table-edmp-dd-consumption table.v-table tbody tr {display: block;} */
+/* #table-edmp-dd-consumption table.v-table.v-datatable thead{
     width: unset;
     display: table-header-group;
     padding-right: unset;
 }
-#table-edmp-dd-original table.v-table.v-datatable tbody{
+#table-edmp-dd-consumption table.v-table.v-datatable tbody{
     display:table-row-group;
     overflow:auto;
     max-height:unset;
     width:unset;
 }
-#table-edmp-dd-original table.v-table.v-datatable tbody tr {display: table-row;} */
-#table-edmp-dd-original table.v-table tr th:nth-of-type(1){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-original table.v-table tr th:nth-of-type(2){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-original table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-original table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-original table.v-table tr th:nth-of-type(5){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-consumption table.v-table.v-datatable tbody tr {display: table-row;} */
+#table-edmp-dd-consumption table.v-table tr th:nth-of-type(1){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-consumption table.v-table tr th:nth-of-type(2){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-consumption table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-consumption table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-consumption table.v-table tr th:nth-of-type(5){width: calc(100%/20) !important; display: table-cell;}
 </style>
 
 <template>
@@ -35,7 +35,7 @@
             :rows-per-page-items="[25, 50, 75, 100]"
             item-key="ID"
             class="table-v2"
-            id="table-edmp-dd-original">
+            id="table-edmp-dd-consumption">
           <template slot="headerCell" slot-scope="props">
             <tableheader :storeName="storeName" :props="props" :which="'left'"/>
           </template>
@@ -56,12 +56,6 @@
 
           <template slot="items" slot-scope="props">
             <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-              <!-- <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }">
-                <tablecell :fulltext="props.item.SYSTEM_NAME" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['ITAM_ID'] + 'px' }">
-                <tablecell :fulltext="props.item.ITAM_ID" showOn="click"></tablecell></td> -->
-
               <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.TABLE_NAME" showOn="click"></tablecell></td>
               
@@ -100,13 +94,13 @@ import pageLoader from "../PageLoader.vue";
 Vue.component("downloadExcel", JsonExcel);
 
 export default {
-  name: "EdmpDdOriginal",
+  name: "EdmpDdConsumption",
   components: {
     PageHeader, pageSearch, pageExport, tableheader, tablecell, pageLoader
   },
   data() {
     return {
-      storeName: "edmpddOriginal",
+      storeName: "edmpddConsumption",
     };
   },
   computed: {
@@ -132,17 +126,17 @@ export default {
     var self = this;
 
     setTimeout(() => {
-      this.setTableColumnsWidth($('#table-edmp-dd-original'));
+      this.setTableColumnsWidth($('#table-edmp-dd-consumption'));
     }, 300);
 
-    $("#page-tab #tab-original").on('click', function(){
+    $("#page-tab #tab-consumption").on('click', function(){
       setTimeout(() => {
-        self.setTableColumnsWidth($('#table-edmp-dd-original'));
+        self.setTableColumnsWidth($('#table-edmp-dd-consumption'));
       }, 1);
     });
   },
   updated() {
-    this.setTableColumnsWidth($('#table-edmp-dd-original'));
+    this.setTableColumnsWidth($('#table-edmp-dd-consumption'));
   },
   methods: {
     getLeftTable() {

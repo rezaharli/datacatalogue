@@ -12,13 +12,16 @@ const state = {
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
-            // { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Sytem Name', value: 'SYSTEM_NAME' },
-            // { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'ITAM ID', value: 'ITAM_ID' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'File / Table Name', value: 'TABLE_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Field Name', value: 'COLUMN_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Field Description', value: 'BUSINESS_ALIAS_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Rule / Logics', value: 'BUSINESS_ALIAS_DESCRIPTION' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Additional Remark/Action', value: 'CDE_YES_NO' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Data Profiling', value: 'TABLE_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Consuming Application', value: 'COLUMN_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Consuming Application ITAM', value: 'BUSINESS_ALIAS_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Consuming Application Owner', value: 'BUSINESS_ALIAS_DESCRIPTION' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Consumer Description', value: 'CDE_YES_NO' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Tech Contact', value: 'CDE_YES_NO' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Ownership', value: 'CDE_YES_NO' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Access Role', value: 'CDE_YES_NO' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Role Description', value: 'CDE_YES_NO' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Consuming Tech Metadata', value: 'CDE_YES_NO' },
         ],
         isRightTable: false,
         DDSource: [],
@@ -107,7 +110,7 @@ const mutations = {
     },
 };
 
-export const edmpddOriginal = {
+export const edmpddConsumption = {
     namespaced: true,
     state,
     actions,
