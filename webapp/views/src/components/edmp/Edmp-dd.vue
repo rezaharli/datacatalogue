@@ -60,6 +60,7 @@
                   </b-row>
                   
                 </b-col>
+                
                 <b-col>
                   <b-button class="float-right red-neon icon-only ml-3 shadow-sm" @click="resetFilter">
                     <i class="fa fa-filter"></i>

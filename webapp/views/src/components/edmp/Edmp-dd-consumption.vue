@@ -23,7 +23,7 @@
     <b-row style="margin-top: 10px;margin-bottom: 10px;">
       <b-col>
         <!-- Main content -->
-        <div class="table-v2-title">Original Metadata</div>
+        <div class="table-v2-title">Consumption Apps</div>
         <v-data-table
             :headers="store.leftHeaders.filter(v => v.display == true)"
             :items="store.left.display"

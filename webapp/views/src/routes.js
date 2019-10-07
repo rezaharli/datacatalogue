@@ -44,6 +44,8 @@ import RfoPriority from './components/rfo/Rfo-priority';
 
 import Edmp from './components/edmp/Edmp';
 import EdmpDd from './components/edmp/Edmp-dd';
+import EdmpIarc from './components/edmp/Edmp-iarc';
+import EdmpIarcPersonal from './components/edmp/Edmp-iarc-personal';
 
 import Access from './components/access/Access';
 import AccessUsers from './components/access/Access-users';
@@ -73,12 +75,29 @@ const router = new VueRouter({
       title: "EDMp - Data Catalogue",
       permission: "DSC"
     },
-  }, { // dsc.edmp
+  }, { // dsc.edmp.dd
     path: '/dsc/edmp/dd', name: 'dsc.edmp.dd', component: EdmpDd, 
     meta: { 
       title: "EDMp - Data Catalogue",
       permission: "DSC"
     },
+  }, { // dsc.edmp.iarc
+    path: '/dsc/edmp/iarc', name: 'dsc.edmp.iarc', component: EdmpIarc, 
+    meta: { 
+      title: "EDMp - Data Catalogue",
+      permission: "DSC"
+    },
+    children: [
+      { 
+        path: '', name: 'dsc.edmp.iarc', redirect: { name: 'dsc.edmp.iarc.personal' }
+      }, { // dsc.iarc.personal
+        path: '/dsc/edmp/iarc/personal', name: 'dsc.edmp.iarc.personal', component: EdmpIarcPersonal, 
+        meta: { 
+          title: "DSC - Data Catalogue",
+          permission: "DSC"
+        },
+      },
+    ]
   }, { // dsc.menu
     path: '/dsc/:system', name: 'dsc.menu', component: DscMenu, 
     meta: { 

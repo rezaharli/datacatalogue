@@ -147,19 +147,17 @@ export default {
             return tmp.slice(0, 3).join("/")
         },
         store () {
-            return this.$store.state.dsc.all
+            return this.$store.state.edmp.all
         },
     },
     mounted () {
-        this.getCounts(this.$route.params.system);
+        this.getCounts("EDMp");
     },
     methods: {
         getCounts (param) {
-            this.$store.dispatch(`dsc/getCounts`, param)
+            this.$store.dispatch(`edmp/getCounts`, param)
         },
         goToDscMenuContent(param){
-            console.log(this.addressPathParent + '/' + encodeURIComponent(param));
-            
             this.$router.push(this.addressPathParent + '/' + encodeURIComponent(param));
         },
     }
