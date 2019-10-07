@@ -1005,6 +1005,74 @@ func (s *DSCService) CreateReferenceLinkDummyData() error {
 	return nil
 }
 
+func (s *DSCService) CreateEdmpDummyData() error {
+	toolkit.Println("CreateEdmpDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewEdmpModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.Edmp, 0)
+	for i := 0; i < 10000; i++ {
+		mdt := m.NewEdmpModel()
+		mdt.ID = i
+		mdt.COUNTRY = fake.Words()
+		mdt.BUSINESS_SEGMENT = fake.Words()
+		mdt.SOURCE_SYSTEM = fake.Words()
+		mdt.CLUSTER_NAME = fake.Words()
+		mdt.TIER = fake.Words()
+		mdt.ITAM = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.EDM_SOURCE_SYSTEM_NAME = fake.Words()
+		mdt.DATABASE_NAME = fake.Words()
+		mdt.TABLE_NAME = fake.Words()
+		mdt.TABLE_DESCRIPTION = fake.Words()
+		mdt.COLUMN_NAME = fake.Words()
+		mdt.COLUMN_DESCRIPTION = fake.Words()
+		mdt.DATA_TYPE = fake.Words()
+		mdt.DATA_LENGTH = fake.Words()
+		mdt.NULLABLE = fake.Words()
+		mdt.PRIMARY_KEY = fake.Words()
+		mdt.PII = fake.Words()
+		mdt.CERTIFIED = fake.Words()
+		mdt.PROFILE_RESULTS = fake.Words()
+		mdt.DATA_LINEAGE = fake.Words()
+		mdt.BUSINESS_TERM = fake.Words()
+		mdt.BUSINESS_DESCRIPTION = fake.Words()
+		mdt.CDE = fake.Words()
+		mdt.DETERMINES_CLIENT_LOCATION = fake.Words()
+		mdt.DETERMINES_ACCOUNT = fake.Words()
+		mdt.PRODUCT_CATEGORY = fake.Words()
+		mdt.CONSUMING_APPLICATION = fake.Words()
+		mdt.CONSUMING_APPLICATION_ITAM = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.CONSUMING_APPLICATION_OWNER = fake.Words()
+		mdt.CONSUMER_DESCRIPTION = fake.Words()
+		mdt.TECH_CONTACT = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.BUSINESS_OWNERSHIP = fake.Words()
+		mdt.ACCESS_ROLE = fake.Words()
+		mdt.ROLE_DESCRIPTION = fake.Words()
+		mdt.CONSUMING_TECH_METADATA = fake.Words()
+		mdt.CREATED_DATETIME = time.Now()
+		mdt.MODIFIED_DATETIME = time.Now()
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewEdmpModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
 func (s *DSCService) CreateUserDummyData() error {
 	toolkit.Println("CreateUserAdminData")
 
