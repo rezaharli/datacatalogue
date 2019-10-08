@@ -46,12 +46,12 @@ const actions = {
         var param = {
             System: state.all.system,
             Filters: state.all.filters.left,
-            Pagination: this._.cloneDeep(state.all.left.pagination)
+            Pagination: _.cloneDeep(state.all.left.pagination)
         }
 
         param.Pagination.rowsPerPage = -1;
 
-        return edmpService.getDdTable(param)
+        return edmpService.getConsumptionTable(param)
             .then(
                 res => commit('getExportDataSuccess', res),
                 error => commit('getExportDataFailure', error)
@@ -85,7 +85,7 @@ const mutations = {
         state.all.left.isLoading = true;
     },
     getExportDataSuccess(state, res) {
-        state.all.exportDatas = res.DataFlat;
+        state.all.exportDatas = res.Data.Flat;
 
         state.all.left.isLoading = false;
     },

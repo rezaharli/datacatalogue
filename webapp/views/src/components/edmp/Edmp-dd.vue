@@ -72,7 +72,7 @@
                     <i class="fa fa-filter"></i>
                   </b-button>
 
-                  <page-export class="float-right shadow-sm" :storeName="storeName" :leftTableCols="store.leftHeaders" :rightTableCols="[]"/>
+                  <page-export class="float-right shadow-sm" :storeName="activeTabStoreName" :leftTableCols="activeTabStore.leftHeaders" :rightTableCols="[]"/>
                 </b-col>
             </b-row>
 
@@ -123,6 +123,24 @@ export default {
       },
       consumptionStore() {
         return this.$store.state[this.consumptionStoreName].all;
+      },
+      activeTabStoreName() {
+        if(this.activeTab.indexOf("technical-metadata") != -1){
+          return this.technicalStoreName;
+        } else if(this.activeTab.indexOf("business-metadata") != -1){
+          return this.businessStoreName;
+        } else if(this.activeTab.indexOf("consumption-apps") != -1){
+          return this.consumptionStoreName;
+        } else {
+          return this.technicalStoreName;
+        }
+      },
+      activeTabStore() {
+        console.log(this.activeTabStoreName);
+        
+        console.log(this.$store.state[this.activeTabStoreName]);
+        
+        return this.$store.state[this.activeTabStoreName].all;
       },
       addressPath() {
         var tmp = this.$route.path.split("/");
@@ -354,10 +372,30 @@ export default {
         this.$router.push(val);
       },
       resetFilter (e) {
-        if(Object.keys(this.store.filters.left).length > 0){
-          this.store.filters.left = {};
-          this.getLeftTable();
+        if(this.activeTab.indexOf("technical-metadata") != -1){
+          if(Object.keys(this.technicalStore.filters.left).length > 0){
+            this.technicalStore.filters.left = {};
+          }
         }
+        if(this.activeTab.indexOf("business-metadata") != -1){
+          if(Object.keys(this.businessStore.filters.left).length > 0){
+            this.businessStore.filters.left = {};
+          }
+        }
+        if(this.activeTab.indexOf("consumption-apps") != -1){
+          if(Object.keys(this.consumptionStore.filters.left).length > 0){
+            this.consumptionStore.filters.left = {};
+          }
+        }
+
+        this.store.ddVal.ddCountrySelected = "";
+        this.store.ddVal.ddBusinessSegmentSelected = "";
+        this.store.ddVal.ddSourceSystemSelected = "";
+        this.store.ddVal.ddClusterSelected = "";
+        this.store.ddVal.ddTierSelected = "";
+        this.store.ddVal.ddItamSelected = "";
+
+        this.refreshActiveTabTable();
       },
     },
 }

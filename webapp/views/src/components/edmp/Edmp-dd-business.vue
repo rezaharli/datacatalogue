@@ -64,61 +64,149 @@
 
               <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.DATABASE_NAME" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-capitalize text-title">
+                <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length > 0">
+                  <tablecell :fulltext="props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA'" showOn="hover"></tablecell>
+                </b-link>
 
-              <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
-                <tablecell :fulltext="props.item.TABLE_NAME" showOn="click"></tablecell></td>
+                <tablecell :fulltext="props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA'" showOn="hover" v-if="props.item.Tables.length < 1"></tablecell>
+              </td>
 
-              <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                <tablecell :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA'"></tablecell>
+              </td>
 
-              <td v-bind:style="{ width: store.left.colWidth['TABLE_DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.TABLE_DESCRIPTION" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['COLUMN_DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.COLUMN_DESCRIPTION" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_TERM'] + 'px' }">
-                <tablecell :fulltext="props.item.BUSINESS_TERM" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.BUSINESS_DESCRIPTION" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['DETERMINES_CLIENT_LOCATION'] + 'px' }">
-                <tablecell :fulltext="props.item.DETERMINES_CLIENT_LOCATION" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['DETERMINES_ACCOUNT'] + 'px' }">
-                <tablecell :fulltext="props.item.DETERMINES_ACCOUNT" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_SEGMENT'] + 'px' }">
-                <tablecell :fulltext="props.item.BUSINESS_SEGMENT" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['PRODUCT_CATEGORY'] + 'px' }">
-                <tablecell :fulltext="props.item.PRODUCT_CATEGORY" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_NAME'] + 'px' }">
-                <tablecell :fulltext="props.item.BUSINESS_ALIAS_NAME" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
-                <tablecell :fulltext="props.item.CDE" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['DOMAIN'] + 'px' }">
-                <tablecell :fulltext="props.item.DOMAIN" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['SUBDOMAIN'] + 'px' }">
-                <tablecell :fulltext="props.item.SUBDOMAIN" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['DOMAIN_OWNER'] + 'px' }">
-                <tablecell :fulltext="props.item.DOMAIN_OWNER" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_TERM_DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.BUSINESS_TERM_DESCRIPTION" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['TABLE_DESCRIPTION'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.TABLE_DESCRIPTION.toString().trim() ? props.item.TABLE_DESCRIPTION : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['COLUMN_DESCRIPTION'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_DESCRIPTION.toString().trim() ? props.item.COLUMN_DESCRIPTION : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_TERM'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.BUSINESS_TERM.toString().trim() ? props.item.BUSINESS_TERM : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_DESCRIPTION'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.BUSINESS_DESCRIPTION.toString().trim() ? props.item.BUSINESS_DESCRIPTION : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['DETERMINES_CLIENT_LOCATION'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DETERMINES_CLIENT_LOCATION.toString().trim() ? props.item.DETERMINES_CLIENT_LOCATION : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['DETERMINES_ACCOUNT'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DETERMINES_ACCOUNT.toString().trim() ? props.item.DETERMINES_ACCOUNT : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_SEGMENT'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.BUSINESS_SEGMENT.toString().trim() ? props.item.BUSINESS_SEGMENT : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['PRODUCT_CATEGORY'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PRODUCT_CATEGORY.toString().trim() ? props.item.PRODUCT_CATEGORY : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_NAME'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.BUSINESS_ALIAS_NAME.toString().trim() ? props.item.BUSINESS_ALIAS_NAME : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_DESCRIPTION'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION.toString().trim() ? props.item.BUSINESS_ALIAS_DESCRIPTION : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['DOMAIN'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DOMAIN.toString().trim() ? props.item.DOMAIN : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['SUBDOMAIN'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.SUBDOMAIN.toString().trim() ? props.item.SUBDOMAIN : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['DOMAIN_OWNER'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DOMAIN_OWNER.toString().trim() ? props.item.DOMAIN_OWNER : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_TERM_DESCRIPTION'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.BUSINESS_TERM_DESCRIPTION.toString().trim() ? props.item.BUSINESS_TERM_DESCRIPTION : 'NA'"></tablecell>
+              </td>
             </tr>
           </template>
-        </v-data-table>
-              
+
+          <template slot="expand" slot-scope="props">
+            <v-data-table
+              :headers="store.leftHeaders.filter(v => v.display == true)"
+              :items="props.item.Tables"
+              item-key="TMTID"
+              class=""
+              hide-actions
+              hide-headers
+              @update:pagination="setExpandedTableColumnsWidth"
+            >
+              <template slot="items" slot-scope="props">
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">&nbsp;</td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
+
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
+                  <tablecell :fulltext="props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['TABLE_DESCRIPTION'] + 'px' }">
+                  <tablecell :fulltext="props.item.TABLE_DESCRIPTION.toString().trim() ? props.item.TABLE_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_DESCRIPTION'] + 'px' }">
+                  <tablecell :fulltext="props.item.COLUMN_DESCRIPTION.toString().trim() ? props.item.COLUMN_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_TERM'] + 'px' }">
+                  <tablecell :fulltext="props.item.BUSINESS_TERM.toString().trim() ? props.item.BUSINESS_TERM : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_DESCRIPTION'] + 'px' }">
+                  <tablecell :fulltext="props.item.BUSINESS_DESCRIPTION.toString().trim() ? props.item.BUSINESS_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DETERMINES_CLIENT_LOCATION'] + 'px' }">
+                  <tablecell :fulltext="props.item.DETERMINES_CLIENT_LOCATION.toString().trim() ? props.item.DETERMINES_CLIENT_LOCATION : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DETERMINES_ACCOUNT'] + 'px' }">
+                  <tablecell :fulltext="props.item.DETERMINES_ACCOUNT.toString().trim() ? props.item.DETERMINES_ACCOUNT : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_SEGMENT'] + 'px' }">
+                  <tablecell :fulltext="props.item.BUSINESS_SEGMENT.toString().trim() ? props.item.BUSINESS_SEGMENT : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['PRODUCT_CATEGORY'] + 'px' }">
+                  <tablecell :fulltext="props.item.PRODUCT_CATEGORY.toString().trim() ? props.item.PRODUCT_CATEGORY : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_NAME'] + 'px' }">
+                  <tablecell :fulltext="props.item.BUSINESS_ALIAS_NAME.toString().trim() ? props.item.BUSINESS_ALIAS_NAME : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_DESCRIPTION'] + 'px' }">
+                  <tablecell :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION.toString().trim() ? props.item.BUSINESS_ALIAS_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
+                  <tablecell :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DOMAIN'] + 'px' }">
+                  <tablecell :fulltext="props.item.DOMAIN.toString().trim() ? props.item.DOMAIN : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['SUBDOMAIN'] + 'px' }">
+                  <tablecell :fulltext="props.item.SUBDOMAIN.toString().trim() ? props.item.SUBDOMAIN : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DOMAIN_OWNER'] + 'px' }">
+                  <tablecell :fulltext="props.item.DOMAIN_OWNER.toString().trim() ? props.item.DOMAIN_OWNER : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_TERM_DESCRIPTION'] + 'px' }">
+                  <tablecell :fulltext="props.item.BUSINESS_TERM_DESCRIPTION.toString().trim() ? props.item.BUSINESS_TERM_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
+                </td>
+              </template>
+            </v-data-table>
+          </template>
+        </v-data-table>    
       </b-col>
     </b-row>
 </template>
@@ -213,6 +301,16 @@ export default {
 
       this.$store.dispatch(`${this.storeName}/getLeftTable`);
     },
+    isMainLevelCellShowing (props){
+      if( ! props.expanded) return true;
+      else {
+        if(props.item.Tables.length > 0) {
+          return true;
+        }
+        
+        return false;
+      }
+    },
     setTableColumnsWidth(elem){
       var tableElem = elem.find('.v-table__overflow > table.v-table');
       var THs = tableElem.find('thead tr th');
@@ -225,6 +323,22 @@ export default {
         });
       });
     },
+    setExpandedTableColumnsWidth(){
+      setTimeout(() => {
+        var elem = $('.v-datatable__expand-row');
+        var elemExpandedTable = elem.find('.v-datatable__expand-content table.v-table');
+        var THs = elem.closest('table.v-table').find('thead tr:first th');
+        var tbodyTR = elemExpandedTable.find('tbody tr');
+        THs.each(function (thIndex) {
+          $(this).css({'color': 'red'});
+          var thWidth = $(this).width();
+          tbodyTR.each(function (tdIndex) {
+            var TDs = $(this).find('td:not([colspan])');
+            TDs.eq(thIndex).width(thWidth);
+          });
+        });
+      }, 10);
+    }
   }
 };
 </script>

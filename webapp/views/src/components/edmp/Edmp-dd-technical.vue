@@ -75,60 +75,153 @@
               <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.DATABASE_NAME" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
-                <tablecell :fulltext="props.item.TABLE_NAME" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                <tablecell :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }">
-                <tablecell :fulltext="props.item.DATA_TYPE" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['COLUMN_LENGTH'] + 'px' }">
-                <tablecell :fulltext="props.item.COLUMN_LENGTH" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['NULLABLE'] + 'px' }">
-                <tablecell :fulltext="props.item.NULLABLE" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['PRIMARY_KEY'] + 'px' }">
-                <tablecell :fulltext="props.item.PRIMARY_KEY" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['CERTIFIED'] + 'px' }">
-                <tablecell :fulltext="props.item.CERTIFIED" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['PROFILE_RESULTS'] + 'px' }">
-                <tablecell :fulltext="props.item.PROFILE_RESULTS" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['DATA_LINEAGE'] + 'px' }">
-                <tablecell :fulltext="props.item.DATA_LINEAGE" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_NAME'] + 'px' }">
-                <tablecell :fulltext="props.item.BUSINESS_ALIAS_NAME" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_DESCRIPTION'] + 'px' }">
-                <tablecell :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
-                <tablecell :fulltext="props.item.CDE" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['DATA_LENGTH'] + 'px' }">
-                <tablecell :fulltext="props.item.DATA_LENGTH" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['EXAMPLE'] + 'px' }">
-                <tablecell :fulltext="props.item.EXAMPLE" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['DERIVED'] + 'px' }">
-                <tablecell :fulltext="props.item.DERIVED" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['DERIVATION_LOGIC'] + 'px' }">
-                <tablecell :fulltext="props.item.DERIVATION_LOGIC" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['SOURCED_FROM_UPSTREAM'] + 'px' }">
-                <tablecell :fulltext="props.item.SOURCED_FROM_UPSTREAM" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CHECKS'] + 'px' }">
-                <tablecell :fulltext="props.item.SYSTEM_CHECKS" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-capitalize text-title">
+                <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length > 0">
+                  <tablecell :fulltext="props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA'" showOn="hover"></tablecell>
+                </b-link>
+
+                <tablecell :fulltext="props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA'" showOn="hover" v-if="props.item.Tables.length < 1"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DATA_TYPE.toString().trim() ? props.item.DATA_TYPE : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['COLUMN_LENGTH'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_LENGTH.toString().trim() ? props.item.COLUMN_LENGTH : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['NULLABLE'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.NULLABLE.toString().trim() ? props.item.NULLABLE : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['PRIMARY_KEY'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PRIMARY_KEY.toString().trim() ? props.item.PRIMARY_KEY : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['CERTIFIED'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.CERTIFIED.toString().trim() ? props.item.CERTIFIED : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['PROFILE_RESULTS'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PROFILE_RESULTS.toString().trim() ? props.item.PROFILE_RESULTS : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['DATA_LINEAGE'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DATA_LINEAGE.toString().trim() ? props.item.DATA_LINEAGE : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_NAME'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.BUSINESS_ALIAS_NAME.toString().trim() ? props.item.BUSINESS_ALIAS_NAME : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_DESCRIPTION'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION.toString().trim() ? props.item.BUSINESS_ALIAS_DESCRIPTION : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['DATA_LENGTH'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DATA_LENGTH.toString().trim() ? props.item.DATA_LENGTH : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['EXAMPLE'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.EXAMPLE.toString().trim() ? props.item.EXAMPLE : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['DERIVED'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DERIVED.toString().trim() ? props.item.DERIVED : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['DERIVATION_LOGIC'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DERIVATION_LOGIC.toString().trim() ? props.item.DERIVATION_LOGIC : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['SOURCED_FROM_UPSTREAM'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.SOURCED_FROM_UPSTREAM.toString().trim() ? props.item.SOURCED_FROM_UPSTREAM : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CHECKS'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.SYSTEM_CHECKS.toString().trim() ? props.item.SYSTEM_CHECKS : 'NA'"></tablecell>
+              </td>
             </tr>
+          </template>
+
+          <template slot="expand" slot-scope="props">
+            <v-data-table
+              :headers="store.leftHeaders.filter(v => v.display == true)"
+              :items="props.item.Tables"
+              item-key="TMTID"
+              class=""
+              hide-actions
+              hide-headers
+              @update:pagination="setExpandedTableColumnsWidth"
+            >
+              <template slot="items" slot-scope="props">
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">&nbsp;</td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
+
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
+                  <tablecell :fulltext="props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }">
+                  <tablecell :fulltext="props.item.DATA_TYPE.toString().trim() ? props.item.DATA_TYPE : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_LENGTH'] + 'px' }">
+                  <tablecell :fulltext="props.item.COLUMN_LENGTH.toString().trim() ? props.item.COLUMN_LENGTH : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['NULLABLE'] + 'px' }">
+                  <tablecell :fulltext="props.item.NULLABLE.toString().trim() ? props.item.NULLABLE : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['PRIMARY_KEY'] + 'px' }">
+                  <tablecell :fulltext="props.item.PRIMARY_KEY.toString().trim() ? props.item.PRIMARY_KEY : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['CERTIFIED'] + 'px' }">
+                  <tablecell :fulltext="props.item.CERTIFIED.toString().trim() ? props.item.CERTIFIED : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['PROFILE_RESULTS'] + 'px' }">
+                  <tablecell :fulltext="props.item.PROFILE_RESULTS.toString().trim() ? props.item.PROFILE_RESULTS : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATA_LINEAGE'] + 'px' }">
+                  <tablecell :fulltext="props.item.DATA_LINEAGE.toString().trim() ? props.item.DATA_LINEAGE : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_NAME'] + 'px' }">
+                  <tablecell :fulltext="props.item.BUSINESS_ALIAS_NAME.toString().trim() ? props.item.BUSINESS_ALIAS_NAME : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_DESCRIPTION'] + 'px' }">
+                  <tablecell :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION.toString().trim() ? props.item.BUSINESS_ALIAS_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
+                  <tablecell :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATA_LENGTH'] + 'px' }">
+                  <tablecell :fulltext="props.item.DATA_LENGTH.toString().trim() ? props.item.DATA_LENGTH : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['EXAMPLE'] + 'px' }">
+                  <tablecell :fulltext="props.item.EXAMPLE.toString().trim() ? props.item.EXAMPLE : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DERIVED'] + 'px' }">
+                  <tablecell :fulltext="props.item.DERIVED.toString().trim() ? props.item.DERIVED : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DERIVATION_LOGIC'] + 'px' }">
+                  <tablecell :fulltext="props.item.DERIVATION_LOGIC.toString().trim() ? props.item.DERIVATION_LOGIC : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['SOURCED_FROM_UPSTREAM'] + 'px' }">
+                  <tablecell :fulltext="props.item.SOURCED_FROM_UPSTREAM.toString().trim() ? props.item.SOURCED_FROM_UPSTREAM : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['SYSTEM_CHECKS'] + 'px' }">
+                  <tablecell :fulltext="props.item.SYSTEM_CHECKS.toString().trim() ? props.item.SYSTEM_CHECKS : 'NA'" showOn="hover"></tablecell>
+                </td>
+              </template>
+            </v-data-table>
           </template>
         </v-data-table>
               
@@ -226,6 +319,16 @@ export default {
 
       this.$store.dispatch(`${this.storeName}/getLeftTable`);
     },
+    isMainLevelCellShowing (props){
+      if( ! props.expanded) return true;
+      else {
+        if(props.item.Tables.length > 0) {
+          return true;
+        }
+        
+        return false;
+      }
+    },
     setTableColumnsWidth(elem){
       var tableElem = elem.find('.v-table__overflow > table.v-table');
       var THs = tableElem.find('thead tr th');
@@ -238,6 +341,22 @@ export default {
         });
       });
     },
+    setExpandedTableColumnsWidth(){
+      setTimeout(() => {
+        var elem = $('.v-datatable__expand-row');
+        var elemExpandedTable = elem.find('.v-datatable__expand-content table.v-table');
+        var THs = elem.closest('table.v-table').find('thead tr:first th');
+        var tbodyTR = elemExpandedTable.find('tbody tr');
+        THs.each(function (thIndex) {
+          $(this).css({'color': 'red'});
+          var thWidth = $(this).width();
+          tbodyTR.each(function (tdIndex) {
+            var TDs = $(this).find('td:not([colspan])');
+            TDs.eq(thIndex).width(thWidth);
+          });
+        });
+      }, 10);
+    }
   }
 };
 </script>
