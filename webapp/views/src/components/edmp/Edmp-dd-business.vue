@@ -55,23 +55,66 @@
 
           <template slot="items" slot-scope="props">
             <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-              <!-- <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }">
-                <tablecell :fulltext="props.item.SYSTEM_NAME" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['ITAM_ID'] + 'px' }">
-                <tablecell :fulltext="props.item.ITAM_ID" showOn="click"></tablecell></td> -->
+              <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }" class="text-capitalize text-title">
+                <b-button size="sm" class="green-tosca-gradient icon-only" @click="showDetails(props.item)">
+                  <i class="fa fa-fw fa-external-link-alt"></i></b-button></td>
+
+              <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
+                <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME" showOn="click"></tablecell></td>
+
+              <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
+                <tablecell :fulltext="props.item.DATABASE_NAME" showOn="click"></tablecell></td>
 
               <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.TABLE_NAME" showOn="click"></tablecell></td>
-              
+
               <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell></td>
+
+              <td v-bind:style="{ width: store.left.colWidth['TABLE_DESCRIPTION'] + 'px' }">
+                <tablecell :fulltext="props.item.TABLE_DESCRIPTION" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['COLUMN_DESCRIPTION'] + 'px' }">
+                <tablecell :fulltext="props.item.COLUMN_DESCRIPTION" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_TERM'] + 'px' }">
+                <tablecell :fulltext="props.item.BUSINESS_TERM" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_DESCRIPTION'] + 'px' }">
+                <tablecell :fulltext="props.item.BUSINESS_DESCRIPTION" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['DETERMINES_CLIENT_LOCATION'] + 'px' }">
+                <tablecell :fulltext="props.item.DETERMINES_CLIENT_LOCATION" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['DETERMINES_ACCOUNT'] + 'px' }">
+                <tablecell :fulltext="props.item.DETERMINES_ACCOUNT" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_SEGMENT'] + 'px' }">
+                <tablecell :fulltext="props.item.BUSINESS_SEGMENT" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['PRODUCT_CATEGORY'] + 'px' }">
+                <tablecell :fulltext="props.item.PRODUCT_CATEGORY" showOn="click"></tablecell></td>
               
               <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.BUSINESS_ALIAS_NAME" showOn="click"></tablecell></td>
               
               <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_DESCRIPTION'] + 'px' }">
                 <tablecell :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
+                <tablecell :fulltext="props.item.CDE" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['DOMAIN'] + 'px' }">
+                <tablecell :fulltext="props.item.DOMAIN" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['SUBDOMAIN'] + 'px' }">
+                <tablecell :fulltext="props.item.SUBDOMAIN" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['DOMAIN_OWNER'] + 'px' }">
+                <tablecell :fulltext="props.item.DOMAIN_OWNER" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_TERM_DESCRIPTION'] + 'px' }">
+                <tablecell :fulltext="props.item.BUSINESS_TERM_DESCRIPTION" showOn="click"></tablecell></td>
             </tr>
           </template>
         </v-data-table>
@@ -103,11 +146,15 @@ export default {
   data() {
     return {
       storeName: "edmpddBusiness",
+      edmpStoreName: "edmp"
     };
   },
   computed: {
     store() {
       return this.$store.state[this.storeName].all;
+    },
+    edmpStore() {
+      return this.$store.state[this.edmpStoreName].all;
     },
   },
   watch: {
@@ -143,6 +190,27 @@ export default {
   methods: {
     getLeftTable() {
       this.store.system = this.$route.params.system;
+
+      if( ! this.store.filters.left.filterTypes) this.store.filters.left.filterTypes = {};
+
+      this.store.filters.left["COUNTRY"] = this.edmpStore.ddVal.ddCountrySelected;
+      this.store.filters.left.filterTypes["COUNTRY"] = "eq";
+
+      this.store.filters.left["BUSINESS_SEGMENT"] = this.edmpStore.ddVal.ddBusinessSegmentSelected;
+      this.store.filters.left.filterTypes["BUSINESS_SEGMENT"] = "eq";
+
+      this.store.filters.left["SOURCE_SYSTEM"] = this.edmpStore.ddVal.ddSourceSystemSelected;
+      this.store.filters.left.filterTypes["SOURCE_SYSTEM"] = "eq";
+
+      this.store.filters.left["CLUSTER_NAME"] = this.edmpStore.ddVal.ddClusterSelected;
+      this.store.filters.left.filterTypes["CLUSTER_NAME"] = "eq";
+
+      this.store.filters.left["TIER"] = this.edmpStore.ddVal.ddTierSelected;
+      this.store.filters.left.filterTypes["TIER"] = "eq";
+
+      this.store.filters.left["ITAM"] = this.edmpStore.ddVal.ddItamSelected;
+      this.store.filters.left.filterTypes["ITAM"] = "eq";
+
       this.$store.dispatch(`${this.storeName}/getLeftTable`);
     },
     setTableColumnsWidth(elem){

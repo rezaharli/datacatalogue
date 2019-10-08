@@ -1,7 +1,12 @@
 import { fetchWHeader } from '../_helpers/auth-header';
 
 export const edmpService = {
-    getHomepageCounts
+    getHomepageCounts,
+    getTechnicalTable,
+    getBusinessTable,
+    getConsumptionTable,
+    getDropdownOpts,
+    getIarcPersonal
 };
 
 function getHomepageCounts(param) {
@@ -9,4 +14,24 @@ function getHomepageCounts(param) {
         res.Data = res.Data[0] ? res.Data[0] : null;
         return res;
     });
+}
+
+function getTechnicalTable(param) {
+    return fetchWHeader(`/dsc/getedmpddtechnicaltable`, param);
+}
+
+function getBusinessTable(param) {
+    return fetchWHeader(`/dsc/getedmpddbusinesstable`, param);
+}
+
+function getConsumptionTable(param) {
+    return fetchWHeader(`/dsc/getedmpddconsumptiontable`, param);
+}
+
+function getDropdownOpts(param) {
+    return fetchWHeader(`/dsc/getedmpdddropdowns`, param);
+}
+
+function getIarcPersonal(param) {
+    return fetchWHeader(`/dsc/getedmpiarcpersonaltable`, param);
 }

@@ -12,16 +12,20 @@ const state = {
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Data Profiling', value: 'TABLE_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Consuming Application', value: 'COLUMN_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Consuming Application ITAM', value: 'BUSINESS_ALIAS_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Consuming Application Owner', value: 'BUSINESS_ALIAS_DESCRIPTION' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Consumer Description', value: 'CDE_YES_NO' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Tech Contact', value: 'CDE_YES_NO' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Ownership', value: 'CDE_YES_NO' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Access Role', value: 'CDE_YES_NO' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Role Description', value: 'CDE_YES_NO' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Consuming Tech Metadata', value: 'CDE_YES_NO' },
+            { align: 'left', display: true, filterable: false, exportable: false, displayCount: false, sortable: false, text: 'Data Profiling', value: 'Details' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'EDM Source System Name', value: 'EDM_SOURCE_SYSTEM_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Database Name', value: 'DATABASE_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Table Name', value: 'TABLE_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Name', value: 'COLUMN_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Consuming Application', value: 'CONSUMING_APPLICATION' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Consuming Application ITAM', value: 'CONSUMING_APPLICATION_ITAM' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Consuming Application Owner', value: 'CONSUMING_APPLICATION_OWNER' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Consumer Description', value: 'CONSUMER_DESCRIPTION' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Tech Contact', value: 'TECH_CONTACT' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Ownership', value: 'BUSINESS_OWNERSHIP' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Access Role', value: 'ACCESS_ROLE' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Role Description', value: 'ROLE_DESCRIPTION' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Consuming Tech Metadata', value: 'CONSUMING_TECH_METADATA' },
         ],
         isRightTable: false,
         DDSource: [],
@@ -35,14 +39,14 @@ const actions = {
     exportData({ commit }) {
         commit('getExportDataRequest');
 
-        Object.keys(state.all.filters.left).map(function(key, index) {
+        Object.keys(state.all.filters.left).map(function(key) {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
         var param = {
             System: state.all.system,
             Filters: state.all.filters.left,
-            Pagination: _.cloneDeep(state.all.left.pagination)
+            Pagination: this._.cloneDeep(state.all.left.pagination)
         }
 
         param.Pagination.rowsPerPage = -1;
@@ -53,10 +57,10 @@ const actions = {
                 error => commit('getExportDataFailure', error)
             );
     },
-    getLeftTable({ commit }, system) {
+    getLeftTable({ commit }) {
         commit('getLeftTableRequest');
 
-        Object.keys(state.all.filters.left).map(function(key, index) {
+        Object.keys(state.all.filters.left).map(function(key) {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
@@ -66,11 +70,9 @@ const actions = {
             Pagination: state.all.left.pagination
         }
 
-        return edmpService.getDdTable(param)
+        return edmpService.getConsumptionTable(param)
             .then(
                 res => {
-                    console.log(res);
-                    
                     commit('getLeftTableSuccess', res)
                 },
                 error => commit('getLeftTableFailure', error)

@@ -32,6 +32,7 @@
       <b-col>
         <!-- Main content -->
         <div class="table-v2-title">Technical Metadata</div>
+        
         <v-data-table
             :headers="store.leftHeaders.filter(v => v.display == true)"
             :items="store.left.display"
@@ -64,17 +65,42 @@
 
           <template slot="items" slot-scope="props">
             <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-              <!-- <td v-bind:style="{ width: store.left.colWidth['SYSTEM_NAME'] + 'px' }">
-                <tablecell :fulltext="props.item.SYSTEM_NAME" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['ITAM_ID'] + 'px' }">
-                <tablecell :fulltext="props.item.ITAM_ID" showOn="click"></tablecell></td> -->
+              <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }" class="text-capitalize text-title">
+                <b-button size="sm" class="green-tosca-gradient icon-only" @click="showDetails(props.item)">
+                  <i class="fa fa-fw fa-external-link-alt"></i></b-button></td>
 
+              <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
+                <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
+                <tablecell :fulltext="props.item.DATABASE_NAME" showOn="click"></tablecell></td>
+              
               <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.TABLE_NAME" showOn="click"></tablecell></td>
               
               <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }">
+                <tablecell :fulltext="props.item.DATA_TYPE" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['COLUMN_LENGTH'] + 'px' }">
+                <tablecell :fulltext="props.item.COLUMN_LENGTH" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['NULLABLE'] + 'px' }">
+                <tablecell :fulltext="props.item.NULLABLE" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['PRIMARY_KEY'] + 'px' }">
+                <tablecell :fulltext="props.item.PRIMARY_KEY" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['CERTIFIED'] + 'px' }">
+                <tablecell :fulltext="props.item.CERTIFIED" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['PROFILE_RESULTS'] + 'px' }">
+                <tablecell :fulltext="props.item.PROFILE_RESULTS" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['DATA_LINEAGE'] + 'px' }">
+                <tablecell :fulltext="props.item.DATA_LINEAGE" showOn="click"></tablecell></td>
               
               <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.BUSINESS_ALIAS_NAME" showOn="click"></tablecell></td>
@@ -82,17 +108,8 @@
               <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_DESCRIPTION'] + 'px' }">
                 <tablecell :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['CDE_YES_NO'] + 'px' }">
-                <tablecell :fulltext="props.item.CDE_YES_NO" showOn="click"></tablecell></td>
-              
-              <!-- <td v-bind:style="{ width: store.left.colWidth['STATUS'] + 'px' }">
-                <tablecell :fulltext="props.item.STATUS" showOn="click"></tablecell></td> -->
-              
-              <td v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }">
-                <tablecell :fulltext="props.item.DATA_TYPE" showOn="click"></tablecell></td>
-              
-              <!-- <td v-bind:style="{ width: store.left.colWidth['DATA_FORMAT'] + 'px' }">
-                <tablecell :fulltext="props.item.DATA_FORMAT" showOn="click"></tablecell></td> -->
+              <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
+                <tablecell :fulltext="props.item.CDE" showOn="click"></tablecell></td>
               
               <td v-bind:style="{ width: store.left.colWidth['DATA_LENGTH'] + 'px' }">
                 <tablecell :fulltext="props.item.DATA_LENGTH" showOn="click"></tablecell></td>
@@ -100,14 +117,14 @@
               <td v-bind:style="{ width: store.left.colWidth['EXAMPLE'] + 'px' }">
                 <tablecell :fulltext="props.item.EXAMPLE" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['DERIVED_YES_NO'] + 'px' }">
-                <tablecell :fulltext="props.item.DERIVED_YES_NO" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['DERIVED'] + 'px' }">
+                <tablecell :fulltext="props.item.DERIVED" showOn="click"></tablecell></td>
               
               <td v-bind:style="{ width: store.left.colWidth['DERIVATION_LOGIC'] + 'px' }">
                 <tablecell :fulltext="props.item.DERIVATION_LOGIC" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['SOURCED_FROM_UPSTREAM_YES_NO'] + 'px' }">
-                <tablecell :fulltext="props.item.SOURCED_FROM_UPSTREAM_YES_NO" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['SOURCED_FROM_UPSTREAM'] + 'px' }">
+                <tablecell :fulltext="props.item.SOURCED_FROM_UPSTREAM" showOn="click"></tablecell></td>
               
               <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CHECKS'] + 'px' }">
                 <tablecell :fulltext="props.item.SYSTEM_CHECKS" showOn="click"></tablecell></td>
@@ -142,11 +159,15 @@ export default {
   data() {
     return {
       storeName: "edmpddTechnical",
+      edmpStoreName: "edmp"
     };
   },
   computed: {
     store() {
       return this.$store.state[this.storeName].all;
+    },
+    edmpStore() {
+      return this.$store.state[this.edmpStoreName].all;
     },
   },
   watch: {
@@ -182,6 +203,27 @@ export default {
   methods: {
     getLeftTable() {
       this.store.system = this.$route.params.system;
+
+      if( ! this.store.filters.left.filterTypes) this.store.filters.left.filterTypes = {};
+
+      this.store.filters.left["COUNTRY"] = this.edmpStore.ddVal.ddCountrySelected;
+      this.store.filters.left.filterTypes["COUNTRY"] = "eq";
+
+      this.store.filters.left["BUSINESS_SEGMENT"] = this.edmpStore.ddVal.ddBusinessSegmentSelected;
+      this.store.filters.left.filterTypes["BUSINESS_SEGMENT"] = "eq";
+
+      this.store.filters.left["SOURCE_SYSTEM"] = this.edmpStore.ddVal.ddSourceSystemSelected;
+      this.store.filters.left.filterTypes["SOURCE_SYSTEM"] = "eq";
+
+      this.store.filters.left["CLUSTER_NAME"] = this.edmpStore.ddVal.ddClusterSelected;
+      this.store.filters.left.filterTypes["CLUSTER_NAME"] = "eq";
+
+      this.store.filters.left["TIER"] = this.edmpStore.ddVal.ddTierSelected;
+      this.store.filters.left.filterTypes["TIER"] = "eq";
+
+      this.store.filters.left["ITAM"] = this.edmpStore.ddVal.ddItamSelected;
+      this.store.filters.left.filterTypes["ITAM"] = "eq";
+
       this.$store.dispatch(`${this.storeName}/getLeftTable`);
     },
     setTableColumnsWidth(elem){

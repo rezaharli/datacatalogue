@@ -12,27 +12,27 @@ const state = {
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Data Profiling', value: 'ITAM_ID' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'EDM Source System Name', value: 'TABLE_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Database Name', value: 'COLUMN_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Table Name', value: 'BUSINESS_ALIAS_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Name', value: 'BUSINESS_ALIAS_DESCRIPTION' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Data Type', value: 'BUSINESS_ALIAS_DESCRIPTION' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Length', value: 'BUSINESS_ALIAS_DESCRIPTION' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Nullable (Yes/No)', value: 'DERIVATION_LOGIC' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Primary Key', value: 'DERIVATION_LOGIC' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Certified (Yes/No)', value: 'DERIVATION_LOGIC' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Profile Results', value: 'DERIVATION_LOGIC' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Data Lineage', value: 'DERIVATION_LOGIC' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Alias Name', value: 'DERIVATION_LOGIC' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Alias Description', value: 'DERIVATION_LOGIC' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'CDE (Yes/No)', value: 'DERIVATION_LOGIC' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Data Length', value: 'DERIVATION_LOGIC' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Example', value: 'DERIVATION_LOGIC' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Derived (Yes/No)', value: 'DERIVATION_LOGIC' },
+            { align: 'left', display: true, filterable: false, exportable: false, displayCount: false, sortable: false, text: 'Data Profiling', value: 'Details' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'EDM Source System Name', value: 'EDM_SOURCE_SYSTEM_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Database Name', value: 'DATABASE_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Table Name', value: 'TABLE_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Name', value: 'COLUMN_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Data Type', value: 'DATA_TYPE' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Length', value: 'COLUMN_LENGTH' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Nullable (Yes/No)', value: 'NULLABLE' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Primary Key', value: 'PRIMARY_KEY' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Certified (Yes/No)', value: 'CERTIFIED' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Profile Results', value: 'PROFILE_RESULTS' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Data Lineage', value: 'DATA_LINEAGE' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Alias Name', value: 'BUSINESS_ALIAS_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Alias Description', value: 'BUSINESS_ALIAS_DESCRIPTION' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'CDE (Yes/No)', value: 'CDE' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Data Length', value: 'DATA_LENGTH' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Example', value: 'EXAMPLE' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Derived (Yes/No)', value: 'DERIVED' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Derivation Logic', value: 'DERIVATION_LOGIC' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Sourced From Upstream (Yes/No)', value: 'DERIVATION_LOGIC' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'System Checks', value: 'DERIVATION_LOGIC' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Sourced From Upstream (Yes/No)', value: 'SOURCED_FROM_UPSTREAM' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'System Checks', value: 'SYSTEM_CHECKS' },
         ],
         isRightTable: false,
         DDSource: [],
@@ -46,14 +46,14 @@ const actions = {
     exportData({ commit }) {
         commit('getExportDataRequest');
 
-        Object.keys(state.all.filters.left).map(function(key, index) {
+        Object.keys(state.all.filters.left).map(function(key) {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
         var param = {
             System: state.all.system,
             Filters: state.all.filters.left,
-            Pagination: _.cloneDeep(state.all.left.pagination)
+            Pagination: this._.cloneDeep(state.all.left.pagination)
         }
 
         param.Pagination.rowsPerPage = -1;
@@ -64,10 +64,10 @@ const actions = {
                 error => commit('getExportDataFailure', error)
             );
     },
-    getLeftTable({ commit }, system) {
+    getLeftTable({ commit }) {
         commit('getLeftTableRequest');
 
-        Object.keys(state.all.filters.left).map(function(key, index) {
+        Object.keys(state.all.filters.left).map(function(key) {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
@@ -77,11 +77,9 @@ const actions = {
             Pagination: state.all.left.pagination
         }
 
-        return edmpService.getDdTable(param)
+        return edmpService.getTechnicalTable(param)
             .then(
                 res => {
-                    console.log(res);
-                    
                     commit('getLeftTableSuccess', res)
                 },
                 error => commit('getLeftTableFailure', error)

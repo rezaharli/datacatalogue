@@ -7,7 +7,7 @@
           <b-col sm=12 md=3>
               <div class="card card-v2 transition">
                   <h6 class="title-1">System Name</h6>
-                  <h3 class="title-2 text-capitalize">{{$route.params.system}}</h3>
+                  <h3 class="title-2 text-capitalize">EDMp</h3>
               </div>
           </b-col>
       </b-row>

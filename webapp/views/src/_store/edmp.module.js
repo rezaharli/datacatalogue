@@ -10,7 +10,17 @@ const state = {
             systemName: "",
             itamID: "",
             owners: []
-        }
+        },
+        DDSource: [],
+        firstload: true,
+        ddVal: {
+            ddCountrySelected: "",
+            ddBusinessSegmentSelected: "",
+            ddSourceSystemSelected: "",
+            ddClusterSelected: "",
+            ddTierSelected: "",
+            ddItamSelected: "",
+        },
     }
 };
 
@@ -27,6 +37,19 @@ const actions = {
                 res => commit('getCountsSuccess', res.Data),
                 error => commit('getCountsFailure', error)
             );
+    },
+    getDropdownOpts({ commit }, system) {
+        commit('getDropdownOptsRequest');
+
+        var param = {
+            System: system
+        }
+
+        return edmpService.getDropdownOpts(param)
+            .then(
+                res => commit('getDropdownOptsSuccess', res.Data),
+                error => commit('getDropdownOptsFailure', error)
+            );
     }
 };
 
@@ -40,6 +63,23 @@ const mutations = {
         state.all.isLoading = false;
     },
     getCountsFailure(state, error) {
+        state.all.isLoading = false;
+        state.all.error = error;
+    },
+    getDropdownOptsRequest(state) {
+        state.all.firstload = true;
+        state.all.isLoading = true;
+    },
+    getDropdownOptsSuccess(state, data) {
+        state.all.firstload = true;
+        state.all.DDSource = data.MappedDDSource;
+
+        setTimeout(() => {
+            state.all.firstload = false;
+            state.all.isLoading = false;
+        }, 100);
+    },
+    getDropdownOptsFailure(state, error) {
         state.all.isLoading = false;
         state.all.error = error;
     },

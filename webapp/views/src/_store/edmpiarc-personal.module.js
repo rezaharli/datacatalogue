@@ -12,12 +12,10 @@ const state = {
         left: newTableObject(),
         exportDatas: [],
         leftHeaders: [
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Table Name', value: 'ITAM_ID' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Name', value: 'ITAM_ID' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Alias Name', value: 'ITAM_ID' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Alias Description', value: 'ITAM_ID' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'CDE (Yes/No)', value: 'ITAM_ID' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'PII Flag', value: 'ITAM_ID' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'EDM Source System Name', value: 'EDM_SOURCE_SYSTEM_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Database Name', value: 'DATABASE_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'PII (Yes/No)', value: 'PII' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'CDE (Yes/No)', value: 'CDE' },
         ],
         isRightTable: false,
         DDSource: [],
@@ -31,7 +29,7 @@ const actions = {
     exportData({ commit }) {
         commit('getExportDataRequest');
 
-        Object.keys(state.all.filters.left).map(function(key, index) {
+        Object.keys(state.all.filters.left).map(function(key) {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
@@ -43,16 +41,16 @@ const actions = {
 
         param.Pagination.rowsPerPage = -1;
 
-        return edmpService.getDdTable(param)
+        return edmpService.getIarcPersonal(param)
             .then(
                 res => commit('getExportDataSuccess', res),
                 error => commit('getExportDataFailure', error)
             );
     },
-    getLeftTable({ commit }, system) {
+    getLeftTable({ commit }) {
         commit('getLeftTableRequest');
 
-        Object.keys(state.all.filters.left).map(function(key, index) {
+        Object.keys(state.all.filters.left).map(function(key) {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
@@ -62,11 +60,9 @@ const actions = {
             Pagination: state.all.left.pagination
         }
 
-        return edmpService.getDdTable(param)
+        return edmpService.getIarcPersonal(param)
             .then(
                 res => {
-                    console.log(res);
-                    
                     commit('getLeftTableSuccess', res)
                 },
                 error => commit('getLeftTableFailure', error)
@@ -79,7 +75,7 @@ const mutations = {
         state.all.left.isLoading = true;
     },
     getExportDataSuccess(state, res) {
-        state.all.exportDatas = res.DataFlat;
+        state.all.exportDatas = res.Data.Flat;
 
         state.all.left.isLoading = false;
     },

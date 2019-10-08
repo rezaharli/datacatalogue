@@ -44,6 +44,9 @@ import RfoPriority from './components/rfo/Rfo-priority';
 
 import Edmp from './components/edmp/Edmp';
 import EdmpDd from './components/edmp/Edmp-dd';
+import EdmpDdTechnical from './components/edmp/Edmp-dd-technical';
+import EdmpDdBusiness from './components/edmp/Edmp-dd-business';
+import EdmpDdConsumption from './components/edmp/Edmp-dd-consumption';
 import EdmpIarc from './components/edmp/Edmp-iarc';
 import EdmpIarcPersonal from './components/edmp/Edmp-iarc-personal';
 
@@ -81,6 +84,29 @@ const router = new VueRouter({
       title: "EDMp - Data Catalogue",
       permission: "DSC"
     },
+    children: [
+      { 
+        path: '', name: 'dsc.edmp.dd.default', redirect: { name: 'dsc.edmp.dd.technical' }
+      }, { // dsc.edmp.dd.technical
+        path: '/dsc/edmp/dd/technical-metadata', name: 'dsc.edmp.dd.technical', component: EdmpDdTechnical, 
+        meta: { 
+          title: "EDMp - Data Catalogue",
+          permission: "DSC"
+        },
+      }, { // dsc.edmp.dd.business
+        path: '/dsc/edmp/dd/business-metadata', name: 'dsc.edmp.dd.business', component: EdmpDdBusiness, 
+        meta: { 
+          title: "EDMp - Data Catalogue",
+          permission: "DSC"
+        },
+      }, { // dsc.edmp.dd.policy
+        path: '/dsc/edmp/dd/consumption-apps', name: 'dsc.edmp.dd.consumption', component: EdmpDdConsumption, 
+        meta: { 
+          title: "EDMp - Data Catalogue",
+          permission: "DSC"
+        },
+      }, 
+    ]
   }, { // dsc.edmp.iarc
     path: '/dsc/edmp/iarc', name: 'dsc.edmp.iarc', component: EdmpIarc, 
     meta: { 
