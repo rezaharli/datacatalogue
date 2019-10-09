@@ -39,6 +39,15 @@
                     <router-link :to="goToDscMenu" class="standard-a">DSC Landing Page</router-link>
                 </b-dropdown-item>
 
+                <b-dropdown-item v-if="
+                    $route.name == 'dsc.edmp.iarc.personal' ||
+                    $route.name == 'dsc.edmp.dd.technical' ||
+                    $route.name == 'dsc.edmp.dd.business' ||
+                    $route.name == 'dsc.edmp.dd.consumption'
+                    ">
+                    <router-link :to="goToDscEdmpMenu" class="standard-a">DSC Landing Page</router-link>
+                </b-dropdown-item>
+
                 <b-dropdown-item v-if="$route.name == 'dsc.cdp.cde'">
                     <router-link :to="goToLevel3" class="standard-a">Critical Downstream Process View</router-link>
                 </b-dropdown-item>
@@ -91,7 +100,7 @@
 
             <v-toolbar-title to="/" class="app-title text-capitalize">
                 <router-link to="/" class="toolbar-title">
-                    {{ $route.name.indexOf('dsc.') != -1 ? $route.params.system : (title ? title : "Data Catalogue") }}
+                    {{ $route.name.indexOf('dsc.') != -1 ? ($route.name.indexOf('dsc.edmp') != -1 ? "EDMp" : $route.params.system) : (title ? title : "Data Catalogue") }}
                 </router-link>
             </v-toolbar-title>
             
@@ -157,6 +166,11 @@ export default {
             var tmp2 = tmp.slice(0, 2).join("/");
             var tmp3 = tmp2 + '/' + encodeURIComponent(this.$route.params.system);
             return tmp3;
+        },
+        goToDscEdmpMenu(){
+            var tmp = this.$route.path.split("/");
+            var tmp2 = tmp.slice(0, 3).join("/");
+            return tmp2;
         },
         goToDdoMenu(){
             var tmp = this.$route.path.split("/");

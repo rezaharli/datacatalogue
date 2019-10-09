@@ -441,7 +441,7 @@ router.beforeEach((to, from, next) => {
       }
 
       // redirect to login page if not logged in and trying to access a restricted page
-      const publicPages = ['/login', '/crypto', '/edmp'];
+      const publicPages = ['/login', '/crypto'];
       const authRequired = !publicPages.find(v => to.path.indexOf(v) != -1);
       const loggedIn = localStorage.getItem('user');
       
