@@ -44,15 +44,25 @@
                 <v-checkbox :input-value="props.all" :indeterminate="props.indeterminate" primary hide-details @click.stop="toggleAll"></v-checkbox>
               </th>
 
-              <th
-                v-for="header in props.headers"
-                :key="header.text"
-                :class="['column sortable text-xs-left', store.left.pagination.descending ? 'desc' : 'asc', header.value === store.left.pagination.sortBy ? 'active' : '']"
-                @click="changeSort(header.value)"
-              >
-                <tableheader :storeName="storeName" :props="header" :which="'left'" :fromHeaderLoop="true" />
-                <v-icon small>arrow_upward</v-icon>
-              </th>
+              <template v-for="header in props.headers">
+                <th
+                  v-if="header.sortable == true"
+                  :key="header.text"
+                  :class="['column sortable text-xs-left', store.left.pagination.descending ? 'desc' : 'asc', header.value === store.left.pagination.sortBy ? 'active' : '']"
+                  @click="changeSort(header.value)"
+                >
+                  <tableheader :storeName="storeName" :props="header" :which="'left'" :fromHeaderLoop="true" />
+                  <v-icon small>arrow_upward</v-icon>
+                </th>
+
+                <th
+                  v-if="header.sortable == false"
+                  :key="header.text"
+                  :class="['column sortable text-xs-left', store.left.pagination.descending ? 'desc' : 'asc', header.value === store.left.pagination.sortBy ? 'active' : '']"
+                >
+                  <tableheader :storeName="storeName" :props="header" :which="'left'" :fromHeaderLoop="true" />
+                </th>
+              </template>
             </tr>
           </template>
 
