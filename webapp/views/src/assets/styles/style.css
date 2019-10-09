@@ -327,7 +327,7 @@ table.v-table tbody tr td.hidden{display: none;} */
 .table-v2 table.v-table thead tr th {padding: 5px 5px; font-size: 12px; font-weight: 600;}
 .table-v2 table.v-table thead tr th:first-of-type {padding-left: 20px;}
 .table-v2 table.v-table thead tr th:last-of-type {padding-right: 20px;}
-.table-v2 table.v-table thead tr th .v-icon {
+.table-v2 table.v-table thead tr th.column .v-icon {
     /* position: absolute; */
     /* left: -10px; */
     /* top: 47%; */

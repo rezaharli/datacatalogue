@@ -7,18 +7,18 @@
 
 <template>
   <div ref="widthAcuan" class="table-header-wrapper">
-    <span>{{ props.header.text }} {{ count }}</span>
+    <span>{{ fixedProps.header.text }} {{ count }}</span>
 
-    <b-dropdown no-caret variant="link" class="dropdown-button-wrapper" ref="columnFilter" v-if="props.header.filterable">
+    <b-dropdown no-caret variant="link" class="dropdown-button-wrapper" ref="columnFilter" v-if="fixedProps.header.filterable">
       <template slot="button-content">
-        <v-icon small v-bind:class="{'icon-active' : store.filters[which][props.header.value.split('.').reverse()[0]] }" class="icon-filter">filter_list</v-icon>
+        <v-icon small v-bind:class="{'icon-active' : store.filters[which][fixedProps.header.value.split('.').reverse()[0]] }" class="icon-filter">filter_list</v-icon>
       </template>
 
       <b-dropdown-header>
         <b-form-input
           type="text"
           placeholder="Filter"
-          v-model="store.filters[which][props.header.value.split('.').reverse()[0]]"
+          v-model="store.filters[which][fixedProps.header.value.split('.').reverse()[0]]"
           @keyup.native="keyupAction"
         ></b-form-input>
       </b-dropdown-header>
@@ -29,15 +29,15 @@
         <b-dropdown-item
           v-for="item in distinctData"
           :key="item"
-          @click="filterClick(props.header, item)"
+          @click="filterClick(fixedProps.header, item)"
         >{{ item }}</b-dropdown-item>
       </div>
 
       <b-dropdown-divider/>
 
-      <b-row class="justify-content-center" v-bind:class="{'d-none' : !(store.filters[which][props.header.value.split('.').reverse()[0]]) }">
+      <b-row class="justify-content-center" v-bind:class="{'d-none' : !(store.filters[which][fixedProps.header.value.split('.').reverse()[0]]) }">
         <b-col cols="auto">
-          <a class="text-danger mx-4 my-1" @click="resetFilterColumn(which, props.header.value.split('.').reverse()[0])">
+          <a class="text-danger mx-4 my-1" @click="resetFilterColumn(which, fixedProps.header.value.split('.').reverse()[0])">
             <i class="fa fa-trash"></i> Clear
           </a>
         </b-col>
@@ -50,7 +50,7 @@
 <script>
 export default {
   name: "tableHeader",
-  props: ["storeName", "props", "which"],
+  props: ["storeName", "props", "which", "fromHeaderLoop"],
   data() {
     return {
       filterProcessTimeout: null,
@@ -60,13 +60,13 @@ export default {
   computed: {
     store () { return this.$store.state[this.storeName].all },
     count () {
-      if( ! this.props.header.displayCount) return "";
+      if( ! this.fixedProps.header.displayCount) return "";
       if( ! this.store[this.which].source[0]) return "(0)";
 
-      return ("(" + this.store[this.which].source[0]["COUNT_" + this.props.header.value.split(".").reverse()[0]] + ")");
+      return ("(" + this.store[this.which].source[0]["COUNT_" + this.fixedProps.header.value.split(".").reverse()[0]] + ")");
     },
     distinctData () {
-      var headerValueField = this.props.header.value;
+      var headerValueField = this.fixedProps.header.value;
       var datax = this.store[this.which].source;
 
       var cols = headerValueField.split(".")
@@ -87,6 +87,16 @@ export default {
         this._.map(this._.sortBy(datax, headerValueField), headerValueField).map(v => v.toString())
       ).filter(Boolean);
     },
+    fixedProps() {
+      if(this.fromHeaderLoop == true){
+        var props = {}
+        props.header = this.props;
+
+        return props
+      } else {
+        return this.props
+      }
+    }
   },
   mounted (){
     this.makeTableAlertFull();
@@ -99,7 +109,7 @@ export default {
         });
       }
 
-      // this.store[this.which].colWidth[this.props.header.value.split('.').reverse()[0]] = this.$refs.widthAcuan.parentNode.offsetWidth;
+      // this.store[this.which].colWidth[this.fixedProps.header.value.split('.').reverse()[0]] = this.$refs.widthAcuan.parentNode.offsetWidth;
       // console.log(this.$refs.widthAcuan.parentNode, '----' ,this.$refs.widthAcuan.parentNode.offsetWidth);
     }, 100);
     setTimeout(() => {
@@ -118,11 +128,11 @@ export default {
 
       // manually adding space only when sortable is true
       if(e.key == " ") {
-        if(this.props.header.sortable){
-          var model = this.store.filters[this.which][this.props.header.value.split('.').reverse()[0]];
+        if(this.fixedProps.header.sortable){
+          var model = this.store.filters[this.which][this.fixedProps.header.value.split('.').reverse()[0]];
           model = model ? model + " " : " ";
 
-          this.store.filters[this.which][this.props.header.value.split('.').reverse()[0]] = model;
+          this.store.filters[this.which][this.fixedProps.header.value.split('.').reverse()[0]] = model;
 
         }
       }

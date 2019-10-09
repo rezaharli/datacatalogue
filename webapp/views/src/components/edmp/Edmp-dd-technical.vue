@@ -34,7 +34,9 @@
         <div class="table-v2-title">Technical Metadata</div>
         
         <v-data-table
-            :headers="store.leftHeaders.filter(v => v.display == true)"
+            v-model="store.selected"
+            select-all
+            :headers="displayedHeaders"
             :items="store.left.display"
             :pagination.sync="store.left.pagination"
             :total-items="store.left.totalItems"
@@ -43,10 +45,25 @@
             :must-sort="true"
             :rows-per-page-items="[25, 50, 75, 100]"
             item-key="ID"
-            class="table-v2"
+            class="elevation-1 table-v2"
             id="table-edmp-dd-technical">
-          <template slot="headerCell" slot-scope="props">
-            <tableheader :storeName="storeName" :props="props" :which="'left'"/>
+
+          <template slot="headers" slot-scope="props">
+            <tr>
+              <th>
+                <v-checkbox :input-value="props.all" :indeterminate="props.indeterminate" primary hide-details @click.stop="toggleAll"></v-checkbox>
+              </th>
+
+              <th
+                v-for="header in props.headers"
+                :key="header.text"
+                :class="['column sortable text-xs-left', store.left.pagination.descending ? 'desc' : 'asc', header.value === store.left.pagination.sortBy ? 'active' : '']"
+                @click="changeSort(header.value)"
+              >
+                <tableheader :storeName="storeName" :props="header" :which="'left'" :fromHeaderLoop="true" />
+                <v-icon small>arrow_upward</v-icon>
+              </th>
+            </tr>
           </template>
 
           <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
@@ -64,7 +81,10 @@
           </template>
 
           <template slot="items" slot-scope="props">
-            <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
+            <tr :class="{even: props.index % 2, odd: !(props.index % 2)}" :active="props.selected">
+              <td>
+                <v-checkbox :input-value="props.selected" primary hide-details @click="props.selected = !props.selected"></v-checkbox></td>
+
               <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }" class="text-capitalize text-title">
                 <b-button size="sm" class="green-tosca-gradient icon-only" @click="showDetails(props.item)">
                   <i class="fa fa-fw fa-external-link-alt"></i></b-button></td>
@@ -155,7 +175,7 @@
 
           <template slot="expand" slot-scope="props">
             <v-data-table
-              :headers="store.leftHeaders.filter(v => v.display == true)"
+              :headers="displayedHeaders"
               :items="props.item.Tables"
               item-key="TMTID"
               class=""
@@ -164,6 +184,7 @@
               @update:pagination="setExpandedTableColumnsWidth"
             >
               <template slot="items" slot-scope="props">
+                <td class="text-capitalize">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">&nbsp;</td>
@@ -252,7 +273,7 @@ export default {
   data() {
     return {
       storeName: "edmpddTechnical",
-      edmpStoreName: "edmp"
+      edmpStoreName: "edmp",
     };
   },
   computed: {
@@ -261,6 +282,9 @@ export default {
     },
     edmpStore() {
       return this.$store.state[this.edmpStoreName].all;
+    },
+    displayedHeaders() {
+      return this.store.leftHeaders.filter(v => v.display == true);
     },
   },
   watch: {
@@ -356,7 +380,19 @@ export default {
           });
         });
       }, 10);
-    }
+    },
+    toggleAll () {
+      if (this.store.selected.length) this.store.selected = []
+      else this.store.selected = this.store.left.display.slice()
+    },
+    changeSort (column) {
+      if (this.store.left.pagination.sortBy === column) {
+        this.store.left.pagination.descending = !this.store.left.pagination.descending
+      } else {
+        this.store.left.pagination.sortBy = column
+        this.store.left.pagination.descending = false
+      }
+    },
   }
 };
 </script>

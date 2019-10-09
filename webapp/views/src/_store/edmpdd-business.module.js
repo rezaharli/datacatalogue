@@ -11,6 +11,7 @@ const state = {
         system: '',
         left: newTableObject(),
         exportDatas: [],
+        selected: [],
         leftHeaders: [
             { align: 'left', display: true, filterable: false, exportable: false, displayCount: false, sortable: false, text: 'Data Profiling', value: 'Details' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'EDM Source System Name', value: 'EDM_SOURCE_SYSTEM_NAME' },

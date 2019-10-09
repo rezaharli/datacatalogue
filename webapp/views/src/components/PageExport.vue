@@ -19,7 +19,7 @@
 import XLSX from 'xlsx'
 export default {
     name: "pageExport",
-    props: ["storeName", "leftTableCols", "rightTableCols", "forceRightAtFirstLevel"],
+    props: ["storeName", "leftTableCols", "rightTableCols", "forceRightAtFirstLevel", "rowSelectInvolved"],
     data() {
         return {};
     },
@@ -72,11 +72,23 @@ export default {
             return this.$store.dispatch(`${this.storeName}/exportData`)
         },
         async fetchData(){
-            const resource = await this.getLeftTable();
+            var fetchExportDatas = async () => {
+                if(this.rowSelectInvolved == true){
+                    if(this.store.selected){
+                        if(this.store.selected.length > 0){
+                            return this.store.left.source.filter(v => this.store.selected.find(w => v.TABLE_NAME == w.TABLE_NAME) != undefined); // SEMENTARA (SHOULDN'T BE HARDCODED USING TABLENAME)
+                        }
+                    }
+                }
+
+                const resource = await this.getLeftTable();
+                return this.store.exportDatas;
+            }
+
+            var exportDatas = await fetchExportDatas();
 
             var res = [];
-
-            this._.each(this.store.exportDatas, (leftRow, i) => {
+            this._.each(exportDatas, (leftRow, i) => {
                 var temp = {}
 
                 this.LeftTableCols.forEach(v => {

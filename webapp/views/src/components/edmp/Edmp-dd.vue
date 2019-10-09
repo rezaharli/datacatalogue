@@ -11,57 +11,105 @@
                 <b-col class="ml-5 col-md-7">
                   <b-row class="ml-3">
                     <b-col>
-                      <v-select
-                        v-model="store.ddVal.ddCountrySelected"
-                        :items="ddCountryOptions"
-                        label="Country"
-                        box
-                      ></v-select>
+                      <v-tooltip bottom>
+                        <template slot="activator" slot-scope="{ on }">
+                          <div v-on="on">
+                            <v-select
+                              v-model="store.ddVal.ddCountrySelected"
+                              :items="ddCountryOptions"
+                              label="Country"
+                              box
+                            ></v-select>
+                          </div>
+                        </template>
+
+                        <span>Country</span>
+                      </v-tooltip>
                     </b-col>
 
                     <b-col>
-                      <v-select
-                        v-model="store.ddVal.ddBusinessSegmentSelected"
-                        :items="ddBusinessSegmentOptions"
-                        label="Business Segment"
-                        box
-                      ></v-select>
+                      <v-tooltip bottom>
+                        <template slot="activator" slot-scope="{ on }">
+                          <div v-on="on">
+                            <v-select
+                              v-model="store.ddVal.ddBusinessSegmentSelected"
+                              :items="ddBusinessSegmentOptions"
+                              label="Business Segment"
+                              box
+                            ></v-select>
+                          </div>
+                        </template>
+                        
+                        <span>Business Segment</span>
+                      </v-tooltip>
                     </b-col>
 
                     <b-col>
-                      <v-select
-                        v-model="store.ddVal.ddSourceSystemSelected"
-                        :items="ddSourceSystemOptions"
-                        label="Source System"
-                        box
-                      ></v-select>
+                      <v-tooltip bottom>
+                        <template slot="activator" slot-scope="{ on }">
+                          <div v-on="on">
+                            <v-select
+                              v-model="store.ddVal.ddSourceSystemSelected"
+                              :items="ddSourceSystemOptions"
+                              label="Source System"
+                              box
+                            ></v-select>
+                          </div>
+                        </template>
+                        
+                        <span>Source System</span>
+                      </v-tooltip>
                     </b-col>
 
                     <b-col>
-                      <v-select
-                        v-model="store.ddVal.ddClusterSelected"
-                        :items="ddClusterOptions"
-                        label="Cluster"
-                        box
-                      ></v-select>
+                      <v-tooltip bottom>
+                        <template slot="activator" slot-scope="{ on }">
+                          <div v-on="on">
+                            <v-select
+                              v-model="store.ddVal.ddClusterSelected"
+                              :items="ddClusterOptions"
+                              label="Cluster"
+                              box
+                            ></v-select>
+                          </div>
+                        </template>
+                        
+                        <span>Cluster</span>
+                      </v-tooltip>
                     </b-col>
 
                     <b-col>
-                      <v-select
-                        v-model="store.ddVal.ddTierSelected"
-                        :items="ddTierOptions"
-                        label="Tier"
-                        box
-                      ></v-select>
+                      <v-tooltip bottom>
+                        <template slot="activator" slot-scope="{ on }">
+                          <div v-on="on">
+                            <v-select
+                              v-model="store.ddVal.ddTierSelected"
+                              :items="ddTierOptions"
+                              label="Tier"
+                              box
+                            ></v-select>
+                          </div>
+                        </template>
+                        
+                        <span>Tier</span>
+                      </v-tooltip>
                     </b-col>
 
                     <b-col>
-                      <v-select
-                        v-model="store.ddVal.ddItamSelected"
-                        :items="ddItamOptions"
-                        label="ITAM"
-                        box
-                      ></v-select>
+                      <v-tooltip bottom>
+                        <template slot="activator" slot-scope="{ on }">
+                          <div v-on="on">
+                            <v-select
+                              v-model="store.ddVal.ddItamSelected"
+                              :items="ddItamOptions"
+                              label="ITAM"
+                              box
+                            ></v-select>
+                          </div>
+                        </template>
+                        
+                        <span>ITAM</span>
+                      </v-tooltip>
                     </b-col>
                   </b-row>
                   
@@ -72,7 +120,7 @@
                     <i class="fa fa-filter"></i>
                   </b-button>
 
-                  <page-export class="float-right shadow-sm" :storeName="activeTabStoreName" :leftTableCols="activeTabStore.leftHeaders" :rightTableCols="[]"/>
+                  <page-export class="float-right shadow-sm" :storeName="activeTabStoreName" :leftTableCols="activeTabStore.leftHeaders" :rightTableCols="[]" :rowSelectInvolved="true" />
                 </b-col>
             </b-row>
 
@@ -136,10 +184,6 @@ export default {
         }
       },
       activeTabStore() {
-        console.log(this.activeTabStoreName);
-        
-        console.log(this.$store.state[this.activeTabStoreName]);
-        
         return this.$store.state[this.activeTabStoreName].all;
       },
       addressPath() {
