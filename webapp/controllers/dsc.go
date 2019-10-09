@@ -308,6 +308,162 @@ func (c *DSC) GetDDTable(k *knot.WebContext) {
 	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
 }
 
+func (c *DSC) GetEdmpDDdropdowns(k *knot.WebContext) {
+	queryTime := time.Now()
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	mappedddSource, err := c.GetDropdownSource(payload, s.NewDSCService().GetEdmpDDDropdowns)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	ret := toolkit.M{}
+	ret.Set("MappedDDSource", mappedddSource)
+
+	h.WriteResultOK(k, res, ret)
+	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
+}
+
+func (c *DSC) GetEdmpDDTechnicalTable(k *knot.WebContext) {
+	queryTime := time.Now()
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	system := payload.GetString("System")
+	colFilter := payload.Get("Filters")
+	pagination, err := toolkit.ToM(payload.Get("Pagination"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	tableRows, _, err := s.NewDSCService().GetEdmpDDTechnicalTable(system, colFilter, pagination)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	ret := toolkit.M{}
+	ret.Set("Flat", tableRows)
+	ret.Set("Grouped", tableRows)
+
+	h.WriteResultOK(k, res, ret)
+	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
+}
+
+func (c *DSC) GetEdmpDDBusinessTable(k *knot.WebContext) {
+	queryTime := time.Now()
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	system := payload.GetString("System")
+	colFilter := payload.Get("Filters")
+	pagination, err := toolkit.ToM(payload.Get("Pagination"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	tableRows, _, err := s.NewDSCService().GetEdmpDDBusinessTable(system, colFilter, pagination)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	ret := toolkit.M{}
+	ret.Set("Flat", tableRows)
+	ret.Set("Grouped", tableRows)
+
+	h.WriteResultOK(k, res, ret)
+	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
+}
+
+func (c *DSC) GetEdmpDDConsumptionTable(k *knot.WebContext) {
+	queryTime := time.Now()
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	system := payload.GetString("System")
+	colFilter := payload.Get("Filters")
+	pagination, err := toolkit.ToM(payload.Get("Pagination"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	tableRows, _, err := s.NewDSCService().GetEdmpDDConsumptionTable(system, colFilter, pagination)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	ret := toolkit.M{}
+	ret.Set("Flat", tableRows)
+	ret.Set("Grouped", tableRows)
+
+	h.WriteResultOK(k, res, ret)
+	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
+}
+
+func (c *DSC) GetEdmpIarcPersonalTable(k *knot.WebContext) {
+	queryTime := time.Now()
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	system := payload.GetString("System")
+	colFilter := payload.Get("Filters")
+	pagination, err := toolkit.ToM(payload.Get("Pagination"))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	tableRows, _, err := s.NewDSCService().GetEdmpIarcPersonalTable(system, colFilter, pagination)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	ret := toolkit.M{}
+	ret.Set("Flat", tableRows)
+	ret.Set("Grouped", tableRows)
+
+	h.WriteResultOK(k, res, ret)
+	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
+}
+
 func (c *DSC) GetTableName(k *knot.WebContext) {
 	res := toolkit.NewResult()
 
