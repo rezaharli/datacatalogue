@@ -687,7 +687,7 @@ func (s *DSCService) GetEdmpIarcPersonalTable(system string, colFilter interface
 
 	///////// --------------------------------------------------COLUMN FILTER
 	gridArgs.Colnames = append(gridArgs.Colnames,
-		"EDM_SOURCE_SYSTEM_NAME", "DATABASE_NAME", "PII", "CDE",
+		"EDM_SOURCE_SYSTEM_NAME", "DATABASE_NAME", "TABLE_NAME", "COLUMN_NAME", "BUSINESS_ALIAS_NAME", "BUSINESS_ALIAS_DESCRIPTION", "CDE", "PII",
 	)
 
 	colFilterM, err := toolkit.ToM(colFilter)

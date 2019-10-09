@@ -86,12 +86,24 @@
                   
                   <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
                     <tablecell :fulltext="props.item.DATABASE_NAME" showOn="click"></tablecell></td>
-                    
-                  <td v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }">
-                    <tablecell :fulltext="props.item.PII" showOn="click"></tablecell></td>
+                  
+                  <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
+                    <tablecell :fulltext="props.item.TABLE_NAME" showOn="click"></tablecell></td>
+                  
+                  <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
+                    <tablecell :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell></td>
+                  
+                  <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_NAME'] + 'px' }">
+                    <tablecell :fulltext="props.item.BUSINESS_ALIAS_NAME" showOn="click"></tablecell></td>
+                  
+                  <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_DESCRIPTION'] + 'px' }">
+                    <tablecell :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION" showOn="click"></tablecell></td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
                     <tablecell :fulltext="props.item.CDE" showOn="click"></tablecell></td>
+                    
+                  <td v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }">
+                    <tablecell :fulltext="props.item.PII" showOn="click"></tablecell></td>
                 </tr>
               </template>
             </v-data-table>
