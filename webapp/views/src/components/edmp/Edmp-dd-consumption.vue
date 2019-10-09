@@ -23,7 +23,7 @@
     <b-row style="margin-top: 10px;margin-bottom: 10px;">
       <b-col>
         <!-- Main content -->
-        <div class="table-v2-title">Consumption Apps</div>
+        <div class="table-v2-title">Consumption Applications</div>
         <v-data-table
             v-model="store.selected"
             select-all
