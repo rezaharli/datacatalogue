@@ -6,6 +6,12 @@
 .dd-filter .v-text-field--box .v-label {
   font-size: 14px;
 }
+.v-select__selection--comma {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+}
 </style>
 
 <template>
@@ -14,7 +20,7 @@
             <PageHeader />
             
             <b-row class="my-4">
-                <b-col class="ml-5 col-md-7">
+                <b-col class="ml-5 col-md-10">
                   <b-row class="ml-3 dd-filter">
                     <b-col>
                       <v-tooltip bottom>
@@ -25,6 +31,7 @@
                               :items="ddCountryOptions"
                               label="Country"
                               box
+                              clearable
                             ></v-select>
                           </div>
                         </template>
@@ -42,6 +49,7 @@
                               :items="ddBusinessSegmentOptions"
                               label="Business Segment"
                               box
+                              clearable
                             ></v-select>
                           </div>
                         </template>
@@ -59,6 +67,7 @@
                               :items="ddSourceSystemOptions"
                               label="Source System"
                               box
+                              clearable
                             ></v-select>
                           </div>
                         </template>
@@ -76,6 +85,7 @@
                               :items="ddClusterOptions"
                               label="Cluster"
                               box
+                              clearable
                             ></v-select>
                           </div>
                         </template>
@@ -93,6 +103,7 @@
                               :items="ddTierOptions"
                               label="Tier"
                               box
+                              clearable
                             ></v-select>
                           </div>
                         </template>
@@ -110,6 +121,7 @@
                               :items="ddItamOptions"
                               label="ITAM"
                               box
+                              clearable
                             ></v-select>
                           </div>
                         </template>
@@ -200,7 +212,7 @@ export default {
         return this.$route.params.system;
       },
       ddCountryOptions () {
-        return _.uniq(_.map(this.store.DDSource, (v) => v.COUNTRY.toString())).filter(Boolean);
+        return _.sortedUniq(_.sortBy(_.map(this.store.DDSource, (v) => v.COUNTRY.toString()), [function(o) { return o; }]));
       },
       ddBusinessSegmentOptions () {
         var self = this;
@@ -208,7 +220,7 @@ export default {
           return self.store.ddVal.ddCountrySelected ? (v.COUNTRY == self.store.ddVal.ddCountrySelected) : true;
         });
 
-        return _.uniq(_.map(filtered, (v) => v.BUSINESS_SEGMENT.toString())).filter(Boolean);
+        return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.BUSINESS_SEGMENT.toString()), [function(o) { return o; }]));
       },
       ddSourceSystemOptions () {
         var self = this;
@@ -217,7 +229,7 @@ export default {
             && self.store.ddVal.ddBusinessSegmentSelected ? (v.BUSINESS_SEGMENT == self.store.ddVal.ddBusinessSegmentSelected) : true;
         });
         
-        return _.uniq(_.map(filtered, (v) => v.SOURCE_SYSTEM.toString())).filter(Boolean);
+        return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.SOURCE_SYSTEM.toString()), [function(o) { return o; }]));
       },
       ddClusterOptions () {
         var self = this;
@@ -227,7 +239,7 @@ export default {
             && self.store.ddVal.ddSourceSystemSelected ? (v.SOURCE_SYSTEM == self.store.ddVal.ddSourceSystemSelected) : true;
         });
         
-        return _.uniq(_.map(filtered, (v) => v.CLUSTER_NAME.toString())).filter(Boolean);
+        return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.CLUSTER_NAME.toString()), [function(o) { return o; }]));
       },
       ddTierOptions () {
         var self = this;
@@ -238,7 +250,7 @@ export default {
             && self.store.ddVal.ddClusterSelected ? (v.CLUSTER_NAME == self.store.ddVal.ddClusterSelected) : true;
         });
         
-        return _.uniq(_.map(filtered, (v) => v.TIER.toString())).filter(Boolean);
+        return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.TIER.toString()), [function(o) { return o; }]));
       },
       ddItamOptions () {
         var self = this;
@@ -250,7 +262,7 @@ export default {
             && self.store.ddVal.ddTierSelected ? (v.TIER == self.store.ddVal.ddTierSelected) : true;
         });
         
-        return _.uniq(_.map(filtered, (v) => v.ITAM.toString())).filter(Boolean);
+        return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.ITAM.toString()), [function(o) { return o; }]));
       },
     },
     watch: {
