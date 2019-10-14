@@ -2,6 +2,12 @@
   @import '../../assets/styles/dashboard.css';
 </style>
 
+<style>
+.dd-filter .v-text-field--box .v-label {
+  font-size: 14px;
+}
+</style>
+
 <template>
     <v-content>
         <b-container fluid>
@@ -9,7 +15,7 @@
             
             <b-row class="my-4">
                 <b-col class="ml-5 col-md-7">
-                  <b-row class="ml-3">
+                  <b-row class="ml-3 dd-filter">
                     <b-col>
                       <v-tooltip bottom>
                         <template slot="activator" slot-scope="{ on }">
