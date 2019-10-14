@@ -107,14 +107,20 @@
               
               <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-capitalize text-title">
                 <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length > 0">
-                  <tablecell :fulltext="props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA'" showOn="hover"></tablecell>
+                  <div class="wrapper-showmore d-inline-block">
+                    <span>{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
+                  </div>
                 </b-link>
 
-                <tablecell :fulltext="props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA'" showOn="hover" v-if="props.item.Tables.length < 1"></tablecell>
+                <div class="wrapper-showmore d-inline-block" v-if="props.item.Tables.length < 1">
+                  <span>{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
+                </div>
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA'"></tablecell>
+                <div class="wrapper-showmore d-inline-block" v-if="isMainLevelCellShowing(props)">
+                    <span>{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
+                  </div>
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }" class="text-capitalize">
@@ -201,7 +207,9 @@
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
 
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                  <tablecell :fulltext="props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA'" showOn="hover"></tablecell>
+                  <div class="wrapper-showmore d-inline-block">
+                    <span>{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
+                  </div>
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }">
                   <tablecell :fulltext="props.item.DATA_TYPE.toString().trim() ? props.item.DATA_TYPE : 'NA'" showOn="hover"></tablecell>

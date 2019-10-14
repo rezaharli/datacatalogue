@@ -100,7 +100,7 @@
 
             <v-toolbar-title to="/" class="app-title text-capitalize">
                 <router-link to="/" class="toolbar-title">
-                    {{ $route.name.indexOf('dsc.') != -1 ? ($route.name.indexOf('dsc.edmp') != -1 ? "EDMp" : $route.params.system) : (title ? title : "Data Catalogue") }}
+                    {{ $route.name.indexOf('dsc.') != -1 ? ($route.name.indexOf('dsc.edmp') != -1 ? "ENTERPRISE DATA MGMT PLATFORM" : $route.params.system) : (title ? title : "Data Catalogue") }}
                 </router-link>
             </v-toolbar-title>
             

@@ -103,12 +103,12 @@
                 <tablecell :fulltext="props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA'" showOn="hover" v-if="props.item.Tables.length < 1"></tablecell>
               </td>
 
-              <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA'"></tablecell>
-              </td>
-
               <td v-bind:style="{ width: store.left.colWidth['TABLE_DESCRIPTION'] + 'px' }" class="text-capitalize">
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.TABLE_DESCRIPTION.toString().trim() ? props.item.TABLE_DESCRIPTION : 'NA'"></tablecell>
+              </td>
+
+              <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA'"></tablecell>
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['COLUMN_DESCRIPTION'] + 'px' }" class="text-capitalize">
@@ -186,11 +186,11 @@
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
 
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                  <tablecell :fulltext="props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA'" showOn="hover"></tablecell>
-                </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['TABLE_DESCRIPTION'] + 'px' }">
                   <tablecell :fulltext="props.item.TABLE_DESCRIPTION.toString().trim() ? props.item.TABLE_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
+                  <tablecell :fulltext="props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA'" showOn="hover"></tablecell>
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_DESCRIPTION'] + 'px' }">
                   <tablecell :fulltext="props.item.COLUMN_DESCRIPTION.toString().trim() ? props.item.COLUMN_DESCRIPTION : 'NA'" showOn="hover"></tablecell>

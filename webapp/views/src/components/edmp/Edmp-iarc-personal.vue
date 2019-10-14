@@ -82,28 +82,28 @@
               <template slot="items" slot-scope="props">
                 <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
                   <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
-                    <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME" showOn="click"></tablecell></td>
+                    <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME.toString().trim() ? props.item.EDM_SOURCE_SYSTEM_NAME : 'NA'" showOn="click"></tablecell></td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
-                    <tablecell :fulltext="props.item.DATABASE_NAME" showOn="click"></tablecell></td>
+                    <tablecell :fulltext="props.item.DATABASE_NAME.toString().trim() ? props.item.DATABASE_NAME : 'NA'" showOn="click"></tablecell></td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
-                    <tablecell :fulltext="props.item.TABLE_NAME" showOn="click"></tablecell></td>
+                    <tablecell :fulltext="props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA'" showOn="click"></tablecell></td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                    <tablecell :fulltext="props.item.COLUMN_NAME" showOn="click"></tablecell></td>
+                    <tablecell :fulltext="props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA'" showOn="click"></tablecell></td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_NAME'] + 'px' }">
-                    <tablecell :fulltext="props.item.BUSINESS_ALIAS_NAME" showOn="click"></tablecell></td>
+                    <tablecell :fulltext="props.item.BUSINESS_ALIAS_NAME.toString().trim() ? props.item.BUSINESS_ALIAS_NAME : 'NA'" showOn="click"></tablecell></td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_DESCRIPTION'] + 'px' }">
-                    <tablecell :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION" showOn="click"></tablecell></td>
+                    <tablecell :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION.toString().trim() ? props.item.BUSINESS_ALIAS_DESCRIPTION : 'NA'" showOn="click"></tablecell></td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
-                    <tablecell :fulltext="props.item.CDE" showOn="click"></tablecell></td>
+                    <tablecell :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'" showOn="click"></tablecell></td>
                     
                   <td v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }">
-                    <tablecell :fulltext="props.item.PII" showOn="click"></tablecell></td>
+                    <tablecell :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'" showOn="click"></tablecell></td>
                 </tr>
               </template>
             </v-data-table>
