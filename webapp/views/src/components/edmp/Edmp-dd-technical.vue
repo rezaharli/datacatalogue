@@ -163,10 +163,6 @@
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'"></tablecell>
               </td>
 
-              <td v-bind:style="{ width: store.left.colWidth['DATA_LENGTH'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DATA_LENGTH.toString().trim() ? props.item.DATA_LENGTH : 'NA'"></tablecell>
-              </td>
-
               <td v-bind:style="{ width: store.left.colWidth['EXAMPLE'] + 'px' }" class="text-capitalize">
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.EXAMPLE.toString().trim() ? props.item.EXAMPLE : 'NA'"></tablecell>
               </td>
@@ -240,9 +236,6 @@
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
                   <tablecell :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'" showOn="hover"></tablecell>
-                </td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATA_LENGTH'] + 'px' }">
-                  <tablecell :fulltext="props.item.DATA_LENGTH.toString().trim() ? props.item.DATA_LENGTH : 'NA'" showOn="hover"></tablecell>
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['EXAMPLE'] + 'px' }">
                   <tablecell :fulltext="props.item.EXAMPLE.toString().trim() ? props.item.EXAMPLE : 'NA'" showOn="hover"></tablecell>
