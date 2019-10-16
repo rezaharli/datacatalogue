@@ -4,6 +4,7 @@ import (
 	h "eaciit/datacatalogue/webapp/helpers"
 	m "eaciit/datacatalogue/webapp/models"
 	"fmt"
+	"reflect"
 	"runtime"
 	"strings"
 
@@ -50,8 +51,19 @@ func (s *Base) ExecuteGridQueryFromFile(gridArgs GridArgs) ([]toolkit.M, int, er
 
 	additionalWhere := make(map[string]interface{}, len(gridArgs.Colnames))
 	for i, colname := range gridArgs.Colnames {
-		if toolkit.ToString(gridArgs.ColumnFilter[i]) != "" {
-			additionalWhere[colname] = gridArgs.ColumnFilter[i]
+		if gridArgs.ColumnFilter[i] != nil {
+			switch reflect.TypeOf(gridArgs.ColumnFilter[i]).Kind() {
+			case reflect.Slice:
+				s := reflect.ValueOf(gridArgs.ColumnFilter[i])
+
+				if s.Len() > 0 {
+					additionalWhere[colname] = gridArgs.ColumnFilter[i]
+				}
+			default:
+				if toolkit.ToString(gridArgs.ColumnFilter[i]) != "" {
+					additionalWhere[colname] = gridArgs.ColumnFilter[i]
+				}
+			}
 		}
 	}
 

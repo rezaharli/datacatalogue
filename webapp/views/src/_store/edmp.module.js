@@ -14,12 +14,12 @@ const state = {
         DDSource: [],
         firstload: true,
         ddVal: {
-            ddCountrySelected: "",
-            ddBusinessSegmentSelected: "",
-            ddSourceSystemSelected: "",
-            ddClusterSelected: "",
-            ddTierSelected: "",
-            ddItamSelected: "",
+            ddCountrySelected: [],
+            ddBusinessSegmentSelected: [],
+            ddSourceSystemSelected: [],
+            ddClusterSelected: [],
+            ddTierSelected: [],
+            ddItamSelected: [],
         },
     }
 };

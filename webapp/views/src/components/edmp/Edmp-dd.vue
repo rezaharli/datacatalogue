@@ -12,6 +12,19 @@
   overflow: hidden;
   display: inline-block;
 }
+
+.v-select__selections{
+  max-width: 70%;
+}
+
+.v-select.v-text-field--enclosed:not(.v-text-field--single-line) .v-select__selections{
+  padding-top: 30px;
+  min-height: unset !important;
+}
+
+.v-select.v-select--chips input{
+  position: absolute;
+}
 </style>
 
 <template>
@@ -22,14 +35,16 @@
             <b-row class="my-4">
                 <b-col class="ml-5 col-md-10">
                   <b-row class="ml-3 dd-filter">
-                    <b-col>
-                      <v-tooltip bottom>
+                    <b-col cols="2">
+                      <v-tooltip top>
                         <template slot="activator" slot-scope="{ on }">
                           <div v-on="on">
                             <v-select
                               v-model="store.ddVal.ddCountrySelected"
                               :items="ddCountryOptions"
                               label="Country"
+                              single-line
+                              multiple
                               box
                               clearable
                             ></v-select>
@@ -40,14 +55,16 @@
                       </v-tooltip>
                     </b-col>
 
-                    <b-col>
-                      <v-tooltip bottom>
+                    <b-col cols="2">
+                      <v-tooltip top>
                         <template slot="activator" slot-scope="{ on }">
                           <div v-on="on">
                             <v-select
                               v-model="store.ddVal.ddBusinessSegmentSelected"
                               :items="ddBusinessSegmentOptions"
                               label="Business Segment"
+                              single-line
+                              multiple
                               box
                               clearable
                             ></v-select>
@@ -58,14 +75,16 @@
                       </v-tooltip>
                     </b-col>
 
-                    <b-col>
-                      <v-tooltip bottom>
+                    <b-col cols="2">
+                      <v-tooltip top>
                         <template slot="activator" slot-scope="{ on }">
                           <div v-on="on">
                             <v-select
                               v-model="store.ddVal.ddSourceSystemSelected"
                               :items="ddSourceSystemOptions"
                               label="Source System"
+                              single-line
+                              multiple
                               box
                               clearable
                             ></v-select>
@@ -76,14 +95,16 @@
                       </v-tooltip>
                     </b-col>
 
-                    <b-col>
-                      <v-tooltip bottom>
+                    <b-col cols="2">
+                      <v-tooltip top>
                         <template slot="activator" slot-scope="{ on }">
                           <div v-on="on">
                             <v-select
                               v-model="store.ddVal.ddClusterSelected"
                               :items="ddClusterOptions"
                               label="Cluster"
+                              single-line
+                              multiple
                               box
                               clearable
                             ></v-select>
@@ -94,14 +115,16 @@
                       </v-tooltip>
                     </b-col>
 
-                    <b-col>
-                      <v-tooltip bottom>
+                    <b-col cols="2">
+                      <v-tooltip top>
                         <template slot="activator" slot-scope="{ on }">
                           <div v-on="on">
                             <v-select
                               v-model="store.ddVal.ddTierSelected"
                               :items="ddTierOptions"
                               label="Tier"
+                              single-line
+                              multiple
                               box
                               clearable
                             ></v-select>
@@ -112,14 +135,16 @@
                       </v-tooltip>
                     </b-col>
 
-                    <b-col>
-                      <v-tooltip bottom>
+                    <b-col cols="2">
+                      <v-tooltip top>
                         <template slot="activator" slot-scope="{ on }">
                           <div v-on="on">
                             <v-select
                               v-model="store.ddVal.ddItamSelected"
                               :items="ddItamOptions"
                               label="ITAM"
+                              single-line
+                              multiple
                               box
                               clearable
                             ></v-select>
@@ -217,7 +242,7 @@ export default {
       ddBusinessSegmentOptions () {
         var self = this;
         var filtered = _.filter(self.store.DDSource, (v) => {
-          return self.store.ddVal.ddCountrySelected ? (v.COUNTRY == self.store.ddVal.ddCountrySelected) : true;
+          return self.store.ddVal.ddCountrySelected.length > 0 ? (self.store.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true;
         });
 
         return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.BUSINESS_SEGMENT.toString()), [function(o) { return o; }]));
@@ -225,8 +250,8 @@ export default {
       ddSourceSystemOptions () {
         var self = this;
         var filtered = _.filter(self.store.DDSource, (v) => {
-          return self.store.ddVal.ddCountrySelected ? (v.COUNTRY == self.store.ddVal.ddCountrySelected) : true 
-            && self.store.ddVal.ddBusinessSegmentSelected ? (v.BUSINESS_SEGMENT == self.store.ddVal.ddBusinessSegmentSelected) : true;
+          return self.store.ddVal.ddCountrySelected.length > 0 ? (self.store.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true 
+            && self.store.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true;
         });
         
         return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.SOURCE_SYSTEM.toString()), [function(o) { return o; }]));
@@ -234,9 +259,9 @@ export default {
       ddClusterOptions () {
         var self = this;
         var filtered = _.filter(self.store.DDSource, (v) => {
-          return self.store.ddVal.ddCountrySelected ? (v.COUNTRY == self.store.ddVal.ddCountrySelected) : true 
-            && self.store.ddVal.ddBusinessSegmentSelected ? (v.BUSINESS_SEGMENT == self.store.ddVal.ddBusinessSegmentSelected) : true 
-            && self.store.ddVal.ddSourceSystemSelected ? (v.SOURCE_SYSTEM == self.store.ddVal.ddSourceSystemSelected) : true;
+          return self.store.ddVal.ddCountrySelected.length > 0 ? (self.store.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true 
+            && self.store.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true 
+            && self.store.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.ddVal.ddSourceSystemSelected.includes(v.SOURCE_SYSTEM)) : true;
         });
         
         return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.CLUSTER_NAME.toString()), [function(o) { return o; }]));
@@ -244,10 +269,10 @@ export default {
       ddTierOptions () {
         var self = this;
         var filtered = _.filter(self.store.DDSource, (v) => {
-          return self.store.ddVal.ddCountrySelected ? (v.COUNTRY == self.store.ddVal.ddCountrySelected) : true 
-            && self.store.ddVal.ddBusinessSegmentSelected ? (v.BUSINESS_SEGMENT == self.store.ddVal.ddBusinessSegmentSelected) : true 
-            && self.store.ddVal.ddSourceSystemSelected ? (v.SOURCE_SYSTEM == self.store.ddVal.ddSourceSystemSelected) : true
-            && self.store.ddVal.ddClusterSelected ? (v.CLUSTER_NAME == self.store.ddVal.ddClusterSelected) : true;
+          return self.store.ddVal.ddCountrySelected.length > 0 ? (self.store.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true 
+            && self.store.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true 
+            && self.store.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.ddVal.ddSourceSystemSelected.includes(v.SOURCE_SYSTEM)) : true
+            && self.store.ddVal.ddClusterSelected.length > 0 ? (self.store.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true;
         });
         
         return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.TIER.toString()), [function(o) { return o; }]));
@@ -255,11 +280,11 @@ export default {
       ddItamOptions () {
         var self = this;
         var filtered = _.filter(self.store.DDSource, (v) => {
-          return self.store.ddVal.ddCountrySelected ? (v.COUNTRY == self.store.ddVal.ddCountrySelected) : true 
-            && self.store.ddVal.ddBusinessSegmentSelected ? (v.BUSINESS_SEGMENT == self.store.ddVal.ddBusinessSegmentSelected) : true 
-            && self.store.ddVal.ddSourceSystemSelected ? (v.SOURCE_SYSTEM == self.store.ddVal.ddSourceSystemSelected) : true
-            && self.store.ddVal.ddClusterSelected ? (v.CLUSTER_NAME == self.store.ddVal.ddClusterSelected) : true
-            && self.store.ddVal.ddTierSelected ? (v.TIER == self.store.ddVal.ddTierSelected) : true;
+          return self.store.ddVal.ddCountrySelected.length > 0 ? (self.store.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true 
+            && self.store.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true 
+            && self.store.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.ddVal.ddSourceSystemSelected.includes(v.SOURCE_SYSTEM)) : true
+            && self.store.ddVal.ddClusterSelected.length > 0 ? (self.store.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true
+            && self.store.ddVal.ddTierSelected.length > 0 ? (self.store.ddVal.ddTierSelected.includes(v.TIER)) : true;
         });
         
         return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.ITAM.toString()), [function(o) { return o; }]));
@@ -267,12 +292,6 @@ export default {
     },
     watch: {
       $route(to) {},
-      "store.left.pagination": {
-        handler() {
-          this.getLeftTable();
-        },
-        deep: true
-      },
       "store.searchMain"(val, oldVal) {
         if (val || oldVal) {
           this.getLeftTable();
@@ -281,7 +300,11 @@ export default {
       'store.ddVal.ddCountrySelected' () {
         if(this.store.firstload) return;
 
-        this.store.ddVal.ddBusinessSegmentSelected = "";
+        this.store.ddVal.ddBusinessSegmentSelected = [];
+        this.store.ddVal.ddSourceSystemSelected = [];
+        this.store.ddVal.ddClusterSelected = [];
+        this.store.ddVal.ddTierSelected = [];
+        this.store.ddVal.ddItamSelected = [];
 
         this.store.firstload = true;
 
@@ -290,7 +313,10 @@ export default {
       'store.ddVal.ddBusinessSegmentSelected' () {
         if(this.store.firstload) return;
 
-        this.store.ddVal.ddSourceSystemSelected = "";
+        this.store.ddVal.ddSourceSystemSelected = [];
+        this.store.ddVal.ddClusterSelected = [];
+        this.store.ddVal.ddTierSelected = [];
+        this.store.ddVal.ddItamSelected = [];
 
         this.store.firstload = true;
 
@@ -299,7 +325,9 @@ export default {
       'store.ddVal.ddSourceSystemSelected' () {
         if(this.store.firstload) return;
 
-        this.store.ddVal.ddClusterSelected = "";
+        this.store.ddVal.ddClusterSelected = [];
+        this.store.ddVal.ddTierSelected = [];
+        this.store.ddVal.ddItamSelected = [];
         
         this.store.firstload = true;
 
@@ -308,7 +336,8 @@ export default {
       'store.ddVal.ddClusterSelected' () {
         if(this.store.firstload) return;
 
-        this.store.ddVal.ddTierSelected = "";
+        this.store.ddVal.ddTierSelected = [];
+        this.store.ddVal.ddItamSelected = [];
 
         this.store.firstload = true;
 
@@ -317,7 +346,7 @@ export default {
       'store.ddVal.ddTierSelected' () {
         if(this.store.firstload) return;
 
-        this.store.ddVal.ddItamSelected = "";
+        this.store.ddVal.ddItamSelected = [];
 
         this.store.firstload = true;
 

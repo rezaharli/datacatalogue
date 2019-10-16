@@ -544,7 +544,7 @@ func (s *DSCService) GetEdmpDDTechnicalTable(system string, colFilter interface{
 		}
 	} else {
 		for _, colname := range gridArgs.Colnames {
-			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.Get(colname))
 
 			filterTypes := colFilterM.Get("filterTypes")
 			if filterTypes != nil {
@@ -597,7 +597,7 @@ func (s *DSCService) GetEdmpDDBusinessTable(system string, colFilter interface{}
 		}
 	} else {
 		for _, colname := range gridArgs.Colnames {
-			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.Get(colname))
 
 			filterTypes := colFilterM.Get("filterTypes")
 			if filterTypes != nil {
@@ -649,7 +649,7 @@ func (s *DSCService) GetEdmpDDConsumptionTable(system string, colFilter interfac
 		}
 	} else {
 		for _, colname := range gridArgs.Colnames {
-			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.Get(colname))
 
 			filterTypes := colFilterM.Get("filterTypes")
 			if filterTypes != nil {
