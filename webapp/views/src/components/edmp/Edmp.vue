@@ -151,7 +151,7 @@ export default {
         },
     },
     mounted () {
-        this.getCounts("EDMp");
+        this.getCounts("ENTERPRISE DATA MGMT PLATFORM");
     },
     methods: {
         getCounts (param) {

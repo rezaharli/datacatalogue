@@ -73,13 +73,13 @@ const router = new VueRouter({
       permission: "DSC"
     },
   }, { // dsc.edmp
-    path: '/dsc/edmp', name: 'dsc.edmp', component: Edmp, 
+    path: '/dsc/ENTERPRISE DATA MGMT PLATFORM', name: 'dsc.edmp', component: Edmp, 
     meta: { 
       title: "EDMp - Data Catalogue",
       permission: "DSC"
     },
   }, { // dsc.edmp.dd
-    path: '/dsc/edmp/dd', name: 'dsc.edmp.dd', component: EdmpDd, 
+    path: '/dsc/ENTERPRISE DATA MGMT PLATFORM/dd', name: 'dsc.edmp.dd', component: EdmpDd, 
     meta: { 
       title: "EDMp - Data Catalogue",
       permission: "DSC"
@@ -88,19 +88,19 @@ const router = new VueRouter({
       { 
         path: '', name: 'dsc.edmp.dd.default', redirect: { name: 'dsc.edmp.dd.technical' }
       }, { // dsc.edmp.dd.technical
-        path: '/dsc/edmp/dd/technical-metadata', name: 'dsc.edmp.dd.technical', component: EdmpDdTechnical, 
+        path: '/dsc/ENTERPRISE DATA MGMT PLATFORM/dd/technical-metadata', name: 'dsc.edmp.dd.technical', component: EdmpDdTechnical, 
         meta: { 
           title: "EDMp - Data Catalogue",
           permission: "DSC"
         },
       }, { // dsc.edmp.dd.business
-        path: '/dsc/edmp/dd/business-metadata', name: 'dsc.edmp.dd.business', component: EdmpDdBusiness, 
+        path: '/dsc/ENTERPRISE DATA MGMT PLATFORM/dd/business-metadata', name: 'dsc.edmp.dd.business', component: EdmpDdBusiness, 
         meta: { 
           title: "EDMp - Data Catalogue",
           permission: "DSC"
         },
       }, { // dsc.edmp.dd.policy
-        path: '/dsc/edmp/dd/consumption-apps', name: 'dsc.edmp.dd.consumption', component: EdmpDdConsumption, 
+        path: '/dsc/ENTERPRISE DATA MGMT PLATFORM/dd/consumption-apps', name: 'dsc.edmp.dd.consumption', component: EdmpDdConsumption, 
         meta: { 
           title: "EDMp - Data Catalogue",
           permission: "DSC"
@@ -108,7 +108,7 @@ const router = new VueRouter({
       }, 
     ]
   }, { // dsc.edmp.iarc
-    path: '/dsc/edmp/iarc', name: 'dsc.edmp.iarc', component: EdmpIarc, 
+    path: '/dsc/ENTERPRISE DATA MGMT PLATFORM/iarc', name: 'dsc.edmp.iarc', component: EdmpIarc, 
     meta: { 
       title: "EDMp - Data Catalogue",
       permission: "DSC"
@@ -117,7 +117,7 @@ const router = new VueRouter({
       { 
         path: '', name: 'dsc.edmp.iarc', redirect: { name: 'dsc.edmp.iarc.personal' }
       }, { // dsc.iarc.personal
-        path: '/dsc/edmp/iarc/personal', name: 'dsc.edmp.iarc.personal', component: EdmpIarcPersonal, 
+        path: '/dsc/ENTERPRISE DATA MGMT PLATFORM/iarc/personal', name: 'dsc.edmp.iarc.personal', component: EdmpIarcPersonal, 
         meta: { 
           title: "DSC - Data Catalogue",
           permission: "DSC"
@@ -359,18 +359,6 @@ const router = new VueRouter({
     meta: { 
       title: "RFO - Data Catalogue",
       permission: "RFO"
-    },
-  }, { // edmp
-    path: '/edmp', name: 'edmp', component: Edmp, 
-    meta: { 
-      title: "EDMp Catalogue - Data Catalogue",
-      permission: "EDMp Catalogue"
-    },
-  }, { // edmp.dd
-    path: '/edmp/dd', name: 'edmp.dd', component: EdmpDd, 
-    meta: { 
-      title: "EDMp Catalogue - Data Catalogue",
-      permission: "EDMp Catalogue"
     },
   }, { // access
     path: '/access', component: Access, 

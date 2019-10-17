@@ -252,6 +252,11 @@ export default {
         //reset right table filter
         this.store.filters.right = {};
 
+        if (param.SYSTEM_NAME.toUpperCase() == "ENTERPRISE DATA MGMT PLATFORM".toUpperCase()){
+          this.$router.push(this.addressPath + '/' + param.SYSTEM_NAME);
+          return
+        }
+
         this.$router.push(this.addressPath + '/' + encodeURIComponent(param.SYSTEM_NAME));
       },
       showDetails (param) {
