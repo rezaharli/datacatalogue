@@ -119,6 +119,10 @@
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.BUSINESS_TERM.toString().trim() ? props.item.BUSINESS_TERM : 'NA'"></tablecell>
               </td>
 
+              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_DESCRIPTION'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.BUSINESS_DESCRIPTION.toString().trim() ? props.item.BUSINESS_DESCRIPTION : 'NA'"></tablecell>
+              </td>
+
               <td v-bind:style="{ width: store.left.colWidth['DETERMINES_CLIENT_LOCATION'] + 'px' }" class="text-capitalize">
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DETERMINES_CLIENT_LOCATION.toString().trim() ? props.item.DETERMINES_CLIENT_LOCATION : 'NA'"></tablecell>
               </td>
@@ -158,10 +162,6 @@
               <td v-bind:style="{ width: store.left.colWidth['DOMAIN_OWNER'] + 'px' }" class="text-capitalize">
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DOMAIN_OWNER.toString().trim() ? props.item.DOMAIN_OWNER : 'NA'"></tablecell>
               </td>
-
-              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_DESCRIPTION'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.BUSINESS_DESCRIPTION.toString().trim() ? props.item.BUSINESS_DESCRIPTION : 'NA'"></tablecell>
-              </td>
             </tr>
           </template>
 
@@ -194,6 +194,9 @@
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_TERM'] + 'px' }">
                   <tablecell :fulltext="props.item.BUSINESS_TERM.toString().trim() ? props.item.BUSINESS_TERM : 'NA'" showOn="hover"></tablecell>
                 </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_DESCRIPTION'] + 'px' }">
+                  <tablecell :fulltext="props.item.BUSINESS_DESCRIPTION.toString().trim() ? props.item.BUSINESS_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
+                </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DETERMINES_CLIENT_LOCATION'] + 'px' }">
                   <tablecell :fulltext="props.item.DETERMINES_CLIENT_LOCATION.toString().trim() ? props.item.DETERMINES_CLIENT_LOCATION : 'NA'" showOn="hover"></tablecell>
                 </td>
@@ -223,9 +226,6 @@
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DOMAIN_OWNER'] + 'px' }">
                   <tablecell :fulltext="props.item.DOMAIN_OWNER.toString().trim() ? props.item.DOMAIN_OWNER : 'NA'" showOn="hover"></tablecell>
-                </td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_DESCRIPTION'] + 'px' }">
-                  <tablecell :fulltext="props.item.BUSINESS_DESCRIPTION.toString().trim() ? props.item.BUSINESS_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
                 </td>
               </template>
             </v-data-table>
