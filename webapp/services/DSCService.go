@@ -559,7 +559,7 @@ func (s *DSCService) GetEdmpDDTechnicalTable(system string, colFilter interface{
 		gridArgs.IsDescending = descending.(bool)
 	}
 
-	gridArgs.GroupCol = "-"
+	gridArgs.GroupCol = "TABLE_NAME"
 	result, total, err := s.Base.ExecuteGridQueryFromFile(gridArgs)
 
 	res = result
@@ -612,7 +612,7 @@ func (s *DSCService) GetEdmpDDBusinessTable(system string, colFilter interface{}
 		gridArgs.IsDescending = descending.(bool)
 	}
 
-	gridArgs.GroupCol = "-"
+	gridArgs.GroupCol = "TABLE_NAME"
 	result, total, err := s.Base.ExecuteGridQueryFromFile(gridArgs)
 
 	res = result
@@ -664,7 +664,7 @@ func (s *DSCService) GetEdmpDDConsumptionTable(system string, colFilter interfac
 		gridArgs.IsDescending = descending.(bool)
 	}
 
-	gridArgs.GroupCol = "-"
+	gridArgs.GroupCol = "TABLE_NAME"
 	result, total, err := s.Base.ExecuteGridQueryFromFile(gridArgs)
 
 	res = result
