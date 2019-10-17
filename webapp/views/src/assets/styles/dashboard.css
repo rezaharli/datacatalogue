@@ -6,7 +6,7 @@
     color: #ffffff !important;
 }
 
-.v-toolbar .dropdown:hover .dropdown-menu {
+.v-toolbar .dropdown:hover .v-menu__content {
     display: block;
 }
 
@@ -89,7 +89,7 @@ table.v-table thead th, .v-datatable th.column {
     font-weight: 900;
 }
 
-.v-table .dropdown-menu.show{
+.v-table .v-menu__content.menuable__content__active{
     max-width: 300px;
 }
 

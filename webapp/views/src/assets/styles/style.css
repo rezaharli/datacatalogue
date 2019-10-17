@@ -42,7 +42,10 @@ body, .application--wrap{
     background-color: rgba(242, 243, 247, 1) !important;
 }
 
-.dropdown-menu{margin-top: 0 !important;}
+.v-menu__content{
+    margin-top: 0 !important;
+    background: #fff !important;
+}
 .bg-2 {
     background: linear-gradient(
         rgba(255, 255, 255, 1), 

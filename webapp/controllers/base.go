@@ -3,11 +3,14 @@ package controllers
 import (
 	"strings"
 
+	"git.eaciitapp.com/sebar/knot"
 	"github.com/eaciit/toolkit"
 
 	"github.com/novalagung/gubrak"
 
 	"eaciit/datacatalogue/webapp/helpers"
+	h "eaciit/datacatalogue/webapp/helpers"
+	s "eaciit/datacatalogue/webapp/services"
 )
 
 type Base struct {
@@ -15,6 +18,37 @@ type Base struct {
 
 func NewBaseController() *Base {
 	return new(Base)
+}
+
+func (c *Base) GetHeaderOpts(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	headerArgs := s.HeaderArgs{
+		LoggedInID: payload.GetString("LoggedInID"),
+		Filename:   payload.GetString("Filename"),
+		Queryname:  payload.GetString("Queryname"),
+		FieldName:  payload.GetString("FieldName"),
+		Filter:     payload.GetString("Filter"),
+	}
+
+	resultRows, err := s.NewBaseService().GetHeaderOpts(headerArgs)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	resultArray, err := gubrak.Map(resultRows, func(v toolkit.M) string {
+		return v.GetString(headerArgs.FieldName)
+	})
+
+	h.WriteResultOK(k, res, resultArray)
 }
 
 func (c *Base) GetDetails(payload toolkit.M,

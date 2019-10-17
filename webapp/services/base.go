@@ -4,10 +4,12 @@ import (
 	h "eaciit/datacatalogue/webapp/helpers"
 	m "eaciit/datacatalogue/webapp/models"
 	"fmt"
+	"path/filepath"
 	"reflect"
 	"runtime"
 	"strings"
 
+	"github.com/eaciit/clit"
 	"github.com/eaciit/toolkit"
 )
 
@@ -16,6 +18,67 @@ type Base struct {
 
 func NewBaseService() *Base {
 	return new(Base)
+}
+
+type HeaderArgs struct {
+	LoggedInID string
+
+	Filename  string
+	Queryname string
+	FieldName string
+
+	Filter string
+}
+
+func (s *Base) GetHeaderOpts(headerArgs HeaderArgs) ([]toolkit.M, error) {
+	fileName := headerArgs.Filename
+	queryName := headerArgs.Queryname
+
+	resultRows := make([]toolkit.M, 0)
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	if headerArgs.LoggedInID != "" {
+		args = append(args, "MY", headerArgs.LoggedInID)
+	} else {
+		args = append(args, "ALL", "0000000")
+	}
+
+	args = append(args, toolkit.ToString(headerArgs.Filter))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
+	if err != nil {
+		return nil, err
+	}
+
+	funcLog(funcName(), fileName, queryName)
+
+	///////// FILTER
+	q = `SELECT DISTINCT ` + headerArgs.FieldName + `
+		FROM (
+		` + q + `
+	) `
+
+	additionalWhere := make(map[string]interface{}, 0)
+	additionalWhere[headerArgs.FieldName] = headerArgs.Filter
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName:       m.NewCategoryModel().TableName(),
+		SqlQuery:        q,
+		Results:         &resultRows,
+		AdditionalWhere: additionalWhere,
+		PageNumber:      1,
+		RowsPerPage:     -1,
+		GroupCol:        headerArgs.FieldName,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return resultRows, nil
 }
 
 type GridArgs struct {
