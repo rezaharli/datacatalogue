@@ -22,6 +22,8 @@ func NewBaseService() *Base {
 
 type HeaderArgs struct {
 	LoggedInID string
+	Param1     string
+	Param2     string
 
 	Filename  string
 	Queryname string
@@ -39,10 +41,19 @@ func (s *Base) GetHeaderOpts(headerArgs HeaderArgs) ([]toolkit.M, error) {
 	q := ""
 	args := make([]interface{}, 0)
 
-	if headerArgs.LoggedInID != "" {
-		args = append(args, "MY", headerArgs.LoggedInID)
-	} else {
-		args = append(args, "ALL", "0000000")
+	if headerArgs.LoggedInID != "-" {
+		if headerArgs.LoggedInID != "" {
+			args = append(args, "MY", headerArgs.LoggedInID)
+		} else {
+			args = append(args, "ALL", "0000000")
+		}
+	}
+
+	if headerArgs.Param1 != "" {
+		args = append(args, toolkit.ToString(headerArgs.Param1))
+	}
+	if headerArgs.Param2 != "" {
+		args = append(args, toolkit.ToString(headerArgs.Param2))
 	}
 
 	args = append(args, toolkit.ToString(headerArgs.Filter))

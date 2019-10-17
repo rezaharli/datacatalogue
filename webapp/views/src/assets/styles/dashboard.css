@@ -89,7 +89,7 @@ table.v-table thead th, .v-datatable th.column {
     font-weight: 900;
 }
 
-.v-table .v-menu__content.menuable__content__active{
+.v-menu__content.menuable__content__active .dropdown-wrapper{
     max-width: 300px;
 }
 

@@ -237,6 +237,7 @@ func (s *DSCService) GetCDPCDETable(system, dspName string, colFilter interface{
 		gridArgs.IsDescending = descending.(bool)
 	}
 
+	gridArgs.GroupCol = "-"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
@@ -380,6 +381,7 @@ func (s *DSCService) GetInterfacesTable(system string, colFilter interface{}, pa
 		gridArgs.IsDescending = descending.(bool)
 	}
 
+	gridArgs.GroupCol = "IMM_INTERFACE"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
@@ -425,6 +427,7 @@ func (s *DSCService) GetInterfacesCDETable(system, dspName string, colFilter int
 		gridArgs.IsDescending = descending.(bool)
 	}
 
+	gridArgs.GroupCol = "CDE"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 

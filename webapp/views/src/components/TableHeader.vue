@@ -13,10 +13,6 @@
     <v-menu
       bottom
       transition="slide-y-transition"
-      absolute
-      offset-y
-      offset-x
-      allow-overflow
       class="dropdown-button-wrapper"
       v-if="fixedProps.header.filterable"
       v-model="menu"
@@ -183,7 +179,10 @@ export default {
       return this.$store
         .dispatch(`${this.headerStoreName}/getOpts`, param)
         .then(() => {
-          this.dropdownData = this.store.datas;
+          this.dropdownData = this._.uniq(
+            this.store.datas.map(v => (v.toString().trim() ? v.toString() : "NA"))
+          );
+
           this.isLoading = false;
         });
     },

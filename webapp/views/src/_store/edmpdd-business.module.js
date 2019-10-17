@@ -3,6 +3,9 @@ import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
     all: {
+        filename: "edmp.sql", 
+        queryname: "edmp-dd-business",
+        param: {},
         tabName: '',
         filters: {
             left: {},
@@ -49,15 +52,15 @@ const actions = {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
-        var param = {
+        state.all.param = {
             System: state.all.system,
             Filters: state.all.filters.left,
             Pagination: _.cloneDeep(state.all.left.pagination)
         }
 
-        param.Pagination.rowsPerPage = -1;
+        state.all.param.Pagination.rowsPerPage = -1;
 
-        return edmpService.getBusinessTable(param)
+        return edmpService.getBusinessTable(state.all.param)
             .then(
                 res => commit('getExportDataSuccess', res),
                 error => commit('getExportDataFailure', error)
@@ -70,13 +73,13 @@ const actions = {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
-        var param = {
+        state.all.param = {
             System: state.all.system,
             Filters: state.all.filters.left,
             Pagination: state.all.left.pagination
         }
 
-        return edmpService.getBusinessTable(param)
+        return edmpService.getBusinessTable(state.all.param)
             .then(
                 res => {
                     commit('getLeftTableSuccess', res)

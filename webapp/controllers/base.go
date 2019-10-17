@@ -31,11 +31,19 @@ func (c *Base) GetHeaderOpts(k *knot.WebContext) {
 	}
 
 	headerArgs := s.HeaderArgs{
-		LoggedInID: payload.GetString("LoggedInID"),
-		Filename:   payload.GetString("Filename"),
-		Queryname:  payload.GetString("Queryname"),
-		FieldName:  payload.GetString("FieldName"),
-		Filter:     payload.GetString("Filter"),
+		Filename:  payload.GetString("Filename"),
+		Queryname: payload.GetString("Queryname"),
+		FieldName: payload.GetString("FieldName"),
+
+		Param1: payload.GetString("System"),
+		Param2: payload.GetString("DspName"),
+		Filter: payload.GetString("Filter"),
+	}
+
+	if payload.Has("LoggedInID") == true {
+		headerArgs.LoggedInID = payload.GetString("LoggedInID")
+	} else {
+		headerArgs.LoggedInID = "-"
 	}
 
 	resultRows, err := s.NewBaseService().GetHeaderOpts(headerArgs)
