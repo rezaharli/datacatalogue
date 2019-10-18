@@ -3,6 +3,9 @@ import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
     all: {
+        filename: "ddo.sql", 
+        queryname: "ddo-view",
+        param: {},
         tabName: '',
         searchMain: '',
         searchDropdown: {
@@ -46,7 +49,7 @@ const actions = {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
-        var param = {
+        state.all.param = {
             Tabs: state.all.tabName,
             LoggedInID: user.Username.toString(),
             Search: state.all.searchMain.toString(),
@@ -55,7 +58,7 @@ const actions = {
             Pagination: state.all.left.pagination
         }
 
-        return ddoMyService.getLeftTable(param)
+        return ddoMyService.getLeftTable(state.all.param)
             .then(
                 res => commit('getLeftTableSuccess', res.Data),
                 error => commit('getLeftTableFailure', error)
@@ -68,7 +71,7 @@ const actions = {
             state.all.filters.right[key] = state.all.filters.right[key] ? state.all.filters.right[key].toString() : "";
         });
 
-        var param = {
+        state.all.param = {
             Tabs: state.all.tabName,
             SystemID: systemID,
             Search: state.all.searchMain,
@@ -77,7 +80,7 @@ const actions = {
             Pagination: state.all.right.pagination
         }
 
-        return ddoMyService.getRightTable(param)
+        return ddoMyService.getRightTable(state.all.param)
             .then(
                 res => commit('getRightTableSuccess', res.Data),
                 error => commit('getRightTableFailure', error)

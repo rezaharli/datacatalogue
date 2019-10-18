@@ -3,6 +3,9 @@ import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
     all: {
+        filename: "rfo.sql", 
+        queryname: "rfo-view",
+        param: {},
         tabName: '',
         searchMain: '',
         searchDropdown: {
@@ -49,7 +52,8 @@ const actions = {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
-        var param = {
+        state.all.param = {
+            LoggedInID: "",
             Tabs: state.all.tabName,
             Search: state.all.searchMain,
             SearchDD: state.all.searchDropdown,
@@ -57,9 +61,9 @@ const actions = {
             Pagination: _.cloneDeep(state.all.left.pagination)
         }
 
-        param.Pagination.rowsPerPage = -1;
+        state.all.param.Pagination.rowsPerPage = -1;
 
-        return rfoMyService.getAllRisk(param)
+        return rfoMyService.getAllRisk(state.all.param)
             .then(
                 res => commit('getExportDataSuccess', res),
                 error => commit('getExportDataFailure', error)
@@ -72,7 +76,8 @@ const actions = {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
-        var param = {
+        state.all.param = {
+            LoggedInID: "",
             Tabs: state.all.tabName,
             Search: state.all.searchMain,
             SearchDD: state.all.searchDropdown,
@@ -80,7 +85,7 @@ const actions = {
             Pagination: state.all.left.pagination
         }
 
-        return rfoMyService.getAllRisk(param)
+        return rfoMyService.getAllRisk(state.all.param)
             .then(
                 res => commit('getLeftTableSuccess', res),
                 error => commit('getLeftTableFailure', error)

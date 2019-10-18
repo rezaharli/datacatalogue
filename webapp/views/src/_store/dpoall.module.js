@@ -3,6 +3,9 @@ import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
     all: {
+        filename: "dpo.sql", 
+        queryname: "dpo-view",
+        param: {},
         tabName: '',
         searchMain: '',
         searchDropdown: {
@@ -38,7 +41,7 @@ const actions = {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
-        var param = {
+        state.all.param = {
             Tabs: state.all.tabName,
             Search: state.all.searchMain.toString(),
             SearchDD: state.all.searchDropdown,
@@ -46,9 +49,9 @@ const actions = {
             Pagination: _.cloneDeep(state.all.left.pagination)
         }
 
-        param.Pagination.rowsPerPage = -1;
+        state.all.param.Pagination.rowsPerPage = -1;
 
-        return dpoMyService.getLeftTable(param)
+        return dpoMyService.getLeftTable(state.all.param)
             .then(
                 res => commit('getExportDataSuccess', res.Data),
                 error => commit('getExportDataFailure', error)
@@ -61,7 +64,8 @@ const actions = {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
-        var param = {
+        state.all.param = {
+            LoggedInID: "",
             Tabs: state.all.tabName,
             Search: state.all.searchMain.toString(),
             SearchDD: state.all.searchDropdown,
@@ -69,7 +73,7 @@ const actions = {
             Pagination: state.all.left.pagination
         }
 
-        return dpoMyService.getLeftTable(param)
+        return dpoMyService.getLeftTable(state.all.param)
             .then(
                 res => commit('getLeftTableSuccess', res.Data),
                 error => commit('getLeftTableFailure', error)
