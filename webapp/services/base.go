@@ -4,6 +4,7 @@ import (
 	h "eaciit/datacatalogue/webapp/helpers"
 	m "eaciit/datacatalogue/webapp/models"
 	"fmt"
+	"log"
 	"path/filepath"
 	"reflect"
 	"runtime"
@@ -111,38 +112,65 @@ type GridArgs struct {
 
 func (s *Base) ExecuteGridQueryFromFile(gridArgs GridArgs) ([]toolkit.M, int, error) {
 	resultRows := make([]toolkit.M, 0)
+
+	log.Println("ExecuteGridQueryFromFile", 115)
+
 	resultTotal := 0
 
 	args := make([]interface{}, 0)
 	args = append(args, gridArgs.MainArgs...)
 	args = append(args, gridArgs.DropdownFilter...)
 
+	log.Println("ExecuteGridQueryFromFile", 124)
+
 	///////// --------------------------------------------------BUILD QUERY FROM ARGS
 	q, err := h.BuildQueryFromFile(gridArgs.QueryFilePath, gridArgs.QueryName, gridArgs.Colnames, args...)
+	log.Println("ExecuteGridQueryFromFile", 128)
 	if err != nil {
+		log.Println("ExecuteGridQueryFromFile", 130)
 		return nil, 0, err
 	}
 
 	additionalWhere := make(map[string]interface{}, len(gridArgs.Colnames))
+	log.Println("ExecuteGridQueryFromFile", 135)
 	for i, colname := range gridArgs.Colnames {
+
+		log.Println("ExecuteGridQueryFromFile", 138)
+		log.Println("ExecuteGridQueryFromFile", 139, gridArgs.ColumnFilter[i])
 		if gridArgs.ColumnFilter[i] != nil {
+			log.Println("ExecuteGridQueryFromFile", 141)
+			log.Println("ExecuteGridQueryFromFile", 142, gridArgs.ColumnFilter[i])
+			log.Println("ExecuteGridQueryFromFile", 143)
+			log.Println("ExecuteGridQueryFromFile", 144, reflect.TypeOf(gridArgs.ColumnFilter[i]))
+			log.Println("ExecuteGridQueryFromFile", 145)
+			log.Println("ExecuteGridQueryFromFile", 146, reflect.TypeOf(gridArgs.ColumnFilter[i]).Kind())
 			switch reflect.TypeOf(gridArgs.ColumnFilter[i]).Kind() {
 			case reflect.Slice:
+				log.Println("ExecuteGridQueryFromFile", 149)
+				log.Println("ExecuteGridQueryFromFile", 150, reflect.ValueOf(gridArgs.ColumnFilter[i]))
 				s := reflect.ValueOf(gridArgs.ColumnFilter[i])
 
+				log.Println("ExecuteGridQueryFromFile", 153)
+				log.Println("ExecuteGridQueryFromFile", 154, s.Len())
 				if s.Len() > 0 {
+					log.Println("ExecuteGridQueryFromFile", 156)
 					additionalWhere[colname] = gridArgs.ColumnFilter[i]
 				}
 			default:
+				log.Println("ExecuteGridQueryFromFile", 160)
 				if toolkit.ToString(gridArgs.ColumnFilter[i]) != "" {
+					log.Println("ExecuteGridQueryFromFile", 162)
 					additionalWhere[colname] = gridArgs.ColumnFilter[i]
 				}
 			}
 		}
 	}
 
+	log.Println("ExecuteGridQueryFromFile", 169)
 	splitted := strings.Split(gridArgs.OrderBy, ".")
+	log.Println("ExecuteGridQueryFromFile", 171)
 	orderBy := splitted[len(splitted)-1]
+	log.Println("ExecuteGridQueryFromFile", 173)
 
 	///////// --------------------------------------------------EXECUTE
 	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{

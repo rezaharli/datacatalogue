@@ -1,6 +1,7 @@
 package services
 
 import (
+	"log"
 	"path/filepath"
 
 	"github.com/eaciit/clit"
@@ -633,7 +634,11 @@ func (s *DSCService) GetEdmpDDConsumptionTable(system string, colFilter interfac
 
 	funcLog(funcName(), fileName, queryName)
 
+	log.Println(637)
+
 	gridArgs.MainArgs = append(gridArgs.MainArgs, system)
+
+	log.Println(641)
 
 	///////// --------------------------------------------------COLUMN FILTER
 	gridArgs.Colnames = append(gridArgs.Colnames,
@@ -643,33 +648,56 @@ func (s *DSCService) GetEdmpDDConsumptionTable(system string, colFilter interfac
 		"TECH_CONTACT", "BUSINESS_OWNERSHIP", "ACCESS_ROLE", "ROLE_DESCRIPTION", "CONSUMING_TECH_METADATA",
 	)
 
+	log.Println(651)
+
 	colFilterM, err := toolkit.ToM(colFilter)
+	log.Println(654)
 	if err != nil {
+		log.Println(656)
 		for _, colname := range gridArgs.Colnames {
+			log.Println(658)
 			colname = ""
 			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colname)
+			log.Println(662)
 		}
 	} else {
+		log.Println(664)
 		for _, colname := range gridArgs.Colnames {
+			log.Println(666)
 			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.Get(colname))
+			log.Println(668)
 
 			filterTypes := colFilterM.Get("filterTypes")
+			log.Println(671)
 			if filterTypes != nil {
+				log.Println(673)
 				gridArgs.ColumnFilterType = colFilterM.Get("filterTypes").(map[string]interface{})
+				log.Println(675)
 			}
 		}
 	}
 
+	log.Println(680)
+
 	gridArgs.OrderBy = pagination.GetString("sortBy")
+	log.Println(683)
 	descending := pagination.Get("descending")
+	log.Println(685)
 	if descending != nil {
+		log.Println(687)
 		gridArgs.IsDescending = descending.(bool)
+		log.Println(689)
 	}
 
 	gridArgs.GroupCol = "TABLE_NAME"
+	log.Println(693)
 	result, total, err := s.Base.ExecuteGridQueryFromFile(gridArgs)
 
+	log.Println(696)
+
 	res = result
+
+	log.Println(700)
 	return
 }
 
