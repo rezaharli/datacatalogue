@@ -3,6 +3,9 @@ import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
     all: {
+        filename: "edmp.sql", 
+        queryname: "edmp-dd-business",
+        param: {},
         tabName: '',
         filters: {
             left: {},
@@ -21,6 +24,7 @@ const state = {
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Name', value: 'COLUMN_NAME' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Description', value: 'COLUMN_DESCRIPTION' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Term', value: 'BUSINESS_TERM' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Term Description', value: 'BUSINESS_DESCRIPTION' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Determines Client Location (Yes/No)', value: 'DETERMINES_CLIENT_LOCATION' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Determines Account / Deal Location (Yes/No)', value: 'DETERMINES_ACCOUNT' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Segment', value: 'BUSINESS_SEGMENT' },
@@ -31,7 +35,6 @@ const state = {
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Domain', value: 'DOMAIN' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Sub Domain', value: 'SUBDOMAIN' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Domain Owner', value: 'DOMAIN_OWNER' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Term Description', value: 'BUSINESS_DESCRIPTION' },
         ],
         isRightTable: false,
         DDSource: [],
@@ -49,15 +52,15 @@ const actions = {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
-        var param = {
+        state.all.param = {
             System: state.all.system,
             Filters: state.all.filters.left,
             Pagination: _.cloneDeep(state.all.left.pagination)
         }
 
-        param.Pagination.rowsPerPage = -1;
+        state.all.param.Pagination.rowsPerPage = -1;
 
-        return edmpService.getBusinessTable(param)
+        return edmpService.getBusinessTable(state.all.param)
             .then(
                 res => commit('getExportDataSuccess', res),
                 error => commit('getExportDataFailure', error)
@@ -70,13 +73,13 @@ const actions = {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
-        var param = {
+        state.all.param = {
             System: state.all.system,
             Filters: state.all.filters.left,
             Pagination: state.all.left.pagination
         }
 
-        return edmpService.getBusinessTable(param)
+        return edmpService.getBusinessTable(state.all.param)
             .then(
                 res => {
                     commit('getLeftTableSuccess', res)

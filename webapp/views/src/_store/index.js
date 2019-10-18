@@ -5,6 +5,8 @@ import { alert } from './alert.module';
 import { account } from './account.module';
 import { crypto } from './crypto.module';
 import { config } from './config.module';
+import { header } from './header.module';
+
 import { users } from './users.module';
 import { usersusage } from './usersusage.module';
 import { dsc } from './dsc.module';
@@ -56,6 +58,7 @@ export const store = new Vuex.Store({
         account,
         crypto,
         config,
+        header,
         users, usersusage,
         dsc, dscmy, dscall, dsccde, dsccdp, dsccdpcde, dscinterfaces, dscinterfacescde, dsciarc, dsciarcpersonal, dscdd, dscddTechnical, dscddBusiness, dscddPolicy,
         dpo, dpomy, dpoall, dpodataelements, dpodatalineage,

@@ -2,7 +2,6 @@ package services
 
 import (
 	"path/filepath"
-	"strings"
 
 	"github.com/eaciit/clit"
 	"github.com/eaciit/toolkit"
@@ -238,6 +237,7 @@ func (s *DSCService) GetCDPCDETable(system, dspName string, colFilter interface{
 		gridArgs.IsDescending = descending.(bool)
 	}
 
+	gridArgs.GroupCol = "-"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
@@ -381,6 +381,7 @@ func (s *DSCService) GetInterfacesTable(system string, colFilter interface{}, pa
 		gridArgs.IsDescending = descending.(bool)
 	}
 
+	gridArgs.GroupCol = "IMM_INTERFACE"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
@@ -426,6 +427,7 @@ func (s *DSCService) GetInterfacesCDETable(system, dspName string, colFilter int
 		gridArgs.IsDescending = descending.(bool)
 	}
 
+	gridArgs.GroupCol = "CDE"
 	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
@@ -559,7 +561,7 @@ func (s *DSCService) GetEdmpDDTechnicalTable(system string, colFilter interface{
 		gridArgs.IsDescending = descending.(bool)
 	}
 
-	gridArgs.GroupCol = "-"
+	gridArgs.GroupCol = "TABLE_NAME"
 	result, total, err := s.Base.ExecuteGridQueryFromFile(gridArgs)
 
 	res = result
@@ -612,7 +614,7 @@ func (s *DSCService) GetEdmpDDBusinessTable(system string, colFilter interface{}
 		gridArgs.IsDescending = descending.(bool)
 	}
 
-	gridArgs.GroupCol = "-"
+	gridArgs.GroupCol = "TABLE_NAME"
 	result, total, err := s.Base.ExecuteGridQueryFromFile(gridArgs)
 
 	res = result
@@ -664,7 +666,7 @@ func (s *DSCService) GetEdmpDDConsumptionTable(system string, colFilter interfac
 		gridArgs.IsDescending = descending.(bool)
 	}
 
-	gridArgs.GroupCol = "-"
+	gridArgs.GroupCol = "TABLE_NAME"
 	result, total, err := s.Base.ExecuteGridQueryFromFile(gridArgs)
 
 	res = result
@@ -718,101 +720,6 @@ func (s *DSCService) GetEdmpIarcPersonalTable(system string, colFilter interface
 
 	res = result
 	return
-}
-
-func (s *DSCService) GetTableName(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
-	fileName := tabs + ".sql"
-	queryName := "right-grid"
-
-	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
-	gridArgs.QueryName = queryName
-	gridArgs.PageNumber = pageNumber
-	gridArgs.RowsPerPage = rowsPerPage
-
-	funcLog(funcName(), fileName, queryName)
-
-	gridArgs.MainArgs = append(gridArgs.MainArgs, toolkit.ToString(systemID))
-	gridArgs.MainArgs = append(gridArgs.MainArgs, toolkit.ToString(systemID))
-
-	///////// --------------------------------------------------DROPDOWN FILTER
-	searchDDM, err := toolkit.ToM(searchDD)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter, searchDDM.GetString("TableName"))
-	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter, searchDDM.GetString("ColumnName"))
-
-	///////// --------------------------------------------------COLUMN FILTER
-	colFilterM, err := toolkit.ToM(colFilter)
-	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "")
-	} else {
-		cdeYesNo := colFilterM.GetString("CDE_YES_NO")
-
-		if cdeYesNo != "" {
-			if strings.EqualFold(cdeYesNo, "yes") {
-				cdeYesNo = "1"
-			} else {
-				cdeYesNo = "0"
-			}
-		}
-
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("TABLE_NAME"),
-			colFilterM.GetString("COLUMN_NAME"),
-			colFilterM.GetString("BUSINESS_ALIAS_NAME"),
-			cdeYesNo,
-		)
-	}
-
-	return s.Base.ExecuteGridQueryFromFile(gridArgs)
-}
-
-func (s *DSCService) GetInterfacesRightTable(tabs string, systemID int, search string, searchDD, colFilter interface{}, pageNumber, rowsPerPage int, filter toolkit.M) (interface{}, int, error) {
-	fileName := tabs + ".sql"
-	queryName := "right-grid"
-
-	gridArgs := GridArgs{}
-	gridArgs.QueryFilePath = filepath.Join(clit.ExeDir(), "queryfiles", fileName)
-	gridArgs.QueryName = queryName
-	gridArgs.PageNumber = pageNumber
-	gridArgs.RowsPerPage = rowsPerPage
-
-	funcLog(funcName(), fileName, queryName)
-
-	gridArgs.MainArgs = append(gridArgs.MainArgs, toolkit.ToString(systemID))
-
-	///////// --------------------------------------------------DROPDOWN FILTER
-	searchDDM, err := toolkit.ToM(searchDD)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter, searchDDM.GetString("TableName"))
-	gridArgs.DropdownFilter = append(gridArgs.DropdownFilter, searchDDM.GetString("ColumnName"))
-
-	///////// --------------------------------------------------COLUMN FILTER
-	colFilterM, err := toolkit.ToM(colFilter)
-	if err != nil {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, "", "", "", "")
-	} else {
-		gridArgs.ColumnFilter = append(gridArgs.ColumnFilter,
-			colFilterM.GetString("LIST_OF_CDE"),
-			colFilterM.GetString("IMM_PREC_SYSTEM_NAME"),
-			colFilterM.GetString("IMM_PREC_SYSTEM_SLA"),
-			colFilterM.GetString("IMM_PREC_SYSTEM_OLA"),
-			colFilterM.GetString("IMM_SUCC_SYSTEM_NAME"),
-			colFilterM.GetString("IMM_SUCC_SYSTEM_SLA"),
-			colFilterM.GetString("IMM_SUCC_SYSTEM_OLA"),
-			colFilterM.GetString("LIST_DOWNSTREAM_PROCESS"),
-			colFilterM.GetString("DOWNSTREAM_PROCESS_OWNER"),
-		)
-	}
-
-	gridArgs.GroupCol = "LIST_OF_CDE"
-	return s.Base.ExecuteGridQueryFromFile(gridArgs)
 }
 
 func (s *DSCService) GetDetailsLeftPanel(payload toolkit.M) (interface{}, int, error) {

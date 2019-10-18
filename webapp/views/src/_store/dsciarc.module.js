@@ -3,6 +3,9 @@ import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
     all: {
+        filename: "dsc.sql", 
+        queryname: "dsc-view-policy-ia",
+        param: {},
         tabName: '',
         filters: {
             left: {},
@@ -22,10 +25,10 @@ const state = {
             
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Information Asset Names', value: 'INFORMATION_ASSET_NAMES' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Information Asset Description', value: 'INFORMATION_ASSET_DESCRIPTION' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'C - Confidentiality', value: 'CONFIDENTIALITY' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'I - Integrity', value: 'INTEGRITY' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'A - Availability', value: 'AVAILABILITY' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Overall CIA Rating', value: 'OVERALL_CIA_RATING' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: false, text: 'C - Confidentiality', value: 'CONFIDENTIALITY' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: false, text: 'I - Integrity', value: 'INTEGRITY' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: false, text: 'A - Availability', value: 'AVAILABILITY' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: false, text: 'Overall CIA Rating', value: 'OVERALL_CIA_RATING' },
             // { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Record Categories', value: 'RECORD_CATEGORIES' },
             // { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'PII Flag', value: 'PII_FLAG' },
         ],
@@ -45,15 +48,15 @@ const actions = {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
-        var param = {
+        state.all.param = {
             System: state.all.system,
             Filters: state.all.filters.left,
             Pagination: _.cloneDeep(state.all.left.pagination)
         }
 
-        param.Pagination.rowsPerPage = -1;
+        state.all.param.Pagination.rowsPerPage = -1;
 
-        return dscMyService.getIarcTable(param)
+        return dscMyService.getIarcTable(state.all.param)
             .then(
                 res => commit('getExportDataSuccess', res),
                 error => commit('getExportDataFailure', error)
@@ -66,13 +69,13 @@ const actions = {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
-        var param = {
+        state.all.param = {
             System: state.all.system,
             Filters: state.all.filters.left,
             Pagination: state.all.left.pagination
         }
 
-        return dscMyService.getIarcTable(param)
+        return dscMyService.getIarcTable(state.all.param)
             .then(
                 res => commit('getLeftTableSuccess', res),
                 error => commit('getLeftTableFailure', error)

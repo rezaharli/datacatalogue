@@ -323,7 +323,6 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 						sqlQuery += `
 							upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
 					}
-
 				} else {
 					sqlQuery += `
 						upper(` + key + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `

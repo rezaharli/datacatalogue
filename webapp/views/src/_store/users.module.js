@@ -3,6 +3,9 @@ import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
     all: {
+        filename: "users.sql", 
+        queryname: "users",
+        param: {},
         tabName: '',
         dialog: false,
         editedIndex: -1,
@@ -40,13 +43,13 @@ const actions = {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
-        var param = {
+        state.all.param = {
             System: state.all.system,
             Filters: state.all.filters.left,
             Pagination: state.all.left.pagination
         }
 
-        return userService.getAll(param)
+        return userService.getAll(state.all.param)
             .then(
                 res => commit('getLeftTableSuccess', res),
                 error => commit('getLeftTableFailure', error)

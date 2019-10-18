@@ -38,7 +38,7 @@ func (s *DSCService) CreateSystemDummyData() error {
 		}
 
 		if i%3 == 0 {
-			system.System_Name = "EDMp"
+			system.System_Name = "ENTERPRISE DATA MGMT PLATFORM"
 		}
 
 		data = append(data, system)

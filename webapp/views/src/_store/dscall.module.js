@@ -3,6 +3,9 @@ import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
     all: {
+        filename: "dsc.sql", 
+        queryname: "dsc-view",
+        param: {},
         tabName: '',
         searchMain: '',
         searchDropdown: {
@@ -24,17 +27,11 @@ const state = {
             { align: 'left', display: false, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Dataset Custodian', value: 'Custodians.DATASET_CUSTODIAN' },
             { align: 'left', display: false, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Bank ID', value: 'Custodians.BANK_ID' }
         ],
-        // rightHeaders: [
-        //   { text: 'Table Name', align: 'left', sortable: false, value: 'TABLE_NAME', displayCount: true, width: "25%" },
-        //   { text: 'Column Name', align: 'left', sortable: false, value: 'Columns.COLUMN_NAME', displayCount: true, width: "25%" },
-        //   { text: 'Business Alias Name', align: 'left', sortable: false, value: 'Columns.BUSINESS_ALIAS_NAME', displayCount: false, width: "25%" },
-        //   { text: 'CDE (Yes/No)', align: 'left', sortable: false, value: 'Columns.CDE_YES_NO', displayCount: true, width: "25%" }
-        // ],
         isRightTable: false,
         DDSource: [],
         detailsLoading: true,
         detailsSource: [],
-        error: null
+        error: null,
     }
 };
 
@@ -46,17 +43,18 @@ const actions = {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
-        var param = {
+        state.all.param = {
             Tabs: state.all.tabName,
+            LoggedInID: "",
             Search: state.all.searchMain,
             SearchDD: state.all.searchDropdown,
             Filters: state.all.filters.left,
             Pagination: _.cloneDeep(state.all.left.pagination)
         }
 
-        param.Pagination.rowsPerPage = -1;
+        state.all.param.Pagination.rowsPerPage = -1;
 
-        return dscMyService.getLeftTable(param)
+        return dscMyService.getLeftTable(state.all.param)
             .then(
                 res => commit('getExportDataSuccess', res),
                 error => commit('getExportDataFailure', error)
@@ -69,15 +67,16 @@ const actions = {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
-        var param = {
+        state.all.param = {
             Tabs: state.all.tabName,
+            LoggedInID: "",
             Search: state.all.searchMain,
             SearchDD: state.all.searchDropdown,
             Filters: state.all.filters.left,
             Pagination: state.all.left.pagination
         }
 
-        return dscMyService.getLeftTable(param)
+        return dscMyService.getLeftTable(state.all.param)
             .then(
                 res => commit('getLeftTableSuccess', res),
                 error => commit('getLeftTableFailure', error)
@@ -90,7 +89,7 @@ const actions = {
             state.all.filters.right[key] = state.all.filters.right[key] ? state.all.filters.right[key].toString() : "";
         });
 
-        var param = {
+        state.all.param = {
             Tabs: state.all.tabName,
             SystemID: systemID,
             Search: state.all.searchMain,
@@ -99,7 +98,7 @@ const actions = {
             Pagination: state.all.right.pagination
         }
 
-        return dscMyService.getRightTable(param)
+        return dscMyService.getRightTable(state.all.param)
             .then(
                 res => commit('getRightTableSuccess', res.Data),
                 error => commit('getRightTableFailure', error)

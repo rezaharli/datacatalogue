@@ -1,7 +1,8 @@
 <style>
-  .dropdown-menu {
-    cursor: default;
-  }
+.v-menu__content {
+  cursor: default;
+  padding: 0.5rem 0;
+}
 </style>
 
 
@@ -9,210 +10,275 @@
   <div ref="widthAcuan" class="table-header-wrapper">
     <span>{{ fixedProps.header.text }} {{ count }}</span>
 
-    <b-dropdown no-caret variant="link" class="dropdown-button-wrapper" ref="columnFilter" v-if="fixedProps.header.filterable">
-      <template slot="button-content">
-        <v-icon small v-bind:class="{'icon-active' : store.filters[which][fixedProps.header.value.split('.').reverse()[0]] }" class="icon-filter">filter_list</v-icon>
+    <v-menu
+      bottom
+      transition="slide-y-transition"
+      class="dropdown-button-wrapper"
+      v-if="fixedProps.header.filterable"
+      v-model="menu"
+      :close-on-content-click="false"
+    >
+      <template slot="activator" slot-scope="{ on }">
+        <button class="dropdown-button-wrapper btn btn-link">
+          <v-icon
+            small
+            class="icon-filter"
+            v-on="on"
+            v-bind:class="{ 'icon-active': tableStore.filters[which][fixedProps.header.value.split('.').reverse()[0]] }"
+          >filter_list</v-icon>
+        </button>
       </template>
 
       <b-dropdown-header>
         <b-form-input
           type="text"
           placeholder="Filter"
-          v-model="store.filters[which][fixedProps.header.value.split('.').reverse()[0]]"
+          v-model="tableStore.filters[which][fixedProps.header.value.split('.').reverse()[0]]"
           @keyup.native="keyupAction"
         ></b-form-input>
       </b-dropdown-header>
 
-      <b-dropdown-divider/>
+      <b-dropdown-divider />
 
       <div class="dropdown-wrapper">
+        <page-loader v-if="isLoading" />
+
         <b-dropdown-item
-          v-for="item in distinctData"
+          v-for="item in dropdownData"
           :key="item"
           @click="filterClick(fixedProps.header, item)"
         >{{ item }}</b-dropdown-item>
       </div>
 
-      <b-dropdown-divider/>
+      <b-dropdown-divider />
 
-      <b-row class="justify-content-center" v-bind:class="{'d-none' : !(store.filters[which][fixedProps.header.value.split('.').reverse()[0]]) }">
+      <b-row
+        class="justify-content-center"
+        v-bind:class="{ 'd-none': !(tableStore.filters[which][fixedProps.header.value.split('.').reverse()[0]]) }"
+      >
         <b-col cols="auto">
-          <a class="text-danger mx-4 my-1" @click="resetFilterColumn(which, fixedProps.header.value.split('.').reverse()[0])">
+          <a
+            class="text-danger mx-4 my-1"
+            @click="resetFilterColumn(which, fixedProps.header.value.split('.').reverse()[0])"
+          >
             <i class="fa fa-trash"></i> Clear
           </a>
         </b-col>
       </b-row>
-
-    </b-dropdown>
+    </v-menu>
   </div>
 </template>
 
 <script>
+import pageLoader from "./PageLoader.vue";
+
 export default {
   name: "tableHeader",
+  components: {
+    pageLoader
+  },
   props: ["storeName", "props", "which", "fromHeaderLoop"],
   data() {
     return {
+      headerStoreName: "header",
       filterProcessTimeout: null,
-      sticky: 0
+      sticky: 0,
+      menu: false,
+      isLoading: false,
+      dropdownData: []
     };
   },
   computed: {
-    store () { return this.$store.state[this.storeName].all },
-    count () {
-      if( ! this.fixedProps.header.displayCount) return "";
-      if( ! this.store[this.which].source[0]) return "(0)";
-
-      return ("(" + this.store[this.which].source[0]["COUNT_" + this.fixedProps.header.value.split(".").reverse()[0]] + ")");
+    store() {
+      return this.$store.state[this.headerStoreName];
     },
-    distinctData () {
+    tableStore() {
+      return this.$store.state[this.storeName].all;
+    },
+    count() {
+      if (!this.fixedProps.header.displayCount) return "";
+      if (!this.tableStore[this.which].source[0]) return "(0)";
+
+      return (
+        "(" +
+        this.tableStore[this.which].source[0][
+          "COUNT_" + this.fixedProps.header.value.split(".").reverse()[0]
+        ] +
+        ")"
+      );
+    },
+    distinctData() {
       var headerValueField = this.fixedProps.header.value;
-      var datax = this.store[this.which].source;
+      var datax = this.tableStore[this.which].source;
 
-      var cols = headerValueField.split(".")
+      var cols = headerValueField.split(".");
 
-      if(cols.length > 1){
+      if (cols.length > 1) {
         var a = datax;
 
         cols.forEach((c, i) => {
           a = this._.flattenDeep(this._.map(this._.sortBy(a, c), c));
         });
 
-        var ret = this._.uniq(a).map(v => v.toString()).filter(Boolean);
-
-        return ret;
+        return this._.uniq(a).map(v => (v.toString() ? v.toString() : "NA"));
       }
-      
+
       return this._.uniq(
-        this._.map(this._.sortBy(datax, headerValueField), headerValueField).map(v => v.toString())
-      ).filter(Boolean);
+        this._.map(
+          this._.sortBy(datax, headerValueField),
+          headerValueField
+        ).map(v => (v.toString() ? v.toString() : "NA"))
+      );
     },
     fixedProps() {
-      if(this.fromHeaderLoop == true){
-        var props = {}
+      if (this.fromHeaderLoop == true) {
+        var props = {};
         props.header = this.props;
 
-        return props
+        return props;
       } else {
-        return this.props
+        return this.props;
       }
     }
   },
-  mounted (){
+  watch: {
+    menu(val, oldVal) {
+      if (val) {
+        this.getOpts();
+      } else {
+        this.dropdownData = [];
+      }
+    }
+  },
+  mounted() {
     this.makeTableAlertFull();
     setTimeout(() => {
-      var $dropdownWrapper = $(this.$refs.widthAcuan).closest("th.column.sortable").find(".dropdown-menu");
-      if($dropdownWrapper[0]){
+      var $dropdownWrapper = $(this.$refs.widthAcuan)
+        .closest("th.column.sortable")
+        .find(".dropdown-button-wrapper");
+      if ($dropdownWrapper[0]) {
         $dropdownWrapper.on("click", function(e) {
           e.preventDefault();
           e.stopPropagation();
         });
       }
-
-      // this.store[this.which].colWidth[this.fixedProps.header.value.split('.').reverse()[0]] = this.$refs.widthAcuan.parentNode.offsetWidth;
-      // console.log(this.$refs.widthAcuan.parentNode, '----' ,this.$refs.widthAcuan.parentNode.offsetWidth);
     }, 100);
-    setTimeout(() => {
-      // this.makeTableHeaderFixed();
-    }, 200);
   },
   methods: {
-    getLeftTable () {
-        return this.$store.dispatch(`${this.storeName}/getLeftTable`)
+    getOpts() {
+      this.isLoading = true;
+
+      var param = this.tableStore.param;
+      param.Filename = this.tableStore.filename;
+      param.Queryname = this.tableStore.queryname;
+      param.FieldName = this.fixedProps.header.value;
+      param.Filter = this.tableStore.filters[this.which][
+        this.fixedProps.header.value.split(".").reverse()[0]
+      ];
+
+      return this.$store
+        .dispatch(`${this.headerStoreName}/getOpts`, param)
+        .then(() => {
+          this.dropdownData = this._.uniq(
+            this.store.datas.map(v => (v.toString().trim() ? v.toString() : "NA"))
+          );
+
+          this.isLoading = false;
+        });
     },
-    getRightTable (id) {
-        this.$store.dispatch(`${this.storeName}/getRightTable`, id)
+    getLeftTable() {
+      return this.$store.dispatch(`${this.storeName}/getLeftTable`);
     },
-    keyupAction(e){
+    getRightTable(id) {
+      this.$store.dispatch(`${this.storeName}/getRightTable`, id);
+    },
+    keyupAction(e) {
+      setTimeout(this.getOpts, 1);
+
       var self = this;
 
       // manually adding space only when sortable is true
-      if(e.key == " ") {
-        if(this.fixedProps.header.sortable){
-          var model = this.store.filters[this.which][this.fixedProps.header.value.split('.').reverse()[0]];
+      if (e.key == " ") {
+        if (this.fixedProps.header.sortable) {
+          var model = this.tableStore.filters[this.which][
+            this.fixedProps.header.value.split(".").reverse()[0]
+          ];
           model = model ? model + " " : " ";
 
-          this.store.filters[this.which][this.fixedProps.header.value.split('.').reverse()[0]] = model;
-
+          this.tableStore.filters[this.which][
+            this.fixedProps.header.value.split(".").reverse()[0]
+          ] = model;
         }
       }
 
-      if(self.filterProcessTimeout != null) clearTimeout(self.filterProcessTimeout);
+      if (self.filterProcessTimeout != null)
+        clearTimeout(self.filterProcessTimeout);
 
       self.filterProcessTimeout = setTimeout(self.filterProcess, 500);
 
-      if(e.key == "Enter") self.$refs.columnFilter.hide(true)
+      if (e.key == "Enter") this.menu = false;
     },
-    filterClick (keyModel, val) {
-      this.store.filters[this.which][keyModel.value.split('.').reverse()[0]] = val;
-      
-      this.store.filters[this.which].filterTypes = {};
-      this.store.filters[this.which].filterTypes[keyModel.value.split('.').reverse()[0]] = "eq"
+    filterClick(keyModel, val) {
+      this.tableStore.filters[this.which][
+        keyModel.value.split(".").reverse()[0]
+      ] = val;
+
+      this.tableStore.filters[this.which].filterTypes = {};
+      this.tableStore.filters[this.which].filterTypes[
+        keyModel.value.split(".").reverse()[0]
+      ] = "eq";
 
       this.filterProcess();
     },
-    filterProcess (){
-      if(this.which == "left") this.getLeftTable()
-      else this.getRightTable(this.$route.params.system)
+    filterProcess() {
+      if (this.which == "left") this.getLeftTable();
+      else this.getRightTable(this.$route.params.system);
     },
-    resetFilterColumn (which, fieldName) {
-      // console.log(this.store.filters[this.which]);
-      // console.log("-------------------");
-      // console.log("fieldName : ", fieldName);
-      // console.log("-------------------");
-      // console.log(this.store.filters[which][fieldName]);
-      
-      this.store.filters[which][fieldName] = "";
-      this.store.filters[which].filterTypes = {};
-      this.filterProcess ();
-      this.$refs.columnFilter.hide(true);
+    resetFilterColumn(which, fieldName) {
+      this.tableStore.filters[which][fieldName] = "";
+      this.tableStore.filters[which].filterTypes = {};
+      this.filterProcess();
+      this.menu = false;
     },
-    onScrollListener(e){
-        // metode mengawang alias menambah class sticky ke current elemen 
-        if ($(window).scrollTop() > this.sticky) {
-            // && tableBody.height() > window.innerHeight 
-            $('table.v-table.v-datatable thead').addClass("sticky");
-            $('table.v-table.v-datatable thead').css({'top': $('.v-toolbar').height()});
-            // $('.v-datatable__actions').css({'position': 'fixed', 'bottom': 0});
-        } else {
-            $('table.v-table.v-datatable thead').removeClass("sticky");
-            $('table.v-table.v-datatable thead').css({'top': 'unset'});
-            // $('.v-datatable__actions').css({'position': 'unset', 'bottom': 'unset'});
-        }
-
-        // // pake clone jes
-        // if ($(window).scrollTop() > this.sticky) {
-        //     // && tableBody.height() > window.innerHeight 
-        //     $('table.v-table.v-datatable thead.sticky').show();
-        //     $('table.v-table.v-datatable thead.sticky').css({'top': $('.v-toolbar').height()});
-        // } else {
-        //     $('table.v-table.v-datatable thead.sticky').hide();
-        //     $('table.v-table.v-datatable thead.sticky').css({'top': 'unset'});
-        // }
-    },
-
-    makeTableHeaderFixed(){
-        const theads = document.querySelectorAll('table.v-table.v-datatable thead');
-        theads.forEach((thead) => {
-          thead.querySelectorAll("tr > th").forEach((th) => {
-            th.style.width = th.offsetWidth+'px';
-          });
-
-          // let clone = thead.cloneNode( true );
-          // clone.setAttribute( 'class', 'sticky');
-          // thead.closest('table.v-table.v-datatable').appendChild( clone );
-          // clone.style.display = "none";
+    onScrollListener(e) {
+      // metode mengawang alias menambah class sticky ke current elemen
+      if ($(window).scrollTop() > this.sticky) {
+        // && tableBody.height() > window.innerHeight
+        $("table.v-table.v-datatable thead").addClass("sticky");
+        $("table.v-table.v-datatable thead").css({
+          top: $(".v-toolbar").height()
         });
-
-        this.sticky = $('table.v-table thead').offset().top;    
-        $(window).scroll(this.onScrollListener);
+        // $('.v-datatable__actions').css({'position': 'fixed', 'bottom': 0});
+      } else {
+        $("table.v-table.v-datatable thead").removeClass("sticky");
+        $("table.v-table.v-datatable thead").css({ top: "unset" });
+        // $('.v-datatable__actions').css({'position': 'unset', 'bottom': 'unset'});
+      }
     },
 
-    makeTableAlertFull(){
-      var elemAlert = $('table.v-table > tbody > tr > td >  .v-alert');
-      var theadWidth = elemAlert.closest('table.v-table').find('thead > tr:first').width() - 50;
-      elemAlert.parent('td').width(theadWidth);
+    makeTableHeaderFixed() {
+      const theads = document.querySelectorAll(
+        "table.v-table.v-datatable thead"
+      );
+      theads.forEach(thead => {
+        thead.querySelectorAll("tr > th").forEach(th => {
+          th.style.width = th.offsetWidth + "px";
+        });
+      });
+
+      this.sticky = $("table.v-table thead").offset().top;
+      $(window).scroll(this.onScrollListener);
     },
+
+    makeTableAlertFull() {
+      var elemAlert = $("table.v-table > tbody > tr > td >  .v-alert");
+      var theadWidth =
+        elemAlert
+          .closest("table.v-table")
+          .find("thead > tr:first")
+          .width() - 50;
+      elemAlert.parent("td").width(theadWidth);
+    }
   }
 };
 </script>
