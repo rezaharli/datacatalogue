@@ -6,7 +6,7 @@ export const edmpService = {
     getBusinessTable,
     getConsumptionTable,
     getDropdownOpts,
-    getIarcPersonal
+    getIarcPersonalTable
 };
 
 function getHomepageCounts(param) {
@@ -128,6 +128,11 @@ function getDropdownOpts(param) {
     return fetchWHeader(`/dsc/getedmpdddropdowns`, param);
 }
 
-function getIarcPersonal(param) {
-    return fetchWHeader(`/dsc/getedmpiarcpersonaltable`, param);
+function getIarcPersonalTable(param) {
+    return fetchWHeader(`/dsc/getedmpiarcpersonaltable`, param).then(
+        res => {
+            res.DataFlat = _.cloneDeep(res.Data);
+            return res;
+        }
+    );
 }

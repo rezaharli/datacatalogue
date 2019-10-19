@@ -1,5 +1,5 @@
-import { edmpService } from '../_services/edmp.service';
 import { newTableObject } from '../_helpers/table-helper';
+import { edmpService } from '../_services/edmp.service';
 
 const state = {
     all: {
@@ -36,7 +36,7 @@ const actions = {
     exportData({ commit }) {
         commit('getExportDataRequest');
 
-        Object.keys(state.all.filters.left).map(function(key) {
+        Object.keys(state.all.filters.left).map(function(key, index) {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
@@ -48,16 +48,16 @@ const actions = {
 
         state.all.param.Pagination.rowsPerPage = -1;
 
-        return edmpService.getIarcPersonal(state.all.param)
+        return edmpService.getIarcPersonalTable(state.all.param)
             .then(
                 res => commit('getExportDataSuccess', res),
                 error => commit('getExportDataFailure', error)
             );
     },
-    getLeftTable({ commit }) {
+    getLeftTable({ commit }, system) {
         commit('getLeftTableRequest');
 
-        Object.keys(state.all.filters.left).map(function(key) {
+        Object.keys(state.all.filters.left).map(function(key, index) {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
@@ -67,11 +67,9 @@ const actions = {
             Pagination: state.all.left.pagination
         }
 
-        return edmpService.getIarcPersonal(state.all.param)
+        return edmpService.getIarcPersonalTable(state.all.param)
             .then(
-                res => {
-                    commit('getLeftTableSuccess', res)
-                },
+                res => commit('getLeftTableSuccess', res),
                 error => commit('getLeftTableFailure', error)
             );
     },
@@ -82,7 +80,7 @@ const mutations = {
         state.all.left.isLoading = true;
     },
     getExportDataSuccess(state, res) {
-        state.all.exportDatas = res.Data.Flat;
+        state.all.exportDatas = res.DataFlat;
 
         state.all.left.isLoading = false;
     },
@@ -92,14 +90,11 @@ const mutations = {
     },
     getLeftTableRequest(state) {
         state.all.left.isLoading = true;
-        state.all.left.source = [];
-        state.all.left.display = [];
-        state.all.left.totalItems = 0;
     },
     getLeftTableSuccess(state, res) {
-        state.all.left.source = res.Data.Flat;
-        state.all.left.display = res.Data.Grouped;
-        state.all.left.totalItems = res.Data.Flat[0] ? res.Data.Flat[0].RESULT_COUNT : 0;
+        state.all.left.source = res.DataFlat;
+        state.all.left.display = res.Data;
+        state.all.left.totalItems = res.Data[0] ? res.Data[0].RESULT_COUNT : 0;
 
         state.all.left.isLoading = false;
     },

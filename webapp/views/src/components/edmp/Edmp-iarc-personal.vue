@@ -1,41 +1,28 @@
 <style>
-/* #table-edmp-iarc-personal table.v-table tr {display: block;} */
-/* #table-edmp-iarc-personal table.v-table.v-datatable thead{
-    width: unset;
-    display: table-header-group;
-    padding-right: unset;
-}
-#table-edmp-iarc-personal table.v-table.v-datatable tbody{
-    display:table-row-group;
-    overflow:auto;
-    max-height:unset;
-    width:unset;
-}
-#table-edmp-iarc-personal table.v-table.v-datatable tbody tr {display: table-row;} */
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(1){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(2){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(5){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(6){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(7){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(8){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(9){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(10){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(11){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(12){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(13){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-personal table.v-table tr th:nth-of-type(1){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-personal table.v-table tr th:nth-of-type(2){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-personal table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-personal table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-personal table.v-table tr th:nth-of-type(5){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-personal table.v-table tr th:nth-of-type(6){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-personal table.v-table tr th:nth-of-type(7){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-personal table.v-table tr th:nth-of-type(8){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-personal table.v-table tr th:nth-of-type(9){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-personal table.v-table tr th:nth-of-type(10){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-personal table.v-table tr th:nth-of-type(11){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-personal table.v-table tr th:nth-of-type(12){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-personal table.v-table tr th:nth-of-type(13){width: calc(100%/20) !important; display: table-cell;}
 
 .row-action-buttons{ top: -59px; position: absolute; right: 15px; }
 </style>
 
 <template>
   <b-container fluid>
-    <!-- <page-loader v-if="store.left.isLoading" /> -->
+    <page-loader v-if="store.left.isLoading" />
 
     <b-row>
       <b-col>
-        <b-row class="my-4 row-action-buttons">
+        <b-row class="my-4">
             <b-col>
                 <b-button class="float-right red-neon icon-only ml-3" @click="resetFilter">
                     <i class="fa fa-fw fa-filter"></i>
@@ -60,7 +47,7 @@
                 :rows-per-page-items="[25, 50, 75, 100]"
                 item-key="ID"
                 class="table-v1"
-                id="table-edmp-iarc-personal">
+                id="table-edmp-dd-personal">
               <template slot="headerCell" slot-scope="props">
                 <tableheader :storeName="storeName" :props="props" :which="'left'"/>
               </template>
@@ -160,18 +147,18 @@ export default {
   },
   mounted() {
     this.store.tabName = this.storeName;
-    this.store.system = this.$route.params.system;
+    this.store.system = "ENTERPRISE DATA MGMT PLATFORM";
     this.resetFilter();
   },
   updated() {
-    this.setTableColumnsWidth($('#table-edmp-iarc-personal'));
+    this.setTableColumnsWidth($('#table-edmp-dd-personal'));
   },
   methods: {
     getLeftTable() {
-      this.store.system = this.$route.params.system;
+      this.store.system = "ENTERPRISE DATA MGMT PLATFORM";
       var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
       getLeftTableVal.then(res => {
-        this.setTableColumnsWidth($('#table-edmp-iarc-personal'));
+        this.setTableColumnsWidth($('#table-edmp-dd-personal'));
       });
     },
     resetFilter (e) {
@@ -179,11 +166,6 @@ export default {
             this.store.filters.left = {};
             this.getLeftTable();
         }
-
-        // if(Object.keys(this.store.filters.right).length > 0){
-        //     this.store.filters.right = {}
-        //     this.getMyRightTable(this.$route.params.system);
-        // }
     },
     setTableColumnsWidth(elem){
       var tableElem = elem.find('.v-table__overflow > table.v-table');
