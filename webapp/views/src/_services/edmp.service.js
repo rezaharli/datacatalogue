@@ -19,8 +19,10 @@ function getHomepageCounts(param) {
 function getTechnicalTable(param) {
     return fetchWHeader(`/dsc/getedmpddtechnicaltable`, param).then(
         res => {
-            var tmp = _.groupBy(res.Data.Grouped, "TABLE_NAME")
-            res.Data.Grouped = _.map(Object.keys(tmp), function(v, i){
+            res.DataFlat = _.cloneDeep(res.Data);
+
+            var tmp = _.groupBy(res.Data, "TABLE_NAME")
+            res.Data = _.map(Object.keys(tmp), function(v, i){
                 var tmpTmp = _.cloneDeep(tmp[v]);
 
                 var ret         = tmpTmp[0];
@@ -43,7 +45,7 @@ function getTechnicalTable(param) {
                 return ret;
             });
 
-            res.Data.Grouped.forEach(v => {
+            res.Data.forEach(v => {
                 v.Tables.shift();
             });
             
@@ -55,8 +57,10 @@ function getTechnicalTable(param) {
 function getBusinessTable(param) {
     return fetchWHeader(`/dsc/getedmpddbusinesstable`, param).then(
         res => {
-            var tmp = _.groupBy(res.Data.Grouped, "TABLE_NAME")
-            res.Data.Grouped = _.map(Object.keys(tmp), function(v, i){
+            res.DataFlat = _.cloneDeep(res.Data);
+
+            var tmp = _.groupBy(res.Data, "TABLE_NAME")
+            res.Data = _.map(Object.keys(tmp), function(v, i){
                 var tmpTmp = _.cloneDeep(tmp[v]);
 
                 var ret         = tmpTmp[0];
@@ -79,7 +83,7 @@ function getBusinessTable(param) {
                 return ret;
             });
 
-            res.Data.Grouped.forEach(v => {
+            res.Data.forEach(v => {
                 v.Tables.shift();
             });
             
@@ -91,8 +95,10 @@ function getBusinessTable(param) {
 function getConsumptionTable(param) {
     return fetchWHeader(`/dsc/getedmpddconsumptiontable`, param).then(
         res => {
-            var tmp = _.groupBy(res.Data.Grouped, "TABLE_NAME")
-            res.Data.Grouped = _.map(Object.keys(tmp), function(v, i){
+            res.DataFlat = _.cloneDeep(res.Data);
+
+            var tmp = _.groupBy(res.Data, "TABLE_NAME")
+            res.Data = _.map(Object.keys(tmp), function(v, i){
                 var tmpTmp = _.cloneDeep(tmp[v]);
 
                 var ret         = tmpTmp[0];
@@ -115,7 +121,7 @@ function getConsumptionTable(param) {
                 return ret;
             });
 
-            res.Data.Grouped.forEach(v => {
+            res.Data.forEach(v => {
                 v.Tables.shift();
             });
             
