@@ -184,10 +184,6 @@ func (c *DSC) GetIARCPersonalDataTable(k *knot.WebContext) {
 		return
 	}
 
-	ret := toolkit.M{}
-	ret.Set("Flat", tableRows)
-	ret.Set("Grouped", tableRows)
-
 	h.WriteResultOK(k, res, tableRows)
 	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
 }
@@ -300,11 +296,7 @@ func (c *DSC) GetDDTable(k *knot.WebContext) {
 		return
 	}
 
-	ret := toolkit.M{}
-	ret.Set("Flat", tableRows)
-	ret.Set("Grouped", tableRows)
-
-	h.WriteResultOK(k, res, ret)
+	h.WriteResultOK(k, res, tableRows)
 	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
 }
 
@@ -357,11 +349,7 @@ func (c *DSC) GetEdmpDDTechnicalTable(k *knot.WebContext) {
 		return
 	}
 
-	ret := toolkit.M{}
-	ret.Set("Flat", tableRows)
-	ret.Set("Grouped", tableRows)
-
-	h.WriteResultOK(k, res, ret)
+	h.WriteResultOK(k, res, tableRows)
 	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
 }
 
@@ -390,11 +378,7 @@ func (c *DSC) GetEdmpDDBusinessTable(k *knot.WebContext) {
 		return
 	}
 
-	ret := toolkit.M{}
-	ret.Set("Flat", tableRows)
-	ret.Set("Grouped", tableRows)
-
-	h.WriteResultOK(k, res, ret)
+	h.WriteResultOK(k, res, tableRows)
 	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
 }
 
@@ -423,11 +407,7 @@ func (c *DSC) GetEdmpDDConsumptionTable(k *knot.WebContext) {
 		return
 	}
 
-	ret := toolkit.M{}
-	ret.Set("Flat", tableRows)
-	ret.Set("Grouped", tableRows)
-
-	h.WriteResultOK(k, res, ret)
+	h.WriteResultOK(k, res, tableRows)
 	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
 }
 
@@ -456,11 +436,7 @@ func (c *DSC) GetEdmpIarcPersonalTable(k *knot.WebContext) {
 		return
 	}
 
-	ret := toolkit.M{}
-	ret.Set("Flat", tableRows)
-	ret.Set("Grouped", tableRows)
-
-	h.WriteResultOK(k, res, ret)
+	h.WriteResultOK(k, res, tableRows)
 	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
 }
 

@@ -374,7 +374,12 @@ function getInterfacesCdeTable(param) {
 }
 
 function getDdTable(param) {
-    return fetchWHeader(`/dsc/getddtable`, param);
+    return fetchWHeader(`/dsc/getddtable`, param).then(
+        res => {
+            res.DataFlat = _.cloneDeep(res.Data);
+            return res;
+        }
+    );
 }
 
 function getRightTable(param) {
