@@ -109,6 +109,9 @@
               <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.DATABASE_NAME" showOn="click"></tablecell></td>
               
+              <td v-bind:style="{ width: store.left.colWidth['CERTIFIED'] + 'px' }">
+                <tablecell :fulltext="props.item.CERTIFIED" showOn="click"></tablecell></td>
+              
               <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-capitalize text-title">
                 <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length > 0">
                   <div class="ini wrapper-showmore d-inline-block">
@@ -141,10 +144,6 @@
 
               <td v-bind:style="{ width: store.left.colWidth['PRIMARY_KEY'] + 'px' }" class="text-capitalize">
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PRIMARY_KEY.toString().trim() ? props.item.PRIMARY_KEY : 'NA'"></tablecell>
-              </td>
-
-              <td v-bind:style="{ width: store.left.colWidth['CERTIFIED'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.CERTIFIED.toString().trim() ? props.item.CERTIFIED : 'NA'"></tablecell>
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['DATA_XRAY'] + 'px' }" class="text-capitalize">
@@ -205,6 +204,7 @@
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['EDM_GOLDEN_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">&nbsp;</td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['CERTIFIED'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
 
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
