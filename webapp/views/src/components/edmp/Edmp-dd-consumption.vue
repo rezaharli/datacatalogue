@@ -90,8 +90,8 @@
                 <b-button size="sm" class="green-tosca-gradient icon-only" @click="showDetails(props.item)">
                   <i class="fa fa-fw fa-external-link-alt"></i></b-button></td>
                   
-              <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
-                <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['EDM_GOLDEN_SYSTEM_NAME'] + 'px' }">
+                <tablecell :fulltext="props.item.EDM_GOLDEN_SYSTEM_NAME" showOn="click"></tablecell></td>
                   
               <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.DATABASE_NAME" showOn="click"></tablecell></td>
@@ -159,7 +159,7 @@
               <template slot="items" slot-scope="props">
                 <td class="text-capitalize">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['EDM_GOLDEN_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
 
@@ -281,8 +281,8 @@ export default {
       this.store.filters.left["BUSINESS_SEGMENT"] = this.edmpStore.ddVal.ddBusinessSegmentSelected;
       this.store.filters.left.filterTypes["BUSINESS_SEGMENT"] = "eq";
 
-      this.store.filters.left["SOURCE_SYSTEM"] = this.edmpStore.ddVal.ddSourceSystemSelected;
-      this.store.filters.left.filterTypes["SOURCE_SYSTEM"] = "eq";
+      this.store.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.edmpStore.ddVal.ddSourceSystemSelected;
+      this.store.filters.left.filterTypes["EDM_SOURCE_SYSTEM_NAME"] = "eq";
 
       this.store.filters.left["CLUSTER_NAME"] = this.edmpStore.ddVal.ddClusterSelected;
       this.store.filters.left.filterTypes["CLUSTER_NAME"] = "eq";

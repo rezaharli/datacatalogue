@@ -6,11 +6,11 @@ type Edmp struct {
 	ID                          int
 	COUNTRY                     string
 	BUSINESS_SEGMENT            string
-	SOURCE_SYSTEM               string
+	EDM_SOURCE_SYSTEM_NAME      string
 	CLUSTER_NAME                string
 	TIER                        string
 	ITAM                        int
-	EDM_SOURCE_SYSTEM_NAME      string
+	EDM_GOLDEN_SYSTEM_NAME      string
 	DATABASE_NAME               string
 	TABLE_NAME                  string
 	TABLE_DESCRIPTION           string
@@ -22,7 +22,7 @@ type Edmp struct {
 	PRIMARY_KEY                 string
 	PII                         string
 	CERTIFIED                   string
-	PROFILE_RESULTS             string
+	DATA_XRAY                   string
 	DATA_LINEAGE                string
 	BUSINESS_TERM               string
 	BUSINESS_DESCRIPTION        string
