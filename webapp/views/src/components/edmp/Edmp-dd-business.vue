@@ -36,7 +36,8 @@
             :rows-per-page-items="[25, 50, 75, 100]"
             item-key="ID"
             class="elevation-1 table-v2"
-            id="table-edmp-dd-business">
+            id="table-edmp-dd-business"
+            @update:pagination="setTableColumnsWidth">
 
           <template slot="headers" slot-scope="props">
             <tr>
@@ -100,10 +101,14 @@
               
               <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-capitalize text-title">
                 <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length > 0">
-                  <tablecell :fulltext="props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA'" showOn="hover"></tablecell>
+                  <div class="ini wrapper-showmore d-inline-block">
+                    <span>{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
+                  </div>
                 </b-link>
 
-                <tablecell :fulltext="props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA'" showOn="hover" v-if="props.item.Tables.length < 1"></tablecell>
+                <div class="ini wrapper-showmore d-inline-block" v-if="props.item.Tables.length < 1">
+                  <span>{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
+                </div>
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['TABLE_DESCRIPTION'] + 'px' }" class="text-capitalize">
@@ -111,7 +116,9 @@
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA'"></tablecell>
+                <div class="ini wrapper-showmore d-inline-block" v-if="isMainLevelCellShowing(props)">
+                    <span>{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
+                  </div>
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['COLUMN_DESCRIPTION'] + 'px' }" class="text-capitalize">
@@ -330,7 +337,11 @@ export default {
       this.store.filters.left["ITAM"] = this.edmpStore.ddVal.ddItamSelected;
       this.store.filters.left.filterTypes["ITAM"] = "eq";
 
-      this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      this.$store.dispatch(`${this.storeName}/getLeftTable`).then(v => { 
+        setTimeout(() => {
+          this.setTableColumnsWidth() 
+        }, 10);
+      });
     },
     isMainLevelCellShowing (props){
       if( ! props.expanded) return true;
@@ -341,6 +352,30 @@ export default {
         
         return false;
       }
+    },
+    fixWidthIfTextNotCollapsed() {
+      $(".ini.wrapper-showmore.d-inline-block").each((i, e) => {
+        var td = $(e).closest("td");
+          
+        var keberapa = td.index();
+        var th = td.closest(".table-v2 > .v-table__overflow > table").children("thead").children('tr').eq(0).children('th').eq(keberapa);
+        //console.log(td.closest(".table-v2 > .v-table__overflow > table").children("thead").children('tr').eq(0).children('th').eq(keberapa), keberapa);
+
+        var thWidth = parseInt(th.attr("data-width-ori"));
+
+        var tdWidths = td.closest(".table-v2 > .v-table__overflow > table > tbody").children().map((i, v) => $(v).children().eq(keberapa).outerWidth());
+        var expandTdWidths = td.closest(".v-datatable__expand-row table.v-datatable.v-table > tbody").children().map((i, v) => $(v).children().eq(keberapa).outerWidth());
+        var concatWidths = $.merge(tdWidths, expandTdWidths)
+        var tdWidthMax = _.max(concatWidths)
+
+        var tdWidthUsed = tdWidthMax > thWidth ? tdWidthMax : thWidth;
+
+        td.css({"width": tdWidthUsed + "px"});
+        td.closest(".table-v2 > .v-table__overflow > table > tbody").children().each((i, v) => { 
+          $(v).children().eq(keberapa).css({"width": tdWidthUsed + "px"});
+        });
+        th.css({"min-width": tdWidthUsed + "px"});
+      });
     },
     setTableColumnsWidth(elem){
       var tableElem = elem.find('.v-table__overflow > table.v-table');
@@ -353,6 +388,8 @@ export default {
           TDs.eq(thIndex).width(thWidth);
         });
       });
+
+      this.fixWidthIfTextNotCollapsed();
     },
     setExpandedTableColumnsWidth(){
       setTimeout(() => {
@@ -368,6 +405,8 @@ export default {
             TDs.eq(thIndex).width(thWidth);
           });
         });
+
+        this.fixWidthIfTextNotCollapsed();
       }, 10);
     },
     toggleAll () {
