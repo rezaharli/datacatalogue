@@ -93,8 +93,8 @@
               <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">
                 <tablecell :fulltext="props.item.ITAM" showOn="click"></tablecell></td>
 
-              <td v-bind:style="{ width: store.left.colWidth['EDM_GOLDEN_SYSTEM_NAME'] + 'px' }">
-                <tablecell :fulltext="props.item.EDM_GOLDEN_SYSTEM_NAME" showOn="click"></tablecell></td>
+              <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
+                <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME" showOn="click"></tablecell></td>
 
               <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.DATABASE_NAME" showOn="click"></tablecell></td>
@@ -189,7 +189,7 @@
                 <td class="text-capitalize">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">&nbsp;</td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['EDM_GOLDEN_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
 
