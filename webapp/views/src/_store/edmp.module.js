@@ -11,15 +11,29 @@ const state = {
             itamID: "",
             owners: []
         },
-        DDSource: [],
-        firstload: true,
-        ddVal: {
-            ddCountrySelected: [],
-            ddBusinessSegmentSelected: [],
-            ddSourceSystemSelected: [],
-            ddClusterSelected: [],
-            ddTierSelected: [],
-            ddItamSelected: [],
+        dd: {
+            DDSource: [],
+            firstload: true,
+            ddVal: {
+                ddCountrySelected: [],
+                ddBusinessSegmentSelected: [],
+                ddSourceSystemSelected: [],
+                ddClusterSelected: [],
+                ddTierSelected: [],
+                ddItamSelected: [],
+            },
+        },
+        iarc: {
+            DDSource: [],
+            firstload: true,
+            ddVal: {
+                ddCountrySelected: [],
+                ddBusinessSegmentSelected: [],
+                ddSourceSystemSelected: [],
+                ddClusterSelected: [],
+                ddTierSelected: [],
+                ddItamSelected: [],
+            },
         },
     }
 };
@@ -38,17 +52,30 @@ const actions = {
                 error => commit('getCountsFailure', error)
             );
     },
-    getDropdownOpts({ commit }, system) {
-        commit('getDropdownOptsRequest');
+    getDdDropdownOpts({ commit }, system) {
+        commit('getDdDropdownOptsRequest');
 
         var param = {
             System: system
         }
 
-        return edmpService.getDropdownOpts(param)
+        return edmpService.getDdDropdownOpts(param)
             .then(
-                res => commit('getDropdownOptsSuccess', res.Data),
-                error => commit('getDropdownOptsFailure', error)
+                res => commit('getDdDropdownOptsSuccess', res.Data),
+                error => commit('getDdDropdownOptsFailure', error)
+            );
+    },
+    getIarcDropdownOpts({ commit }, system) {
+        commit('getIarcDropdownOptsRequest');
+
+        var param = {
+            System: system
+        }
+
+        return edmpService.getIarcDropdownOpts(param)
+            .then(
+                res => commit('getIarcDropdownOptsSuccess', res.Data),
+                error => commit('getIarcDropdownOptsFailure', error)
             );
     }
 };
@@ -66,20 +93,37 @@ const mutations = {
         state.all.isLoading = false;
         state.all.error = error;
     },
-    getDropdownOptsRequest(state) {
-        state.all.firstload = true;
+    getDdDropdownOptsRequest(state) {
+        state.all.dd.firstload = true;
         state.all.isLoading = true;
     },
-    getDropdownOptsSuccess(state, data) {
-        state.all.firstload = true;
-        state.all.DDSource = data.MappedDDSource;
+    getDdDropdownOptsSuccess(state, data) {
+        state.all.dd.firstload = true;
+        state.all.dd.DDSource = data.MappedDDSource;
 
         setTimeout(() => {
-            state.all.firstload = false;
+            state.all.dd.firstload = false;
             state.all.isLoading = false;
         }, 100);
     },
-    getDropdownOptsFailure(state, error) {
+    getDdDropdownOptsFailure(state, error) {
+        state.all.isLoading = false;
+        state.all.error = error;
+    },
+    getIarcDropdownOptsRequest(state) {
+        state.all.iarc.firstload = true;
+        state.all.isLoading = true;
+    },
+    getIarcDropdownOptsSuccess(state, data) {
+        state.all.iarc.firstload = true;
+        state.all.iarc.DDSource = data.MappedDDSource;
+
+        setTimeout(() => {
+            state.all.iarc.firstload = false;
+            state.all.isLoading = false;
+        }, 100);
+    },
+    getIarcDropdownOptsFailure(state, error) {
         state.all.isLoading = false;
         state.all.error = error;
     },

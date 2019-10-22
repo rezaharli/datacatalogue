@@ -93,6 +93,14 @@ SELECT DISTINCT
     FROM
         TBL_EDMP
 
+-- name: edmp-iarc-dropdowns
+SELECT DISTINCT
+        COUNTRY AS COUNTRY,
+        EDM_SOURCE_SYSTEM_NAME AS EDM_SOURCE_SYSTEM_NAME,
+        ITAM AS ITAM
+    FROM
+        TBL_EDMP
+
 -- name: edmp-iarc-personal
 SELECT DISTINCT
         ITAM AS ITAM,

@@ -5,7 +5,8 @@ export const edmpService = {
     getTechnicalTable,
     getBusinessTable,
     getConsumptionTable,
-    getDropdownOpts,
+    getDdDropdownOpts,
+    getIarcDropdownOpts,
     getIarcPersonalTable
 };
 
@@ -130,8 +131,12 @@ function getConsumptionTable(param) {
     );
 }
 
-function getDropdownOpts(param) {
+function getDdDropdownOpts(param) {
     return fetchWHeader(`/dsc/getedmpdddropdowns`, param);
+}
+
+function getIarcDropdownOpts(param) {
+    return fetchWHeader(`/dsc/getedmpiarcdropdowns`, param);
 }
 
 function getIarcPersonalTable(param) {
