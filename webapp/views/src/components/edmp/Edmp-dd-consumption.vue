@@ -281,8 +281,8 @@ export default {
       this.store.filters.left["BUSINESS_SEGMENT"] = this.edmpStore.ddVal.ddBusinessSegmentSelected;
       this.store.filters.left.filterTypes["BUSINESS_SEGMENT"] = "eq";
 
-      this.store.filters.left["SOURCE_SYSTEM"] = this.edmpStore.ddVal.ddSourceSystemSelected;
-      this.store.filters.left.filterTypes["SOURCE_SYSTEM"] = "eq";
+      this.store.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.edmpStore.ddVal.ddSourceSystemSelected;
+      this.store.filters.left.filterTypes["EDM_SOURCE_SYSTEM_NAME"] = "eq";
 
       this.store.filters.left["CLUSTER_NAME"] = this.edmpStore.ddVal.ddClusterSelected;
       this.store.filters.left.filterTypes["CLUSTER_NAME"] = "eq";

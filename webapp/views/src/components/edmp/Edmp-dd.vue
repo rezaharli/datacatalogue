@@ -254,14 +254,14 @@ export default {
             && self.store.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true;
         });
         
-        return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.SOURCE_SYSTEM.toString()), [function(o) { return o; }]));
+        return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.EDM_SOURCE_SYSTEM_NAME.toString()), [function(o) { return o; }]));
       },
       ddClusterOptions () {
         var self = this;
         var filtered = _.filter(self.store.DDSource, (v) => {
           return self.store.ddVal.ddCountrySelected.length > 0 ? (self.store.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true 
             && self.store.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true 
-            && self.store.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.ddVal.ddSourceSystemSelected.includes(v.SOURCE_SYSTEM)) : true;
+            && self.store.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true;
         });
         
         return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.CLUSTER_NAME.toString()), [function(o) { return o; }]));
@@ -271,7 +271,7 @@ export default {
         var filtered = _.filter(self.store.DDSource, (v) => {
           return self.store.ddVal.ddCountrySelected.length > 0 ? (self.store.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true 
             && self.store.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true 
-            && self.store.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.ddVal.ddSourceSystemSelected.includes(v.SOURCE_SYSTEM)) : true
+            && self.store.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true
             && self.store.ddVal.ddClusterSelected.length > 0 ? (self.store.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true;
         });
         
@@ -282,7 +282,7 @@ export default {
         var filtered = _.filter(self.store.DDSource, (v) => {
           return self.store.ddVal.ddCountrySelected.length > 0 ? (self.store.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true 
             && self.store.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true 
-            && self.store.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.ddVal.ddSourceSystemSelected.includes(v.SOURCE_SYSTEM)) : true
+            && self.store.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true
             && self.store.ddVal.ddClusterSelected.length > 0 ? (self.store.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true
             && self.store.ddVal.ddTierSelected.length > 0 ? (self.store.ddVal.ddTierSelected.includes(v.TIER)) : true;
         });
@@ -393,8 +393,8 @@ export default {
         this.technicalStore.filters.left["BUSINESS_SEGMENT"] = this.store.ddVal.ddBusinessSegmentSelected;
         this.technicalStore.filters.left.filterTypes["BUSINESS_SEGMENT"] = "eq";
 
-        this.technicalStore.filters.left["SOURCE_SYSTEM"] = this.store.ddVal.ddSourceSystemSelected;
-        this.technicalStore.filters.left.filterTypes["SOURCE_SYSTEM"] = "eq";
+        this.technicalStore.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.store.ddVal.ddSourceSystemSelected;
+        this.technicalStore.filters.left.filterTypes["EDM_SOURCE_SYSTEM_NAME"] = "eq";
 
         this.technicalStore.filters.left["CLUSTER_NAME"] = this.store.ddVal.ddClusterSelected;
         this.technicalStore.filters.left.filterTypes["CLUSTER_NAME"] = "eq";
@@ -418,8 +418,8 @@ export default {
         this.businessStore.filters.left["BUSINESS_SEGMENT"] = this.store.ddVal.ddBusinessSegmentSelected;
         this.businessStore.filters.left.filterTypes["BUSINESS_SEGMENT"] = "eq";
 
-        this.businessStore.filters.left["SOURCE_SYSTEM"] = this.store.ddVal.ddSourceSystemSelected;
-        this.businessStore.filters.left.filterTypes["SOURCE_SYSTEM"] = "eq";
+        this.businessStore.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.store.ddVal.ddSourceSystemSelected;
+        this.businessStore.filters.left.filterTypes["EDM_SOURCE_SYSTEM_NAME"] = "eq";
 
         this.businessStore.filters.left["CLUSTER_NAME"] = this.store.ddVal.ddClusterSelected;
         this.businessStore.filters.left.filterTypes["CLUSTER_NAME"] = "eq";
@@ -443,8 +443,8 @@ export default {
         this.consumptionStore.filters.left["BUSINESS_SEGMENT"] = this.store.ddVal.ddBusinessSegmentSelected;
         this.consumptionStore.filters.left.filterTypes["BUSINESS_SEGMENT"] = "eq";
 
-        this.consumptionStore.filters.left["SOURCE_SYSTEM"] = this.store.ddVal.ddSourceSystemSelected;
-        this.consumptionStore.filters.left.filterTypes["SOURCE_SYSTEM"] = "eq";
+        this.consumptionStore.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.store.ddVal.ddSourceSystemSelected;
+        this.consumptionStore.filters.left.filterTypes["EDM_SOURCE_SYSTEM_NAME"] = "eq";
 
         this.consumptionStore.filters.left["CLUSTER_NAME"] = this.store.ddVal.ddClusterSelected;
         this.consumptionStore.filters.left.filterTypes["CLUSTER_NAME"] = "eq";
