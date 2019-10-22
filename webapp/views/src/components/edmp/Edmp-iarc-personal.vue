@@ -1,72 +1,91 @@
 <style>
-#table-edmp-dd-personal table.v-table tr th:nth-of-type(1){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-personal table.v-table tr th:nth-of-type(2){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-personal table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-personal table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-personal table.v-table tr th:nth-of-type(5){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-personal table.v-table tr th:nth-of-type(6){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-personal table.v-table tr th:nth-of-type(7){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-personal table.v-table tr th:nth-of-type(8){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-personal table.v-table tr th:nth-of-type(9){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-personal table.v-table tr th:nth-of-type(10){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-personal table.v-table tr th:nth-of-type(11){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-personal table.v-table tr th:nth-of-type(12){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-personal table.v-table tr th:nth-of-type(13){width: calc(100%/20) !important; display: table-cell;}
-
-.row-action-buttons{ top: -59px; position: absolute; right: 15px; }
+/* #table-edmp-iarc-personal table.v-table tbody tr {display: block;} */
+/* #table-edmp-iarc-personal table.v-table.v-datatable thead{
+    width: unset;
+    display: table-header-group;
+    padding-right: unset;
+}
+#table-edmp-iarc-personal table.v-table.v-datatable tbody{
+    display:table-row-group;
+    overflow:auto;
+    max-height:unset;
+    width:unset;
+}
+#table-edmp-iarc-personal table.v-table.v-datatable tbody tr {display: table-row;} */
+#table-edmp-iarc-personal table.v-table tr th:nth-of-type(1){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-personal table.v-table tr th:nth-of-type(2){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-personal table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-personal table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-personal table.v-table tr th:nth-of-type(5){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-personal table.v-table tr th:nth-of-type(6){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-personal table.v-table tr th:nth-of-type(7){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-personal table.v-table tr th:nth-of-type(8){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-personal table.v-table tr th:nth-of-type(9){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-personal table.v-table tr th:nth-of-type(10){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-personal table.v-table tr th:nth-of-type(11){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-personal table.v-table tr th:nth-of-type(12){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-personal table.v-table tr th:nth-of-type(13){width: calc(100%/20) !important; display: table-cell;}
 </style>
 
 <template>
-  <b-container fluid>
-    <page-loader v-if="store.left.isLoading" />
-
-    <b-row>
+    <b-row style="margin-top: 10px;margin-bottom: 10px;">
       <b-col>
-        <b-row class="my-4">
-            <b-col>
-                <b-button class="float-right red-neon icon-only ml-3" @click="resetFilter">
-                    <i class="fa fa-fw fa-filter"></i>
-                </b-button>
+        <!-- Main content -->
+        <div class="table-v2-title">Personal Data</div>
+        
+        <v-data-table
+            :headers="displayedHeaders"
+            :items="store.left.display"
+            :pagination.sync="store.left.pagination"
+            :total-items="store.left.totalItems"
+            :loading="store.left.isLoading"
+            :expand="false"
+            :must-sort="true"
+            :rows-per-page-items="[25, 50, 75, 100]"
+            item-key="ID"
+            class="elevation-1 table-v2"
+            id="table-edmp-iarc-personal"
+            @update:pagination="setTableColumnsWidth">
 
-                <page-export class="float-right" :storeName="storeName" :leftTableCols="store.leftHeaders" :rightTableCols="[]"/>
-            </b-col>
-        </b-row>
+          <template slot="headers" slot-scope="props">
+            <tr>
+              <template v-for="header in props.headers">
+                <th
+                  v-if="header.sortable == true"
+                  :key="header.text"
+                  :class="['column sortable text-xs-left', store.left.pagination.descending ? 'desc' : 'asc', header.value === store.left.pagination.sortBy ? 'active' : '']"
+                  @click="changeSort(header.value)"
+                >
+                  <tableheader :storeName="storeName" :props="header" :which="'left'" :fromHeaderLoop="true" />
+                  <v-icon small>arrow_upward</v-icon>
+                </th>
 
-        <b-row class="my-4">
-          <b-col>
-            <!-- Main content -->
-            <!-- <div class="table-v2-title">Policy Related Information</div> -->
-            <v-data-table
-                :headers="store.leftHeaders.filter(v => v.display == true)"
-                :items="store.left.display"
-                :pagination.sync="store.left.pagination"
-                :total-items="store.left.totalItems"
-                :loading="store.left.isLoading"
-                :expand="false"
-                :must-sort="true"
-                :rows-per-page-items="[25, 50, 75, 100]"
-                item-key="ID"
-                class="table-v1"
-                id="table-edmp-dd-personal">
-              <template slot="headerCell" slot-scope="props">
-                <tableheader :storeName="storeName" :props="props" :which="'left'"/>
+                <th
+                  v-if="header.sortable == false"
+                  :key="header.text"
+                  :class="['column sortable text-xs-left', store.left.pagination.descending ? 'desc' : 'asc', header.value === store.left.pagination.sortBy ? 'active' : '']"
+                >
+                  <tableheader :storeName="storeName" :props="header" :which="'left'" :fromHeaderLoop="true" />
+                </th>
               </template>
+            </tr>
+          </template>
 
-              <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+          <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
-              <template slot="no-data">
-                <v-alert
-                    :value="store.left.isLoading"
-                    type="info"
-                  >Please wait while data is loading</v-alert>
+          <template slot="no-data">
+            <v-alert
+                :value="store.left.isLoading"
+                type="info"
+              >Please wait while data is loading</v-alert>
 
-                <v-alert
-                    :value="!store.left.isLoading"
-                    type="error"
-                  >Sorry, nothing to display here</v-alert>
-              </template>
+            <v-alert
+                :value="!store.left.isLoading"
+                type="error"
+              >Sorry, nothing to display here</v-alert>
+          </template>
 
-              <template slot="items" slot-scope="props">
+          <template slot="items" slot-scope="props">
                 <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
                   <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">
                     <tablecell :fulltext="props.item.ITAM.toString().trim() ? props.item.ITAM : 'NA'" showOn="click"></tablecell></td>
@@ -96,20 +115,20 @@
                     <tablecell :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'" showOn="click"></tablecell></td>
                 </tr>
               </template>
-            </v-data-table>
-                  
-          </b-col>
-        </b-row>
+        </v-data-table>
+              
       </b-col>
     </b-row>
-  </b-container>
 </template>
 
 <script>
 import Vue from "vue";
 import { mapState, mapActions } from "vuex";
 
+import PageHeader from '../PageHeader';
+
 import JsonExcel from "vue-json-excel";
+import pageSearch from "../PageSearch.vue";
 import pageExport from "../PageExport.vue";
 import tableheader from "../TableHeader.vue";
 import tablecell from "../Tablecell.vue";
@@ -120,18 +139,23 @@ Vue.component("downloadExcel", JsonExcel);
 export default {
   name: "EdmpIarcPersonal",
   components: {
-    pageExport, tableheader, tablecell, pageLoader
+    PageHeader, pageSearch, pageExport, tableheader, tablecell, pageLoader
   },
   data() {
     return {
       storeName: "edmpIarcPersonal",
-      systemSource: [],
-      tablenameSource: []
+      edmpStoreName: "edmp",
     };
   },
   computed: {
     store() {
       return this.$store.state[this.storeName].all;
+    },
+    edmpStore() {
+      return this.$store.state[this.edmpStoreName].all;
+    },
+    displayedHeaders() {
+      return this.store.leftHeaders.filter(v => v.display == true);
     },
   },
   watch: {
@@ -149,28 +173,78 @@ export default {
     }
   },
   mounted() {
-    this.store.tabName = this.storeName;
-    this.store.system = "ENTERPRISE DATA MGMT PLATFORM";
-    this.resetFilter();
+    var self = this;
+
+    setTimeout(() => {
+      this.setTableColumnsWidth();
+    }, 10);
+
+    $("#page-tab #tab-personal").on('click', function(){
+      setTimeout(() => {
+        self.setTableColumnsWidth();
+      }, 1);
+    });
   },
   updated() {
-    this.setTableColumnsWidth($('#table-edmp-dd-personal'));
+    this.setTableColumnsWidth();
   },
   methods: {
     getLeftTable() {
-      this.store.system = "ENTERPRISE DATA MGMT PLATFORM";
-      var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
-      getLeftTableVal.then(res => {
-        this.setTableColumnsWidth($('#table-edmp-dd-personal'));
+      this.store.system = this.$route.params.system;
+
+      if( ! this.store.filters.left.filterTypes) this.store.filters.left.filterTypes = {};
+
+      this.store.filters.left["COUNTRY"] = this.edmpStore.dd.ddVal.ddCountrySelected;
+      this.store.filters.left.filterTypes["COUNTRY"] = "eq";
+
+      this.store.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.edmpStore.dd.ddVal.ddSourceSystemSelected;
+      this.store.filters.left.filterTypes["EDM_SOURCE_SYSTEM_NAME"] = "eq";
+
+      this.store.filters.left["ITAM"] = this.edmpStore.dd.ddVal.ddItamSelected;
+      this.store.filters.left.filterTypes["ITAM"] = "eq";
+
+      this.$store.dispatch(`${this.storeName}/getLeftTable`).then(v => { 
+        setTimeout(() => {
+          this.setTableColumnsWidth() 
+        }, 10);
+      })
+    },
+    isMainLevelCellShowing (props){
+      if( ! props.expanded) return true;
+      else {
+        if(props.item.Tables.length > 0) {
+          return true;
+        }
+        
+        return false;
+      }
+    },
+    fixWidthIfTextNotCollapsed() {
+      $(".ini.wrapper-showmore.d-inline-block").each((i, e) => {
+        var td = $(e).closest("td");
+          
+        var keberapa = td.index();
+        var th = td.closest(".table-v2 > .v-table__overflow > table").children("thead").children('tr').eq(0).children('th').eq(keberapa);
+        //console.log(td.closest(".table-v2 > .v-table__overflow > table").children("thead").children('tr').eq(0).children('th').eq(keberapa), keberapa);
+
+        var thWidth = parseInt(th.attr("data-width-ori"));
+
+        var tdWidths = td.closest(".table-v2 > .v-table__overflow > table > tbody").children().map((i, v) => $(v).children().eq(keberapa).outerWidth());
+        var expandTdWidths = td.closest(".v-datatable__expand-row table.v-datatable.v-table > tbody").children().map((i, v) => $(v).children().eq(keberapa).outerWidth());
+        var concatWidths = $.merge(tdWidths, expandTdWidths)
+        var tdWidthMax = _.max(concatWidths)
+
+        var tdWidthUsed = tdWidthMax > thWidth ? tdWidthMax : thWidth;
+
+        td.css({"width": tdWidthUsed + "px"});
+        td.closest(".table-v2 > .v-table__overflow > table > tbody").children().each((i, v) => { 
+          $(v).children().eq(keberapa).css({"width": tdWidthUsed + "px"});
+        });
+        th.css({"min-width": tdWidthUsed + "px"});
       });
     },
-    resetFilter (e) {
-        if(Object.keys(this.store.filters.left).length > 0){
-            this.store.filters.left = {};
-            this.getLeftTable();
-        }
-    },
-    setTableColumnsWidth(elem){
+    setTableColumnsWidth(){
+      var elem = $('#table-edmp-iarc-personal');
       var tableElem = elem.find('.v-table__overflow > table.v-table');
       var THs = tableElem.find('thead tr th');
       var tbodyTR = tableElem.find('tbody tr');
@@ -181,6 +255,38 @@ export default {
           TDs.eq(thIndex).width(thWidth);
         });
       });
+
+      this.fixWidthIfTextNotCollapsed();
+    },
+    setExpandedTableColumnsWidth(){
+      setTimeout(() => {
+        var elem = $('.v-datatable__expand-row');
+        var elemExpandedTable = elem.find('.v-datatable__expand-content table.v-table');
+        var THs = elem.closest('table.v-table').find('thead tr:first th');
+        var tbodyTR = elemExpandedTable.find('tbody tr');
+        THs.each(function (thIndex) {
+          $(this).css({'color': 'red'});
+          var thWidth = $(this).width();
+          tbodyTR.each(function (tdIndex) {
+            var TDs = $(this).find('td:not([colspan])');
+            TDs.eq(thIndex).width(thWidth);
+          });
+        });
+
+        this.fixWidthIfTextNotCollapsed();
+      }, 10);
+    },
+    toggleAll () {
+      if (this.store.selected.length) this.store.selected = []
+      else this.store.selected = this.store.left.display.slice()
+    },
+    changeSort (column) {
+      if (this.store.left.pagination.sortBy === column) {
+        this.store.left.pagination.descending = !this.store.left.pagination.descending
+      } else {
+        this.store.left.pagination.sortBy = column
+        this.store.left.pagination.descending = false
+      }
     },
   }
 };

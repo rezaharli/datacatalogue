@@ -339,22 +339,22 @@ export default {
 
       if( ! this.store.filters.left.filterTypes) this.store.filters.left.filterTypes = {};
 
-      this.store.filters.left["COUNTRY"] = this.edmpStore.ddVal.ddCountrySelected;
+      this.store.filters.left["COUNTRY"] = this.edmpStore.dd.ddVal.ddCountrySelected;
       this.store.filters.left.filterTypes["COUNTRY"] = "eq";
 
-      this.store.filters.left["BUSINESS_SEGMENT"] = this.edmpStore.ddVal.ddBusinessSegmentSelected;
+      this.store.filters.left["BUSINESS_SEGMENT"] = this.edmpStore.dd.ddVal.ddBusinessSegmentSelected;
       this.store.filters.left.filterTypes["BUSINESS_SEGMENT"] = "eq";
 
-      this.store.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.edmpStore.ddVal.ddSourceSystemSelected;
+      this.store.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.edmpStore.dd.ddVal.ddSourceSystemSelected;
       this.store.filters.left.filterTypes["EDM_SOURCE_SYSTEM_NAME"] = "eq";
 
-      this.store.filters.left["CLUSTER_NAME"] = this.edmpStore.ddVal.ddClusterSelected;
+      this.store.filters.left["CLUSTER_NAME"] = this.edmpStore.dd.ddVal.ddClusterSelected;
       this.store.filters.left.filterTypes["CLUSTER_NAME"] = "eq";
 
-      this.store.filters.left["TIER"] = this.edmpStore.ddVal.ddTierSelected;
+      this.store.filters.left["TIER"] = this.edmpStore.dd.ddVal.ddTierSelected;
       this.store.filters.left.filterTypes["TIER"] = "eq";
 
-      this.store.filters.left["ITAM"] = this.edmpStore.ddVal.ddItamSelected;
+      this.store.filters.left["ITAM"] = this.edmpStore.dd.ddVal.ddItamSelected;
       this.store.filters.left.filterTypes["ITAM"] = "eq";
 
       this.$store.dispatch(`${this.storeName}/getLeftTable`).then(v => { 

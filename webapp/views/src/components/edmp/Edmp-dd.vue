@@ -40,7 +40,7 @@
                         <template slot="activator" slot-scope="{ on }">
                           <div v-on="on">
                             <v-select
-                              v-model="store.ddVal.ddCountrySelected"
+                              v-model="store.dd.ddVal.ddCountrySelected"
                               :items="ddCountryOptions"
                               label="Country"
                               single-line
@@ -60,7 +60,7 @@
                         <template slot="activator" slot-scope="{ on }">
                           <div v-on="on">
                             <v-select
-                              v-model="store.ddVal.ddBusinessSegmentSelected"
+                              v-model="store.dd.ddVal.ddBusinessSegmentSelected"
                               :items="ddBusinessSegmentOptions"
                               label="Business Segment"
                               single-line
@@ -80,7 +80,7 @@
                         <template slot="activator" slot-scope="{ on }">
                           <div v-on="on">
                             <v-select
-                              v-model="store.ddVal.ddSourceSystemSelected"
+                              v-model="store.dd.ddVal.ddSourceSystemSelected"
                               :items="ddSourceSystemOptions"
                               label="Source System"
                               single-line
@@ -100,7 +100,7 @@
                         <template slot="activator" slot-scope="{ on }">
                           <div v-on="on">
                             <v-select
-                              v-model="store.ddVal.ddClusterSelected"
+                              v-model="store.dd.ddVal.ddClusterSelected"
                               :items="ddClusterOptions"
                               label="Cluster"
                               single-line
@@ -120,7 +120,7 @@
                         <template slot="activator" slot-scope="{ on }">
                           <div v-on="on">
                             <v-select
-                              v-model="store.ddVal.ddTierSelected"
+                              v-model="store.dd.ddVal.ddTierSelected"
                               :items="ddTierOptions"
                               label="Tier"
                               single-line
@@ -140,7 +140,7 @@
                         <template slot="activator" slot-scope="{ on }">
                           <div v-on="on">
                             <v-select
-                              v-model="store.ddVal.ddItamSelected"
+                              v-model="store.dd.ddVal.ddItamSelected"
                               :items="ddItamOptions"
                               label="ITAM"
                               single-line
@@ -237,54 +237,54 @@ export default {
         return this.$route.params.system;
       },
       ddCountryOptions () {
-        return _.sortedUniq(_.sortBy(_.map(this.store.DDSource, (v) => v.COUNTRY.toString()), [function(o) { return o; }]));
+        return _.sortedUniq(_.sortBy(_.map(this.store.dd.DDSource, (v) => v.COUNTRY.toString()), [function(o) { return o; }]));
       },
       ddBusinessSegmentOptions () {
         var self = this;
-        var filtered = _.filter(self.store.DDSource, (v) => {
-          return self.store.ddVal.ddCountrySelected.length > 0 ? (self.store.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true;
+        var filtered = _.filter(self.store.dd.DDSource, (v) => {
+          return self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true;
         });
 
         return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.BUSINESS_SEGMENT.toString()), [function(o) { return o; }]));
       },
       ddSourceSystemOptions () {
         var self = this;
-        var filtered = _.filter(self.store.DDSource, (v) => {
-          return self.store.ddVal.ddCountrySelected.length > 0 ? (self.store.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true 
-            && self.store.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true;
+        var filtered = _.filter(self.store.dd.DDSource, (v) => {
+          return self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true 
+            && self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true;
         });
         
         return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.EDM_SOURCE_SYSTEM_NAME.toString()), [function(o) { return o; }]));
       },
       ddClusterOptions () {
         var self = this;
-        var filtered = _.filter(self.store.DDSource, (v) => {
-          return self.store.ddVal.ddCountrySelected.length > 0 ? (self.store.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true 
-            && self.store.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true 
-            && self.store.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true;
+        var filtered = _.filter(self.store.dd.DDSource, (v) => {
+          return self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true 
+            && self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true 
+            && self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true;
         });
         
         return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.CLUSTER_NAME.toString()), [function(o) { return o; }]));
       },
       ddTierOptions () {
         var self = this;
-        var filtered = _.filter(self.store.DDSource, (v) => {
-          return self.store.ddVal.ddCountrySelected.length > 0 ? (self.store.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true 
-            && self.store.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true 
-            && self.store.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true
-            && self.store.ddVal.ddClusterSelected.length > 0 ? (self.store.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true;
+        var filtered = _.filter(self.store.dd.DDSource, (v) => {
+          return self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true 
+            && self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true 
+            && self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true
+            && self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true;
         });
         
         return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.TIER.toString()), [function(o) { return o; }]));
       },
       ddItamOptions () {
         var self = this;
-        var filtered = _.filter(self.store.DDSource, (v) => {
-          return self.store.ddVal.ddCountrySelected.length > 0 ? (self.store.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true 
-            && self.store.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true 
-            && self.store.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true
-            && self.store.ddVal.ddClusterSelected.length > 0 ? (self.store.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true
-            && self.store.ddVal.ddTierSelected.length > 0 ? (self.store.ddVal.ddTierSelected.includes(v.TIER)) : true;
+        var filtered = _.filter(self.store.dd.DDSource, (v) => {
+          return self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true 
+            && self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true 
+            && self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true
+            && self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true
+            && self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : true;
         });
         
         return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.ITAM.toString()), [function(o) { return o; }]));
@@ -297,65 +297,65 @@ export default {
           this.getLeftTable();
         }
       },
-      'store.ddVal.ddCountrySelected' () {
-        if(this.store.firstload) return;
+      'store.dd.ddVal.ddCountrySelected' () {
+        if(this.store.dd.firstload) return;
 
-        this.store.ddVal.ddBusinessSegmentSelected = [];
-        this.store.ddVal.ddSourceSystemSelected = [];
-        this.store.ddVal.ddClusterSelected = [];
-        this.store.ddVal.ddTierSelected = [];
-        this.store.ddVal.ddItamSelected = [];
+        this.store.dd.ddVal.ddBusinessSegmentSelected = [];
+        this.store.dd.ddVal.ddSourceSystemSelected = [];
+        this.store.dd.ddVal.ddClusterSelected = [];
+        this.store.dd.ddVal.ddTierSelected = [];
+        this.store.dd.ddVal.ddItamSelected = [];
 
-        this.store.firstload = true;
-
-        this.refreshActiveTabTable();
-      },
-      'store.ddVal.ddBusinessSegmentSelected' () {
-        if(this.store.firstload) return;
-
-        this.store.ddVal.ddSourceSystemSelected = [];
-        this.store.ddVal.ddClusterSelected = [];
-        this.store.ddVal.ddTierSelected = [];
-        this.store.ddVal.ddItamSelected = [];
-
-        this.store.firstload = true;
+        this.store.dd.firstload = true;
 
         this.refreshActiveTabTable();
       },
-      'store.ddVal.ddSourceSystemSelected' () {
-        if(this.store.firstload) return;
+      'store.dd.ddVal.ddBusinessSegmentSelected' () {
+        if(this.store.dd.firstload) return;
 
-        this.store.ddVal.ddClusterSelected = [];
-        this.store.ddVal.ddTierSelected = [];
-        this.store.ddVal.ddItamSelected = [];
+        this.store.dd.ddVal.ddSourceSystemSelected = [];
+        this.store.dd.ddVal.ddClusterSelected = [];
+        this.store.dd.ddVal.ddTierSelected = [];
+        this.store.dd.ddVal.ddItamSelected = [];
+
+        this.store.dd.firstload = true;
+
+        this.refreshActiveTabTable();
+      },
+      'store.dd.ddVal.ddSourceSystemSelected' () {
+        if(this.store.dd.firstload) return;
+
+        this.store.dd.ddVal.ddClusterSelected = [];
+        this.store.dd.ddVal.ddTierSelected = [];
+        this.store.dd.ddVal.ddItamSelected = [];
         
-        this.store.firstload = true;
+        this.store.dd.firstload = true;
 
         this.refreshActiveTabTable();
       },
-      'store.ddVal.ddClusterSelected' () {
-        if(this.store.firstload) return;
+      'store.dd.ddVal.ddClusterSelected' () {
+        if(this.store.dd.firstload) return;
 
-        this.store.ddVal.ddTierSelected = [];
-        this.store.ddVal.ddItamSelected = [];
+        this.store.dd.ddVal.ddTierSelected = [];
+        this.store.dd.ddVal.ddItamSelected = [];
 
-        this.store.firstload = true;
-
-        this.refreshActiveTabTable();
-      },
-      'store.ddVal.ddTierSelected' () {
-        if(this.store.firstload) return;
-
-        this.store.ddVal.ddItamSelected = [];
-
-        this.store.firstload = true;
+        this.store.dd.firstload = true;
 
         this.refreshActiveTabTable();
       },
-      'store.ddVal.ddItamSelected' () {
-        if(this.store.firstload) return;
+      'store.dd.ddVal.ddTierSelected' () {
+        if(this.store.dd.firstload) return;
 
-        this.store.firstload = true;
+        this.store.dd.ddVal.ddItamSelected = [];
+
+        this.store.dd.firstload = true;
+
+        this.refreshActiveTabTable();
+      },
+      'store.dd.ddVal.ddItamSelected' () {
+        if(this.store.dd.firstload) return;
+
+        this.store.dd.firstload = true;
 
         this.refreshActiveTabTable();
       },
@@ -368,7 +368,7 @@ export default {
     },
     methods: {
       getDropdownOpts() {
-        this.$store.dispatch(`${this.storeName}/getDropdownOpts`);
+        this.$store.dispatch(`${this.storeName}/getDdDropdownOpts`);
       },
       getLeftTable() {
         this.$store.dispatch(`${this.storeName}/getLeftTable`);
@@ -387,76 +387,76 @@ export default {
       refreshTechnicalTable() {
         if( ! this.technicalStore.filters.left.filterTypes) this.technicalStore.filters.left.filterTypes = {};
 
-        this.technicalStore.filters.left["COUNTRY"] = this.store.ddVal.ddCountrySelected;
+        this.technicalStore.filters.left["COUNTRY"] = this.store.dd.ddVal.ddCountrySelected;
         this.technicalStore.filters.left.filterTypes["COUNTRY"] = "eq";
 
-        this.technicalStore.filters.left["BUSINESS_SEGMENT"] = this.store.ddVal.ddBusinessSegmentSelected;
+        this.technicalStore.filters.left["BUSINESS_SEGMENT"] = this.store.dd.ddVal.ddBusinessSegmentSelected;
         this.technicalStore.filters.left.filterTypes["BUSINESS_SEGMENT"] = "eq";
 
-        this.technicalStore.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.store.ddVal.ddSourceSystemSelected;
+        this.technicalStore.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.store.dd.ddVal.ddSourceSystemSelected;
         this.technicalStore.filters.left.filterTypes["EDM_SOURCE_SYSTEM_NAME"] = "eq";
 
-        this.technicalStore.filters.left["CLUSTER_NAME"] = this.store.ddVal.ddClusterSelected;
+        this.technicalStore.filters.left["CLUSTER_NAME"] = this.store.dd.ddVal.ddClusterSelected;
         this.technicalStore.filters.left.filterTypes["CLUSTER_NAME"] = "eq";
 
-        this.technicalStore.filters.left["TIER"] = this.store.ddVal.ddTierSelected;
+        this.technicalStore.filters.left["TIER"] = this.store.dd.ddVal.ddTierSelected;
         this.technicalStore.filters.left.filterTypes["TIER"] = "eq";
 
-        this.technicalStore.filters.left["ITAM"] = this.store.ddVal.ddItamSelected;
+        this.technicalStore.filters.left["ITAM"] = this.store.dd.ddVal.ddItamSelected;
         this.technicalStore.filters.left.filterTypes["ITAM"] = "eq";
 
         this.$store.dispatch(`${this.technicalStoreName}/getLeftTable`).then(res => {
-          this.store.firstload = false;
+          this.store.dd.firstload = false;
         });
       },
       refreshBusinessTable() {
         if( ! this.businessStore.filters.left.filterTypes) this.businessStore.filters.left.filterTypes = {};
 
-        this.businessStore.filters.left["COUNTRY"] = this.store.ddVal.ddCountrySelected;
+        this.businessStore.filters.left["COUNTRY"] = this.store.dd.ddVal.ddCountrySelected;
         this.businessStore.filters.left.filterTypes["COUNTRY"] = "eq";
 
-        this.businessStore.filters.left["BUSINESS_SEGMENT"] = this.store.ddVal.ddBusinessSegmentSelected;
+        this.businessStore.filters.left["BUSINESS_SEGMENT"] = this.store.dd.ddVal.ddBusinessSegmentSelected;
         this.businessStore.filters.left.filterTypes["BUSINESS_SEGMENT"] = "eq";
 
-        this.businessStore.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.store.ddVal.ddSourceSystemSelected;
+        this.businessStore.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.store.dd.ddVal.ddSourceSystemSelected;
         this.businessStore.filters.left.filterTypes["EDM_SOURCE_SYSTEM_NAME"] = "eq";
 
-        this.businessStore.filters.left["CLUSTER_NAME"] = this.store.ddVal.ddClusterSelected;
+        this.businessStore.filters.left["CLUSTER_NAME"] = this.store.dd.ddVal.ddClusterSelected;
         this.businessStore.filters.left.filterTypes["CLUSTER_NAME"] = "eq";
 
-        this.businessStore.filters.left["TIER"] = this.store.ddVal.ddTierSelected;
+        this.businessStore.filters.left["TIER"] = this.store.dd.ddVal.ddTierSelected;
         this.businessStore.filters.left.filterTypes["TIER"] = "eq";
 
-        this.businessStore.filters.left["ITAM"] = this.store.ddVal.ddItamSelected;
+        this.businessStore.filters.left["ITAM"] = this.store.dd.ddVal.ddItamSelected;
         this.businessStore.filters.left.filterTypes["ITAM"] = "eq";
 
         this.$store.dispatch(`${this.businessStoreName}/getLeftTable`).then(res => {
-          this.store.firstload = false;
+          this.store.dd.firstload = false;
         });
       },
       refreshConsumptionTable() {
         if( ! this.consumptionStore.filters.left.filterTypes) this.consumptionStore.filters.left.filterTypes = {};
 
-        this.consumptionStore.filters.left["COUNTRY"] = this.store.ddVal.ddCountrySelected;
+        this.consumptionStore.filters.left["COUNTRY"] = this.store.dd.ddVal.ddCountrySelected;
         this.consumptionStore.filters.left.filterTypes["COUNTRY"] = "eq";
 
-        this.consumptionStore.filters.left["BUSINESS_SEGMENT"] = this.store.ddVal.ddBusinessSegmentSelected;
+        this.consumptionStore.filters.left["BUSINESS_SEGMENT"] = this.store.dd.ddVal.ddBusinessSegmentSelected;
         this.consumptionStore.filters.left.filterTypes["BUSINESS_SEGMENT"] = "eq";
 
-        this.consumptionStore.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.store.ddVal.ddSourceSystemSelected;
+        this.consumptionStore.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.store.dd.ddVal.ddSourceSystemSelected;
         this.consumptionStore.filters.left.filterTypes["EDM_SOURCE_SYSTEM_NAME"] = "eq";
 
-        this.consumptionStore.filters.left["CLUSTER_NAME"] = this.store.ddVal.ddClusterSelected;
+        this.consumptionStore.filters.left["CLUSTER_NAME"] = this.store.dd.ddVal.ddClusterSelected;
         this.consumptionStore.filters.left.filterTypes["CLUSTER_NAME"] = "eq";
 
-        this.consumptionStore.filters.left["TIER"] = this.store.ddVal.ddTierSelected;
+        this.consumptionStore.filters.left["TIER"] = this.store.dd.ddVal.ddTierSelected;
         this.consumptionStore.filters.left.filterTypes["TIER"] = "eq";
 
-        this.consumptionStore.filters.left["ITAM"] = this.store.ddVal.ddItamSelected;
+        this.consumptionStore.filters.left["ITAM"] = this.store.dd.ddVal.ddItamSelected;
         this.consumptionStore.filters.left.filterTypes["ITAM"] = "eq";
 
         this.$store.dispatch(`${this.consumptionStoreName}/getLeftTable`).then(res => {
-          this.store.firstload = false;
+          this.store.dd.firstload = false;
         });
       },
       updateRouter(val){
@@ -479,12 +479,12 @@ export default {
           }
         }
 
-        this.store.ddVal.ddCountrySelected = "";
-        this.store.ddVal.ddBusinessSegmentSelected = "";
-        this.store.ddVal.ddSourceSystemSelected = "";
-        this.store.ddVal.ddClusterSelected = "";
-        this.store.ddVal.ddTierSelected = "";
-        this.store.ddVal.ddItamSelected = "";
+        this.store.dd.ddVal.ddCountrySelected = "";
+        this.store.dd.ddVal.ddBusinessSegmentSelected = "";
+        this.store.dd.ddVal.ddSourceSystemSelected = "";
+        this.store.dd.ddVal.ddClusterSelected = "";
+        this.store.dd.ddVal.ddTierSelected = "";
+        this.store.dd.ddVal.ddItamSelected = "";
 
         this.refreshActiveTabTable();
       },

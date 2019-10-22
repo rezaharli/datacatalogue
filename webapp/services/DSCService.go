@@ -517,6 +517,39 @@ func (s *DSCService) GetEdmpDDDropdowns(payload toolkit.M) (interface{}, int, er
 	return resultRows, resultTotal, nil
 }
 
+func (s *DSCService) GetEdmpIarcDropdowns(payload toolkit.M) (interface{}, int, error) {
+	fileName := "edmp.sql"
+	queryName := "edmp-iarc-dropdowns"
+
+	resultRows := make([]toolkit.M, 0)
+	resultTotal := 0
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	args = append(args, toolkit.ToString(payload.GetInt("Left")))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	funcLog(funcName(), fileName, queryName)
+
+	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+		TableName: m.NewCategoryModel().TableName(),
+		SqlQuery:  q,
+		Results:   &resultRows,
+	})
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resultRows, resultTotal, nil
+}
+
 func (s *DSCService) GetEdmpDDTechnicalTable(system string, colFilter interface{}, pagination toolkit.M) (res []toolkit.M, total int, err error) {
 	fileName := "edmp.sql"
 	queryName := "edmp-dd-technical"
@@ -717,7 +750,8 @@ func (s *DSCService) GetEdmpIarcPersonalTable(system string, colFilter interface
 
 	///////// --------------------------------------------------COLUMN FILTER
 	gridArgs.Colnames = append(gridArgs.Colnames,
-		"ITAM", "EDM_SOURCE_SYSTEM_NAME", "DATABASE_NAME", "TABLE_NAME", "COLUMN_NAME", "BUSINESS_ALIAS_NAME", "BUSINESS_ALIAS_DESCRIPTION", "CDE", "PII",
+		"COUNTRY", "BUSINESS_SEGMENT", "EDM_SOURCE_SYSTEM_NAME", "CLUSTER_NAME", "TIER", "ITAM",
+		"DATABASE_NAME", "TABLE_NAME", "COLUMN_NAME", "BUSINESS_ALIAS_NAME", "BUSINESS_ALIAS_DESCRIPTION", "CDE", "PII",
 	)
 
 	colFilterM, err := toolkit.ToM(colFilter)
@@ -728,7 +762,7 @@ func (s *DSCService) GetEdmpIarcPersonalTable(system string, colFilter interface
 		}
 	} else {
 		for _, colname := range gridArgs.Colnames {
-			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.GetString(colname))
+			gridArgs.ColumnFilter = append(gridArgs.ColumnFilter, colFilterM.Get(colname))
 
 			filterTypes := colFilterM.Get("filterTypes")
 			if filterTypes != nil {

@@ -324,6 +324,30 @@ func (c *DSC) GetEdmpDDdropdowns(k *knot.WebContext) {
 	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
 }
 
+func (c *DSC) GetEdmpIarcdropdowns(k *knot.WebContext) {
+	queryTime := time.Now()
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	mappedddSource, err := c.GetDropdownSource(payload, s.NewDSCService().GetEdmpIarcDropdowns)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	ret := toolkit.M{}
+	ret.Set("MappedDDSource", mappedddSource)
+
+	h.WriteResultOK(k, res, ret)
+	toolkit.Println("Process Time:", time.Since(queryTime).Seconds(), "\n------------------------------------------------------------------------")
+}
+
 func (c *DSC) GetEdmpDDTechnicalTable(k *knot.WebContext) {
 	queryTime := time.Now()
 	res := toolkit.NewResult()
