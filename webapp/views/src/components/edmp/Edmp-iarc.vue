@@ -33,7 +33,7 @@
             <PageHeader />
             
             <b-row class="my-4">
-                <b-col class="ml-5 col-md-10">
+                <b-col class="ml-5 col-md-10" v-if="activeTabStoreName == personalStoreName">
                   <b-row class="ml-3 dd-filter">
                     <b-col cols="2">
                       <v-tooltip top>
@@ -95,7 +95,6 @@
                       </v-tooltip>
                     </b-col>
                   </b-row>
-                  
                 </b-col>
                 
                 <b-col>
@@ -132,8 +131,10 @@ export default {
       return {
         storeName: "edmp",
         personalStoreName: "edmpIarcPersonal",
+        informationStoreName: "dsciarc",
         activeTab: '',
         tabs: [
+            { id: 'information', key: 'information', name: 'Information Asset Category', route: this.addressPath + '/information' },
             { id: 'personal', key: 'personal', name: 'Personal Data', route: this.addressPath + '/personal' },
         ]
       };
@@ -145,11 +146,15 @@ export default {
       personalStore() {
         return this.$store.state[this.personalStoreName].all;
       },
-      consumptionStore() {
-        return this.$store.state[this.consumptionStoreName].all;
+      informationStore() {
+        return this.$store.state[this.informationStoreName].all;
       },
       activeTabStoreName() {
-        return this.personalStoreName;
+        if(this.activeTab.indexOf("personal") != -1){
+          return this.personalStoreName;
+        } else {
+          return this.informationStoreName;
+        }
       },
       activeTabStore() {
         return this.$store.state[this.activeTabStoreName].all;
@@ -233,6 +238,9 @@ export default {
         if(this.activeTab.indexOf("personal") != -1){
           this.refreshPersonalTable();
         }
+        if(this.activeTab.indexOf("information") != -1){
+          this.refreshInformationTable();
+        }
       },
       refreshPersonalTable() {
         if( ! this.personalStore.filters.left.filterTypes) this.personalStore.filters.left.filterTypes = {};
@@ -247,6 +255,11 @@ export default {
         this.personalStore.filters.left.filterTypes["ITAM"] = "eq";
 
         this.$store.dispatch(`${this.personalStoreName}/getLeftTable`).then(res => {
+          this.store.iarc.firstload = false;
+        });
+      },
+      refreshInformationTable() {
+        this.$store.dispatch(`${this.informationStoreName}/getLeftTable`).then(res => {
           this.store.iarc.firstload = false;
         });
       },
