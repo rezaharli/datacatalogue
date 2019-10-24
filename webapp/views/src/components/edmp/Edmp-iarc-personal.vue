@@ -93,6 +93,9 @@
                   <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
                     <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME.toString().trim() ? props.item.EDM_SOURCE_SYSTEM_NAME : 'NA'" showOn="click"></tablecell></td>
                   
+                  <td v-bind:style="{ width: store.left.colWidth['COUNTRY'] + 'px' }">
+                    <tablecell :fulltext="props.item.COUNTRY.toString().trim() ? props.item.COUNTRY : 'NA'" showOn="click"></tablecell></td>
+                  
                   <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
                     <tablecell :fulltext="props.item.DATABASE_NAME.toString().trim() ? props.item.DATABASE_NAME : 'NA'" showOn="click"></tablecell></td>
                   
