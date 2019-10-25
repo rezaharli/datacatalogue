@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"log"
 	"reflect"
 	"strconv"
 	"strings"
@@ -348,6 +349,7 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 	cursor := conn.Cursor(dbflex.From(param.TableName).SQL(sqlQuery), nil)
 	defer cursor.Close()
 
+	log.Println("352")
 	err := cursor.Fetchs(param.Results, 0)
 	toolkit.Println(sqlQuery, "\nqueryTime:", time.Since(queryTime).Seconds())
 	a := param.Results.(*[]toolkit.M)
