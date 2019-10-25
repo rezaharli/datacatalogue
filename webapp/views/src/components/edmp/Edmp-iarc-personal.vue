@@ -99,11 +99,17 @@
                   <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
                     <tablecell :fulltext="props.item.DATABASE_NAME.toString().trim() ? props.item.DATABASE_NAME : 'NA'" showOn="click"></tablecell></td>
                   
-                  <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
-                    <tablecell :fulltext="props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA'" showOn="click"></tablecell></td>
+                  <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-capitalize">
+                    <div class="ini wrapper-showmore d-inline-block">
+                      <span>{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
+                    </div>
+                  </td>
                   
-                  <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                    <tablecell :fulltext="props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA'" showOn="click"></tablecell></td>
+                  <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-capitalize">
+                    <div class="ini wrapper-showmore d-inline-block">
+                        <span>{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
+                      </div>
+                  </td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_NAME'] + 'px' }">
                     <tablecell :fulltext="props.item.BUSINESS_ALIAS_NAME.toString().trim() ? props.item.BUSINESS_ALIAS_NAME : 'NA'" showOn="click"></tablecell></td>

@@ -16,6 +16,11 @@
 #table-edmp-dd-business table.v-table tr th:nth-of-type(2){width: calc(100%/20) !important; display: table-cell;}
 #table-edmp-dd-business table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
 #table-edmp-dd-business table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
+
+.ini{
+  max-width: 90%;
+  word-break: break-word;
+}
 </style>
 
 <template>
@@ -99,16 +104,12 @@
               <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.DATABASE_NAME" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-capitalize text-title">
+              <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-capitalize">
                 <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length > 0">
-                  <div class="ini wrapper-showmore d-inline-block">
-                    <span>{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
-                  </div>
+                  <span class="ini">{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
                 </b-link>
 
-                <div class="ini wrapper-showmore d-inline-block" v-if="props.item.Tables.length < 1">
-                  <span>{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
-                </div>
+                <span class="ini" v-if="props.item.Tables.length < 1">{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['TABLE_DESCRIPTION'] + 'px' }" class="text-capitalize">
@@ -116,9 +117,7 @@
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-capitalize">
-                <div class="ini wrapper-showmore d-inline-block" v-if="isMainLevelCellShowing(props)">
-                    <span>{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
-                  </div>
+                <span class="ini" v-if="isMainLevelCellShowing(props)">{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['COLUMN_DESCRIPTION'] + 'px' }" class="text-capitalize">
@@ -197,7 +196,7 @@
                   <tablecell :fulltext="props.item.TABLE_DESCRIPTION.toString().trim() ? props.item.TABLE_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                  <tablecell :fulltext="props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA'" showOn="hover"></tablecell>
+                  <span class="ini" v-if="isMainLevelCellShowing(props)">{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_DESCRIPTION'] + 'px' }">
                   <tablecell :fulltext="props.item.COLUMN_DESCRIPTION.toString().trim() ? props.item.COLUMN_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
@@ -301,17 +300,17 @@ export default {
     var self = this;
 
     setTimeout(() => {
-      this.setTableColumnsWidth($('#table-edmp-dd-business'));
-    }, 300);
+      this.setTableColumnsWidth();
+    }, 10);
 
     $("#page-tab #tab-business").on('click', function(){
       setTimeout(() => {
-        self.setTableColumnsWidth($('#table-edmp-dd-business'));
+        self.setTableColumnsWidth();
       }, 1);
     });
   },
   updated() {
-    this.setTableColumnsWidth($('#table-edmp-dd-business'));
+    this.setTableColumnsWidth();
   },
   methods: {
     getLeftTable() {
@@ -341,7 +340,7 @@ export default {
         setTimeout(() => {
           this.setTableColumnsWidth() 
         }, 10);
-      });
+      })
     },
     isMainLevelCellShowing (props){
       if( ! props.expanded) return true;
@@ -354,30 +353,47 @@ export default {
       }
     },
     fixWidthIfTextNotCollapsed() {
-      $(".ini.wrapper-showmore.d-inline-block").each((i, e) => {
+      $(".ini").each((i, e) => {
         var td = $(e).closest("td");
           
-        var keberapa = td.index();
-        var th = td.closest(".table-v2 > .v-table__overflow > table").children("thead").children('tr').eq(0).children('th').eq(keberapa);
-        //console.log(td.closest(".table-v2 > .v-table__overflow > table").children("thead").children('tr').eq(0).children('th').eq(keberapa), keberapa);
+          var tdWidth = td.width();
+          var keberapa = td.index();
 
-        var thWidth = parseInt(th.attr("data-width-ori"));
+          var th = td.closest(".table-v2 > .v-table__overflow > table").children("thead").children('tr').eq(0).children('th').eq(keberapa);
 
-        var tdWidths = td.closest(".table-v2 > .v-table__overflow > table > tbody").children().map((i, v) => $(v).children().eq(keberapa).outerWidth());
-        var expandTdWidths = td.closest(".v-datatable__expand-row table.v-datatable.v-table > tbody").children().map((i, v) => $(v).children().eq(keberapa).outerWidth());
-        var concatWidths = $.merge(tdWidths, expandTdWidths)
-        var tdWidthMax = _.max(concatWidths)
+          td.closest(".table-v2 > .v-table__overflow > table > tbody").children().each(function(i, v){
+            var td2 = $(v).find('td:not([colspan])').eq(keberapa);
 
-        var tdWidthUsed = tdWidthMax > thWidth ? tdWidthMax : thWidth;
+            if(tdWidth > td2.width()){
+              td2.removeAttr("style")
+              td2.css({"min-width": tdWidth + "px"});
+              td2.css({"max-width": tdWidth + "px"});
+            }
+          })
 
-        td.css({"width": tdWidthUsed + "px"});
-        td.closest(".table-v2 > .v-table__overflow > table > tbody").children().each((i, v) => { 
-          $(v).children().eq(keberapa).css({"width": tdWidthUsed + "px"});
-        });
-        th.css({"min-width": tdWidthUsed + "px"});
-      });
+          td.closest(".v-datatable__expand-row table.v-datatable.v-table > tbody").children().each(function(i, v){
+            var td2 = $(v).find('td:not([colspan])').eq(keberapa);
+
+            if(tdWidth > td2.width()){
+              td2.removeAttr("style")
+              td2.css({"min-width": tdWidth + "px"});
+              td2.css({"max-width": tdWidth + "px"});
+            }
+          })
+
+          var dataWidthOri = th.width();
+          var thWidth = parseInt(dataWidthOri);
+
+          if(tdWidth > thWidth) {
+            if(keberapa == 7) console.log(td, tdWidth, thWidth)
+
+            th.css({"min-width": tdWidth + "px"});
+            th.css({"max-width": tdWidth + "px"});
+          }
+        })
     },
-    setTableColumnsWidth(elem){
+    setTableColumnsWidth(){
+      var elem = $('#table-edmp-dd-business');
       var tableElem = elem.find('.v-table__overflow > table.v-table');
       var THs = tableElem.find('thead tr th');
       var tbodyTR = tableElem.find('tbody tr');
@@ -421,10 +437,6 @@ export default {
         this.store.left.pagination.descending = false
       }
     },
-  }
-};
-</script>
-
   }
 };
 </script>
