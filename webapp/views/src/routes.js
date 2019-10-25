@@ -49,6 +49,7 @@ import EdmpDdBusiness from './components/edmp/Edmp-dd-business';
 import EdmpDdConsumption from './components/edmp/Edmp-dd-consumption';
 import EdmpIarc from './components/edmp/Edmp-iarc';
 import EdmpIarcPersonal from './components/edmp/Edmp-iarc-personal';
+import EdmpIarcInformation from './components/edmp/Edmp-iarc-information';
 
 import Access from './components/access/Access';
 import AccessUsers from './components/access/Access-users';
@@ -118,6 +119,12 @@ const router = new VueRouter({
         path: '', name: 'dsc.edmp.iarc', redirect: { name: 'dsc.edmp.iarc.personal' }
       }, { // dsc.iarc.personal
         path: '/dsc/ENTERPRISE DATA MGMT PLATFORM/iarc/personal', name: 'dsc.edmp.iarc.personal', component: EdmpIarcPersonal, 
+        meta: { 
+          title: "DSC - Data Catalogue",
+          permission: "DSC"
+        },
+      }, { // dsc.iarc.information
+        path: '/dsc/ENTERPRISE DATA MGMT PLATFORM/iarc/information', name: 'dsc.edmp.iarc.information', component: EdmpIarcInformation, 
         meta: { 
           title: "DSC - Data Catalogue",
           permission: "DSC"

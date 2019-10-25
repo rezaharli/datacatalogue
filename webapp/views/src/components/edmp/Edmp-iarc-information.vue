@@ -1,37 +1,37 @@
 <style>
-/* #table-edmp-iarc-personal table.v-table tbody tr {display: block;} */
-/* #table-edmp-iarc-personal table.v-table.v-datatable thead{
+/* #table-edmp-iarc-information table.v-table tbody tr {display: block;} */
+/* #table-edmp-iarc-information table.v-table.v-datatable thead{
     width: unset;
     display: table-header-group;
     padding-right: unset;
 }
-#table-edmp-iarc-personal table.v-table.v-datatable tbody{
+#table-edmp-iarc-information table.v-table.v-datatable tbody{
     display:table-row-group;
     overflow:auto;
     max-height:unset;
     width:unset;
 }
-#table-edmp-iarc-personal table.v-table.v-datatable tbody tr {display: table-row;} */
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(1){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(2){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(5){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(6){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(7){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(8){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(9){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(10){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(11){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(12){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(13){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-information table.v-table.v-datatable tbody tr {display: table-row;} */
+#table-edmp-iarc-information table.v-table tr th:nth-of-type(1){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-information table.v-table tr th:nth-of-type(2){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-information table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-information table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-information table.v-table tr th:nth-of-type(5){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-information table.v-table tr th:nth-of-type(6){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-information table.v-table tr th:nth-of-type(7){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-information table.v-table tr th:nth-of-type(8){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-information table.v-table tr th:nth-of-type(9){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-information table.v-table tr th:nth-of-type(10){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-information table.v-table tr th:nth-of-type(11){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-information table.v-table tr th:nth-of-type(12){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-information table.v-table tr th:nth-of-type(13){width: calc(100%/20) !important; display: table-cell;}
 </style>
 
 <template>
     <b-row style="margin-top: 10px;margin-bottom: 10px;">
       <b-col>
         <!-- Main content -->
-        <div class="table-v2-title">Personal Data</div>
+        <div class="table-v2-title">Information Asset Category</div>
         
         <v-data-table
             :headers="displayedHeaders"
@@ -44,7 +44,7 @@
             :rows-per-page-items="[25, 50, 75, 100]"
             item-key="ID"
             class="elevation-1 table-v2"
-            id="table-edmp-iarc-personal"
+            id="table-edmp-iarc-information"
             @update:pagination="setTableColumnsWidth">
 
           <template slot="headers" slot-scope="props">
@@ -87,41 +87,23 @@
 
           <template slot="items" slot-scope="props">
                 <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                  <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">
-                    <tablecell :fulltext="props.item.ITAM.toString().trim() ? props.item.ITAM : 'NA'" showOn="click"></tablecell></td>
-
-                  <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
-                    <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME.toString().trim() ? props.item.EDM_SOURCE_SYSTEM_NAME : 'NA'" showOn="click"></tablecell></td>
+                  <td v-bind:style="{ width: store.left.colWidth['INFORMATION_ASSET_NAMES'] + 'px' }">
+                    {{props.item.INFORMATION_ASSET_NAMES}}</td>
                   
-                  <td v-bind:style="{ width: store.left.colWidth['COUNTRY'] + 'px' }">
-                    <tablecell :fulltext="props.item.COUNTRY.toString().trim() ? props.item.COUNTRY : 'NA'" showOn="click"></tablecell></td>
+                  <td v-bind:style="{ width: store.left.colWidth['INFORMATION_ASSET_DESCRIPTION'] + 'px' }">
+                    <tablecell :fulltext="props.item.INFORMATION_ASSET_DESCRIPTION" showOn="click"></tablecell></td>
                   
-                  <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
-                    <tablecell :fulltext="props.item.DATABASE_NAME.toString().trim() ? props.item.DATABASE_NAME : 'NA'" showOn="click"></tablecell></td>
+                  <td v-bind:style="{ width: store.left.colWidth['CONFIDENTIALITY'] + 'px' }">
+                    <tablecell :fulltext="props.item.CONFIDENTIALITY" showOn="click"></tablecell></td>
                   
-                  <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-capitalize">
-                    <div class="ini wrapper-showmore d-inline-block">
-                      <span>{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
-                    </div>
-                  </td>
+                  <td v-bind:style="{ width: store.left.colWidth['INTEGRITY'] + 'px' }">
+                    <tablecell :fulltext="props.item.INTEGRITY" showOn="click"></tablecell></td>
                   
-                  <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-capitalize">
-                    <div class="ini wrapper-showmore d-inline-block">
-                        <span>{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
-                      </div>
-                  </td>
+                  <td v-bind:style="{ width: store.left.colWidth['AVAILABILITY'] + 'px' }">
+                    <tablecell :fulltext="props.item.AVAILABILITY" showOn="click"></tablecell></td>
                   
-                  <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_NAME'] + 'px' }">
-                    <tablecell :fulltext="props.item.BUSINESS_ALIAS_NAME.toString().trim() ? props.item.BUSINESS_ALIAS_NAME : 'NA'" showOn="click"></tablecell></td>
-                  
-                  <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_DESCRIPTION'] + 'px' }">
-                    <tablecell :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION.toString().trim() ? props.item.BUSINESS_ALIAS_DESCRIPTION : 'NA'" showOn="click"></tablecell></td>
-                  
-                  <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
-                    <tablecell :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'" showOn="click"></tablecell></td>
-                    
-                  <td v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }">
-                    <tablecell :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'" showOn="click"></tablecell></td>
+                  <td v-bind:style="{ width: store.left.colWidth['OVERALL_CIA_RATING'] + 'px' }">
+                    <tablecell :fulltext="props.item.OVERALL_CIA_RATING" showOn="click"></tablecell></td>
                 </tr>
               </template>
         </v-data-table>
@@ -146,13 +128,13 @@ import pageLoader from "../PageLoader.vue";
 Vue.component("downloadExcel", JsonExcel);
 
 export default {
-  name: "EdmpIarcPersonal",
+  name: "EdmpIarcInformation",
   components: {
     PageHeader, pageSearch, pageExport, tableheader, tablecell, pageLoader
   },
   data() {
     return {
-      storeName: "edmpIarcPersonal",
+      storeName: "dsciarc",
       edmpStoreName: "edmp",
     };
   },
@@ -188,7 +170,7 @@ export default {
       this.setTableColumnsWidth();
     }, 10);
 
-    $("#page-tab #tab-personal").on('click', function(){
+    $("#page-tab #tab-information").on('click', function(){
       setTimeout(() => {
         self.setTableColumnsWidth();
       }, 1);
@@ -199,18 +181,7 @@ export default {
   },
   methods: {
     getLeftTable() {
-      this.store.system = this.$route.params.system;
-
-      if( ! this.store.filters.left.filterTypes) this.store.filters.left.filterTypes = {};
-
-      this.store.filters.left["COUNTRY"] = this.edmpStore.dd.ddVal.ddCountrySelected;
-      this.store.filters.left.filterTypes["COUNTRY"] = "eq";
-
-      this.store.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.edmpStore.dd.ddVal.ddSourceSystemSelected;
-      this.store.filters.left.filterTypes["EDM_SOURCE_SYSTEM_NAME"] = "eq";
-
-      this.store.filters.left["ITAM"] = this.edmpStore.dd.ddVal.ddItamSelected;
-      this.store.filters.left.filterTypes["ITAM"] = "eq";
+      this.store.system = "ENTERPRISE DATA MGMT PLATFORM";
 
       this.$store.dispatch(`${this.storeName}/getLeftTable`).then(v => { 
         setTimeout(() => {
@@ -253,7 +224,7 @@ export default {
       });
     },
     setTableColumnsWidth(){
-      var elem = $('#table-edmp-iarc-personal');
+      var elem = $('#table-edmp-iarc-information');
       var tableElem = elem.find('.v-table__overflow > table.v-table');
       var THs = tableElem.find('thead tr th');
       var tbodyTR = tableElem.find('tbody tr');

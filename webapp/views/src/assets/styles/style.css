@@ -360,7 +360,7 @@ table.v-table tbody tr td.hidden{display: none;} */
 .table-v2 table.v-table tbody tr td:first-of-type {padding-left: 20px;}
 .table-v2 table.v-table tbody tr td:last-of-type {padding-right: 20px;}
 /* .table-v2 table.v-table tbody tr td.text-description {font-weight: 300; font-size: 11px;} */
-.table-v2 table.v-table tbody tr td.text-title {font-weight: 600;}
+.table-v2 table.v-table tbody tr td .text-title {font-weight: 600;}
 .table-v2 table.v-table tbody tr td .v-datatable__expand-content .v-table__overflow > table.v-table > tbody > tr > td {padding-top: 0; padding-bottom: 0;}
 .table-v2 .v-table {background-color: transparent;}
 .table-v2 > .v-table > .v-datatable__actions {border-radius: 0 0 7px 7px;}
