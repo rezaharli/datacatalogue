@@ -1,7 +1,6 @@
 package helpers
 
 import (
-	"log"
 	"reflect"
 	"strconv"
 	"strings"
@@ -233,42 +232,31 @@ type SqlQueryParam struct {
 
 func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 	queryTime := time.Now()
-	log.Println("ExecuteSQLQuery", 235)
 
 	sqlQuery := param.SqlQuery
 	if !(param.PageNumber == 0 && param.RowsPerPage == 0) {
-		log.Println("ExecuteSQLQuery", 140)
 		sqlQuery = `SELECT a.*, `
 
 		if param.GroupCol != "" {
-			log.Println("ExecuteSQLQuery", 244)
 			if param.GroupCol == "-" {
-				log.Println("ExecuteSQLQuery", 246)
 				sqlQuery += `rownum r__, `
 				sqlQuery += `COUNT(*) OVER () RESULT_COUNT `
 			} else {
-				log.Println("ExecuteSQLQuery", 250)
 				sqlQuery += `DENSE_RANK() OVER (ORDER BY ` + param.GroupCol + ` ASC ) AS r__, `
 				sqlQuery += `COUNT(DISTINCT  ` + param.GroupCol + `) OVER () RESULT_COUNT `
 			}
 		} else {
-			log.Println("ExecuteSQLQuery", 255)
 			sqlQuery += `DENSE_RANK() OVER (ORDER BY id ASC ) AS r__, `
 			sqlQuery += `COUNT(DISTINCT  id) OVER () RESULT_COUNT `
 		}
-		log.Println("ExecuteSQLQuery", 259)
 
 		if param.OrderBy != "" {
-			log.Println("ExecuteSQLQuery", 262)
 			param.OrderBy = `ORDER BY regexp_replace(regexp_replace(UPPER(` + param.OrderBy + `), '(\d+)', lpad('0', 20, '0')||'\1'), '0*?(\d{21}(\D|$))', '\1') `
 		}
-		log.Println("ExecuteSQLQuery", 265)
 
 		if param.IsDescending {
-			log.Println("ExecuteSQLQuery", 268)
 			param.OrderBy += `DESC `
 		}
-		log.Println("ExecuteSQLQuery", 271)
 
 		sqlQuery += `
 			FROM
@@ -276,129 +264,77 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 				` + param.SqlQuery + `
 			) a `
 
-		log.Println("ExecuteSQLQuery", 279)
-
 		if len(param.AdditionalWhere) > 0 {
-			log.Println("ExecuteSQLQuery", 282)
 			sqlQuery += `WHERE( `
 
 			i := 0
 			for key, val := range param.AdditionalWhere {
-				log.Println("ExecuteSQLQuery", 287)
 				if i != 0 {
-					log.Println("ExecuteSQLQuery", 289)
 					sqlQuery += `AND `
 				}
 				i++
-				log.Println("ExecuteSQLQuery", 293)
 
 				if filterType, ok := param.ColumnFilterType[key]; ok && filterType != nil {
-					log.Println("ExecuteSQLQuery", 296)
 					if filterType.(string) == "eq" {
-						log.Println("ExecuteSQLQuery", 298)
 						appendAdditionalWhere := func(value interface{}) {
-							log.Println("ExecuteSQLQuery", 300)
 							intVal, err := strconv.Atoi(toolkit.ToString(value))
-							log.Println("ExecuteSQLQuery", 302)
+
 							if err != nil {
-								log.Println("ExecuteSQLQuery", 304)
 								if value == "NA" {
-									log.Println("ExecuteSQLQuery", 306)
 									sqlQuery += `
 								upper(` + key + `) IS NULL `
 								} else {
-									log.Println("ExecuteSQLQuery", 310)
 									replacedVal := strings.ReplaceAll(toolkit.ToString(value), "'", "''")
 									sqlQuery += `
 									upper(NVL(` + key + `, ' ')) = upper('` + replacedVal + `') `
 								}
-								log.Println("ExecuteSQLQuery", 315)
 							} else {
-								log.Println("ExecuteSQLQuery", 317)
 								sqlQuery += `
 								upper(` + key + `) = upper('` + toolkit.ToString(intVal) + `') `
 							}
-							log.Println("ExecuteSQLQuery", 321)
 						}
 
-						log.Println("ExecuteSQLQuery", 324)
-						log.Println("ExecuteSQLQuery", 325, val)
-						log.Println("ExecuteSQLQuery", 326)
-						log.Println("ExecuteSQLQuery", 327, reflect.TypeOf(val))
-						log.Println("ExecuteSQLQuery", 328)
-						log.Println("ExecuteSQLQuery", 329, reflect.TypeOf(val).Kind())
 						switch reflect.TypeOf(val).Kind() {
 						case reflect.Slice:
-							log.Println("ExecuteSQLQuery", 332)
-
-							log.Println("ExecuteSQLQuery", 334, reflect.ValueOf(val))
 							s := reflect.ValueOf(val)
-
-							log.Println("ExecuteSQLQuery", 337)
-							log.Println("ExecuteSQLQuery", 337, s.Len())
 							for i := 0; i < s.Len(); i++ {
-								log.Println("ExecuteSQLQuery", 340)
-								log.Println("ExecuteSQLQuery", 341, s.Index(i))
-								log.Println("ExecuteSQLQuery", 342, s.Index(i).Interface())
 								appendAdditionalWhere(s.Index(i).Interface())
-
-								log.Println("ExecuteSQLQuery", 345)
 								if i != s.Len()-1 {
-									log.Println("ExecuteSQLQuery", 347)
 									sqlQuery += `
 									OR `
 								}
 							}
 						default:
-							log.Println("ExecuteSQLQuery", 353)
-							log.Println("ExecuteSQLQuery", 354, val)
 							appendAdditionalWhere(val)
-							log.Println("ExecuteSQLQuery", 356)
 						}
 
-						log.Println("ExecuteSQLQuery", 359)
 						continue
 					}
 				}
 
-				log.Println("ExecuteSQLQuery", 364)
-				log.Println("ExecuteSQLQuery", 365, val)
-				log.Println("ExecuteSQLQuery", 366, toolkit.ToString(val))
 				intVal, err := strconv.Atoi(toolkit.ToString(val))
 				if err != nil {
-					log.Println("ExecuteSQLQuery", 369)
 					if val == "NA" {
-						log.Println("ExecuteSQLQuery", 371)
 						sqlQuery += `
 						upper(` + key + `) IS NULL `
 					} else {
-						log.Println("ExecuteSQLQuery", 375)
 						replacedVal := strings.ReplaceAll(toolkit.ToString(val), "'", "''")
-						log.Println("ExecuteSQLQuery", 377)
+
 						sqlQuery += `
 							upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
-						log.Println("ExecuteSQLQuery", 379)
 					}
-					log.Println("ExecuteSQLQuery", 382)
 				} else {
-					log.Println("ExecuteSQLQuery", 384)
 					sqlQuery += `
 						upper(` + key + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
 				}
 			}
 
-			log.Println("ExecuteSQLQuery", 390)
 			sqlQuery += `
 				) `
 		}
 
-		log.Println("ExecuteSQLQuery", 395)
 		sqlQuery += param.OrderBy
-
-		log.Println("ExecuteSQLQuery", 398)
 		if param.RowsPerPage > 0 {
-			log.Println("ExecuteSQLQuery", 400)
-
 			sqlQuery = `SELECT * FROM
 				(
 					` + sqlQuery + ` 
@@ -406,21 +342,13 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 				BETWEEN ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + ` 
 				AND ` + toolkit.ToString(param.PageNumber*param.RowsPerPage) + ` `
 		}
-		log.Println("ExecuteSQLQuery", 409)
 	}
-	log.Println("ExecuteSQLQuery", 411)
 
 	conn := Database()
-	log.Println("ExecuteSQLQuery", 414)
 	cursor := conn.Cursor(dbflex.From(param.TableName).SQL(sqlQuery), nil)
-	log.Println("ExecuteSQLQuery", 416)
 	defer cursor.Close()
-	log.Println("ExecuteSQLQuery", 418)
 
 	err := cursor.Fetchs(param.Results, 0)
-	log.Println("ExecuteSQLQuery", 421)
-	log.Println("ExecuteSQLQuery", 422, err)
-
 	toolkit.Println(sqlQuery, "\nqueryTime:", time.Since(queryTime).Seconds())
 	a := param.Results.(*[]toolkit.M)
 	toolkit.Println("fetched results:", len(*a), "\n--------------------------------------------------------------")
