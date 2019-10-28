@@ -228,30 +228,6 @@ export default {
         return false;
       }
     },
-    fixWidthIfTextNotCollapsed() {
-      $(".ini.wrapper-showmore.d-inline-block").each((i, e) => {
-        var td = $(e).closest("td");
-          
-        var keberapa = td.index();
-        var th = td.closest(".table-v2 > .v-table__overflow > table").children("thead").children('tr').eq(0).children('th').eq(keberapa);
-        //console.log(td.closest(".table-v2 > .v-table__overflow > table").children("thead").children('tr').eq(0).children('th').eq(keberapa), keberapa);
-
-        var thWidth = parseInt(th.attr("data-width-ori"));
-
-        var tdWidths = td.closest(".table-v2 > .v-table__overflow > table > tbody").children().map((i, v) => $(v).children().eq(keberapa).outerWidth());
-        var expandTdWidths = td.closest(".v-datatable__expand-row table.v-datatable.v-table > tbody").children().map((i, v) => $(v).children().eq(keberapa).outerWidth());
-        var concatWidths = $.merge(tdWidths, expandTdWidths)
-        var tdWidthMax = _.max(concatWidths)
-
-        var tdWidthUsed = tdWidthMax > thWidth ? tdWidthMax : thWidth;
-
-        td.css({"width": tdWidthUsed + "px"});
-        td.closest(".table-v2 > .v-table__overflow > table > tbody").children().each((i, v) => { 
-          $(v).children().eq(keberapa).css({"width": tdWidthUsed + "px"});
-        });
-        th.css({"min-width": tdWidthUsed + "px"});
-      });
-    },
     setTableColumnsWidth(){
       var elem = $('#table-edmp-iarc-personal');
       var tableElem = elem.find('.v-table__overflow > table.v-table');
@@ -264,8 +240,6 @@ export default {
           TDs.eq(thIndex).width(thWidth);
         });
       });
-
-      this.fixWidthIfTextNotCollapsed();
     },
     setExpandedTableColumnsWidth(){
       setTimeout(() => {
@@ -281,8 +255,6 @@ export default {
             TDs.eq(thIndex).width(thWidth);
           });
         });
-
-        this.fixWidthIfTextNotCollapsed();
       }, 10);
     },
     toggleAll () {
