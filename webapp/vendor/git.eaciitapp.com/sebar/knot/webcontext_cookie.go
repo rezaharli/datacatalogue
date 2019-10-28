@@ -20,3 +20,8 @@ func (ctx *WebContext) GetCookie(name string, def string) *http.Cookie {
 	out, _ := ctx.cookies.getCookie(ctx, name, def)
 	return out
 }
+
+// DeleteCookie remove cookie with given name
+func (ctx *WebContext) DeleteCookie(name string) {
+	ctx.cookies.deleteCookie(ctx, name)
+}

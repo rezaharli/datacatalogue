@@ -75,6 +75,24 @@ func (cs *cookieStore) setCookie(r *WebContext, name string, value string, expir
 	return c
 }
 
+func (cs *cookieStore) deleteCookie(r *WebContext, name string) {
+	cs.initCookies(r)
+
+	c := &http.Cookie{}
+	c.Name = name
+	c.Value = ""
+	c.Path = "/"
+	c.Expires = time.Unix(0, 0)
+	c.MaxAge = -1
+	c.Domain = r.Request.Host
+
+	cs.Lock()
+	delete(cs.data, name)
+	cs.Unlock()
+
+	http.SetCookie(r.Writer, c)
+}
+
 func (cs *cookieStore) getAllCookies(ctx *WebContext) map[string]*http.Cookie {
 	cs.initCookies(ctx)
 

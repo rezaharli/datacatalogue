@@ -76,12 +76,13 @@ func (s *Server) handleFunc(routeItem *RouteItem, app *Application) *Server {
 		}
 
 		fullFn := func(w http.ResponseWriter, r *http.Request) {
-			defer func() {
-				if rec := recover(); rec != nil {
-					s.Logger().Errorf("panic detected on %s: %v", r.URL.String(), rec)
-					s.Logger().Errorf("stack trace: %v", string(debug.Stack()))
-				}
-			}()
+			if s.AutoRecoverPanic {
+				defer func() {
+					if rec := recover(); rec != nil {
+						s.Logger().Errorf("panic detected on %s: %v\ntrace:\n%s\n\n", r.URL.String(), rec, friendlyError())
+					}
+				}()
+			}
 
 			ctx := newWebContext(s, app, w, r)
 			ctx.Server().Logger().Infof("| Access | %s | %s", ctx.Request.URL, ctx.Request.RemoteAddr)
@@ -100,6 +101,17 @@ func (s *Server) handleFunc(routeItem *RouteItem, app *Application) *Server {
 		s.mux.HandleFunc(pattern, fullFn)
 	}
 	return s
+}
+
+func friendlyError() string {
+	errTxts := string(debug.Stack())
+	// newtxts := []string{}
+	// for _, txt := range errTxts {
+	// 	if strings.Contains(txt, "git") {
+	// 		newtxts = append(newtxts, txt)
+	// 	}
+	// }
+	return errTxts
 }
 
 type reqexpRoute struct {
