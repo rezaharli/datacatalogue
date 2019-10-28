@@ -369,6 +369,9 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 	defer cursor.Close()
 
 	err := cursor.Fetchs(param.Results, 0)
+	if err != nil {
+		return err
+	}
 
 	toolkit.Println(sqlQuery, "\nqueryTime:", time.Since(queryTime).Seconds())
 	a := param.Results.(*[]toolkit.M)

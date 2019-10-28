@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"runtime"
+	"runtime/debug"
 	"strings"
 
 	"github.com/eaciit/toolkit"
@@ -78,6 +79,7 @@ func (s *Server) handleFunc(routeItem *RouteItem, app *Application) *Server {
 			defer func() {
 				if rec := recover(); rec != nil {
 					s.Logger().Errorf("panic detected on %s: %v", r.URL.String(), rec)
+					s.Logger().Errorf("stack trace: %v", string(debug.Stack()))
 				}
 			}()
 
