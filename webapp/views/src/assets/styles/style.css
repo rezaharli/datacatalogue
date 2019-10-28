@@ -436,3 +436,5 @@ table.v-table.v-datatable td.text-prewrap,
 .edmp-search > .v-input__control > .v-input__slot {border-radius: 30px !important; padding: 0 15px 0 20px !important;}
 .edmp-search > .v-input__control > .v-input__slot > .v-input__append-inner {margin-top: 0 !important;}
 .edmp-search > .v-input__control > .v-input__slot .v-icon{font-size: 20px !important;}
+
+.grey--text.caption { margin-right: 5px; }
