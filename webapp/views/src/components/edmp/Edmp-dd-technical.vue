@@ -102,8 +102,8 @@
                 <v-checkbox :input-value="props.selected" primary hide-details @click="props.selected = !props.selected"></v-checkbox></td>
 
               <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }" class="text-capitalize text-title">
-                <b-button size="sm" class="green-tosca-gradient icon-only" @click="showDetails(props.item)">
-                  <i class="fa fa-fw fa-external-link-alt"></i></b-button></td>
+                <v-btn small exact target="blank" :href="linkDataXray(props.item.DATA_XRAY)" :disabled="dataXrayDisabled(props.item.DATA_XRAY)" class="green-tosca-gradient icon-only">
+                  <i class="fa fa-fw fa-external-link-alt"></i></v-btn></td>
 
               <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">
                 <tablecell :fulltext="props.item.ITAM" showOn="click"></tablecell></td>
@@ -143,10 +143,6 @@
 
               <td v-bind:style="{ width: store.left.colWidth['PRIMARY_KEY'] + 'px' }" class="text-capitalize">
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PRIMARY_KEY.toString().trim() ? props.item.PRIMARY_KEY : 'NA'"></tablecell>
-              </td>
-
-              <td v-bind:style="{ width: store.left.colWidth['DATA_XRAY'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DATA_XRAY.toString().trim() ? props.item.DATA_XRAY : 'NA'"></tablecell>
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['DATA_LINEAGE'] + 'px' }" class="text-capitalize">
@@ -220,9 +216,6 @@
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['PRIMARY_KEY'] + 'px' }">
                   <tablecell :fulltext="props.item.PRIMARY_KEY.toString().trim() ? props.item.PRIMARY_KEY : 'NA'" showOn="hover"></tablecell>
-                </td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATA_XRAY'] + 'px' }">
-                  <tablecell :fulltext="props.item.DATA_XRAY.toString().trim() ? props.item.DATA_XRAY : 'NA'" showOn="hover"></tablecell>
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATA_LINEAGE'] + 'px' }">
                   <tablecell :fulltext="props.item.DATA_LINEAGE.toString().trim() ? props.item.DATA_LINEAGE : 'NA'" showOn="hover"></tablecell>
@@ -451,6 +444,18 @@ export default {
         this.store.left.pagination.sortBy = column
         this.store.left.pagination.descending = false
       }
+    },
+    linkDataXray(param){
+      if(param.includes("https://")){
+        return param;
+      } else if (param.includes("http://")) {
+        return param;
+      } else {
+        return "http://" + param;
+      }
+    },
+    dataXrayDisabled(param){
+      return param.trim() == "" ? true : false;
     },
   }
 };
