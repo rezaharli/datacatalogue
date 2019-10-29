@@ -298,11 +298,19 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 							s := reflect.ValueOf(val)
 
 							for i := 0; i < s.Len(); i++ {
+								if i == 0 {
+									sqlQuery += `(
+										 `
+								}
+
 								appendAdditionalWhere(s.Index(i).Interface())
 
 								if i != s.Len()-1 {
 									sqlQuery += `
 									OR `
+								} else {
+									sqlQuery += `)
+										 `
 								}
 							}
 						default:
@@ -335,11 +343,19 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 					s := reflect.ValueOf(val)
 
 					for i := 0; i < s.Len(); i++ {
+						if i == 0 {
+							sqlQuery += `(
+								 `
+						}
+
 						appendAdditionalWhere(s.Index(i).Interface())
 
 						if i != s.Len()-1 {
 							sqlQuery += `
 							OR `
+						} else {
+							sqlQuery += `)
+								 `
 						}
 					}
 				default:
