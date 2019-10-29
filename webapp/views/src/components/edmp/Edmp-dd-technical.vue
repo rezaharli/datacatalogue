@@ -30,6 +30,11 @@
   max-width: 90%;
   word-break: break-word;
 }
+
+.transparent-tnya3{
+  background-color: rgba(0, 0, 0, 0) !important;
+  color: rgba(0, 0, 0, 0) !important;
+}
 </style>
 
 <template>
@@ -195,7 +200,11 @@
             >
               <template slot="items" slot-scope="props">
                 <td class="text-capitalize">&nbsp;</td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
+                
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">
+                  <v-btn small exact disabled target="blank" :href="linkDataXray(props.item.DATA_XRAY)" class="icon-only" style="background-color: rgba(0, 0, 0, 0) !important; color: rgba(0, 0, 0, 0) !important;">
+                    <i class="fa fa-fw fa-external-link-alt"></i></v-btn>
+                    </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">&nbsp;</td>
