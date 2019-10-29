@@ -367,17 +367,15 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 				) `
 		}
 
-		sqlQuery += param.OrderBy
-
 		if param.RowsPerPage > 0 {
-
 			sqlQuery = `SELECT * FROM
 				(
 					` + sqlQuery + ` 
-				) WHERE r__ 
-				BETWEEN ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + ` 
-				AND ` + toolkit.ToString(param.PageNumber*param.RowsPerPage) + ` `
+				) WHERE r__ BETWEEN ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + ` AND ` + toolkit.ToString(param.PageNumber*param.RowsPerPage) + `
+				`
 		}
+
+		sqlQuery += param.OrderBy
 	}
 
 	conn := Database()

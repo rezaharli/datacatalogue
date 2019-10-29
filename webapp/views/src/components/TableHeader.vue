@@ -195,9 +195,11 @@ export default {
       this.$store.dispatch(`${this.storeName}/getRightTable`, id);
     },
     keyupAction(e) {
-      delete this.tableStore.filters[this.which].filterTypes[
-        this.fixedProps.header.value.split(".").reverse()[0]
-      ];
+      if (this.tableStore.filters[this.which].filterTypes){
+        delete this.tableStore.filters[this.which].filterTypes[
+          this.fixedProps.header.value.split(".").reverse()[0]
+        ];
+      }
 
       setTimeout(this.getOpts, 1);
 
