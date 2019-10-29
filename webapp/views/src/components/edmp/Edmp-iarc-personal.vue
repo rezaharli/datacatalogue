@@ -203,13 +203,13 @@ export default {
 
       if( ! this.store.filters.left.filterTypes) this.store.filters.left.filterTypes = {};
 
-      this.store.filters.left["COUNTRY"] = this.edmpStore.dd.ddVal.ddCountrySelected;
+      this.store.filters.left["COUNTRY"] = this.edmpStore.iarc.ddVal.ddCountrySelected;
       this.store.filters.left.filterTypes["COUNTRY"] = "eq";
 
-      this.store.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.edmpStore.dd.ddVal.ddSourceSystemSelected;
+      this.store.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.edmpStore.iarc.ddVal.ddSourceSystemSelected;
       this.store.filters.left.filterTypes["EDM_SOURCE_SYSTEM_NAME"] = "eq";
 
-      this.store.filters.left["ITAM"] = this.edmpStore.dd.ddVal.ddItamSelected;
+      this.store.filters.left["ITAM"] = this.edmpStore.iarc.ddVal.ddItamSelected;
       this.store.filters.left.filterTypes["ITAM"] = "eq";
 
       this.$store.dispatch(`${this.storeName}/getLeftTable`).then(v => { 

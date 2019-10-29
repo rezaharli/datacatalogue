@@ -222,8 +222,8 @@ export default {
       ddItamOptions () {
         var self = this;
         var filtered = _.filter(self.store.iarc.DDSource, (v) => {
-          return self.store.iarc.ddVal.ddCountrySelected.length > 0 ? (self.store.iarc.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true  
-            && self.store.iarc.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.iarc.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true;
+          return (self.store.iarc.ddVal.ddCountrySelected.length > 0 ? (self.store.iarc.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true)  
+            && (self.store.iarc.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.iarc.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true);
         });
         
         return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.ITAM.toString()), [function(o) { return o; }]));
