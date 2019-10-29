@@ -60,7 +60,7 @@ body, .application--wrap{
 .bg-light-grey {background-color: #E4E9EF !important;}
 
 .btn, .v-btn {border-radius: 5px !important; min-width: unset;}
-.btn.icon-only, .v-btn.icon-only {border: none !important; padding: 7px 14px;}
+.btn.icon-only, .v-btn.icon-only {border: none !important; padding: 7px 7px;}
 .btn.btn-link:hover, .v-btn:hover {text-decoration: none;}
 .btn.green-tosca, .v-btn.green-tosca {background-color: #00CC99 !important;}
 .btn.green-tosca-gradient, .v-btn.green-tosca-gradient {
