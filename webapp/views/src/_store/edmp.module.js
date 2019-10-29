@@ -28,10 +28,7 @@ const state = {
             firstload: true,
             ddVal: {
                 ddCountrySelected: [],
-                ddBusinessSegmentSelected: [],
                 ddSourceSystemSelected: [],
-                ddClusterSelected: [],
-                ddTierSelected: [],
                 ddItamSelected: [],
             },
         },
