@@ -14,7 +14,8 @@ import (
 
 // Server is a knot server that HTTP/HTTPS
 type Server struct {
-	MultiApp bool
+	MultiApp         bool
+	AutoRecoverPanic bool
 
 	routes          map[string]*RouteItem
 	plugins         []Plugin
@@ -43,6 +44,7 @@ func NewServer() *Server {
 	s.initRoute(true)
 	s.initApps(true)
 	s.initSessionStore(nil)
+	s.AutoRecoverPanic = true
 	return s
 }
 

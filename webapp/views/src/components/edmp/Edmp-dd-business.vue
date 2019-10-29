@@ -91,10 +91,6 @@
               <td>
                 <v-checkbox :input-value="props.selected" primary hide-details @click="props.selected = !props.selected"></v-checkbox></td>
 
-              <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }" class="text-capitalize text-title">
-                <b-button size="sm" class="green-tosca-gradient icon-only" @click="showDetails(props.item)">
-                  <i class="fa fa-fw fa-external-link-alt"></i></b-button></td>
-
               <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">
                 <tablecell :fulltext="props.item.ITAM" showOn="click"></tablecell></td>
 
@@ -186,7 +182,6 @@
             >
               <template slot="items" slot-scope="props">
                 <td class="text-capitalize">&nbsp;</td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">&nbsp;</td>
@@ -352,46 +347,6 @@ export default {
         return false;
       }
     },
-    fixWidthIfTextNotCollapsed() {
-      $(".ini").each((i, e) => {
-        var td = $(e).closest("td");
-          
-          var tdWidth = td.width();
-          var keberapa = td.index();
-
-          var th = td.closest(".table-v2 > .v-table__overflow > table").children("thead").children('tr').eq(0).children('th').eq(keberapa);
-
-          td.closest(".table-v2 > .v-table__overflow > table > tbody").children().each(function(i, v){
-            var td2 = $(v).find('td:not([colspan])').eq(keberapa);
-
-            if(tdWidth > td2.width()){
-              td2.removeAttr("style")
-              td2.css({"min-width": tdWidth + "px"});
-              td2.css({"max-width": tdWidth + "px"});
-            }
-          })
-
-          td.closest(".v-datatable__expand-row table.v-datatable.v-table > tbody").children().each(function(i, v){
-            var td2 = $(v).find('td:not([colspan])').eq(keberapa);
-
-            if(tdWidth > td2.width()){
-              td2.removeAttr("style")
-              td2.css({"min-width": tdWidth + "px"});
-              td2.css({"max-width": tdWidth + "px"});
-            }
-          })
-
-          var dataWidthOri = th.width();
-          var thWidth = parseInt(dataWidthOri);
-
-          if(tdWidth > thWidth) {
-            if(keberapa == 7) console.log(td, tdWidth, thWidth)
-
-            th.css({"min-width": tdWidth + "px"});
-            th.css({"max-width": tdWidth + "px"});
-          }
-        })
-    },
     setTableColumnsWidth(){
       var elem = $('#table-edmp-dd-business');
       var tableElem = elem.find('.v-table__overflow > table.v-table');
@@ -404,8 +359,6 @@ export default {
           TDs.eq(thIndex).width(thWidth);
         });
       });
-
-      this.fixWidthIfTextNotCollapsed();
     },
     setExpandedTableColumnsWidth(){
       setTimeout(() => {
@@ -421,8 +374,6 @@ export default {
             TDs.eq(thIndex).width(thWidth);
           });
         });
-
-        this.fixWidthIfTextNotCollapsed();
       }, 10);
     },
     toggleAll () {

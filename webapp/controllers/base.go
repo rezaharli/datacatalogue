@@ -35,9 +35,10 @@ func (c *Base) GetHeaderOpts(k *knot.WebContext) {
 		Queryname: payload.GetString("Queryname"),
 		FieldName: payload.GetString("FieldName"),
 
-		Param1: payload.GetString("System"),
-		Param2: payload.GetString("DspName"),
-		Filter: payload.GetString("Filter"),
+		Param1:       payload.GetString("System"),
+		Param2:       payload.GetString("DspName"),
+		Filter:       payload.GetString("Filter"),
+		ScopeFilters: payload.Get("Filters"),
 	}
 
 	if payload.Has("LoggedInID") == true {

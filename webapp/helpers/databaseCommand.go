@@ -1,7 +1,6 @@
 package helpers
 
 import (
-	"log"
 	"reflect"
 	"strconv"
 	"strings"
@@ -279,11 +278,10 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 					if filterType.(string) == "eq" {
 						appendAdditionalWhere := func(value interface{}) {
 							intVal, err := strconv.Atoi(toolkit.ToString(value))
-
 							if err != nil {
 								if value == "NA" {
 									sqlQuery += `
-								upper(` + key + `) IS NULL `
+									upper(` + key + `) IS NULL `
 								} else {
 									replacedVal := strings.ReplaceAll(toolkit.ToString(value), "'", "''")
 									sqlQuery += `
@@ -298,8 +296,10 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 						switch reflect.TypeOf(val).Kind() {
 						case reflect.Slice:
 							s := reflect.ValueOf(val)
+
 							for i := 0; i < s.Len(); i++ {
 								appendAdditionalWhere(s.Index(i).Interface())
+
 								if i != s.Len()-1 {
 									sqlQuery += `
 									OR `
@@ -313,20 +313,37 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 					}
 				}
 
-				intVal, err := strconv.Atoi(toolkit.ToString(val))
-				if err != nil {
-					if val == "NA" {
-						sqlQuery += `
+				appendAdditionalWhere := func(value interface{}) {
+					intVal, err := strconv.Atoi(toolkit.ToString(value))
+					if err != nil {
+						if value == "NA" {
+							sqlQuery += `
 						upper(` + key + `) IS NULL `
-					} else {
-						replacedVal := strings.ReplaceAll(toolkit.ToString(val), "'", "''")
-
-						sqlQuery += `
+						} else {
+							replacedVal := strings.ReplaceAll(toolkit.ToString(value), "'", "''")
+							sqlQuery += `
 							upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
-					}
-				} else {
-					sqlQuery += `
+						}
+					} else {
+						sqlQuery += `
 						upper(` + key + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
+					}
+				}
+
+				switch reflect.TypeOf(val).Kind() {
+				case reflect.Slice:
+					s := reflect.ValueOf(val)
+
+					for i := 0; i < s.Len(); i++ {
+						appendAdditionalWhere(s.Index(i).Interface())
+
+						if i != s.Len()-1 {
+							sqlQuery += `
+							OR `
+						}
+					}
+				default:
+					appendAdditionalWhere(val)
 				}
 			}
 
@@ -335,7 +352,9 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 		}
 
 		sqlQuery += param.OrderBy
+
 		if param.RowsPerPage > 0 {
+
 			sqlQuery = `SELECT * FROM
 				(
 					` + sqlQuery + ` 
@@ -349,8 +368,11 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 	cursor := conn.Cursor(dbflex.From(param.TableName).SQL(sqlQuery), nil)
 	defer cursor.Close()
 
-	log.Println("352")
 	err := cursor.Fetchs(param.Results, 0)
+	if err != nil {
+		return err
+	}
+
 	toolkit.Println(sqlQuery, "\nqueryTime:", time.Since(queryTime).Seconds())
 	a := param.Results.(*[]toolkit.M)
 	toolkit.Println("fetched results:", len(*a), "\n--------------------------------------------------------------")

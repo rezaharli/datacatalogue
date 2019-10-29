@@ -180,7 +180,9 @@ export default {
         .dispatch(`${this.headerStoreName}/getOpts`, param)
         .then(() => {
           this.dropdownData = this._.uniq(
-            this.store.datas.map(v => (v.toString().trim() ? v.toString() : "NA"))
+            this.store.datas.map(v =>
+              v.toString().trim() ? v.toString() : "NA"
+            )
           );
 
           this.isLoading = false;
@@ -193,6 +195,10 @@ export default {
       this.$store.dispatch(`${this.storeName}/getRightTable`, id);
     },
     keyupAction(e) {
+      delete this.tableStore.filters[this.which].filterTypes[
+        this.fixedProps.header.value.split(".").reverse()[0]
+      ];
+
       setTimeout(this.getOpts, 1);
 
       var self = this;
@@ -211,12 +217,14 @@ export default {
         }
       }
 
-      if (self.filterProcessTimeout != null)
-        clearTimeout(self.filterProcessTimeout);
+      if (e.key == "Enter") {
+        this.menu = false;
 
-      self.filterProcessTimeout = setTimeout(self.filterProcess, 500);
+        if (self.filterProcessTimeout != null)
+          clearTimeout(self.filterProcessTimeout);
 
-      if (e.key == "Enter") this.menu = false;
+        self.filterProcessTimeout = setTimeout(self.filterProcess, 500);
+      }
     },
     filterClick(keyModel, val) {
       this.tableStore.filters[this.which][

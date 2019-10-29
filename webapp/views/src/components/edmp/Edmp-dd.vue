@@ -42,12 +42,25 @@
                             <v-select
                               v-model="store.dd.ddVal.ddCountrySelected"
                               :items="ddCountryOptions"
+                              :search-input.sync="searchInputCountry"
                               label="Country"
                               single-line
                               multiple
                               box
                               clearable
-                            ></v-select>
+                              autocomplete 
+                            >
+                              <template slot="selection" slot-scope="{ item, index }">
+                                <v-chip v-if="index === 0" :class="store.dd.ddVal.ddCountrySelected.length == 1 ? 'full' : 'small'">
+                                  <span>{{ item }}</span>
+                                </v-chip>
+
+                                <span
+                                  v-if="index === 1"
+                                  class="grey--text caption"
+                                >({{ store.dd.ddVal.ddCountrySelected.length - 1 }}+) </span>
+                              </template>
+                            </v-select>
                           </div>
                         </template>
 
@@ -62,12 +75,25 @@
                             <v-select
                               v-model="store.dd.ddVal.ddBusinessSegmentSelected"
                               :items="ddBusinessSegmentOptions"
+                              :search-input.sync="searchInputBusiness"
                               label="Business Segment"
                               single-line
                               multiple
                               box
                               clearable
-                            ></v-select>
+                              autocomplete
+                            >
+                              <template slot="selection" slot-scope="{ item, index }">
+                                <v-chip v-if="index === 0" :class="store.dd.ddVal.ddBusinessSegmentSelected.length == 1 ? 'full' : 'small'">
+                                  <span>{{ item }}</span>
+                                </v-chip>
+
+                                <span
+                                  v-if="index === 1"
+                                  class="grey--text caption"
+                                >({{ store.dd.ddVal.ddBusinessSegmentSelected.length - 1 }}+) </span>
+                              </template>
+                            </v-select>
                           </div>
                         </template>
                         
@@ -82,12 +108,25 @@
                             <v-select
                               v-model="store.dd.ddVal.ddSourceSystemSelected"
                               :items="ddSourceSystemOptions"
+                              :search-input.sync="searchInputSourceSystem"
                               label="Source System"
                               single-line
                               multiple
                               box
                               clearable
-                            ></v-select>
+                              autocomplete
+                            >
+                              <template slot="selection" slot-scope="{ item, index }">
+                                <v-chip v-if="index === 0" :class="store.dd.ddVal.ddSourceSystemSelected.length == 1 ? 'full' : 'small'">
+                                  <span>{{ item }}</span>
+                                </v-chip>
+
+                                <span
+                                  v-if="index === 1"
+                                  class="grey--text caption"
+                                >({{ store.dd.ddVal.ddSourceSystemSelected.length - 1 }}+) </span>
+                              </template>
+                            </v-select>
                           </div>
                         </template>
                         
@@ -102,12 +141,25 @@
                             <v-select
                               v-model="store.dd.ddVal.ddClusterSelected"
                               :items="ddClusterOptions"
+                              :search-input.sync="searchInputCluster"
                               label="Cluster"
                               single-line
                               multiple
                               box
                               clearable
-                            ></v-select>
+                              autocomplete
+                            >
+                              <template slot="selection" slot-scope="{ item, index }">
+                                <v-chip v-if="index === 0" :class="store.dd.ddVal.ddClusterSelected.length == 1 ? 'full' : 'small'">
+                                  <span>{{ item }}</span>
+                                </v-chip>
+
+                                <span
+                                  v-if="index === 1"
+                                  class="grey--text caption"
+                                >({{ store.dd.ddVal.ddClusterSelected.length - 1 }}+) </span>
+                              </template>
+                            </v-select>
                           </div>
                         </template>
                         
@@ -122,12 +174,25 @@
                             <v-select
                               v-model="store.dd.ddVal.ddTierSelected"
                               :items="ddTierOptions"
+                              :search-input.sync="searchInputTier"
                               label="Tier"
                               single-line
                               multiple
                               box
                               clearable
-                            ></v-select>
+                              autocomplete
+                            >
+                              <template slot="selection" slot-scope="{ item, index }">
+                                <v-chip v-if="index === 0" :class="store.dd.ddVal.ddTierSelected.length == 1 ? 'full' : 'small'">
+                                  <span>{{ item }}</span>
+                                </v-chip>
+
+                                <span
+                                  v-if="index === 1"
+                                  class="grey--text caption"
+                                >({{ store.dd.ddVal.ddTierSelected.length - 1 }}+) </span>
+                              </template>
+                            </v-select>
                           </div>
                         </template>
                         
@@ -142,12 +207,25 @@
                             <v-select
                               v-model="store.dd.ddVal.ddItamSelected"
                               :items="ddItamOptions"
+                              :search-input.sync="searchInputItam"
                               label="ITAM"
                               single-line
                               multiple
                               box
                               clearable
-                            ></v-select>
+                              autocomplete
+                            >
+                              <template slot="selection" slot-scope="{ item, index }">
+                                <v-chip v-if="index === 0" :class="store.dd.ddVal.ddItamSelected.length == 1 ? 'full' : 'small'">
+                                  <span>{{ item }}</span>
+                                </v-chip>
+
+                                <span
+                                  v-if="index === 1"
+                                  class="grey--text caption"
+                                >({{ store.dd.ddVal.ddItamSelected.length - 1 }}+) </span>
+                              </template>
+                            </v-select>
                           </div>
                         </template>
                         
@@ -194,6 +272,12 @@ export default {
         technicalStoreName: "edmpddTechnical",
         businessStoreName: "edmpddBusiness",
         consumptionStoreName: "edmpddConsumption",
+        searchInputCountry: "",
+        searchInputBusiness: "",
+        searchInputSourceSystem: "",
+        searchInputCluster: "",
+        searchInputTier: "",
+        searchInputItam: "",
         activeTab: '',
         tabs: [
             { id: 'technical', key: 'technical-metadata', name: 'Technical Metadata', route: this.addressPath + '/technical-metadata' },

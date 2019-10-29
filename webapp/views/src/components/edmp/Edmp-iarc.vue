@@ -42,12 +42,25 @@
                             <v-select
                               v-model="store.iarc.ddVal.ddCountrySelected"
                               :items="ddCountryOptions"
+                              :search-input.sync="searchInputCountry"
                               label="Country"
                               single-line
                               multiple
                               box
                               clearable
-                            ></v-select>
+                              autocomplete
+                            >
+                              <template slot="selection" slot-scope="{ item, index }">
+                                <v-chip v-if="index === 0" :class="store.iarc.ddVal.ddCountrySelected.length == 1 ? 'full' : 'small'">
+                                  <span>{{ item }}</span>
+                                </v-chip>
+
+                                <span
+                                  v-if="index === 1"
+                                  class="grey--text caption"
+                                >({{ store.iarc.ddVal.ddCountrySelected.length - 1 }}+) </span>
+                              </template>
+                            </v-select>
                           </div>
                         </template>
 
@@ -62,12 +75,25 @@
                             <v-select
                               v-model="store.iarc.ddVal.ddSourceSystemSelected"
                               :items="ddSourceSystemOptions"
+                              :search-input.sync="searchInputSourceSystem"
                               label="Source System"
                               single-line
                               multiple
                               box
                               clearable
-                            ></v-select>
+                              autocomplete
+                            >
+                              <template slot="selection" slot-scope="{ item, index }">
+                                <v-chip v-if="index === 0" :class="store.iarc.ddVal.ddSourceSystemSelected.length == 1 ? 'full' : 'small'">
+                                  <span>{{ item }}</span>
+                                </v-chip>
+
+                                <span
+                                  v-if="index === 1"
+                                  class="grey--text caption"
+                                >({{ store.iarc.ddVal.ddSourceSystemSelected.length - 1 }}+) </span>
+                              </template>
+                            </v-select>
                           </div>
                         </template>
                         
@@ -82,12 +108,25 @@
                             <v-select
                               v-model="store.iarc.ddVal.ddItamSelected"
                               :items="ddItamOptions"
+                              :search-input.sync="searchInputItam"
                               label="ITAM"
                               single-line
                               multiple
                               box
                               clearable
-                            ></v-select>
+                              autocomplete
+                            >
+                              <template slot="selection" slot-scope="{ item, index }">
+                                <v-chip v-if="index === 0" :class="store.iarc.ddVal.ddItamSelected.length == 1 ? 'full' : 'small'">
+                                  <span>{{ item }}</span>
+                                </v-chip>
+
+                                <span
+                                  v-if="index === 1"
+                                  class="grey--text caption"
+                                >({{ store.iarc.ddVal.ddItamSelected.length - 1 }}+) </span>
+                              </template>
+                            </v-select>
                           </div>
                         </template>
                         
@@ -132,6 +171,9 @@ export default {
         storeName: "edmp",
         personalStoreName: "edmpIarcPersonal",
         informationStoreName: "dsciarc",
+        searchInputCountry: "",
+        searchInputSourceSystem: "",
+        searchInputItam: "",
         activeTab: '',
         tabs: [
             { id: 'information', key: 'information', name: 'Information Asset Category', route: this.addressPath + '/information' },

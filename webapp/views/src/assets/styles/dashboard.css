@@ -93,6 +93,15 @@ table.v-table thead th, .v-datatable th.column {
     max-width: 300px;
 }
 
+.v-chip.full .v-chip__content { max-width: 70px; }
+.v-chip.small .v-chip__content { max-width: 44px; }
+.v-chip .v-chip__content span{
+    max-width: 90%;
+    word-break: break-word;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+
 @media (min-width: 992px) {
     #modal-details .modal-lg{
         max-width: 80%;
