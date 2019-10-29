@@ -100,13 +100,14 @@ const router = new VueRouter({
           title: "EDMp - Data Catalogue",
           permission: "DSC"
         },
-      }, { // dsc.edmp.dd.policy
-        path: '/dsc/ENTERPRISE DATA MGMT PLATFORM/dd/consumption-apps', name: 'dsc.edmp.dd.consumption', component: EdmpDdConsumption, 
-        meta: { 
-          title: "EDMp - Data Catalogue",
-          permission: "DSC"
-        },
       }, 
+      // { // dsc.edmp.dd.consumption
+      //   path: '/dsc/ENTERPRISE DATA MGMT PLATFORM/dd/consumption-apps', name: 'dsc.edmp.dd.consumption', component: EdmpDdConsumption, 
+      //   meta: { 
+      //     title: "EDMp - Data Catalogue",
+      //     permission: "DSC"
+      //   },
+      // }, 
     ]
   }, { // dsc.edmp.iarc
     path: '/dsc/ENTERPRISE DATA MGMT PLATFORM/iarc', name: 'dsc.edmp.iarc', component: EdmpIarc, 
