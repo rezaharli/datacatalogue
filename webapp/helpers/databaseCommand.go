@@ -239,23 +239,15 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 
 		if param.GroupCol != "" {
 			if param.GroupCol == "-" {
-				sqlQuery += `rownum r__, `
+				// 		sqlQuery += `rownum r__, `
 				sqlQuery += `COUNT(*) OVER () RESULT_COUNT `
 			} else {
-				sqlQuery += `DENSE_RANK() OVER (ORDER BY ` + param.GroupCol + ` ASC ) AS r__, `
+				// 		sqlQuery += `DENSE_RANK() OVER (ORDER BY ` + param.GroupCol + ` ASC ) AS r__, `
 				sqlQuery += `COUNT(DISTINCT  ` + param.GroupCol + `) OVER () RESULT_COUNT `
 			}
 		} else {
-			sqlQuery += `DENSE_RANK() OVER (ORDER BY id ASC ) AS r__, `
+			// 	sqlQuery += `DENSE_RANK() OVER (ORDER BY id ASC ) AS r__, `
 			sqlQuery += `COUNT(DISTINCT  id) OVER () RESULT_COUNT `
-		}
-
-		if param.OrderBy != "" {
-			param.OrderBy = `ORDER BY regexp_replace(regexp_replace(UPPER(` + param.OrderBy + `), '(\d+)', lpad('0', 20, '0')||'\1'), '0*?(\d{21}(\D|$))', '\1') `
-		}
-
-		if param.IsDescending {
-			param.OrderBy += `DESC `
 		}
 
 		sqlQuery += `
@@ -367,12 +359,28 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 				) `
 		}
 
+		// if param.RowsPerPage > 0 {
+		// 	sqlQuery = `SELECT * FROM
+		// 		(
+		// 			` + sqlQuery + `
+		// 		) WHERE r__ BETWEEN ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + ` AND ` + toolkit.ToString(param.PageNumber*param.RowsPerPage) + `
+		// 		`
+		// }
+
 		if param.RowsPerPage > 0 {
 			sqlQuery = `SELECT * FROM
 				(
-					` + sqlQuery + ` 
-				) WHERE r__ BETWEEN ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + ` AND ` + toolkit.ToString(param.PageNumber*param.RowsPerPage) + `
+					` + sqlQuery + `
+				) WHERE rownum BETWEEN ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + ` AND ` + toolkit.ToString(param.PageNumber*param.RowsPerPage) + `
 				`
+		}
+
+		if param.OrderBy != "" {
+			param.OrderBy = `ORDER BY regexp_replace(regexp_replace(UPPER(` + param.OrderBy + `), '(\d+)', lpad('0', 20, '0')||'\1'), '0*?(\d{21}(\D|$))', '\1') `
+		}
+
+		if param.IsDescending {
+			param.OrderBy += `DESC `
 		}
 
 		sqlQuery += param.OrderBy
