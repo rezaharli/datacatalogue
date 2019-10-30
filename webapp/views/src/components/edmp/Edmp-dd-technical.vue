@@ -150,6 +150,10 @@
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PRIMARY_KEY.toString().trim() ? props.item.PRIMARY_KEY : 'NA'"></tablecell>
               </td>
 
+              <td v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }" class="text-capitalize">
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'"></tablecell>
+              </td>
+
               <td v-bind:style="{ width: store.left.colWidth['DATA_LINEAGE'] + 'px' }" class="text-capitalize">
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DATA_LINEAGE.toString().trim() ? props.item.DATA_LINEAGE : 'NA'"></tablecell>
               </td>
@@ -225,6 +229,9 @@
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['PRIMARY_KEY'] + 'px' }">
                   <tablecell :fulltext="props.item.PRIMARY_KEY.toString().trim() ? props.item.PRIMARY_KEY : 'NA'" showOn="hover"></tablecell>
+                </td>
+                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }">
+                  <tablecell :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'" showOn="hover"></tablecell>
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATA_LINEAGE'] + 'px' }">
                   <tablecell :fulltext="props.item.DATA_LINEAGE.toString().trim() ? props.item.DATA_LINEAGE : 'NA'" showOn="hover"></tablecell>
