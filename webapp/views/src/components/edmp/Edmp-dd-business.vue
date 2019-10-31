@@ -38,7 +38,7 @@
             :loading="store.left.isLoading"
             :expand="false"
             :must-sort="true"
-            :rows-per-page-items="[25, 50, 75, 100]"
+            :rows-per-page-items="[100]"
             item-key="ID"
             class="elevation-1 table-v2"
             id="table-edmp-dd-business"
