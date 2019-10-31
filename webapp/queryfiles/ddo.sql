@@ -191,7 +191,7 @@ SELECT DISTINCT
 
 -- name: details
 SELECT 
-        TSC.ID,
+        TSC.ID                                                      AS ID,
         TC.NAME                                                     AS DATA_DOMAIN,
         TSC.NAME                                                    AS SUB_DOMAINS,
         TP.FIRST_NAME||' '||TP.LAST_NAME                            AS SUB_DOMAIN_OWNER,
