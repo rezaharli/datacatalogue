@@ -82,6 +82,10 @@ func (s *Base) GetHeaderOpts(headerArgs HeaderArgs) ([]toolkit.M, error) {
 			continue
 		}
 
+		if filter == nil {
+			continue
+		}
+
 		fieldNames = append(fieldNames, key)
 
 		switch reflect.TypeOf(filter).Kind() {
@@ -114,7 +118,7 @@ func (s *Base) GetHeaderOpts(headerArgs HeaderArgs) ([]toolkit.M, error) {
 		` + q + `
 	) `
 
-	err = h.NewDBcmd().ExecuteSQLQuery(h.SqlQueryParam{
+	err = h.NewDBcmd().ExecuteSQLQueryHeaderOpts(h.SqlQueryParam{
 		TableName:        m.NewCategoryModel().TableName(),
 		SqlQuery:         q,
 		Results:          &resultRows,

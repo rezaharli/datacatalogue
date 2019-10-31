@@ -12,6 +12,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
+	"unicode"
 
 	"github.com/eaciit/toolkit"
 
@@ -100,4 +102,21 @@ func Decrypt(cryptoText string) (string, error) {
 	stream.XORKeyStream(ciphertext, ciphertext)
 
 	return fmt.Sprintf("%s", ciphertext), err
+}
+
+func TabToSpace(input string) string {
+	var result []string
+
+	for _, i := range input {
+		switch {
+		// all these considered as space, including tab \t
+		// '\t', '\n', '\v', '\f', '\r',' ', 0x85, 0xA0
+		case unicode.IsSpace(i):
+			result = append(result, "   ") // replace tab with space
+		case !unicode.IsSpace(i):
+			result = append(result, string(i))
+		}
+	}
+
+	return strings.Join(result, "")
 }
