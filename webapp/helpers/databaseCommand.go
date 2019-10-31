@@ -235,34 +235,36 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 
 	sqlQuery := param.SqlQuery
 	if !(param.PageNumber == 0 && param.RowsPerPage == 0) {
-		sqlQuery = `SELECT a.*, `
+		sqlQuery = ""
 
-		if param.GroupCol != "" {
-			if param.GroupCol == "-" {
-				// 		sqlQuery += `rownum r__, `
-				sqlQuery += `COUNT(*) OVER () RESULT_COUNT `
-			} else {
-				// 		sqlQuery += `DENSE_RANK() OVER (ORDER BY ` + param.GroupCol + ` ASC ) AS r__, `
-				sqlQuery += `COUNT(DISTINCT  ` + param.GroupCol + `) OVER () RESULT_COUNT `
-			}
-		} else {
-			// 	sqlQuery += `DENSE_RANK() OVER (ORDER BY id ASC ) AS r__, `
-			sqlQuery += `COUNT(DISTINCT  id) OVER () RESULT_COUNT `
+		//split the query
+		splittedFROM := strings.Split(strings.ReplaceAll(param.SqlQuery, "\n", " "), " FROM ")
+		splittedWHERE := strings.Split(splittedFROM[1], " WHERE ")
+
+		var splittedORDERBY []string
+		if len(splittedWHERE) > 1 {
+			splittedORDERBY = strings.Split(splittedWHERE[1], "ORDER BY")
 		}
 
-		sqlQuery += `
-			FROM
-			(
-				` + param.SqlQuery + `
-			) a `
+		selectQuery := splittedFROM[0]
+		fromQuery := splittedWHERE[0]
+
+		whereQuery := ""
+		orderbyQuery := ""
+		if len(splittedORDERBY) > 0 {
+			whereQuery = splittedORDERBY[0]
+			if len(splittedORDERBY) > 1 {
+				orderbyQuery = splittedORDERBY[1]
+			}
+		}
 
 		if len(param.AdditionalWhere) > 0 {
-			sqlQuery += `WHERE( `
+			additionalWhereQuery := `( `
 
 			i := 0
 			for key, val := range param.AdditionalWhere {
 				if i != 0 {
-					sqlQuery += `AND `
+					additionalWhereQuery += `AND `
 				}
 				i++
 
@@ -272,16 +274,13 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 							intVal, err := strconv.Atoi(toolkit.ToString(value))
 							if err != nil {
 								if value == "NA" {
-									sqlQuery += `
-									upper(` + key + `) IS NULL `
+									additionalWhereQuery += `upper(` + key + `) IS NULL `
 								} else {
 									replacedVal := strings.ReplaceAll(toolkit.ToString(value), "'", "''")
-									sqlQuery += `
-									upper(NVL(` + key + `, ' ')) = upper('` + replacedVal + `') `
+									additionalWhereQuery += `upper(NVL(` + key + `, ' ')) = upper('` + replacedVal + `') `
 								}
 							} else {
-								sqlQuery += `
-								upper(` + key + `) = upper('` + toolkit.ToString(intVal) + `') `
+								additionalWhereQuery += `upper(` + key + `) = upper('` + toolkit.ToString(intVal) + `') `
 							}
 						}
 
@@ -291,18 +290,15 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 
 							for i := 0; i < s.Len(); i++ {
 								if i == 0 {
-									sqlQuery += `(
-										 `
+									additionalWhereQuery += `( `
 								}
 
 								appendAdditionalWhere(s.Index(i).Interface())
 
 								if i != s.Len()-1 {
-									sqlQuery += `
-									OR `
+									additionalWhereQuery += `OR `
 								} else {
-									sqlQuery += `)
-										 `
+									additionalWhereQuery += `) `
 								}
 							}
 						default:
@@ -317,16 +313,13 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 					intVal, err := strconv.Atoi(toolkit.ToString(value))
 					if err != nil {
 						if value == "NA" {
-							sqlQuery += `
-						upper(` + key + `) IS NULL `
+							additionalWhereQuery += `upper(` + key + `) IS NULL `
 						} else {
 							replacedVal := strings.ReplaceAll(toolkit.ToString(value), "'", "''")
-							sqlQuery += `
-							upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
+							additionalWhereQuery += `upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
 						}
 					} else {
-						sqlQuery += `
-						upper(` + key + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
+						additionalWhereQuery += `upper(` + key + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
 					}
 				}
 
@@ -336,18 +329,15 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 
 					for i := 0; i < s.Len(); i++ {
 						if i == 0 {
-							sqlQuery += `(
-								 `
+							additionalWhereQuery += `( `
 						}
 
 						appendAdditionalWhere(s.Index(i).Interface())
 
 						if i != s.Len()-1 {
-							sqlQuery += `
-							OR `
+							additionalWhereQuery += `OR `
 						} else {
-							sqlQuery += `)
-								 `
+							additionalWhereQuery += `) `
 						}
 					}
 				default:
@@ -355,24 +345,49 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 				}
 			}
 
-			sqlQuery += `
-				) `
+			additionalWhereQuery += `) `
+
+			if strings.TrimSpace(whereQuery) != "" {
+				whereQuery = whereQuery + "\nAND " + additionalWhereQuery
+			} else {
+				whereQuery = additionalWhereQuery
+			}
 		}
 
-		// if param.RowsPerPage > 0 {
-		// 	sqlQuery = `SELECT * FROM
-		// 		(
-		// 			` + sqlQuery + `
-		// 		) WHERE r__ BETWEEN ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + ` AND ` + toolkit.ToString(param.PageNumber*param.RowsPerPage) + `
-		// 		`
-		// }
+		if param.RowsPerPage > 0 {
+			selectQuery = selectQuery + ",rownum row_num"
+		}
+
+		if param.GroupCol != "" {
+			if param.GroupCol == "-" {
+				// 		sqlQuery += `rownum r__, `
+				selectQuery += `,COUNT(*) OVER () RESULT_COUNT `
+			} else {
+				// 		sqlQuery += `DENSE_RANK() OVER (ORDER BY ` + param.GroupCol + ` ASC ) AS r__, `
+				// sqlQuery += `COUNT(DISTINCT  ` + param.GroupCol + `) OVER () RESULT_COUNT `
+				selectQuery += `,COUNT(DISTINCT rownum) OVER () RESULT_COUNT `
+			}
+		} else {
+			// 	sqlQuery += `DENSE_RANK() OVER (ORDER BY id ASC ) AS r__, `
+			selectQuery += `,COUNT(DISTINCT rownum) OVER () RESULT_COUNT `
+		}
+
+		// combine it back
+		selectQuery = strings.ReplaceAll(selectQuery, ",", ",\n")
+		param.SqlQuery = strings.TrimSpace(selectQuery) + "\nFROM\n" + strings.TrimSpace(fromQuery)
+		if strings.TrimSpace(whereQuery) != "" {
+			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nWHERE\n" + strings.TrimSpace(whereQuery)
+		}
+		if strings.TrimSpace(orderbyQuery) != "" {
+			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nORDER BY\n" + strings.TrimSpace(orderbyQuery)
+		}
+
+		sqlQuery += "SELECT a.* FROM (\n"
+		sqlQuery += param.SqlQuery + "\n"
+		sqlQuery += ") a "
 
 		if param.RowsPerPage > 0 {
-			sqlQuery = `SELECT * FROM
-				(
-					` + sqlQuery + `
-				) WHERE rownum BETWEEN ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + ` AND ` + toolkit.ToString(param.PageNumber*param.RowsPerPage) + `
-				`
+			sqlQuery = sqlQuery + `WHERE row_num BETWEEN ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + ` AND ` + toolkit.ToString(param.PageNumber*param.RowsPerPage) + " "
 		}
 
 		if param.OrderBy != "" {

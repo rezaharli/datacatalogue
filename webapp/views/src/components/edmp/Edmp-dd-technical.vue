@@ -12,8 +12,7 @@
     width:unset;
 }
 #table-edmp-dd-technical table.v-table.v-datatable tbody tr {display: table-row;} */
-#table-edmp-dd-technical table.v-table tr th:nth-of-type(1){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-technical table.v-table tr th:nth-of-type(2){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-dd-technical table.v-table tr th:nth-of-type(2){width: calc(100%/10) !important; display: table-cell;}
 #table-edmp-dd-technical table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
 #table-edmp-dd-technical table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
 #table-edmp-dd-technical table.v-table tr th:nth-of-type(5){width: calc(100%/20) !important; display: table-cell;}
@@ -25,11 +24,7 @@
 #table-edmp-dd-technical table.v-table tr th:nth-of-type(11){width: calc(100%/20) !important; display: table-cell;}
 #table-edmp-dd-technical table.v-table tr th:nth-of-type(12){width: calc(100%/20) !important; display: table-cell;}
 #table-edmp-dd-technical table.v-table tr th:nth-of-type(13){width: calc(100%/20) !important; display: table-cell;}
-
-.ini{
-  max-width: 90%;
-  word-break: break-word;
-}
+#table-edmp-dd-technical tr > td{ max-width: 90%; word-break: break-word; }
 
 .transparent-tnya3{
   background-color: rgba(0, 0, 0, 0) !important;
@@ -53,7 +48,7 @@
             :loading="store.left.isLoading"
             :expand="false"
             :must-sort="true"
-            :rows-per-page-items="[25, 50, 75, 100]"
+            :rows-per-page-items="[100]"
             item-key="ID"
             class="elevation-1 table-v2"
             id="table-edmp-dd-technical"

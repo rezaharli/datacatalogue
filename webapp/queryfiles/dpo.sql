@@ -94,7 +94,7 @@ SELECT DISTINCT
 
 -- name: details-immediate-preceding-system
 SELECT DISTINCT 
-        DSP.ID,
+        DSP.ID                      AS ID,
         DSP.NAME                    AS PROCESS_NAME,
         CD.ALIAS_NAME               AS DATA_ELEMENT,
         SYS.SYSTEM_NAME             AS SYSTEM_NAME, 
@@ -120,26 +120,26 @@ SELECT DISTINCT
 
 -- name: details-ultimate-source-system
 SELECT DISTINCT 
-        DSP.ID,
-        USYS.SYSTEM_NAME             AS SYSTEM_NAME, 
-        USYS.ITAM_ID                 AS ITAM_ID,
-        UTAB.NAME                    AS TABLE_NAME, 
-        UCOL.NAME                    AS COLUMN_NAME, 
-        UCD.ALIAS_NAME                AS DATA_ELEMENT,
-        UCD.DESCRIPTION              AS DESCRIPTION, 
-        UCD.DERIVED                  AS DERIVED,
-        UCD.DERIVATION_LOGIC         AS DERIVATION_LOGIC,
-        UCD.DQ_STANDARDS             AS DQ_STANDARDS,
-        UCD.THRESHOLD                AS THRESHOLD,
-        CASE WHEN UCOL.ID = GSC.ID THEN 'Yes' ELSE 'No' END AS GOLDEN_SOURCE,
-        GS.SYSTEM_NAME               AS GS_SYSTEM_NAME, 
+        DSP.ID                                                          AS ID,
+        USYS.SYSTEM_NAME                                                AS SYSTEM_NAME, 
+        USYS.ITAM_ID                                                    AS ITAM_ID,
+        UTAB.NAME                                                       AS TABLE_NAME, 
+        UCOL.NAME                                                       AS COLUMN_NAME, 
+        UCD.ALIAS_NAME                                                  AS DATA_ELEMENT,
+        UCD.DESCRIPTION                                                 AS DESCRIPTION, 
+        UCD.DERIVED                                                     AS DERIVED,
+        UCD.DERIVATION_LOGIC                                            AS DERIVATION_LOGIC,
+        UCD.DQ_STANDARDS                                                AS DQ_STANDARDS,
+        UCD.THRESHOLD                                                   AS THRESHOLD,
+        CASE WHEN UCOL.ID = GSC.ID THEN 'Yes' ELSE 'No' END             AS GOLDEN_SOURCE,
+        GS.SYSTEM_NAME                                                  AS GS_SYSTEM_NAME, 
         CASE WHEN GS.ITAM_ID = '0' THEN 'NA' ELSE upper(GS.ITAM_ID) END AS GF_ITAM_ID,
-        GST.NAME                     AS GS_TABLE_NAME, 
-        GSC.NAME                     AS GS_COLUMN_NAME, 
-        GSCD.ALIAS_NAME                AS GS_DATA_ELEMENT,
-        GSCD.DESCRIPTION             AS GS_DESCRIPTION, 
-        CASE WHEN GSCD.DERIVED = '1' THEN 'Yes' ELSE 'No' END AS GS_DERIVED,
-        GSCD.DERIVATION_LOGIC        AS GS_DERIVATION_LOGIC
+        GST.NAME                                                        AS GS_TABLE_NAME, 
+        GSC.NAME                                                        AS GS_COLUMN_NAME, 
+        GSCD.ALIAS_NAME                                                 AS GS_DATA_ELEMENT,
+        GSCD.DESCRIPTION                                                AS GS_DESCRIPTION, 
+        CASE WHEN GSCD.DERIVED = '1' THEN 'Yes' ELSE 'No' END           AS GS_DERIVED,
+        GSCD.DERIVATION_LOGIC                                           AS GS_DERIVATION_LOGIC
     FROM TBL_DS_PROCESSES DSP
         INNER JOIN TBL_DS_PROCESS_DETAIL DSPD ON DSP.ID = DSPD.PROCESS_ID 
         INNER JOIN TBL_MD_COLUMN COL ON DSPD.COLUMN_ID = COL.ID 
@@ -184,10 +184,10 @@ SELECT DISTINCT
 
 -- name: details-data-standards
 SELECT DISTINCT
-  TMCD.DQ_STANDARDS			     AS DPO_DQ_STANDARDS,
-  TBT.DQ_STANDARDS				 AS DQ_STANDARDS_BT_LEVEL,
-  TMCD.THRESHOLD                AS DPO_THRESHOLD,
-  TBT.THRESHOLD                 AS THRESHOLD_BT_LEVEL
+  TMCD.DQ_STANDARDS     AS DPO_DQ_STANDARDS,
+  TBT.DQ_STANDARDS      AS DQ_STANDARDS_BT_LEVEL,
+  TMCD.THRESHOLD        AS DPO_THRESHOLD,
+  TBT.THRESHOLD         AS THRESHOLD_BT_LEVEL
 FROM TBL_BUSINESS_TERM TBT 
       INNER JOIN TBL_LINK_COLUMN_BUSINESS_TERM CBT ON TBT.ID = CBT.BUSINESS_TERM_ID
       INNER JOIN TBL_MD_COLUMN TMC ON TMC.ID = CBT.COLUMN_ID

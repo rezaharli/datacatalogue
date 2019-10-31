@@ -1,13 +1,13 @@
 -- name: rfo-view
 SELECT DISTINCT
-    CAT.ID,
-    CAT.NAME                          AS PRINCIPAL_RISK_TYPES,
-	  SC.NAME                           AS RISK_SUB_TYPE,    
-    PO.FIRST_NAME||' '||PO.LAST_NAME 	AS RISK_FRAMEWORK_OWNER,
-    PL.FIRST_NAME||' '||PL.LAST_NAME 	AS RISK_REPORTING_LEAD,    
-    COUNT(DISTINCT UPPER(PR.NAME)) OVER (PARTITION BY CAT.NAME, SC.NAME)   AS PR_COUNT,
-    COUNT(DISTINCT UPPER(CRM.NAME)) OVER (PARTITION BY CAT.NAME, SC.NAME)  AS CRM_COUNT,
-    COUNT(DISTINCT UPPER(CDE.NAME)) OVER (PARTITION BY CAT.NAME, SC.NAME)  AS CDE_COUNT
+    CAT.ID                                                                  AS ID,
+    CAT.NAME                                                                AS PRINCIPAL_RISK_TYPES,
+	SC.NAME                                                                 AS RISK_SUB_TYPE,    
+    PO.FIRST_NAME||' '||PO.LAST_NAME 	                                    AS RISK_FRAMEWORK_OWNER,
+    PL.FIRST_NAME||' '||PL.LAST_NAME 	                                    AS RISK_REPORTING_LEAD,    
+    COUNT(DISTINCT UPPER(PR.NAME)) OVER (PARTITION BY CAT.NAME, SC.NAME)    AS PR_COUNT,
+    COUNT(DISTINCT UPPER(CRM.NAME)) OVER (PARTITION BY CAT.NAME, SC.NAME)   AS CRM_COUNT,
+    COUNT(DISTINCT UPPER(CDE.NAME)) OVER (PARTITION BY CAT.NAME, SC.NAME)   AS CDE_COUNT
 FROM TBL_PRIORITY_REPORTS PR 
     INNER JOIN TBL_PEOPLE PO ON PR.OWNER_ID = PO.ID
     INNER JOIN TBL_PEOPLE PL ON PR.LEAD_ID = PL.ID
@@ -20,8 +20,8 @@ ORDER BY CAT.NAME, SC.NAME
 
 -- name: rfo-home-view
 SELECT
-    CAT.NAME                        AS PRINCIPAL_RISK,
-    SC.NAME                         AS RISK_SUB
+    CAT.NAME    AS PRINCIPAL_RISK,
+    SC.NAME     AS RISK_SUB
 FROM TBL_PRIORITY_REPORTS PR 
     INNER JOIN TBL_PEOPLE PL ON PR.LEAD_ID = PL.ID
     INNER JOIN TBL_SUBCATEGORY SC ON PR.SUB_RISK_TYPE_ID = SC.ID
@@ -30,7 +30,7 @@ WHERE UPPER(SC.NAME) = upper('?') -- PASS SUB RISK TYPE IN UPPER CASE
 
 -- name: rfo-summary-view
 SELECT
-    PR.ID,
+    PR.ID                           AS ID,
     CAT.NAME                        AS PRINCIPAL_RISK,
     SC.NAME                         AS RISK_SUB,
     COUNT(DISTINCT PR.NAME) OVER () AS PR_COUNT,
@@ -50,7 +50,7 @@ ORDER BY PR.NAME, CRM.NAME, CDE.NAME
 
 -- name: rfo-hierarchy-view
 SELECT
-    PR.ID,
+    PR.ID                           AS ID,
     CAT.NAME                        AS PRINCIPAL_RISK,
     SC.NAME                         AS RISK_SUB,
     COUNT(DISTINCT PR.NAME) OVER () AS PR_COUNT,
