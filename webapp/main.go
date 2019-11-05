@@ -41,6 +41,7 @@ func main() {
 	app.Static("css", filepath.Join(clit.ExeDir(), "views", "dist", "css"))
 	app.Static("js", filepath.Join(clit.ExeDir(), "views", "dist", "js"))
 	app.Static("img", filepath.Join(clit.ExeDir(), "views", "dist", "img"))
+	app.Static("csv", filepath.Join(clit.ExeDir(), "csv"))
 
 	server := knot.NewServer()
 	server.RegisterApp(app, "")

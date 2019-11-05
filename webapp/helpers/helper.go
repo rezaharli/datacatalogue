@@ -37,6 +37,13 @@ func WriteResultOK(k *knot.WebContext, res *toolkit.Result, data interface{}) {
 	k.WriteJSON(res, http.StatusOK)
 }
 
+func WriteResultCSV(k *knot.WebContext, data []byte) {
+	k.Writer.Header().Set("Content-Type", `text/csv`)
+	k.Writer.Header().Set("Content-Disposition", `attachment; filename="filename.csv"`)
+
+	k.Write(data, http.StatusOK)
+}
+
 func ObjectKeys(data interface{}) []string {
 	var datax map[string]interface{}
 

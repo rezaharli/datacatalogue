@@ -10,7 +10,7 @@
         </b-button>
     </download-excel> -->
 
-    <b-button v-on:click="onExport" class="float-right icon-only green-tosca">
+    <b-button v-on:click="doExport" class="float-right icon-only green-tosca">
         <i class="fa fa-fw fa-file-excel"></i>
     </b-button>
 </template>
@@ -24,7 +24,8 @@ export default {
         return {};
     },
     computed: {
-        store () { return this.$store.state[this.storeName].all },
+        store () { return this.$store.state.exportData },
+        tableStore () { return this.$store.state[this.storeName].all },
         excelFields (){
             var ret = {}
             
@@ -32,7 +33,7 @@ export default {
                 ret[v.text] = v.value.split(".").reverse()[0];
             })
 
-            if(this.store.isRightTable){
+            if(this.tableStore.isRightTable){
                 _.each(this.RightTableCols, function(v){
                     ret[v.text] = v.value.split(".").reverse()[0];
                 })
@@ -68,21 +69,37 @@ export default {
         }
     },
     methods: {
+        doExport(){
+            this.tableStore.left.isLoading = true;
+
+            var param = this.tableStore.param;
+            param.Filename = this.tableStore.filename;
+            param.Queryname = this.tableStore.queryname;
+            param.Pagination = _.cloneDeep(param.Pagination)
+            param.Headers = this.tableStore.leftHeaders;
+            
+            param.Pagination.rowsPerPage = -1;
+
+            return this.$store.dispatch(`exportData/doExport`, param).then(res => {
+                this.tableStore.left.isLoading = false;
+                window.open("/csv/"+this.store.filename, "_blank");
+            });
+        },
         getLeftTable () {
             return this.$store.dispatch(`${this.storeName}/exportData`)
         },
         async fetchData(){
             var fetchExportDatas = async () => {
                 if(this.rowSelectInvolved == true){
-                    if(this.store.selected){
-                        if(this.store.selected.length > 0){
-                            return this.store.left.source.filter(v => this.store.selected.find(w => v.TABLE_NAME == w.TABLE_NAME) != undefined); // SEMENTARA (SHOULDN'T BE HARDCODED USING TABLENAME)
+                    if(this.tableStore.selected){
+                        if(this.tableStore.selected.length > 0){
+                            return this.tableStore.left.source.filter(v => this.tableStore.selected.find(w => v.TABLE_NAME == w.TABLE_NAME) != undefined); // SEMENTARA (SHOULDN'T BE HARDCODED USING TABLENAME)
                         }
                     }
                 }
 
                 const resource = await this.getLeftTable();
-                return this.store.exportDatas;
+                return this.tableStore.exportDatas;
             }
 
             var exportDatas = await fetchExportDatas();
@@ -106,8 +123,8 @@ export default {
                     }
                 });
                 
-                if(this.store.isRightTable){
-                    var rightRows = this._.filter(this.store.right.source, (v) => v.LEFTID == leftRow.ID);
+                if(this.tableStore.isRightTable){
+                    var rightRows = this._.filter(this.tableStore.right.source, (v) => v.LEFTID == leftRow.ID);
                     
                     if(rightRows.length > 0){
                         this._.each(rightRows, (row, i) => {

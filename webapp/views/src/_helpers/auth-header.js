@@ -1,10 +1,10 @@
 import router from '../routes';
 
-export function authHeader() {
+export function authHeader(contentType) {
     let user = JSON.parse(localStorage.getItem('user'));
 
     var header = {
-        'Content-Type': 'application/json'
+        'Content-Type': contentType ? contentType : 'application/json'
     }
 
     if (user && user.token) {
@@ -18,6 +18,16 @@ export function fetchWHeader(url, body) {
     const requestOptions = {
         method: 'POST',
         headers: authHeader(),
+        body: JSON.stringify(body)
+    };
+
+    return fetch(url, requestOptions).then(handleResponse);
+}
+
+export function fetchFile(url, body) {
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader('text/csv'),
         body: JSON.stringify(body)
     };
 

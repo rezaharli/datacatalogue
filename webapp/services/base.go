@@ -29,6 +29,7 @@ type HeaderArgs struct {
 	Filename  string
 	Queryname string
 	FieldName string
+	Headers   []interface{}
 
 	Filter       string
 	ScopeFilters interface{}
@@ -114,6 +115,89 @@ func (s *Base) GetHeaderOpts(headerArgs HeaderArgs) ([]toolkit.M, error) {
 
 	///////// FILTER
 	q = `SELECT DISTINCT ` + joinedFieldnames + `
+		FROM (
+		` + q + `
+	) `
+
+	err = h.NewDBcmd().ExecuteSQLQueryHeaderOpts(h.SqlQueryParam{
+		TableName:        m.NewCategoryModel().TableName(),
+		SqlQuery:         q,
+		Results:          &resultRows,
+		AdditionalWhere:  additionalWhere,
+		PageNumber:       1,
+		RowsPerPage:      -1,
+		GroupCol:         headerArgs.FieldName,
+		ColumnFilterType: columnFilterType,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return resultRows, nil
+}
+
+func (s *Base) GetExportData(headerArgs HeaderArgs) ([]toolkit.M, error) {
+	fileName := headerArgs.Filename
+	queryName := headerArgs.Queryname
+
+	resultRows := make([]toolkit.M, 0)
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	if headerArgs.LoggedInID != "-" {
+		if headerArgs.LoggedInID != "" {
+			args = append(args, "MY", headerArgs.LoggedInID)
+		} else {
+			args = append(args, "ALL", "0000000")
+		}
+	}
+
+	if headerArgs.Param1 != "" {
+		args = append(args, toolkit.ToString(headerArgs.Param1))
+	}
+	if headerArgs.Param2 != "" {
+		args = append(args, toolkit.ToString(headerArgs.Param2))
+	}
+
+	// args = append(args, toolkit.ToString(headerArgs.Filter))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
+	if err != nil {
+		return nil, err
+	}
+
+	funcLog(funcName(), fileName, queryName)
+	additionalWhere := make(map[string]interface{}, 0)
+	var columnFilterType map[string]interface{}
+	for key, filter := range headerArgs.ScopeFilters.(map[string]interface{}) {
+		if key == "filterTypes" {
+			columnFilterType = filter.(map[string]interface{})
+			continue
+		}
+
+		if filter == nil {
+			continue
+		}
+
+		switch reflect.TypeOf(filter).Kind() {
+		case reflect.Slice:
+			s := reflect.ValueOf(filter)
+
+			if s.Len() > 0 {
+				additionalWhere[key] = filter
+			}
+		default:
+			if toolkit.ToString(filter) != "" {
+				additionalWhere[key] = filter
+			}
+		}
+	}
+
+	///////// FILTER
+	q = `SELECT *
 		FROM (
 		` + q + `
 	) `

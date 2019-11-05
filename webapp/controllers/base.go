@@ -1,9 +1,14 @@
 package controllers
 
 import (
+	"encoding/csv"
+	"log"
+	"os"
+	"path/filepath"
 	"strings"
 
 	"git.eaciitapp.com/sebar/knot"
+	"github.com/eaciit/clit"
 	"github.com/eaciit/toolkit"
 
 	"github.com/novalagung/gubrak"
@@ -58,6 +63,91 @@ func (c *Base) GetHeaderOpts(k *knot.WebContext) {
 	})
 
 	h.WriteResultOK(k, res, resultArray)
+}
+
+func (c *Base) ExportToCsv(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	headerArgs := s.HeaderArgs{
+		Filename:  payload.GetString("Filename"),
+		Queryname: payload.GetString("Queryname"),
+		Headers:   payload.Get("Headers").([]interface{}),
+
+		Param1:       payload.GetString("System"),
+		Param2:       payload.GetString("DspName"),
+		Filter:       payload.GetString("Filter"),
+		ScopeFilters: payload.Get("Filters"),
+	}
+
+	if payload.Has("LoggedInID") == true {
+		headerArgs.LoggedInID = payload.GetString("LoggedInID")
+	} else {
+		headerArgs.LoggedInID = "-"
+	}
+
+	resultRows, err := s.NewBaseService().GetExportData(headerArgs)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	folderPath := filepath.Join(clit.ExeDir(), "csv")
+	if _, err := os.Stat(folderPath); os.IsNotExist(err) {
+		os.MkdirAll(folderPath, os.ModePerm)
+	}
+
+	fileName := "result.csv"
+	os.Remove(filepath.Join(folderPath, fileName))
+	file, err := os.Create(filepath.Join(folderPath, fileName))
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+	defer file.Close()
+
+	w := csv.NewWriter(file)
+	w.Comma = '\t'
+	defer w.Flush()
+
+	var headers []string
+	for _, value := range headerArgs.Headers {
+		mapVal := value.(map[string]interface{})
+		if mapVal["exportable"].(bool) == true {
+			headers = append(headers, mapVal["text"].(string))
+		}
+	}
+
+	if err := w.Write(headers); err != nil {
+		log.Fatalln("error writing record to csv:", err)
+	}
+
+	for _, resultRow := range resultRows {
+		var row []string
+
+		for _, value := range headerArgs.Headers {
+			mapVal := value.(map[string]interface{})
+			if mapVal["exportable"].(bool) == true {
+				row = append(row, resultRow.GetString(mapVal["value"].(string)))
+			}
+		}
+
+		if err := w.Write(row); err != nil {
+			log.Fatalln("error writing record to csv:", err)
+		}
+	}
+
+	if err := w.Error(); err != nil {
+		log.Fatal(err)
+	}
+
+	h.WriteResultOK(k, res, fileName)
 }
 
 func (c *Base) GetDetails(payload toolkit.M,
