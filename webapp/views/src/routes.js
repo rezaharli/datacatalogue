@@ -1,8 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import Home from './components/Home';
-
 import Login from './components/Login';
 import Crypto from './components/Crypto';
 
@@ -46,7 +44,7 @@ import Edmp from './components/edmp/Edmp';
 import EdmpDd from './components/edmp/Edmp-dd';
 import EdmpDdTechnical from './components/edmp/Edmp-dd-technical';
 import EdmpDdBusiness from './components/edmp/Edmp-dd-business';
-import EdmpDdConsumption from './components/edmp/Edmp-dd-consumption';
+// import EdmpDdConsumption from './components/edmp/Edmp-dd-consumption';
 import EdmpIarc from './components/edmp/Edmp-iarc';
 import EdmpIarcPersonal from './components/edmp/Edmp-iarc-personal';
 import EdmpIarcInformation from './components/edmp/Edmp-iarc-information';
@@ -63,10 +61,7 @@ Vue.use(VueRouter);
 const router = new VueRouter({
   mode: 'history',
   routes: [{ // home
-    path: '/', name: 'landingpage', component: Home, 
-    meta: { 
-      title: "Home - Data Catalogue" 
-    },
+    path: '/', name: 'landingpage', redirect: { name: 'dsc' }
   }, { // dsc
     path: '/dsc', name: 'dsc', component: Dsc, 
     meta: { 

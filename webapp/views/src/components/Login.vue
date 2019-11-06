@@ -7,7 +7,7 @@
     <v-container fluid fill-height back>
         <div id="login">
             <div id="description">
-                <h1>Metadata Smart View</h1>
+                <h1>EDMP Metadata Catalogue</h1>
                 <p>Sign in to your account.</p>
             </div>
 
@@ -50,7 +50,6 @@
 
 <script>
 import jQuery from 'jquery'
-import { mapState, mapActions } from 'vuex'
 
 export default {
     data() {

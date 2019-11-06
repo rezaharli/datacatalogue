@@ -23,6 +23,11 @@
     margin-top: 1rem;
 }
 
+.back {
+    background-image: url('../images/u2.png');
+    background-size: cover;
+}
+
 /* ----- main 3 colors ------
 #5cb1b1
 #369fb5
