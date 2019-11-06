@@ -176,7 +176,6 @@ export default {
         searchInputItam: "",
         activeTab: '',
         tabs: [
-            { id: 'information', key: 'information', name: 'Information Asset Category', route: this.addressPath + '/information' },
             { id: 'personal', key: 'personal', name: 'Personal Data', route: this.addressPath + '/personal' },
         ]
       };
