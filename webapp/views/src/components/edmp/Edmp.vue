@@ -10,46 +10,7 @@
             <div class="">
                 
                 <b-row>
-                    <b-col sm=12 md=4 lg=4 class="my-3">
-                        <div class="card card-v3 transition link" @click="goToDscMenuContent('cde')">
-                            <b-row>
-                                <b-col cols=5 class="transition">
-                                    <v-img :src="images.cde" :contain="true" class="card-icon"></v-img>
-                                </b-col>
-
-                                <b-col cols=7 class="">
-                                    <div class="card-content">
-                                        <div class="text">
-                                            <h6 class="title-1">Critical Data Elements</h6>
-                                        </div>
-                                    </div>
-                                </b-col>
-                            </b-row>
-
-                            <h4 class="title-2">{{ store.counts ? store.counts.CDE_COUNT : 0 }}</h4>
-                            <div class="card-circle-left transition"></div>
-                        </div>
-                    </b-col>
-                
-                    <b-col sm=12 md=4 lg=4 class="my-3">
-                        <div class="card card-v3 transition link" @click="goToDscMenuContent('cdp')">
-                            <b-row>
-                                <b-col cols=5 class="transition">
-                                    <v-img :src="images.cdsp" :contain="true" class="card-icon"></v-img>
-                                </b-col>
-
-                                <b-col cols=7 class="">
-                                    <div class="card-content">
-                                        <div class="text">
-                                            <h6 class="title-1">Critical Downstream Processes</h6>
-                                        </div>
-                                    </div>
-                                </b-col>
-                            </b-row>
-
-                            <h4 class="title-2">{{ store.counts ? store.counts.DSP_COUNT : 0 }}</h4>
-                            <div class="card-circle-left transition"></div>
-                        </div>
+                    <b-col sm=12 md=2 lg=2 class="my-3">
                     </b-col>
 
                     <b-col sm=12 md=4 lg=4 class="my-3">
@@ -73,30 +34,6 @@
                         </div>
                     </b-col>
 
-                    <div class="clearfix"></div>
-                </b-row><b-row>
-
-                    <b-col sm=12 md=4 lg=4 class="my-3">
-                        <div class="card card-v3 transition link" @click="goToDscMenuContent('interfaces')">
-                            <b-row>
-                                <b-col cols=5 class="transition">
-                                    <v-img :src="images.imi" :contain="true" class="card-icon"></v-img>
-                                </b-col>
-
-                                <b-col cols=7 class="">
-                                    <div class="card-content">
-                                        <div class="text">
-                                            <h6 class="title-1">Immediate Interfaces</h6>
-                                        </div>
-                                    </div>
-                                </b-col>
-                            </b-row>
-
-                            <h4 class="title-2">{{ store.counts ? store.counts.INTERFACE_COUNT : 0 }}</h4>
-                            <div class="card-circle-left transition"></div>
-                        </div>
-                    </b-col>
-
                     <b-col sm=12 md=4 lg=4 class="my-3">
                         <div class="card card-v3 transition link" @click="goToEdmpMenuContent('dd')">
                             <b-row>
@@ -116,7 +53,11 @@
                             <div class="card-circle-left transition"></div>
                         </div>
                     </b-col>
-                    <b-col sm=12 md=4 lg=4 />
+
+                    <b-col sm=12 md=2 lg=2 class="my-3">
+                    </b-col>
+
+                    <div class="clearfix"></div>
                 </b-row>
             </div>
 
