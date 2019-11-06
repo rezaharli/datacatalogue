@@ -144,28 +144,8 @@
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PRODUCT_CATEGORY.toString().trim() ? props.item.PRODUCT_CATEGORY : 'NA'"></tablecell>
               </td>
 
-              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_NAME'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.BUSINESS_ALIAS_NAME.toString().trim() ? props.item.BUSINESS_ALIAS_NAME : 'NA'"></tablecell>
-              </td>
-
-              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_DESCRIPTION'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION.toString().trim() ? props.item.BUSINESS_ALIAS_DESCRIPTION : 'NA'"></tablecell>
-              </td>
-
               <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-capitalize">
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'"></tablecell>
-              </td>
-
-              <td v-bind:style="{ width: store.left.colWidth['DOMAIN'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DOMAIN.toString().trim() ? props.item.DOMAIN : 'NA'"></tablecell>
-              </td>
-
-              <td v-bind:style="{ width: store.left.colWidth['SUBDOMAIN'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.SUBDOMAIN.toString().trim() ? props.item.SUBDOMAIN : 'NA'"></tablecell>
-              </td>
-
-              <td v-bind:style="{ width: store.left.colWidth['DOMAIN_OWNER'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DOMAIN_OWNER.toString().trim() ? props.item.DOMAIN_OWNER : 'NA'"></tablecell>
               </td>
             </tr>
           </template>
@@ -214,23 +194,8 @@
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['PRODUCT_CATEGORY'] + 'px' }">
                   <tablecell :fulltext="props.item.PRODUCT_CATEGORY.toString().trim() ? props.item.PRODUCT_CATEGORY : 'NA'" showOn="hover"></tablecell>
                 </td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_NAME'] + 'px' }">
-                  <tablecell :fulltext="props.item.BUSINESS_ALIAS_NAME.toString().trim() ? props.item.BUSINESS_ALIAS_NAME : 'NA'" showOn="hover"></tablecell>
-                </td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_DESCRIPTION'] + 'px' }">
-                  <tablecell :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION.toString().trim() ? props.item.BUSINESS_ALIAS_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
-                </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
                   <tablecell :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'" showOn="hover"></tablecell>
-                </td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DOMAIN'] + 'px' }">
-                  <tablecell :fulltext="props.item.DOMAIN.toString().trim() ? props.item.DOMAIN : 'NA'" showOn="hover"></tablecell>
-                </td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['SUBDOMAIN'] + 'px' }">
-                  <tablecell :fulltext="props.item.SUBDOMAIN.toString().trim() ? props.item.SUBDOMAIN : 'NA'" showOn="hover"></tablecell>
-                </td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DOMAIN_OWNER'] + 'px' }">
-                  <tablecell :fulltext="props.item.DOMAIN_OWNER.toString().trim() ? props.item.DOMAIN_OWNER : 'NA'" showOn="hover"></tablecell>
                 </td>
               </template>
             </v-data-table>

@@ -153,36 +153,8 @@
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DATA_LINEAGE.toString().trim() ? props.item.DATA_LINEAGE : 'NA'"></tablecell>
               </td>
 
-              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_NAME'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.BUSINESS_ALIAS_NAME.toString().trim() ? props.item.BUSINESS_ALIAS_NAME : 'NA'"></tablecell>
-              </td>
-
-              <td v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_DESCRIPTION'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION.toString().trim() ? props.item.BUSINESS_ALIAS_DESCRIPTION : 'NA'"></tablecell>
-              </td>
-
               <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-capitalize">
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'"></tablecell>
-              </td>
-
-              <td v-bind:style="{ width: store.left.colWidth['EXAMPLE'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.EXAMPLE.toString().trim() ? props.item.EXAMPLE : 'NA'"></tablecell>
-              </td>
-
-              <td v-bind:style="{ width: store.left.colWidth['DERIVED'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DERIVED.toString().trim() ? props.item.DERIVED : 'NA'"></tablecell>
-              </td>
-
-              <td v-bind:style="{ width: store.left.colWidth['DERIVATION_LOGIC'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DERIVATION_LOGIC.toString().trim() ? props.item.DERIVATION_LOGIC : 'NA'"></tablecell>
-              </td>
-
-              <td v-bind:style="{ width: store.left.colWidth['SOURCED_FROM_UPSTREAM'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.SOURCED_FROM_UPSTREAM.toString().trim() ? props.item.SOURCED_FROM_UPSTREAM : 'NA'"></tablecell>
-              </td>
-
-              <td v-bind:style="{ width: store.left.colWidth['SYSTEM_CHECKS'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.SYSTEM_CHECKS.toString().trim() ? props.item.SYSTEM_CHECKS : 'NA'"></tablecell>
               </td>
             </tr>
           </template>
@@ -231,29 +203,8 @@
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATA_LINEAGE'] + 'px' }">
                   <tablecell :fulltext="props.item.DATA_LINEAGE.toString().trim() ? props.item.DATA_LINEAGE : 'NA'" showOn="hover"></tablecell>
                 </td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_NAME'] + 'px' }">
-                  <tablecell :fulltext="props.item.BUSINESS_ALIAS_NAME.toString().trim() ? props.item.BUSINESS_ALIAS_NAME : 'NA'" showOn="hover"></tablecell>
-                </td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_ALIAS_DESCRIPTION'] + 'px' }">
-                  <tablecell :fulltext="props.item.BUSINESS_ALIAS_DESCRIPTION.toString().trim() ? props.item.BUSINESS_ALIAS_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
-                </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
                   <tablecell :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'" showOn="hover"></tablecell>
-                </td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['EXAMPLE'] + 'px' }">
-                  <tablecell :fulltext="props.item.EXAMPLE.toString().trim() ? props.item.EXAMPLE : 'NA'" showOn="hover"></tablecell>
-                </td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DERIVED'] + 'px' }">
-                  <tablecell :fulltext="props.item.DERIVED.toString().trim() ? props.item.DERIVED : 'NA'" showOn="hover"></tablecell>
-                </td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DERIVATION_LOGIC'] + 'px' }">
-                  <tablecell :fulltext="props.item.DERIVATION_LOGIC.toString().trim() ? props.item.DERIVATION_LOGIC : 'NA'" showOn="hover"></tablecell>
-                </td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['SOURCED_FROM_UPSTREAM'] + 'px' }">
-                  <tablecell :fulltext="props.item.SOURCED_FROM_UPSTREAM.toString().trim() ? props.item.SOURCED_FROM_UPSTREAM : 'NA'" showOn="hover"></tablecell>
-                </td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['SYSTEM_CHECKS'] + 'px' }">
-                  <tablecell :fulltext="props.item.SYSTEM_CHECKS.toString().trim() ? props.item.SYSTEM_CHECKS : 'NA'" showOn="hover"></tablecell>
                 </td>
               </template>
             </v-data-table>
