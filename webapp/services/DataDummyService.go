@@ -1023,6 +1023,7 @@ func (s *DSCService) CreateEdmpDummyData() error {
 	for i := 0; i < 10000; i++ {
 		mdt := m.NewEdmpModel()
 		mdt.ID = i
+		mdt.RESOURCE_NAME = fake.Words()
 		mdt.COUNTRY = fake.Words()
 		mdt.BUSINESS_SEGMENT = fake.Words()
 		mdt.EDM_SOURCE_SYSTEM_NAME = fake.Words()
@@ -1058,8 +1059,9 @@ func (s *DSCService) CreateEdmpDummyData() error {
 		mdt.ACCESS_ROLE = fake.Words()
 		mdt.ROLE_DESCRIPTION = fake.Words()
 		mdt.CONSUMING_TECH_METADATA = fake.Words()
-		mdt.CREATED_DATETIME = time.Now()
-		mdt.MODIFIED_DATETIME = time.Now()
+		mdt.REQ_NO = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Created_DateTime = time.Now()
+		mdt.Modified_DateTime = time.Now()
 
 		data = append(data, mdt)
 	}
@@ -1070,6 +1072,184 @@ func (s *DSCService) CreateEdmpDummyData() error {
 		ContinueOnError: true,
 	})
 	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (s *DSCService) CreateEdmpSystemDummyData() error {
+	toolkit.Println("CreateEdmpSystemDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewEdmpSystemModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.EdmpSystem, 0)
+	for i := 0; i < 10000; i++ {
+		mdt := m.NewEdmpSystemModel()
+		mdt.ID = i
+		mdt.System_Name = fake.Words()
+		mdt.Display_Name = fake.Words()
+		mdt.ITAM_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Created_DateTime = time.Now()
+		mdt.Modified_DateTime = time.Now()
+		mdt.Status = rand.Intn(2)
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewEdmpSystemModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (s *DSCService) CreateEdmpPeopleDummyData() error {
+	toolkit.Println("CreateEdmpPeopleDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewEdmpPeopleModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.EdmpPeople, 0)
+	for i := 0; i < 10000; i++ {
+		mdt := m.NewEdmpPeopleModel()
+		mdt.ID = i
+		mdt.First_Name = fake.Words()
+		mdt.Last_Name = fake.Words()
+		mdt.Bank_ID = fake.Words()
+		mdt.Email_ID = fake.Words()
+		mdt.Function = fake.Words()
+		mdt.Org_Unit = fake.Words()
+		mdt.Status = fake.Words()
+		mdt.Created_DateTime = time.Now()
+		mdt.Modified_DateTime = time.Now()
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewEdmpPeopleModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (s *DSCService) CreateEdmpRoleDummyData() error {
+	toolkit.Println("CreateEdmpRoleDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewEdmpRoleModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.EdmpRole, 0)
+	for i := 0; i < 10000; i++ {
+		mdt := m.NewEdmpRoleModel()
+		mdt.ID = i
+		mdt.Role_Name = fake.Words()
+		mdt.Role_Type = fake.Words()
+		mdt.Role_Description = fake.Words()
+		mdt.Created_DateTime = time.Now()
+		mdt.Modified_DateTime = time.Now()
+		mdt.Status = rand.Intn(2)
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewEdmpRoleModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (s *DSCService) CreateEdmpLinkRolePeopleDummyData() error {
+	toolkit.Println("CreateEdmpLinkRolePeopleDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewEdmpLinkRolePeopleModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.EdmpLinkRolePeople, 0)
+	for i := 0; i < 10000; i++ {
+		mdt := m.NewEdmpLinkRolePeopleModel()
+		mdt.ID = i
+		mdt.Role_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.People_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Object_Type = fake.Words()
+		mdt.Object_ID = toolkit.ToInt(fake.DigitsN(4), "")
+		mdt.Created_DateTime = time.Now()
+		mdt.Modified_DateTime = time.Now()
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewEdmpLinkRolePeopleModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (s *DSCService) CreateEdmpUserDummyData() error {
+	toolkit.Println("CreateEdmpUserAdminData")
+
+	data := m.NewEdmpUserModel()
+	data.ID = 1
+	data.USERNAME = 123
+	data.PASSWORD = "Password.1"
+	data.EMAIL = "eaciit@eaciit.com"
+	data.NAME = "eaciit"
+	data.STATUS = 1
+	data.ROLE = "Admin,DSC,DDO,DPO,RFO"
+	data.CREATEDAT = time.Now().String()
+	data.UPDATEDAT = time.Now().String()
+
+	ok, err := NewEdmpUserService().Insert(data)
+	if !ok && err != nil {
+		log.Println(err.Error())
+		return err
+	}
+	if ok && err != nil {
 		log.Println(err.Error())
 		return err
 	}

@@ -92,8 +92,13 @@ func main() {
 			s.NewDSCService().CreateLinkPolicySystemDummyData()
 			s.NewDSCService().CreateReferenceLinkDummyData()
 			s.NewDSCService().CreateEdmpDummyData()
+			s.NewDSCService().CreateEdmpSystemDummyData()
+			s.NewDSCService().CreateEdmpPeopleDummyData()
+			s.NewDSCService().CreateEdmpRoleDummyData()
+			s.NewDSCService().CreateEdmpLinkRolePeopleDummyData()
 		}
 
+		s.NewDSCService().CreateEdmpUserDummyData()
 		s.NewDSCService().CreateUserDummyData()
 
 		// creates a new file watcher

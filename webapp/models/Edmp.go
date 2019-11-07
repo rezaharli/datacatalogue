@@ -4,6 +4,7 @@ import "time"
 
 type Edmp struct {
 	ID                          int
+	RESOURCE_NAME               string
 	COUNTRY                     string
 	BUSINESS_SEGMENT            string
 	EDM_SOURCE_SYSTEM_NAME      string
@@ -39,8 +40,9 @@ type Edmp struct {
 	ACCESS_ROLE                 string
 	ROLE_DESCRIPTION            string
 	CONSUMING_TECH_METADATA     string
-	CREATED_DATETIME            time.Time
-	MODIFIED_DATETIME           time.Time
+	REQ_NO                      int
+	Created_DateTime            time.Time
+	Modified_DateTime           time.Time
 }
 
 func NewEdmpModel() *Edmp {
