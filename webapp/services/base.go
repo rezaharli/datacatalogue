@@ -137,6 +137,90 @@ func (s *Base) GetHeaderOpts(headerArgs HeaderArgs) ([]toolkit.M, error) {
 	return resultRows, nil
 }
 
+func (s *Base) GetRowCount(headerArgs HeaderArgs) ([]toolkit.M, error) {
+	fileName := headerArgs.Filename
+	queryName := headerArgs.Queryname
+
+	resultRows := make([]toolkit.M, 0)
+
+	q := ""
+	args := make([]interface{}, 0)
+
+	if headerArgs.LoggedInID != "-" {
+		if headerArgs.LoggedInID != "" {
+			args = append(args, "MY", headerArgs.LoggedInID)
+		} else {
+			args = append(args, "ALL", "0000000")
+		}
+	}
+
+	if headerArgs.Param1 != "" {
+		args = append(args, toolkit.ToString(headerArgs.Param1))
+	}
+	if headerArgs.Param2 != "" {
+		args = append(args, toolkit.ToString(headerArgs.Param2))
+	}
+
+	// args = append(args, toolkit.ToString(headerArgs.Filter))
+
+	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
+	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
+	if err != nil {
+		return nil, err
+	}
+
+	var fieldNames []string
+	fieldNames = append(fieldNames, headerArgs.FieldName)
+
+	additionalWhere := make(map[string]interface{}, 0)
+	if strings.TrimSpace(headerArgs.Filter) != "" {
+		additionalWhere[headerArgs.FieldName] = headerArgs.Filter
+	}
+
+	var columnFilterType map[string]interface{}
+	for key, filter := range headerArgs.ScopeFilters.(map[string]interface{}) {
+		if key == "filterTypes" {
+			columnFilterType = filter.(map[string]interface{})
+			continue
+		}
+
+		if filter == nil {
+			continue
+		}
+
+		fieldNames = append(fieldNames, key)
+
+		switch reflect.TypeOf(filter).Kind() {
+		case reflect.Slice:
+			s := reflect.ValueOf(filter)
+
+			if s.Len() > 0 {
+				additionalWhere[key] = filter
+			}
+		default:
+			if toolkit.ToString(filter) != "" {
+				additionalWhere[key] = filter
+			}
+		}
+	}
+
+	err = h.NewDBcmd().ExecuteSQLQueryRowCount(h.SqlQueryParam{
+		TableName:        m.NewCategoryModel().TableName(),
+		SqlQuery:         q,
+		Results:          &resultRows,
+		AdditionalWhere:  additionalWhere,
+		PageNumber:       1,
+		RowsPerPage:      -1,
+		ColumnFilterType: columnFilterType,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return resultRows, nil
+}
+
 func (s *Base) GetExportData(headerArgs HeaderArgs) ([]toolkit.M, error) {
 	fileName := headerArgs.Filename
 	queryName := headerArgs.Queryname

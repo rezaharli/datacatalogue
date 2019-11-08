@@ -297,6 +297,10 @@ export default {
       this.store.filters.left.filterTypes["ITAM"] = "eq";
 
       this.$store.dispatch(`${this.storeName}/getLeftTable`).then(v => { 
+        this.$store.dispatch(`header/getRowCount`, this.store.param).then(res => {
+          this.store.left.totalItems = res.Data;
+        });
+
         setTimeout(() => {
           this.setTableColumnsWidth() 
         }, 10);

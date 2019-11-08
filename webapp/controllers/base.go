@@ -65,6 +65,41 @@ func (c *Base) GetHeaderOpts(k *knot.WebContext) {
 	h.WriteResultOK(k, res, resultArray)
 }
 
+func (c *Base) GetRowCount(k *knot.WebContext) {
+	res := toolkit.NewResult()
+
+	payload := toolkit.M{}
+	err := k.GetPayload(&payload)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	headerArgs := s.HeaderArgs{
+		Filename:  payload.GetString("Filename"),
+		Queryname: payload.GetString("Queryname"),
+
+		Param1:       payload.GetString("System"),
+		Param2:       payload.GetString("DspName"),
+		Filter:       payload.GetString("Filter"),
+		ScopeFilters: payload.Get("Filters"),
+	}
+
+	if payload.Has("LoggedInID") == true {
+		headerArgs.LoggedInID = payload.GetString("LoggedInID")
+	} else {
+		headerArgs.LoggedInID = "-"
+	}
+
+	resultRows, err := s.NewBaseService().GetRowCount(headerArgs)
+	if err != nil {
+		h.WriteResultError(k, res, err.Error())
+		return
+	}
+
+	h.WriteResultOK(k, res, resultRows[0].GetInt("RESULT_COUNT"))
+}
+
 func (c *Base) ExportToCsv(k *knot.WebContext) {
 	res := toolkit.NewResult()
 

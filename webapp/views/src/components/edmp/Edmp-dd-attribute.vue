@@ -150,7 +150,11 @@ export default {
   methods: {
     getLeftTable() {
       this.store.system = this.$route.params.system;
-      this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      this.$store.dispatch(`${this.storeName}/getLeftTable`).then(() => {
+        this.$store.dispatch(`header/getRowCount`, this.store.param).then(res => {
+          this.store.left.totalItems = res.Data;
+        });
+      });
     },
     setTableColumnsWidth(elem){
       var tableElem = elem.find('.v-table__overflow > table.v-table');

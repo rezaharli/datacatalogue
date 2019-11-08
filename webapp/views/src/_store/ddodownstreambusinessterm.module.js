@@ -67,6 +67,8 @@ const actions = {
         });
 
         state.all.param = {
+            Filename: state.all.filename,
+            Queryname: state.all.queryname,
             Subdomain: state.all.subdomain,
             DspName: state.all.subdomain,
             System: state.all.system,
@@ -114,7 +116,6 @@ const mutations = {
     getLeftTableSuccess(state, data) {
         state.all.left.source = data;
         state.all.left.display = data;
-        state.all.left.totalItems = data[0] ? data[0].RESULT_COUNT : 0;
 
         state.all.left.isLoading = false;
     },

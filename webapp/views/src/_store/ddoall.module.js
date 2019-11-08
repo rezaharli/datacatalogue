@@ -72,6 +72,8 @@ const actions = {
         });
 
         state.all.param = {
+            Filename: state.all.filename,
+            Queryname: state.all.queryname,
             LoggedInID: "",
             Tabs: state.all.tabName,
             Search: state.all.searchMain.toString(),

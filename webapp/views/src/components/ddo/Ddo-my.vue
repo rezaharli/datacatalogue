@@ -147,6 +147,10 @@ export default {
       getLeftTable () {
         var getLeftTableVal = this.$store.dispatch(`${this.storeName}/getLeftTable`);
         getLeftTableVal.then(res => {
+          this.$store.dispatch(`header/getRowCount`, this.store.param).then(res => {
+            this.store.left.totalItems = res.Data;
+          });
+
           this.removeHypenOnEmptyTables($("#table-ddo-my"));
           this.setTableColumnsWidth($('#table-ddo-my'));
         });

@@ -184,6 +184,10 @@ export default {
       this.store.system = "ENTERPRISE DATA MGMT PLATFORM";
 
       this.$store.dispatch(`${this.storeName}/getLeftTable`).then(v => { 
+        this.$store.dispatch(`header/getRowCount`, this.store.param).then(res => {
+          this.store.left.totalItems = res.Data;
+        });
+
         setTimeout(() => {
           this.setTableColumnsWidth() 
         }, 10);

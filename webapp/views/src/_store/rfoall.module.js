@@ -77,6 +77,8 @@ const actions = {
         });
 
         state.all.param = {
+            Filename: state.all.filename,
+            Queryname: state.all.queryname,
             LoggedInID: "",
             Tabs: state.all.tabName,
             Search: state.all.searchMain,
@@ -145,7 +147,6 @@ const mutations = {
     getLeftTableSuccess(state, res) {
         state.all.left.source = res.DataFlat;
         state.all.left.display = res.Data;
-        state.all.left.totalItems = res.Data[0] ? res.Data[0].RESULT_COUNT : 0;
 
         state.all.left.isLoading = false;
     },

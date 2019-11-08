@@ -246,7 +246,11 @@ export default {
   },
   methods: {
     getLeftTable() {
-      this.$store.dispatch(`${this.storeName}/getLeftTable`);
+      this.$store.dispatch(`${this.storeName}/getLeftTable`).then(() => {
+        this.$store.dispatch(`header/getRowCount`, this.store.param).then(res => {
+          this.store.left.totalItems = res.Data;
+        });
+      });
     },
     isMainLevelCellShowing (props){
       if( ! props.expanded) return true;

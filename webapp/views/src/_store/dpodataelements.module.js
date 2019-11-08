@@ -63,6 +63,8 @@ const actions = {
         });
 
         state.all.param = {
+            Filename: state.all.filename,
+            Queryname: state.all.queryname,
             System: state.all.dspname,
             Filters: state.all.filters.left,
             Pagination: state.all.left.pagination
@@ -108,7 +110,6 @@ const mutations = {
     getLeftTableSuccess(state, data) {
         state.all.left.source = data;
         state.all.left.display = data;
-        state.all.left.totalItems = data[0] ? data[0].RESULT_COUNT : 0;
 
         state.all.left.isLoading = false;
     },

@@ -16,6 +16,9 @@ const actions = {
                 error => commit('getGetOptsFailure', error)
             );
     },
+    getRowCount({ commit }, param) {
+        return headerService.getRowCount(param)
+    },
 };
 
 const mutations = {
