@@ -16,7 +16,7 @@ const actions = {
                 error => commit('getGetOptsFailure', error)
             );
     },
-    getRowCount({ commit }, param) {
+    getRowCount(param) {
         return headerService.getRowCount(param)
     },
 };

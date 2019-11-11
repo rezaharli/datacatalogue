@@ -36,10 +36,10 @@
                 <b-col class="ml-5 col-md-10">
                   <b-row class="ml-3 dd-filter">
                     <b-col cols="2">
-                      <v-tooltip top>
+                      <v-tooltip bottom>
                         <template slot="activator" slot-scope="{ on }">
                           <div v-on="on">
-                            <v-select
+                            <v-autocomplete
                               v-model="store.dd.ddVal.ddCountrySelected"
                               :items="ddCountryOptions"
                               :search-input.sync="searchInputCountry"
@@ -48,7 +48,6 @@
                               multiple
                               box
                               clearable
-                              autocomplete 
                             >
                               <template slot="selection" slot-scope="{ item, index }">
                                 <v-chip v-if="index === 0" :class="store.dd.ddVal.ddCountrySelected.length == 1 ? 'full' : 'small'">
@@ -60,19 +59,25 @@
                                   class="grey--text caption"
                                 >({{ store.dd.ddVal.ddCountrySelected.length - 1 }}+) </span>
                               </template>
-                            </v-select>
+                            </v-autocomplete>
                           </div>
                         </template>
 
-                        <span>Country</span>
+                        <div>
+                          <span>Country</span>
+
+                          <ul v-if="store.dd.ddVal.ddCountrySelected.length > 0">
+                            <li :key="val" v-for="val in store.dd.ddVal.ddCountrySelected">{{ val }}</li>
+                          </ul>
+                        </div>
                       </v-tooltip>
                     </b-col>
 
                     <b-col cols="2">
-                      <v-tooltip top>
+                      <v-tooltip bottom>
                         <template slot="activator" slot-scope="{ on }">
                           <div v-on="on">
-                            <v-select
+                            <v-autocomplete
                               v-model="store.dd.ddVal.ddBusinessSegmentSelected"
                               :items="ddBusinessSegmentOptions"
                               :search-input.sync="searchInputBusiness"
@@ -81,7 +86,6 @@
                               multiple
                               box
                               clearable
-                              autocomplete
                             >
                               <template slot="selection" slot-scope="{ item, index }">
                                 <v-chip v-if="index === 0" :class="store.dd.ddVal.ddBusinessSegmentSelected.length == 1 ? 'full' : 'small'">
@@ -93,19 +97,25 @@
                                   class="grey--text caption"
                                 >({{ store.dd.ddVal.ddBusinessSegmentSelected.length - 1 }}+) </span>
                               </template>
-                            </v-select>
+                            </v-autocomplete>
                           </div>
                         </template>
-                        
-                        <span>Business Segment</span>
+
+                        <div>
+                          <span>Business Segment</span>
+
+                          <ul v-if="store.dd.ddVal.ddBusinessSegmentSelected.length > 0">
+                            <li :key="val" v-for="val in store.dd.ddVal.ddBusinessSegmentSelected">{{ val }}</li>
+                          </ul>
+                        </div>
                       </v-tooltip>
                     </b-col>
 
                     <b-col cols="2">
-                      <v-tooltip top>
+                      <v-tooltip bottom>
                         <template slot="activator" slot-scope="{ on }">
                           <div v-on="on">
-                            <v-select
+                            <v-autocomplete
                               v-model="store.dd.ddVal.ddSourceSystemSelected"
                               :items="ddSourceSystemOptions"
                               :search-input.sync="searchInputSourceSystem"
@@ -114,7 +124,6 @@
                               multiple
                               box
                               clearable
-                              autocomplete
                             >
                               <template slot="selection" slot-scope="{ item, index }">
                                 <v-chip v-if="index === 0" :class="store.dd.ddVal.ddSourceSystemSelected.length == 1 ? 'full' : 'small'">
@@ -126,19 +135,25 @@
                                   class="grey--text caption"
                                 >({{ store.dd.ddVal.ddSourceSystemSelected.length - 1 }}+) </span>
                               </template>
-                            </v-select>
+                            </v-autocomplete>
                           </div>
                         </template>
-                        
-                        <span>Source System</span>
+
+                        <div>
+                          <span>Source System</span>
+
+                          <ul v-if="store.dd.ddVal.ddSourceSystemSelected.length > 0">
+                            <li :key="val" v-for="val in store.dd.ddVal.ddSourceSystemSelected">{{ val }}</li>
+                          </ul>
+                        </div>
                       </v-tooltip>
                     </b-col>
 
                     <b-col cols="2">
-                      <v-tooltip top>
+                      <v-tooltip bottom>
                         <template slot="activator" slot-scope="{ on }">
                           <div v-on="on">
-                            <v-select
+                            <v-autocomplete
                               v-model="store.dd.ddVal.ddClusterSelected"
                               :items="ddClusterOptions"
                               :search-input.sync="searchInputCluster"
@@ -147,7 +162,6 @@
                               multiple
                               box
                               clearable
-                              autocomplete
                             >
                               <template slot="selection" slot-scope="{ item, index }">
                                 <v-chip v-if="index === 0" :class="store.dd.ddVal.ddClusterSelected.length == 1 ? 'full' : 'small'">
@@ -159,19 +173,25 @@
                                   class="grey--text caption"
                                 >({{ store.dd.ddVal.ddClusterSelected.length - 1 }}+) </span>
                               </template>
-                            </v-select>
+                            </v-autocomplete>
                           </div>
                         </template>
-                        
-                        <span>Cluster</span>
+
+                        <div>
+                          <span>Cluster</span>
+
+                          <ul v-if="store.dd.ddVal.ddClusterSelected.length > 0">
+                            <li :key="val" v-for="val in store.dd.ddVal.ddClusterSelected">{{ val }}</li>
+                          </ul>
+                        </div>
                       </v-tooltip>
                     </b-col>
 
                     <b-col cols="2">
-                      <v-tooltip top>
+                      <v-tooltip bottom>
                         <template slot="activator" slot-scope="{ on }">
                           <div v-on="on">
-                            <v-select
+                            <v-autocomplete
                               v-model="store.dd.ddVal.ddTierSelected"
                               :items="ddTierOptions"
                               :search-input.sync="searchInputTier"
@@ -180,7 +200,6 @@
                               multiple
                               box
                               clearable
-                              autocomplete
                             >
                               <template slot="selection" slot-scope="{ item, index }">
                                 <v-chip v-if="index === 0" :class="store.dd.ddVal.ddTierSelected.length == 1 ? 'full' : 'small'">
@@ -192,19 +211,25 @@
                                   class="grey--text caption"
                                 >({{ store.dd.ddVal.ddTierSelected.length - 1 }}+) </span>
                               </template>
-                            </v-select>
+                            </v-autocomplete>
                           </div>
                         </template>
-                        
-                        <span>Tier</span>
+
+                        <div>
+                          <span>Tier</span>
+
+                          <ul v-if="store.dd.ddVal.ddTierSelected.length > 0">
+                            <li :key="val" v-for="val in store.dd.ddVal.ddTierSelected">{{ val }}</li>
+                          </ul>
+                        </div>
                       </v-tooltip>
                     </b-col>
 
                     <b-col cols="2">
-                      <v-tooltip top>
+                      <v-tooltip bottom>
                         <template slot="activator" slot-scope="{ on }">
                           <div v-on="on">
-                            <v-select
+                            <v-autocomplete
                               v-model="store.dd.ddVal.ddItamSelected"
                               :items="ddItamOptions"
                               :search-input.sync="searchInputItam"
@@ -213,7 +238,6 @@
                               multiple
                               box
                               clearable
-                              autocomplete
                             >
                               <template slot="selection" slot-scope="{ item, index }">
                                 <v-chip v-if="index === 0" :class="store.dd.ddVal.ddItamSelected.length == 1 ? 'full' : 'small'">
@@ -225,11 +249,17 @@
                                   class="grey--text caption"
                                 >({{ store.dd.ddVal.ddItamSelected.length - 1 }}+) </span>
                               </template>
-                            </v-select>
+                            </v-autocomplete>
                           </div>
                         </template>
-                        
-                        <span>ITAM</span>
+
+                        <div>
+                          <span>ITAM</span>
+
+                          <ul v-if="store.dd.ddVal.ddItamSelected.length > 0">
+                            <li :key="val" v-for="val in store.dd.ddVal.ddItamSelected">{{ val }}</li>
+                          </ul>
+                        </div>
                       </v-tooltip>
                     </b-col>
                   </b-row>
@@ -272,6 +302,12 @@ export default {
         technicalStoreName: "edmpddTechnical",
         businessStoreName: "edmpddBusiness",
         consumptionStoreName: "edmpddConsumption",
+        ddCountryOptions: [],
+        ddBusinessSegmentOptions: [],
+        ddSourceSystemOptions: [],
+        ddClusterOptions: [],
+        ddTierOptions: [],
+        ddItamOptions: [],
         searchInputCountry: "",
         searchInputBusiness: "",
         searchInputSourceSystem: "",
@@ -313,65 +349,20 @@ export default {
       activeTabStore() {
         return this.$store.state[this.activeTabStoreName].all;
       },
+      isGlobalFilterEmpty() {
+        return this.store.dd.ddVal.ddCountrySelected.length == 0
+          && this.store.dd.ddVal.ddBusinessSegmentSelected.length == 0
+          && this.store.dd.ddVal.ddSourceSystemSelected.length == 0
+          && this.store.dd.ddVal.ddClusterSelected.length == 0
+          && this.store.dd.ddVal.ddTierSelected.length == 0
+          && this.store.dd.ddVal.ddItamSelected.length == 0;
+      },
       addressPath() {
         var tmp = this.$route.path.split("/");
         return tmp.slice(0, 4).join("/");
       },
       urlParam1() {
         return this.$route.params.system;
-      },
-      ddCountryOptions () {
-        return _.sortedUniq(_.sortBy(_.map(this.store.dd.DDSource, (v) => v.COUNTRY.toString()), [function(o) { return o; }]));
-      },
-      ddBusinessSegmentOptions () {
-        var self = this;
-        var filtered = _.filter(self.store.dd.DDSource, (v) => {
-          return self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true;
-        });
-
-        return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.BUSINESS_SEGMENT.toString()), [function(o) { return o; }]));
-      },
-      ddSourceSystemOptions () {
-        var self = this;
-        var filtered = _.filter(self.store.dd.DDSource, (v) => {
-          return (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true) 
-            && (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true);
-        });
-        
-        return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.EDM_SOURCE_SYSTEM_NAME.toString()), [function(o) { return o; }]));
-      },
-      ddClusterOptions () {
-        var self = this;
-        var filtered = _.filter(self.store.dd.DDSource, (v) => {
-          return (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true) 
-            && (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true) 
-            && (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true);
-        });
-        
-        return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.CLUSTER_NAME.toString()), [function(o) { return o; }]));
-      },
-      ddTierOptions () {
-        var self = this;
-        var filtered = _.filter(self.store.dd.DDSource, (v) => {
-          return (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true) 
-            && (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true) 
-            && (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true)
-            && (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true);
-        });
-        
-        return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.TIER.toString()), [function(o) { return o; }]));
-      },
-      ddItamOptions () {
-        var self = this;
-        var filtered = _.filter(self.store.dd.DDSource, (v) => {
-          return (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true) 
-            && (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true) 
-            && (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true)
-            && (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true)
-            && (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : true);
-        });
-        
-        return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.ITAM.toString()), [function(o) { return o; }]));
       },
     },
     watch: {
@@ -381,67 +372,95 @@ export default {
           this.getLeftTable();
         }
       },
-      'store.dd.ddVal.ddCountrySelected' () {
+      'store.dd.ddVal.ddCountrySelected'(val) {
         if(this.store.dd.firstload) return;
 
-        this.store.dd.ddVal.ddBusinessSegmentSelected = [];
-        this.store.dd.ddVal.ddSourceSystemSelected = [];
-        this.store.dd.ddVal.ddClusterSelected = [];
-        this.store.dd.ddVal.ddTierSelected = [];
-        this.store.dd.ddVal.ddItamSelected = [];
+        this.setDdBusinessSegmentOptions();
+        this.setDdSourceSystemOptions();
+        this.setDdClusterOptions();
+        this.setDdTierOptions();
+        this.setDdItamOptions();
 
         this.store.dd.firstload = true;
 
-        this.refreshActiveTabTable();
+        setTimeout(() => {
+          this.refreshActiveTabTable("COUNTRY", val);
+        }, 0);
       },
-      'store.dd.ddVal.ddBusinessSegmentSelected' () {
+      'store.dd.ddVal.ddBusinessSegmentSelected'(val) {
         if(this.store.dd.firstload) return;
-
-        this.store.dd.ddVal.ddSourceSystemSelected = [];
-        this.store.dd.ddVal.ddClusterSelected = [];
-        this.store.dd.ddVal.ddTierSelected = [];
-        this.store.dd.ddVal.ddItamSelected = [];
+        
+        this.setDdCountryOptions();
+        this.setDdSourceSystemOptions();
+        this.setDdClusterOptions();
+        this.setDdTierOptions();
+        this.setDdItamOptions();
 
         this.store.dd.firstload = true;
 
-        this.refreshActiveTabTable();
+        setTimeout(() => {
+          this.refreshActiveTabTable("BUSINESS_SEGMENT", val);
+        }, 0);
       },
-      'store.dd.ddVal.ddSourceSystemSelected' () {
+      'store.dd.ddVal.ddSourceSystemSelected'(val) {
         if(this.store.dd.firstload) return;
 
-        this.store.dd.ddVal.ddClusterSelected = [];
-        this.store.dd.ddVal.ddTierSelected = [];
-        this.store.dd.ddVal.ddItamSelected = [];
+        this.setDdCountryOptions();
+        this.setDdBusinessSegmentOptions();
+        this.setDdClusterOptions();
+        this.setDdTierOptions();
+        this.setDdItamOptions();
         
         this.store.dd.firstload = true;
 
-        this.refreshActiveTabTable();
+        setTimeout(() => {
+          this.refreshActiveTabTable("EDM_SOURCE_SYSTEM_NAME", val);
+        }, 0);
       },
-      'store.dd.ddVal.ddClusterSelected' () {
+      'store.dd.ddVal.ddClusterSelected'(val) {
         if(this.store.dd.firstload) return;
 
-        this.store.dd.ddVal.ddTierSelected = [];
-        this.store.dd.ddVal.ddItamSelected = [];
+        this.setDdCountryOptions();
+        this.setDdBusinessSegmentOptions();
+        this.setDdSourceSystemOptions();
+        this.setDdTierOptions();
+        this.setDdItamOptions();
 
         this.store.dd.firstload = true;
 
-        this.refreshActiveTabTable();
+        setTimeout(() => {
+          this.refreshActiveTabTable("CLUSTER_NAME", val);
+        }, 0);
       },
-      'store.dd.ddVal.ddTierSelected' () {
+      'store.dd.ddVal.ddTierSelected'(val) {
         if(this.store.dd.firstload) return;
 
-        this.store.dd.ddVal.ddItamSelected = [];
+        this.setDdCountryOptions();
+        this.setDdBusinessSegmentOptions();
+        this.setDdSourceSystemOptions();
+        this.setDdClusterOptions();
+        this.setDdItamOptions();
 
         this.store.dd.firstload = true;
 
-        this.refreshActiveTabTable();
+        setTimeout(() => {
+          this.refreshActiveTabTable("TIER", val);
+        }, 0);
       },
-      'store.dd.ddVal.ddItamSelected' () {
+      'store.dd.ddVal.ddItamSelected'(val) {
         if(this.store.dd.firstload) return;
+
+        this.setDdCountryOptions();
+        this.setDdBusinessSegmentOptions();
+        this.setDdSourceSystemOptions();
+        this.setDdClusterOptions();
+        this.setDdTierOptions();
 
         this.store.dd.firstload = true;
 
-        this.refreshActiveTabTable();
+        setTimeout(() => {
+          this.refreshActiveTabTable("ITAM", val);
+        }, 0);
       },
     },
     mounted() {
@@ -451,13 +470,37 @@ export default {
       this.getDropdownOpts();
     },
     methods: {
+      setNewDropdownOpts() {
+        this.ddCountryOptions = _.sortedUniq(_.sortBy(_.map(this.store.dd.DDSource, (v) => v.COUNTRY.toString()), [function(o) { return o; }]));
+        this.ddBusinessSegmentOptions = _.sortedUniq(_.sortBy(_.map(this.store.dd.DDSource, (v) => v.BUSINESS_SEGMENT.toString()), [function(o) { return o; }]));
+        this.ddSourceSystemOptions = _.sortedUniq(_.sortBy(_.map(this.store.dd.DDSource, (v) => v.EDM_SOURCE_SYSTEM_NAME.toString()), [function(o) { return o; }]));
+        this.ddClusterOptions = _.sortedUniq(_.sortBy(_.map(this.store.dd.DDSource, (v) => v.CLUSTER_NAME.toString()), [function(o) { return o; }]));
+        this.ddTierOptions = _.sortedUniq(_.sortBy(_.map(this.store.dd.DDSource, (v) => v.TIER.toString()), [function(o) { return o; }]));
+        this.ddItamOptions = _.sortedUniq(_.sortBy(_.map(this.store.dd.DDSource, (v) => v.ITAM.toString()), [function(o) { return o; }]));
+        
+      },
       getDropdownOpts() {
-        this.$store.dispatch(`${this.storeName}/getDdDropdownOpts`);
+        this.$store.dispatch(`${this.storeName}/getDdDropdownOpts`).then(() => {
+          this.setNewDropdownOpts();
+        });
       },
       getLeftTable() {
         this.$store.dispatch(`${this.storeName}/getLeftTable`);
       },
-      refreshActiveTabTable() {
+      refreshActiveTabTable(updatedAttr, val) {
+        if( ! this.technicalStore.filters.left.filterTypes) this.technicalStore.filters.left.filterTypes = {};
+        if( ! this.businessStore.filters.left.filterTypes) this.businessStore.filters.left.filterTypes = {};
+        if( ! this.consumptionStore.filters.left.filterTypes) this.consumptionStore.filters.left.filterTypes = {};
+
+        this.technicalStore.filters.left[updatedAttr] = val;
+        this.technicalStore.filters.left.filterTypes[updatedAttr] = "eq";
+
+        this.businessStore.filters.left[updatedAttr] = val;
+        this.businessStore.filters.left.filterTypes[updatedAttr] = "eq";
+
+        this.consumptionStore.filters.left[updatedAttr] = val;
+        this.consumptionStore.filters.left.filterTypes[updatedAttr] = "eq";
+
         if(this.activeTab.indexOf("technical-metadata") != -1){
           this.refreshTechnicalTable();
         }
@@ -469,79 +512,109 @@ export default {
         }
       },
       refreshTechnicalTable() {
-        if( ! this.technicalStore.filters.left.filterTypes) this.technicalStore.filters.left.filterTypes = {};
-
-        this.technicalStore.filters.left["COUNTRY"] = this.store.dd.ddVal.ddCountrySelected;
-        this.technicalStore.filters.left.filterTypes["COUNTRY"] = "eq";
-
-        this.technicalStore.filters.left["BUSINESS_SEGMENT"] = this.store.dd.ddVal.ddBusinessSegmentSelected;
-        this.technicalStore.filters.left.filterTypes["BUSINESS_SEGMENT"] = "eq";
-
-        this.technicalStore.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.store.dd.ddVal.ddSourceSystemSelected;
-        this.technicalStore.filters.left.filterTypes["EDM_SOURCE_SYSTEM_NAME"] = "eq";
-
-        this.technicalStore.filters.left["CLUSTER_NAME"] = this.store.dd.ddVal.ddClusterSelected;
-        this.technicalStore.filters.left.filterTypes["CLUSTER_NAME"] = "eq";
-
-        this.technicalStore.filters.left["TIER"] = this.store.dd.ddVal.ddTierSelected;
-        this.technicalStore.filters.left.filterTypes["TIER"] = "eq";
-
-        this.technicalStore.filters.left["ITAM"] = this.store.dd.ddVal.ddItamSelected;
-        this.technicalStore.filters.left.filterTypes["ITAM"] = "eq";
-
         this.$store.dispatch(`${this.technicalStoreName}/getLeftTable`).then(res => {
           this.store.dd.firstload = false;
         });
       },
       refreshBusinessTable() {
-        if( ! this.businessStore.filters.left.filterTypes) this.businessStore.filters.left.filterTypes = {};
-
-        this.businessStore.filters.left["COUNTRY"] = this.store.dd.ddVal.ddCountrySelected;
-        this.businessStore.filters.left.filterTypes["COUNTRY"] = "eq";
-
-        this.businessStore.filters.left["BUSINESS_SEGMENT"] = this.store.dd.ddVal.ddBusinessSegmentSelected;
-        this.businessStore.filters.left.filterTypes["BUSINESS_SEGMENT"] = "eq";
-
-        this.businessStore.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.store.dd.ddVal.ddSourceSystemSelected;
-        this.businessStore.filters.left.filterTypes["EDM_SOURCE_SYSTEM_NAME"] = "eq";
-
-        this.businessStore.filters.left["CLUSTER_NAME"] = this.store.dd.ddVal.ddClusterSelected;
-        this.businessStore.filters.left.filterTypes["CLUSTER_NAME"] = "eq";
-
-        this.businessStore.filters.left["TIER"] = this.store.dd.ddVal.ddTierSelected;
-        this.businessStore.filters.left.filterTypes["TIER"] = "eq";
-
-        this.businessStore.filters.left["ITAM"] = this.store.dd.ddVal.ddItamSelected;
-        this.businessStore.filters.left.filterTypes["ITAM"] = "eq";
-
         this.$store.dispatch(`${this.businessStoreName}/getLeftTable`).then(res => {
           this.store.dd.firstload = false;
         });
       },
       refreshConsumptionTable() {
-        if( ! this.consumptionStore.filters.left.filterTypes) this.consumptionStore.filters.left.filterTypes = {};
-
-        this.consumptionStore.filters.left["COUNTRY"] = this.store.dd.ddVal.ddCountrySelected;
-        this.consumptionStore.filters.left.filterTypes["COUNTRY"] = "eq";
-
-        this.consumptionStore.filters.left["BUSINESS_SEGMENT"] = this.store.dd.ddVal.ddBusinessSegmentSelected;
-        this.consumptionStore.filters.left.filterTypes["BUSINESS_SEGMENT"] = "eq";
-
-        this.consumptionStore.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.store.dd.ddVal.ddSourceSystemSelected;
-        this.consumptionStore.filters.left.filterTypes["EDM_SOURCE_SYSTEM_NAME"] = "eq";
-
-        this.consumptionStore.filters.left["CLUSTER_NAME"] = this.store.dd.ddVal.ddClusterSelected;
-        this.consumptionStore.filters.left.filterTypes["CLUSTER_NAME"] = "eq";
-
-        this.consumptionStore.filters.left["TIER"] = this.store.dd.ddVal.ddTierSelected;
-        this.consumptionStore.filters.left.filterTypes["TIER"] = "eq";
-
-        this.consumptionStore.filters.left["ITAM"] = this.store.dd.ddVal.ddItamSelected;
-        this.consumptionStore.filters.left.filterTypes["ITAM"] = "eq";
-
         this.$store.dispatch(`${this.consumptionStoreName}/getLeftTable`).then(res => {
           this.store.dd.firstload = false;
         });
+      },
+      setDdCountryOptions () {
+        var self = this;
+        var filtered = _.filter(self.store.dd.DDSource, (v) => {
+          if(this.isGlobalFilterEmpty) return true;
+
+          return (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : false) 
+            || (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : false) 
+            || (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : false)
+            || (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : false)
+            || (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : false)
+            || (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : false);
+        });
+        
+        this.ddCountryOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.COUNTRY.toString()), [function(o) { return o; }]));
+      },
+      setDdBusinessSegmentOptions () {
+        var self = this;
+        var filtered = _.filter(self.store.dd.DDSource, (v) => {
+          if(this.isGlobalFilterEmpty) return true;
+
+          return (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : false) 
+            || (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : false) 
+            || (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : false)
+            || (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : false)
+            || (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : false)
+            || (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : false);
+        });
+        
+        this.ddBusinessSegmentOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.BUSINESS_SEGMENT.toString()), [function(o) { return o; }]));
+      },
+      setDdSourceSystemOptions () {
+        var self = this;
+        var filtered = _.filter(self.store.dd.DDSource, (v) => {
+          if(this.isGlobalFilterEmpty) return true;
+          
+          return (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : false) 
+            || (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : false)
+            || (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : false)
+            || (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : false)
+            || (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : false)
+            || (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : false);
+        });
+        
+        this.ddSourceSystemOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.EDM_SOURCE_SYSTEM_NAME.toString()), [function(o) { return o; }]));
+      },
+      setDdClusterOptions () {
+        var self = this;
+        var filtered = _.filter(self.store.dd.DDSource, (v) => {
+          if(this.isGlobalFilterEmpty) return true;
+          
+          return (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : false) 
+            || (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : false)
+            || (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : false)
+            || (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : false)
+            || (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : false)
+            || (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : false);
+        });
+        
+        this.ddClusterOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.CLUSTER_NAME.toString()), [function(o) { return o; }]));
+      },
+      setDdTierOptions () {
+        var self = this;
+        var filtered = _.filter(self.store.dd.DDSource, (v) => {
+          if(this.isGlobalFilterEmpty) return true;
+          
+          return (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : false) 
+            || (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : false)
+            || (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : false)
+            || (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : false)
+            || (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : false)
+            || (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : false);
+        });
+        
+        this.ddTierOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.TIER.toString()), [function(o) { return o; }]));
+      },
+      setDdItamOptions () {
+        var self = this;
+        var filtered = _.filter(self.store.dd.DDSource, (v) => {
+          if(this.isGlobalFilterEmpty) return true;
+          
+          return (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : false) 
+            || (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : false) 
+            || (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : false)
+            || (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : false)
+            || (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : false)
+            || (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : false);
+        });
+        
+        this.ddItamOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.ITAM.toString()), [function(o) { return o; }]));
       },
       updateRouter(val){
         this.$router.push(val);
@@ -562,15 +635,12 @@ export default {
             this.consumptionStore.filters.left = {};
           }
         }
-
-        this.store.dd.ddVal.ddCountrySelected = "";
-        this.store.dd.ddVal.ddBusinessSegmentSelected = "";
-        this.store.dd.ddVal.ddSourceSystemSelected = "";
-        this.store.dd.ddVal.ddClusterSelected = "";
-        this.store.dd.ddVal.ddTierSelected = "";
-        this.store.dd.ddVal.ddItamSelected = "";
-
-        this.refreshActiveTabTable();
+        this.store.dd.ddVal.ddCountrySelected = [];
+        this.store.dd.ddVal.ddBusinessSegmentSelected = [];
+        this.store.dd.ddVal.ddSourceSystemSelected = [];
+        this.store.dd.ddVal.ddClusterSelected = [];
+        this.store.dd.ddVal.ddTierSelected = [];
+        this.store.dd.ddVal.ddItamSelected = [];
       },
     },
 }

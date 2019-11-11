@@ -1,3 +1,4 @@
+import { header } from './header.module';
 import { edmpService } from '../_services/edmp.service';
 import { newTableObject } from '../_helpers/table-helper';
 
@@ -79,6 +80,10 @@ const actions = {
             .then(
                 res => {
                     commit('getLeftTableSuccess', res)
+                    
+                    header.actions.getRowCount(state.all.param).then(v => {
+                        state.all.left.totalItems = v.Data;
+                    });
                 },
                 error => commit('getLeftTableFailure', error)
             );

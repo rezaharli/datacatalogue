@@ -1,3 +1,4 @@
+import { header } from './header.module';
 import { newTableObject } from '../_helpers/table-helper';
 import { edmpService } from '../_services/edmp.service';
 
@@ -71,7 +72,13 @@ const actions = {
 
         return edmpService.getIarcPersonalTable(state.all.param)
             .then(
-                res => commit('getLeftTableSuccess', res),
+                res => {
+                    commit('getLeftTableSuccess', res)
+                    
+                    header.actions.getRowCount(state.all.param).then(v => {
+                        state.all.left.totalItems = v.Data;
+                    });
+                },
                 error => commit('getLeftTableFailure', error)
             );
     },

@@ -37,10 +37,18 @@
       <b-col>
         <!-- Main content -->
         <div class="table-v2-title">Technical Metadata</div>
+
+        <v-alert
+          :value="isGlobalFilterEmpty"
+          type="warning"
+        >
+          Choose the global filters for the data.
+        </v-alert>
         
         <v-data-table
             v-model="store.selected"
             select-all
+            v-if="!isGlobalFilterEmpty"
             :headers="displayedHeaders"
             :items="store.left.display"
             :pagination.sync="store.left.pagination"
@@ -251,12 +259,22 @@ export default {
     displayedHeaders() {
       return this.store.leftHeaders.filter(v => v.display == true);
     },
+    isGlobalFilterEmpty() {
+      return this.edmpStore.dd.ddVal.ddCountrySelected.length == 0
+        && this.edmpStore.dd.ddVal.ddBusinessSegmentSelected.length == 0
+        && this.edmpStore.dd.ddVal.ddSourceSystemSelected.length == 0
+        && this.edmpStore.dd.ddVal.ddClusterSelected.length == 0
+        && this.edmpStore.dd.ddVal.ddTierSelected.length == 0
+        && this.edmpStore.dd.ddVal.ddItamSelected.length == 0;
+    },
   },
   watch: {
     $route(to) {},
     "store.left.pagination": {
       handler() {
-        this.getLeftTable();
+        if( ! this.edmpStore.dd.firstload) {
+          this.getLeftTable();
+        }
       },
       deep: true
     },
@@ -286,35 +304,17 @@ export default {
     getLeftTable() {
       this.store.system = this.$route.params.system;
 
-      if( ! this.store.filters.left.filterTypes) this.store.filters.left.filterTypes = {};
+      if( ! this.isGlobalFilterEmpty) {
+        this.$store.dispatch(`${this.storeName}/getLeftTable`).then(v => {
+          this.edmpStore.dd.firstload = false;
 
-      this.store.filters.left["COUNTRY"] = this.edmpStore.dd.ddVal.ddCountrySelected;
-      this.store.filters.left.filterTypes["COUNTRY"] = "eq";
-
-      this.store.filters.left["BUSINESS_SEGMENT"] = this.edmpStore.dd.ddVal.ddBusinessSegmentSelected;
-      this.store.filters.left.filterTypes["BUSINESS_SEGMENT"] = "eq";
-
-      this.store.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.edmpStore.dd.ddVal.ddSourceSystemSelected;
-      this.store.filters.left.filterTypes["EDM_SOURCE_SYSTEM_NAME"] = "eq";
-
-      this.store.filters.left["CLUSTER_NAME"] = this.edmpStore.dd.ddVal.ddClusterSelected;
-      this.store.filters.left.filterTypes["CLUSTER_NAME"] = "eq";
-
-      this.store.filters.left["TIER"] = this.edmpStore.dd.ddVal.ddTierSelected;
-      this.store.filters.left.filterTypes["TIER"] = "eq";
-
-      this.store.filters.left["ITAM"] = this.edmpStore.dd.ddVal.ddItamSelected;
-      this.store.filters.left.filterTypes["ITAM"] = "eq";
-
-      this.$store.dispatch(`${this.storeName}/getLeftTable`).then(v => {
-        this.$store.dispatch(`header/getRowCount`, this.store.param).then(res => {
-          this.store.left.totalItems = res.Data;
-        });
-
-        setTimeout(() => {
-          this.setTableColumnsWidth() 
-        }, 10);
-      })
+          setTimeout(() => {
+            this.setTableColumnsWidth() 
+          }, 10);
+        }) 
+      } else {
+        this.store.left.isLoading = false;
+      }
     },
     isMainLevelCellShowing (props){
       if( ! props.expanded) return true;

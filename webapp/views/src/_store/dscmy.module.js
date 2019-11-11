@@ -1,3 +1,4 @@
+import { header } from './header.module';
 import { dscMyService } from '../_services/dscmy.service';
 import { newTableObject } from '../_helpers/table-helper';
 
@@ -89,7 +90,13 @@ const actions = {
 
         return dscMyService.getLeftTable(state.all.param)
             .then(
-                res => commit('getLeftTableSuccess', res.Data),
+                res => {
+                    commit('getLeftTableSuccess', res.Data)
+                    
+                    header.actions.getRowCount(state.all.param).then(v => {
+                        state.all.left.totalItems = v.Data;
+                    });
+                },
                 error => commit('getLeftTableFailure', error)
             );
     },
