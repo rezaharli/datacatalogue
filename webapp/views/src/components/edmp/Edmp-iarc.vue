@@ -36,102 +36,24 @@
                 <b-col class="ml-5 col-md-10" v-if="activeTabStoreName == personalStoreName">
                   <b-row class="ml-3 dd-filter">
                     <b-col cols="2">
-                      <v-tooltip top>
-                        <template slot="activator" slot-scope="{ on }">
-                          <div v-on="on">
-                            <v-select
-                              v-model="store.iarc.ddVal.ddCountrySelected"
-                              :items="ddCountryOptions"
-                              :search-input.sync="searchInputCountry"
-                              label="Country"
-                              single-line
-                              multiple
-                              box
-                              clearable
-                              autocomplete
-                            >
-                              <template slot="selection" slot-scope="{ item, index }">
-                                <v-chip v-if="index === 0" :class="store.iarc.ddVal.ddCountrySelected.length == 1 ? 'full' : 'small'">
-                                  <span>{{ item }}</span>
-                                </v-chip>
-
-                                <span
-                                  v-if="index === 1"
-                                  class="grey--text caption"
-                                >({{ store.iarc.ddVal.ddCountrySelected.length - 1 }}+) </span>
-                              </template>
-                            </v-select>
-                          </div>
-                        </template>
-
-                        <span>Country</span>
-                      </v-tooltip>
+                      <global-filter-dropdown label="Country" 
+                        v-model="store.iarc.ddVal.ddCountrySelected"
+                        :items="ddCountryOptions"
+                      />
                     </b-col>
 
                     <b-col cols="2">
-                      <v-tooltip top>
-                        <template slot="activator" slot-scope="{ on }">
-                          <div v-on="on">
-                            <v-select
-                              v-model="store.iarc.ddVal.ddSourceSystemSelected"
-                              :items="ddSourceSystemOptions"
-                              :search-input.sync="searchInputSourceSystem"
-                              label="Source System"
-                              single-line
-                              multiple
-                              box
-                              clearable
-                              autocomplete
-                            >
-                              <template slot="selection" slot-scope="{ item, index }">
-                                <v-chip v-if="index === 0" :class="store.iarc.ddVal.ddSourceSystemSelected.length == 1 ? 'full' : 'small'">
-                                  <span>{{ item }}</span>
-                                </v-chip>
-
-                                <span
-                                  v-if="index === 1"
-                                  class="grey--text caption"
-                                >({{ store.iarc.ddVal.ddSourceSystemSelected.length - 1 }}+) </span>
-                              </template>
-                            </v-select>
-                          </div>
-                        </template>
-                        
-                        <span>Source System</span>
-                      </v-tooltip>
+                      <global-filter-dropdown label="Source System" 
+                        v-model="store.iarc.ddVal.ddSourceSystemSelected"
+                        :items="ddSourceSystemOptions"
+                      />
                     </b-col>
 
                     <b-col cols="2">
-                      <v-tooltip top>
-                        <template slot="activator" slot-scope="{ on }">
-                          <div v-on="on">
-                            <v-select
-                              v-model="store.iarc.ddVal.ddItamSelected"
-                              :items="ddItamOptions"
-                              :search-input.sync="searchInputItam"
-                              label="ITAM"
-                              single-line
-                              multiple
-                              box
-                              clearable
-                              autocomplete
-                            >
-                              <template slot="selection" slot-scope="{ item, index }">
-                                <v-chip v-if="index === 0" :class="store.iarc.ddVal.ddItamSelected.length == 1 ? 'full' : 'small'">
-                                  <span>{{ item }}</span>
-                                </v-chip>
-
-                                <span
-                                  v-if="index === 1"
-                                  class="grey--text caption"
-                                >({{ store.iarc.ddVal.ddItamSelected.length - 1 }}+) </span>
-                              </template>
-                            </v-select>
-                          </div>
-                        </template>
-                        
-                        <span>ITAM</span>
-                      </v-tooltip>
+                      <global-filter-dropdown label="ITAM" 
+                        v-model="store.iarc.ddVal.ddItamSelected"
+                        :items="ddItamOptions"
+                      />
                     </b-col>
                   </b-row>
                 </b-col>
@@ -163,17 +85,15 @@
 <script>
 import PageHeader from '../PageHeader';
 import pageExport from "../PageExport.vue";
+import globalFilterDropdown from "./GlobalFilterDropdown.vue";
 
 export default {
-    components: { PageHeader, pageExport },
+    components: { PageHeader, pageExport, globalFilterDropdown },
     data() {
       return {
         storeName: "edmp",
         personalStoreName: "edmpIarcPersonal",
         informationStoreName: "dsciarc",
-        searchInputCountry: "",
-        searchInputSourceSystem: "",
-        searchInputItam: "",
         activeTab: '',
         tabs: [
             { id: 'personal', key: 'personal', name: 'Personal Data', route: this.addressPath + '/personal' },

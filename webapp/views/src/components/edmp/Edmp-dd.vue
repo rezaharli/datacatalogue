@@ -36,231 +36,45 @@
                 <b-col class="ml-5 col-md-10">
                   <b-row class="ml-3 dd-filter">
                     <b-col cols="2">
-                      <v-tooltip bottom>
-                        <template slot="activator" slot-scope="{ on }">
-                          <div v-on="on">
-                            <v-autocomplete
-                              v-model="store.dd.ddVal.ddCountrySelected"
-                              :items="ddCountryOptions"
-                              :search-input.sync="searchInputCountry"
-                              label="Country"
-                              single-line
-                              multiple
-                              box
-                              clearable
-                            >
-                              <template slot="selection" slot-scope="{ item, index }">
-                                <v-chip v-if="index === 0" :class="store.dd.ddVal.ddCountrySelected.length == 1 ? 'full' : 'small'">
-                                  <span>{{ item }}</span>
-                                </v-chip>
-
-                                <span
-                                  v-if="index === 1"
-                                  class="grey--text caption"
-                                >({{ store.dd.ddVal.ddCountrySelected.length - 1 }}+) </span>
-                              </template>
-                            </v-autocomplete>
-                          </div>
-                        </template>
-
-                        <div>
-                          <span>Country</span>
-
-                          <ul v-if="store.dd.ddVal.ddCountrySelected.length > 0">
-                            <li :key="val" v-for="val in store.dd.ddVal.ddCountrySelected">{{ val }}</li>
-                          </ul>
-                        </div>
-                      </v-tooltip>
+                      <global-filter-dropdown label="Country" 
+                        v-model="store.dd.ddVal.ddCountrySelected"
+                        :items="ddCountryOptions"
+                      />
                     </b-col>
 
                     <b-col cols="2">
-                      <v-tooltip bottom>
-                        <template slot="activator" slot-scope="{ on }">
-                          <div v-on="on">
-                            <v-autocomplete
-                              v-model="store.dd.ddVal.ddBusinessSegmentSelected"
-                              :items="ddBusinessSegmentOptions"
-                              :search-input.sync="searchInputBusiness"
-                              label="Business Segment"
-                              single-line
-                              multiple
-                              box
-                              clearable
-                            >
-                              <template slot="selection" slot-scope="{ item, index }">
-                                <v-chip v-if="index === 0" :class="store.dd.ddVal.ddBusinessSegmentSelected.length == 1 ? 'full' : 'small'">
-                                  <span>{{ item }}</span>
-                                </v-chip>
-
-                                <span
-                                  v-if="index === 1"
-                                  class="grey--text caption"
-                                >({{ store.dd.ddVal.ddBusinessSegmentSelected.length - 1 }}+) </span>
-                              </template>
-                            </v-autocomplete>
-                          </div>
-                        </template>
-
-                        <div>
-                          <span>Business Segment</span>
-
-                          <ul v-if="store.dd.ddVal.ddBusinessSegmentSelected.length > 0">
-                            <li :key="val" v-for="val in store.dd.ddVal.ddBusinessSegmentSelected">{{ val }}</li>
-                          </ul>
-                        </div>
-                      </v-tooltip>
+                      <global-filter-dropdown label="Business Segment" 
+                        v-model="store.dd.ddVal.ddBusinessSegmentSelected"
+                        :items="ddBusinessSegmentOptions"
+                      />
                     </b-col>
 
                     <b-col cols="2">
-                      <v-tooltip bottom>
-                        <template slot="activator" slot-scope="{ on }">
-                          <div v-on="on">
-                            <v-autocomplete
-                              v-model="store.dd.ddVal.ddSourceSystemSelected"
-                              :items="ddSourceSystemOptions"
-                              :search-input.sync="searchInputSourceSystem"
-                              label="Source System"
-                              single-line
-                              multiple
-                              box
-                              clearable
-                            >
-                              <template slot="selection" slot-scope="{ item, index }">
-                                <v-chip v-if="index === 0" :class="store.dd.ddVal.ddSourceSystemSelected.length == 1 ? 'full' : 'small'">
-                                  <span>{{ item }}</span>
-                                </v-chip>
-
-                                <span
-                                  v-if="index === 1"
-                                  class="grey--text caption"
-                                >({{ store.dd.ddVal.ddSourceSystemSelected.length - 1 }}+) </span>
-                              </template>
-                            </v-autocomplete>
-                          </div>
-                        </template>
-
-                        <div>
-                          <span>Source System</span>
-
-                          <ul v-if="store.dd.ddVal.ddSourceSystemSelected.length > 0">
-                            <li :key="val" v-for="val in store.dd.ddVal.ddSourceSystemSelected">{{ val }}</li>
-                          </ul>
-                        </div>
-                      </v-tooltip>
+                      <global-filter-dropdown label="Source System" 
+                        v-model="store.dd.ddVal.ddSourceSystemSelected"
+                        :items="ddSourceSystemOptions"
+                      />
                     </b-col>
 
                     <b-col cols="2">
-                      <v-tooltip bottom>
-                        <template slot="activator" slot-scope="{ on }">
-                          <div v-on="on">
-                            <v-autocomplete
-                              v-model="store.dd.ddVal.ddClusterSelected"
-                              :items="ddClusterOptions"
-                              :search-input.sync="searchInputCluster"
-                              label="Cluster"
-                              single-line
-                              multiple
-                              box
-                              clearable
-                            >
-                              <template slot="selection" slot-scope="{ item, index }">
-                                <v-chip v-if="index === 0" :class="store.dd.ddVal.ddClusterSelected.length == 1 ? 'full' : 'small'">
-                                  <span>{{ item }}</span>
-                                </v-chip>
-
-                                <span
-                                  v-if="index === 1"
-                                  class="grey--text caption"
-                                >({{ store.dd.ddVal.ddClusterSelected.length - 1 }}+) </span>
-                              </template>
-                            </v-autocomplete>
-                          </div>
-                        </template>
-
-                        <div>
-                          <span>Cluster</span>
-
-                          <ul v-if="store.dd.ddVal.ddClusterSelected.length > 0">
-                            <li :key="val" v-for="val in store.dd.ddVal.ddClusterSelected">{{ val }}</li>
-                          </ul>
-                        </div>
-                      </v-tooltip>
+                      <global-filter-dropdown label="Cluster" 
+                        v-model="store.dd.ddVal.ddClusterSelected"
+                        :items="ddClusterOptions"
+                      />
                     </b-col>
 
                     <b-col cols="2">
-                      <v-tooltip bottom>
-                        <template slot="activator" slot-scope="{ on }">
-                          <div v-on="on">
-                            <v-autocomplete
-                              v-model="store.dd.ddVal.ddTierSelected"
-                              :items="ddTierOptions"
-                              :search-input.sync="searchInputTier"
-                              label="Tier"
-                              single-line
-                              multiple
-                              box
-                              clearable
-                            >
-                              <template slot="selection" slot-scope="{ item, index }">
-                                <v-chip v-if="index === 0" :class="store.dd.ddVal.ddTierSelected.length == 1 ? 'full' : 'small'">
-                                  <span>{{ item }}</span>
-                                </v-chip>
-
-                                <span
-                                  v-if="index === 1"
-                                  class="grey--text caption"
-                                >({{ store.dd.ddVal.ddTierSelected.length - 1 }}+) </span>
-                              </template>
-                            </v-autocomplete>
-                          </div>
-                        </template>
-
-                        <div>
-                          <span>Tier</span>
-
-                          <ul v-if="store.dd.ddVal.ddTierSelected.length > 0">
-                            <li :key="val" v-for="val in store.dd.ddVal.ddTierSelected">{{ val }}</li>
-                          </ul>
-                        </div>
-                      </v-tooltip>
+                      <global-filter-dropdown label="Tier" 
+                        v-model="store.dd.ddVal.ddTierSelected"
+                        :items="ddTierOptions"
+                      />
                     </b-col>
 
                     <b-col cols="2">
-                      <v-tooltip bottom>
-                        <template slot="activator" slot-scope="{ on }">
-                          <div v-on="on">
-                            <v-autocomplete
-                              v-model="store.dd.ddVal.ddItamSelected"
-                              :items="ddItamOptions"
-                              :search-input.sync="searchInputItam"
-                              label="ITAM"
-                              single-line
-                              multiple
-                              box
-                              clearable
-                            >
-                              <template slot="selection" slot-scope="{ item, index }">
-                                <v-chip v-if="index === 0" :class="store.dd.ddVal.ddItamSelected.length == 1 ? 'full' : 'small'">
-                                  <span>{{ item }}</span>
-                                </v-chip>
-
-                                <span
-                                  v-if="index === 1"
-                                  class="grey--text caption"
-                                >({{ store.dd.ddVal.ddItamSelected.length - 1 }}+) </span>
-                              </template>
-                            </v-autocomplete>
-                          </div>
-                        </template>
-
-                        <div>
-                          <span>ITAM</span>
-
-                          <ul v-if="store.dd.ddVal.ddItamSelected.length > 0">
-                            <li :key="val" v-for="val in store.dd.ddVal.ddItamSelected">{{ val }}</li>
-                          </ul>
-                        </div>
-                      </v-tooltip>
+                      <global-filter-dropdown label="ITAM" 
+                        v-model="store.dd.ddVal.ddItamSelected"
+                        :items="ddItamOptions"
+                      />
                     </b-col>
                   </b-row>
                   
@@ -293,9 +107,10 @@
 <script>
 import PageHeader from '../PageHeader';
 import pageExport from "../PageExport.vue";
+import globalFilterDropdown from "./GlobalFilterDropdown.vue";
 
 export default {
-    components: { PageHeader, pageExport },
+    components: { PageHeader, pageExport, globalFilterDropdown },
     data() {
       return {
         storeName: "edmp",
@@ -308,12 +123,6 @@ export default {
         ddClusterOptions: [],
         ddTierOptions: [],
         ddItamOptions: [],
-        searchInputCountry: "",
-        searchInputBusiness: "",
-        searchInputSourceSystem: "",
-        searchInputCluster: "",
-        searchInputTier: "",
-        searchInputItam: "",
         activeTab: '',
         tabs: [
             { id: 'technical', key: 'technical-metadata', name: 'Technical Metadata', route: this.addressPath + '/technical-metadata' },
