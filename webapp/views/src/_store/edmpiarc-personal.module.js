@@ -1,6 +1,6 @@
 import { header } from './header.module';
-import { newTableObject } from '../_helpers/table-helper';
 import { edmpService } from '../_services/edmp.service';
+import { newTableObject } from '../_helpers/table-helper';
 
 const state = {
     all: {

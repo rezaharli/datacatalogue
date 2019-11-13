@@ -78,7 +78,6 @@
                       />
                     </b-col>
                   </b-row>
-                  
                 </b-col>
                 
                 <b-col>
@@ -287,7 +286,6 @@ export default {
         this.ddClusterOptions = _.sortedUniq(_.sortBy(_.map(this.store.dd.DDSource, (v) => v.CLUSTER_NAME.toString()), [function(o) { return o; }]));
         this.ddTierOptions = _.sortedUniq(_.sortBy(_.map(this.store.dd.DDSource, (v) => v.TIER.toString()), [function(o) { return o; }]));
         this.ddItamOptions = _.sortedUniq(_.sortBy(_.map(this.store.dd.DDSource, (v) => v.ITAM.toString()), [function(o) { return o; }]));
-        
       },
       getDropdownOpts() {
         this.$store.dispatch(`${this.storeName}/getDdDropdownOpts`).then(() => {
@@ -341,12 +339,14 @@ export default {
         var filtered = _.filter(self.store.dd.DDSource, (v) => {
           if(this.isGlobalFilterEmpty) return true;
 
-          return (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : false) 
-            || (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : false) 
-            || (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : false)
-            || (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : false)
-            || (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : false)
-            || (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : false);
+          return (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : false)
+          || (
+            (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true) 
+            && (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true)
+            && (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true)
+            && (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : true)
+            && (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : true)
+          );
         });
         
         this.ddCountryOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.COUNTRY.toString()), [function(o) { return o; }]));
@@ -356,12 +356,14 @@ export default {
         var filtered = _.filter(self.store.dd.DDSource, (v) => {
           if(this.isGlobalFilterEmpty) return true;
 
-          return (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : false) 
-            || (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : false) 
-            || (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : false)
-            || (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : false)
-            || (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : false)
-            || (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : false);
+          return (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : false)
+          || (
+            (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true) 
+            && (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true)
+            && (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true)
+            && (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : true)
+            && (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : true)
+          );
         });
         
         this.ddBusinessSegmentOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.BUSINESS_SEGMENT.toString()), [function(o) { return o; }]));
@@ -371,12 +373,14 @@ export default {
         var filtered = _.filter(self.store.dd.DDSource, (v) => {
           if(this.isGlobalFilterEmpty) return true;
           
-          return (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : false) 
-            || (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : false)
-            || (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : false)
-            || (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : false)
-            || (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : false)
-            || (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : false);
+          return (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : false)
+          || (
+            (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true) 
+            && (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true)
+            && (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true)
+            && (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : true)
+            && (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : true)
+          );
         });
         
         this.ddSourceSystemOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.EDM_SOURCE_SYSTEM_NAME.toString()), [function(o) { return o; }]));
@@ -386,12 +390,14 @@ export default {
         var filtered = _.filter(self.store.dd.DDSource, (v) => {
           if(this.isGlobalFilterEmpty) return true;
           
-          return (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : false) 
-            || (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : false)
-            || (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : false)
-            || (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : false)
-            || (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : false)
-            || (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : false);
+          return (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : false)
+            || (
+              (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true) 
+              && (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true)
+              && (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true)
+              && (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : true)
+              && (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : true)
+            );
         });
         
         this.ddClusterOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.CLUSTER_NAME.toString()), [function(o) { return o; }]));
@@ -401,12 +407,14 @@ export default {
         var filtered = _.filter(self.store.dd.DDSource, (v) => {
           if(this.isGlobalFilterEmpty) return true;
           
-          return (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : false) 
-            || (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : false)
-            || (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : false)
-            || (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : false)
-            || (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : false)
-            || (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : false);
+          return (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : false)
+            || (
+              (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true) 
+              && (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true)
+              && (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true)
+              && (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true)
+              && (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : true)
+            );
         });
         
         this.ddTierOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.TIER.toString()), [function(o) { return o; }]));
@@ -416,12 +424,14 @@ export default {
         var filtered = _.filter(self.store.dd.DDSource, (v) => {
           if(this.isGlobalFilterEmpty) return true;
           
-          return (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : false) 
-            || (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : false) 
-            || (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : false)
-            || (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : false)
-            || (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : false)
-            || (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : false);
+          return (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : false)
+          || (
+            (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true) 
+            && (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true) 
+            && (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true)
+            && (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true)
+            && (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : true)
+          );
         });
         
         this.ddItamOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.ITAM.toString()), [function(o) { return o; }]));
@@ -435,6 +445,7 @@ export default {
             this.technicalStore.filters.left = {};
           }
         }
+
         if(this.activeTab.indexOf("business-metadata") != -1){
           if(Object.keys(this.businessStore.filters.left).length > 0){
             this.businessStore.filters.left = {};
@@ -445,6 +456,7 @@ export default {
             this.consumptionStore.filters.left = {};
           }
         }
+
         this.store.dd.ddVal.ddCountrySelected = [];
         this.store.dd.ddVal.ddBusinessSegmentSelected = [];
         this.store.dd.ddVal.ddSourceSystemSelected = [];

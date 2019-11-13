@@ -12,8 +12,8 @@
     width:unset;
 }
 #table-edmp-iarc-personal table.v-table.v-datatable tbody tr {display: table-row;} */
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(1){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(2){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-personal table.v-table tr th:nth-of-type(1){width: calc(100%/10) !important; display: table-cell;}
+#table-edmp-iarc-personal table.v-table tr th:nth-of-type(2){width: calc(100%/10) !important; display: table-cell;}
 #table-edmp-iarc-personal table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
 #table-edmp-iarc-personal table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
 #table-edmp-iarc-personal table.v-table tr th:nth-of-type(5){width: calc(100%/20) !important; display: table-cell;}
@@ -25,6 +25,12 @@
 #table-edmp-iarc-personal table.v-table tr th:nth-of-type(11){width: calc(100%/20) !important; display: table-cell;}
 #table-edmp-iarc-personal table.v-table tr th:nth-of-type(12){width: calc(100%/20) !important; display: table-cell;}
 #table-edmp-iarc-personal table.v-table tr th:nth-of-type(13){width: calc(100%/20) !important; display: table-cell;}
+#table-edmp-iarc-personal tr > td{ max-width: 90%; word-break: break-word; }
+
+.transparent-tnya3{
+  background-color: rgba(0, 0, 0, 0) !important;
+  color: rgba(0, 0, 0, 0) !important;
+}
 </style>
 
 <template>
@@ -32,8 +38,16 @@
       <b-col>
         <!-- Main content -->
         <div class="table-v2-title">Personal Data</div>
+
+        <v-alert
+          :value="isGlobalFilterEmpty"
+          type="warning"
+        >
+          Choose the global filters for the data.
+        </v-alert>
         
         <v-data-table
+            v-if="!isGlobalFilterEmpty"
             :headers="displayedHeaders"
             :items="store.left.display"
             :pagination.sync="store.left.pagination"
@@ -41,7 +55,7 @@
             :loading="store.left.isLoading"
             :expand="false"
             :must-sort="true"
-            :rows-per-page-items="[25, 50, 75, 100]"
+            :rows-per-page-items="[100]"
             item-key="ID"
             class="elevation-1 table-v2"
             id="table-edmp-iarc-personal"
@@ -86,43 +100,43 @@
           </template>
 
           <template slot="items" slot-scope="props">
-                <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-                  <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">
-                    <v-layout justify-center>
-                      <tablecell :fulltext="props.item.ITAM.toString().trim() ? props.item.ITAM : 'NA'" showOn="click"></tablecell></v-layout></td>
+            <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
+              <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">
+                <v-layout justify-center>
+                  <tablecell :fulltext="props.item.ITAM.toString().trim() ? props.item.ITAM : 'NA'" showOn="click"></tablecell></v-layout></td>
 
-                  <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
-                    <v-layout justify-center>
-                      <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME.toString().trim() ? props.item.EDM_SOURCE_SYSTEM_NAME : 'NA'" showOn="click"></tablecell></v-layout></td>
-                  
-                  <td v-bind:style="{ width: store.left.colWidth['COUNTRY'] + 'px' }">
-                    <v-layout justify-center>
-                      <tablecell :fulltext="props.item.COUNTRY.toString().trim() ? props.item.COUNTRY : 'NA'" showOn="click"></tablecell></v-layout></td>
-                  
-                  <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
-                    <tablecell :fulltext="props.item.DATABASE_NAME.toString().trim() ? props.item.DATABASE_NAME : 'NA'" showOn="click"></tablecell></td>
-                  
-                  <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-capitalize">
-                    <div class="ini wrapper-showmore d-inline-block">
-                      <span>{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
-                    </div>
-                  </td>
-                  
-                  <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-capitalize">
-                    <div class="ini wrapper-showmore d-inline-block">
-                        <span>{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
-                      </div>
-                  </td>
-                  
-                  <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
-                    <v-layout justify-center>
-                      <tablecell :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'" showOn="click"></tablecell></v-layout></td>
-                    
-                  <td v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }">
-                    <v-layout justify-center>
-                      <tablecell :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'" showOn="click"></tablecell></v-layout></td>
-                </tr>
-              </template>
+              <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
+                <v-layout justify-center>
+                  <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME.toString().trim() ? props.item.EDM_SOURCE_SYSTEM_NAME : 'NA'" showOn="click"></tablecell></v-layout></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['COUNTRY'] + 'px' }">
+                <v-layout justify-center>
+                  <tablecell :fulltext="props.item.COUNTRY.toString().trim() ? props.item.COUNTRY : 'NA'" showOn="click"></tablecell></v-layout></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
+                <tablecell :fulltext="props.item.DATABASE_NAME.toString().trim() ? props.item.DATABASE_NAME : 'NA'" showOn="click"></tablecell></td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-capitalize">
+                <div class="ini wrapper-showmore d-inline-block">
+                  <span>{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
+                </div>
+              </td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-capitalize">
+                <div class="ini wrapper-showmore d-inline-block">
+                    <span>{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
+                  </div>
+              </td>
+              
+              <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
+                <v-layout justify-center>
+                  <tablecell :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'" showOn="click"></tablecell></v-layout></td>
+                
+              <td v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }">
+                <v-layout justify-center>
+                  <tablecell :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'" showOn="click"></tablecell></v-layout></td>
+            </tr>
+          </template>
         </v-data-table>
               
       </b-col>
@@ -165,12 +179,19 @@ export default {
     displayedHeaders() {
       return this.store.leftHeaders.filter(v => v.display == true);
     },
+    isGlobalFilterEmpty() {
+      return this.edmpStore.iarc.ddVal.ddCountrySelected.length == 0
+        && this.edmpStore.iarc.ddVal.ddSourceSystemSelected.length == 0
+        && this.edmpStore.iarc.ddVal.ddItamSelected.length == 0;
+    },
   },
   watch: {
     $route(to) {},
     "store.left.pagination": {
       handler() {
-        this.getLeftTable();
+        if( ! this.edmpStore.iarc.firstload) {
+          this.getLeftTable();
+        }
       },
       deep: true
     },
@@ -200,22 +221,17 @@ export default {
     getLeftTable() {
       this.store.system = this.$route.params.system;
 
-      if( ! this.store.filters.left.filterTypes) this.store.filters.left.filterTypes = {};
+      if( ! this.isGlobalFilterEmpty) {
+        this.$store.dispatch(`${this.storeName}/getLeftTable`).then(v => {
+          this.edmpStore.iarc.firstload = false;
 
-      this.store.filters.left["COUNTRY"] = this.edmpStore.iarc.ddVal.ddCountrySelected;
-      this.store.filters.left.filterTypes["COUNTRY"] = "eq";
-
-      this.store.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.edmpStore.iarc.ddVal.ddSourceSystemSelected;
-      this.store.filters.left.filterTypes["EDM_SOURCE_SYSTEM_NAME"] = "eq";
-
-      this.store.filters.left["ITAM"] = this.edmpStore.iarc.ddVal.ddItamSelected;
-      this.store.filters.left.filterTypes["ITAM"] = "eq";
-
-      this.$store.dispatch(`${this.storeName}/getLeftTable`).then(v => { 
-        setTimeout(() => {
-          this.setTableColumnsWidth() 
-        }, 10);
-      })
+          setTimeout(() => {
+            this.setTableColumnsWidth() 
+          }, 10);
+        }) 
+      } else {
+        this.store.left.isLoading = false;
+      }
     },
     isMainLevelCellShowing (props){
       if( ! props.expanded) return true;
@@ -267,6 +283,18 @@ export default {
         this.store.left.pagination.sortBy = column
         this.store.left.pagination.descending = false
       }
+    },
+    linkDataXray(param){
+      if(param.includes("https://")){
+        return param;
+      } else if (param.includes("http://")) {
+        return param;
+      } else {
+        return "http://" + param;
+      }
+    },
+    dataXrayDisabled(param){
+      return param.trim() == "" ? true : false;
     },
   }
 };
