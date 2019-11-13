@@ -109,7 +109,7 @@ body, .application--wrap{
     display: inline-block;
 }
 .table-header-wrapper  .dropdown-button-wrapper .btn{padding: 0 5px 0 10px;}
-.table-header-wrapper  .dropdown-button-wrapper {position: unset;}
+.table-header-wrapper  .dropdown-button-wrapper { position: unset; border: 0px; line-height: 1; }
 
 table.v-table thead th > div.btn-group {
     width: auto;
@@ -370,6 +370,7 @@ table.v-table tbody tr td.hidden{display: none;} */
 .table-v2 > .v-table__overflow > table.v-table > tbody > tr.even,
 .table-v2 > .v-table__overflow > table.v-table > tbody > tr.even + .v-datatable__expand-row .v-table {background-color: #EEF3F9;}
 .table-v2 table.v-table tbody tr td {padding: 5px 5px; font-weight: 300; font-size: 14px;}
+.table-v2 table.v-table tbody tr td .layout.justify-center { text-align: center; }
 .table-v2 table.v-table tbody tr td:first-of-type {padding-left: 20px;}
 .table-v2 table.v-table tbody tr td:last-of-type {padding-right: 20px;}
 /* .table-v2 table.v-table tbody tr td.text-description {font-weight: 300; font-size: 11px;} */

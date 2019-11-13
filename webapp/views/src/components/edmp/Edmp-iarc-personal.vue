@@ -88,13 +88,16 @@
           <template slot="items" slot-scope="props">
                 <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
                   <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">
-                    <tablecell :fulltext="props.item.ITAM.toString().trim() ? props.item.ITAM : 'NA'" showOn="click"></tablecell></td>
+                    <v-layout justify-center>
+                      <tablecell :fulltext="props.item.ITAM.toString().trim() ? props.item.ITAM : 'NA'" showOn="click"></tablecell></v-layout></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
-                    <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME.toString().trim() ? props.item.EDM_SOURCE_SYSTEM_NAME : 'NA'" showOn="click"></tablecell></td>
+                    <v-layout justify-center>
+                      <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME.toString().trim() ? props.item.EDM_SOURCE_SYSTEM_NAME : 'NA'" showOn="click"></tablecell></v-layout></td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['COUNTRY'] + 'px' }">
-                    <tablecell :fulltext="props.item.COUNTRY.toString().trim() ? props.item.COUNTRY : 'NA'" showOn="click"></tablecell></td>
+                    <v-layout justify-center>
+                      <tablecell :fulltext="props.item.COUNTRY.toString().trim() ? props.item.COUNTRY : 'NA'" showOn="click"></tablecell></v-layout></td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
                     <tablecell :fulltext="props.item.DATABASE_NAME.toString().trim() ? props.item.DATABASE_NAME : 'NA'" showOn="click"></tablecell></td>
@@ -112,10 +115,12 @@
                   </td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
-                    <tablecell :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'" showOn="click"></tablecell></td>
+                    <v-layout justify-center>
+                      <tablecell :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'" showOn="click"></tablecell></v-layout></td>
                     
                   <td v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }">
-                    <tablecell :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'" showOn="click"></tablecell></td>
+                    <v-layout justify-center>
+                      <tablecell :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'" showOn="click"></tablecell></v-layout></td>
                 </tr>
               </template>
         </v-data-table>
