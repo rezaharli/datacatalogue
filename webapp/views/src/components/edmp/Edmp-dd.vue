@@ -5,6 +5,7 @@
 <style>
 .dd-filter .v-text-field--box .v-label {
   font-size: 14px;
+  color: black;
 }
 .v-select__selection--comma {
   text-overflow: ellipsis;
