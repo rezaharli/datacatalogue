@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
@@ -367,7 +368,13 @@ func (c *DSC) GetEdmpDDTechnicalTable(k *knot.WebContext) {
 		return
 	}
 
-	tableRows, _, err := s.NewDSCService().GetEdmpDDTechnicalTable(system, colFilter, pagination)
+	defaultSortInt := payload.Get("DefaultSort").([]interface{})
+	defaultSort := make([]string, len(defaultSortInt))
+	for i, v := range defaultSortInt {
+		defaultSort[i] = fmt.Sprint(v)
+	}
+
+	tableRows, _, err := s.NewDSCService().GetEdmpDDTechnicalTable(system, colFilter, pagination, defaultSort)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -396,7 +403,13 @@ func (c *DSC) GetEdmpDDBusinessTable(k *knot.WebContext) {
 		return
 	}
 
-	tableRows, _, err := s.NewDSCService().GetEdmpDDBusinessTable(system, colFilter, pagination)
+	defaultSortInt := payload.Get("DefaultSort").([]interface{})
+	defaultSort := make([]string, len(defaultSortInt))
+	for i, v := range defaultSortInt {
+		defaultSort[i] = fmt.Sprint(v)
+	}
+
+	tableRows, _, err := s.NewDSCService().GetEdmpDDBusinessTable(system, colFilter, pagination, defaultSort)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -425,7 +438,13 @@ func (c *DSC) GetEdmpDDConsumptionTable(k *knot.WebContext) {
 		return
 	}
 
-	tableRows, _, err := s.NewDSCService().GetEdmpDDConsumptionTable(system, colFilter, pagination)
+	defaultSortInt := payload.Get("DefaultSort").([]interface{})
+	defaultSort := make([]string, len(defaultSortInt))
+	for i, v := range defaultSortInt {
+		defaultSort[i] = fmt.Sprint(v)
+	}
+
+	tableRows, _, err := s.NewDSCService().GetEdmpDDConsumptionTable(system, colFilter, pagination, defaultSort)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -454,7 +473,13 @@ func (c *DSC) GetEdmpIarcPersonalTable(k *knot.WebContext) {
 		return
 	}
 
-	tableRows, _, err := s.NewDSCService().GetEdmpIarcPersonalTable(system, colFilter, pagination)
+	defaultSortInt := payload.Get("DefaultSort").([]interface{})
+	defaultSort := make([]string, len(defaultSortInt))
+	for i, v := range defaultSortInt {
+		defaultSort[i] = fmt.Sprint(v)
+	}
+
+	tableRows, _, err := s.NewDSCService().GetEdmpIarcPersonalTable(system, colFilter, pagination, defaultSort)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return

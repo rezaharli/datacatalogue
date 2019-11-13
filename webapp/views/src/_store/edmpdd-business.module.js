@@ -74,7 +74,8 @@ const actions = {
             Queryname: state.all.queryname,
             System: state.all.system,
             Filters: state.all.filters.left,
-            Pagination: state.all.left.pagination
+            Pagination: state.all.left.pagination,
+            DefaultSort: ["TABLE_NAME", "COLUMN_NAME"],
         }
 
         return edmpService.getBusinessTable(state.all.param)

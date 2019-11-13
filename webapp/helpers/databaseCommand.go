@@ -225,6 +225,7 @@ type SqlQueryParam struct {
 	GroupCol         string
 	AdditionalWhere  map[string]interface{}
 	ColumnFilterType map[string]interface{}
+	DefaultSort      []string
 
 	Results     interface{}
 	ResultTotal int
@@ -500,15 +501,25 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 			sqlQuery = sqlQuery + `WHERE row_num >= ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + " "
 		}
 
-		if param.OrderBy != "" {
-			param.OrderBy = `ORDER BY regexp_replace(regexp_replace(UPPER(` + param.OrderBy + `), '(\d+)', lpad('0', 20, '0')||'\1'), '0*?(\d{21}(\D|$))', '\1') `
-
-			if param.IsDescending {
-				param.OrderBy += `DESC `
+		orders := []string{}
+		if len(param.DefaultSort) > 0 {
+			for _, val := range param.DefaultSort {
+				order := val + " ASC"
+				orders = append(orders, order)
 			}
 		}
 
-		sqlQuery += param.OrderBy
+		if param.OrderBy != "" {
+			order := `regexp_replace(regexp_replace(UPPER(` + param.OrderBy + `), '(\d+)', lpad('0', 20, '0')||'\1'), '0*?(\d{21}(\D|$))', '\1') `
+
+			if param.IsDescending {
+				order += `DESC `
+			}
+
+			orders = append(orders, order)
+		}
+
+		sqlQuery += "ORDER BY " + strings.Join(orders, ", ")
 	}
 
 	conn := Database()

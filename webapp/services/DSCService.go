@@ -550,7 +550,7 @@ func (s *DSCService) GetEdmpIarcDropdowns(payload toolkit.M) (interface{}, int, 
 	return resultRows, resultTotal, nil
 }
 
-func (s *DSCService) GetEdmpDDTechnicalTable(system string, colFilter interface{}, pagination toolkit.M) (res []toolkit.M, total int, err error) {
+func (s *DSCService) GetEdmpDDTechnicalTable(system string, colFilter interface{}, pagination toolkit.M, defaultSort []string) (res []toolkit.M, total int, err error) {
 	fileName := "edmp.sql"
 	queryName := "edmp-dd-technical"
 
@@ -559,6 +559,7 @@ func (s *DSCService) GetEdmpDDTechnicalTable(system string, colFilter interface{
 	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+	gridArgs.DefaultSort = defaultSort
 
 	funcLog(funcName(), fileName, queryName)
 
@@ -602,7 +603,7 @@ func (s *DSCService) GetEdmpDDTechnicalTable(system string, colFilter interface{
 	return
 }
 
-func (s *DSCService) GetEdmpDDBusinessTable(system string, colFilter interface{}, pagination toolkit.M) (res []toolkit.M, total int, err error) {
+func (s *DSCService) GetEdmpDDBusinessTable(system string, colFilter interface{}, pagination toolkit.M, defaultSort []string) (res []toolkit.M, total int, err error) {
 	fileName := "edmp.sql"
 	queryName := "edmp-dd-business"
 
@@ -611,6 +612,7 @@ func (s *DSCService) GetEdmpDDBusinessTable(system string, colFilter interface{}
 	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+	gridArgs.DefaultSort = defaultSort
 
 	funcLog(funcName(), fileName, queryName)
 
@@ -655,7 +657,7 @@ func (s *DSCService) GetEdmpDDBusinessTable(system string, colFilter interface{}
 	return
 }
 
-func (s *DSCService) GetEdmpDDConsumptionTable(system string, colFilter interface{}, pagination toolkit.M) (res []toolkit.M, total int, err error) {
+func (s *DSCService) GetEdmpDDConsumptionTable(system string, colFilter interface{}, pagination toolkit.M, defaultSort []string) (res []toolkit.M, total int, err error) {
 	fileName := "edmp.sql"
 	queryName := "edmp-dd-consumption"
 
@@ -664,6 +666,7 @@ func (s *DSCService) GetEdmpDDConsumptionTable(system string, colFilter interfac
 	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+	gridArgs.DefaultSort = defaultSort
 
 	funcLog(funcName(), fileName, queryName)
 
@@ -708,7 +711,7 @@ func (s *DSCService) GetEdmpDDConsumptionTable(system string, colFilter interfac
 	return
 }
 
-func (s *DSCService) GetEdmpIarcPersonalTable(system string, colFilter interface{}, pagination toolkit.M) (res []toolkit.M, total int, err error) {
+func (s *DSCService) GetEdmpIarcPersonalTable(system string, colFilter interface{}, pagination toolkit.M, defaultSort []string) (res []toolkit.M, total int, err error) {
 	fileName := "edmp.sql"
 	queryName := "edmp-iarc-personal"
 
@@ -717,6 +720,7 @@ func (s *DSCService) GetEdmpIarcPersonalTable(system string, colFilter interface
 	gridArgs.QueryName = queryName
 	gridArgs.PageNumber = pagination.GetInt("page")
 	gridArgs.RowsPerPage = pagination.GetInt("rowsPerPage")
+	gridArgs.DefaultSort = defaultSort
 
 	funcLog(funcName(), fileName, queryName)
 
