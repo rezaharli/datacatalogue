@@ -466,41 +466,6 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 			}
 		}
 
-		if param.RowsPerPage > 0 {
-			selectQuery = selectQuery + ", rownum row_num "
-
-			if strings.TrimSpace(groupbyQuery) != "" {
-				groupbyQuery = groupbyQuery + ", rownum "
-			}
-
-			if strings.TrimSpace(whereQuery) != "" {
-				whereQuery = whereQuery + "\nAND rownum <= " + toolkit.ToString(param.PageNumber*param.RowsPerPage) + " "
-			} else {
-				whereQuery = "rownum <= " + toolkit.ToString(param.PageNumber*param.RowsPerPage) + " "
-			}
-		}
-
-		// combine it back
-		selectQuery = strings.ReplaceAll(selectQuery, ",", ",\n")
-		param.SqlQuery = strings.TrimSpace(selectQuery) + "\nFROM\n" + strings.TrimSpace(fromQuery)
-		if strings.TrimSpace(whereQuery) != "" {
-			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nWHERE\n" + strings.TrimSpace(whereQuery)
-		}
-		if strings.TrimSpace(groupbyQuery) != "" {
-			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nGROUP BY\n" + strings.TrimSpace(groupbyQuery)
-		}
-		if strings.TrimSpace(orderbyQuery) != "" {
-			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nORDER BY\n" + strings.TrimSpace(orderbyQuery)
-		}
-
-		sqlQuery += "SELECT a.* FROM (\n"
-		sqlQuery += param.SqlQuery + "\n"
-		sqlQuery += ") a "
-
-		if param.RowsPerPage > 0 {
-			sqlQuery = sqlQuery + `WHERE row_num >= ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + " "
-		}
-
 		orders := []string{}
 		if len(param.DefaultSort) > 0 {
 			for _, val := range param.DefaultSort {
@@ -519,7 +484,34 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 			orders = append(orders, order)
 		}
 
-		sqlQuery += "ORDER BY " + strings.Join(orders, ", ")
+		if strings.TrimSpace(orderbyQuery) != "" {
+			orderbyQuery = strings.Join(orders, ", ") + ", " + orderbyQuery
+		} else {
+			orderbyQuery = strings.Join(orders, ", ")
+		}
+
+		// combine it back
+		selectQuery = strings.ReplaceAll(selectQuery, ",", ",\n")
+		param.SqlQuery = strings.TrimSpace(selectQuery) + "\nFROM\n" + strings.TrimSpace(fromQuery)
+		if strings.TrimSpace(whereQuery) != "" {
+			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nWHERE\n" + strings.TrimSpace(whereQuery)
+		}
+		if strings.TrimSpace(groupbyQuery) != "" {
+			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nGROUP BY\n" + strings.TrimSpace(groupbyQuery)
+		}
+		if strings.TrimSpace(orderbyQuery) != "" {
+			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nORDER BY\n" + strings.TrimSpace(orderbyQuery)
+		}
+
+		sqlQuery += "SELECT * FROM (\n"
+		sqlQuery += "SELECT t.*, rownum as rn FROM (\n"
+		sqlQuery += param.SqlQuery + "\n"
+		sqlQuery += ") t "
+		sqlQuery += ") "
+
+		if param.RowsPerPage > 0 {
+			sqlQuery = sqlQuery + `WHERE rn >= ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + " AND rn <= " + toolkit.ToString(param.PageNumber*param.RowsPerPage) + " "
+		}
 	}
 
 	conn := Database()
