@@ -10,6 +10,7 @@ import { exportData } from './exportdata.module';
 
 import { users } from './users.module';
 import { usersusage } from './usersusage.module';
+
 import { dsc } from './dsc.module';
 import { dscmy } from './dscmy.module';
 import { dscall } from './dscall.module';
@@ -24,11 +25,19 @@ import { dscdd } from './dscdd.module';
 import { dscddTechnical } from './dscdd-technical.module';
 import { dscddBusiness } from './dscdd-business.module';
 import { dscddPolicy } from './dscdd-policy.module';
+
+import { edmp } from './edmp.module';
+import { edmpddTechnical } from './edmpdd-technical.module';
+import { edmpddBusiness } from './edmpdd-business.module';
+import { edmpddConsumption } from './edmpdd-consumption.module';
+import { edmpIarcPersonal } from './edmpiarc-personal.module';
+
 import { dpo } from './dpo.module';
 import { dpodataelements } from './dpodataelements.module';
 import { dpodatalineage } from './dpodatalineage.module';
 import { dpomy } from './dpomy.module';
 import { dpoall } from './dpoall.module';
+
 import { ddo } from './ddo.module';
 import { ddomy } from './ddomy.module';
 import { ddoall } from './ddoall.module';
@@ -37,19 +46,12 @@ import { ddosystems } from './ddosystems.module';
 import { ddosystemsbusinessterm } from './ddosystemsbusinessterm.module';
 import { ddodownstream } from './ddodownstream.module';
 import { ddodownstreambusinessterm } from './ddodownstreambusinessterm.module';
+
 import { rfo } from './rfo.module';
 import { rfomy } from './rfomy.module';
 import { rfoall } from './rfoall.module';
 import { rfosummary } from './rfosummary.module';
 import { rfopriority } from './rfopriority.module';
-import { edmp } from './edmp.module';
-import { edmpIarcPersonal } from './edmpiarc-personal.module';
-import { edmpddTechnical } from './edmpdd-technical.module';
-import { edmpddBusiness } from './edmpdd-business.module';
-import { edmpddConsumption } from './edmpdd-consumption.module';
-import { edmpddPresence } from './edmpdd-presence.module';
-import { edmpddProtection } from './edmpdd-protection.module';
-import { edmpddAttribute } from './edmpdd-attribute.module';
 
 Vue.use(Vuex);
 
@@ -63,9 +65,9 @@ export const store = new Vuex.Store({
         exportData,
         users, usersusage,
         dsc, dscmy, dscall, dsccde, dsccdp, dsccdpcde, dscinterfaces, dscinterfacescde, dsciarc, dsciarcpersonal, dscdd, dscddTechnical, dscddBusiness, dscddPolicy,
+        edmp, edmpIarcPersonal, edmpddTechnical, edmpddBusiness, edmpddConsumption,
         dpo, dpomy, dpoall, dpodataelements, dpodatalineage,
         ddo, ddomy, ddoall, ddobusinessterm, ddosystems, ddosystemsbusinessterm, ddodownstream, ddodownstreambusinessterm,
         rfo, rfomy, rfoall, rfosummary, rfopriority,
-        edmp, edmpIarcPersonal, edmpddTechnical, edmpddBusiness, edmpddConsumption, edmpddPresence, edmpddProtection, edmpddAttribute,
     }
 });

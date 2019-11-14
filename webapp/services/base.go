@@ -319,6 +319,8 @@ type GridArgs struct {
 	RowsPerPage  int
 	OrderBy      string
 	IsDescending bool
+
+	DefaultSort []string
 }
 
 func (s *Base) ExecuteGridQueryFromFile(gridArgs GridArgs) ([]toolkit.M, int, error) {
@@ -371,6 +373,7 @@ func (s *Base) ExecuteGridQueryFromFile(gridArgs GridArgs) ([]toolkit.M, int, er
 		GroupCol:         gridArgs.GroupCol,
 		AdditionalWhere:  additionalWhere,
 		ColumnFilterType: gridArgs.ColumnFilterType,
+		DefaultSort:      gridArgs.DefaultSort,
 	})
 	if err != nil {
 		return nil, 0, err

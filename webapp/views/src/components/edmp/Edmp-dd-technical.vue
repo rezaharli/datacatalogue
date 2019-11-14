@@ -114,16 +114,19 @@
                   <i class="fa fa-fw fa-external-link-alt"></i></v-btn></td>
 
               <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">
-                <tablecell :fulltext="props.item.ITAM" showOn="click"></tablecell></td>
+                <v-layout justify-center>
+                  <tablecell :fulltext="props.item.ITAM" showOn="click"></tablecell></v-layout></td>
 
               <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
-                <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME" showOn="click"></tablecell></td>
+                <v-layout justify-center>
+                  <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME" showOn="click"></tablecell></v-layout></td>
               
               <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.DATABASE_NAME" showOn="click"></tablecell></td>
               
               <td v-bind:style="{ width: store.left.colWidth['CERTIFIED'] + 'px' }">
-                <tablecell :fulltext="props.item.CERTIFIED" showOn="click"></tablecell></td>
+                <v-layout justify-center>
+                  <tablecell :fulltext="props.item.CERTIFIED" showOn="click"></tablecell></v-layout></td>
               
               <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-capitalize">
                 <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length > 0">
@@ -138,23 +141,26 @@
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DATA_TYPE.toString().trim() ? props.item.DATA_TYPE : 'NA'"></tablecell>
-              </td>
+                <v-layout justify-center>
+                  <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DATA_TYPE.toString().trim() ? props.item.DATA_TYPE : 'NA'"></tablecell></v-layout></td>
 
               <td v-bind:style="{ width: store.left.colWidth['COLUMN_LENGTH'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_LENGTH.toString().trim() ? props.item.COLUMN_LENGTH : 'NA'"></tablecell>
-              </td>
+                <v-layout justify-center>
+                  <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_LENGTH.toString().trim() ? props.item.COLUMN_LENGTH : 'NA'"></tablecell></v-layout></td>
 
               <td v-bind:style="{ width: store.left.colWidth['NULLABLE'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.NULLABLE.toString().trim() ? props.item.NULLABLE : 'NA'"></tablecell>
+                <v-layout justify-center>
+                  <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.NULLABLE.toString().trim() ? props.item.NULLABLE : 'NA'"></tablecell></v-layout>
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['PRIMARY_KEY'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PRIMARY_KEY.toString().trim() ? props.item.PRIMARY_KEY : 'NA'"></tablecell>
+                <v-layout justify-center>
+                  <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PRIMARY_KEY.toString().trim() ? props.item.PRIMARY_KEY : 'NA'"></tablecell></v-layout>
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'"></tablecell>
+                <v-layout justify-center>
+                  <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'"></tablecell></v-layout>
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['DATA_LINEAGE'] + 'px' }" class="text-capitalize">
@@ -162,7 +168,8 @@
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-capitalize">
-                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'"></tablecell>
+                <v-layout justify-center>
+                  <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'"></tablecell></v-layout>
               </td>
             </tr>
           </template>
@@ -193,26 +200,39 @@
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
                   <span class="ini" v-if="isMainLevelCellShowing(props)">{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
                 </td>
+
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }">
-                  <tablecell :fulltext="props.item.DATA_TYPE.toString().trim() ? props.item.DATA_TYPE : 'NA'" showOn="hover"></tablecell>
+                  <v-layout justify-center>
+                    <tablecell :fulltext="props.item.DATA_TYPE.toString().trim() ? props.item.DATA_TYPE : 'NA'" showOn="hover"></tablecell></v-layout>
                 </td>
+
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_LENGTH'] + 'px' }">
-                  <tablecell :fulltext="props.item.COLUMN_LENGTH.toString().trim() ? props.item.COLUMN_LENGTH : 'NA'" showOn="hover"></tablecell>
+                  <v-layout justify-center>
+                    <tablecell :fulltext="props.item.COLUMN_LENGTH.toString().trim() ? props.item.COLUMN_LENGTH : 'NA'" showOn="hover"></tablecell></v-layout>
                 </td>
+
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['NULLABLE'] + 'px' }">
-                  <tablecell :fulltext="props.item.NULLABLE.toString().trim() ? props.item.NULLABLE : 'NA'" showOn="hover"></tablecell>
+                  <v-layout justify-center>
+                    <tablecell :fulltext="props.item.NULLABLE.toString().trim() ? props.item.NULLABLE : 'NA'" showOn="hover"></tablecell></v-layout>
                 </td>
+
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['PRIMARY_KEY'] + 'px' }">
-                  <tablecell :fulltext="props.item.PRIMARY_KEY.toString().trim() ? props.item.PRIMARY_KEY : 'NA'" showOn="hover"></tablecell>
+                  <v-layout justify-center>
+                    <tablecell :fulltext="props.item.PRIMARY_KEY.toString().trim() ? props.item.PRIMARY_KEY : 'NA'" showOn="hover"></tablecell></v-layout>
                 </td>
+
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }">
-                  <tablecell :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'" showOn="hover"></tablecell>
+                  <v-layout justify-center>
+                    <tablecell :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'" showOn="hover"></tablecell></v-layout>
                 </td>
+
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATA_LINEAGE'] + 'px' }">
                   <tablecell :fulltext="props.item.DATA_LINEAGE.toString().trim() ? props.item.DATA_LINEAGE : 'NA'" showOn="hover"></tablecell>
                 </td>
+
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
-                  <tablecell :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'" showOn="hover"></tablecell>
+                  <v-layout justify-center>
+                    <tablecell :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'" showOn="hover"></tablecell></v-layout>
                 </td>
               </template>
             </v-data-table>

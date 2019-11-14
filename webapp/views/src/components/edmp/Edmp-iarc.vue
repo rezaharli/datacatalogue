@@ -5,6 +5,7 @@
 <style>
 .dd-filter .v-text-field--box .v-label {
   font-size: 14px;
+  color: black;
 }
 .v-select__selection--comma {
   text-overflow: ellipsis;
@@ -33,105 +34,27 @@
             <PageHeader />
             
             <b-row class="my-4">
-                <b-col class="ml-5 col-md-10" v-if="activeTabStoreName == personalStoreName">
+                <b-col class="ml-5 col-md-10">
                   <b-row class="ml-3 dd-filter">
                     <b-col cols="2">
-                      <v-tooltip top>
-                        <template slot="activator" slot-scope="{ on }">
-                          <div v-on="on">
-                            <v-select
-                              v-model="store.iarc.ddVal.ddCountrySelected"
-                              :items="ddCountryOptions"
-                              :search-input.sync="searchInputCountry"
-                              label="Country"
-                              single-line
-                              multiple
-                              box
-                              clearable
-                              autocomplete
-                            >
-                              <template slot="selection" slot-scope="{ item, index }">
-                                <v-chip v-if="index === 0" :class="store.iarc.ddVal.ddCountrySelected.length == 1 ? 'full' : 'small'">
-                                  <span>{{ item }}</span>
-                                </v-chip>
-
-                                <span
-                                  v-if="index === 1"
-                                  class="grey--text caption"
-                                >({{ store.iarc.ddVal.ddCountrySelected.length - 1 }}+) </span>
-                              </template>
-                            </v-select>
-                          </div>
-                        </template>
-
-                        <span>Country</span>
-                      </v-tooltip>
+                      <global-filter-dropdown label="Country" 
+                        v-model="store.iarc.ddVal.ddCountrySelected"
+                        :items="ddCountryOptions"
+                      />
                     </b-col>
 
                     <b-col cols="2">
-                      <v-tooltip top>
-                        <template slot="activator" slot-scope="{ on }">
-                          <div v-on="on">
-                            <v-select
-                              v-model="store.iarc.ddVal.ddSourceSystemSelected"
-                              :items="ddSourceSystemOptions"
-                              :search-input.sync="searchInputSourceSystem"
-                              label="Source System"
-                              single-line
-                              multiple
-                              box
-                              clearable
-                              autocomplete
-                            >
-                              <template slot="selection" slot-scope="{ item, index }">
-                                <v-chip v-if="index === 0" :class="store.iarc.ddVal.ddSourceSystemSelected.length == 1 ? 'full' : 'small'">
-                                  <span>{{ item }}</span>
-                                </v-chip>
-
-                                <span
-                                  v-if="index === 1"
-                                  class="grey--text caption"
-                                >({{ store.iarc.ddVal.ddSourceSystemSelected.length - 1 }}+) </span>
-                              </template>
-                            </v-select>
-                          </div>
-                        </template>
-                        
-                        <span>Source System</span>
-                      </v-tooltip>
+                      <global-filter-dropdown label="Source System" 
+                        v-model="store.iarc.ddVal.ddSourceSystemSelected"
+                        :items="ddSourceSystemOptions"
+                      />
                     </b-col>
 
                     <b-col cols="2">
-                      <v-tooltip top>
-                        <template slot="activator" slot-scope="{ on }">
-                          <div v-on="on">
-                            <v-select
-                              v-model="store.iarc.ddVal.ddItamSelected"
-                              :items="ddItamOptions"
-                              :search-input.sync="searchInputItam"
-                              label="ITAM"
-                              single-line
-                              multiple
-                              box
-                              clearable
-                              autocomplete
-                            >
-                              <template slot="selection" slot-scope="{ item, index }">
-                                <v-chip v-if="index === 0" :class="store.iarc.ddVal.ddItamSelected.length == 1 ? 'full' : 'small'">
-                                  <span>{{ item }}</span>
-                                </v-chip>
-
-                                <span
-                                  v-if="index === 1"
-                                  class="grey--text caption"
-                                >({{ store.iarc.ddVal.ddItamSelected.length - 1 }}+) </span>
-                              </template>
-                            </v-select>
-                          </div>
-                        </template>
-                        
-                        <span>ITAM</span>
-                      </v-tooltip>
+                      <global-filter-dropdown label="ITAM" 
+                        v-model="store.iarc.ddVal.ddItamSelected"
+                        :items="ddItamOptions"
+                      />
                     </b-col>
                   </b-row>
                 </b-col>
@@ -163,17 +86,18 @@
 <script>
 import PageHeader from '../PageHeader';
 import pageExport from "../PageExport.vue";
+import globalFilterDropdown from "./GlobalFilterDropdown.vue";
 
 export default {
-    components: { PageHeader, pageExport },
+    components: { PageHeader, pageExport, globalFilterDropdown },
     data() {
       return {
         storeName: "edmp",
         personalStoreName: "edmpIarcPersonal",
         informationStoreName: "dsciarc",
-        searchInputCountry: "",
-        searchInputSourceSystem: "",
-        searchInputItam: "",
+        ddCountryOptions: [],
+        ddSourceSystemOptions: [],
+        ddItamOptions: [],
         activeTab: '',
         tabs: [
             { id: 'personal', key: 'personal', name: 'Personal Data', route: this.addressPath + '/personal' },
@@ -200,32 +124,17 @@ export default {
       activeTabStore() {
         return this.$store.state[this.activeTabStoreName].all;
       },
+      isGlobalFilterEmpty() {
+        return this.store.iarc.ddVal.ddCountrySelected.length == 0
+          && this.store.iarc.ddVal.ddSourceSystemSelected.length == 0
+          && this.store.iarc.ddVal.ddItamSelected.length == 0;
+      },
       addressPath() {
         var tmp = this.$route.path.split("/");
         return tmp.slice(0, 4).join("/");
       },
       urlParam1() {
         return this.$route.params.system;
-      },
-      ddCountryOptions () {
-        return _.sortedUniq(_.sortBy(_.map(this.store.iarc.DDSource, (v) => v.COUNTRY.toString()), [function(o) { return o; }]));
-      },
-      ddSourceSystemOptions () {
-        var self = this;
-        var filtered = _.filter(self.store.iarc.DDSource, (v) => {
-          return self.store.iarc.ddVal.ddCountrySelected.length > 0 ? (self.store.iarc.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true;
-        });
-        
-        return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.EDM_SOURCE_SYSTEM_NAME.toString()), [function(o) { return o; }]));
-      },
-      ddItamOptions () {
-        var self = this;
-        var filtered = _.filter(self.store.iarc.DDSource, (v) => {
-          return (self.store.iarc.ddVal.ddCountrySelected.length > 0 ? (self.store.iarc.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true)  
-            && (self.store.iarc.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.iarc.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true);
-        });
-        
-        return _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.ITAM.toString()), [function(o) { return o; }]));
       },
     },
     watch: {
@@ -235,31 +144,41 @@ export default {
           this.getLeftTable();
         }
       },
-      'store.iarc.ddVal.ddCountrySelected' () {
+      'store.iarc.ddVal.ddCountrySelected'(val) {
         if(this.store.iarc.firstload) return;
 
-        this.store.iarc.ddVal.ddSourceSystemSelected = [];
-        this.store.iarc.ddVal.ddItamSelected = [];
+        this.setDdSourceSystemOptions();
+        this.setDdItamOptions();
 
         this.store.iarc.firstload = true;
 
-        this.refreshActiveTabTable();
+        setTimeout(() => {
+          this.refreshActiveTabTable("COUNTRY", val);
+        }, 0);
       },
-      'store.iarc.ddVal.ddSourceSystemSelected' () {
+      'store.iarc.ddVal.ddSourceSystemSelected'(val) {
         if(this.store.iarc.firstload) return;
 
-        this.store.iarc.ddVal.ddItamSelected = [];
+        this.setDdCountryOptions();
+        this.setDdItamOptions();
         
         this.store.iarc.firstload = true;
 
-        this.refreshActiveTabTable();
+        setTimeout(() => {
+          this.refreshActiveTabTable("EDM_SOURCE_SYSTEM_NAME", val);
+        }, 0);
       },
-      'store.iarc.ddVal.ddItamSelected' () {
+      'store.iarc.ddVal.ddItamSelected'(val) {
         if(this.store.iarc.firstload) return;
+
+        this.setDdCountryOptions();
+        this.setDdSourceSystemOptions();
 
         this.store.iarc.firstload = true;
 
-        this.refreshActiveTabTable();
+        setTimeout(() => {
+          this.refreshActiveTabTable("ITAM", val);
+        }, 0);
       },
     },
     mounted() {
@@ -269,56 +188,89 @@ export default {
       this.getDropdownOpts();
     },
     methods: {
+      setNewDropdownOpts() {
+        this.ddCountryOptions = _.sortedUniq(_.sortBy(_.map(this.store.iarc.DDSource, (v) => v.COUNTRY.toString()), [function(o) { return o; }]));
+        this.ddSourceSystemOptions = _.sortedUniq(_.sortBy(_.map(this.store.iarc.DDSource, (v) => v.EDM_SOURCE_SYSTEM_NAME.toString()), [function(o) { return o; }]));
+        this.ddItamOptions = _.sortedUniq(_.sortBy(_.map(this.store.iarc.DDSource, (v) => v.ITAM.toString()), [function(o) { return o; }]));
+      },
       getDropdownOpts() {
-        this.$store.dispatch(`${this.storeName}/getIarcDropdownOpts`);
+        this.$store.dispatch(`${this.storeName}/getIarcDropdownOpts`).then(() => {
+          this.setNewDropdownOpts();
+        });
       },
       getLeftTable() {
         this.$store.dispatch(`${this.storeName}/getLeftTable`);
       },
-      refreshActiveTabTable() {
+      refreshActiveTabTable(updatedAttr, val) {
+        if( ! this.personalStore.filters.left.filterTypes) this.personalStore.filters.left.filterTypes = {};
+
+        this.personalStore.filters.left[updatedAttr] = val;
+        this.personalStore.filters.left.filterTypes[updatedAttr] = "eq";
+
         if(this.activeTab.indexOf("personal") != -1){
           this.refreshPersonalTable();
         }
-        if(this.activeTab.indexOf("information") != -1){
-          this.refreshInformationTable();
-        }
       },
       refreshPersonalTable() {
-        if( ! this.personalStore.filters.left.filterTypes) this.personalStore.filters.left.filterTypes = {};
-
-        this.personalStore.filters.left["COUNTRY"] = this.store.iarc.ddVal.ddCountrySelected;
-        this.personalStore.filters.left.filterTypes["COUNTRY"] = "eq";
-
-        this.personalStore.filters.left["EDM_SOURCE_SYSTEM_NAME"] = this.store.iarc.ddVal.ddSourceSystemSelected;
-        this.personalStore.filters.left.filterTypes["EDM_SOURCE_SYSTEM_NAME"] = "eq";
-
-        this.personalStore.filters.left["ITAM"] = this.store.iarc.ddVal.ddItamSelected;
-        this.personalStore.filters.left.filterTypes["ITAM"] = "eq";
-
         this.$store.dispatch(`${this.personalStoreName}/getLeftTable`).then(res => {
           this.store.iarc.firstload = false;
         });
       },
-      refreshInformationTable() {
-        this.$store.dispatch(`${this.informationStoreName}/getLeftTable`).then(res => {
-          this.store.iarc.firstload = false;
+      setDdCountryOptions () {
+        var self = this;
+        var filtered = _.filter(self.store.iarc.DDSource, (v) => {
+          if(this.isGlobalFilterEmpty) return true;
+
+          return (self.store.iarc.ddVal.ddCountrySelected.length > 0 ? (self.store.iarc.ddVal.ddCountrySelected.includes(v.COUNTRY)) : false) 
+            || (
+              (self.store.iarc.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.iarc.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true)
+              && (self.store.iarc.ddVal.ddItamSelected.length > 0 ? (self.store.iarc.ddVal.ddItamSelected.includes(v.ITAM)) : true)
+            );
         });
+        
+        this.ddCountryOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.COUNTRY.toString()), [function(o) { return o; }]));
+      },
+      setDdSourceSystemOptions () {
+        var self = this;
+        var filtered = _.filter(self.store.iarc.DDSource, (v) => {
+          if(this.isGlobalFilterEmpty) return true;
+          
+          return (self.store.iarc.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.iarc.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : false)
+            || (
+              (self.store.iarc.ddVal.ddCountrySelected.length > 0 ? (self.store.iarc.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true) 
+              && (self.store.iarc.ddVal.ddItamSelected.length > 0 ? (self.store.iarc.ddVal.ddItamSelected.includes(v.ITAM)) : true)
+            );
+        });
+        
+        this.ddSourceSystemOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.EDM_SOURCE_SYSTEM_NAME.toString()), [function(o) { return o; }]));
+      },
+      setDdItamOptions () {
+        var self = this;
+        var filtered = _.filter(self.store.iarc.DDSource, (v) => {
+          if(this.isGlobalFilterEmpty) return true;
+          
+          return (self.store.iarc.ddVal.ddItamSelected.length > 0 ? (self.store.iarc.ddVal.ddItamSelected.includes(v.ITAM)) : false)
+            || (
+              (self.store.iarc.ddVal.ddCountrySelected.length > 0 ? (self.store.iarc.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true) 
+              && (self.store.iarc.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.iarc.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true)
+            );
+        });
+        
+        this.ddItamOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.ITAM.toString()), [function(o) { return o; }]));
       },
       updateRouter(val){
         this.$router.push(val);
       },
       resetFilter (e) {
-        if(this.activeTab.indexOf("personal-data") != -1){
+        if(this.activeTab.indexOf("personal") != -1){
           if(Object.keys(this.personalStore.filters.left).length > 0){
             this.personalStore.filters.left = {};
           }
         }
 
-        this.store.iarc.ddVal.ddCountrySelected = "";
-        this.store.iarc.ddVal.ddSourceSystemSelected = "";
-        this.store.iarc.ddVal.ddItamSelected = "";
-
-        this.refreshActiveTabTable();
+        this.store.iarc.ddVal.ddCountrySelected = [];
+        this.store.iarc.ddVal.ddSourceSystemSelected = [];
+        this.store.iarc.ddVal.ddItamSelected = [];
       },
     },
 }
