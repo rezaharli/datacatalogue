@@ -40,8 +40,10 @@
                   :class="['column sortable text-xs-left', store.left.pagination.descending ? 'desc' : 'asc', header.value === store.left.pagination.sortBy ? 'active' : '']"
                   @click="changeSort(header.value)"
                 >
-                  <tableheader :storeName="storeName" :props="header" :which="'left'" :fromHeaderLoop="true" />
-                  <v-icon small>arrow_upward</v-icon>
+                  <div class="th-wrapper" v-bind:style="{ width: header.width ? header.width : 'unset' }">
+                    <tableheader :storeName="storeName" :props="header" :which="'left'" :fromHeaderLoop="true" />
+                    <v-icon small>arrow_upward</v-icon>
+                  </div>
                 </th>
 
                 <th
@@ -49,7 +51,9 @@
                   :key="header.text"
                   :class="['column sortable text-xs-left', store.left.pagination.descending ? 'desc' : 'asc', header.value === store.left.pagination.sortBy ? 'active' : '']"
                 >
-                  <tableheader :storeName="storeName" :props="header" :which="'left'" :fromHeaderLoop="true" />
+                  <div class="th-wrapper" v-bind:style="{ width: header.width ? header.width : 'unset' }">
+                    <tableheader :storeName="storeName" :props="header" :which="'left'" :fromHeaderLoop="true" />
+                  </div>
                 </th>
               </template>
             </tr>
@@ -142,7 +146,7 @@
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
 
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                  <span v-if="isMainLevelCellShowing(props)">{{ row.COLUMN_NAME.toString().trim() ? row.COLUMN_NAME : 'NA' }}</span></td>
+                  <span>{{ row.COLUMN_NAME.toString().trim() ? row.COLUMN_NAME : 'NA' }}</span></td>
 
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }">
                     <tablecell :fulltext="row.DATA_TYPE.toString().trim() ? row.DATA_TYPE : 'NA'" showOn="hover"></tablecell></td>

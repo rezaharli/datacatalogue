@@ -82,6 +82,14 @@ table.v-table thead th, .v-datatable th.column {
     text-overflow: ellipsis;
 }
 
+.th-wrapper{ padding: 0px 24px; }
+table.v-table thead td:not(:nth-child(1)), 
+table.v-table thead th:not(:nth-child(1)), 
+table.v-table thead td:first-child, 
+table.v-table thead th:first-child {
+    padding: 0px
+}
+
 @media (min-width: 992px) {
     #modal-details .modal-lg{
         max-width: 80%;
