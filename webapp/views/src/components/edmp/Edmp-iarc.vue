@@ -202,12 +202,13 @@ export default {
         this.$store.dispatch(`${this.storeName}/getLeftTable`);
       },
       refreshActiveTabTable(updatedAttr, val) {
-        if( ! this.personalStore.filters.left.filterTypes) this.personalStore.filters.left.filterTypes = {};
-
-        this.personalStore.filters.left[updatedAttr] = val;
-        this.personalStore.filters.left.filterTypes[updatedAttr] = "eq";
+        if( ! this.store.iarc.globalFilters.filterTypes) this.store.iarc.globalFilters.filterTypes = {};
+        
+        this.store.iarc.globalFilters[updatedAttr] = val;
+        this.store.iarc.globalFilters.filterTypes[updatedAttr] = "eq";
 
         if(this.activeTab.indexOf("personal") != -1){
+          this.personalStore.filters.left = {}
           this.refreshPersonalTable();
         }
       },
@@ -262,6 +263,8 @@ export default {
         this.$router.push(val);
       },
       resetFilter (e) {
+        this.store.dd.globalFilters = {}
+
         if(this.activeTab.indexOf("personal") != -1){
           if(Object.keys(this.personalStore.filters.left).length > 0){
             this.personalStore.filters.left = {};

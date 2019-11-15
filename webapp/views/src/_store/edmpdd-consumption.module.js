@@ -61,7 +61,7 @@ const actions = {
                 error => commit('getExportDataFailure', error)
             );
     },
-    getLeftTable({ commit }) {
+    getLeftTable({ rootState, commit }) {
         commit('getLeftTableRequest');
 
         Object.keys(state.all.filters.left).map(function(key) {
@@ -72,6 +72,7 @@ const actions = {
             Filename: state.all.filename,
             Queryname: state.all.queryname,
             System: state.all.system,
+            GlobalFilters: rootState.edmp.all.dd.globalFilters,
             Filters: state.all.filters.left,
             Pagination: state.all.left.pagination,
             DefaultSort: ["TABLE_NAME", "COLUMN_NAME"],

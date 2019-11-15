@@ -1,38 +1,3 @@
-<style>
-/* #table-edmp-iarc-personal table.v-table tbody tr {display: block;} */
-/* #table-edmp-iarc-personal table.v-table.v-datatable thead{
-    width: unset;
-    display: table-header-group;
-    padding-right: unset;
-}
-#table-edmp-iarc-personal table.v-table.v-datatable tbody{
-    display:table-row-group;
-    overflow:auto;
-    max-height:unset;
-    width:unset;
-}
-#table-edmp-iarc-personal table.v-table.v-datatable tbody tr {display: table-row;} */
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(1){width: calc(100%/10) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(2){width: calc(100%/10) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(5){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(6){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(7){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(8){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(9){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(10){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(11){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(12){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal table.v-table tr th:nth-of-type(13){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-iarc-personal tr > td{ max-width: 90%; word-break: break-word; }
-
-.transparent-tnya3{
-  background-color: rgba(0, 0, 0, 0) !important;
-  color: rgba(0, 0, 0, 0) !important;
-}
-</style>
-
 <template>
     <b-row style="margin-top: 10px;margin-bottom: 10px;">
       <b-col>
@@ -47,6 +12,8 @@
         </v-alert>
         
         <v-data-table
+            v-model="store.selected"
+            select-all
             v-if="!isGlobalFilterEmpty"
             :headers="displayedHeaders"
             :items="store.left.display"
@@ -58,11 +25,14 @@
             :rows-per-page-items="[100]"
             item-key="ID"
             class="elevation-1 table-v2"
-            id="table-edmp-iarc-personal"
-            @update:pagination="setTableColumnsWidth">
+            id="table-edmp-iarc-personal">
 
           <template slot="headers" slot-scope="props">
             <tr>
+              <th>
+                <v-checkbox :input-value="props.all" :indeterminate="props.indeterminate" primary hide-details @click.stop="toggleAll"></v-checkbox>
+              </th>
+
               <template v-for="header in props.headers">
                 <th
                   v-if="header.sortable == true"
@@ -101,17 +71,17 @@
 
           <template slot="items" slot-scope="props">
             <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
+              <td>
+                <v-checkbox :input-value="props.selected" primary hide-details @click="props.selected = !props.selected"></v-checkbox></td>
+
               <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">
-                <v-layout justify-center>
-                  <tablecell :fulltext="props.item.ITAM.toString().trim() ? props.item.ITAM : 'NA'" showOn="click"></tablecell></v-layout></td>
+                  <tablecell :fulltext="props.item.ITAM.toString().trim() ? props.item.ITAM : 'NA'" showOn="click"></tablecell></td>
 
               <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
-                <v-layout justify-center>
-                  <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME.toString().trim() ? props.item.EDM_SOURCE_SYSTEM_NAME : 'NA'" showOn="click"></tablecell></v-layout></td>
+                  <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME.toString().trim() ? props.item.EDM_SOURCE_SYSTEM_NAME : 'NA'" showOn="click"></tablecell></td>
               
               <td v-bind:style="{ width: store.left.colWidth['COUNTRY'] + 'px' }">
-                <v-layout justify-center>
-                  <tablecell :fulltext="props.item.COUNTRY.toString().trim() ? props.item.COUNTRY : 'NA'" showOn="click"></tablecell></v-layout></td>
+                  <tablecell :fulltext="props.item.COUNTRY.toString().trim() ? props.item.COUNTRY : 'NA'" showOn="click"></tablecell></td>
               
               <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.DATABASE_NAME.toString().trim() ? props.item.DATABASE_NAME : 'NA'" showOn="click"></tablecell></td>
@@ -129,12 +99,10 @@
               </td>
               
               <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
-                <v-layout justify-center>
-                  <tablecell :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'" showOn="click"></tablecell></v-layout></td>
+                  <tablecell :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'" showOn="click"></tablecell></td>
                 
               <td v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }">
-                <v-layout justify-center>
-                  <tablecell :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'" showOn="click"></tablecell></v-layout></td>
+                  <tablecell :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'" showOn="click"></tablecell></td>
             </tr>
           </template>
         </v-data-table>
@@ -152,7 +120,7 @@ import PageHeader from '../PageHeader';
 import JsonExcel from "vue-json-excel";
 import pageSearch from "../PageSearch.vue";
 import pageExport from "../PageExport.vue";
-import tableheader from "../TableHeader.vue";
+import tableheader from "./TableHeader.vue";
 import tablecell from "../Tablecell.vue";
 import pageLoader from "../PageLoader.vue";
 
@@ -201,22 +169,8 @@ export default {
       }
     }
   },
-  mounted() {
-    var self = this;
-
-    setTimeout(() => {
-      this.setTableColumnsWidth();
-    }, 10);
-
-    $("#page-tab #tab-personal").on('click', function(){
-      setTimeout(() => {
-        self.setTableColumnsWidth();
-      }, 1);
-    });
-  },
-  updated() {
-    this.setTableColumnsWidth();
-  },
+  mounted() {},
+  updated() {},
   methods: {
     getLeftTable() {
       this.store.system = this.$route.params.system;
@@ -224,10 +178,6 @@ export default {
       if( ! this.isGlobalFilterEmpty) {
         this.$store.dispatch(`${this.storeName}/getLeftTable`).then(v => {
           this.edmpStore.iarc.firstload = false;
-
-          setTimeout(() => {
-            this.setTableColumnsWidth() 
-          }, 10);
         }) 
       } else {
         this.store.left.isLoading = false;
@@ -242,35 +192,6 @@ export default {
         
         return false;
       }
-    },
-    setTableColumnsWidth(){
-      var elem = $('#table-edmp-iarc-personal');
-      var tableElem = elem.find('.v-table__overflow > table.v-table');
-      var THs = tableElem.find('thead tr th');
-      var tbodyTR = tableElem.find('tbody tr');
-      THs.each(function (thIndex) {
-        var thWidth = $(this).width();
-        tbodyTR.each(function (tdIndex) {
-          var TDs = $(this).find('td:not([colspan])');
-          TDs.eq(thIndex).width(thWidth);
-        });
-      });
-    },
-    setExpandedTableColumnsWidth(){
-      setTimeout(() => {
-        var elem = $('.v-datatable__expand-row');
-        var elemExpandedTable = elem.find('.v-datatable__expand-content table.v-table');
-        var THs = elem.closest('table.v-table').find('thead tr:first th');
-        var tbodyTR = elemExpandedTable.find('tbody tr');
-        THs.each(function (thIndex) {
-          $(this).css({'color': 'red'});
-          var thWidth = $(this).width();
-          tbodyTR.each(function (tdIndex) {
-            var TDs = $(this).find('td:not([colspan])');
-            TDs.eq(thIndex).width(thWidth);
-          });
-        });
-      }, 10);
     },
     toggleAll () {
       if (this.store.selected.length) this.store.selected = []

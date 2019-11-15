@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper-showmore d-inline-block">
-    <span v-if="showOn == 'click'" @click="toggleText(); onClick($event, isTruncated);">{{ isTruncated ? truncateCells(fulltext) : fulltext }}</span>
+    <span v-if="showOn == 'click'" @click="toggleText();">{{ isTruncated ? truncateCells(fulltext) : fulltext }}</span>
 
     <p
       style="margin-bottom: 0px !important;"
@@ -21,9 +21,9 @@ export default {
     };
   },
   mounted() {
-    setTimeout(() => {
-      this.setThWidthOri();
-    }, 1);
+    // setTimeout(() => {
+    //   this.setThWidthOri();
+    // }, 1);
   },
   methods: {
     toggleText() {
@@ -36,13 +36,13 @@ export default {
 
       return text.length > n ? text.slice(0, n) + "..." : text;
     },
-    setThWidthOri() {
-      $("table.v-table > thead > tr > th").each(function () {
-        var thElem = $(this);
-        var thWidthOri = thElem.outerWidth();
-        thElem.attr("data-width-ori", thWidthOri);
-      });
-    },
+    // setThWidthOri() {
+    //   $("table.v-table > thead > tr > th").each(function () {
+    //     var thElem = $(this);
+    //     var thWidthOri = thElem.outerWidth();
+    //     thElem.attr("data-width-ori", thWidthOri);
+    //   });
+    // },
     onClick: function (e, isTruncated) {
       var clickedElem = e.currentTarget;
       var tdElem = $(clickedElem).closest("td");

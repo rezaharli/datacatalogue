@@ -1,29 +1,3 @@
-<style>
-/* #table-edmp-dd-consumption table.v-table tbody tr {display: block;} */
-/* #table-edmp-dd-consumption table.v-table.v-datatable thead{
-    width: unset;
-    display: table-header-group;
-    padding-right: unset;
-}
-#table-edmp-dd-consumption table.v-table.v-datatable tbody{
-    display:table-row-group;
-    overflow:auto;
-    max-height:unset;
-    width:unset;
-}
-#table-edmp-dd-consumption table.v-table.v-datatable tbody tr {display: table-row;} */
-#table-edmp-dd-consumption table.v-table tr th:nth-of-type(1){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-consumption table.v-table tr th:nth-of-type(2){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-consumption table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-consumption table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-consumption table.v-table tr th:nth-of-type(5){width: calc(100%/20) !important; display: table-cell;}
-
-.ini{
-  max-width: 90%;
-  word-break: break-word;
-}
-</style>
-
 <template>
     <b-row style="margin-top: 10px;margin-bottom: 10px;">
       <b-col>
@@ -154,56 +128,46 @@
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.CONSUMING_TECH_METADATA.toString().trim() ? props.item.CONSUMING_TECH_METADATA : 'NA'"></tablecell>
               </td>
             </tr>
-          </template>
-
-          <template slot="expand" slot-scope="props">
-            <v-data-table
-              :headers="displayedHeaders"
-              :items="props.item.Tables"
-              item-key="TMTID"
-              class=""
-              hide-actions
-              hide-headers
-              @update:pagination="setExpandedTableColumnsWidth"
-            >
-              <template slot="items" slot-scope="props">
+            
+            <template v-if="props.item.Tables.length > 0 && props.expanded">
+              <tr :key="row.TMTID" v-for="row in props.item.Tables">
                 <td class="text-capitalize">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
 
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                  <span class="ini" v-if="isMainLevelCellShowing(props)">{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
+                  <span class="ini" v-if="isMainLevelCellShowing(props)">{{ row.COLUMN_NAME.toString().trim() ? row.COLUMN_NAME : 'NA' }}</span>
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['CONSUMING_APPLICATION'] + 'px' }">
-                  <tablecell :fulltext="props.item.CONSUMING_APPLICATION.toString().trim() ? props.item.CONSUMING_APPLICATION : 'NA'" showOn="hover"></tablecell>
+                  <tablecell :fulltext="row.CONSUMING_APPLICATION.toString().trim() ? row.CONSUMING_APPLICATION : 'NA'" showOn="hover"></tablecell>
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['CONSUMING_APPLICATION_ITAM'] + 'px' }">
-                  <tablecell :fulltext="props.item.CONSUMING_APPLICATION_ITAM.toString().trim() ? props.item.CONSUMING_APPLICATION_ITAM : 'NA'" showOn="hover"></tablecell>
+                  <tablecell :fulltext="row.CONSUMING_APPLICATION_ITAM.toString().trim() ? row.CONSUMING_APPLICATION_ITAM : 'NA'" showOn="hover"></tablecell>
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['CONSUMING_APPLICATION_OWNER'] + 'px' }">
-                  <tablecell :fulltext="props.item.CONSUMING_APPLICATION_OWNER.toString().trim() ? props.item.CONSUMING_APPLICATION_OWNER : 'NA'" showOn="hover"></tablecell>
+                  <tablecell :fulltext="row.CONSUMING_APPLICATION_OWNER.toString().trim() ? row.CONSUMING_APPLICATION_OWNER : 'NA'" showOn="hover"></tablecell>
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['CONSUMER_DESCRIPTION'] + 'px' }">
-                  <tablecell :fulltext="props.item.CONSUMER_DESCRIPTION.toString().trim() ? props.item.CONSUMER_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
+                  <tablecell :fulltext="row.CONSUMER_DESCRIPTION.toString().trim() ? row.CONSUMER_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['TECH_CONTACT'] + 'px' }">
-                  <tablecell :fulltext="props.item.TECH_CONTACT.toString().trim() ? props.item.TECH_CONTACT : 'NA'" showOn="hover"></tablecell>
+                  <tablecell :fulltext="row.TECH_CONTACT.toString().trim() ? row.TECH_CONTACT : 'NA'" showOn="hover"></tablecell>
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_OWNERSHIP'] + 'px' }">
-                  <tablecell :fulltext="props.item.BUSINESS_OWNERSHIP.toString().trim() ? props.item.BUSINESS_OWNERSHIP : 'NA'" showOn="hover"></tablecell>
+                  <tablecell :fulltext="row.BUSINESS_OWNERSHIP.toString().trim() ? row.BUSINESS_OWNERSHIP : 'NA'" showOn="hover"></tablecell>
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['ACCESS_ROLE'] + 'px' }">
-                  <tablecell :fulltext="props.item.ACCESS_ROLE.toString().trim() ? props.item.ACCESS_ROLE : 'NA'" showOn="hover"></tablecell>
+                  <tablecell :fulltext="row.ACCESS_ROLE.toString().trim() ? row.ACCESS_ROLE : 'NA'" showOn="hover"></tablecell>
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['ROLE_DESCRIPTION'] + 'px' }">
-                  <tablecell :fulltext="props.item.ROLE_DESCRIPTION.toString().trim() ? props.item.ROLE_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
+                  <tablecell :fulltext="row.ROLE_DESCRIPTION.toString().trim() ? row.ROLE_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
                 </td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['CONSUMING_TECH_METADATA'] + 'px' }">
-                  <tablecell :fulltext="props.item.CONSUMING_TECH_METADATA.toString().trim() ? props.item.CONSUMING_TECH_METADATA : 'NA'" showOn="hover"></tablecell>
+                  <tablecell :fulltext="row.CONSUMING_TECH_METADATA.toString().trim() ? row.CONSUMING_TECH_METADATA : 'NA'" showOn="hover"></tablecell>
                 </td>
-              </template>
-            </v-data-table>
+              </tr>
+            </template>
           </template>
         </v-data-table>
               
@@ -220,7 +184,7 @@ import PageHeader from '../PageHeader';
 import JsonExcel from "vue-json-excel";
 import pageSearch from "../PageSearch.vue";
 import pageExport from "../PageExport.vue";
-import tableheader from "../TableHeader.vue";
+import tableheader from "./TableHeader.vue";
 import tablecell from "../Tablecell.vue";
 import pageLoader from "../PageLoader.vue";
 
@@ -270,22 +234,8 @@ export default {
       }
     }
   },
-  mounted() {
-    var self = this;
-
-    setTimeout(() => {
-      this.setTableColumnsWidth();
-    }, 10);
-
-    $("#page-tab #tab-consumption").on('click', function(){
-      setTimeout(() => {
-        self.setTableColumnsWidth();
-      }, 1);
-    });
-  },
-  updated() {
-    this.setTableColumnsWidth();
-  },
+  mounted() {},
+  updated() {},
   methods: {
     getLeftTable() {
       this.store.system = this.$route.params.system;
@@ -293,10 +243,6 @@ export default {
       if( ! this.isGlobalFilterEmpty) {
         this.$store.dispatch(`${this.storeName}/getLeftTable`).then(v => { 
           this.edmpStore.dd.firstload = false;
-
-          setTimeout(() => {
-            this.setTableColumnsWidth() 
-          }, 10);
         })
       }
     },
@@ -309,35 +255,6 @@ export default {
         
         return false;
       }
-    },
-    setTableColumnsWidth(){
-      var elem = $('#table-edmp-dd-consumption');
-      var tableElem = elem.find('.v-table__overflow > table.v-table');
-      var THs = tableElem.find('thead tr th');
-      var tbodyTR = tableElem.find('tbody tr');
-      THs.each(function (thIndex) {
-        var thWidth = $(this).width();
-        tbodyTR.each(function (tdIndex) {
-          var TDs = $(this).find('td:not([colspan])');
-          TDs.eq(thIndex).width(thWidth);
-        });
-      });
-    },
-    setExpandedTableColumnsWidth(){
-      setTimeout(() => {
-        var elem = $('.v-datatable__expand-row');
-        var elemExpandedTable = elem.find('.v-datatable__expand-content table.v-table');
-        var THs = elem.closest('table.v-table').find('thead tr:first th');
-        var tbodyTR = elemExpandedTable.find('tbody tr');
-        THs.each(function (thIndex) {
-          $(this).css({'color': 'red'});
-          var thWidth = $(this).width();
-          tbodyTR.each(function (tdIndex) {
-            var TDs = $(this).find('td:not([colspan])');
-            TDs.eq(thIndex).width(thWidth);
-          });
-        });
-      }, 10);
     },
     toggleAll () {
       if (this.store.selected.length) this.store.selected = []
