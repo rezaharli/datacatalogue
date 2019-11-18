@@ -120,7 +120,7 @@ func (c *Base) ExportToCsv(k *knot.WebContext) {
 		Param1:        payload.GetString("System"),
 		Param2:        payload.GetString("DspName"),
 		Filter:        payload.GetString("Filter"),
-		ColumnFilters: payload.Get("ColumnFilters"),
+		ColumnFilters: payload.Get("Filters"),
 	}
 
 	if payload.Has("LoggedInID") == true {

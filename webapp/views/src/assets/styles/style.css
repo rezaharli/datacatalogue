@@ -410,3 +410,7 @@ table.v-table.v-datatable thead.sticky .v-datatable__progress {visibility: hidde
 .edmp-search > .v-input__control > .v-input__slot .v-icon{font-size: 20px !important;}
 
 .grey--text.caption { margin-right: 5px; }
+
+.card .v-table__overflow,
+.table-v1 .v-table__overflow,
+.table-v2 .v-table__overflow {overflow-x: auto; overflow-y: visible;}

@@ -1,5 +1,5 @@
 -- name: dsc-view
-SELECT DISTINCT 
+SELECT 
 		TS.ID					AS ID,
 		TS.SYSTEM_NAME 				AS SYSTEM_NAME,
 		TS.ITAM_ID					AS ITAM_ID,

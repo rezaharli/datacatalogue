@@ -802,10 +802,12 @@ func (DBcmd) ExecuteSQLQueryHeaderOpts(param SqlQueryParam) error {
 			orders = append(orders, order)
 		}
 
-		if strings.TrimSpace(orderbyQuery) != "" {
-			orderbyQuery = strings.Join(orders, ", ") + ", " + orderbyQuery
-		} else {
-			orderbyQuery = strings.Join(orders, ", ")
+		if len(orders) > 0 {
+			if strings.TrimSpace(orderbyQuery) != "" {
+				orderbyQuery = strings.Join(orders, ", ") + ", " + orderbyQuery
+			} else {
+				orderbyQuery = strings.Join(orders, ", ")
+			}
 		}
 
 		// combine it back
