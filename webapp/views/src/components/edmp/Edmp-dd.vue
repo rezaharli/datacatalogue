@@ -296,26 +296,21 @@ export default {
         this.$store.dispatch(`${this.storeName}/getLeftTable`);
       },
       refreshActiveTabTable(updatedAttr, val) {
-        if( ! this.technicalStore.filters.left.filterTypes) this.technicalStore.filters.left.filterTypes = {};
-        if( ! this.businessStore.filters.left.filterTypes) this.businessStore.filters.left.filterTypes = {};
-        if( ! this.consumptionStore.filters.left.filterTypes) this.consumptionStore.filters.left.filterTypes = {};
+        if( ! this.store.dd.globalFilters.filterTypes) this.store.dd.globalFilters.filterTypes = {};
 
-        this.technicalStore.filters.left[updatedAttr] = val;
-        this.technicalStore.filters.left.filterTypes[updatedAttr] = "eq";
-
-        this.businessStore.filters.left[updatedAttr] = val;
-        this.businessStore.filters.left.filterTypes[updatedAttr] = "eq";
-
-        this.consumptionStore.filters.left[updatedAttr] = val;
-        this.consumptionStore.filters.left.filterTypes[updatedAttr] = "eq";
+        this.store.dd.globalFilters[updatedAttr] = val;
+        this.store.dd.globalFilters.filterTypes[updatedAttr] = "eq";
 
         if(this.activeTab.indexOf("technical-metadata") != -1){
+          this.technicalStore.filters.left = {}
           this.refreshTechnicalTable();
         }
         if(this.activeTab.indexOf("business-metadata") != -1){
+          this.businessStore.filters.left = {}
           this.refreshBusinessTable();
         }
         if(this.activeTab.indexOf("consumption-apps") != -1){
+          this.consumptionStore.filters.left = {}
           this.refreshConsumptionTable();
         }
       },
@@ -440,6 +435,8 @@ export default {
         this.$router.push(val);
       },
       resetFilter (e) {
+        this.store.dd.globalFilters = {}
+
         if(this.activeTab.indexOf("technical-metadata") != -1){
           if(Object.keys(this.technicalStore.filters.left).length > 0){
             this.technicalStore.filters.left = {};

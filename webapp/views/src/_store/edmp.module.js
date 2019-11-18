@@ -14,6 +14,7 @@ const state = {
         dd: {
             DDSource: [],
             firstload: true,
+            globalFilters: {},
             ddVal: {
                 ddCountrySelected: [],
                 ddBusinessSegmentSelected: [],
@@ -26,6 +27,7 @@ const state = {
         iarc: {
             DDSource: [],
             firstload: true,
+            globalFilters: {},
             ddVal: {
                 ddCountrySelected: [],
                 ddSourceSystemSelected: [],

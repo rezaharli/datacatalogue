@@ -40,10 +40,11 @@ func (c *Base) GetHeaderOpts(k *knot.WebContext) {
 		Queryname: payload.GetString("Queryname"),
 		FieldName: payload.GetString("FieldName"),
 
-		Param1:       payload.GetString("System"),
-		Param2:       payload.GetString("DspName"),
-		Filter:       payload.GetString("Filter"),
-		ScopeFilters: payload.Get("Filters"),
+		Param1:        payload.GetString("System"),
+		Param2:        payload.GetString("DspName"),
+		Filter:        payload.GetString("Filter"),
+		GlobalFilters: payload.Get("GlobalFilters"),
+		ColumnFilters: payload.Get("Filters"),
 	}
 
 	if payload.Has("LoggedInID") == true {
@@ -79,10 +80,11 @@ func (c *Base) GetRowCount(k *knot.WebContext) {
 		Filename:  payload.GetString("Filename"),
 		Queryname: payload.GetString("Queryname"),
 
-		Param1:       payload.GetString("System"),
-		Param2:       payload.GetString("DspName"),
-		Filter:       payload.GetString("Filter"),
-		ScopeFilters: payload.Get("Filters"),
+		Param1:        payload.GetString("System"),
+		Param2:        payload.GetString("DspName"),
+		Filter:        payload.GetString("Filter"),
+		GlobalFilters: payload.Get("GlobalFilters"),
+		ColumnFilters: payload.Get("Filters"),
 	}
 
 	if payload.Has("LoggedInID") == true {
@@ -115,10 +117,10 @@ func (c *Base) ExportToCsv(k *knot.WebContext) {
 		Queryname: payload.GetString("Queryname"),
 		Headers:   payload.Get("Headers").([]interface{}),
 
-		Param1:       payload.GetString("System"),
-		Param2:       payload.GetString("DspName"),
-		Filter:       payload.GetString("Filter"),
-		ScopeFilters: payload.Get("Filters"),
+		Param1:        payload.GetString("System"),
+		Param2:        payload.GetString("DspName"),
+		Filter:        payload.GetString("Filter"),
+		ColumnFilters: payload.Get("Filters"),
 	}
 
 	if payload.Has("LoggedInID") == true {

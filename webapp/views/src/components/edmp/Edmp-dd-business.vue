@@ -1,28 +1,3 @@
-<style>
-/* #table-edmp-dd-business table.v-table tbody tr {display: block;} */
-/* #table-edmp-dd-business table.v-table.v-datatable thead{
-    width: unset;
-    display: table-header-group;
-    padding-right: unset;
-}
-#table-edmp-dd-business table.v-table.v-datatable tbody{
-    display:table-row-group;
-    overflow:auto;
-    max-height:unset;
-    width:unset;
-}
-#table-edmp-dd-business table.v-table.v-datatable tbody tr {display: table-row;} */
-#table-edmp-dd-business table.v-table tr th:nth-of-type(1){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-business table.v-table tr th:nth-of-type(2){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-business table.v-table tr th:nth-of-type(3){width: calc(100%/20) !important; display: table-cell;}
-#table-edmp-dd-business table.v-table tr th:nth-of-type(4){width: calc(100%/20) !important; display: table-cell;}
-
-.ini{
-  max-width: 90%;
-  word-break: break-word;
-}
-</style>
-
 <template>
     <b-row style="margin-top: 10px;margin-bottom: 10px;">
       <b-col>
@@ -50,8 +25,7 @@
             :rows-per-page-items="[100]"
             item-key="ID"
             class="elevation-1 table-v2"
-            id="table-edmp-dd-business"
-            @update:pagination="setTableColumnsWidth">
+            id="table-edmp-dd-business">
 
           <template slot="headers" slot-scope="props">
             <tr>
@@ -66,8 +40,10 @@
                   :class="['column sortable text-xs-left', store.left.pagination.descending ? 'desc' : 'asc', header.value === store.left.pagination.sortBy ? 'active' : '']"
                   @click="changeSort(header.value)"
                 >
-                  <tableheader :storeName="storeName" :props="header" :which="'left'" :fromHeaderLoop="true" />
-                  <v-icon small>arrow_upward</v-icon>
+                  <div class="th-wrapper" v-bind:style="{ width: header.width ? header.width : 'unset' }">
+                    <tableheader :storeName="storeName" :props="header" :which="'left'" :fromHeaderLoop="true" />
+                    <v-icon small>arrow_upward</v-icon>
+                  </div>
                 </th>
 
                 <th
@@ -75,7 +51,9 @@
                   :key="header.text"
                   :class="['column sortable text-xs-left', store.left.pagination.descending ? 'desc' : 'asc', header.value === store.left.pagination.sortBy ? 'active' : '']"
                 >
-                  <tableheader :storeName="storeName" :props="header" :which="'left'" :fromHeaderLoop="true" />
+                  <div class="th-wrapper" v-bind:style="{ width: header.width ? header.width : 'unset' }">
+                    <tableheader :storeName="storeName" :props="header" :which="'left'" :fromHeaderLoop="true" />
+                  </div>
                 </th>
               </template>
             </tr>
@@ -101,22 +79,20 @@
                 <v-checkbox :input-value="props.selected" primary hide-details @click="props.selected = !props.selected"></v-checkbox></td>
 
               <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">
-                <v-layout justify-center>
-                  <tablecell :fulltext="props.item.ITAM" showOn="click"></tablecell></v-layout></td>
+                <tablecell :fulltext="props.item.ITAM" showOn="click"></tablecell></td>
 
               <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
-                <v-layout justify-center>
-                  <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME" showOn="click"></tablecell></v-layout></td>
+                <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME" showOn="click"></tablecell></td>
 
               <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
                 <tablecell :fulltext="props.item.DATABASE_NAME" showOn="click"></tablecell></td>
               
               <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-capitalize">
                 <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length > 0">
-                  <span class="ini">{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
+                  <span>{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
                 </b-link>
 
-                <span class="ini" v-if="props.item.Tables.length < 1">{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
+                <span v-if="props.item.Tables.length < 1">{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['TABLE_DESCRIPTION'] + 'px' }" class="text-capitalize">
@@ -124,7 +100,7 @@
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-capitalize">
-                <span class="ini" v-if="isMainLevelCellShowing(props)">{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
+                <span v-if="isMainLevelCellShowing(props)">{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['COLUMN_DESCRIPTION'] + 'px' }" class="text-capitalize">
@@ -156,23 +132,12 @@
               </td>
 
               <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-capitalize">
-                <v-layout justify-center>
-                  <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'"></tablecell></v-layout>
+                <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'"></tablecell>
               </td>
             </tr>
-          </template>
-
-          <template slot="expand" slot-scope="props">
-            <v-data-table
-              :headers="displayedHeaders"
-              :items="props.item.Tables"
-              item-key="TMTID"
-              class=""
-              hide-actions
-              hide-headers
-              @update:pagination="setExpandedTableColumnsWidth"
-            >
-              <template slot="items" slot-scope="props">
+            
+            <template v-if="props.item.Tables.length > 0 && props.expanded">
+              <tr :key="row.TMTID" v-for="row in props.item.Tables">
                 <td class="text-capitalize">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">&nbsp;</td>
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
@@ -180,47 +145,46 @@
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
 
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['TABLE_DESCRIPTION'] + 'px' }">
-                  <tablecell :fulltext="props.item.TABLE_DESCRIPTION.toString().trim() ? props.item.TABLE_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
+                  <tablecell :fulltext="row.TABLE_DESCRIPTION.toString().trim() ? row.TABLE_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
                 </td>
                 
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                  <span class="ini" v-if="isMainLevelCellShowing(props)">{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
+                  <span>{{ row.COLUMN_NAME.toString().trim() ? row.COLUMN_NAME : 'NA' }}</span>
                 </td>
                 
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_DESCRIPTION'] + 'px' }">
-                  <tablecell :fulltext="props.item.COLUMN_DESCRIPTION.toString().trim() ? props.item.COLUMN_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
+                  <tablecell :fulltext="row.COLUMN_DESCRIPTION.toString().trim() ? row.COLUMN_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
                 </td>
                 
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_TERM'] + 'px' }">
-                  <tablecell :fulltext="props.item.BUSINESS_TERM.toString().trim() ? props.item.BUSINESS_TERM : 'NA'" showOn="hover"></tablecell>
+                  <tablecell :fulltext="row.BUSINESS_TERM.toString().trim() ? row.BUSINESS_TERM : 'NA'" showOn="hover"></tablecell>
                 </td>
                 
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_DESCRIPTION'] + 'px' }">
-                  <tablecell :fulltext="props.item.BUSINESS_DESCRIPTION.toString().trim() ? props.item.BUSINESS_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
+                  <tablecell :fulltext="row.BUSINESS_DESCRIPTION.toString().trim() ? row.BUSINESS_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
                 </td>
                 
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DETERMINES_CLIENT_LOCATION'] + 'px' }">
-                  <tablecell :fulltext="props.item.DETERMINES_CLIENT_LOCATION.toString().trim() ? props.item.DETERMINES_CLIENT_LOCATION : 'NA'" showOn="hover"></tablecell>
+                  <tablecell :fulltext="row.DETERMINES_CLIENT_LOCATION.toString().trim() ? row.DETERMINES_CLIENT_LOCATION : 'NA'" showOn="hover"></tablecell>
                 </td>
                 
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DETERMINES_ACCOUNT'] + 'px' }">
-                  <tablecell :fulltext="props.item.DETERMINES_ACCOUNT.toString().trim() ? props.item.DETERMINES_ACCOUNT : 'NA'" showOn="hover"></tablecell>
+                  <tablecell :fulltext="row.DETERMINES_ACCOUNT.toString().trim() ? row.DETERMINES_ACCOUNT : 'NA'" showOn="hover"></tablecell>
                 </td>
                 
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['BUSINESS_SEGMENT'] + 'px' }">
-                  <tablecell :fulltext="props.item.BUSINESS_SEGMENT.toString().trim() ? props.item.BUSINESS_SEGMENT : 'NA'" showOn="hover"></tablecell>
+                  <tablecell :fulltext="row.BUSINESS_SEGMENT.toString().trim() ? row.BUSINESS_SEGMENT : 'NA'" showOn="hover"></tablecell>
                 </td>
                 
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['PRODUCT_CATEGORY'] + 'px' }">
-                  <tablecell :fulltext="props.item.PRODUCT_CATEGORY.toString().trim() ? props.item.PRODUCT_CATEGORY : 'NA'" showOn="hover"></tablecell>
+                  <tablecell :fulltext="row.PRODUCT_CATEGORY.toString().trim() ? row.PRODUCT_CATEGORY : 'NA'" showOn="hover"></tablecell>
                 </td>
                 
                 <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
-                  <v-layout justify-center>
-                    <tablecell :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'" showOn="hover"></tablecell></v-layout>
+                  <tablecell :fulltext="row.CDE.toString().trim() ? row.CDE : 'NA'" showOn="hover"></tablecell>
                 </td>
-              </template>
-            </v-data-table>
+              </tr>
+            </template>
           </template>
         </v-data-table>    
       </b-col>
@@ -236,7 +200,7 @@ import PageHeader from '../PageHeader';
 import JsonExcel from "vue-json-excel";
 import pageSearch from "../PageSearch.vue";
 import pageExport from "../PageExport.vue";
-import tableheader from "../TableHeader.vue";
+import tableheader from "./TableHeader.vue";
 import tablecell from "../Tablecell.vue";
 import pageLoader from "../PageLoader.vue";
 
@@ -288,22 +252,8 @@ export default {
       }
     }
   },
-  mounted() {
-    var self = this;
-
-    setTimeout(() => {
-      this.setTableColumnsWidth();
-    }, 10);
-
-    $("#page-tab #tab-business").on('click', function(){
-      setTimeout(() => {
-        self.setTableColumnsWidth();
-      }, 1);
-    });
-  },
-  updated() {
-    this.setTableColumnsWidth();
-  },
+  mounted() {},
+  updated() {},
   methods: {
     getLeftTable() {
       this.store.system = this.$route.params.system;
@@ -311,10 +261,6 @@ export default {
       if( ! this.isGlobalFilterEmpty) {
         this.$store.dispatch(`${this.storeName}/getLeftTable`).then(v => { 
           this.edmpStore.dd.firstload = false;
-
-          setTimeout(() => {
-            this.setTableColumnsWidth() 
-          }, 10);
         })
       }
     },
@@ -327,35 +273,6 @@ export default {
         
         return false;
       }
-    },
-    setTableColumnsWidth(){
-      var elem = $('#table-edmp-dd-business');
-      var tableElem = elem.find('.v-table__overflow > table.v-table');
-      var THs = tableElem.find('thead tr th');
-      var tbodyTR = tableElem.find('tbody tr');
-      THs.each(function (thIndex) {
-        var thWidth = $(this).width();
-        tbodyTR.each(function (tdIndex) {
-          var TDs = $(this).find('td:not([colspan])');
-          TDs.eq(thIndex).width(thWidth);
-        });
-      });
-    },
-    setExpandedTableColumnsWidth(){
-      setTimeout(() => {
-        var elem = $('.v-datatable__expand-row');
-        var elemExpandedTable = elem.find('.v-datatable__expand-content table.v-table');
-        var THs = elem.closest('table.v-table').find('thead tr:first th');
-        var tbodyTR = elemExpandedTable.find('tbody tr');
-        THs.each(function (thIndex) {
-          $(this).css({'color': 'red'});
-          var thWidth = $(this).width();
-          tbodyTR.each(function (tdIndex) {
-            var TDs = $(this).find('td:not([colspan])');
-            TDs.eq(thIndex).width(thWidth);
-          });
-        });
-      }, 10);
     },
     toggleAll () {
       if (this.store.selected.length) this.store.selected = []

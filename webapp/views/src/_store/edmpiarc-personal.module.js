@@ -20,8 +20,8 @@ const state = {
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Source System Name', value: 'EDM_SOURCE_SYSTEM_NAME' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Country', value: 'COUNTRY' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Database Name', value: 'DATABASE_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Table Name', value: 'TABLE_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Name', value: 'COLUMN_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Table Name', value: 'TABLE_NAME', width: "300px" },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Name', value: 'COLUMN_NAME', width: "300px" },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'CDE (Yes/No)', value: 'CDE' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'PII Flag', value: 'PII' },
         ],
@@ -55,7 +55,7 @@ const actions = {
                 error => commit('getExportDataFailure', error)
             );
     },
-    getLeftTable({ commit }, system) {
+    getLeftTable({ rootState, commit }, system) {
         commit('getLeftTableRequest');
 
         Object.keys(state.all.filters.left).map(function(key, index) {
@@ -66,6 +66,7 @@ const actions = {
             Filename: state.all.filename,
             Queryname: state.all.queryname,
             System: state.all.system,
+            GlobalFilters: rootState.edmp.all.iarc.globalFilters,
             Filters: state.all.filters.left,
             Pagination: state.all.left.pagination,
             DefaultSort: ["TABLE_NAME", "COLUMN_NAME"],

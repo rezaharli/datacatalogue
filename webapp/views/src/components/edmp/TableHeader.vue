@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import pageLoader from "./PageLoader.vue";
+import pageLoader from "../PageLoader.vue";
 
 export default {
   name: "tableHeader",
@@ -81,6 +81,7 @@ export default {
   data() {
     return {
       headerStoreName: "header",
+      edmpStoreName: "edmp",
       filterProcessTimeout: null,
       sticky: 0,
       menu: false,
@@ -91,6 +92,9 @@ export default {
   computed: {
     store() {
       return this.$store.state[this.headerStoreName];
+    },
+    edmpStore() {
+      return this.$store.state.edmp.all;
     },
     tableStore() {
       return this.$store.state[this.storeName].all;
@@ -172,6 +176,7 @@ export default {
       param.Filename = this.tableStore.filename;
       param.Queryname = this.tableStore.queryname;
       param.FieldName = this.fixedProps.header.value;
+      param.GlobalFilters = this.edmpStore.globalFilters;
 
       param.ColumnFilters = this.tableStore.filters[this.which][
         this.fixedProps.header.value.split(".").reverse()[0]

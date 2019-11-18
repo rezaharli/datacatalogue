@@ -263,16 +263,16 @@ export default {
         this.$router.push(this.addressPath + "/" + encodeURIComponent(param.TSID) + '/' + encodeURIComponent(param.ID) + '/' + encodeURIComponent(param.COLID))
       },
       setTableColumnsWidth(elem){
-        var tableElem = elem.find('.v-table__overflow > table.v-table');
-        var THs = tableElem.find('thead tr th');
-        var tbodyTR = tableElem.find('tbody tr');
-        THs.each(function (thIndex) {
-          var thWidth = $(this).width();
-          tbodyTR.each(function (tdIndex) {
-            var TDs = $(this).find('td:not([colspan])');
-            TDs.eq(thIndex).width(thWidth);
-          });
-        });
+        // var tableElem = elem.find('.v-table__overflow > table.v-table');
+        // var THs = tableElem.find('thead tr th');
+        // var tbodyTR = tableElem.find('tbody tr');
+        // THs.each(function (thIndex) {
+        //   var thWidth = $(this).width();
+        //   tbodyTR.each(function (tdIndex) {
+        //     var TDs = $(this).find('td:not([colspan])');
+        //     TDs.eq(thIndex).width(thWidth);
+        //   });
+        // });
       },
       removeHypenOnEmptyTables(elem){
         var paginationElem = elem.find('.v-datatable__actions .v-datatable__actions__range-controls .v-datatable__actions__pagination');

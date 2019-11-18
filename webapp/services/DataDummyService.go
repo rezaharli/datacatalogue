@@ -1100,6 +1100,14 @@ func (s *DSCService) CreateEdmpSystemDummyData() error {
 		mdt.Modified_DateTime = time.Now()
 		mdt.Status = rand.Intn(2)
 
+		if i%2 == 0 {
+			mdt.System_Name = "USFRR"
+		}
+
+		if i%3 == 0 {
+			mdt.System_Name = "ENTERPRISE DATA MGMT PLATFORM"
+		}
+
 		data = append(data, mdt)
 	}
 
@@ -1130,15 +1138,19 @@ func (s *DSCService) CreateEdmpPeopleDummyData() error {
 	for i := 0; i < 10000; i++ {
 		mdt := m.NewEdmpPeopleModel()
 		mdt.ID = i
-		mdt.First_Name = fake.Words()
-		mdt.Last_Name = fake.Words()
-		mdt.Bank_ID = fake.Words()
-		mdt.Email_ID = fake.Words()
-		mdt.Function = fake.Words()
-		mdt.Org_Unit = fake.Words()
-		mdt.Status = fake.Words()
+		mdt.First_Name = fake.FirstName()
+		mdt.Last_Name = fake.LastName()
+		mdt.Bank_ID = "100" + toolkit.ToString(i)
+		mdt.Email_ID = fake.EmailAddress()
+		mdt.Function = fake.JobTitle()
+		mdt.Org_Unit = fake.JobTitle()
+		mdt.Status = fake.WordsN(25)[0:25]
 		mdt.Created_DateTime = time.Now()
 		mdt.Modified_DateTime = time.Now()
+
+		if i == 0 {
+			mdt.Bank_ID = "123"
+		}
 
 		data = append(data, mdt)
 	}
@@ -1177,6 +1189,8 @@ func (s *DSCService) CreateEdmpRoleDummyData() error {
 		mdt.Modified_DateTime = time.Now()
 		mdt.Status = rand.Intn(2)
 
+		mdt.Role_Name = "Dataset Custodian"
+
 		data = append(data, mdt)
 	}
 
@@ -1213,6 +1227,8 @@ func (s *DSCService) CreateEdmpLinkRolePeopleDummyData() error {
 		mdt.Object_ID = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.Created_DateTime = time.Now()
 		mdt.Modified_DateTime = time.Now()
+
+		mdt.Object_Type = "SYSTEM"
 
 		data = append(data, mdt)
 	}

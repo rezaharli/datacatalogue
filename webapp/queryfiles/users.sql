@@ -8,7 +8,7 @@ SELECT
         STATUS,
         CREATEDAT,
         UPDATEDAT 
-    FROM TBL_USERS
+    FROM TBL_EDMP_USERS
 
 -- name: users-usage
 SELECT 
@@ -20,5 +20,5 @@ SELECT
         DESCRIPTION,
         TIME,
         RESOURCEURL 
-    FROM TBL_USAGE
+    FROM TBL_EDMP_USAGE
     ORDER BY TIME DESC

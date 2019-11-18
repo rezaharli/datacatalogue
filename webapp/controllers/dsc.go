@@ -361,6 +361,7 @@ func (c *DSC) GetEdmpDDTechnicalTable(k *knot.WebContext) {
 	}
 
 	system := payload.GetString("System")
+	globalFilter := payload.Get("GlobalFilters")
 	colFilter := payload.Get("Filters")
 	pagination, err := toolkit.ToM(payload.Get("Pagination"))
 	if err != nil {
@@ -374,7 +375,7 @@ func (c *DSC) GetEdmpDDTechnicalTable(k *knot.WebContext) {
 		defaultSort[i] = fmt.Sprint(v)
 	}
 
-	tableRows, _, err := s.NewDSCService().GetEdmpDDTechnicalTable(system, colFilter, pagination, defaultSort)
+	tableRows, _, err := s.NewDSCService().GetEdmpDDTechnicalTable(system, globalFilter, colFilter, pagination, defaultSort)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -396,6 +397,7 @@ func (c *DSC) GetEdmpDDBusinessTable(k *knot.WebContext) {
 	}
 
 	system := payload.GetString("System")
+	globalFilter := payload.Get("GlobalFilters")
 	colFilter := payload.Get("Filters")
 	pagination, err := toolkit.ToM(payload.Get("Pagination"))
 	if err != nil {
@@ -409,7 +411,7 @@ func (c *DSC) GetEdmpDDBusinessTable(k *knot.WebContext) {
 		defaultSort[i] = fmt.Sprint(v)
 	}
 
-	tableRows, _, err := s.NewDSCService().GetEdmpDDBusinessTable(system, colFilter, pagination, defaultSort)
+	tableRows, _, err := s.NewDSCService().GetEdmpDDBusinessTable(system, globalFilter, colFilter, pagination, defaultSort)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -431,6 +433,7 @@ func (c *DSC) GetEdmpDDConsumptionTable(k *knot.WebContext) {
 	}
 
 	system := payload.GetString("System")
+	globalFilter := payload.Get("GlobalFilters")
 	colFilter := payload.Get("Filters")
 	pagination, err := toolkit.ToM(payload.Get("Pagination"))
 	if err != nil {
@@ -444,7 +447,7 @@ func (c *DSC) GetEdmpDDConsumptionTable(k *knot.WebContext) {
 		defaultSort[i] = fmt.Sprint(v)
 	}
 
-	tableRows, _, err := s.NewDSCService().GetEdmpDDConsumptionTable(system, colFilter, pagination, defaultSort)
+	tableRows, _, err := s.NewDSCService().GetEdmpDDConsumptionTable(system, globalFilter, colFilter, pagination, defaultSort)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -466,6 +469,7 @@ func (c *DSC) GetEdmpIarcPersonalTable(k *knot.WebContext) {
 	}
 
 	system := payload.GetString("System")
+	globalFilter := payload.Get("GlobalFilters")
 	colFilter := payload.Get("Filters")
 	pagination, err := toolkit.ToM(payload.Get("Pagination"))
 	if err != nil {
@@ -479,7 +483,7 @@ func (c *DSC) GetEdmpIarcPersonalTable(k *knot.WebContext) {
 		defaultSort[i] = fmt.Sprint(v)
 	}
 
-	tableRows, _, err := s.NewDSCService().GetEdmpIarcPersonalTable(system, colFilter, pagination, defaultSort)
+	tableRows, _, err := s.NewDSCService().GetEdmpIarcPersonalTable(system, globalFilter, colFilter, pagination, defaultSort)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return

@@ -216,16 +216,20 @@ func (DBcmd) Delete(param DeleteParam) error {
 }
 
 type SqlQueryParam struct {
-	TableName        string
-	SqlQuery         string
-	PageNumber       int
-	RowsPerPage      int
-	OrderBy          string
-	IsDescending     bool
-	GroupCol         string
-	AdditionalWhere  map[string]interface{}
-	ColumnFilterType map[string]interface{}
-	DefaultSort      []string
+	TableName string
+	SqlQuery  string
+
+	PageNumber   int
+	RowsPerPage  int
+	DefaultSort  []string
+	OrderBy      string
+	IsDescending bool
+	GroupCol     string
+
+	GlobalFilterWhere map[string]interface{}
+	GlobalFilterType  map[string]interface{}
+	ColumnFilterWhere map[string]interface{}
+	ColumnFilterType  map[string]interface{}
 
 	Results     interface{}
 	ResultTotal int
@@ -344,17 +348,17 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 			}
 		}
 
-		if len(param.AdditionalWhere) > 0 {
+		appendWhereQueryWithFilters := func(paramFilterWhere, paramFilterType map[string]interface{}) {
 			additionalWhereQuery := `( `
 
 			i := 0
-			for key, val := range param.AdditionalWhere {
+			for key, val := range paramFilterWhere {
 				if i != 0 {
 					additionalWhereQuery += `AND `
 				}
 				i++
 
-				if filterType, ok := param.ColumnFilterType[key]; ok && filterType != nil {
+				if filterType, ok := paramFilterType[key]; ok && filterType != nil {
 					if filterType.(string) == "eq" {
 						appendAdditionalWhere := func(value interface{}) {
 							intVal, err := strconv.Atoi(toolkit.ToString(value))
@@ -466,39 +470,12 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 			}
 		}
 
-		if param.RowsPerPage > 0 {
-			selectQuery = selectQuery + ", rownum row_num "
-
-			if strings.TrimSpace(groupbyQuery) != "" {
-				groupbyQuery = groupbyQuery + ", rownum "
-			}
-
-			if strings.TrimSpace(whereQuery) != "" {
-				whereQuery = whereQuery + "\nAND rownum <= " + toolkit.ToString(param.PageNumber*param.RowsPerPage) + " "
-			} else {
-				whereQuery = "rownum <= " + toolkit.ToString(param.PageNumber*param.RowsPerPage) + " "
-			}
+		if len(param.GlobalFilterWhere) > 0 {
+			appendWhereQueryWithFilters(param.GlobalFilterWhere, param.GlobalFilterType)
 		}
 
-		// combine it back
-		selectQuery = strings.ReplaceAll(selectQuery, ",", ",\n")
-		param.SqlQuery = strings.TrimSpace(selectQuery) + "\nFROM\n" + strings.TrimSpace(fromQuery)
-		if strings.TrimSpace(whereQuery) != "" {
-			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nWHERE\n" + strings.TrimSpace(whereQuery)
-		}
-		if strings.TrimSpace(groupbyQuery) != "" {
-			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nGROUP BY\n" + strings.TrimSpace(groupbyQuery)
-		}
-		if strings.TrimSpace(orderbyQuery) != "" {
-			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nORDER BY\n" + strings.TrimSpace(orderbyQuery)
-		}
-
-		sqlQuery += "SELECT a.* FROM (\n"
-		sqlQuery += param.SqlQuery + "\n"
-		sqlQuery += ") a "
-
-		if param.RowsPerPage > 0 {
-			sqlQuery = sqlQuery + `WHERE row_num >= ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + " "
+		if len(param.ColumnFilterWhere) > 0 {
+			appendWhereQueryWithFilters(param.ColumnFilterWhere, param.ColumnFilterType)
 		}
 
 		orders := []string{}
@@ -519,7 +496,34 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 			orders = append(orders, order)
 		}
 
-		sqlQuery += "ORDER BY " + strings.Join(orders, ", ")
+		if strings.TrimSpace(orderbyQuery) != "" {
+			orderbyQuery = strings.Join(orders, ", ") + ", " + orderbyQuery
+		} else {
+			orderbyQuery = strings.Join(orders, ", ")
+		}
+
+		// combine it back
+		selectQuery = strings.ReplaceAll(selectQuery, ",", ",\n")
+		param.SqlQuery = strings.TrimSpace(selectQuery) + "\nFROM\n" + strings.TrimSpace(fromQuery)
+		if strings.TrimSpace(whereQuery) != "" {
+			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nWHERE\n" + strings.TrimSpace(whereQuery)
+		}
+		if strings.TrimSpace(groupbyQuery) != "" {
+			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nGROUP BY\n" + strings.TrimSpace(groupbyQuery)
+		}
+		if strings.TrimSpace(orderbyQuery) != "" {
+			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nORDER BY\n" + strings.TrimSpace(orderbyQuery)
+		}
+
+		sqlQuery += "SELECT * FROM (\n"
+		sqlQuery += "SELECT t.*, rownum as rn FROM (\n"
+		sqlQuery += param.SqlQuery + "\n"
+		sqlQuery += ") t "
+		sqlQuery += ") "
+
+		if param.RowsPerPage > 0 {
+			sqlQuery = sqlQuery + `WHERE rn >= ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + " AND rn <= " + toolkit.ToString(param.PageNumber*param.RowsPerPage) + " "
+		}
 	}
 
 	conn := Database()
@@ -542,29 +546,150 @@ func (DBcmd) ExecuteSQLQueryHeaderOpts(param SqlQueryParam) error {
 
 	sqlQuery := param.SqlQuery
 	if !(param.PageNumber == 0 && param.RowsPerPage == 0) {
-		if len(param.AdditionalWhere) > 0 {
+		sqlQuery = ""
+
+		//split the query
+		tempSplittedFrom := strings.Split(strings.ReplaceAll(param.SqlQuery, "\n", " "), " FROM ")
+		var splittedFROM []string
+		splittedFROM = append(splittedFROM, tempSplittedFrom[0])
+		if len(tempSplittedFrom) > 2 {
+			var temp []string
+			for i := 1; i < len(tempSplittedFrom); i++ {
+				temp = append(temp, tempSplittedFrom[i])
+			}
+
+			splittedFROM = append(splittedFROM, strings.Join(temp, " FROM "))
+		} else {
+			splittedFROM = append(splittedFROM, tempSplittedFrom[1])
+		}
+
+		tempSplittedWHERE := strings.Split(splittedFROM[1], " WHERE ")
+		var splittedWHERE []string
+		if len(tempSplittedWHERE) > 2 {
+			var temp []string
+			for i := 0; i < len(tempSplittedWHERE)-1; i++ {
+				temp = append(temp, tempSplittedWHERE[i])
+			}
+			splittedWHERE = append(splittedWHERE, strings.Join(temp, " WHERE "))
+			splittedWHERE = append(splittedWHERE, tempSplittedWHERE[len(tempSplittedWHERE)-1])
+		} else if len(tempSplittedWHERE) >= 2 {
+			splittedWHERE = append(splittedWHERE, tempSplittedWHERE[0])
+			splittedWHERE = append(splittedWHERE, tempSplittedWHERE[1])
+		} else {
+			splittedWHERE = append(splittedWHERE, tempSplittedWHERE[0])
+		}
+
+		var splittedGROUPBY []string
+		var splittedORDERBY []string
+		if len(splittedWHERE) > 1 {
+			splittedGROUPBY = strings.Split(splittedWHERE[1], "GROUP BY")
+			if len(splittedGROUPBY) > 1 {
+				splittedORDERBY = strings.Split(splittedGROUPBY[1], "ORDER BY")
+			} else {
+				splittedORDERBY = strings.Split(splittedWHERE[1], "ORDER BY")
+			}
+		}
+
+		selectQuery := splittedFROM[0]
+		fromQuery := splittedWHERE[0]
+
+		whereQuery := ""
+		if len(splittedGROUPBY) >= 2 {
+			whereQuery = splittedGROUPBY[0]
+		} else {
+			if len(splittedGROUPBY) >= 1 {
+				whereQuery = splittedORDERBY[0]
+			}
+		}
+
+		groupbyQuery := ""
+		if len(splittedGROUPBY) >= 2 {
+			if len(splittedORDERBY) >= 1 {
+				groupbyQuery = splittedORDERBY[0]
+			} else {
+				groupbyQuery = splittedGROUPBY[1]
+			}
+		}
+
+		orderbyQuery := ""
+		if len(splittedORDERBY) >= 2 {
+			orderbyQuery = splittedORDERBY[1]
+		}
+
+		tmpSelect := TabToSpace(strings.ReplaceAll(strings.ReplaceAll(selectQuery, "SELECT ", " "), "DISTINCT ", " "))
+		lines := []string{}
+
+		for {
+			line := ""
+			i := strings.Index(tmpSelect, " AS ")
+			if i > -1 {
+				beforeAS := tmpSelect[:i]
+				afterAS := tmpSelect[i+1:]
+
+				j := strings.Index(afterAS, ",")
+				if j > -1 {
+					beforeComma := afterAS[:j]
+					afterComma := afterAS[j+1:]
+
+					line = beforeAS + beforeComma
+					tmpSelect = afterComma
+				} else {
+					break
+				}
+			} else {
+				break
+			}
+
+			lines = append(lines, line)
+		}
+
+		mapAS := map[string]string{}
+		for _, line := range lines {
+			splittedAS := strings.Split(TabToSpace(line), " AS ")
+
+			if strings.TrimSpace(splittedAS[1]) == "ID" {
+				mapAS["ID"] = "ID"
+			} else {
+				mapAS[strings.TrimSpace(splittedAS[1])] = strings.TrimSpace(splittedAS[0])
+			}
+		}
+
+		appendWhereQueryWithFilters := func(paramFilterWhere, paramFilterType map[string]interface{}) {
 			additionalWhereQuery := `( `
 
 			i := 0
-			for key, val := range param.AdditionalWhere {
+			for key, val := range paramFilterWhere {
 				if i != 0 {
 					additionalWhereQuery += `AND `
 				}
 				i++
 
-				if filterType, ok := param.ColumnFilterType[key]; ok && filterType != nil {
+				if filterType, ok := paramFilterType[key]; ok && filterType != nil {
 					if filterType.(string) == "eq" {
 						appendAdditionalWhere := func(value interface{}) {
 							intVal, err := strconv.Atoi(toolkit.ToString(value))
 							if err != nil {
 								if value == "NA" {
-									additionalWhereQuery += `upper(` + key + `) IS NULL `
+									if mapAS[key] != "" {
+										additionalWhereQuery += `upper(` + mapAS[key] + `) IS NULL `
+									} else {
+										additionalWhereQuery += `upper(` + key + `) IS NULL `
+									}
 								} else {
 									replacedVal := strings.ReplaceAll(toolkit.ToString(value), "'", "''")
-									additionalWhereQuery += `upper(NVL(` + key + `, ' ')) = upper('` + replacedVal + `') `
+
+									if mapAS[key] != "" {
+										additionalWhereQuery += `upper(NVL(` + mapAS[key] + `, ' ')) = upper('` + replacedVal + `') `
+									} else {
+										additionalWhereQuery += `upper(NVL(` + key + `, ' ')) = upper('` + replacedVal + `') `
+									}
 								}
 							} else {
-								additionalWhereQuery += `upper(` + key + `) = upper('` + toolkit.ToString(intVal) + `') `
+								if mapAS[key] != "" {
+									additionalWhereQuery += `upper(` + mapAS[key] + `) = upper('` + toolkit.ToString(intVal) + `') `
+								} else {
+									additionalWhereQuery += `upper(` + key + `) = upper('` + toolkit.ToString(intVal) + `') `
+								}
 							}
 						}
 
@@ -597,13 +722,26 @@ func (DBcmd) ExecuteSQLQueryHeaderOpts(param SqlQueryParam) error {
 					intVal, err := strconv.Atoi(toolkit.ToString(value))
 					if err != nil {
 						if value == "NA" {
-							additionalWhereQuery += `upper(` + key + `) IS NULL `
+							if mapAS[key] != "" {
+								additionalWhereQuery += `upper(` + mapAS[key] + `) IS NULL `
+							} else {
+								additionalWhereQuery += `upper(` + key + `) IS NULL `
+							}
 						} else {
 							replacedVal := strings.ReplaceAll(toolkit.ToString(value), "'", "''")
-							additionalWhereQuery += `upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
+
+							if mapAS[key] != "" {
+								additionalWhereQuery += `upper(NVL(` + mapAS[key] + `, ' ')) LIKE upper('%` + replacedVal + `%') `
+							} else {
+								additionalWhereQuery += `upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
+							}
 						}
 					} else {
-						additionalWhereQuery += `upper(` + key + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
+						if mapAS[key] != "" {
+							additionalWhereQuery += `upper(` + mapAS[key] + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
+						} else {
+							additionalWhereQuery += `upper(` + key + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
+						}
 					}
 				}
 
@@ -631,8 +769,64 @@ func (DBcmd) ExecuteSQLQueryHeaderOpts(param SqlQueryParam) error {
 
 			additionalWhereQuery += `) `
 
-			sqlQuery += "\nWHERE\n"
-			sqlQuery += additionalWhereQuery
+			if strings.TrimSpace(whereQuery) != "" {
+				whereQuery = whereQuery + "\nAND " + additionalWhereQuery
+			} else {
+				whereQuery = additionalWhereQuery
+			}
+		}
+
+		if len(param.GlobalFilterWhere) > 0 {
+			appendWhereQueryWithFilters(param.GlobalFilterWhere, param.GlobalFilterType)
+		}
+
+		if len(param.ColumnFilterWhere) > 0 {
+			appendWhereQueryWithFilters(param.ColumnFilterWhere, param.ColumnFilterType)
+		}
+
+		orders := []string{}
+		if len(param.DefaultSort) > 0 {
+			for _, val := range param.DefaultSort {
+				order := val + " ASC"
+				orders = append(orders, order)
+			}
+		}
+
+		if param.OrderBy != "" {
+			order := `regexp_replace(regexp_replace(UPPER(` + param.OrderBy + `), '(\d+)', lpad('0', 20, '0')||'\1'), '0*?(\d{21}(\D|$))', '\1') `
+
+			if param.IsDescending {
+				order += `DESC `
+			}
+
+			orders = append(orders, order)
+		}
+
+		if len(orders) > 0 {
+			if strings.TrimSpace(orderbyQuery) != "" {
+				orderbyQuery = strings.Join(orders, ", ") + ", " + orderbyQuery
+			} else {
+				orderbyQuery = strings.Join(orders, ", ")
+			}
+		}
+
+		// combine it back
+		selectQuery = strings.ReplaceAll(selectQuery, ",", ",\n")
+		param.SqlQuery = strings.TrimSpace(selectQuery) + "\nFROM\n" + strings.TrimSpace(fromQuery)
+		if strings.TrimSpace(whereQuery) != "" {
+			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nWHERE\n" + strings.TrimSpace(whereQuery)
+		}
+		if strings.TrimSpace(groupbyQuery) != "" {
+			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nGROUP BY\n" + strings.TrimSpace(groupbyQuery)
+		}
+		if strings.TrimSpace(orderbyQuery) != "" {
+			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nORDER BY\n" + strings.TrimSpace(orderbyQuery)
+		}
+
+		sqlQuery += param.SqlQuery + "\n"
+
+		if param.RowsPerPage > 0 {
+			sqlQuery = sqlQuery + `WHERE rn >= ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + " AND rn <= " + toolkit.ToString(param.PageNumber*param.RowsPerPage) + " "
 		}
 	}
 
@@ -762,17 +956,17 @@ func (DBcmd) ExecuteSQLQueryRowCount(param SqlQueryParam) error {
 			}
 		}
 
-		if len(param.AdditionalWhere) > 0 {
+		appendWhereQueryWithFilters := func(paramFilterWhere, paramFilterType map[string]interface{}) {
 			additionalWhereQuery := `( `
 
 			i := 0
-			for key, val := range param.AdditionalWhere {
+			for key, val := range paramFilterWhere {
 				if i != 0 {
 					additionalWhereQuery += `AND `
 				}
 				i++
 
-				if filterType, ok := param.ColumnFilterType[key]; ok && filterType != nil {
+				if filterType, ok := paramFilterType[key]; ok && filterType != nil {
 					if filterType.(string) == "eq" {
 						appendAdditionalWhere := func(value interface{}) {
 							intVal, err := strconv.Atoi(toolkit.ToString(value))
@@ -882,6 +1076,14 @@ func (DBcmd) ExecuteSQLQueryRowCount(param SqlQueryParam) error {
 			} else {
 				whereQuery = additionalWhereQuery
 			}
+		}
+
+		if len(param.GlobalFilterWhere) > 0 {
+			appendWhereQueryWithFilters(param.GlobalFilterWhere, param.GlobalFilterType)
+		}
+
+		if len(param.ColumnFilterWhere) > 0 {
+			appendWhereQueryWithFilters(param.ColumnFilterWhere, param.ColumnFilterType)
 		}
 
 		//replace the query with count query
