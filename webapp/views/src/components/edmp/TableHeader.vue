@@ -12,11 +12,11 @@
 
     <v-menu
       bottom
+      v-model="menu"
+      v-if="fixedProps.header.filterable"
+      :close-on-content-click="false"
       transition="slide-y-transition"
       class="dropdown-button-wrapper"
-      v-if="fixedProps.header.filterable"
-      v-model="menu"
-      :close-on-content-click="false"
     >
       <template slot="activator" slot-scope="{ on }">
         <button class="dropdown-button-wrapper btn btn-link">
@@ -52,15 +52,9 @@
 
       <b-dropdown-divider />
 
-      <b-row
-        class="justify-content-center"
-        v-bind:class="{ 'd-none': !(tableStore.filters[which][fixedProps.header.value.split('.').reverse()[0]]) }"
-      >
+      <b-row class="justify-content-center" v-if="tableStore.filters[which][fixedProps.header.value.split('.').reverse()[0]]">
         <b-col cols="auto">
-          <a
-            class="text-danger mx-4 my-1"
-            @click="resetFilterColumn(which, fixedProps.header.value.split('.').reverse()[0])"
-          >
+          <a class="text-danger mx-4 my-1" @click="resetFilterColumn(which, fixedProps.header.value.split('.').reverse()[0])">
             <i class="fa fa-trash"></i> Clear
           </a>
         </b-col>
@@ -176,11 +170,11 @@ export default {
       param.Filename = this.tableStore.filename;
       param.Queryname = this.tableStore.queryname;
       param.FieldName = this.fixedProps.header.value;
-      param.GlobalFilters = this.edmpStore.globalFilters;
 
-      param.ColumnFilters = this.tableStore.filters[this.which][
-        this.fixedProps.header.value.split(".").reverse()[0]
-      ];
+      var page = this.$route.name.includes(".dd.") ? "dd" : "iarc";
+
+      param.GlobalFilters = this.edmpStore[page].globalFilters;
+      param.ColumnFilters = this.tableStore.filters[this.which][this.fixedProps.header.value.split('.').reverse()[0]];
 
       return this.$store
         .dispatch(`${this.headerStoreName}/getOpts`, param)
@@ -201,10 +195,8 @@ export default {
       this.$store.dispatch(`${this.storeName}/getRightTable`, id);
     },
     keyupAction(e) {
-      if (this.tableStore.filters[this.which].filterTypes){
-        delete this.tableStore.filters[this.which].filterTypes[
-          this.fixedProps.header.value.split(".").reverse()[0]
-        ];
+      if (this.tableStore.filters[this.which].filterTypes) {
+        delete this.tableStore.filters[this.which].filterTypes[this.fixedProps.header.value.split('.').reverse()[0]];
       }
 
       setTimeout(this.getOpts, 1);
@@ -214,14 +206,10 @@ export default {
       // manually adding space only when sortable is true
       if (e.key == " ") {
         if (this.fixedProps.header.sortable) {
-          var model = this.tableStore.filters[this.which][
-            this.fixedProps.header.value.split(".").reverse()[0]
-          ];
+          var model = this.tableStore.filters[this.which][this.fixedProps.header.value.split('.').reverse()[0]];
           model = model ? model + " " : " ";
 
-          this.tableStore.filters[this.which][
-            this.fixedProps.header.value.split(".").reverse()[0]
-          ] = model;
+          this.tableStore.filters[this.which][this.fixedProps.header.value.split('.').reverse()[0]] = model;
         }
       }
 
@@ -235,15 +223,16 @@ export default {
       }
     },
     filterClick(keyModel, val) {
-      this.tableStore.filters[this.which][
-        keyModel.value.split(".").reverse()[0]
-      ] = val;
+      this.menu = false;
 
-      this.tableStore.filters[this.which].filterTypes = {};
-      this.tableStore.filters[this.which].filterTypes[
-        keyModel.value.split(".").reverse()[0]
-      ] = "eq";
+      var fieldName = keyModel.value.split(".").reverse()[0];
+      this.tableStore.filters[this.which][fieldName] = val;
 
+      if (this.tableStore.filters[this.which].filterTypes) {
+        delete this.tableStore.filters[this.which].filterTypes[this.fixedProps.header.value.split('.').reverse()[0]];
+      }
+
+      this.tableStore.filters[this.which].filterTypes[fieldName] = "eq";
       this.filterProcess();
     },
     filterProcess() {
@@ -255,46 +244,7 @@ export default {
       this.tableStore.filters[which].filterTypes = {};
       this.filterProcess();
       this.menu = false;
-    },
-    // onScrollListener(e) {
-    //   // metode mengawang alias menambah class sticky ke current elemen
-    //   if ($(window).scrollTop() > this.sticky) {
-    //     // && tableBody.height() > window.innerHeight
-    //     $("table.v-table.v-datatable thead").addClass("sticky");
-    //     $("table.v-table.v-datatable thead").css({
-    //       top: $(".v-toolbar").height()
-    //     });
-    //     // $('.v-datatable__actions').css({'position': 'fixed', 'bottom': 0});
-    //   } else {
-    //     $("table.v-table.v-datatable thead").removeClass("sticky");
-    //     $("table.v-table.v-datatable thead").css({ top: "unset" });
-    //     // $('.v-datatable__actions').css({'position': 'unset', 'bottom': 'unset'});
-    //   }
-    // },
-
-    // makeTableHeaderFixed() {
-    //   const theads = document.querySelectorAll(
-    //     "table.v-table.v-datatable thead"
-    //   );
-    //   theads.forEach(thead => {
-    //     thead.querySelectorAll("tr > th").forEach(th => {
-    //       th.style.width = th.offsetWidth + "px";
-    //     });
-    //   });
-
-    //   this.sticky = $("table.v-table thead").offset().top;
-    //   $(window).scroll(this.onScrollListener);
-    // },
-
-    // makeTableAlertFull() {
-    //   var elemAlert = $("table.v-table > tbody > tr > td >  .v-alert");
-    //   var theadWidth =
-    //     elemAlert
-    //       .closest("table.v-table")
-    //       .find("thead > tr:first")
-    //       .width() - 50;
-    //   elemAlert.parent("td").width(theadWidth);
-    // }
+    }
   }
 };
 </script>

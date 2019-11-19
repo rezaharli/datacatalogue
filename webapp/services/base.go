@@ -85,7 +85,7 @@ func (s *Base) GetHeaderOpts(headerArgs HeaderArgs) ([]toolkit.M, error) {
 				continue
 			}
 
-			fieldNames = append(fieldNames, key)
+			// fieldNames = append(fieldNames, key)
 
 			switch reflect.TypeOf(filter).Kind() {
 			case reflect.Slice:
@@ -118,7 +118,7 @@ func (s *Base) GetHeaderOpts(headerArgs HeaderArgs) ([]toolkit.M, error) {
 			continue
 		}
 
-		fieldNames = append(fieldNames, key)
+		// fieldNames = append(fieldNames, key)
 
 		switch reflect.TypeOf(filter).Kind() {
 		case reflect.Slice:
@@ -153,6 +153,7 @@ func (s *Base) GetHeaderOpts(headerArgs HeaderArgs) ([]toolkit.M, error) {
 	err = h.NewDBcmd().ExecuteSQLQueryHeaderOpts(h.SqlQueryParam{
 		TableName:         m.NewCategoryModel().TableName(),
 		SqlQuery:          q,
+		SelectFields:      fieldNames,
 		Results:           &resultRows,
 		PageNumber:        1,
 		RowsPerPage:       -1,
