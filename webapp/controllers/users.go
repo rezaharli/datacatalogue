@@ -1,13 +1,10 @@
 package controllers
 
 import (
-	"fmt"
-	"strings"
 	"time"
 
 	"github.com/eaciit/clit"
 	"github.com/eaciit/toolkit"
-	"github.com/go-ldap/ldap"
 
 	"git.eaciitapp.com/sebar/knot"
 
@@ -54,70 +51,70 @@ func (c *Users) Authenticate(k *knot.WebContext) {
 				return
 			}
 
-			go func() {
-				toolkit.Println("------------------------------------------------------------------------------------------")
+			// go func() {
+			// 	toolkit.Println("------------------------------------------------------------------------------------------")
 
-				// var ldapServer = "ldap.itd.umich.edu"
-				// var ldapPort = uint16(389)
-				// var ldapTLSPort = uint16(636)
-				// var baseDN = "dc=umich,dc=edu"
-				// var filter = []string{
-				// 	"(cn=cis-fac)",
-				// 	"(&(owner=*)(cn=cis-fac))",
-				// 	"(&(objectclass=rfc822mailgroup)(cn=*Computer*))",
-				// 	"(&(objectclass=rfc822mailgroup)(cn=*Mathematics*))"}
-				var attributes = []string{"fullName", "givenName"}
+			// 	// var ldapServer = "ldap.itd.umich.edu"
+			// 	// var ldapPort = uint16(389)
+			// 	// var ldapTLSPort = uint16(636)
+			// 	// var baseDN = "dc=umich,dc=edu"
+			// 	// var filter = []string{
+			// 	// 	"(cn=cis-fac)",
+			// 	// 	"(&(owner=*)(cn=cis-fac))",
+			// 	// 	"(&(objectclass=rfc822mailgroup)(cn=*Computer*))",
+			// 	// 	"(&(objectclass=rfc822mailgroup)(cn=*Mathematics*))"}
+			// 	var attributes = []string{"fullName", "givenName"}
 
-				fmt.Printf("TestSearch: starting...\n")
-				ldapConf := clit.Config("default", "LDAP", "").(map[string]interface{})
-				l, err := ldap.Dial("tcp", strings.TrimSpace(ldapConf["Host"].(string)))
-				if err != nil {
-					toolkit.Println("1", err.Error())
-					return
-				}
-				defer l.Close()
+			// 	fmt.Printf("TestSearch: starting...\n")
+			// 	ldapConf := clit.Config("default", "LDAP", "").(map[string]interface{})
+			// 	l, err := ldap.Dial("tcp", strings.TrimSpace(ldapConf["Host"].(string)))
+			// 	if err != nil {
+			// 		toolkit.Println(err.Error())
+			// 		return
+			// 	}
+			// 	defer l.Close()
 
-				toolkit.Println(strings.TrimSpace(ldapConf["BaseDN"].(string)))
-				toolkit.Println(ldap.ScopeWholeSubtree, ldap.DerefAlways, 0, 0, false)
-				toolkit.Println("(" + strings.TrimSpace(ldapConf["UserAuthAttr"].(string)) + "=" + payload.GetString("username") + ")")
-				toolkit.Println(attributes)
+			// 	toolkit.Println(strings.TrimSpace(ldapConf["BaseDN"].(string)))
+			// 	toolkit.Println(ldap.ScopeWholeSubtree, ldap.DerefAlways, 0, 0, false)
+			// 	// toolkit.Println("(" + strings.TrimSpace(ldapConf["UserAuthAttr"].(string)) + "=" + payload.GetString("username") + ")")
+			// 	toolkit.Println(attributes)
 
-				searchRequest := ldap.NewSearchRequest(
-					strings.TrimSpace(ldapConf["BaseDN"].(string)),
-					ldap.ScopeWholeSubtree, ldap.DerefAlways, 0, 0, false,
-					"("+strings.TrimSpace(ldapConf["UserAuthAttr"].(string))+"="+payload.GetString("username")+")",
-					attributes,
-					nil)
+			// 	searchRequest := ldap.NewSearchRequest(
+			// 		strings.TrimSpace(ldapConf["BaseDN"].(string)),
+			// 		ldap.ScopeWholeSubtree, ldap.DerefAlways, 0, 0, false,
+			// 		"("+strings.TrimSpace(ldapConf["UserAuthAttr"].(string))+"="+payload.GetString("username")+")",
+			// 		attributes,
+			// 		nil)
 
-				toolkit.Println("--", searchRequest)
+			// 	toolkit.Println("--", searchRequest)
 
-				sr, err := l.Search(searchRequest)
-				if err != nil {
-					toolkit.Println("2", err.Error())
-					return
-				}
+			// 	sr, err := l.Search(searchRequest)
+			// 	if err != nil {
+			// 		toolkit.Println(err.Error())
+			// 		return
+			// 	}
 
-				fmt.Printf("TestSearch: %s\n", searchRequest.Filter)
-				fmt.Printf("num of entries = %d\n", len(sr.Entries))
-				fmt.Println(sr.Entries)
+			// 	fmt.Printf("TestSearch: %s\n", searchRequest.Filter)
+			// 	fmt.Printf("num of entries = %d\n", len(sr.Entries))
+			// 	fmt.Println(sr.Entries)
 
-				for _, v := range sr.Entries {
-					for _, str := range attributes {
+			// 	for _, v := range sr.Entries {
+			// 		for _, str := range attributes {
 
-						toolkit.Println("v ---", v)
-						toolkit.Println("str ---", str)
+			// 			toolkit.Println("v ---", v)
+			// 			toolkit.Println("str ---", str)
 
-						val := ""
-						if len(v.GetAttributeValues(str)) > 1 {
-							val = strings.Join(v.GetAttributeValues(str), "|")
-						} else {
-							val = v.GetAttributeValue(str)
-						}
+			// 			val := ""
+			// 			if len(v.GetAttributeValues(str)) > 1 {
+			// 				val = strings.Join(v.GetAttributeValues(str), "|")
+			// 			} else {
+			// 				val = v.GetAttributeValue(str)
+			// 			}
 
-						toolkit.Println("val ---", val)
-					}
-				}
-			}()
+			// 			toolkit.Println("val ---", val)
+			// 		}
+			// 	}
+			// }()
 		}
 	}
 
