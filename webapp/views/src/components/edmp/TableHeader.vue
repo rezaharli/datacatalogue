@@ -197,6 +197,8 @@ export default {
     keyupAction(e) {
       if (this.tableStore.filters[this.which].filterTypes) {
         delete this.tableStore.filters[this.which].filterTypes[this.fixedProps.header.value.split('.').reverse()[0]];
+      } else {
+        this.tableStore.filters[this.which].filterTypes = {};
       }
 
       setTimeout(this.getOpts, 1);
@@ -230,6 +232,8 @@ export default {
 
       if (this.tableStore.filters[this.which].filterTypes) {
         delete this.tableStore.filters[this.which].filterTypes[this.fixedProps.header.value.split('.').reverse()[0]];
+      } else {
+        this.tableStore.filters[this.which].filterTypes = {};
       }
 
       this.tableStore.filters[this.which].filterTypes[fieldName] = "eq";
