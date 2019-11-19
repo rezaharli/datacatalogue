@@ -519,10 +519,15 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 		sqlQuery += "SELECT t.*, rownum as rn FROM (\n"
 		sqlQuery += param.SqlQuery + "\n"
 		sqlQuery += ") t "
+
+		if param.RowsPerPage > 0 {
+			sqlQuery = sqlQuery + " WHERE rownum <= " + toolkit.ToString(param.PageNumber*param.RowsPerPage) + " "
+		}
+
 		sqlQuery += ") "
 
 		if param.RowsPerPage > 0 {
-			sqlQuery = sqlQuery + `WHERE rn >= ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + " AND rn <= " + toolkit.ToString(param.PageNumber*param.RowsPerPage) + " "
+			sqlQuery = sqlQuery + `WHERE rn >= ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + " "
 		}
 	}
 
