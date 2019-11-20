@@ -216,15 +216,18 @@ func (DBcmd) Delete(param DeleteParam) error {
 }
 
 type SqlQueryParam struct {
-	TableName string
-	SqlQuery  string
+	TableName    string
+	SqlQuery     string
+	SelectFields []string
 
-	PageNumber   int
-	RowsPerPage  int
+	PageNumber  int
+	RowsPerPage int
+
 	DefaultSort  []string
 	OrderBy      string
 	IsDescending bool
-	GroupCol     string
+
+	GroupCol string
 
 	GlobalFilterWhere map[string]interface{}
 	GlobalFilterType  map[string]interface{}
@@ -235,290 +238,342 @@ type SqlQueryParam struct {
 	ResultTotal int
 }
 
-func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
-	queryTime := time.Now()
+func (s *DBcmd) BuildQuery(param *SqlQueryParam) error {
+	var err error
 
-	sqlQuery := param.SqlQuery
-	if !(param.PageNumber == 0 && param.RowsPerPage == 0) {
-		sqlQuery = ""
+	//split the query
+	tempSplittedFrom := strings.Split(strings.ReplaceAll(param.SqlQuery, "\n", " "), " FROM ")
+	var splittedFROM []string
+	splittedFROM = append(splittedFROM, tempSplittedFrom[0])
+	if len(tempSplittedFrom) > 2 {
+		var temp []string
+		for i := 1; i < len(tempSplittedFrom); i++ {
+			temp = append(temp, tempSplittedFrom[i])
+		}
 
-		//split the query
-		tempSplittedFrom := strings.Split(strings.ReplaceAll(param.SqlQuery, "\n", " "), " FROM ")
-		var splittedFROM []string
-		splittedFROM = append(splittedFROM, tempSplittedFrom[0])
-		if len(tempSplittedFrom) > 2 {
-			var temp []string
-			for i := 1; i < len(tempSplittedFrom); i++ {
-				temp = append(temp, tempSplittedFrom[i])
-			}
+		splittedFROM = append(splittedFROM, strings.Join(temp, " FROM "))
+	} else {
+		splittedFROM = append(splittedFROM, tempSplittedFrom[1])
+	}
 
-			splittedFROM = append(splittedFROM, strings.Join(temp, " FROM "))
+	tempSplittedWHERE := strings.Split(splittedFROM[1], " WHERE ")
+	var splittedWHERE []string
+	if len(tempSplittedWHERE) > 2 {
+		var temp []string
+		for i := 0; i < len(tempSplittedWHERE)-1; i++ {
+			temp = append(temp, tempSplittedWHERE[i])
+		}
+		splittedWHERE = append(splittedWHERE, strings.Join(temp, " WHERE "))
+		splittedWHERE = append(splittedWHERE, tempSplittedWHERE[len(tempSplittedWHERE)-1])
+	} else if len(tempSplittedWHERE) >= 2 {
+		splittedWHERE = append(splittedWHERE, tempSplittedWHERE[0])
+		splittedWHERE = append(splittedWHERE, tempSplittedWHERE[1])
+	} else {
+		splittedWHERE = append(splittedWHERE, tempSplittedWHERE[0])
+	}
+
+	var splittedGROUPBY []string
+	var splittedORDERBY []string
+	if len(splittedWHERE) > 1 {
+		splittedGROUPBY = strings.Split(splittedWHERE[1], "GROUP BY")
+		if len(splittedGROUPBY) > 1 {
+			splittedORDERBY = strings.Split(splittedGROUPBY[1], "ORDER BY")
 		} else {
-			splittedFROM = append(splittedFROM, tempSplittedFrom[1])
+			splittedORDERBY = strings.Split(splittedWHERE[1], "ORDER BY")
 		}
+	}
 
-		tempSplittedWHERE := strings.Split(splittedFROM[1], " WHERE ")
-		var splittedWHERE []string
-		if len(tempSplittedWHERE) > 2 {
-			var temp []string
-			for i := 0; i < len(tempSplittedWHERE)-1; i++ {
-				temp = append(temp, tempSplittedWHERE[i])
-			}
-			splittedWHERE = append(splittedWHERE, strings.Join(temp, " WHERE "))
-			splittedWHERE = append(splittedWHERE, tempSplittedWHERE[len(tempSplittedWHERE)-1])
-		} else if len(tempSplittedWHERE) >= 2 {
-			splittedWHERE = append(splittedWHERE, tempSplittedWHERE[0])
-			splittedWHERE = append(splittedWHERE, tempSplittedWHERE[1])
+	selectQuery := splittedFROM[0]
+	fromQuery := splittedWHERE[0]
+
+	whereQuery := ""
+	if len(splittedGROUPBY) >= 2 {
+		whereQuery = splittedGROUPBY[0]
+	} else {
+		if len(splittedGROUPBY) >= 1 {
+			whereQuery = splittedORDERBY[0]
+		}
+	}
+
+	groupbyQuery := ""
+	if len(splittedGROUPBY) >= 2 {
+		if len(splittedORDERBY) >= 1 {
+			groupbyQuery = splittedORDERBY[0]
 		} else {
-			splittedWHERE = append(splittedWHERE, tempSplittedWHERE[0])
+			groupbyQuery = splittedGROUPBY[1]
 		}
+	}
 
-		var splittedGROUPBY []string
-		var splittedORDERBY []string
-		if len(splittedWHERE) > 1 {
-			splittedGROUPBY = strings.Split(splittedWHERE[1], "GROUP BY")
-			if len(splittedGROUPBY) > 1 {
-				splittedORDERBY = strings.Split(splittedGROUPBY[1], "ORDER BY")
-			} else {
-				splittedORDERBY = strings.Split(splittedWHERE[1], "ORDER BY")
-			}
-		}
+	orderbyQuery := ""
+	if len(splittedORDERBY) >= 2 {
+		orderbyQuery = splittedORDERBY[1]
+	}
 
-		selectQuery := splittedFROM[0]
-		fromQuery := splittedWHERE[0]
+	isContainsDistinct := strings.Contains(strings.ToUpper(selectQuery), strings.ToUpper("DISTINCT"))
+	tmpSelect := TabToSpace(strings.ReplaceAll(strings.ReplaceAll(selectQuery, "SELECT ", " "), "DISTINCT ", " "))
+	lines := []string{}
+	fixedlines := map[string]string{}
 
-		whereQuery := ""
-		if len(splittedGROUPBY) >= 2 {
-			whereQuery = splittedGROUPBY[0]
-		} else {
-			if len(splittedGROUPBY) >= 1 {
-				whereQuery = splittedORDERBY[0]
-			}
-		}
+	for {
+		line := ""
+		i := strings.Index(tmpSelect, " AS ")
+		if i > -1 {
+			beforeAS := tmpSelect[:i]
+			afterAS := tmpSelect[i+1:]
 
-		groupbyQuery := ""
-		if len(splittedGROUPBY) >= 2 {
-			if len(splittedORDERBY) >= 1 {
-				groupbyQuery = splittedORDERBY[0]
-			} else {
-				groupbyQuery = splittedGROUPBY[1]
-			}
-		}
+			j := strings.Index(afterAS, ",")
+			if j > -1 {
+				beforeComma := afterAS[:j]
+				afterComma := afterAS[j+1:]
 
-		orderbyQuery := ""
-		if len(splittedORDERBY) >= 2 {
-			orderbyQuery = splittedORDERBY[1]
-		}
-
-		tmpSelect := TabToSpace(strings.ReplaceAll(strings.ReplaceAll(selectQuery, "SELECT ", " "), "DISTINCT ", " "))
-		lines := []string{}
-
-		for {
-			line := ""
-			i := strings.Index(tmpSelect, " AS ")
-			if i > -1 {
-				beforeAS := tmpSelect[:i]
-				afterAS := tmpSelect[i+1:]
-
-				j := strings.Index(afterAS, ",")
-				if j > -1 {
-					beforeComma := afterAS[:j]
-					afterComma := afterAS[j+1:]
-
-					line = beforeAS + beforeComma
-					tmpSelect = afterComma
-				} else {
-					break
-				}
+				line = beforeAS + beforeComma
+				tmpSelect = afterComma
 			} else {
 				break
 			}
-
-			lines = append(lines, line)
+		} else {
+			break
 		}
 
-		mapAS := map[string]string{}
-		for _, line := range lines {
-			splittedAS := strings.Split(TabToSpace(line), " AS ")
+		lines = append(lines, line)
+	}
 
-			if strings.TrimSpace(splittedAS[1]) == "ID" {
-				mapAS["ID"] = "ID"
-			} else {
-				mapAS[strings.TrimSpace(splittedAS[1])] = strings.TrimSpace(splittedAS[0])
+	mapAS := map[string]string{}
+	for _, line := range lines {
+		splittedAS := strings.Split(TabToSpace(line), " AS ")
+
+		if strings.TrimSpace(splittedAS[1]) == "ID" {
+			mapAS["ID"] = "ID"
+		} else {
+			mapAS[strings.TrimSpace(splittedAS[1])] = strings.TrimSpace(splittedAS[0])
+		}
+
+		//recreate select query if SelectFields defined
+		if len(param.SelectFields) > 0 {
+			orderFields := strings.Split(orderbyQuery, ",")
+			for i := range orderFields {
+				orderFields[i] = strings.ReplaceAll(orderFields[i], " ASC", "")
+				orderFields[i] = strings.ReplaceAll(orderFields[i], " DESC", "")
+				orderFields[i] = strings.TrimSpace(orderFields[i])
 			}
-		}
 
-		appendWhereQueryWithFilters := func(paramFilterWhere, paramFilterType map[string]interface{}) {
-			additionalWhereQuery := `( `
+			for _, field := range param.SelectFields {
+				fieldName := strings.TrimSpace(splittedAS[0])
+				fieldAlias := strings.TrimSpace(splittedAS[1])
 
-			i := 0
-			for key, val := range paramFilterWhere {
-				if i != 0 {
-					additionalWhereQuery += `AND `
-				}
-				i++
-
-				if filterType, ok := paramFilterType[key]; ok && filterType != nil {
-					if filterType.(string) == "eq" {
-						appendAdditionalWhere := func(value interface{}) {
-							intVal, err := strconv.Atoi(toolkit.ToString(value))
-							if err != nil {
-								if value == "NA" {
-									if mapAS[key] != "" {
-										additionalWhereQuery += `upper(` + mapAS[key] + `) IS NULL `
-									} else {
-										additionalWhereQuery += `upper(` + key + `) IS NULL `
-									}
-								} else {
-									replacedVal := strings.ReplaceAll(toolkit.ToString(value), "'", "''")
-
-									if mapAS[key] != "" {
-										additionalWhereQuery += `upper(NVL(` + mapAS[key] + `, ' ')) = upper('` + replacedVal + `') `
-									} else {
-										additionalWhereQuery += `upper(NVL(` + key + `, ' ')) = upper('` + replacedVal + `') `
-									}
-								}
-							} else {
-								if mapAS[key] != "" {
-									additionalWhereQuery += `upper(` + mapAS[key] + `) = upper('` + toolkit.ToString(intVal) + `') `
-								} else {
-									additionalWhereQuery += `upper(` + key + `) = upper('` + toolkit.ToString(intVal) + `') `
-								}
-							}
-						}
-
-						switch reflect.TypeOf(val).Kind() {
-						case reflect.Slice:
-							s := reflect.ValueOf(val)
-
-							for i := 0; i < s.Len(); i++ {
-								if i == 0 {
-									additionalWhereQuery += `( `
-								}
-
-								appendAdditionalWhere(s.Index(i).Interface())
-
-								if i != s.Len()-1 {
-									additionalWhereQuery += `OR `
-								} else {
-									additionalWhereQuery += `) `
-								}
-							}
-						default:
-							appendAdditionalWhere(val)
-						}
-
-						continue
+				isFieldInsideOrder := false
+				for _, field := range orderFields {
+					if strings.ToUpper(field) == strings.ToUpper(fieldName) || strings.ToUpper(field) == strings.ToUpper(fieldAlias) {
+						isFieldInsideOrder = true
 					}
 				}
 
-				appendAdditionalWhere := func(value interface{}) {
-					intVal, err := strconv.Atoi(toolkit.ToString(value))
-					if err != nil {
-						if value == "NA" {
-							if mapAS[key] != "" {
-								additionalWhereQuery += `upper(` + mapAS[key] + `) IS NULL `
+				if strings.ToUpper(fieldAlias) == strings.ToUpper(field) || isFieldInsideOrder == true {
+					fixedlines[fieldAlias] = line
+				}
+			}
+		}
+	}
+
+	//recreate select query if SelectFields defined
+	if len(param.SelectFields) > 0 {
+		selectQuery = "SELECT "
+		if isContainsDistinct {
+			selectQuery += "DISTINCT\n"
+		}
+
+		i := 0
+		for _, line := range fixedlines {
+			selectQuery += line
+			if i < len(fixedlines)-1 {
+				selectQuery += ", "
+			}
+			i++
+		}
+	}
+
+	appendWhereQueryWithFilters := func(paramFilterWhere, paramFilterType map[string]interface{}) {
+		additionalWhereQuery := `( `
+
+		i := 0
+		for key, val := range paramFilterWhere {
+			if i != 0 {
+				additionalWhereQuery += `AND `
+			}
+			i++
+
+			if filterType, ok := paramFilterType[key]; ok && filterType != nil {
+				if filterType.(string) == "eq" {
+					appendAdditionalWhere := func(value interface{}) {
+						intVal, err := strconv.Atoi(toolkit.ToString(value))
+						if err != nil {
+							if value == "NA" {
+								if mapAS[key] != "" {
+									additionalWhereQuery += `upper(` + mapAS[key] + `) IS NULL `
+								} else {
+									additionalWhereQuery += `upper(` + key + `) IS NULL `
+								}
 							} else {
-								additionalWhereQuery += `upper(` + key + `) IS NULL `
+								replacedVal := strings.ReplaceAll(toolkit.ToString(value), "'", "''")
+
+								if mapAS[key] != "" {
+									additionalWhereQuery += `upper(NVL(` + mapAS[key] + `, ' ')) = upper('` + replacedVal + `') `
+								} else {
+									additionalWhereQuery += `upper(NVL(` + key + `, ' ')) = upper('` + replacedVal + `') `
+								}
 							}
 						} else {
-							replacedVal := strings.ReplaceAll(toolkit.ToString(value), "'", "''")
-
 							if mapAS[key] != "" {
-								additionalWhereQuery += `upper(NVL(` + mapAS[key] + `, ' ')) LIKE upper('%` + replacedVal + `%') `
+								additionalWhereQuery += `upper(` + mapAS[key] + `) = upper('` + toolkit.ToString(intVal) + `') `
 							} else {
-								additionalWhereQuery += `upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
+								additionalWhereQuery += `upper(` + key + `) = upper('` + toolkit.ToString(intVal) + `') `
 							}
+						}
+					}
+
+					switch reflect.TypeOf(val).Kind() {
+					case reflect.Slice:
+						s := reflect.ValueOf(val)
+
+						for i := 0; i < s.Len(); i++ {
+							if i == 0 {
+								additionalWhereQuery += `( `
+							}
+
+							appendAdditionalWhere(s.Index(i).Interface())
+
+							if i != s.Len()-1 {
+								additionalWhereQuery += `OR `
+							} else {
+								additionalWhereQuery += `) `
+							}
+						}
+					default:
+						appendAdditionalWhere(val)
+					}
+
+					continue
+				}
+			}
+
+			appendAdditionalWhere := func(value interface{}) {
+				intVal, err := strconv.Atoi(toolkit.ToString(value))
+				if err != nil {
+					if value == "NA" {
+						if mapAS[key] != "" {
+							additionalWhereQuery += `upper(` + mapAS[key] + `) IS NULL `
+						} else {
+							additionalWhereQuery += `upper(` + key + `) IS NULL `
 						}
 					} else {
+						replacedVal := strings.ReplaceAll(toolkit.ToString(value), "'", "''")
+
 						if mapAS[key] != "" {
-							additionalWhereQuery += `upper(` + mapAS[key] + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
+							additionalWhereQuery += `upper(NVL(` + mapAS[key] + `, ' ')) LIKE upper('%` + replacedVal + `%') `
 						} else {
-							additionalWhereQuery += `upper(` + key + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
+							additionalWhereQuery += `upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
 						}
 					}
-				}
-
-				switch reflect.TypeOf(val).Kind() {
-				case reflect.Slice:
-					s := reflect.ValueOf(val)
-
-					for i := 0; i < s.Len(); i++ {
-						if i == 0 {
-							additionalWhereQuery += `( `
-						}
-
-						appendAdditionalWhere(s.Index(i).Interface())
-
-						if i != s.Len()-1 {
-							additionalWhereQuery += `OR `
-						} else {
-							additionalWhereQuery += `) `
-						}
+				} else {
+					if mapAS[key] != "" {
+						additionalWhereQuery += `upper(` + mapAS[key] + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
+					} else {
+						additionalWhereQuery += `upper(` + key + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
 					}
-				default:
-					appendAdditionalWhere(val)
 				}
 			}
 
-			additionalWhereQuery += `) `
+			switch reflect.TypeOf(val).Kind() {
+			case reflect.Slice:
+				s := reflect.ValueOf(val)
 
-			if strings.TrimSpace(whereQuery) != "" {
-				whereQuery = whereQuery + "\nAND " + additionalWhereQuery
-			} else {
-				whereQuery = additionalWhereQuery
+				for i := 0; i < s.Len(); i++ {
+					if i == 0 {
+						additionalWhereQuery += `( `
+					}
+
+					appendAdditionalWhere(s.Index(i).Interface())
+
+					if i != s.Len()-1 {
+						additionalWhereQuery += `OR `
+					} else {
+						additionalWhereQuery += `) `
+					}
+				}
+			default:
+				appendAdditionalWhere(val)
 			}
 		}
 
-		if len(param.GlobalFilterWhere) > 0 {
-			appendWhereQueryWithFilters(param.GlobalFilterWhere, param.GlobalFilterType)
+		additionalWhereQuery += `) `
+
+		if strings.TrimSpace(whereQuery) != "" {
+			whereQuery = whereQuery + "\nAND " + additionalWhereQuery
+		} else {
+			whereQuery = additionalWhereQuery
 		}
+	}
 
-		if len(param.ColumnFilterWhere) > 0 {
-			appendWhereQueryWithFilters(param.ColumnFilterWhere, param.ColumnFilterType)
-		}
+	if len(param.GlobalFilterWhere) > 0 {
+		appendWhereQueryWithFilters(param.GlobalFilterWhere, param.GlobalFilterType)
+	}
 
-		orders := []string{}
-		if len(param.DefaultSort) > 0 {
-			for _, val := range param.DefaultSort {
-				order := val + " ASC"
-				orders = append(orders, order)
-			}
-		}
+	if len(param.ColumnFilterWhere) > 0 {
+		appendWhereQueryWithFilters(param.ColumnFilterWhere, param.ColumnFilterType)
+	}
 
-		if param.OrderBy != "" {
-			order := `regexp_replace(regexp_replace(UPPER(` + param.OrderBy + `), '(\d+)', lpad('0', 20, '0')||'\1'), '0*?(\d{21}(\D|$))', '\1') `
-
-			if param.IsDescending {
-				order += `DESC `
-			}
-
+	orders := []string{}
+	if len(param.DefaultSort) > 0 {
+		for _, val := range param.DefaultSort {
+			order := val + " ASC"
 			orders = append(orders, order)
 		}
+	}
 
-		if strings.TrimSpace(orderbyQuery) != "" {
-			orderbyQuery = strings.Join(orders, ", ") + ", " + orderbyQuery
-		} else {
-			orderbyQuery = strings.Join(orders, ", ")
-		}
+	if param.OrderBy != "" {
+		order := param.OrderBy + ` `
 
-		// combine it back
-		selectQuery = strings.ReplaceAll(selectQuery, ",", ",\n")
-		param.SqlQuery = strings.TrimSpace(selectQuery) + "\nFROM\n" + strings.TrimSpace(fromQuery)
-		if strings.TrimSpace(whereQuery) != "" {
-			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nWHERE\n" + strings.TrimSpace(whereQuery)
-		}
-		if strings.TrimSpace(groupbyQuery) != "" {
-			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nGROUP BY\n" + strings.TrimSpace(groupbyQuery)
-		}
-		if strings.TrimSpace(orderbyQuery) != "" {
-			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nORDER BY\n" + strings.TrimSpace(orderbyQuery)
+		if param.IsDescending {
+			order += `DESC `
 		}
 
-		sqlQuery += "SELECT * FROM (\n"
-		sqlQuery += "SELECT t.*, rownum as rn FROM (\n"
-		sqlQuery += param.SqlQuery + "\n"
-		sqlQuery += ") t "
+		orders = append(orders, order)
+	}
+
+	if strings.TrimSpace(orderbyQuery) != "" {
+		orderbyQuery = strings.Join(orders, ", ") + ", " + orderbyQuery
+	} else {
+		orderbyQuery = strings.Join(orders, ", ")
+	}
+
+	// combine it back
+	selectQuery = strings.ReplaceAll(selectQuery, ",", ",\n")
+	param.SqlQuery = strings.TrimSpace(selectQuery) + "\nFROM\n" + strings.TrimSpace(fromQuery)
+	if strings.TrimSpace(whereQuery) != "" {
+		param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nWHERE\n" + strings.TrimSpace(whereQuery)
+	}
+	if strings.TrimSpace(groupbyQuery) != "" {
+		param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nGROUP BY\n" + strings.TrimSpace(groupbyQuery)
+	}
+	if strings.TrimSpace(orderbyQuery) != "" {
+		param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nORDER BY\n" + strings.TrimSpace(orderbyQuery)
+	}
+
+	return err
+}
+
+func (s *DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
+	queryTime := time.Now()
+	var err error
+
+	sqlQuery := param.SqlQuery
+	if !(param.PageNumber == 0 && param.RowsPerPage == 0) {
+		err = s.BuildQuery(&param)
+
+		sqlQuery = "SELECT * FROM (\n"
+		sqlQuery += "	SELECT t.*, rownum as rn FROM (\n"
+		sqlQuery += "		" + param.SqlQuery + "\n"
+		sqlQuery += "	) t "
 
 		if param.RowsPerPage > 0 {
 			sqlQuery = sqlQuery + " WHERE rownum <= " + toolkit.ToString(param.PageNumber*param.RowsPerPage) + " "
@@ -535,7 +590,7 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 	cursor := conn.Cursor(dbflex.From(param.TableName).SQL(sqlQuery), nil)
 	defer cursor.Close()
 
-	err := cursor.Fetchs(param.Results, 0)
+	err = cursor.Fetchs(param.Results, 0)
 	if err != nil {
 		return err
 	}
@@ -546,300 +601,22 @@ func (DBcmd) ExecuteSQLQuery(param SqlQueryParam) error {
 	return err
 }
 
-func (DBcmd) ExecuteSQLQueryHeaderOpts(param SqlQueryParam) error {
+func (s *DBcmd) ExecuteSQLQueryHeaderOpts(param SqlQueryParam) error {
 	queryTime := time.Now()
+	var err error
 
 	sqlQuery := param.SqlQuery
 	if !(param.PageNumber == 0 && param.RowsPerPage == 0) {
-		sqlQuery = ""
+		err = s.BuildQuery(&param)
 
-		//split the query
-		tempSplittedFrom := strings.Split(strings.ReplaceAll(param.SqlQuery, "\n", " "), " FROM ")
-		var splittedFROM []string
-		splittedFROM = append(splittedFROM, tempSplittedFrom[0])
-		if len(tempSplittedFrom) > 2 {
-			var temp []string
-			for i := 1; i < len(tempSplittedFrom); i++ {
-				temp = append(temp, tempSplittedFrom[i])
-			}
-
-			splittedFROM = append(splittedFROM, strings.Join(temp, " FROM "))
-		} else {
-			splittedFROM = append(splittedFROM, tempSplittedFrom[1])
-		}
-
-		tempSplittedWHERE := strings.Split(splittedFROM[1], " WHERE ")
-		var splittedWHERE []string
-		if len(tempSplittedWHERE) > 2 {
-			var temp []string
-			for i := 0; i < len(tempSplittedWHERE)-1; i++ {
-				temp = append(temp, tempSplittedWHERE[i])
-			}
-			splittedWHERE = append(splittedWHERE, strings.Join(temp, " WHERE "))
-			splittedWHERE = append(splittedWHERE, tempSplittedWHERE[len(tempSplittedWHERE)-1])
-		} else if len(tempSplittedWHERE) >= 2 {
-			splittedWHERE = append(splittedWHERE, tempSplittedWHERE[0])
-			splittedWHERE = append(splittedWHERE, tempSplittedWHERE[1])
-		} else {
-			splittedWHERE = append(splittedWHERE, tempSplittedWHERE[0])
-		}
-
-		var splittedGROUPBY []string
-		var splittedORDERBY []string
-		if len(splittedWHERE) > 1 {
-			splittedGROUPBY = strings.Split(splittedWHERE[1], "GROUP BY")
-			if len(splittedGROUPBY) > 1 {
-				splittedORDERBY = strings.Split(splittedGROUPBY[1], "ORDER BY")
-			} else {
-				splittedORDERBY = strings.Split(splittedWHERE[1], "ORDER BY")
-			}
-		}
-
-		selectQuery := splittedFROM[0]
-		fromQuery := splittedWHERE[0]
-
-		whereQuery := ""
-		if len(splittedGROUPBY) >= 2 {
-			whereQuery = splittedGROUPBY[0]
-		} else {
-			if len(splittedGROUPBY) >= 1 {
-				whereQuery = splittedORDERBY[0]
-			}
-		}
-
-		groupbyQuery := ""
-		if len(splittedGROUPBY) >= 2 {
-			if len(splittedORDERBY) >= 1 {
-				groupbyQuery = splittedORDERBY[0]
-			} else {
-				groupbyQuery = splittedGROUPBY[1]
-			}
-		}
-
-		orderbyQuery := ""
-		if len(splittedORDERBY) >= 2 {
-			orderbyQuery = splittedORDERBY[1]
-		}
-
-		tmpSelect := TabToSpace(strings.ReplaceAll(strings.ReplaceAll(selectQuery, "SELECT ", " "), "DISTINCT ", " "))
-		lines := []string{}
-
-		for {
-			line := ""
-			i := strings.Index(tmpSelect, " AS ")
-			if i > -1 {
-				beforeAS := tmpSelect[:i]
-				afterAS := tmpSelect[i+1:]
-
-				j := strings.Index(afterAS, ",")
-				if j > -1 {
-					beforeComma := afterAS[:j]
-					afterComma := afterAS[j+1:]
-
-					line = beforeAS + beforeComma
-					tmpSelect = afterComma
-				} else {
-					break
-				}
-			} else {
-				break
-			}
-
-			lines = append(lines, line)
-		}
-
-		mapAS := map[string]string{}
-		for _, line := range lines {
-			splittedAS := strings.Split(TabToSpace(line), " AS ")
-
-			if strings.TrimSpace(splittedAS[1]) == "ID" {
-				mapAS["ID"] = "ID"
-			} else {
-				mapAS[strings.TrimSpace(splittedAS[1])] = strings.TrimSpace(splittedAS[0])
-			}
-		}
-
-		appendWhereQueryWithFilters := func(paramFilterWhere, paramFilterType map[string]interface{}) {
-			additionalWhereQuery := `( `
-
-			i := 0
-			for key, val := range paramFilterWhere {
-				if i != 0 {
-					additionalWhereQuery += `AND `
-				}
-				i++
-
-				if filterType, ok := paramFilterType[key]; ok && filterType != nil {
-					if filterType.(string) == "eq" {
-						appendAdditionalWhere := func(value interface{}) {
-							intVal, err := strconv.Atoi(toolkit.ToString(value))
-							if err != nil {
-								if value == "NA" {
-									if mapAS[key] != "" {
-										additionalWhereQuery += `upper(` + mapAS[key] + `) IS NULL `
-									} else {
-										additionalWhereQuery += `upper(` + key + `) IS NULL `
-									}
-								} else {
-									replacedVal := strings.ReplaceAll(toolkit.ToString(value), "'", "''")
-
-									if mapAS[key] != "" {
-										additionalWhereQuery += `upper(NVL(` + mapAS[key] + `, ' ')) = upper('` + replacedVal + `') `
-									} else {
-										additionalWhereQuery += `upper(NVL(` + key + `, ' ')) = upper('` + replacedVal + `') `
-									}
-								}
-							} else {
-								if mapAS[key] != "" {
-									additionalWhereQuery += `upper(` + mapAS[key] + `) = upper('` + toolkit.ToString(intVal) + `') `
-								} else {
-									additionalWhereQuery += `upper(` + key + `) = upper('` + toolkit.ToString(intVal) + `') `
-								}
-							}
-						}
-
-						switch reflect.TypeOf(val).Kind() {
-						case reflect.Slice:
-							s := reflect.ValueOf(val)
-
-							for i := 0; i < s.Len(); i++ {
-								if i == 0 {
-									additionalWhereQuery += `( `
-								}
-
-								appendAdditionalWhere(s.Index(i).Interface())
-
-								if i != s.Len()-1 {
-									additionalWhereQuery += `OR `
-								} else {
-									additionalWhereQuery += `) `
-								}
-							}
-						default:
-							appendAdditionalWhere(val)
-						}
-
-						continue
-					}
-				}
-
-				appendAdditionalWhere := func(value interface{}) {
-					intVal, err := strconv.Atoi(toolkit.ToString(value))
-					if err != nil {
-						if value == "NA" {
-							if mapAS[key] != "" {
-								additionalWhereQuery += `upper(` + mapAS[key] + `) IS NULL `
-							} else {
-								additionalWhereQuery += `upper(` + key + `) IS NULL `
-							}
-						} else {
-							replacedVal := strings.ReplaceAll(toolkit.ToString(value), "'", "''")
-
-							if mapAS[key] != "" {
-								additionalWhereQuery += `upper(NVL(` + mapAS[key] + `, ' ')) LIKE upper('%` + replacedVal + `%') `
-							} else {
-								additionalWhereQuery += `upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
-							}
-						}
-					} else {
-						if mapAS[key] != "" {
-							additionalWhereQuery += `upper(` + mapAS[key] + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
-						} else {
-							additionalWhereQuery += `upper(` + key + `) LIKE upper('%` + toolkit.ToString(intVal) + `%') `
-						}
-					}
-				}
-
-				switch reflect.TypeOf(val).Kind() {
-				case reflect.Slice:
-					s := reflect.ValueOf(val)
-
-					for i := 0; i < s.Len(); i++ {
-						if i == 0 {
-							additionalWhereQuery += `( `
-						}
-
-						appendAdditionalWhere(s.Index(i).Interface())
-
-						if i != s.Len()-1 {
-							additionalWhereQuery += `OR `
-						} else {
-							additionalWhereQuery += `) `
-						}
-					}
-				default:
-					appendAdditionalWhere(val)
-				}
-			}
-
-			additionalWhereQuery += `) `
-
-			if strings.TrimSpace(whereQuery) != "" {
-				whereQuery = whereQuery + "\nAND " + additionalWhereQuery
-			} else {
-				whereQuery = additionalWhereQuery
-			}
-		}
-
-		if len(param.GlobalFilterWhere) > 0 {
-			appendWhereQueryWithFilters(param.GlobalFilterWhere, param.GlobalFilterType)
-		}
-
-		if len(param.ColumnFilterWhere) > 0 {
-			appendWhereQueryWithFilters(param.ColumnFilterWhere, param.ColumnFilterType)
-		}
-
-		orders := []string{}
-		if len(param.DefaultSort) > 0 {
-			for _, val := range param.DefaultSort {
-				order := val + " ASC"
-				orders = append(orders, order)
-			}
-		}
-
-		if param.OrderBy != "" {
-			order := `regexp_replace(regexp_replace(UPPER(` + param.OrderBy + `), '(\d+)', lpad('0', 20, '0')||'\1'), '0*?(\d{21}(\D|$))', '\1') `
-
-			if param.IsDescending {
-				order += `DESC `
-			}
-
-			orders = append(orders, order)
-		}
-
-		if len(orders) > 0 {
-			if strings.TrimSpace(orderbyQuery) != "" {
-				orderbyQuery = strings.Join(orders, ", ") + ", " + orderbyQuery
-			} else {
-				orderbyQuery = strings.Join(orders, ", ")
-			}
-		}
-
-		// combine it back
-		selectQuery = strings.ReplaceAll(selectQuery, ",", ",\n")
-		param.SqlQuery = strings.TrimSpace(selectQuery) + "\nFROM\n" + strings.TrimSpace(fromQuery)
-		if strings.TrimSpace(whereQuery) != "" {
-			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nWHERE\n" + strings.TrimSpace(whereQuery)
-		}
-		if strings.TrimSpace(groupbyQuery) != "" {
-			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nGROUP BY\n" + strings.TrimSpace(groupbyQuery)
-		}
-		if strings.TrimSpace(orderbyQuery) != "" {
-			param.SqlQuery = strings.TrimSpace(param.SqlQuery) + "\nORDER BY\n" + strings.TrimSpace(orderbyQuery)
-		}
-
-		sqlQuery += param.SqlQuery + "\n"
-
-		if param.RowsPerPage > 0 {
-			sqlQuery = sqlQuery + `WHERE rn >= ` + toolkit.ToString(((param.PageNumber-1)*param.RowsPerPage)+1) + " AND rn <= " + toolkit.ToString(param.PageNumber*param.RowsPerPage) + " "
-		}
+		sqlQuery = param.SqlQuery
 	}
 
 	conn := Database()
 	cursor := conn.Cursor(dbflex.From(param.TableName).SQL(sqlQuery), nil)
 	defer cursor.Close()
 
-	err := cursor.Fetchs(param.Results, 0)
+	err = cursor.Fetchs(param.Results, 0)
 	if err != nil {
 		return err
 	}
@@ -1120,73 +897,4 @@ func (DBcmd) ExecuteSQLQueryRowCount(param SqlQueryParam) error {
 	}
 
 	return err
-}
-
-type PrepareQueryParam struct {
-	q                            string
-	Cols                         []string
-	ColsFilteredBySearchDropdown map[string]string
-	ColumnFilters                []string
-	SpecialCountCols             []string
-	SpecialCountQueries          []string
-}
-
-func (DBcmd) PrepareQueryForGrids(p PrepareQueryParam) string {
-	checkNotEmpty := func(s []string) bool {
-		for _, v := range s {
-			if v != "" {
-				return true
-			}
-		}
-		return false
-	}
-
-	///////// DROPDOWN FILTER
-	p.q = `SELECT * FROM (
-		` + p.q + `
-	) WHERE ( `
-	i := 0
-	for key, val := range p.ColsFilteredBySearchDropdown {
-		if i != 0 {
-			p.q += `AND `
-		}
-		p.q += `upper(` + key + `) LIKE upper('%` + val + `%') `
-	}
-	p.q += `) `
-
-	if checkNotEmpty(p.ColumnFilters) == true {
-		///////// COLUMN FILTER
-		p.q += `AND ( `
-		for i, col := range p.Cols {
-			if i != 0 {
-				p.q += `AND `
-			}
-			p.q += `upper(` + col + `) LIKE upper('%` + p.ColumnFilters[i] + `%') `
-		}
-		p.q += `) `
-	}
-
-	return p.q
-}
-
-func (DBcmd) PrepareCountQueryForGrids(p PrepareQueryParam) string {
-	ret := p.q
-
-	///////// COUNT
-	ret = `SELECT res.*, `
-	for i, col := range p.Cols {
-		ret += `COUNT(DISTINCT ` + col + `) OVER () COUNT_` + col
-		if i != len(p.Cols)-1 {
-			ret += `, `
-		}
-	}
-	ret = `COUNT(DISTINCT table_name) OVER () COUNT_table_name,
-			COUNT(DISTINCT column_name) OVER () COUNT_column_name,
-			COUNT(DISTINCT business_alias_name) OVER () COUNT_business_alias_name,
-			(SELECT COUNT (cde_yes_no) FROM ( ` + p.q + `) res2 WHERE cde_yes_no = 1) COUNT_cde_yes_no
-		FROM (
-			` + p.q + `
-		) res `
-
-	return ret
 }
