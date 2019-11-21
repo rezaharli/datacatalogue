@@ -1,6 +1,10 @@
-<style>
+<style scoped>
 .table-v2 table.v-table thead tr th:first-of-type{
   padding-left: 0;
+}
+
+.table-v2 table.v-table tbody tr td:first-of-type{
+  padding-left: 24px;
 }
 </style>
 
