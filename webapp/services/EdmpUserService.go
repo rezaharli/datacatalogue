@@ -327,7 +327,7 @@ func (s *EdmpUserService) SaveUsage(data toolkit.M) error {
 	data.Set("ID", toolkit.ToString(time.Now().UnixNano()))
 
 	err := h.NewDBcmd().Insert(h.InsertParam{
-		TableName: m.NewUserUsageModel().TableName(),
+		TableName: m.NewEdmpUsageModel().TableName(),
 		Data:      data,
 	})
 
