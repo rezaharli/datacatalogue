@@ -378,7 +378,7 @@ func (s *DBcmd) BuildQuery(param *SqlQueryParam) error {
 	//recreate select query if SelectFields defined
 	if len(param.SelectFields) > 0 {
 		selectQuery = "SELECT "
-		if isContainsDistinct {
+		if isContainsDistinct || len(fixedlines) == 1 {
 			selectQuery += "DISTINCT\n"
 		}
 
