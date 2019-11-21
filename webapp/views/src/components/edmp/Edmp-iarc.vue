@@ -213,9 +213,13 @@ export default {
         }
       },
       refreshPersonalTable() {
-        this.$store.dispatch(`${this.personalStoreName}/getLeftTable`).then(res => {
+        if( ! this.isGlobalFilterEmpty) {
+          this.$store.dispatch(`${this.personalStoreName}/getLeftTable`).then(res => {
+            this.store.iarc.firstload = false;
+          });
+        } else {
           this.store.iarc.firstload = false;
-        });
+        }
       },
       setDdCountryOptions () {
         var self = this;
@@ -263,7 +267,7 @@ export default {
         this.$router.push(val);
       },
       resetFilter (e) {
-        this.store.dd.globalFilters = {}
+        this.store.iarc.globalFilters = {}
 
         if(this.activeTab.indexOf("personal") != -1){
           if(Object.keys(this.personalStore.filters.left).length > 0){
