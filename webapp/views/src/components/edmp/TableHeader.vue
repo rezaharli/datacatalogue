@@ -141,10 +141,13 @@ export default {
   },
   watch: {
     menu(val, oldVal) {
-      if (val) {
-        this.getOpts();
-      } else {
-        this.dropdownData = [];
+      var filterValue = this.tableStore.filters[this.which][this.fixedProps.header.value.split(".").reverse()[0]];
+      if(filterValue == undefined || filterValue == ""){
+        if (val) {
+          this.getOpts();
+        } else {
+          this.dropdownData = [];
+        }
       }
     }
   },
@@ -237,6 +240,9 @@ export default {
       }
 
       this.tableStore.filters[this.which].filterTypes[fieldName] = "eq";
+
+      this.dropdownData = [val];
+
       this.filterProcess();
     },
     filterProcess() {
@@ -246,7 +252,9 @@ export default {
     resetFilterColumn(which, fieldName) {
       this.tableStore.filters[which][fieldName] = "";
       this.tableStore.filters[which].filterTypes = {};
+
       this.filterProcess();
+      
       this.menu = false;
     }
   }

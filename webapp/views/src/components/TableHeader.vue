@@ -143,10 +143,13 @@ export default {
   },
   watch: {
     menu(val, oldVal) {
-      if (val) {
-        this.getOpts();
-      } else {
-        this.dropdownData = [];
+      var filterValue = this.tableStore.filters[this.which][this.fixedProps.header.value.split(".").reverse()[0]];
+      if(filterValue == undefined || filterValue == ""){
+        if (val) {
+          this.getOpts();
+        } else {
+          this.dropdownData = [];
+        }
       }
     }
   },
@@ -230,14 +233,15 @@ export default {
       }
     },
     filterClick(keyModel, val) {
-      this.tableStore.filters[this.which][
-        keyModel.value.split(".").reverse()[0]
-      ] = val;
+      this.menu = false;
+
+      var fieldName = keyModel.value.split(".").reverse()[0];
+      this.tableStore.filters[this.which][fieldName] = val;
 
       this.tableStore.filters[this.which].filterTypes = {};
-      this.tableStore.filters[this.which].filterTypes[
-        keyModel.value.split(".").reverse()[0]
-      ] = "eq";
+      this.tableStore.filters[this.which].filterTypes[fieldName] = "eq";
+
+      this.dropdownData = [val]
 
       this.filterProcess();
     },
@@ -248,48 +252,11 @@ export default {
     resetFilterColumn(which, fieldName) {
       this.tableStore.filters[which][fieldName] = "";
       this.tableStore.filters[which].filterTypes = {};
+
       this.filterProcess();
+
       this.menu = false;
     },
-    // onScrollListener(e) {
-    //   // metode mengawang alias menambah class sticky ke current elemen
-    //   if ($(window).scrollTop() > this.sticky) {
-    //     // && tableBody.height() > window.innerHeight
-    //     $("table.v-table.v-datatable thead").addClass("sticky");
-    //     $("table.v-table.v-datatable thead").css({
-    //       top: $(".v-toolbar").height()
-    //     });
-    //     // $('.v-datatable__actions').css({'position': 'fixed', 'bottom': 0});
-    //   } else {
-    //     $("table.v-table.v-datatable thead").removeClass("sticky");
-    //     $("table.v-table.v-datatable thead").css({ top: "unset" });
-    //     // $('.v-datatable__actions').css({'position': 'unset', 'bottom': 'unset'});
-    //   }
-    // },
-
-    // makeTableHeaderFixed() {
-    //   const theads = document.querySelectorAll(
-    //     "table.v-table.v-datatable thead"
-    //   );
-    //   theads.forEach(thead => {
-    //     thead.querySelectorAll("tr > th").forEach(th => {
-    //       th.style.width = th.offsetWidth + "px";
-    //     });
-    //   });
-
-    //   this.sticky = $("table.v-table thead").offset().top;
-    //   $(window).scroll(this.onScrollListener);
-    // },
-
-    // makeTableAlertFull() {
-    //   var elemAlert = $("table.v-table > tbody > tr > td >  .v-alert");
-    //   var theadWidth =
-    //     elemAlert
-    //       .closest("table.v-table")
-    //       .find("thead > tr:first")
-    //       .width() - 50;
-    //   elemAlert.parent("td").width(theadWidth);
-    // }
   }
 };
 </script>
