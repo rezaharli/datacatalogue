@@ -143,14 +143,16 @@ export default {
   },
   watch: {
     menu(val, oldVal) {
-      var filterValue = this.tableStore.filters[this.which][this.fixedProps.header.value.split(".").reverse()[0]];
-      if(filterValue == undefined || filterValue == ""){
-        if (val) {
-          this.getOpts();
-        } else {
-          this.dropdownData = [];
+      setTimeout(() => {
+        var filterValue = this.tableStore.filters[this.which][this.fixedProps.header.value.split(".").reverse()[0]];
+        if(filterValue == undefined || filterValue == ""){
+          if (val) {
+            this.getOpts();
+          } else {
+            this.dropdownData = [];
+          }
         }
-      }
+      }, 0);
     }
   },
   mounted() {
