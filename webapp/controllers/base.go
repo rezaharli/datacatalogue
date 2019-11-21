@@ -112,6 +112,8 @@ func (c *Base) ExportToCsv(k *knot.WebContext) {
 		return
 	}
 
+	rowSelect := payload.Get("RowSelect").([]interface{})
+
 	headerArgs := s.HeaderArgs{
 		Filename:  payload.GetString("Filename"),
 		Queryname: payload.GetString("Queryname"),
@@ -120,6 +122,7 @@ func (c *Base) ExportToCsv(k *knot.WebContext) {
 		Param1:        payload.GetString("System"),
 		Param2:        payload.GetString("DspName"),
 		Filter:        payload.GetString("Filter"),
+		GlobalFilters: payload.Get("GlobalFilters"),
 		ColumnFilters: payload.Get("Filters"),
 	}
 
@@ -129,10 +132,23 @@ func (c *Base) ExportToCsv(k *knot.WebContext) {
 		headerArgs.LoggedInID = "-"
 	}
 
-	resultRows, err := s.NewBaseService().GetExportData(headerArgs)
-	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
+	resultRows := []toolkit.M{}
+	if len(rowSelect) > 0 {
+		for _, row := range rowSelect {
+			data, err := toolkit.ToM(row)
+			if err != nil {
+				h.WriteResultError(k, res, err.Error())
+				return
+			}
+
+			resultRows = append(resultRows, data)
+		}
+	} else {
+		resultRows, err = s.NewBaseService().GetExportData(headerArgs)
+		if err != nil {
+			h.WriteResultError(k, res, err.Error())
+			return
+		}
 	}
 
 	folderPath := filepath.Join(clit.ExeDir(), "csv")

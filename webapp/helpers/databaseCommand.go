@@ -541,7 +541,12 @@ func (s *DBcmd) BuildQuery(param *SqlQueryParam) error {
 	}
 
 	if strings.TrimSpace(orderbyQuery) != "" {
-		orderbyQuery = strings.Join(orders, ", ") + ", " + orderbyQuery
+		orderbyQuery = ""
+		if len(orders) > 0 {
+			orderbyQuery = strings.Join(orders, ", ") + ", "
+		}
+
+		orderbyQuery += orderbyQuery
 	} else {
 		orderbyQuery = strings.Join(orders, ", ")
 	}

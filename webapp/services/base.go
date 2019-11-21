@@ -59,8 +59,6 @@ func (s *Base) GetHeaderOpts(headerArgs HeaderArgs) ([]toolkit.M, error) {
 		args = append(args, toolkit.ToString(headerArgs.Param2))
 	}
 
-	// args = append(args, toolkit.ToString(headerArgs.Filter))
-
 	filePath := filepath.Join(clit.ExeDir(), "queryfiles", fileName)
 	q, err := h.BuildQueryFromFile(filePath, queryName, []string{}, args...)
 	if err != nil {
@@ -84,8 +82,6 @@ func (s *Base) GetHeaderOpts(headerArgs HeaderArgs) ([]toolkit.M, error) {
 			if filter == nil {
 				continue
 			}
-
-			// fieldNames = append(fieldNames, key)
 
 			switch reflect.TypeOf(filter).Kind() {
 			case reflect.Slice:
@@ -118,8 +114,6 @@ func (s *Base) GetHeaderOpts(headerArgs HeaderArgs) ([]toolkit.M, error) {
 			continue
 		}
 
-		// fieldNames = append(fieldNames, key)
-
 		switch reflect.TypeOf(filter).Kind() {
 		case reflect.Slice:
 			s := reflect.ValueOf(filter)
@@ -133,22 +127,6 @@ func (s *Base) GetHeaderOpts(headerArgs HeaderArgs) ([]toolkit.M, error) {
 			}
 		}
 	}
-
-	// uniqueFieldNames, err := gubrak.Uniq(fieldNames)
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// joinedFieldnames, err := gubrak.Join(uniqueFieldNames, ", ")
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	///////// FILTER
-	// q = `SELECT DISTINCT ` + joinedFieldnames + `
-	// 	FROM (
-	// 	` + q + `
-	// ) `
 
 	err = h.NewDBcmd().ExecuteSQLQueryHeaderOpts(h.SqlQueryParam{
 		TableName:         m.NewCategoryModel().TableName(),
@@ -323,7 +301,45 @@ func (s *Base) GetExportData(headerArgs HeaderArgs) ([]toolkit.M, error) {
 	}
 
 	funcLog(funcName(), fileName, queryName)
+	var fieldNames []string
+	fieldNames = append(fieldNames, headerArgs.FieldName)
+
+	globalFilterWhere := make(map[string]interface{}, 0)
+	var globalFilterType map[string]interface{}
+
+	if headerArgs.GlobalFilters != nil {
+		for key, filter := range headerArgs.GlobalFilters.(map[string]interface{}) {
+			if key == "filterTypes" {
+				globalFilterType = filter.(map[string]interface{})
+				continue
+			}
+
+			if filter == nil {
+				continue
+			}
+
+			// fieldNames = append(fieldNames, key)
+
+			switch reflect.TypeOf(filter).Kind() {
+			case reflect.Slice:
+				s := reflect.ValueOf(filter)
+
+				if s.Len() > 0 {
+					globalFilterWhere[key] = filter
+				}
+			default:
+				if toolkit.ToString(filter) != "" {
+					globalFilterWhere[key] = filter
+				}
+			}
+		}
+	}
+
 	columnFilterWhere := make(map[string]interface{}, 0)
+	if strings.TrimSpace(headerArgs.Filter) != "" {
+		columnFilterWhere[headerArgs.FieldName] = headerArgs.Filter
+	}
+
 	var columnFilterType map[string]interface{}
 	for key, filter := range headerArgs.ColumnFilters.(map[string]interface{}) {
 		if key == "filterTypes" {
@@ -334,6 +350,8 @@ func (s *Base) GetExportData(headerArgs HeaderArgs) ([]toolkit.M, error) {
 		if filter == nil {
 			continue
 		}
+
+		// fieldNames = append(fieldNames, key)
 
 		switch reflect.TypeOf(filter).Kind() {
 		case reflect.Slice:
@@ -349,21 +367,18 @@ func (s *Base) GetExportData(headerArgs HeaderArgs) ([]toolkit.M, error) {
 		}
 	}
 
-	///////// FILTER
-	q = `SELECT *
-		FROM (
-		` + q + `
-	) `
-
 	err = h.NewDBcmd().ExecuteSQLQueryHeaderOpts(h.SqlQueryParam{
 		TableName:         m.NewCategoryModel().TableName(),
 		SqlQuery:          q,
 		Results:           &resultRows,
-		ColumnFilterWhere: columnFilterWhere,
 		PageNumber:        1,
 		RowsPerPage:       -1,
 		GroupCol:          headerArgs.FieldName,
+		OrderBy:           headerArgs.FieldName,
+		ColumnFilterWhere: columnFilterWhere,
 		ColumnFilterType:  columnFilterType,
+		GlobalFilterWhere: globalFilterWhere,
+		GlobalFilterType:  globalFilterType,
 	})
 
 	if err != nil {

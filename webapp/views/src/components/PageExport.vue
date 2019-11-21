@@ -80,9 +80,27 @@ export default {
             
             param.Pagination.rowsPerPage = -1;
 
+            param.RowSelect = [];
+            if(this.rowSelectInvolved == true){
+                if(this.tableStore.selected){
+                    if(this.tableStore.selected.length > 0){
+                        param.RowSelect = this.tableStore.left.source.filter(v => this.tableStore.selected.find(w => v.TABLE_NAME == w.TABLE_NAME) != undefined); // SEMENTARA (SHOULDN'T BE HARDCODED USING TABLENAME)
+                    }
+                }
+            }
+
             return this.$store.dispatch(`exportData/doExport`, param).then(res => {
                 this.tableStore.left.isLoading = false;
-                window.open("/csv/"+this.store.filename, "_blank");
+                var url = "/csv/" + this.store.filename;
+
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                // the filename you want
+                a.download = this.tableStore.queryname + ".csv";
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
             });
         },
         getLeftTable () {

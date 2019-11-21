@@ -1,3 +1,9 @@
+<style>
+.table-v2 table.v-table thead tr th:first-of-type{
+  padding-left: 0;
+}
+</style>
+
 <template>
     <b-row style="margin-top: 10px;margin-bottom: 10px;">
       <b-col>
@@ -20,7 +26,6 @@
             :pagination.sync="store.left.pagination"
             :total-items="store.left.totalItems"
             :loading="store.left.isLoading"
-            :expand="false"
             :must-sort="true"
             :rows-per-page-items="[100]"
             item-key="ID"
@@ -29,10 +34,6 @@
 
           <template slot="headers" slot-scope="props">
             <tr>
-              <th>
-                <v-checkbox :input-value="props.all" :indeterminate="props.indeterminate" primary hide-details @click.stop="toggleAll"></v-checkbox>
-              </th>
-
               <template v-for="header in props.headers">
                 <th
                   v-if="header.sortable == true"
@@ -75,9 +76,6 @@
 
           <template slot="items" slot-scope="props">
             <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
-              <td>
-                <v-checkbox :input-value="props.selected" primary hide-details @click="props.selected = !props.selected"></v-checkbox></td>
-
               <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">
                   <tablecell :fulltext="props.item.ITAM.toString().trim() ? props.item.ITAM : 'NA'" showOn="click"></tablecell></td>
 
@@ -208,18 +206,6 @@ export default {
         this.store.left.pagination.sortBy = column
         this.store.left.pagination.descending = false
       }
-    },
-    linkDataXray(param){
-      if(param.includes("https://")){
-        return param;
-      } else if (param.includes("http://")) {
-        return param;
-      } else {
-        return "http://" + param;
-      }
-    },
-    dataXrayDisabled(param){
-      return param.trim() == "" ? true : false;
     },
   }
 };
