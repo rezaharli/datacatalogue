@@ -118,7 +118,7 @@ func (c *Users) Authenticate(k *knot.WebContext) {
 		}
 	}
 
-	ok, user, err := s.NewUserService().Authenticate(payload.GetInt("username"), payload.GetString("password"))
+	ok, user, err := s.NewEdmpUserService().Authenticate(payload.GetInt("username"), payload.GetString("password"))
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -154,7 +154,7 @@ func (c *Users) GetAll(k *knot.WebContext) {
 		return
 	}
 
-	systems, _, err := s.NewUserService().GetAll(tabs, loggedinId, search, searchDD, colFilter, pagination)
+	systems, _, err := s.NewEdmpUserService().GetAll(tabs, loggedinId, search, searchDD, colFilter, pagination)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -166,15 +166,15 @@ func (c *Users) GetAll(k *knot.WebContext) {
 func (c *Users) Register(k *knot.WebContext) {
 	res := toolkit.NewResult()
 
-	payload := m.NewSysUserModel()
+	payload := m.NewEdmpUserModel()
 	err := k.GetPayload(&payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
-	payload.ID = payload.Username
-	ok, err := s.NewUserService().Insert(payload)
+	payload.ID = payload.USERNAME
+	ok, err := s.NewEdmpUserService().Insert(payload)
 	if !ok && err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -190,15 +190,15 @@ func (c *Users) Register(k *knot.WebContext) {
 func (c *Users) Update(k *knot.WebContext) {
 	res := toolkit.NewResult()
 
-	payload := m.NewSysUserModel()
+	payload := m.NewEdmpUserModel()
 	err := k.GetPayload(&payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
-	payload.UpdatedAt = time.Now().String()
-	ok, err := s.NewUserService().Update(payload)
+	payload.UPDATEDAT = time.Now().String()
+	ok, err := s.NewEdmpUserService().Update(payload)
 	if !ok && err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -221,7 +221,7 @@ func (c *Users) Delete(k *knot.WebContext) {
 		return
 	}
 
-	err = s.NewUserService().DeleteByUsername(payload.GetInt("Username"))
+	err = s.NewEdmpUserService().DeleteByUsername(payload.GetInt("Username"))
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -240,7 +240,7 @@ func (c *Users) SaveUsage(k *knot.WebContext) {
 		return
 	}
 
-	err = s.NewUserService().SaveUsage(payload)
+	err = s.NewEdmpUserService().SaveUsage(payload)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
@@ -266,7 +266,7 @@ func (c *Users) GetUsageTable(k *knot.WebContext) {
 		return
 	}
 
-	systems, _, err := s.NewUserService().GetUsageTable(colFilter, pagination)
+	systems, _, err := s.NewEdmpUserService().GetUsageTable(colFilter, pagination)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return

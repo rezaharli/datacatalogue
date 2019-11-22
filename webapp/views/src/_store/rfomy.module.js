@@ -56,7 +56,7 @@ const actions = {
 
         state.all.param = {
             Tabs: state.all.tabName,
-            LoggedInID: user.Username.toString(),
+            LoggedInID: user.USERNAME.toString(),
             Search: state.all.searchMain.toString(),
             SearchDD: state.all.searchDropdown,
             Filters: state.all.filters.left,
@@ -84,7 +84,7 @@ const actions = {
             Filename: state.all.filename,
             Queryname: state.all.queryname,
             Tabs: state.all.tabName,
-            LoggedInID: user.Username.toString(),
+            LoggedInID: user.USERNAME.toString(),
             Search: state.all.searchMain.toString(),
             SearchDD: state.all.searchDropdown,
             Filters: state.all.filters.left,

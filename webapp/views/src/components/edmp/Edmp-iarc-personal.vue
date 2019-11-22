@@ -1,3 +1,9 @@
+<style scoped>
+.table-v2 table.v-table tbody tr td:first-of-type{
+  padding-left: 24px !important;
+}
+</style>
+
 <template>
     <b-row style="margin-top: 10px;margin-bottom: 10px;">
       <b-col>
@@ -13,14 +19,12 @@
         
         <v-data-table
             v-model="store.selected"
-            select-all
             v-if="!isGlobalFilterEmpty"
             :headers="displayedHeaders"
             :items="store.left.display"
             :pagination.sync="store.left.pagination"
             :total-items="store.left.totalItems"
             :loading="store.left.isLoading"
-            :expand="false"
             :must-sort="true"
             :rows-per-page-items="[100]"
             item-key="ID"
@@ -29,10 +33,6 @@
 
           <template slot="headers" slot-scope="props">
             <tr>
-              <th>
-                <v-checkbox :input-value="props.all" :indeterminate="props.indeterminate" primary hide-details @click.stop="toggleAll"></v-checkbox>
-              </th>
-
               <template v-for="header in props.headers">
                 <th
                   v-if="header.sortable == true"
@@ -75,38 +75,29 @@
 
           <template slot="items" slot-scope="props">
             <tr :class="{even: props.index % 2, odd: !(props.index % 2)}">
+              <td><tablecell :fulltext="props.item.ITAM.toString().trim() ? props.item.ITAM : 'NA'" showOn="click"></tablecell></td>
+
+              <td><tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME.toString().trim() ? props.item.EDM_SOURCE_SYSTEM_NAME : 'NA'" showOn="click"></tablecell></td>
+              
+              <td><tablecell :fulltext="props.item.COUNTRY.toString().trim() ? props.item.COUNTRY : 'NA'" showOn="click"></tablecell></td>
+              
+              <td><tablecell :fulltext="props.item.DATABASE_NAME.toString().trim() ? props.item.DATABASE_NAME : 'NA'" showOn="click"></tablecell></td>
+              
               <td>
-                <v-checkbox :input-value="props.selected" primary hide-details @click="props.selected = !props.selected"></v-checkbox></td>
-
-              <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">
-                  <tablecell :fulltext="props.item.ITAM.toString().trim() ? props.item.ITAM : 'NA'" showOn="click"></tablecell></td>
-
-              <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
-                  <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME.toString().trim() ? props.item.EDM_SOURCE_SYSTEM_NAME : 'NA'" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['COUNTRY'] + 'px' }">
-                  <tablecell :fulltext="props.item.COUNTRY.toString().trim() ? props.item.COUNTRY : 'NA'" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
-                <tablecell :fulltext="props.item.DATABASE_NAME.toString().trim() ? props.item.DATABASE_NAME : 'NA'" showOn="click"></tablecell></td>
-              
-              <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-capitalize">
                 <div class="ini wrapper-showmore d-inline-block">
                   <span>{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
                 </div>
               </td>
               
-              <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-capitalize">
+              <td>
                 <div class="ini wrapper-showmore d-inline-block">
-                    <span>{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
-                  </div>
+                  <span>{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
+                </div>
               </td>
               
-              <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
-                  <tablecell :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'" showOn="click"></tablecell></td>
+              <td><tablecell :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'" showOn="click"></tablecell></td>
                 
-              <td v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }">
-                  <tablecell :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'" showOn="click"></tablecell></td>
+              <td><tablecell :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'" showOn="click"></tablecell></td>
             </tr>
           </template>
         </v-data-table>
@@ -208,18 +199,6 @@ export default {
         this.store.left.pagination.sortBy = column
         this.store.left.pagination.descending = false
       }
-    },
-    linkDataXray(param){
-      if(param.includes("https://")){
-        return param;
-      } else if (param.includes("http://")) {
-        return param;
-      } else {
-        return "http://" + param;
-      }
-    },
-    dataXrayDisabled(param){
-      return param.trim() == "" ? true : false;
     },
   }
 };

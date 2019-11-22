@@ -49,9 +49,9 @@ func Database() dbflex.IConnection {
 			// os.Exit(0)
 		} else {
 			// test connection by random select into any table
-			users := make([]m.SysUser, 0)
+			users := make([]m.EdmpUser, 0)
 			err = NewDBcmd().GetBy(GetByParam{
-				TableName: "tbl_users",
+				TableName: m.NewEdmpUserModel().TableName(),
 				Clause:    dbflex.Eq("username", 123),
 				Result:    &users,
 			})

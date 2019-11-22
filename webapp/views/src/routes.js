@@ -398,7 +398,7 @@ const router = new VueRouter({
   { path: '*', redirect: '/' }]
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   document.title = (to.meta.title || '')
   next()
 });
@@ -407,15 +407,15 @@ var checkSession = () => {
   return store.dispatch(`account/checkSession`);
 }
 
-var saveUsage = function(isAuth, to, from, next){
+var saveUsage = function(isAuth, to){
   var saveLog = (param) => { store.dispatch(`users/saveLog`, param); }
   
   var user = store.state.account.user;
   if(user)
     saveLog({
-      Username: user.Username,
-      Fullname: user.Name,
-      Role: user.Role,
+      Username: user.USERNAME,
+      Fullname: user.NAME,
+      Role: user.ROLE,
       Module: to.name,
       Description: isAuth ? "SUCCESS" : "Permission Denied",
       ResourceUrl: to.fullPath
@@ -423,44 +423,42 @@ var saveUsage = function(isAuth, to, from, next){
 }
 
 router.beforeEach((to, from, next) => {
-  checkSession().then(
-    res => {
-      var isSession = store.state.account.isSession;
-      
-      if( ! isSession){
-        localStorage.removeItem('user');
-      }
-
-      // redirect to login page if not logged in and trying to access a restricted page
-      const publicPages = ['/login', '/crypto'];
-      const authRequired = !publicPages.find(v => to.path.indexOf(v) != -1);
-      const loggedIn = localStorage.getItem('user');
-      
-      if (authRequired && !loggedIn) {
-        saveUsage(false, to, from, next);
-        return next('/login');
-      } else {
-        if(to.name != "landingpage" && authRequired){
-          var user = store.state.account.user;
-          if(user)
-            if(to.name.split(".")[0].toLowerCase() == "access"){
-              if(user.Role.toLowerCase().split(",").indexOf("Admin".toLowerCase()) == -1){
-                saveUsage(false, to, from, next);
-                return next('/');
-              }
-            } else {
-              if(user.Role.toLowerCase().split(",").indexOf(to.name.split(".")[0].toLowerCase()) == -1){
-                saveUsage(false, to, from, next);
-                return next('/');
-              }
-            }
-        }
-
-        saveUsage(true, to, from, next)
-        next();
-      }
+  checkSession().then(() => {
+    var isSession = store.state.account.isSession;
+    
+    if( ! isSession){
+      localStorage.removeItem('user');
     }
-  )
+
+    // redirect to login page if not logged in and trying to access a restricted page
+    const publicPages = ['/login', '/crypto'];
+    const authRequired = !publicPages.find(v => to.path.indexOf(v) != -1);
+    const loggedIn = localStorage.getItem('user');
+    
+    if (authRequired && !loggedIn) {
+      saveUsage(false, to, from, next);
+      return next('/login');
+    } else {
+      if(to.name != "landingpage" && authRequired){
+        var user = store.state.account.user;
+        if(user)
+          if(to.name.split(".")[0].toLowerCase() == "access"){
+            if(user.ROLE.toLowerCase().split(",").indexOf("Admin".toLowerCase()) == -1){
+              saveUsage(false, to, from, next);
+              return next('/');
+            }
+          } else {
+            if(user.ROLE.toLowerCase().split(",").indexOf(to.name.split(".")[0].toLowerCase()) == -1){
+              saveUsage(false, to, from, next);
+              return next('/');
+            }
+          }
+      }
+
+      saveUsage(true, to, from, next)
+      next();
+    }
+  })
 })
 
 export default router

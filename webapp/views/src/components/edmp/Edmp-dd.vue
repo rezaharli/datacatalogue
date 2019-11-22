@@ -315,19 +315,31 @@ export default {
         }
       },
       refreshTechnicalTable() {
-        this.$store.dispatch(`${this.technicalStoreName}/getLeftTable`).then(res => {
+        if( ! this.isGlobalFilterEmpty) {
+          this.$store.dispatch(`${this.technicalStoreName}/getLeftTable`).then(res => {
+            this.store.dd.firstload = false;
+          });
+        } else {
           this.store.dd.firstload = false;
-        });
+        }
       },
       refreshBusinessTable() {
-        this.$store.dispatch(`${this.businessStoreName}/getLeftTable`).then(res => {
+        if( ! this.isGlobalFilterEmpty) {
+          this.$store.dispatch(`${this.businessStoreName}/getLeftTable`).then(res => {
+            this.store.dd.firstload = false;
+          });
+        } else {
           this.store.dd.firstload = false;
-        });
+        }
       },
       refreshConsumptionTable() {
-        this.$store.dispatch(`${this.consumptionStoreName}/getLeftTable`).then(res => {
+        if( ! this.isGlobalFilterEmpty) {
+          this.$store.dispatch(`${this.consumptionStoreName}/getLeftTable`).then(res => {
+            this.store.dd.firstload = false;
+          });
+        } else {
           this.store.dd.firstload = false;
-        });
+        }
       },
       setDdCountryOptions () {
         var self = this;
