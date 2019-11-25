@@ -1071,6 +1071,12 @@ func (s *DSCService) CreateEdmpDummyData() error {
 		Data:            data,
 		ContinueOnError: true,
 	})
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewEdmpHeaderModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
 	if err != nil {
 		log.Println(err.Error())
 		return err
@@ -1266,6 +1272,38 @@ func (s *DSCService) CreateEdmpUserDummyData() error {
 		return err
 	}
 	if ok && err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (s *DSCService) CreateEdmpBsMappingDummyData() error {
+	toolkit.Println("CreateEdmpBsMappingDummyData")
+	err := h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewEdmpBsMappingModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	data := make([]*m.EdmpBsMapping, 0)
+	for i := 0; i < 10000; i++ {
+		mdt := m.NewEdmpBsMappingModel()
+		mdt.BUSINESS_SEGMENT_OLD = fake.Words()
+		mdt.BUSINESS_SEGMENT_NEW = fake.Words()
+
+		data = append(data, mdt)
+	}
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewEdmpBsMappingModel().TableName(),
+		Data:            data,
+		ContinueOnError: true,
+	})
+	if err != nil {
 		log.Println(err.Error())
 		return err
 	}

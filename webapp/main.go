@@ -96,6 +96,7 @@ func main() {
 			s.NewDSCService().CreateEdmpPeopleDummyData()
 			s.NewDSCService().CreateEdmpRoleDummyData()
 			s.NewDSCService().CreateEdmpLinkRolePeopleDummyData()
+			s.NewDSCService().CreateEdmpBsMappingDummyData()
 		}
 
 		s.NewDSCService().CreateEdmpUserDummyData()
