@@ -1,4 +1,4 @@
-import router from '../routes';
+import router from '../router/routes';
 
 export function authHeader(contentType) {
     let user = JSON.parse(localStorage.getItem('user'));
