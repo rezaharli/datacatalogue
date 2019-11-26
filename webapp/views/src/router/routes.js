@@ -1,36 +1,36 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import Login from '../views/Login';
-import Crypto from '../views/Crypto';
+import Login from '../pages/Login';
+import Crypto from '../pages/Crypto';
 
-import Dsc from '../views/dsc/Dsc';
-import DscMenu from '../views/dsc/Dsc-menu';
-import DscCde from '../views/dsc/Dsc-cde';
-import DscCdp from '../views/dsc/Dsc-cdp';
-import DscCdpCde from '../views/dsc/Dsc-cdp-cde';
-import DscIarc from '../views/dsc/Dsc-iarc';
-import DscIarcInformation from '../views/dsc/Dsc-iarc-information';
-import DscIarcPersonal from '../views/dsc/Dsc-iarc-personal';
-import DscInterfaces from '../views/dsc/Dsc-interfaces';
-import DscInterfacesCde from '../views/dsc/Dsc-interfaces-cde';
-import DscDd from '../views/dsc/Dsc-dd';
-import DscDdTechnical from '../views/dsc/Dsc-dd-technical';
-import DscDdBusiness from '../views/dsc/Dsc-dd-business';
-import DscDdPolicy from '../views/dsc/Dsc-dd-policy';
-import DscDetails from '../views/dsc/Dsc-details';
+import Dsc from '../pages/dsc/Dsc';
+import DscMenu from '../pages/dsc/Dsc-menu';
+import DscCde from '../pages/dsc/Dsc-cde';
+import DscCdp from '../pages/dsc/Dsc-cdp';
+import DscCdpCde from '../pages/dsc/Dsc-cdp-cde';
+import DscIarc from '../pages/dsc/Dsc-iarc';
+import DscIarcInformation from '../pages/dsc/Dsc-iarc-information';
+import DscIarcPersonal from '../pages/dsc/Dsc-iarc-personal';
+import DscInterfaces from '../pages/dsc/Dsc-interfaces';
+import DscInterfacesCde from '../pages/dsc/Dsc-interfaces-cde';
+import DscDd from '../pages/dsc/Dsc-dd';
+import DscDdTechnical from '../pages/dsc/Dsc-dd-technical';
+import DscDdBusiness from '../pages/dsc/Dsc-dd-business';
+import DscDdPolicy from '../pages/dsc/Dsc-dd-policy';
+import DscDetails from '../pages/dsc/Dsc-details';
 
-import Edmp from '../views/dsc/edmp/Edmp';
-import EdmpDd from '../views/dsc/edmp/Edmp-dd';
-import EdmpDdTechnical from '../views/dsc/edmp/Edmp-dd-technical';
-import EdmpDdBusiness from '../views/dsc/edmp/Edmp-dd-business';
-import EdmpIarc from '../views/dsc/edmp/Edmp-iarc';
-import EdmpIarcPersonal from '../views/dsc/edmp/Edmp-iarc-personal';
+import Edmp from '../pages/dsc/edmp/Edmp';
+import EdmpDd from '../pages/dsc/edmp/Edmp-dd';
+import EdmpDdTechnical from '../pages/dsc/edmp/Edmp-dd-technical';
+import EdmpDdBusiness from '../pages/dsc/edmp/Edmp-dd-business';
+import EdmpIarc from '../pages/dsc/edmp/Edmp-iarc';
+import EdmpIarcPersonal from '../pages/dsc/edmp/Edmp-iarc-personal';
 
-import Access from '../views/access/Access';
-import AccessUsers from '../views/access/Access-users';
-import AccessRoles from '../views/access/Access-roles';
-import AccessUsage from '../views/access/Access-usage';
+import Access from '../pages/access/Access';
+import AccessUsers from '../pages/access/Access-users';
+import AccessRoles from '../pages/access/Access-roles';
+import AccessUsage from '../pages/access/Access-usage';
 
 import {store} from '../_store/index'
 
