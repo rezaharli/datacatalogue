@@ -1,5 +1,5 @@
 <style>
-  @import '@/assets/styles/dashboard.css';
+  @import '../../../assets/styles/dashboard.css';
 </style>
 
 <style>

@@ -1,5 +1,5 @@
 <style>
-  @import '@/components/@/components/assets/styles/dashboard.css';
+  @import '../../assets/styles/dashboard.css';
 </style>
 
 <template>

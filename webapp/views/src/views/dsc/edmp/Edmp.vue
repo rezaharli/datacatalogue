@@ -1,5 +1,5 @@
 <style>
-  @import '@/assets/styles/dashboard.css';
+  @import '../../../assets/styles/dashboard.css';
 </style>
 
 <template>
@@ -74,11 +74,11 @@ export default {
     data () {
         return {
             images: {
-                cde: require('../../assets/images/icon-cde.png'),
-                cdsp: require('../../assets/images/icon-cdsp.png'),
-                iarc: require('../../assets/images/icon-all-system.png'),
-                dd: require('../../assets/images/icon-dd.png'),
-                imi: require('../../assets/images/icon-imi.png'),
+                cde: require('@/assets/images/icon-cde.png'),
+                cdsp: require('@/assets/images/icon-cdsp.png'),
+                iarc: require('@/assets/images/icon-all-system.png'),
+                dd: require('@/assets/images/icon-dd.png'),
+                imi: require('@/assets/images/icon-imi.png'),
             }
         }
     },

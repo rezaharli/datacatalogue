@@ -1,5 +1,5 @@
 <style>
-  @import '@/assets/styles/dashboard.css';
+  @import '../../assets/styles/dashboard.css';
 </style>
 
 <template>
@@ -85,8 +85,8 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 
-import PageHeader from '../PageHeader';
-import pageExport from '../PageExport.vue'
+import PageHeader from '@/components/PageHeader';
+import pageExport from '@/components/PageExport.vue'
 
 import dscMy from './Dsc-my.vue';
 import dscAll from './Dsc-all.vue';

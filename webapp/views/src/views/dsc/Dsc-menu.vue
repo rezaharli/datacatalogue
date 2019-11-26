@@ -139,7 +139,7 @@
 </template>
 
 <script>
-import PageHeader from '../PageHeader';
+import PageHeader from '@/components/PageHeader';
 import { mapState, mapActions } from 'vuex'
 
 export default {
