@@ -39,10 +39,11 @@ export function handleResponse(response) {
         const data = text && JSON.parse(text);
         
         if (!response.ok) {
-            if (response.status === 401) {
-                // auto logout if 401 response returned from api
-                router.push("/");
-            }
+            // // auto logout if 401 response returned from api
+            // if (response.status === 401) {
+            //     logout();
+            //     router.push("/");
+            // }
             
             const error = (data && data.Message) || response.statusText;
             return Promise.reject(error);
