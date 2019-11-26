@@ -255,6 +255,7 @@ func (s *Base) GetRowCount(headerArgs HeaderArgs) ([]toolkit.M, error) {
 		Results:           &resultRows,
 		PageNumber:        1,
 		RowsPerPage:       -1,
+		GroupCol:          headerArgs.FieldName,
 		GlobalFilterWhere: globalFilterWhere,
 		GlobalFilterType:  globalFilterType,
 		ColumnFilterWhere: columnFilterWhere,

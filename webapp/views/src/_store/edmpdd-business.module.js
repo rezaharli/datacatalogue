@@ -6,6 +6,7 @@ const state = {
     all: {
         filename: "edmp.sql", 
         queryname: "edmp-dd-business",
+        groupBy: "TABLE_NAME",
         param: {},
         tabName: '',
         filters: {
@@ -77,15 +78,16 @@ const actions = {
             Filters: state.all.filters.left,
             Pagination: state.all.left.pagination,
             DefaultSort: ["TABLE_NAME", "COLUMN_NAME"],
+            FieldName: state.all.groupBy
         }
 
         return edmpService.getBusinessTable(state.all.param)
             .then(
                 res => {
-                    commit('getLeftTableSuccess', res)
+                    commit('getLeftTableSuccess', res);
                     
                     header.actions.getRowCount(state.all.param).then(v => {
-                        state.all.left.totalItems = v.Data;
+                        commit('getRowCountSuccess', v);
                     });
                 },
                 error => commit('getLeftTableFailure', error)
@@ -112,8 +114,12 @@ const mutations = {
     getLeftTableSuccess(state, res) {
         state.all.left.source = res.DataFlat;
         state.all.left.display = res.Data;
+        state.all.left.totalItems = res.Data.length;
 
         state.all.left.isLoading = false;
+    },
+    getRowCountSuccess(state, res) {
+        state.all.left.totalItems = res.Data;
     },
     getLeftTableFailure(state, error) {
         state.all.left.isLoading = false;

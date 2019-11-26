@@ -79,6 +79,7 @@ func (c *Base) GetRowCount(k *knot.WebContext) {
 	headerArgs := s.HeaderArgs{
 		Filename:  payload.GetString("Filename"),
 		Queryname: payload.GetString("Queryname"),
+		FieldName: payload.GetString("FieldName"),
 
 		Param1:        payload.GetString("System"),
 		Param2:        payload.GetString("DspName"),

@@ -37,6 +37,24 @@ const state = {
     }
 };
 
+const getters = {
+    isDdGlobalFilterEmpty: (state) => {
+        var ddVal = state.all.dd.ddVal;
+        return ddVal.ddCountrySelected.length == 0
+            && ddVal.ddBusinessSegmentSelected.length == 0
+            && ddVal.ddSourceSystemSelected.length == 0
+            && ddVal.ddClusterSelected.length == 0
+            && ddVal.ddTierSelected.length == 0
+            && ddVal.ddItamSelected.length == 0;
+    },
+    isIarcGlobalFilterEmpty: (state) => {
+        var ddVal = state.all.iarc.ddVal;
+        return ddVal.ddCountrySelected.length == 0
+            && ddVal.ddSourceSystemSelected.length == 0
+            && ddVal.ddItamSelected.length == 0;
+    },
+}
+
 const actions = {
     getCounts({ commit }, system) {
         commit('getCountsRequest');
@@ -131,6 +149,7 @@ const mutations = {
 export const edmp = {
     namespaced: true,
     state,
+    getters,
     actions,
     mutations
 };

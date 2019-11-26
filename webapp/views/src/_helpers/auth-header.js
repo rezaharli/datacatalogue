@@ -1,4 +1,4 @@
-import router from '../routes';
+import router from '../router/routes';
 
 export function authHeader(contentType) {
     let user = JSON.parse(localStorage.getItem('user'));
@@ -39,11 +39,11 @@ export function handleResponse(response) {
         const data = text && JSON.parse(text);
         
         if (!response.ok) {
-            if (response.status === 401) {
-                // auto logout if 401 response returned from api
-                logout();
-                router.push("/");
-            }
+            // // auto logout if 401 response returned from api
+            // if (response.status === 401) {
+            //     logout();
+            //     router.push("/");
+            // }
             
             const error = (data && data.Message) || response.statusText;
             return Promise.reject(error);

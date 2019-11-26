@@ -2,7 +2,7 @@ import Vue from 'vue'
 import './plugins/vuetify'
 import App from './App.vue'
 
-import router from './routes'
+import router from './router/routes'
 import { store } from './_store'
 
 import VueLodash from 'vue-lodash'
