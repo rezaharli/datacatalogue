@@ -20,34 +20,12 @@ import DscDdBusiness from './components/dsc/Dsc-dd-business';
 import DscDdPolicy from './components/dsc/Dsc-dd-policy';
 import DscDetails from './components/dsc/Dsc-details';
 
-import Dpo from './components/dpo/Dpo';
-import DpoMenu from './components/dpo/Dpo-menu';
-import DpoDataelements from './components/dpo/Dpo-dataelements';
-import DpoDatalineage from './components/dpo/Dpo-datalineage';
-import DpoDetails from './components/dpo/Dpo-details';
-
-import Ddo from './components/ddo/Ddo';
-import DdoMenu from './components/ddo/Ddo-menu';
-import DdoBusinessterm from './components/ddo/Ddo-businessterm';
-import DdoSystems from './components/ddo/Ddo-systems';
-import DdoSystemsBusinessterm from './components/ddo/Ddo-systems-businessterm';
-import DdoDownstream from './components/ddo/Ddo-downstream';
-import DdoDownstreamBusinessterm from './components/ddo/Ddo-downstream-businessterm';
-import DdoDetails from './components/ddo/Ddo-details';
-
-import Rfo from './components/rfo/Rfo';
-import RfoMenu from './components/rfo/Rfo-menu';
-import RfoSummary from './components/rfo/Rfo-summary';
-import RfoPriority from './components/rfo/Rfo-priority';
-
 import Edmp from './components/edmp/Edmp';
 import EdmpDd from './components/edmp/Edmp-dd';
 import EdmpDdTechnical from './components/edmp/Edmp-dd-technical';
 import EdmpDdBusiness from './components/edmp/Edmp-dd-business';
-// import EdmpDdConsumption from './components/edmp/Edmp-dd-consumption';
 import EdmpIarc from './components/edmp/Edmp-iarc';
 import EdmpIarcPersonal from './components/edmp/Edmp-iarc-personal';
-import EdmpIarcInformation from './components/edmp/Edmp-iarc-information';
 
 import Access from './components/access/Access';
 import AccessUsers from './components/access/Access-users';
@@ -96,13 +74,6 @@ const router = new VueRouter({
           permission: "DSC"
         },
       }, 
-      // { // dsc.edmp.dd.consumption
-      //   path: '/dsc/ENTERPRISE DATA MGMT PLATFORM/dd/consumption-apps', name: 'dsc.edmp.dd.consumption', component: EdmpDdConsumption, 
-      //   meta: { 
-      //     title: "EDMp - Data Catalogue",
-      //     permission: "DSC"
-      //   },
-      // }, 
     ]
   }, { // dsc.edmp.iarc
     path: '/dsc/ENTERPRISE DATA MGMT PLATFORM/iarc', name: 'dsc.edmp.iarc', component: EdmpIarc, 
@@ -119,13 +90,7 @@ const router = new VueRouter({
           title: "DSC - Data Catalogue",
           permission: "DSC"
         },
-      }, { // dsc.iarc.information
-        path: '/dsc/ENTERPRISE DATA MGMT PLATFORM/iarc/information', name: 'dsc.edmp.iarc.information', component: EdmpIarcInformation, 
-        meta: { 
-          title: "DSC - Data Catalogue",
-          permission: "DSC"
-        },
-      },
+      }, 
     ]
   }, { // dsc.menu
     path: '/dsc/:system', name: 'dsc.menu', component: DscMenu, 
@@ -239,130 +204,6 @@ const router = new VueRouter({
         },
       }, 
     ]
-  }, 
-  { // dpo
-    path: '/dpo', name: 'dpo', component: Dpo, 
-    meta: { 
-      title: "DPO - Data Catalogue",
-      permission: "DPO"
-    },
-  }, { // dpo.menu
-    path: '/dpo/:system', name: 'dpo.menu', component: DpoMenu, 
-    meta: { 
-      title: "DPO - Data Catalogue",
-      permission: "DPO"
-    },
-  }, { // dpo.dataelements
-    path: '/dpo/dataelements/:dspname', name: 'dpo.dataelements', component: DpoDataelements, 
-    meta: { 
-      title: "DPO - Data Catalogue",
-      permission: "DPO"
-    },
-    children: [{ // dpo.details
-      path: ':cdename', name: 'dpo.details', component: DpoDetails,
-      meta: { 
-        title: "DPO Details - Data Catalogue",
-        showModal: true,
-        permission: "DPO"
-      } 
-    }] 
-  }, { // dpo.datalineage
-    path: '/dpo/datalineage/:dspname', name: 'dpo.datalineage', component: DpoDatalineage, 
-    meta: { 
-      title: "DPO - Data Catalogue",
-      permission: "DPO"
-    },
-  },
-  { // ddo
-    path: '/ddo', name: 'ddo', component: Ddo, 
-    meta: { 
-      title: "DDO - Data Catalogue",
-      permission: "DSC"
-    },
-  }, { // ddo.menu
-    path: '/ddo/:system', name: 'ddo.menu', component: DdoMenu, 
-    meta: { 
-      title: "DDO - Data Catalogue",
-      permission: "DDO"
-    },
-  }, { // ddo.businessterm
-    path: '/ddo/businessterm/:subdomain', name: 'ddo.businessterm', component: DdoBusinessterm, 
-    meta: { 
-      title: "DDO - Data Catalogue",
-      permission: "DDO"
-    },
-    children: [{ // ddo.details
-      path: ':btname', name: 'ddo.details', component: DdoDetails,
-      meta: { 
-        title: "DDO Details - Data Catalogue",
-        showModal: true,
-        permission: "DDO"
-      } 
-    }] 
-  }, { // ddo.systems
-    path: '/ddo/systems/:subdomain', name: 'ddo.systems', component: DdoSystems, 
-    meta: { 
-      title: "DDO - Data Catalogue",
-      permission: "DDO"
-    }
-  }, { // ddo.systems.businessterm
-    path: '/ddo/systems/:subdomain/:system', name: 'ddo.systems.businessterm', component: DdoSystemsBusinessterm, 
-    meta: { 
-      title: "DDO - Data Catalogue",
-      permission: "DDO"
-    },
-    children: [{ // ddo.details
-      path: ':btname', name: 'ddo.details', component: DdoDetails,
-      meta: { 
-        title: "DDO Details - Data Catalogue",
-        showModal: true,
-        permission: "DDO"
-      } 
-    }] 
-  }, { // ddo.downstream
-    path: '/ddo/downstream/:subdomain', name: 'ddo.downstream', component: DdoDownstream, 
-    meta: { 
-      title: "DDO - Data Catalogue",
-      permission: "DDO"
-    }
-  }, { // dsc.downstream.businessterm
-    path: '/ddo/downstream/:subdomain/:system', name: 'ddo.downstream.businessterm', component: DdoDownstreamBusinessterm, 
-    meta: { 
-      title: "DDO - Data Catalogue",
-      permission: "DDO"
-    },
-    children: [{ // ddo.details
-      path: ':btname', name: 'ddo.details', component: DdoDetails,
-      meta: { 
-        title: "DDO Details - Data Catalogue",
-        showModal: true,
-        permission: "DDO"
-      } 
-    }] 
-  }, { // rfo
-    path: '/rfo', name: 'rfo', component: Rfo, 
-    meta: { 
-      title: "RFO - Data Catalogue",
-      permission: "RFO"
-    },
-  }, { // rfo.menu
-    path: '/rfo/:type', name: 'rfo.menu', component: RfoMenu, 
-    meta: { 
-      title: "RFO - Data Catalogue",
-      permission: "RFO"
-    },
-  }, { // rfo.summary
-    path: '/rfo/summary/:type', name: 'rfo.summary', component: RfoSummary, 
-    meta: { 
-      title: "RFO - Data Catalogue",
-      permission: "RFO"
-    },
-  }, { // rfo.priority
-    path: '/rfo/hierarchy/:type', name: 'rfo.priority', component: RfoPriority, 
-    meta: { 
-      title: "RFO - Data Catalogue",
-      permission: "RFO"
-    },
   }, { // access
     path: '/access', component: Access, 
     meta: { 
