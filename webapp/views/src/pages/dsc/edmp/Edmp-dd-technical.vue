@@ -62,15 +62,8 @@
           <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
           <template slot="no-data">
-            <v-alert
-                :value="store.left.isLoading"
-                type="info"
-              >Please wait while data is loading</v-alert>
-
-            <v-alert
-                :value="!store.left.isLoading"
-                type="error"
-              >Sorry, nothing to display here</v-alert>
+            <v-alert :value="store.left.isLoading" type="info">Please wait while data is loading</v-alert>
+            <v-alert :value="!store.left.isLoading" type="error">Sorry, nothing to display here</v-alert>
           </template>
 
           <template slot="items" slot-scope="props">
@@ -96,7 +89,7 @@
               
               <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-capitalize">
                 <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length > 0">
-                  <span>{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
+                  <span>{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }} asdf</span>
                 </b-link>
 
                 <span v-if="props.item.Tables.length < 1">{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
@@ -214,12 +207,7 @@ export default {
       return this.store.leftHeaders.filter(v => v.display == true);
     },
     isGlobalFilterEmpty() {
-      return this.edmpStore.dd.ddVal.ddCountrySelected.length == 0
-        && this.edmpStore.dd.ddVal.ddBusinessSegmentSelected.length == 0
-        && this.edmpStore.dd.ddVal.ddSourceSystemSelected.length == 0
-        && this.edmpStore.dd.ddVal.ddClusterSelected.length == 0
-        && this.edmpStore.dd.ddVal.ddTierSelected.length == 0
-        && this.edmpStore.dd.ddVal.ddItamSelected.length == 0;
+        return this.$store.getters[this.edmpStoreName + "/isDdGlobalFilterEmpty"];
     },
   },
   watch: {
@@ -236,7 +224,7 @@ export default {
       if (val || oldVal) {
         this.getLeftTable();
       }
-    }
+    },
   },
   mounted() {},
   updated() {},
@@ -253,8 +241,9 @@ export default {
       }
     },
     isMainLevelCellShowing (props){
-      if( ! props.expanded) return true;
-      else {
+      if( ! props.expanded) {
+        return true;
+      } else {
         if(props.item.Tables.length > 0) {
           return true;
         }

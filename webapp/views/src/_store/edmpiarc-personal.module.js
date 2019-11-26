@@ -75,10 +75,10 @@ const actions = {
         return edmpService.getIarcPersonalTable(state.all.param)
             .then(
                 res => {
-                    commit('getLeftTableSuccess', res)
-                    
+                    commit('getLeftTableSuccess', res);
+                        
                     header.actions.getRowCount(state.all.param).then(v => {
-                        state.all.left.totalItems = v.Data;
+                        commit('getRowCountSuccess', v);
                     });
                 },
                 error => commit('getLeftTableFailure', error)
@@ -105,8 +105,12 @@ const mutations = {
     getLeftTableSuccess(state, res) {
         state.all.left.source = res.DataFlat;
         state.all.left.display = res.Data;
+        state.all.left.totalItems = res.Data.length;
 
         state.all.left.isLoading = false;
+    },
+    getRowCountSuccess(state, res) {
+        state.all.left.totalItems = res.Data;
     },
     getLeftTableFailure(state, error) {
         state.all.left.isLoading = false;

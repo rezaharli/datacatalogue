@@ -125,9 +125,7 @@ export default {
         return this.$store.state[this.activeTabStoreName].all;
       },
       isGlobalFilterEmpty() {
-        return this.store.iarc.ddVal.ddCountrySelected.length == 0
-          && this.store.iarc.ddVal.ddSourceSystemSelected.length == 0
-          && this.store.iarc.ddVal.ddItamSelected.length == 0;
+        return this.$store.getters.isIarcGlobalFilterEmpty;
       },
       addressPath() {
         var tmp = this.$route.path.split("/");
@@ -145,7 +143,12 @@ export default {
         }
       },
       'store.iarc.ddVal.ddCountrySelected'(val) {
+        this.activeTabStore.left.display = [];
+        this.activeTabStore.left.source = [];
+        this.activeTabStore.left.totalItems = 0;
+
         if(this.store.iarc.firstload) return;
+        this.activeTabStore.left.isLoading = true;
 
         this.setDdSourceSystemOptions();
         this.setDdItamOptions();
@@ -157,7 +160,12 @@ export default {
         }, 0);
       },
       'store.iarc.ddVal.ddSourceSystemSelected'(val) {
+        this.activeTabStore.left.display = [];
+        this.activeTabStore.left.source = [];
+        this.activeTabStore.left.totalItems = 0;
+
         if(this.store.iarc.firstload) return;
+        this.activeTabStore.left.isLoading = true;
 
         this.setDdCountryOptions();
         this.setDdItamOptions();
@@ -169,7 +177,12 @@ export default {
         }, 0);
       },
       'store.iarc.ddVal.ddItamSelected'(val) {
+        this.activeTabStore.left.display = [];
+        this.activeTabStore.left.source = [];
+        this.activeTabStore.left.totalItems = 0;
+
         if(this.store.iarc.firstload) return;
+        this.activeTabStore.left.isLoading = true;
 
         this.setDdCountryOptions();
         this.setDdSourceSystemOptions();

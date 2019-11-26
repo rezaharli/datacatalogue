@@ -60,11 +60,6 @@
     overflow: scroll;
 }
 
-table.v-table thead th, .v-datatable th.column {
-    font-weight: 900;
-    color: black !important;
-}
-
 .v-tabs__item {
     font-weight: 900;
 }

@@ -333,10 +333,19 @@ table.v-table thead th > div.btn-group {
     border-top-right-radius: 7px; 
 }
 
+.v-datatable tr th .v-alert{
+    margin: 5px 20px;
+}
+
+table.v-table thead tr:first-of-type th, .v-datatable tr:first-of-type th.column {
+    font-weight: 900;
+    color: black !important;
+}
+
 /* .table-v2 table.v-table thead tr th {padding: 5px 5px; font-size: 14px; font-weight: 600;} */
 .table-v2 table.v-table thead tr th:first-of-type {padding-left: 20px;}
 .table-v2 table.v-table thead tr th:last-of-type {padding-right: 20px;}
-.table-v2 table.v-table thead tr th.column .v-icon {
+.table-v2 table.v-table thead tr:first-of-type th.column .v-icon {
     /* position: absolute; */
     /* left: -10px; */
     /* top: 47%; */

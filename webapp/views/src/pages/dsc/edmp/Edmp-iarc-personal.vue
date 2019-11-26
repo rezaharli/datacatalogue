@@ -62,15 +62,8 @@
           <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
 
           <template slot="no-data">
-            <v-alert
-                :value="store.left.isLoading"
-                type="info"
-              >Please wait while data is loading</v-alert>
-
-            <v-alert
-                :value="!store.left.isLoading"
-                type="error"
-              >Sorry, nothing to display here</v-alert>
+            <v-alert :value="store.left.isLoading" type="info">Please wait while data is loading</v-alert>
+            <v-alert :value="!store.left.isLoading" type="error">Sorry, nothing to display here</v-alert>
           </template>
 
           <template slot="items" slot-scope="props">
@@ -143,9 +136,7 @@ export default {
       return this.store.leftHeaders.filter(v => v.display == true);
     },
     isGlobalFilterEmpty() {
-      return this.edmpStore.iarc.ddVal.ddCountrySelected.length == 0
-        && this.edmpStore.iarc.ddVal.ddSourceSystemSelected.length == 0
-        && this.edmpStore.iarc.ddVal.ddItamSelected.length == 0;
+      return this.$store.getters[this.edmpStoreName + "/isIarcGlobalFilterEmpty"];
     },
   },
   watch: {
@@ -179,8 +170,9 @@ export default {
       }
     },
     isMainLevelCellShowing (props){
-      if( ! props.expanded) return true;
-      else {
+      if( ! props.expanded) {
+        return true;
+      } else {
         if(props.item.Tables.length > 0) {
           return true;
         }

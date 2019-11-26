@@ -159,12 +159,7 @@ export default {
         return this.$store.state[this.activeTabStoreName].all;
       },
       isGlobalFilterEmpty() {
-        return this.store.dd.ddVal.ddCountrySelected.length == 0
-          && this.store.dd.ddVal.ddBusinessSegmentSelected.length == 0
-          && this.store.dd.ddVal.ddSourceSystemSelected.length == 0
-          && this.store.dd.ddVal.ddClusterSelected.length == 0
-          && this.store.dd.ddVal.ddTierSelected.length == 0
-          && this.store.dd.ddVal.ddItamSelected.length == 0;
+        return this.$store.getters[this.storeName + "/isDdGlobalFilterEmpty"];
       },
       addressPath() {
         var tmp = this.$route.path.split("/");
@@ -182,7 +177,12 @@ export default {
         }
       },
       'store.dd.ddVal.ddCountrySelected'(val) {
+        this.activeTabStore.left.display = [];
+        this.activeTabStore.left.source = [];
+        this.activeTabStore.left.totalItems = 0;
+
         if(this.store.dd.firstload) return;
+        this.activeTabStore.left.isLoading = true;
 
         this.setDdBusinessSegmentOptions();
         this.setDdSourceSystemOptions();
@@ -197,7 +197,12 @@ export default {
         }, 0);
       },
       'store.dd.ddVal.ddBusinessSegmentSelected'(val) {
+        this.activeTabStore.left.display = [];
+        this.activeTabStore.left.source = [];
+        this.activeTabStore.left.totalItems = 0;
+
         if(this.store.dd.firstload) return;
+        this.activeTabStore.left.isLoading = true;
         
         this.setDdCountryOptions();
         this.setDdSourceSystemOptions();
@@ -212,7 +217,12 @@ export default {
         }, 0);
       },
       'store.dd.ddVal.ddSourceSystemSelected'(val) {
+        this.activeTabStore.left.display = [];
+        this.activeTabStore.left.source = [];
+        this.activeTabStore.left.totalItems = 0;
+
         if(this.store.dd.firstload) return;
+        this.activeTabStore.left.isLoading = true;
 
         this.setDdCountryOptions();
         this.setDdBusinessSegmentOptions();
@@ -227,7 +237,12 @@ export default {
         }, 0);
       },
       'store.dd.ddVal.ddClusterSelected'(val) {
+        this.activeTabStore.left.display = [];
+        this.activeTabStore.left.source = [];
+        this.activeTabStore.left.totalItems = 0;
+
         if(this.store.dd.firstload) return;
+        this.activeTabStore.left.isLoading = true;
 
         this.setDdCountryOptions();
         this.setDdBusinessSegmentOptions();
@@ -242,7 +257,12 @@ export default {
         }, 0);
       },
       'store.dd.ddVal.ddTierSelected'(val) {
+        this.activeTabStore.left.display = [];
+        this.activeTabStore.left.source = [];
+        this.activeTabStore.left.totalItems = 0;
+
         if(this.store.dd.firstload) return;
+        this.activeTabStore.left.isLoading = true;
 
         this.setDdCountryOptions();
         this.setDdBusinessSegmentOptions();
@@ -257,7 +277,12 @@ export default {
         }, 0);
       },
       'store.dd.ddVal.ddItamSelected'(val) {
+        this.activeTabStore.left.display = [];
+        this.activeTabStore.left.source = [];
+        this.activeTabStore.left.totalItems = 0;
+
         if(this.store.dd.firstload) return;
+        this.activeTabStore.left.isLoading = true;
 
         this.setDdCountryOptions();
         this.setDdBusinessSegmentOptions();
