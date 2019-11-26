@@ -40,6 +40,7 @@
                       <global-filter-dropdown label="Country" 
                         v-model="store.iarc.ddVal.ddCountrySelected"
                         :items="ddCountryOptions"
+                        :disabled="activeTabStore.left.isLoading"
                       />
                     </b-col>
 
@@ -47,6 +48,7 @@
                       <global-filter-dropdown label="Source System" 
                         v-model="store.iarc.ddVal.ddSourceSystemSelected"
                         :items="ddSourceSystemOptions"
+                        :disabled="activeTabStore.left.isLoading"
                       />
                     </b-col>
 
@@ -54,6 +56,7 @@
                       <global-filter-dropdown label="ITAM" 
                         v-model="store.iarc.ddVal.ddItamSelected"
                         :items="ddItamOptions"
+                        :disabled="activeTabStore.left.isLoading"
                       />
                     </b-col>
                   </b-row>
@@ -232,6 +235,7 @@ export default {
           });
         } else {
           this.store.iarc.firstload = false;
+          this.activeTabStore.left.isLoading = false;
         }
       },
       setDdCountryOptions () {

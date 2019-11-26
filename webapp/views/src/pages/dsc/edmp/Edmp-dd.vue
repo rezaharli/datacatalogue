@@ -40,6 +40,7 @@
                       <global-filter-dropdown label="Country" 
                         v-model="store.dd.ddVal.ddCountrySelected"
                         :items="ddCountryOptions"
+                        :disabled="activeTabStore.left.isLoading"
                       />
                     </b-col>
 
@@ -47,6 +48,7 @@
                       <global-filter-dropdown label="Business Segment" 
                         v-model="store.dd.ddVal.ddBusinessSegmentSelected"
                         :items="ddBusinessSegmentOptions"
+                        :disabled="activeTabStore.left.isLoading"
                       />
                     </b-col>
 
@@ -54,6 +56,7 @@
                       <global-filter-dropdown label="Source System" 
                         v-model="store.dd.ddVal.ddSourceSystemSelected"
                         :items="ddSourceSystemOptions"
+                        :disabled="activeTabStore.left.isLoading"
                       />
                     </b-col>
 
@@ -61,6 +64,7 @@
                       <global-filter-dropdown label="Cluster" 
                         v-model="store.dd.ddVal.ddClusterSelected"
                         :items="ddClusterOptions"
+                        :disabled="activeTabStore.left.isLoading"
                       />
                     </b-col>
 
@@ -68,6 +72,7 @@
                       <global-filter-dropdown label="Tier" 
                         v-model="store.dd.ddVal.ddTierSelected"
                         :items="ddTierOptions"
+                        :disabled="activeTabStore.left.isLoading"
                       />
                     </b-col>
 
@@ -75,6 +80,7 @@
                       <global-filter-dropdown label="ITAM" 
                         v-model="store.dd.ddVal.ddItamSelected"
                         :items="ddItamOptions"
+                        :disabled="activeTabStore.left.isLoading"
                       />
                     </b-col>
                   </b-row>
@@ -346,6 +352,7 @@ export default {
           });
         } else {
           this.store.dd.firstload = false;
+          this.activeTabStore.left.isLoading = false;
         }
       },
       refreshBusinessTable() {
@@ -355,6 +362,7 @@ export default {
           });
         } else {
           this.store.dd.firstload = false;
+          this.activeTabStore.left.isLoading = false;
         }
       },
       refreshConsumptionTable() {
@@ -364,6 +372,7 @@ export default {
           });
         } else {
           this.store.dd.firstload = false;
+          this.activeTabStore.left.isLoading = false;
         }
       },
       setDdCountryOptions () {

@@ -1,6 +1,6 @@
 export function newTableObject() {
     return {
-        isLoading: true,
+        isLoading: false,
         source: [],
         display: [],
         pagination: {},
