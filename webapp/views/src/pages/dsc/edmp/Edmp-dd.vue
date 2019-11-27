@@ -196,8 +196,6 @@ export default {
         this.setDdTierOptions();
         this.setDdItamOptions();
 
-        this.store.dd.firstload = true;
-
         setTimeout(() => {
           this.refreshActiveTabTable("COUNTRY", val);
         }, 0);
@@ -216,8 +214,6 @@ export default {
         this.setDdTierOptions();
         this.setDdItamOptions();
 
-        this.store.dd.firstload = true;
-
         setTimeout(() => {
           this.refreshActiveTabTable("BUSINESS_SEGMENT", val);
         }, 0);
@@ -235,8 +231,6 @@ export default {
         this.setDdClusterOptions();
         this.setDdTierOptions();
         this.setDdItamOptions();
-        
-        this.store.dd.firstload = true;
 
         setTimeout(() => {
           this.refreshActiveTabTable("EDM_SOURCE_SYSTEM_NAME", val);
@@ -256,8 +250,6 @@ export default {
         this.setDdTierOptions();
         this.setDdItamOptions();
 
-        this.store.dd.firstload = true;
-
         setTimeout(() => {
           this.refreshActiveTabTable("CLUSTER_NAME", val);
         }, 0);
@@ -276,8 +268,6 @@ export default {
         this.setDdClusterOptions();
         this.setDdItamOptions();
 
-        this.store.dd.firstload = true;
-
         setTimeout(() => {
           this.refreshActiveTabTable("TIER", val);
         }, 0);
@@ -295,8 +285,6 @@ export default {
         this.setDdSourceSystemOptions();
         this.setDdClusterOptions();
         this.setDdTierOptions();
-
-        this.store.dd.firstload = true;
 
         setTimeout(() => {
           this.refreshActiveTabTable("ITAM", val);
@@ -327,6 +315,7 @@ export default {
         this.$store.dispatch(`${this.storeName}/getLeftTable`);
       },
       refreshActiveTabTable(updatedAttr, val) {
+        this.store.dd.firstload = true;
         if( ! this.store.dd.globalFilters.filterTypes) this.store.dd.globalFilters.filterTypes = {};
 
         this.store.dd.globalFilters[updatedAttr] = val;

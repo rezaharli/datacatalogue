@@ -156,8 +156,6 @@ export default {
         this.setDdSourceSystemOptions();
         this.setDdItamOptions();
 
-        this.store.iarc.firstload = true;
-
         setTimeout(() => {
           this.refreshActiveTabTable("COUNTRY", val);
         }, 0);
@@ -172,8 +170,6 @@ export default {
 
         this.setDdCountryOptions();
         this.setDdItamOptions();
-        
-        this.store.iarc.firstload = true;
 
         setTimeout(() => {
           this.refreshActiveTabTable("EDM_SOURCE_SYSTEM_NAME", val);
@@ -189,8 +185,6 @@ export default {
 
         this.setDdCountryOptions();
         this.setDdSourceSystemOptions();
-
-        this.store.iarc.firstload = true;
 
         setTimeout(() => {
           this.refreshActiveTabTable("ITAM", val);
@@ -218,6 +212,7 @@ export default {
         this.$store.dispatch(`${this.storeName}/getLeftTable`);
       },
       refreshActiveTabTable(updatedAttr, val) {
+        this.store.dd.firstload = true;
         if( ! this.store.iarc.globalFilters.filterTypes) this.store.iarc.globalFilters.filterTypes = {};
         
         this.store.iarc.globalFilters[updatedAttr] = val;
