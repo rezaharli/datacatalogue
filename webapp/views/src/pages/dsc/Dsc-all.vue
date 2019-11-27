@@ -108,7 +108,21 @@ export default {
       tablenameSource: [],
       images: {
         all: require("../../assets/images/icon-all-system.png")
-      }
+      },
+      headers: [
+        { 
+          text: 'System Name', value: 'SYSTEM_NAME',
+          display: true, filterable: true, exportable: true, displayCount: true, sortable: true, isLink: true, align: 'left', 
+          onClick: this.showRightTable
+        },
+        { 
+          text: 'ITAM ID', value: 'ITAM_ID',
+          display: true, filterable: true, exportable: true, displayCount: true, sortable: true, isLink: true, align: 'left', 
+          onClick: this.toggleDscDrawer
+        },
+        { align: 'left', display: false, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Dataset Custodian', value: 'Custodians.DATASET_CUSTODIAN' },
+        { align: 'left', display: false, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Bank ID', value: 'Custodians.BANK_ID' }
+      ],
     };
   },
   computed: {
@@ -120,10 +134,11 @@ export default {
     },
     tableOpts() {
       return {
-        headers: this.store.leftHeaders,
+        headers: this.headers,
         pagination: this.store.left.pagination,
         totalItems: this.store.left.totalItems,
-        isLoading: this.store.left.isLoading
+        isLoading: this.store.left.isLoading,
+        fetch: this.getLeftTable
       }
     },
     addressPath() {

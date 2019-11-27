@@ -53,9 +53,9 @@
       <b-dropdown-divider />
 
       <b-row
-        class="justify-content-center"
-        v-bind:class="{ 'd-none': !(tableStore.filters[which][fixedProps.header.value.split('.').reverse()[0]]) }"
-      >
+          class="justify-content-center"
+          v-bind:class="{ 'd-none': !(tableStore.filters[which][fixedProps.header.value.split('.').reverse()[0]]) }"
+        >
         <b-col cols="auto">
           <a
             class="text-danger mx-4 my-1"
@@ -77,7 +77,7 @@ export default {
   components: {
     pageLoader
   },
-  props: ["storeName", "props", "which", "fromHeaderLoop"],
+  props: ["opts", "props", "which", "fromHeaderLoop"],
   data() {
     return {
       headerStoreName: "header",
@@ -93,42 +93,6 @@ export default {
       return this.$store.state[this.headerStoreName];
     },
     tableStore() {
-      return this.$store.state[this.storeName].all;
-    },
-    count() {
-      if (!this.fixedProps.header.displayCount) return "";
-      if (!this.tableStore[this.which].source[0]) return "(0)";
-
-      return (
-        "(" +
-        this.tableStore[this.which].source[0][
-          "COUNT_" + this.fixedProps.header.value.split(".").reverse()[0]
-        ] +
-        ")"
-      );
-    },
-    distinctData() {
-      var headerValueField = this.fixedProps.header.value;
-      var datax = this.tableStore[this.which].source;
-
-      var cols = headerValueField.split(".");
-
-      if (cols.length > 1) {
-        var a = datax;
-
-        cols.forEach((c, i) => {
-          a = this._.flattenDeep(this._.map(this._.sortBy(a, c), c));
-        });
-
-        return this._.uniq(a).map(v => (v.toString() ? v.toString() : "NA"));
-      }
-
-      return this._.uniq(
-        this._.map(
-          this._.sortBy(datax, headerValueField),
-          headerValueField
-        ).map(v => (v.toString() ? v.toString() : "NA"))
-      );
     },
     fixedProps() {
       if (this.fromHeaderLoop == true) {
@@ -139,12 +103,24 @@ export default {
       } else {
         return this.props;
       }
-    }
+    },
+    count() {
+      if (!this.fixedProps.header.displayCount) return "";
+      if (!this.tableStore.left.source[0]) return "(0)";
+
+      return (
+        "(" +
+        this.tableStore.left.source[0][
+          "COUNT_" + this.fixedProps.header.value.split(".").reverse()[0]
+        ] +
+        ")"
+      );
+    },
   },
   watch: {
     menu(val, oldVal) {
       setTimeout(() => {
-        var filterValue = this.tableStore.filters[this.which][this.fixedProps.header.value.split(".").reverse()[0]];
+        var filterValue = this.tableStore.filters.left[this.fixedProps.header.value.split(".").reverse()[0]];
         if(filterValue == undefined || filterValue == ""){
           if (val) {
             this.getOpts();
@@ -178,7 +154,7 @@ export default {
       param.Queryname = this.tableStore.queryname;
       param.FieldName = this.fixedProps.header.value;
 
-      param.ColumnFilters = this.tableStore.filters[this.which][
+      param.ColumnFilters = this.tableStore.filters.left[
         this.fixedProps.header.value.split(".").reverse()[0]
       ];
 
@@ -197,12 +173,9 @@ export default {
     getLeftTable() {
       return this.$store.dispatch(`${this.storeName}/getLeftTable`);
     },
-    getRightTable(id) {
-      this.$store.dispatch(`${this.storeName}/getRightTable`, id);
-    },
     keyupAction(e) {
-      if (this.tableStore.filters[this.which].filterTypes){
-        delete this.tableStore.filters[this.which].filterTypes[
+      if (this.tableStore.filters.left.filterTypes){
+        delete this.tableStore.filters.left.filterTypes[
           this.fixedProps.header.value.split(".").reverse()[0]
         ];
       }
@@ -214,12 +187,12 @@ export default {
       // manually adding space only when sortable is true
       if (e.key == " ") {
         if (this.fixedProps.header.sortable) {
-          var model = this.tableStore.filters[this.which][
+          var model = this.tableStore.filters.left[
             this.fixedProps.header.value.split(".").reverse()[0]
           ];
           model = model ? model + " " : " ";
 
-          this.tableStore.filters[this.which][
+          this.tableStore.filters.left[
             this.fixedProps.header.value.split(".").reverse()[0]
           ] = model;
         }
@@ -238,18 +211,17 @@ export default {
       this.menu = false;
 
       var fieldName = keyModel.value.split(".").reverse()[0];
-      this.tableStore.filters[this.which][fieldName] = val;
+      this.tableStore.filters.left[fieldName] = val;
 
-      this.tableStore.filters[this.which].filterTypes = {};
-      this.tableStore.filters[this.which].filterTypes[fieldName] = "eq";
+      this.tableStore.filters.left.filterTypes = {};
+      this.tableStore.filters.left.filterTypes[fieldName] = "eq";
 
       this.dropdownData = [val]
 
       this.filterProcess();
     },
     filterProcess() {
-      if (this.which == "left") this.getLeftTable();
-      else this.getRightTable(this.$route.params.system);
+      this.opts.fetch();
     },
     resetFilterColumn(which, fieldName) {
       this.tableStore.filters[which][fieldName] = "";
