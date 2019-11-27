@@ -231,12 +231,14 @@ export default {
   methods: {
     getLeftTable() {
       this.store.system = this.$route.params.system;
+      this.edmpStore.dd.firstload = true;
 
       if( ! this.isGlobalFilterEmpty) {
         this.$store.dispatch(`${this.storeName}/getLeftTable`).then(v => {
           this.edmpStore.dd.firstload = false;
         }) 
       } else {
+        this.store.dd.firstload = false;
         this.store.left.isLoading = false;
       }
     },
