@@ -20,11 +20,7 @@ export default {
       isTruncated: true
     };
   },
-  mounted() {
-    // setTimeout(() => {
-    //   this.setThWidthOri();
-    // }, 1);
-  },
+  mounted() {},
   methods: {
     toggleText() {
       this.isTruncated = !this.isTruncated;
@@ -36,13 +32,6 @@ export default {
 
       return text.length > n ? text.slice(0, n) + "..." : text;
     },
-    // setThWidthOri() {
-    //   $("table.v-table > thead > tr > th").each(function () {
-    //     var thElem = $(this);
-    //     var thWidthOri = thElem.outerWidth();
-    //     thElem.attr("data-width-ori", thWidthOri);
-    //   });
-    // },
     onClick: function (e, isTruncated) {
       var clickedElem = e.currentTarget;
       var tdElem = $(clickedElem).closest("td");
