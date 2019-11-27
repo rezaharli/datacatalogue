@@ -871,11 +871,11 @@ func (DBcmd) ExecuteSQLQueryRowCount(param SqlQueryParam) error {
 		}
 
 		//replace the query with count query
-		if param.GroupCol != "" {
-			selectQuery = `SELECT COUNT(DISTINCT ` + param.GroupCol + `) RESULT_COUNT `
-		} else {
-			selectQuery = `SELECT COUNT(DISTINCT rownum) RESULT_COUNT `
-		}
+		// if param.GroupCol != "" {
+		// 	selectQuery = `SELECT COUNT(DISTINCT ` + param.GroupCol + `) RESULT_COUNT `
+		// } else {
+		selectQuery = `SELECT COUNT(DISTINCT rownum) RESULT_COUNT `
+		// }
 
 		// combine it back
 		selectQuery = strings.ReplaceAll(selectQuery, ",", ",\n")
