@@ -1019,8 +1019,25 @@ func (s *DSCService) CreateEdmpDummyData() error {
 		return err
 	}
 
+	err = h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewEdmpHeaderModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	err = h.NewDBcmd().Delete(h.DeleteParam{
+		TableName: m.NewEdmpBsMappingModel().TableName(),
+	})
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
 	data := make([]*m.Edmp, 0)
 	dataHeader := make([]*m.EdmpHeader, 0)
+	dataMapping := make([]*m.EdmpBsMapping, 0)
 	for i := 0; i < 10000; i++ {
 		mdt := m.NewEdmpModel()
 		mdt.ID = i
@@ -1033,9 +1050,9 @@ func (s *DSCService) CreateEdmpDummyData() error {
 		mdt.ITAM = toolkit.ToInt(fake.DigitsN(4), "")
 		mdt.EDM_GOLDEN_SYSTEM_NAME = fake.Words()
 		mdt.DATABASE_NAME = fake.Words()
-		mdt.TABLE_NAME = fake.Words()
+		mdt.TABLE_NAME = fake.Word()
 		mdt.TABLE_DESCRIPTION = fake.Words()
-		mdt.COLUMN_NAME = fake.Words()
+		mdt.COLUMN_NAME = fake.Word()
 		mdt.COLUMN_DESCRIPTION = fake.Words()
 		mdt.DATA_TYPE = fake.Words()
 		mdt.DATA_LENGTH = fake.Words()
@@ -1076,6 +1093,12 @@ func (s *DSCService) CreateEdmpDummyData() error {
 		mdt2.ITAM = mdt.ITAM
 
 		dataHeader = append(dataHeader, mdt2)
+
+		mdt3 := m.NewEdmpBsMappingModel()
+		mdt3.BUSINESS_SEGMENT_OLD = mdt.BUSINESS_SEGMENT
+		mdt3.BUSINESS_SEGMENT_NEW = mdt.BUSINESS_SEGMENT
+
+		dataMapping = append(dataMapping, mdt3)
 	}
 
 	err = h.NewDBcmd().Insert(h.InsertParam{
@@ -1087,6 +1110,12 @@ func (s *DSCService) CreateEdmpDummyData() error {
 	err = h.NewDBcmd().Insert(h.InsertParam{
 		TableName:       m.NewEdmpHeaderModel().TableName(),
 		Data:            dataHeader,
+		ContinueOnError: true,
+	})
+
+	err = h.NewDBcmd().Insert(h.InsertParam{
+		TableName:       m.NewEdmpBsMappingModel().TableName(),
+		Data:            dataMapping,
 		ContinueOnError: true,
 	})
 	if err != nil {
@@ -1284,38 +1313,6 @@ func (s *DSCService) CreateEdmpUserDummyData() error {
 		return err
 	}
 	if ok && err != nil {
-		log.Println(err.Error())
-		return err
-	}
-
-	return nil
-}
-
-func (s *DSCService) CreateEdmpBsMappingDummyData() error {
-	toolkit.Println("CreateEdmpBsMappingDummyData")
-	err := h.NewDBcmd().Delete(h.DeleteParam{
-		TableName: m.NewEdmpBsMappingModel().TableName(),
-	})
-	if err != nil {
-		log.Println(err.Error())
-		return err
-	}
-
-	data := make([]*m.EdmpBsMapping, 0)
-	for i := 0; i < 10000; i++ {
-		mdt := m.NewEdmpBsMappingModel()
-		mdt.BUSINESS_SEGMENT_OLD = fake.Words()
-		mdt.BUSINESS_SEGMENT_NEW = fake.Words()
-
-		data = append(data, mdt)
-	}
-
-	err = h.NewDBcmd().Insert(h.InsertParam{
-		TableName:       m.NewEdmpBsMappingModel().TableName(),
-		Data:            data,
-		ContinueOnError: true,
-	})
-	if err != nil {
 		log.Println(err.Error())
 		return err
 	}
