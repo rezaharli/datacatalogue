@@ -324,6 +324,8 @@ export default {
 
         if(this.isGlobalFilterEmpty) {
           this.activeTabStore.left.isLoading = false;
+          this.store.dd.firstload = false;
+          this.store.dd.displayTable = false;
         } else {
           // Remove table component from the DOM
           this.store.dd.displayTable = false;

@@ -128,7 +128,7 @@ export default {
         return this.$store.state[this.activeTabStoreName].all;
       },
       isGlobalFilterEmpty() {
-        return this.$store.getters.isIarcGlobalFilterEmpty;
+        return this.$store.getters[this.storeName + "/isIarcGlobalFilterEmpty"];
       },
       addressPath() {
         var tmp = this.$route.path.split("/");
