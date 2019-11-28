@@ -1042,7 +1042,7 @@ func (s *DSCService) CreateEdmpDummyData() error {
 		mdt := m.NewEdmpModel()
 		mdt.ID = i
 		mdt.RESOURCE_NAME = fake.Words()
-		mdt.COUNTRY = fake.Words()
+		mdt.COUNTRY = fake.Country()
 		mdt.BUSINESS_SEGMENT = fake.Words()
 		mdt.EDM_SOURCE_SYSTEM_NAME = fake.Words()
 		mdt.CLUSTER_NAME = fake.Words()
