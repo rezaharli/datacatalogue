@@ -12,6 +12,8 @@ const state = {
             owners: []
         },
         dd: {
+            isNewPage: true,
+            displayTable: true,
             DDSource: [],
             firstload: true,
             globalFilters: {},
@@ -25,6 +27,8 @@ const state = {
             },
         },
         iarc: {
+            isNewPage: true,
+            displayTable: true,
             DDSource: [],
             firstload: true,
             globalFilters: {},

@@ -177,9 +177,11 @@ export default {
     },
     watch: {
       $route(to) {},
-      "store.searchMain"(val, oldVal) {
-        if (val || oldVal) {
-          this.getLeftTable();
+      activeTab(val, oldVal){
+        if (oldVal) {
+          this.store.dd.isNewPage = false;
+        } else {
+          this.store.dd.isNewPage = true;
         }
       },
       'store.dd.ddVal.ddCountrySelected'(val) {
@@ -311,9 +313,6 @@ export default {
           this.setNewDropdownOpts();
         });
       },
-      getLeftTable() {
-        this.$store.dispatch(`${this.storeName}/getLeftTable`);
-      },
       refreshActiveTabTable(updatedAttr, val) {
         this.store.dd.firstload = true;
         if( ! this.store.dd.globalFilters.filterTypes) this.store.dd.globalFilters.filterTypes = {};
@@ -321,47 +320,17 @@ export default {
         this.store.dd.globalFilters[updatedAttr] = val;
         this.store.dd.globalFilters.filterTypes[updatedAttr] = "eq";
 
-        if(this.activeTab.indexOf("technical-metadata") != -1){
-          this.technicalStore.filters.left = {}
-          this.refreshTechnicalTable();
-        }
-        if(this.activeTab.indexOf("business-metadata") != -1){
-          this.businessStore.filters.left = {}
-          this.refreshBusinessTable();
-        }
-        if(this.activeTab.indexOf("consumption-apps") != -1){
-          this.consumptionStore.filters.left = {}
-          this.refreshConsumptionTable();
-        }
-      },
-      refreshTechnicalTable() {
-        if( ! this.isGlobalFilterEmpty) {
-          this.$store.dispatch(`${this.technicalStoreName}/getLeftTable`).then(res => {
-            this.store.dd.firstload = false;
-          });
-        } else {
-          this.store.dd.firstload = false;
+        this.activeTabStore.filters.left = {}
+
+        if(this.isGlobalFilterEmpty) {
           this.activeTabStore.left.isLoading = false;
-        }
-      },
-      refreshBusinessTable() {
-        if( ! this.isGlobalFilterEmpty) {
-          this.$store.dispatch(`${this.businessStoreName}/getLeftTable`).then(res => {
-            this.store.dd.firstload = false;
-          });
         } else {
-          this.store.dd.firstload = false;
-          this.activeTabStore.left.isLoading = false;
-        }
-      },
-      refreshConsumptionTable() {
-        if( ! this.isGlobalFilterEmpty) {
-          this.$store.dispatch(`${this.consumptionStoreName}/getLeftTable`).then(res => {
-            this.store.dd.firstload = false;
+          // Remove table component from the DOM
+          this.store.dd.displayTable = false;
+          this.$nextTick().then(() => {
+            // Add the component back in
+            this.store.dd.displayTable = true;
           });
-        } else {
-          this.store.dd.firstload = false;
-          this.activeTabStore.left.isLoading = false;
         }
       },
       setDdCountryOptions () {

@@ -14,7 +14,7 @@
         <v-data-table
             v-model="store.selected"
             select-all
-            v-if="!isGlobalFilterEmpty"
+            v-if="( ! isGlobalFilterEmpty) && edmpStore.dd.displayTable"
             :headers="displayedHeaders"
             :items="store.left.display"
             :pagination.sync="store.left.pagination"
@@ -213,17 +213,12 @@ export default {
   watch: {
     $route(to) {},
     "store.left.pagination": {
-      handler() {
-        if( ! this.edmpStore.dd.firstload) {
+      handler(val, oldVal) {
+        if (Object.keys(oldVal).length > 0 || ( ! this.edmpStore.dd.isNewPage)) {
           this.getLeftTable();
         }
       },
       deep: true
-    },
-    "store.searchMain"(val, oldVal) {
-      if (val || oldVal) {
-        this.getLeftTable();
-      }
     },
   },
   mounted() {},
