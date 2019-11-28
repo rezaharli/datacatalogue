@@ -17,9 +17,9 @@
       <!-- Main content -->
       <b-row>
         <b-col>
-          <page-loader
+          <!-- <page-loader
             v-if="store.left.isLoading || (store.isRightTable && store.right.isLoading)"
-          />
+          /> -->
 
           <div class="card card-v1 transition">
             <div class="title-wrapper transition">
@@ -27,7 +27,7 @@
               <h2 class="transition title-1">All Systems</h2>
             </div>
 
-            <table-component :items="store.left.display" :opts="tableOpts" />
+            <table-component :opts="tableOpts" />
 
             <!-- <v-data-table
                 :headers="store.leftHeaders.filter(v => v.display == true)"
@@ -109,20 +109,35 @@ export default {
       images: {
         all: require("../../assets/images/icon-all-system.png")
       },
-      headers: [
-        { 
-          text: 'System Name', value: 'SYSTEM_NAME',
-          display: true, filterable: true, exportable: true, displayCount: true, sortable: true, isLink: true, align: 'left', 
-          onClick: this.showRightTable
+      tableOpts: {
+        data: {
+          read: (o) => {
+            var payload = o.payload;
+            payload.Filename = "dsc.sql";
+            payload.Queryname = "dsc-view";
+            payload.Tabs = "dscall";
+            payload.LoggedInID = "";
+
+            this.$store.dispatch(`dscall/getLeftTable`, payload).then((res) => {
+              console.log("B=====D", this.store.left.display);
+              o.data = this.store.left.display;
+            });
+          }
         },
-        { 
-          text: 'ITAM ID', value: 'ITAM_ID',
-          display: true, filterable: true, exportable: true, displayCount: true, sortable: true, isLink: true, align: 'left', 
-          onClick: this.toggleDscDrawer
-        },
-        { align: 'left', display: false, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Dataset Custodian', value: 'Custodians.DATASET_CUSTODIAN' },
-        { align: 'left', display: false, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Bank ID', value: 'Custodians.BANK_ID' }
-      ],
+        headers: [{ 
+            text: 'System Name', value: 'SYSTEM_NAME',
+            display: true, filterable: true, exportable: true, displayCount: true, sortable: true, isLink: true, align: 'left', 
+            onClick: this.showRightTable
+          },
+          { 
+            text: 'ITAM ID', value: 'ITAM_ID',
+            display: true, filterable: true, exportable: true, displayCount: true, sortable: true, isLink: true, align: 'left', 
+            onClick: this.toggleDscDrawer
+          },
+          { align: 'left', display: false, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Dataset Custodian', value: 'Custodians.DATASET_CUSTODIAN' },
+          { align: 'left', display: false, filterable: true, exportable: true, displayCount: true, sortable: true, text: 'Bank ID', value: 'Custodians.BANK_ID' }
+        ],
+      },
     };
   },
   computed: {
@@ -131,15 +146,6 @@ export default {
     },
     dscStore() {
       return this.$store.state.dsc.all;
-    },
-    tableOpts() {
-      return {
-        headers: this.headers,
-        pagination: this.store.left.pagination,
-        totalItems: this.store.left.totalItems,
-        isLoading: this.store.left.isLoading,
-        fetch: this.getLeftTable
-      }
     },
     addressPath() {
       var tmp = this.$route.path.split("/");
@@ -153,34 +159,7 @@ export default {
       if (to.params != undefined) {
         this.store.isRightTable = to.params.system;
       }
-
-      if (this.store.isRightTable) {
-        this.doGetRightTable(this.$route.params.system);
-      }
     },
-    "store.left.pagination": {
-      handler() {
-        this.doGetLeftTable();
-      },
-      deep: true
-    },
-    "store.right.pagination": {
-      handler() {
-        if (this.store.isRightTable) {
-          this.doGetRightTable(this.$route.params.system);
-        }
-      },
-      deep: true
-    },
-    "store.searchMain"(val, oldVal) {
-      if (val || oldVal) {
-        this.doGetLeftTable();
-
-        if (this.store.isRightTable) {
-          this.doGetRightTable(this.$route.params.system);
-        }
-      }
-    }
   },
   mounted() {
     this.store.tabName = this.storeName;
@@ -192,16 +171,22 @@ export default {
       var getLeftTableVal = this.$store.dispatch(
         `${this.storeName}/getLeftTable`
       );
-      getLeftTableVal.then(res => {
+
+      var a = getLeftTableVal.then(res => {
+        console.log("====", res);
         this.removeHypenOnEmptyTables($("#table-dsc-all"));
       });
+
+      console.log("====", a);
+      
+      return a;
     },
     getRightTable(id) {
       this.$store.dispatch(`${this.storeName}/getRightTable`, id);
     },
-    doGetLeftTable() {
-      this.getLeftTable();
-    },
+    // doGetLeftTable() {
+    //   this.getLeftTable();
+    // },
     doGetRightTable(id) {
       this.getRightTable(id);
     },

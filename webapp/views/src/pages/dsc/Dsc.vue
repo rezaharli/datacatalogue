@@ -13,7 +13,7 @@
                         <i class="fa fa-filter"></i>
                     </b-button>
 
-                    <page-export class="float-right" storeName="dscall" :leftTableCols="myStore.leftHeaders" :rightTableCols="myStore.rightHeaders"/>
+                    <page-export class="float-right" storeName="dscall" :leftTableCols="allStore.leftHeaders" :rightTableCols="allStore.rightHeaders"/>
                 </b-col>
             </b-row>
         </b-container>
@@ -22,9 +22,9 @@
             <!-- <b-row> -->
                 <!-- <b-col sm=12 md=1 lg=1 /> -->
 
-                <div class="d-inline-block mx-3 mb-3">
+                <!-- <div class="d-inline-block mx-3 mb-3">
                     <dsc-my />
-                </div>
+                </div> -->
 
                 <div class="d-inline-block mx-3 mb-3">
                     <dsc-all />
@@ -98,22 +98,15 @@ export default {
     },
     computed: {
         store () { return this.$store.state.dsc.all },
-        myStore () { return this.$store.state.dscmy.all },
         allStore () { return this.$store.state.dscall.all }
     },
-    mounted() {
-        this.resetFilter();
-    },
+    mounted() {},
     methods: {
-        getMyLeftTable () { return this.$store.dispatch(`dscmy/getLeftTable`) },
-        getMyRightTable () { return this.$store.dispatch(`dscmy/getRightTable`) },
-        getAllLeftTable () { return this.$store.dispatch(`dscall/getLeftTable`) },
-        getAllRightTable () { return this.$store.dispatch(`dscall/getRightTable`) },
         resetFilter (e) {
-            if(Object.keys(this.myStore.filters.left).length > 0){
-                this.myStore.filters.left = {};
-                this.getMyLeftTable();
-            }
+            // if(Object.keys(this.myStore.filters.left).length > 0){
+            //     this.myStore.filters.left = {};
+            //     this.getMyLeftTable();
+            // }
 
             // if(Object.keys(this.myStore.filters.right).length > 0){
             //     this.myStore.filters.right = {}

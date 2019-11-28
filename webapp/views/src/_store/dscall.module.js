@@ -37,80 +37,33 @@ const state = {
 };
 
 const actions = {
-    exportData({ commit }) {
-        commit('getExportDataRequest');
-
-        Object.keys(state.all.filters.left).map(function(key, index) {
-            state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
-        });
-
-        state.all.param = {
-            Tabs: state.all.tabName,
-            LoggedInID: "",
-            Search: state.all.searchMain,
-            SearchDD: state.all.searchDropdown,
-            Filters: state.all.filters.left,
-            Pagination: _.cloneDeep(state.all.left.pagination)
-        }
-
-        state.all.param.Pagination.rowsPerPage = -1;
-
-        return dscMyService.getLeftTable(state.all.param)
-            .then(
-                res => commit('getExportDataSuccess', res),
-                error => commit('getExportDataFailure', error)
-            );
-    },
-    getLeftTable({ commit }) {
+    getLeftTable({ commit }, param) {
         commit('getLeftTableRequest');
 
         Object.keys(state.all.filters.left).map(function(key, index) {
             state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
         });
 
-        state.all.param = {
-            Filename: state.all.filename,
-            Queryname: state.all.queryname,
-            Tabs: state.all.tabName,
-            LoggedInID: "",
-            Search: state.all.searchMain,
-            SearchDD: state.all.searchDropdown,
-            Filters: state.all.filters.left,
-            Pagination: state.all.left.pagination
-        }
+        // state.all.param = {
+        //     Filename: state.all.filename,
+        //     Queryname: state.all.queryname,
+        //     Tabs: state.all.tabName,
+        //     LoggedInID: "",
+        //     Search: state.all.searchMain,
+        //     SearchDD: state.all.searchDropdown,
+        //     Filters: state.all.filters.left,
+        //     Pagination: state.all.left.pagination
+        // }
 
-        return dscMyService.getLeftTable(state.all.param)
-            .then(
+        return dscMyService.getLeftTable(param).then(
                 res => {
                     commit('getLeftTableSuccess', res)
                     
-                    header.actions.getRowCount(state.all.param).then(v => {
+                    header.actions.getRowCount(param).then(v => {
                         state.all.left.totalItems = v.Data;
                     });
                 },
                 error => commit('getLeftTableFailure', error)
-            );
-    },
-    getRightTable({ commit }, systemID) {
-        commit('getRightTableRequest');
-
-        Object.keys(state.all.filters.right).map(function(key, index) {
-            state.all.filters.right[key] = state.all.filters.right[key] ? state.all.filters.right[key].toString() : "";
-        });
-
-        state.all.param = {
-            Tabs: state.all.tabName,
-            SystemID: systemID,
-            Search: state.all.searchMain,
-            SearchDD: state.all.searchDropdown,
-            Filters: state.all.filters.right,
-            Pagination: state.all.right.pagination
-        }
-
-        return dscMyService.getRightTable(state.all.param)
-            .then(
-                res => commit('getRightTableSuccess', res.Data),
-                error => commit('getRightTableFailure', error)
             );
     },
     getDetails({ commit }, param) {
@@ -127,18 +80,6 @@ const actions = {
 };
 
 const mutations = {
-    getExportDataRequest(state) {
-        state.all.left.isLoading = true;
-    },
-    getExportDataSuccess(state, res) {
-        state.all.exportDatas = res.DataFlat;
-
-        state.all.left.isLoading = false;
-    },
-    getExportDataFailure(state, error) {
-        state.all.left.isLoading = false;
-        state.all.error = error;
-    },
     getLeftTableRequest(state) {
         state.all.left.isLoading = true;
     },
@@ -150,20 +91,6 @@ const mutations = {
     },
     getLeftTableFailure(state, error) {
         state.all.left.isLoading = false;
-        state.all.error = error;
-    },
-    getRightTableRequest(state) {
-        state.all.right.isLoading = true;
-    },
-    getRightTableSuccess(state, data) {
-        state.all.right.source = data;
-        state.all.right.display = data;
-        state.all.right.totalItems = data[0] ? data[0].RESULT_COUNT : 0;
-
-        state.all.right.isLoading = false;
-    },
-    getRightTableFailure(state, error) {
-        state.all.right.isLoading = false;
         state.all.error = error;
     },
     getDetailsRequest(state) {

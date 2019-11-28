@@ -17,6 +17,7 @@ export const dscMyService = {
 };
 
 function getLeftTable(param) {
+    console.trace()
     return fetchWHeader(`/dsc/getallsystems`, param).then(
         res => {
             res.DataFlat = _.cloneDeep(res.Data);

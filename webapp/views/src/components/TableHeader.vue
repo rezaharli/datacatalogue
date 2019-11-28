@@ -24,7 +24,7 @@
             small
             class="icon-filter"
             v-on="on"
-            v-bind:class="{ 'icon-active': tableStore.filters[which][fixedProps.header.value.split('.').reverse()[0]] }"
+            v-bind:class="{ 'icon-active': tableStore.filters[fixedProps.header.value.split('.').reverse()[0]] }"
           >filter_list</v-icon>
         </button>
       </template>
@@ -33,7 +33,7 @@
         <b-form-input
           type="text"
           placeholder="Filter"
-          v-model="tableStore.filters[which][fixedProps.header.value.split('.').reverse()[0]]"
+          v-model="tableStore.filters[fixedProps.header.value.split('.').reverse()[0]]"
           @keyup.native="keyupAction"
         ></b-form-input>
       </b-dropdown-header>
@@ -54,7 +54,7 @@
 
       <b-row
           class="justify-content-center"
-          v-bind:class="{ 'd-none': !(tableStore.filters[which][fixedProps.header.value.split('.').reverse()[0]]) }"
+          v-bind:class="{ 'd-none': !(tableStore.filters[fixedProps.header.value.split('.').reverse()[0]]) }"
         >
         <b-col cols="auto">
           <a
@@ -93,6 +93,7 @@ export default {
       return this.$store.state[this.headerStoreName];
     },
     tableStore() {
+      return this.$store.state.tableModule;
     },
     fixedProps() {
       if (this.fromHeaderLoop == true) {
@@ -106,21 +107,23 @@ export default {
     },
     count() {
       if (!this.fixedProps.header.displayCount) return "";
-      if (!this.tableStore.left.source[0]) return "(0)";
+      if (!this.tableStore.items[0]) return "(0)";
 
       return (
         "(" +
-        this.tableStore.left.source[0][
+        this.tableStore.items[0][
           "COUNT_" + this.fixedProps.header.value.split(".").reverse()[0]
         ] +
         ")"
       );
+
+      return "(0)";
     },
   },
   watch: {
     menu(val, oldVal) {
       setTimeout(() => {
-        var filterValue = this.tableStore.filters.left[this.fixedProps.header.value.split(".").reverse()[0]];
+        var filterValue = this.tableStore.filters[this.fixedProps.header.value.split(".").reverse()[0]];
         if(filterValue == undefined || filterValue == ""){
           if (val) {
             this.getOpts();
@@ -154,7 +157,7 @@ export default {
       param.Queryname = this.tableStore.queryname;
       param.FieldName = this.fixedProps.header.value;
 
-      param.ColumnFilters = this.tableStore.filters.left[
+      param.ColumnFilters = this.tableStore.filters[
         this.fixedProps.header.value.split(".").reverse()[0]
       ];
 
@@ -174,8 +177,8 @@ export default {
       return this.$store.dispatch(`${this.storeName}/getLeftTable`);
     },
     keyupAction(e) {
-      if (this.tableStore.filters.left.filterTypes){
-        delete this.tableStore.filters.left.filterTypes[
+      if (this.tableStore.filters.filterTypes){
+        delete this.tableStore.filters.filterTypes[
           this.fixedProps.header.value.split(".").reverse()[0]
         ];
       }
@@ -187,12 +190,12 @@ export default {
       // manually adding space only when sortable is true
       if (e.key == " ") {
         if (this.fixedProps.header.sortable) {
-          var model = this.tableStore.filters.left[
+          var model = this.tableStore.filters[
             this.fixedProps.header.value.split(".").reverse()[0]
           ];
           model = model ? model + " " : " ";
 
-          this.tableStore.filters.left[
+          this.tableStore.filters[
             this.fixedProps.header.value.split(".").reverse()[0]
           ] = model;
         }
@@ -211,10 +214,10 @@ export default {
       this.menu = false;
 
       var fieldName = keyModel.value.split(".").reverse()[0];
-      this.tableStore.filters.left[fieldName] = val;
+      this.tableStore.filters[fieldName] = val;
 
-      this.tableStore.filters.left.filterTypes = {};
-      this.tableStore.filters.left.filterTypes[fieldName] = "eq";
+      this.tableStore.filters.filterTypes = {};
+      this.tableStore.filters.filterTypes[fieldName] = "eq";
 
       this.dropdownData = [val]
 
@@ -224,8 +227,8 @@ export default {
       this.opts.fetch();
     },
     resetFilterColumn(which, fieldName) {
-      this.tableStore.filters[which][fieldName] = "";
-      this.tableStore.filters[which].filterTypes = {};
+      this.tableStore.filters[fieldName] = "";
+      this.tableStore.filters.filterTypes = {};
 
       this.filterProcess();
 

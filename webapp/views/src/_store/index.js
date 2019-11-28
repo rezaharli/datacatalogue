@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import { tableModule } from './table.module';
 import { alert } from './alert.module';
 import { account } from './account.module';
 import { crypto } from './crypto.module';
@@ -57,6 +58,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     modules: {
+        tableModule,
         alert,
         account,
         crypto,
