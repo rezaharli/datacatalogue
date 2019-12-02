@@ -128,7 +128,7 @@ export default {
         return this.$store.state[this.activeTabStoreName].all;
       },
       isGlobalFilterEmpty() {
-        return this.$store.getters.isIarcGlobalFilterEmpty;
+        return this.$store.getters[this.storeName + "/isIarcGlobalFilterEmpty"];
       },
       addressPath() {
         var tmp = this.$route.path.split("/");
@@ -140,9 +140,11 @@ export default {
     },
     watch: {
       $route(to) {},
-      "store.searchMain"(val, oldVal) {
-        if (val || oldVal) {
-          this.getLeftTable();
+      activeTab(val, oldVal){
+        if (oldVal) {
+          this.store.iarc.isNewPage = false;
+        } else {
+          this.store.iarc.isNewPage = true;
         }
       },
       'store.iarc.ddVal.ddCountrySelected'(val) {
@@ -208,29 +210,24 @@ export default {
           this.setNewDropdownOpts();
         });
       },
-      getLeftTable() {
-        this.$store.dispatch(`${this.storeName}/getLeftTable`);
-      },
       refreshActiveTabTable(updatedAttr, val) {
-        this.store.dd.firstload = true;
+        this.store.iarc.firstload = true;
         if( ! this.store.iarc.globalFilters.filterTypes) this.store.iarc.globalFilters.filterTypes = {};
         
         this.store.iarc.globalFilters[updatedAttr] = val;
         this.store.iarc.globalFilters.filterTypes[updatedAttr] = "eq";
 
-        if(this.activeTab.indexOf("personal") != -1){
-          this.personalStore.filters.left = {}
-          this.refreshPersonalTable();
-        }
-      },
-      refreshPersonalTable() {
-        if( ! this.isGlobalFilterEmpty) {
-          this.$store.dispatch(`${this.personalStoreName}/getLeftTable`).then(res => {
-            this.store.iarc.firstload = false;
-          });
-        } else {
-          this.store.iarc.firstload = false;
+        this.activeTabStore.filters.left = {}
+
+        if(this.isGlobalFilterEmpty) {
           this.activeTabStore.left.isLoading = false;
+        } else {
+          // Remove table component from the DOM
+          this.store.iarc.displayTable = false;
+          this.$nextTick().then(() => {
+            // Add the component back in
+            this.store.iarc.displayTable = true;
+          });
         }
       },
       setDdCountryOptions () {
