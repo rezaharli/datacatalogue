@@ -417,9 +417,9 @@ func (s *DBcmd) BuildQuery(param *SqlQueryParam) error {
 								replacedVal := strings.ReplaceAll(toolkit.ToString(value), "'", "''")
 
 								if mapAS[key] != "" {
-									additionalWhereQuery += `upper(NVL(` + mapAS[key] + `, ' ')) = upper('` + replacedVal + `') `
+									additionalWhereQuery += mapAS[key] + ` = '` + replacedVal + `' `
 								} else {
-									additionalWhereQuery += `upper(NVL(` + key + `, ' ')) = upper('` + replacedVal + `') `
+									additionalWhereQuery += key + ` = '` + replacedVal + `' `
 								}
 							}
 						} else {
@@ -765,9 +765,9 @@ func (DBcmd) ExecuteSQLQueryRowCount(param SqlQueryParam) error {
 									replacedVal := strings.ReplaceAll(toolkit.ToString(value), "'", "''")
 
 									if mapAS[key] != "" {
-										additionalWhereQuery += `upper(NVL(` + mapAS[key] + `, ' ')) = upper('` + replacedVal + `') `
+										additionalWhereQuery += mapAS[key] + ` = '` + replacedVal + `' `
 									} else {
-										additionalWhereQuery += `upper(NVL(` + key + `, ' ')) = upper('` + replacedVal + `') `
+										additionalWhereQuery += key + ` = '` + replacedVal + `' `
 									}
 								}
 							} else {

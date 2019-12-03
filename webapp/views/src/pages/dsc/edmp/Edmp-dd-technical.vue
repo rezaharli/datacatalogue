@@ -71,7 +71,7 @@
               <td>
                 <v-checkbox :input-value="props.selected" primary hide-details @click="props.selected = !props.selected"></v-checkbox></td>
 
-              <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }" class="text-capitalize text-title">
+              <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }">
                 <v-btn small exact target="blank" :href="linkDataXray(props.item.DATA_XRAY)" :disabled="dataXrayDisabled(props.item.DATA_XRAY)" class="green-tosca-gradient icon-only">
                   <i class="fa fa-fw fa-external-link-alt"></i></v-btn></td>
 
@@ -87,7 +87,7 @@
               <td v-bind:style="{ width: store.left.colWidth['CERTIFIED'] + 'px' }">
                 <tablecell :fulltext="props.item.CERTIFIED" showOn="click"></tablecell></td>
               
-              <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }" class="text-capitalize">
+              <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
                 <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length > 0">
                   <span>{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
                 </b-link>
@@ -95,71 +95,71 @@
                 <span v-if="props.item.Tables.length < 1">{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
               </td>
 
-              <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }" class="text-capitalize">
+              <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
                 <span v-if="isMainLevelCellShowing(props)">{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
               </td>
 
-              <td v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }" class="text-capitalize">
+              <td v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }">
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DATA_TYPE.toString().trim() ? props.item.DATA_TYPE : 'NA'"></tablecell></td>
 
-              <td v-bind:style="{ width: store.left.colWidth['COLUMN_LENGTH'] + 'px' }" class="text-capitalize">
+              <td v-bind:style="{ width: store.left.colWidth['COLUMN_LENGTH'] + 'px' }">
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_LENGTH.toString().trim() ? props.item.COLUMN_LENGTH : 'NA'"></tablecell></td>
 
-              <td v-bind:style="{ width: store.left.colWidth['NULLABLE'] + 'px' }" class="text-capitalize">
+              <td v-bind:style="{ width: store.left.colWidth['NULLABLE'] + 'px' }">
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.NULLABLE.toString().trim() ? props.item.NULLABLE : 'NA'"></tablecell>
               </td>
 
-              <td v-bind:style="{ width: store.left.colWidth['PRIMARY_KEY'] + 'px' }" class="text-capitalize">
+              <td v-bind:style="{ width: store.left.colWidth['PRIMARY_KEY'] + 'px' }">
                   <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PRIMARY_KEY.toString().trim() ? props.item.PRIMARY_KEY : 'NA'"></tablecell>
               </td>
 
-              <td v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }" class="text-capitalize">
+              <td v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }">
                   <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'"></tablecell>
               </td>
 
-              <td v-bind:style="{ width: store.left.colWidth['DATA_LINEAGE'] + 'px' }" class="text-capitalize">
+              <td v-bind:style="{ width: store.left.colWidth['DATA_LINEAGE'] + 'px' }">
                 <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DATA_LINEAGE.toString().trim() ? props.item.DATA_LINEAGE : 'NA'"></tablecell>
               </td>
 
-              <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }" class="text-capitalize">
+              <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
                   <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'"></tablecell>
               </td>
             </tr>
             
             <template v-if="props.item.Tables.length > 0 && props.expanded">
               <tr :key="row.TMTID" v-for="row in props.item.Tables">
-                <td class="text-capitalize">&nbsp;</td>
+                <td>&nbsp;</td>
                 
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }"></td>
+                <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }"></td>
 
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">&nbsp;</td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">&nbsp;</td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['CERTIFIED'] + 'px' }">&nbsp;</td>
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
+                <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">&nbsp;</td>
+                <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
+                <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">&nbsp;</td>
+                <td v-bind:style="{ width: store.left.colWidth['CERTIFIED'] + 'px' }">&nbsp;</td>
+                <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
 
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
+                <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
                   <span>{{ row.COLUMN_NAME.toString().trim() ? row.COLUMN_NAME : 'NA' }}</span></td>
 
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }">
+                <td v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }">
                     <tablecell :fulltext="row.DATA_TYPE.toString().trim() ? row.DATA_TYPE : 'NA'" showOn="hover"></tablecell></td>
 
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['COLUMN_LENGTH'] + 'px' }">
+                <td v-bind:style="{ width: store.left.colWidth['COLUMN_LENGTH'] + 'px' }">
                     <tablecell :fulltext="row.COLUMN_LENGTH.toString().trim() ? row.COLUMN_LENGTH : 'NA'" showOn="hover"></tablecell></td>
 
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['NULLABLE'] + 'px' }">
+                <td v-bind:style="{ width: store.left.colWidth['NULLABLE'] + 'px' }">
                     <tablecell :fulltext="row.NULLABLE.toString().trim() ? row.NULLABLE : 'NA'" showOn="hover"></tablecell></td>
 
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['PRIMARY_KEY'] + 'px' }">
+                <td v-bind:style="{ width: store.left.colWidth['PRIMARY_KEY'] + 'px' }">
                     <tablecell :fulltext="row.PRIMARY_KEY.toString().trim() ? row.PRIMARY_KEY : 'NA'" showOn="hover"></tablecell></td>
 
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }">
+                <td v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }">
                     <tablecell :fulltext="row.PII.toString().trim() ? row.PII : 'NA'" showOn="hover"></tablecell></td>
 
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['DATA_LINEAGE'] + 'px' }">
+                <td v-bind:style="{ width: store.left.colWidth['DATA_LINEAGE'] + 'px' }">
                   <tablecell :fulltext="row.DATA_LINEAGE.toString().trim() ? row.DATA_LINEAGE : 'NA'" showOn="hover"></tablecell></td>
 
-                <td class="text-capitalize" v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
+                <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
                     <tablecell :fulltext="row.CDE.toString().trim() ? row.CDE : 'NA'" showOn="hover"></tablecell></td>
               </tr>
             </template>
