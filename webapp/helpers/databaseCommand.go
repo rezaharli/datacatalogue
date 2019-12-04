@@ -469,9 +469,9 @@ func (s *DBcmd) BuildQuery(param *SqlQueryParam) error {
 						replacedVal := strings.ReplaceAll(toolkit.ToString(value), "'", "''")
 
 						if mapAS[key] != "" {
-							additionalWhereQuery += `upper(NVL(` + mapAS[key] + `, ' ')) LIKE upper('%` + replacedVal + `%') `
+							additionalWhereQuery += mapAS[key] + ` LIKE '%` + replacedVal + `%' `
 						} else {
-							additionalWhereQuery += `upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
+							additionalWhereQuery += key + ` LIKE '%` + replacedVal + `%' `
 						}
 					}
 				} else {
@@ -817,9 +817,9 @@ func (DBcmd) ExecuteSQLQueryRowCount(param SqlQueryParam) error {
 							replacedVal := strings.ReplaceAll(toolkit.ToString(value), "'", "''")
 
 							if mapAS[key] != "" {
-								additionalWhereQuery += `upper(NVL(` + mapAS[key] + `, ' ')) LIKE upper('%` + replacedVal + `%') `
+								additionalWhereQuery += mapAS[key] + ` LIKE '%` + replacedVal + `%' `
 							} else {
-								additionalWhereQuery += `upper(NVL(` + key + `, ' ')) LIKE upper('%` + replacedVal + `%') `
+								additionalWhereQuery += key + ` LIKE '%` + replacedVal + `%' `
 							}
 						}
 					} else {

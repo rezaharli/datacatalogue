@@ -42,27 +42,6 @@ const state = {
 };
 
 const actions = {
-    exportData({ commit }) {
-        commit('getExportDataRequest');
-
-        Object.keys(state.all.filters.left).map(function(key) {
-            state.all.filters.left[key] = (typeof(state.all.filters.left[key]) == "object") ? state.all.filters.left[key] : (state.all.filters.left[key] ? state.all.filters.left[key].toString() : "");
-        });
-
-        state.all.param = {
-            System: state.all.system,
-            Filters: state.all.filters.left,
-            Pagination: _.cloneDeep(state.all.left.pagination)
-        }
-
-        state.all.param.Pagination.rowsPerPage = -1;
-
-        return edmpService.getTechnicalTable(state.all.param)
-            .then(
-                res => commit('getExportDataSuccess', res),
-                error => commit('getExportDataFailure', error)
-            );
-    },
     getLeftTable({ rootState, commit }) {
         commit('getLeftTableRequest');
 
@@ -73,7 +52,6 @@ const actions = {
         state.all.param = {
             Filename: state.all.filename,
             Queryname: state.all.queryname,
-            System: state.all.system,
             GlobalFilters: rootState.edmp.all.dd.globalFilters,
             Filters: state.all.filters.left,
             Pagination: state.all.left.pagination,
@@ -96,18 +74,6 @@ const actions = {
 };
 
 const mutations = {
-    getExportDataRequest(state) {
-        state.all.left.isLoading = true;
-    },
-    getExportDataSuccess(state, res) {
-        state.all.exportDatas = res.DataFlat;
-
-        state.all.left.isLoading = false;
-    },
-    getExportDataFailure(state, error) {
-        state.all.left.isLoading = false;
-        state.all.error = error;
-    },
     getLeftTableRequest(state) {
         state.all.left.isLoading = true;
     },

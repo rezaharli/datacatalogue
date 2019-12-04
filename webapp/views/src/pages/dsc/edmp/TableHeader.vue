@@ -200,15 +200,18 @@ export default {
       this.$store.dispatch(`${this.storeName}/getRightTable`, id);
     },
     keyupAction(e) {
-      if (this.tableStore.filters[this.which].filterTypes) {
-        delete this.tableStore.filters[this.which].filterTypes[this.fixedProps.header.value.split('.').reverse()[0]];
+      var self = this;
+
+      if (self.tableStore.filters[self.which].filterTypes) {
+        delete self.tableStore.filters[self.which].filterTypes[self.fixedProps.header.value.split('.').reverse()[0]];
       } else {
-        this.tableStore.filters[this.which].filterTypes = {};
+        self.tableStore.filters[self.which].filterTypes = {};
       }
 
-      setTimeout(this.getOpts, 1);
+      if (self.filterProcessTimeout != null)
+        clearTimeout(self.filterProcessTimeout);
 
-      var self = this;
+      self.filterProcessTimeout = setTimeout(self.getOpts, 1000);
 
       // manually adding space only when sortable is true
       if (e.key == " ") {
@@ -223,10 +226,7 @@ export default {
       if (e.key == "Enter") {
         this.menu = false;
 
-        if (self.filterProcessTimeout != null)
-          clearTimeout(self.filterProcessTimeout);
-
-        self.filterProcessTimeout = setTimeout(self.filterProcess, 500);
+        setTimeout(self.filterProcess, 500);
       }
     },
     filterClick(keyModel, val) {
