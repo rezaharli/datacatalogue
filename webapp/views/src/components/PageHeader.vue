@@ -8,13 +8,13 @@
                 :fixed="toolbar.fixed"
                 :clipped-left="toolbar.clippedLeft">
 
-            <b-dropdown no-caret id="ddowntoolbar" v-if="!($route.name == 'dsc')">
+            <!-- <b-dropdown no-caret id="ddowntoolbar" v-if="!($route.name == 'dsc')">
                 <template slot="button-content">
                     <v-btn icon>
                         <v-icon>home</v-icon>
                     </v-btn>
                 </template>
-            </b-dropdown>
+            </b-dropdown> -->
 
             <v-toolbar-title to="/" class="app-title text-capitalize">
                 <router-link to="/" class="toolbar-title">
