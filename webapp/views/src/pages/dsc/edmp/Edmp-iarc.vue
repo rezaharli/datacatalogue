@@ -82,6 +82,13 @@
                     </transition>
                 </b-col>
             </b-row>
+
+            <b-row>
+              <b-col>
+                <p v-if="!showNote">&nbsp;</p>
+                <p v-if="showNote">Note: Tables with column count exceeded with more than 100 will be displayed on the next page.</p>
+              </b-col>
+            </b-row>
         </b-container>
     </v-content>
 </template>
@@ -104,7 +111,8 @@ export default {
         activeTab: '',
         tabs: [
             { id: 'personal', key: 'personal', name: 'Personal Data', route: this.addressPath + '/personal' },
-        ]
+        ],
+        showNote: true,
       };
     },
     computed: {
@@ -198,6 +206,10 @@ export default {
       this.store.system = this.$route.params.system;
 
       this.getDropdownOpts();
+
+      setInterval(() => {
+        this.showNote = !this.showNote;
+      }, 500);
     },
     methods: {
       setNewDropdownOpts() {
