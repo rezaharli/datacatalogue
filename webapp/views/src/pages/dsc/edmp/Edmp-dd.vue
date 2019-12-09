@@ -106,6 +106,13 @@
                     </transition>
                 </b-col>
             </b-row>
+
+            <b-row>
+              <b-col>
+                <p v-if="!showNote">&nbsp;</p>
+                <p v-if="showNote">Note: Tables with column count exceeded with more than 100 will be displayed on the next page.</p>
+              </b-col>
+            </b-row>
         </b-container>
     </v-content>
 </template>
@@ -134,7 +141,8 @@ export default {
             { id: 'technical', key: 'technical-metadata', name: 'Technical Metadata', route: this.addressPath + '/technical-metadata' },
             { id: 'business', key: 'business-metadata', name: 'Business Metadata', route: this.addressPath + '/business-metadata' },
             // { id: 'consumption', key: 'consumption-apps', name: 'Consumption Applications', route: this.addressPath + '/consumption-apps' },
-        ]
+        ],
+        showNote: true,
       };
     },
     computed: {
@@ -298,6 +306,10 @@ export default {
       this.store.system = this.$route.params.system;
 
       this.getDropdownOpts();
+
+      setInterval(() => {
+        this.showNote = !this.showNote;
+      }, 500);
     },
     methods: {
       setNewDropdownOpts() {
