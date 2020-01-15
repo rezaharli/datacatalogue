@@ -3,10 +3,11 @@
 </style>
 
 <style>
-.dd-filter .v-text-field--box .v-label {
+.dd-filter .v-text-field--box .v-label, .v-text-field--box .v-label {
   font-size: 14px;
   color: black;
 }
+
 .v-select__selection--comma {
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -26,95 +27,137 @@
 .v-select.v-select--chips input{
   position: absolute;
 }
+
+.xs1.koma.lima{
+  flex-basis: 12.5%;
+  max-width: 12.5%;
+}
+
+.v-alert{
+  width: 100%;
+}
+</style>
+
+<style>
+.fixed-header{ display: flex; flex-direction: column; height: 100%; }
+
+.fixed-header table{ table-layout: fixed; width: unset; }
+
+.fixed-header th{ position: sticky; top: 0; z-index: 5; }
+.fixed-header th::after{ content: ''; position: absolute; left: 0; bottom: 0; width: 100%; }
+
+.fixed-header tr.v-datatable__progress th{ height: 1px; }
+
+.fixed-header .v-table__overflow{ flex-grow: 1; flex-shrink: 1; overflow-x: auto; overflow-y: auto; }
+
+.fixed-header > .v-datatable.v-table{ flex-grow: 0; flex-shrink: 1; }
+.fixed-header > .v-datatable.v-table .v-datatable__actions{ flex-wrap: nowrap }
+.fixed-header > .v-datatable.v-table .v-datatable__actions .v-datatable__actions__pagination{ white-space: nowrap; }
 </style>
 
 <template>
-    <v-content>
-        <b-container fluid>
+  <v-content>
+    <v-container fluid grid-list-md box>
+      <v-layout row>
+        <v-flex d-flex xs12>
+          <v-layout row wrap>
             <PageHeader />
-            
-            <b-row class="my-4">
-                <b-col class="ml-5 col-md-10">
-                  <b-row class="ml-3 dd-filter">
-                    <b-col cols="2">
-                      <global-filter-dropdown label="Country" 
-                        v-model="store.dd.ddVal.ddCountrySelected"
-                        :items="ddCountryOptions"
-                        :disabled="activeTabStore.left.isLoading"
-                      />
-                    </b-col>
 
-                    <b-col cols="2">
-                      <global-filter-dropdown label="Business Segment" 
-                        v-model="store.dd.ddVal.ddBusinessSegmentSelected"
-                        :items="ddBusinessSegmentOptions"
-                        :disabled="activeTabStore.left.isLoading"
-                      />
-                    </b-col>
+            <v-flex d-flex xs1 koma lima>
+              <global-filter-dropdown label="Country" 
+                  v-model="store.dd.ddVal.ddCountrySelected"
+                  :items="ddCountryOptions"
+                  :disabled="activeTabStore.left.isLoading"
+                />
+            </v-flex>
 
-                    <b-col cols="2">
-                      <global-filter-dropdown label="Source System" 
-                        v-model="store.dd.ddVal.ddSourceSystemSelected"
-                        :items="ddSourceSystemOptions"
-                        :disabled="activeTabStore.left.isLoading"
-                      />
-                    </b-col>
+            <v-flex d-flex xs1 koma lima>
+              <global-filter-dropdown label="Business Segment" 
+                v-model="store.dd.ddVal.ddBusinessSegmentSelected"
+                :items="ddBusinessSegmentOptions"
+                :disabled="activeTabStore.left.isLoading"
+                />
+            </v-flex>
 
-                    <b-col cols="2">
-                      <global-filter-dropdown label="Cluster" 
-                        v-model="store.dd.ddVal.ddClusterSelected"
-                        :items="ddClusterOptions"
-                        :disabled="activeTabStore.left.isLoading"
-                      />
-                    </b-col>
+            <v-flex d-flex xs1 koma lima>
+              <global-filter-dropdown label="Source System" 
+                  v-model="store.dd.ddVal.ddSourceSystemSelected"
+                  :items="ddSourceSystemOptions"
+                  :disabled="activeTabStore.left.isLoading"
+                />
+            </v-flex>
 
-                    <b-col cols="2">
-                      <global-filter-dropdown label="Tier" 
-                        v-model="store.dd.ddVal.ddTierSelected"
-                        :items="ddTierOptions"
-                        :disabled="activeTabStore.left.isLoading"
-                      />
-                    </b-col>
+            <v-flex d-flex xs1 koma lima>
+              <global-filter-dropdown label="Cluster" 
+                  v-model="store.dd.ddVal.ddClusterSelected"
+                  :items="ddClusterOptions"
+                  :disabled="activeTabStore.left.isLoading"
+                />
+            </v-flex>
 
-                    <b-col cols="2">
-                      <global-filter-dropdown label="ITAM" 
-                        v-model="store.dd.ddVal.ddItamSelected"
-                        :items="ddItamOptions"
-                        :disabled="activeTabStore.left.isLoading"
-                      />
-                    </b-col>
-                  </b-row>
-                </b-col>
-                
-                <b-col>
-                  <b-button class="float-right red-neon icon-only ml-3 shadow-sm" @click="resetFilter">
-                    <i class="fa fa-filter"></i>
-                  </b-button>
+            <v-flex d-flex xs1 koma lima>
+              <global-filter-dropdown label="Tier" 
+                  v-model="store.dd.ddVal.ddTierSelected"
+                  :items="ddTierOptions"
+                  :disabled="activeTabStore.left.isLoading"
+                />
+            </v-flex>
 
-                  <page-export class="float-right shadow-sm" :storeName="activeTabStoreName" :leftTableCols="activeTabStore.leftHeaders" :rightTableCols="[]" :rowSelectInvolved="true" />
-                </b-col>
-            </b-row>
+            <v-flex d-flex xs1 koma lima>
+              <global-filter-dropdown label="ITAM" 
+                  v-model="store.dd.ddVal.ddItamSelected"
+                  :items="ddItamOptions"
+                  :disabled="activeTabStore.left.isLoading"
+                />
+            </v-flex>
 
-            <b-row>
-                <b-col>
-                    <v-tabs id="page-tab" class="page-tab" v-model="activeTab">
-                        <v-tab v-for="tab in tabs" class="px-2 mx-5" :id="'tab-' + tab.id" :key="tab.key" :to="addressPath + '/' + tab.key" :ref="tab.id">{{ tab.name }}</v-tab>
-                    </v-tabs>
-                    
-                    <transition name="fade" mode="out-in">
-                      <router-view />
-                    </transition>
-                </b-col>
-            </b-row>
+            <v-flex d-flex xs1 koma lima>
+              <v-layout row wrap justify-end>
+                <v-flex d-flex xs1 koma lima>
+                  &nbsp;
+                </v-flex>
+              </v-layout>
+            </v-flex>
 
-            <b-row>
-              <b-col>
+            <v-flex d-flex xs1 koma lima>
+              <v-layout row wrap align-center justify-end>
+                <v-flex d-flex xs3>
+                  <b-button class="float-right red-neon icon-only shadow-sm" @click="resetFilter"><i class="fa fa-filter"></i></b-button>
+                </v-flex>
+
+                <v-flex d-flex xs3>
+                  <page-export class="float-right icon-only shadow-sm" :storeName="activeTabStoreName" :leftTableCols="activeTabStore.leftHeaders" :rightTableCols="[]" :rowSelectInvolved="true" />
+                </v-flex>
+              </v-layout>
+            </v-flex>
+
+            <v-flex d-flex xs12>
+              <v-layout row wrap>
+                <v-tabs id="page-tab" class="page-tab" v-model="activeTab">
+                    <v-tab v-for="tab in tabs" class="px-2 mx-5" :id="'tab-' + tab.id" :key="tab.key" :to="addressPath + '/' + tab.key" :ref="tab.id">{{ tab.name }}</v-tab>
+                </v-tabs>
+              </v-layout>
+            </v-flex>
+              
+            <v-flex d-flex xs12>
+              <v-layout row wrap>
+                <transition name="fade" mode="out-in">
+                  <router-view />
+                </transition>
+              </v-layout>
+            </v-flex>
+              
+            <v-flex d-flex xs12>
+              <v-layout row wrap>
                 <p v-if="!showNote">&nbsp;</p>
                 <p v-if="showNote">Note: Tables with column count exceeded with more than 100 will be displayed on the next page.</p>
-              </b-col>
-            </b-row>
-        </b-container>
-    </v-content>
+              </v-layout>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </v-content>
 </template>
 
 <script>
@@ -184,7 +227,7 @@ export default {
       },
     },
     watch: {
-      $route(to) {},
+      $route() {},
       activeTab(val, oldVal){
         if (oldVal) {
           this.store.dd.isNewPage = false;
@@ -313,12 +356,12 @@ export default {
     },
     methods: {
       setNewDropdownOpts() {
-        this.ddCountryOptions = _.sortedUniq(_.sortBy(_.map(this.store.dd.DDSource, (v) => v.COUNTRY.toString()), [function(o) { return o; }]));
-        this.ddBusinessSegmentOptions = _.sortedUniq(_.sortBy(_.map(this.store.dd.DDSource, (v) => v.BUSINESS_SEGMENT.toString()), [function(o) { return o; }]));
-        this.ddSourceSystemOptions = _.sortedUniq(_.sortBy(_.map(this.store.dd.DDSource, (v) => v.EDM_SOURCE_SYSTEM_NAME.toString()), [function(o) { return o; }]));
-        this.ddClusterOptions = _.sortedUniq(_.sortBy(_.map(this.store.dd.DDSource, (v) => v.CLUSTER_NAME.toString()), [function(o) { return o; }]));
-        this.ddTierOptions = _.sortedUniq(_.sortBy(_.map(this.store.dd.DDSource, (v) => v.TIER.toString()), [function(o) { return o; }]));
-        this.ddItamOptions = _.sortedUniq(_.sortBy(_.map(this.store.dd.DDSource, (v) => v.ITAM.toString()), [function(o) { return o; }]));
+        this.ddCountryOptions = this._.sortedUniq(this._.sortBy(this._.map(this.store.dd.DDSource, (v) => v.COUNTRY.toString()), [function(o) { return o; }]));
+        this.ddBusinessSegmentOptions = this._.sortedUniq(this._.sortBy(this._.map(this.store.dd.DDSource, (v) => v.BUSINESS_SEGMENT.toString()), [function(o) { return o; }]));
+        this.ddSourceSystemOptions = this._.sortedUniq(this._.sortBy(this._.map(this.store.dd.DDSource, (v) => v.EDM_SOURCE_SYSTEM_NAME.toString()), [function(o) { return o; }]));
+        this.ddClusterOptions = this._.sortedUniq(this._.sortBy(this._.map(this.store.dd.DDSource, (v) => v.CLUSTER_NAME.toString()), [function(o) { return o; }]));
+        this.ddTierOptions = this._.sortedUniq(this._.sortBy(this._.map(this.store.dd.DDSource, (v) => v.TIER.toString()), [function(o) { return o; }]));
+        this.ddItamOptions = this._.sortedUniq(this._.sortBy(this._.map(this.store.dd.DDSource, (v) => v.ITAM.toString()), [function(o) { return o; }]));
       },
       getDropdownOpts() {
         this.$store.dispatch(`${this.storeName}/getDdDropdownOpts`).then(() => {
@@ -349,7 +392,7 @@ export default {
       },
       setDdCountryOptions () {
         var self = this;
-        var filtered = _.filter(self.store.dd.DDSource, (v) => {
+        var filtered = this._.filter(self.store.dd.DDSource, (v) => {
           if(this.isGlobalFilterEmpty) return true;
 
           return (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : false)
@@ -362,11 +405,11 @@ export default {
           );
         });
         
-        this.ddCountryOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.COUNTRY.toString()), [function(o) { return o; }]));
+        this.ddCountryOptions = this._.sortedUniq(this._.sortBy(this._.map(filtered, (v) => v.COUNTRY.toString()), [function(o) { return o; }]));
       },
       setDdBusinessSegmentOptions () {
         var self = this;
-        var filtered = _.filter(self.store.dd.DDSource, (v) => {
+        var filtered = this._.filter(self.store.dd.DDSource, (v) => {
           if(this.isGlobalFilterEmpty) return true;
 
           return (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : false)
@@ -379,11 +422,11 @@ export default {
           );
         });
         
-        this.ddBusinessSegmentOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.BUSINESS_SEGMENT.toString()), [function(o) { return o; }]));
+        this.ddBusinessSegmentOptions = this._.sortedUniq(this._.sortBy(this._.map(filtered, (v) => v.BUSINESS_SEGMENT.toString()), [function(o) { return o; }]));
       },
       setDdSourceSystemOptions () {
         var self = this;
-        var filtered = _.filter(self.store.dd.DDSource, (v) => {
+        var filtered = this._.filter(self.store.dd.DDSource, (v) => {
           if(this.isGlobalFilterEmpty) return true;
           
           return (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : false)
@@ -396,11 +439,11 @@ export default {
           );
         });
         
-        this.ddSourceSystemOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.EDM_SOURCE_SYSTEM_NAME.toString()), [function(o) { return o; }]));
+        this.ddSourceSystemOptions = this._.sortedUniq(this._.sortBy(this._.map(filtered, (v) => v.EDM_SOURCE_SYSTEM_NAME.toString()), [function(o) { return o; }]));
       },
       setDdClusterOptions () {
         var self = this;
-        var filtered = _.filter(self.store.dd.DDSource, (v) => {
+        var filtered = this._.filter(self.store.dd.DDSource, (v) => {
           if(this.isGlobalFilterEmpty) return true;
           
           return (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : false)
@@ -413,11 +456,11 @@ export default {
             );
         });
         
-        this.ddClusterOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.CLUSTER_NAME.toString()), [function(o) { return o; }]));
+        this.ddClusterOptions = this._.sortedUniq(this._.sortBy(this._.map(filtered, (v) => v.CLUSTER_NAME.toString()), [function(o) { return o; }]));
       },
       setDdTierOptions () {
         var self = this;
-        var filtered = _.filter(self.store.dd.DDSource, (v) => {
+        var filtered = this._.filter(self.store.dd.DDSource, (v) => {
           if(this.isGlobalFilterEmpty) return true;
           
           return (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : false)
@@ -430,11 +473,11 @@ export default {
             );
         });
         
-        this.ddTierOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.TIER.toString()), [function(o) { return o; }]));
+        this.ddTierOptions = this._.sortedUniq(this._.sortBy(this._.map(filtered, (v) => v.TIER.toString()), [function(o) { return o; }]));
       },
       setDdItamOptions () {
         var self = this;
-        var filtered = _.filter(self.store.dd.DDSource, (v) => {
+        var filtered = this._.filter(self.store.dd.DDSource, (v) => {
           if(this.isGlobalFilterEmpty) return true;
           
           return (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : false)
@@ -447,12 +490,12 @@ export default {
           );
         });
         
-        this.ddItamOptions = _.sortedUniq(_.sortBy(_.map(filtered, (v) => v.ITAM.toString()), [function(o) { return o; }]));
+        this.ddItamOptions = this._.sortedUniq(this._.sortBy(this._.map(filtered, (v) => v.ITAM.toString()), [function(o) { return o; }]));
       },
       updateRouter(val){
         this.$router.push(val);
       },
-      resetFilter (e) {
+      resetFilter() {
         this.store.dd.globalFilters = {}
 
         if(this.activeTab.indexOf("technical-metadata") != -1){
