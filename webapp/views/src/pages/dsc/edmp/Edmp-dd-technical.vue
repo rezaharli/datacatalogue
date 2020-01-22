@@ -105,6 +105,7 @@
 
                 <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
                   <span v-if="isMainLevelCellShowing(props)">{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
+                  <span v-if="props.item.Tables.length > 0"> ...</span>
                 </td>
 
                 <td v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }">
