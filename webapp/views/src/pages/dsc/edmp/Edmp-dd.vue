@@ -116,7 +116,7 @@
                 <!-- <v-flex d-flex xs12> -->
                   <b-button class="float-right red-neon icon-only shadow-sm" @click="resetFilter"><i class="fa fa-filter"></i></b-button>
 
-                  <page-export class="float-right icon-only shadow-sm" :storeName="activeTabStoreName" :leftTableCols="activeTabStore.leftHeaders" :rightTableCols="[]" :rowSelectInvolved="true" />
+                  <page-export class="float-right icon-only shadow-sm" :storeNames="[technicalStoreName, businessStoreName]" :leftTableCols="activeTabStore.leftHeaders" :rightTableCols="[]" :rowSelectInvolved="true" />
                 <!-- </v-flex> -->
               </v-layout>
             </v-flex>

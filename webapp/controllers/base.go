@@ -106,102 +106,163 @@ func (c *Base) GetRowCount(k *knot.WebContext) {
 func (c *Base) ExportToCsv(k *knot.WebContext) {
 	res := toolkit.NewResult()
 
-	payload := toolkit.M{}
-	err := k.GetPayload(&payload)
+	payloads := []toolkit.M{}
+	err := k.GetPayload(&payloads)
 	if err != nil {
 		h.WriteResultError(k, res, err.Error())
 		return
 	}
 
-	rowSelect := payload.Get("RowSelect").([]interface{})
+	var globalFilters interface{}
+	var filters interface{}
+	defaultSort := []interface{}{}
+	fieldName := ""
 
-	headerArgs := s.HeaderArgs{
-		Filename:  payload.GetString("Filename"),
-		Queryname: payload.GetString("Queryname"),
-		Headers:   payload.Get("Headers").([]interface{}),
+	for _, payload := range payloads {
+		toolkit.Println("-----", payload.Get("GlobalFilters"))
 
-		Param1:        payload.GetString("System"),
-		Param2:        payload.GetString("DspName"),
-		Filter:        payload.GetString("Filter"),
-		GlobalFilters: payload.Get("GlobalFilters"),
-		ColumnFilters: payload.Get("Filters"),
-	}
+		if payload.Get("GlobalFilters") != nil {
+			globalFilters = payload.Get("GlobalFilters")
+		}
 
-	if payload.Has("LoggedInID") == true {
-		headerArgs.LoggedInID = payload.GetString("LoggedInID")
-	} else {
-		headerArgs.LoggedInID = "-"
-	}
+		if payload.Get("Filters") != nil {
+			filters = payload.Get("Filters")
+		}
 
-	resultRows := []toolkit.M{}
-	if len(rowSelect) > 0 {
-		for _, row := range rowSelect {
-			data, err := toolkit.ToM(row)
+		if payload.Get("DefaultSort") != nil {
+			defaultSort = payload.Get("DefaultSort").([]interface{})
 			if err != nil {
+				toolkit.Println(2)
 				h.WriteResultError(k, res, err.Error())
 				return
 			}
-
-			resultRows = append(resultRows, data)
 		}
-	} else {
-		resultRows, err = s.NewBaseService().GetExportData(headerArgs)
-		if err != nil {
-			h.WriteResultError(k, res, err.Error())
-			return
-		}
-	}
 
-	folderPath := filepath.Join(clit.ExeDir(), "csv")
-	if _, err := os.Stat(folderPath); os.IsNotExist(err) {
-		os.MkdirAll(folderPath, os.ModePerm)
-	}
-
-	fileName := "result.csv"
-	os.Remove(filepath.Join(folderPath, fileName))
-	file, err := os.Create(filepath.Join(folderPath, fileName))
-	if err != nil {
-		h.WriteResultError(k, res, err.Error())
-		return
-	}
-	defer file.Close()
-
-	w := csv.NewWriter(file)
-	w.Comma = '\t'
-	defer w.Flush()
-
-	var headers []string
-	for _, value := range headerArgs.Headers {
-		mapVal := value.(map[string]interface{})
-		if mapVal["exportable"].(bool) == true {
-			headers = append(headers, mapVal["text"].(string))
+		if payload.GetString("FieldName") != "" {
+			fieldName = payload.GetString("FieldName")
+			if err != nil {
+				toolkit.Println(3)
+				h.WriteResultError(k, res, err.Error())
+				return
+			}
 		}
 	}
 
-	if err := w.Write(headers); err != nil {
-		log.Fatalln("error writing record to csv:", err)
-	}
+	resultFilenames := []string{}
+	for _, payload := range payloads {
+		if payload.Get("GlobalFilters") == nil {
+			payload.Set("GlobalFilters", globalFilters.(map[string]interface{}))
+		}
 
-	for _, resultRow := range resultRows {
-		var row []string
+		if payload.Get("Filters") == nil {
+			payload.Set("Filters", filters.(map[string]interface{}))
+		}
 
-		for _, value := range headerArgs.Headers {
-			mapVal := value.(map[string]interface{})
-			if mapVal["exportable"].(bool) == true {
-				row = append(row, resultRow.GetString(mapVal["value"].(string)))
+		if payload.Get("DefaultSort") == nil {
+			payload.Set("DefaultSort", defaultSort)
+		}
+
+		if payload.GetString("FieldName") == "" {
+			payload.Set("FieldName", fieldName)
+		}
+
+		toolkit.Println(payload)
+
+		rowSelect := payload.Get("RowSelect").([]interface{})
+
+		headerArgs := s.HeaderArgs{
+			Filename:  payload.GetString("Filename"),
+			Queryname: payload.GetString("Queryname"),
+			Headers:   payload.Get("Headers").([]interface{}),
+
+			Param1:        payload.GetString("System"),
+			Param2:        payload.GetString("DspName"),
+			Filter:        payload.GetString("Filter"),
+			GlobalFilters: payload.Get("GlobalFilters"),
+			ColumnFilters: payload.Get("Filters"),
+		}
+
+		if payload.Has("LoggedInID") == true {
+			headerArgs.LoggedInID = payload.GetString("LoggedInID")
+		} else {
+			headerArgs.LoggedInID = "-"
+		}
+
+		resultRows := []toolkit.M{}
+		if len(rowSelect) > 0 {
+			for _, row := range rowSelect {
+				data, err := toolkit.ToM(row)
+				if err != nil {
+					h.WriteResultError(k, res, err.Error())
+					toolkit.Println(4)
+					return
+				}
+
+				resultRows = append(resultRows, data)
+			}
+		} else {
+			resultRows, err = s.NewBaseService().GetExportData(headerArgs)
+			if err != nil {
+				h.WriteResultError(k, res, err.Error())
+				toolkit.Println(5)
+				return
 			}
 		}
 
-		if err := w.Write(row); err != nil {
+		folderPath := filepath.Join(clit.ExeDir(), "csv")
+		if _, err := os.Stat(folderPath); os.IsNotExist(err) {
+			os.MkdirAll(folderPath, os.ModePerm)
+		}
+
+		fileName := payload.GetString("Queryname") + ".csv"
+		os.Remove(filepath.Join(folderPath, fileName))
+		file, err := os.Create(filepath.Join(folderPath, fileName))
+		if err != nil {
+			h.WriteResultError(k, res, err.Error())
+			toolkit.Println(6)
+			return
+		}
+		defer file.Close()
+
+		w := csv.NewWriter(file)
+		w.Comma = '\t'
+		defer w.Flush()
+
+		var headers []string
+		for _, value := range headerArgs.Headers {
+			mapVal := value.(map[string]interface{})
+			if mapVal["exportable"].(bool) == true {
+				headers = append(headers, mapVal["text"].(string))
+			}
+		}
+
+		if err := w.Write(headers); err != nil {
 			log.Fatalln("error writing record to csv:", err)
 		}
+
+		for _, resultRow := range resultRows {
+			var row []string
+
+			for _, value := range headerArgs.Headers {
+				mapVal := value.(map[string]interface{})
+				if mapVal["exportable"].(bool) == true {
+					row = append(row, resultRow.GetString(mapVal["value"].(string)))
+				}
+			}
+
+			if err := w.Write(row); err != nil {
+				log.Fatalln("error writing record to csv:", err)
+			}
+		}
+
+		if err := w.Error(); err != nil {
+			log.Fatal(err)
+		}
+
+		resultFilenames = append(resultFilenames, fileName)
 	}
 
-	if err := w.Error(); err != nil {
-		log.Fatal(err)
-	}
-
-	h.WriteResultOK(k, res, fileName)
+	h.WriteResultOK(k, res, resultFilenames)
 }
 
 func (c *Base) GetDetails(payload toolkit.M,
