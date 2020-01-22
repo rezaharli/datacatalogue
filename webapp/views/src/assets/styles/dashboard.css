@@ -68,14 +68,14 @@
     max-width: 300px;
 }
 
-.v-chip.full .v-chip__content { max-width: 70px; }
-.v-chip.small .v-chip__content { max-width: 44px; }
-.v-chip .v-chip__content span{
+/* .v-chip.full .v-chip__content { max-width: 70px; }
+.v-chip.small .v-chip__content { max-width: 44px; } */
+/* .v-chip .v-chip__content span{
     max-width: 90%;
     word-break: break-word;
     overflow-x: hidden;
     text-overflow: ellipsis;
-}
+} */
 
 /* .th-wrapper{ padding: 0px 24px; } */
 
