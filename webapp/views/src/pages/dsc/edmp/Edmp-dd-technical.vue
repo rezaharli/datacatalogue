@@ -32,7 +32,7 @@
               :rows-per-page-items="[100]"
               item-key="ID"
               class="elevation-1 table-v2 fixed-header v-table__overflow"
-              style="max-height: calc(100vh - 374px); backface-visibility: hidden;"
+              style="max-height: calc(100vh - 160px); backface-visibility: hidden;"
               id="table-edmp-dd-technical">
 
             <template slot="headers" slot-scope="props">
@@ -75,7 +75,7 @@
             </template>
 
             <template slot="items" slot-scope="props">
-              <tr :class="{even: props.index % 2, odd: !(props.index % 2)}" :active="props.selected">
+              <tr :active="props.selected">
                 <td>
                   <v-checkbox :input-value="props.selected" primary hide-details @click="props.selected = !props.selected"></v-checkbox></td>
 
@@ -96,56 +96,60 @@
                   <tablecell :fulltext="props.item.CERTIFIED" showOn="click"></tablecell></td>
                 
                 <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
-                  <b-link @click="props.expanded = !props.expanded" v-if="props.item.Tables.length > 0">
-                    <span>{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
-                  </b-link>
-
-                  <span v-if="props.item.Tables.length < 1">{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
+                  <span>{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
                 </td>
 
                 <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
-                  <span v-if="isMainLevelCellShowing(props)">{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
-                  <span v-if="props.item.Tables.length > 0"> ...</span>
+                  <span>{{ props.item.COLUMN_NAME.toString().trim() ? props.item.COLUMN_NAME : 'NA' }}</span>
                 </td>
 
                 <td v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }">
-                  <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DATA_TYPE.toString().trim() ? props.item.DATA_TYPE : 'NA'"></tablecell></td>
+                  <tablecell showOn="hover" :fulltext="props.item.DATA_TYPE.toString().trim() ? props.item.DATA_TYPE : 'NA'"></tablecell></td>
 
                 <td v-bind:style="{ width: store.left.colWidth['COLUMN_LENGTH'] + 'px' }">
-                  <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.COLUMN_LENGTH.toString().trim() ? props.item.COLUMN_LENGTH : 'NA'"></tablecell></td>
+                  <tablecell showOn="hover" :fulltext="props.item.COLUMN_LENGTH.toString().trim() ? props.item.COLUMN_LENGTH : 'NA'"></tablecell></td>
 
                 <td v-bind:style="{ width: store.left.colWidth['NULLABLE'] + 'px' }">
-                  <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.NULLABLE.toString().trim() ? props.item.NULLABLE : 'NA'"></tablecell>
+                  <tablecell showOn="hover" :fulltext="props.item.NULLABLE.toString().trim() ? props.item.NULLABLE : 'NA'"></tablecell>
                 </td>
 
                 <td v-bind:style="{ width: store.left.colWidth['PRIMARY_KEY'] + 'px' }">
-                    <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PRIMARY_KEY.toString().trim() ? props.item.PRIMARY_KEY : 'NA'"></tablecell>
+                    <tablecell showOn="hover" :fulltext="props.item.PRIMARY_KEY.toString().trim() ? props.item.PRIMARY_KEY : 'NA'"></tablecell>
                 </td>
 
                 <td v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }">
-                    <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'"></tablecell>
+                    <tablecell showOn="hover" :fulltext="props.item.PII.toString().trim() ? props.item.PII : 'NA'"></tablecell>
                 </td>
 
                 <td v-bind:style="{ width: store.left.colWidth['DATA_LINEAGE'] + 'px' }">
-                  <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.DATA_LINEAGE.toString().trim() ? props.item.DATA_LINEAGE : 'NA'"></tablecell>
+                  <tablecell showOn="hover" :fulltext="props.item.DATA_LINEAGE.toString().trim() ? props.item.DATA_LINEAGE : 'NA'"></tablecell>
                 </td>
 
                 <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
-                    <tablecell showOn="hover" v-if="isMainLevelCellShowing(props)" :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'"></tablecell>
+                    <tablecell showOn="hover" :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'"></tablecell>
                 </td>
               </tr>
               
-              <template v-if="props.item.Tables.length > 0 && props.expanded">
+              <template>
                 <tr :key="row.TMTID" v-for="row in props.item.Tables">
                   <td>&nbsp;</td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }"></td>
 
-                  <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">&nbsp;</td>
-                  <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">&nbsp;</td>
-                  <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">&nbsp;</td>
-                  <td v-bind:style="{ width: store.left.colWidth['CERTIFIED'] + 'px' }">&nbsp;</td>
-                  <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">&nbsp;</td>
+                  <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">
+                    <span>{{ row.ITAM.toString().trim() ? row.ITAM : 'NA' }}</span></td>
+
+                  <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
+                    <span>{{ row.EDM_SOURCE_SYSTEM_NAME.toString().trim() ? row.EDM_SOURCE_SYSTEM_NAME : 'NA' }}</span></td>
+
+                  <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
+                    <span>{{ row.DATABASE_NAME.toString().trim() ? row.DATABASE_NAME : 'NA' }}</span></td>
+
+                  <td v-bind:style="{ width: store.left.colWidth['CERTIFIED'] + 'px' }">
+                    <span>{{ row.CERTIFIED.toString().trim() ? row.CERTIFIED : 'NA' }}</span></td>
+
+                  <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
+                    <span>{{ row.TABLE_NAME.toString().trim() ? row.TABLE_NAME : 'NA' }}</span></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
                     <span>{{ row.COLUMN_NAME.toString().trim() ? row.COLUMN_NAME : 'NA' }}</span></td>
@@ -239,17 +243,6 @@ export default {
       } else {
         this.store.dd.firstload = false;
         this.store.left.isLoading = false;
-      }
-    },
-    isMainLevelCellShowing (props){
-      if( ! props.expanded) {
-        return true;
-      } else {
-        if(props.item.Tables.length > 0) {
-          return true;
-        }
-        
-        return false;
       }
     },
     toggleAll () {
