@@ -36,6 +36,14 @@
 .v-alert{
   width: 100%;
 }
+
+.action-button-wrapper .btn{
+  max-width: 35px;
+  max-height: 35px;
+  width: 35px;
+  height: 35px;
+  margin-left: 10px;
+}
 </style>
 
 <style>
@@ -63,7 +71,7 @@
           <v-layout row wrap>
             <PageHeader />
 
-            <v-flex d-flex xs1 koma lima>
+            <v-flex d-flex xs2 koma lima>
               <global-filter-dropdown label="Country" 
                   v-model="store.dd.ddVal.ddCountrySelected"
                   :items="ddCountryOptions"
@@ -71,7 +79,7 @@
                 />
             </v-flex>
 
-            <v-flex d-flex xs1 koma lima>
+            <v-flex d-flex xs2 koma lima>
               <global-filter-dropdown label="Business Segment" 
                 v-model="store.dd.ddVal.ddBusinessSegmentSelected"
                 :items="ddBusinessSegmentOptions"
@@ -79,7 +87,7 @@
                 />
             </v-flex>
 
-            <v-flex d-flex xs1 koma lima>
+            <v-flex d-flex xs2 koma lima>
               <global-filter-dropdown label="Source System" 
                   v-model="store.dd.ddVal.ddSourceSystemSelected"
                   :items="ddSourceSystemOptions"
@@ -87,15 +95,7 @@
                 />
             </v-flex>
 
-            <v-flex d-flex xs1 koma lima>
-              <global-filter-dropdown label="Cluster" 
-                  v-model="store.dd.ddVal.ddClusterSelected"
-                  :items="ddClusterOptions"
-                  :disabled="activeTabStore.left.isLoading"
-                />
-            </v-flex>
-
-            <v-flex d-flex xs1 koma lima>
+            <v-flex d-flex xs2 koma lima>
               <global-filter-dropdown label="Tier" 
                   v-model="store.dd.ddVal.ddTierSelected"
                   :items="ddTierOptions"
@@ -103,31 +103,21 @@
                 />
             </v-flex>
 
-            <v-flex d-flex xs1 koma lima>
-              <global-filter-dropdown label="ITAM" 
-                  v-model="store.dd.ddVal.ddItamSelected"
-                  :items="ddItamOptions"
-                  :disabled="activeTabStore.left.isLoading"
-                />
-            </v-flex>
-
-            <v-flex d-flex xs1 koma lima>
+            <v-flex d-flex xs2 koma lima>
               <v-layout row wrap justify-end>
-                <v-flex d-flex xs1 koma lima>
+                <v-flex d-flex xs12>
                   &nbsp;
                 </v-flex>
               </v-layout>
             </v-flex>
 
-            <v-flex d-flex xs1 koma lima>
-              <v-layout row wrap align-center justify-end>
-                <v-flex d-flex xs3>
+            <v-flex d-flex xs2 koma lima>
+              <v-layout row wrap align-center justify-end class="action-button-wrapper">
+                <!-- <v-flex d-flex xs12> -->
                   <b-button class="float-right red-neon icon-only shadow-sm" @click="resetFilter"><i class="fa fa-filter"></i></b-button>
-                </v-flex>
 
-                <v-flex d-flex xs3>
-                  <page-export class="float-right icon-only shadow-sm" :storeName="activeTabStoreName" :leftTableCols="activeTabStore.leftHeaders" :rightTableCols="[]" :rowSelectInvolved="true" />
-                </v-flex>
+                  <page-export class="float-right icon-only shadow-sm" :storeNames="[technicalStoreName, businessStoreName]" :leftTableCols="activeTabStore.leftHeaders" :rightTableCols="[]" :rowSelectInvolved="true" />
+                <!-- </v-flex> -->
               </v-layout>
             </v-flex>
 
@@ -176,9 +166,7 @@ export default {
         ddCountryOptions: [],
         ddBusinessSegmentOptions: [],
         ddSourceSystemOptions: [],
-        ddClusterOptions: [],
         ddTierOptions: [],
-        ddItamOptions: [],
         activeTab: '',
         tabs: [
             { id: 'technical', key: 'technical-metadata', name: 'Technical Metadata', route: this.addressPath + '/technical-metadata' },
@@ -245,9 +233,7 @@ export default {
 
         this.setDdBusinessSegmentOptions();
         this.setDdSourceSystemOptions();
-        this.setDdClusterOptions();
         this.setDdTierOptions();
-        this.setDdItamOptions();
 
         setTimeout(() => {
           this.refreshActiveTabTable("COUNTRY", val);
@@ -263,9 +249,7 @@ export default {
         
         this.setDdCountryOptions();
         this.setDdSourceSystemOptions();
-        this.setDdClusterOptions();
         this.setDdTierOptions();
-        this.setDdItamOptions();
 
         setTimeout(() => {
           this.refreshActiveTabTable("BUSINESS_SEGMENT", val);
@@ -281,30 +265,10 @@ export default {
 
         this.setDdCountryOptions();
         this.setDdBusinessSegmentOptions();
-        this.setDdClusterOptions();
         this.setDdTierOptions();
-        this.setDdItamOptions();
 
         setTimeout(() => {
           this.refreshActiveTabTable("EDM_SOURCE_SYSTEM_NAME", val);
-        }, 0);
-      },
-      'store.dd.ddVal.ddClusterSelected'(val) {
-        this.activeTabStore.left.display = [];
-        this.activeTabStore.left.source = [];
-        this.activeTabStore.left.totalItems = 0;
-
-        if(this.store.dd.firstload) return;
-        this.activeTabStore.left.isLoading = true;
-
-        this.setDdCountryOptions();
-        this.setDdBusinessSegmentOptions();
-        this.setDdSourceSystemOptions();
-        this.setDdTierOptions();
-        this.setDdItamOptions();
-
-        setTimeout(() => {
-          this.refreshActiveTabTable("CLUSTER_NAME", val);
         }, 0);
       },
       'store.dd.ddVal.ddTierSelected'(val) {
@@ -318,29 +282,9 @@ export default {
         this.setDdCountryOptions();
         this.setDdBusinessSegmentOptions();
         this.setDdSourceSystemOptions();
-        this.setDdClusterOptions();
-        this.setDdItamOptions();
 
         setTimeout(() => {
           this.refreshActiveTabTable("TIER", val);
-        }, 0);
-      },
-      'store.dd.ddVal.ddItamSelected'(val) {
-        this.activeTabStore.left.display = [];
-        this.activeTabStore.left.source = [];
-        this.activeTabStore.left.totalItems = 0;
-
-        if(this.store.dd.firstload) return;
-        this.activeTabStore.left.isLoading = true;
-
-        this.setDdCountryOptions();
-        this.setDdBusinessSegmentOptions();
-        this.setDdSourceSystemOptions();
-        this.setDdClusterOptions();
-        this.setDdTierOptions();
-
-        setTimeout(() => {
-          this.refreshActiveTabTable("ITAM", val);
         }, 0);
       },
     },
@@ -359,9 +303,7 @@ export default {
         this.ddCountryOptions = this._.sortedUniq(this._.sortBy(this._.map(this.store.dd.DDSource, (v) => v.COUNTRY.toString()), [function(o) { return o; }]));
         this.ddBusinessSegmentOptions = this._.sortedUniq(this._.sortBy(this._.map(this.store.dd.DDSource, (v) => v.BUSINESS_SEGMENT.toString()), [function(o) { return o; }]));
         this.ddSourceSystemOptions = this._.sortedUniq(this._.sortBy(this._.map(this.store.dd.DDSource, (v) => v.EDM_SOURCE_SYSTEM_NAME.toString()), [function(o) { return o; }]));
-        this.ddClusterOptions = this._.sortedUniq(this._.sortBy(this._.map(this.store.dd.DDSource, (v) => v.CLUSTER_NAME.toString()), [function(o) { return o; }]));
         this.ddTierOptions = this._.sortedUniq(this._.sortBy(this._.map(this.store.dd.DDSource, (v) => v.TIER.toString()), [function(o) { return o; }]));
-        this.ddItamOptions = this._.sortedUniq(this._.sortBy(this._.map(this.store.dd.DDSource, (v) => v.ITAM.toString()), [function(o) { return o; }]));
       },
       getDropdownOpts() {
         this.$store.dispatch(`${this.storeName}/getDdDropdownOpts`).then(() => {
@@ -399,9 +341,7 @@ export default {
           || (
             (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true) 
             && (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true)
-            && (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true)
             && (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : true)
-            && (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : true)
           );
         });
         
@@ -416,9 +356,7 @@ export default {
           || (
             (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true) 
             && (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true)
-            && (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true)
             && (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : true)
-            && (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : true)
           );
         });
         
@@ -433,30 +371,11 @@ export default {
           || (
             (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true) 
             && (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true)
-            && (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true)
             && (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : true)
-            && (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : true)
           );
         });
         
         this.ddSourceSystemOptions = this._.sortedUniq(this._.sortBy(this._.map(filtered, (v) => v.EDM_SOURCE_SYSTEM_NAME.toString()), [function(o) { return o; }]));
-      },
-      setDdClusterOptions () {
-        var self = this;
-        var filtered = this._.filter(self.store.dd.DDSource, (v) => {
-          if(this.isGlobalFilterEmpty) return true;
-          
-          return (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : false)
-            || (
-              (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true) 
-              && (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true)
-              && (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true)
-              && (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : true)
-              && (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : true)
-            );
-        });
-        
-        this.ddClusterOptions = this._.sortedUniq(this._.sortBy(this._.map(filtered, (v) => v.CLUSTER_NAME.toString()), [function(o) { return o; }]));
       },
       setDdTierOptions () {
         var self = this;
@@ -468,29 +387,10 @@ export default {
               (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true) 
               && (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true)
               && (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true)
-              && (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true)
-              && (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : true)
             );
         });
         
         this.ddTierOptions = this._.sortedUniq(this._.sortBy(this._.map(filtered, (v) => v.TIER.toString()), [function(o) { return o; }]));
-      },
-      setDdItamOptions () {
-        var self = this;
-        var filtered = this._.filter(self.store.dd.DDSource, (v) => {
-          if(this.isGlobalFilterEmpty) return true;
-          
-          return (self.store.dd.ddVal.ddItamSelected.length > 0 ? (self.store.dd.ddVal.ddItamSelected.includes(v.ITAM)) : false)
-          || (
-            (self.store.dd.ddVal.ddCountrySelected.length > 0 ? (self.store.dd.ddVal.ddCountrySelected.includes(v.COUNTRY)) : true) 
-            && (self.store.dd.ddVal.ddBusinessSegmentSelected.length > 0 ? (self.store.dd.ddVal.ddBusinessSegmentSelected.includes(v.BUSINESS_SEGMENT)) : true) 
-            && (self.store.dd.ddVal.ddSourceSystemSelected.length > 0 ? (self.store.dd.ddVal.ddSourceSystemSelected.includes(v.EDM_SOURCE_SYSTEM_NAME)) : true)
-            && (self.store.dd.ddVal.ddClusterSelected.length > 0 ? (self.store.dd.ddVal.ddClusterSelected.includes(v.CLUSTER_NAME)) : true)
-            && (self.store.dd.ddVal.ddTierSelected.length > 0 ? (self.store.dd.ddVal.ddTierSelected.includes(v.TIER)) : true)
-          );
-        });
-        
-        this.ddItamOptions = this._.sortedUniq(this._.sortBy(this._.map(filtered, (v) => v.ITAM.toString()), [function(o) { return o; }]));
       },
       updateRouter(val){
         this.$router.push(val);
@@ -509,6 +409,7 @@ export default {
             this.businessStore.filters.left = {};
           }
         }
+
         if(this.activeTab.indexOf("consumption-apps") != -1){
           if(Object.keys(this.consumptionStore.filters.left).length > 0){
             this.consumptionStore.filters.left = {};
@@ -518,9 +419,7 @@ export default {
         this.store.dd.ddVal.ddCountrySelected = [];
         this.store.dd.ddVal.ddBusinessSegmentSelected = [];
         this.store.dd.ddVal.ddSourceSystemSelected = [];
-        this.store.dd.ddVal.ddClusterSelected = [];
         this.store.dd.ddVal.ddTierSelected = [];
-        this.store.dd.ddVal.ddItamSelected = [];
       },
     },
 }

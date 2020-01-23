@@ -41,6 +41,15 @@ const state = {
     }
 };
 
+const getters = {
+    getSelectedData: (state) => {
+        var deState = state.all;
+        var selected = deState.selected;
+        
+        return deState.left.source.filter(v => selected.find(w => v.TABLE_NAME == w.TABLE_NAME) != undefined);
+    },
+}
+
 const actions = {
     getLeftTable({ rootState, commit }) {
         commit('getLeftTableRequest');
@@ -96,5 +105,6 @@ export const edmpddTechnical = {
     namespaced: true,
     state,
     actions,
+    getters,
     mutations
 };

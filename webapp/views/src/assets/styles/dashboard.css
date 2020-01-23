@@ -68,10 +68,10 @@
     max-width: 300px;
 }
 
-.v-chip.full .v-chip__content { max-width: 70px; }
-.v-chip.small .v-chip__content { max-width: 44px; }
+.v-chip.full, .v-chip.small{ max-width: 70%; }
+.v-chip.full .v-chip__content, .v-chip.small .v-chip__content { max-width: 100%; }
 .v-chip .v-chip__content span{
-    max-width: 90%;
+    max-width: 100%;
     word-break: break-word;
     overflow-x: hidden;
     text-overflow: ellipsis;

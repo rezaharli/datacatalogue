@@ -120,6 +120,17 @@ const mutations = {
     },
     getDdDropdownOptsSuccess(state, data) {
         state.all.dd.firstload = true;
+
+        data.MappedDDSource = data.MappedDDSource.filter(v => {
+            for (const key in v) {
+                if(v[key] == "NA") {
+                    return false;
+                }
+            }
+
+            return true;
+        });
+        
         state.all.dd.DDSource = data.MappedDDSource;
 
         setTimeout(() => {

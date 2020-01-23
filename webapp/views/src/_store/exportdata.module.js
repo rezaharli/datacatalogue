@@ -2,7 +2,7 @@ import { exportService } from '../_services/export.service';
 
 const state = {
     isLoading: true,
-    filename: "",
+    filenames: [],
     error: null,
 };
 
@@ -23,7 +23,7 @@ const mutations = {
         state.isLoading = true;
     },
     getGetOptsSuccess(state, res) {
-        state.filename = res.Data;
+        state.filenames = res.Data;
 
         state.isLoading = false;
     },
