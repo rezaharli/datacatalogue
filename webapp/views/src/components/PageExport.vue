@@ -1,61 +1,109 @@
 <template>
-    <b-button v-on:click="doExport" class="float-right icon-only green-tosca">
-        <i class="fa fa-fw fa-file-excel"></i>
-    </b-button>
+    <!-- <b-button v-on:click="doExport" class="float-right icon-only green-tosca"><i class="fa fa-fw fa-file-excel"></i></b-button> -->
+
+    <v-menu
+      v-model="menu"
+      left
+      :close-on-content-click="false"
+    >
+        <template slot="activator" slot-scope="{ on }">
+            <b-button v-on="on" class="float-right icon-only green-tosca"><i class="fa fa-fw fa-file-excel"></i></b-button>
+        </template>
+
+        <v-card>
+            <v-list subheader>
+                <v-subheader>Choose field to export</v-subheader>
+
+                <v-list-tile v-bind:key="i" v-for="(header, i) in exportableHeaders">
+                    <v-list-tile-action>
+                        <v-switch selected color="purple" v-model="selectedHeaders[i]" :value="header"></v-switch>
+                    </v-list-tile-action>
+
+                    <v-list-tile-title>{{ header.text }}</v-list-tile-title>
+                </v-list-tile>
+            </v-list>
+
+            <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn color="primary" flat @click="doExport">Export</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-menu>
 </template>
 
 <script>
 export default {
     name: "pageExport",
-    props: ["storeNames", "rowSelectInvolved"],
+    props: ["storeName", "rowSelectInvolved"],
     data() {
-        return {};
+        var exportableHeaders = [
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Country', value: 'COUNTRY' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Itam ID', value: 'ITAM' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Source System Name', value: 'EDM_SOURCE_SYSTEM_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Database Name', value: 'DATABASE_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'TIER', value: 'TIER' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Certified (Yes/No)', value: 'CERTIFIED' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Table Name', value: 'TABLE_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Table Description', value: 'TABLE_DESCRIPTION' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Name', value: 'COLUMN_NAME' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Description', value: 'COLUMN_DESCRIPTION' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Data Type', value: 'DATA_TYPE' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Column Length', value: 'COLUMN_LENGTH' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Nullable (Yes/No)', value: 'NULLABLE' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Primary Key', value: 'PRIMARY_KEY' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'PII', value: 'PII' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Data Lineage', value: 'DATA_LINEAGE' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'CDE (Yes/No)', value: 'CDE' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Term', value: 'BUSINESS_TERM' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Term Description', value: 'BUSINESS_DESCRIPTION' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Determines Client Location (Yes/No)', value: 'DETERMINES_CLIENT_LOCATION' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Determines Account / Deal Location (Yes/No)', value: 'DETERMINES_ACCOUNT' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Business Segment', value: 'BUSINESS_SEGMENT' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Product Category', value: 'PRODUCT_CATEGORY' },
+        ];
+
+        return {
+            menu: false,
+            exportableHeaders: _.cloneDeep(exportableHeaders),
+            selectedHeaders: _.cloneDeep(exportableHeaders),
+        };
     },
     computed: {
         store () { return this.$store.state.exportData },
-        tableStores () { 
-            var stores = []; 
-
-            this.storeNames.forEach(name => {
-                stores = stores.concat(this.$store.state[name].all);
-            });
-
-            return stores;
+        tableStore () { 
+            return this.$store.state[this.storeName].all;
         },
+        headers() {
+            return this.tableStore.leftHeaders.filter(v => v.exportable);
+        }
     },
     methods: {
         doExport(){
-            var params = [];
-            this.tableStores.forEach((tableStore, i) => {
-                tableStore.left.isLoading = true;
-                
-                var param = tableStore.param;
-                param.Filename = tableStore.filename;
-                param.Queryname = tableStore.queryname;
-                param.Pagination = _.cloneDeep(param.Pagination)
-                param.Headers = tableStore.leftHeaders;
+            this.tableStore.left.isLoading = true;
+            
+            var param = this.tableStore.param;
+            param.Filename = this.tableStore.filename;
+            param.Queryname = 'edmp-dd-export';
+            param.Pagination = this._.cloneDeep(param.Pagination)
+            param.Headers = this.selectedHeaders.filter(v => v);
 
-                if(!param.Pagination)
-                    param.Pagination = {}
+            if( ! param.Pagination)
+                param.Pagination = {}
 
-                param.Pagination.rowsPerPage = -1;
+            param.Pagination.rowsPerPage = -1;
 
-                param.RowSelect = [];
-                if(this.rowSelectInvolved == true){
-                    if(tableStore.selected){
-                        if(tableStore.selected.length > 0){
-                            param.RowSelect = this.$store.getters[this.storeNames[i] + "/getSelectedData"]
-                        }
+            param.RowSelect = [];
+            if(this.rowSelectInvolved == true){
+                if(this.tableStore.selected){
+                    if(this.tableStore.selected.length > 0){
+                        param.RowSelect = this.$store.getters[this.storeName + "/getSelectedData"]
                     }
                 }
+            }
 
-                params = params.concat(param);
-            });
-
-            return this.$store.dispatch(`exportData/doExport`, params).then(() => {
-                this.tableStores.forEach((tableStore) => {
-                    tableStore.left.isLoading = false;
-                })
+            return this.$store.dispatch(`exportData/doExport`, param).then(() => {
+                this.tableStore.left.isLoading = false;
 
                 this.store.filenames.forEach(filename => {
                     var url = "/csv/" + filename;

@@ -20,14 +20,25 @@
     >
       <template slot="activator" slot-scope="{ on }">
         <button class="dropdown-button-wrapper btn btn-link">
-          <v-icon
-            small
-            class="icon-filter"
-            v-on="on"
-            v-bind:class="{ 'icon-active': tableStore.filters[which][fixedProps.header.value.split('.').reverse()[0]] }"
-          >filter_list</v-icon>
+          <v-icon small class="icon-filter" v-on="on" v-bind:class="{ 'icon-active': tableStore.filters[which][fixedProps.header.value.split('.').reverse()[0]] }">filter_list</v-icon>
         </button>
       </template>
+
+      <v-card>
+        <v-list>
+            <v-list-tile v-bind:key="i" v-for="(item, i) in dropdownData">
+                <v-list-tile-action v-model="tableStore.filters[which][fixedProps.header.value.split('.').reverse()[0]]"></v-list-tile-action>
+
+                <v-list-tile-title>{{ header.text }}</v-list-tile-title>
+            </v-list-tile>
+        </v-list>
+
+        <v-card-actions>
+            <v-spacer></v-spacer>
+
+            <v-btn color="primary" flat @click="doExport">Export</v-btn>
+        </v-card-actions>
+      </v-card>
 
       <b-dropdown-header>
         <b-form-input
@@ -40,15 +51,15 @@
 
       <b-dropdown-divider />
 
-      <div class="dropdown-wrapper">
+      <!-- <div class="dropdown-wrapper">
         <page-loader v-if="isLoading" />
 
         <b-dropdown-item
-          v-for="item in dropdownData"
-          :key="item"
+          v-for="(item, i) in dropdownData"
+          :key="i"
           @click="filterClick(fixedProps.header, item)"
         >{{ item }}</b-dropdown-item>
-      </div>
+      </div> -->
 
       <b-dropdown-divider />
 

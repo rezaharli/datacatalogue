@@ -425,3 +425,8 @@ table.v-table.v-datatable thead.sticky .v-datatable__progress {visibility: hidde
 .card .v-table__overflow,
 .table-v1 .v-table__overflow,
 .table-v2 .v-table__overflow {overflow-x: auto; overflow-y: visible;}
+
+.v-menu__content {
+  cursor: default;
+  padding: 0 !important;
+}

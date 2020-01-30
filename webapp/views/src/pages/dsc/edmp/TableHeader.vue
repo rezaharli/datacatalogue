@@ -1,7 +1,15 @@
 <style>
-.v-menu__content {
-  cursor: default;
-  padding: 0.5rem 0;
+.column-filter-card .list-data{
+  max-height: 150px;
+  overflow-y: auto;
+  max-width: 200px;
+}
+.column-filter-card .v-divider{
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.column-filter-card .button-clear-filter{
+  border: 0px;
 }
 </style>
 
@@ -29,7 +37,36 @@
         </button>
       </template>
 
-      <b-dropdown-header>
+      <v-card class="column-filter-card">
+        <v-card-title>
+          <b-form-input
+            type="text"
+            placeholder="Filter"
+            v-model="tableStore.filters[which][fixedProps.header.value.split('.').reverse()[0]]"
+            @keyup.native="keyupAction"
+          ></b-form-input>
+        </v-card-title>
+
+        <v-divider></v-divider>
+
+        <page-loader v-if="isLoading" />
+
+        <v-list class="list-data">
+          <v-list-tile v-bind:key="i" v-for="(item, i) in dropdownData" @click="filterClick(fixedProps.header, item)">
+            <v-list-tile-title>{{ item }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+
+        <v-divider></v-divider>
+
+        <div class="text-xs-center">
+          <v-btn color="red" outline class="button-clear-filter" @click="resetFilterColumn(which, fixedProps.header.value.split('.').reverse()[0])">
+            <i class="fa fa-trash"></i>&nbsp;Clear
+          </v-btn>
+        </div>
+      </v-card>
+
+      <!-- <b-dropdown-header>
         <b-form-input
           type="text"
           placeholder="Filter"
@@ -41,7 +78,6 @@
       <b-dropdown-divider />
 
       <div class="dropdown-wrapper">
-        <page-loader v-if="isLoading" />
 
         <b-dropdown-item
           v-for="item in dropdownData"
@@ -58,7 +94,7 @@
             <i class="fa fa-trash"></i> Clear
           </a>
         </b-col>
-      </b-row>
+      </b-row> -->
     </v-menu>
   </div>
 </template>
