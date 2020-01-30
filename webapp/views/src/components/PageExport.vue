@@ -1,35 +1,36 @@
+<style>
+    .export-form .column-list{
+        max-height: calc(100vh - 117px);
+        overflow-y: auto;
+    }
+</style>
+
 <template>
-    <!-- <b-button v-on:click="doExport" class="float-right icon-only green-tosca"><i class="fa fa-fw fa-file-excel"></i></b-button> -->
+    <div>
+        <b-button @click.stop="drawer = !drawer" class="float-right icon-only green-tosca"><i class="fa fa-fw fa-file-excel"></i></b-button>
+        
+        <v-navigation-drawer right absolute temporary class="export-form" v-model="drawer">
+            <v-card>
+                <v-list subheader class="column-list">
+                    <v-subheader>Choose fields to export</v-subheader>
 
-    <v-menu
-      v-model="menu"
-      left
-      :close-on-content-click="false"
-    >
-        <template slot="activator" slot-scope="{ on }">
-            <b-button v-on="on" class="float-right icon-only green-tosca"><i class="fa fa-fw fa-file-excel"></i></b-button>
-        </template>
+                    <v-list-tile v-bind:key="i" v-for="(header, i) in exportableHeaders">
+                        <v-list-tile-action>
+                            <v-switch selected color="purple" v-model="selectedHeaders[i]" :value="header"></v-switch>
+                        </v-list-tile-action>
 
-        <v-card>
-            <v-list subheader>
-                <v-subheader>Choose field to export</v-subheader>
+                        <v-list-tile-title>{{ header.text }}</v-list-tile-title>
+                    </v-list-tile>
+                </v-list>
 
-                <v-list-tile v-bind:key="i" v-for="(header, i) in exportableHeaders">
-                    <v-list-tile-action>
-                        <v-switch selected color="purple" v-model="selectedHeaders[i]" :value="header"></v-switch>
-                    </v-list-tile-action>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
 
-                    <v-list-tile-title>{{ header.text }}</v-list-tile-title>
-                </v-list-tile>
-            </v-list>
-
-            <v-card-actions>
-                <v-spacer></v-spacer>
-
-                <v-btn color="primary" flat @click="doExport">Export</v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-menu>
+                    <v-btn color="primary" flat @click="doExport">Export</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-navigation-drawer>
+    </div>
 </template>
 
 <script>
@@ -42,7 +43,7 @@ export default {
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Itam ID', value: 'ITAM' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Source System Name', value: 'EDM_SOURCE_SYSTEM_NAME' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Database Name', value: 'DATABASE_NAME' },
-            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'TIER', value: 'TIER' },
+            { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Tier', value: 'TIER' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Certified (Yes/No)', value: 'CERTIFIED' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Table Name', value: 'TABLE_NAME' },
             { align: 'left', display: true, exportable: true, displayCount: false, sortable: true, filterable: true, text: 'Table Description', value: 'TABLE_DESCRIPTION' },
@@ -65,6 +66,7 @@ export default {
 
         return {
             menu: false,
+            drawer: false,
             exportableHeaders: _.cloneDeep(exportableHeaders),
             selectedHeaders: _.cloneDeep(exportableHeaders),
         };
@@ -84,7 +86,7 @@ export default {
             
             var param = this.tableStore.param;
             param.Filename = this.tableStore.filename;
-            param.Queryname = 'edmp-dd-export';
+            param.Queryname = this.tableStore.queryname;
             param.Pagination = this._.cloneDeep(param.Pagination)
             param.Headers = this.selectedHeaders.filter(v => v);
 
