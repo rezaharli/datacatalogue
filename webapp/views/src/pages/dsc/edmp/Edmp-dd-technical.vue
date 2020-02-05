@@ -84,7 +84,7 @@
                     <i class="fa fa-fw fa-external-link-alt"></i></v-btn></td>
 
                 <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">
-                  <tablecell :fulltext="props.item.ITAM" showOn="click"></tablecell></td>
+                  <tablecell :fulltext="props.item.ITAM.toString().trim() ? props.item.ITAM : 'NA'" showOn="click"></tablecell></td>
 
                 <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
                   <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME" showOn="click"></tablecell></td>
@@ -93,7 +93,7 @@
                   <tablecell :fulltext="props.item.DATABASE_NAME" showOn="click"></tablecell></td>
                 
                 <td v-bind:style="{ width: store.left.colWidth['CERTIFIED'] + 'px' }">
-                  <tablecell :fulltext="props.item.CERTIFIED" showOn="click"></tablecell></td>
+                  <tablecell :fulltext="props.item.CERTIFIED.toString().trim() ? props.item.CERTIFIED : 'NA'" showOn="click"></tablecell></td>
                 
                 <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
                   <span>{{ props.item.TABLE_NAME.toString().trim() ? props.item.TABLE_NAME : 'NA' }}</span>
@@ -126,7 +126,7 @@
                 </td>
 
                 <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
-                    <tablecell showOn="hover" :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'"></tablecell>
+                  <tablecell showOn="hover" :fulltext="props.item.CDE.toString().trim() ? props.item.CDE : 'NA'"></tablecell>
                 </td>
               </tr>
               
@@ -137,16 +137,16 @@
                   <td v-bind:style="{ width: store.left.colWidth['Details'] + 'px' }"></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">
-                    <span>{{ row.ITAM.toString().trim() ? row.ITAM : 'NA' }}</span></td>
+                    <tablecell :fulltext="row.ITAM.toString().trim() ? row.ITAM : 'NA'" showOn="click"></tablecell></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
-                    <span>{{ row.EDM_SOURCE_SYSTEM_NAME.toString().trim() ? row.EDM_SOURCE_SYSTEM_NAME : 'NA' }}</span></td>
+                    <tablecell :fulltext="row.EDM_SOURCE_SYSTEM_NAME" showOn="click"></tablecell></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
-                    <span>{{ row.DATABASE_NAME.toString().trim() ? row.DATABASE_NAME : 'NA' }}</span></td>
+                    <tablecell :fulltext="row.DATABASE_NAME" showOn="click"></tablecell></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['CERTIFIED'] + 'px' }">
-                    <span>{{ row.CERTIFIED.toString().trim() ? row.CERTIFIED : 'NA' }}</span></td>
+                    <tablecell :fulltext="row.CERTIFIED" showOn="click"></tablecell></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
                     <span>{{ row.TABLE_NAME.toString().trim() ? row.TABLE_NAME : 'NA' }}</span></td>
@@ -155,25 +155,25 @@
                     <span>{{ row.COLUMN_NAME.toString().trim() ? row.COLUMN_NAME : 'NA' }}</span></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['DATA_TYPE'] + 'px' }">
-                      <tablecell :fulltext="row.DATA_TYPE.toString().trim() ? row.DATA_TYPE : 'NA'" showOn="hover"></tablecell></td>
+                      <tablecell showOn="hover" :fulltext="row.DATA_TYPE.toString().trim() ? row.DATA_TYPE : 'NA'"></tablecell></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['COLUMN_LENGTH'] + 'px' }">
-                      <tablecell :fulltext="row.COLUMN_LENGTH.toString().trim() ? row.COLUMN_LENGTH : 'NA'" showOn="hover"></tablecell></td>
+                      <tablecell showOn="hover" :fulltext="row.COLUMN_LENGTH.toString().trim() ? row.COLUMN_LENGTH : 'NA'"></tablecell></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['NULLABLE'] + 'px' }">
-                      <tablecell :fulltext="row.NULLABLE.toString().trim() ? row.NULLABLE : 'NA'" showOn="hover"></tablecell></td>
+                      <tablecell showOn="hover" :fulltext="row.NULLABLE.toString().trim() ? row.NULLABLE : 'NA'"></tablecell></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['PRIMARY_KEY'] + 'px' }">
-                      <tablecell :fulltext="row.PRIMARY_KEY.toString().trim() ? row.PRIMARY_KEY : 'NA'" showOn="hover"></tablecell></td>
+                      <tablecell showOn="hover" :fulltext="row.PRIMARY_KEY.toString().trim() ? row.PRIMARY_KEY : 'NA'"></tablecell></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['PII'] + 'px' }">
-                      <tablecell :fulltext="row.PII.toString().trim() ? row.PII : 'NA'" showOn="hover"></tablecell></td>
+                      <tablecell showOn="hover" :fulltext="row.PII.toString().trim() ? row.PII : 'NA'"></tablecell></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['DATA_LINEAGE'] + 'px' }">
-                    <tablecell :fulltext="row.DATA_LINEAGE.toString().trim() ? row.DATA_LINEAGE : 'NA'" showOn="hover"></tablecell></td>
+                    <tablecell showOn="hover" :fulltext="row.DATA_LINEAGE.toString().trim() ? row.DATA_LINEAGE : 'NA'"></tablecell></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
-                      <tablecell :fulltext="row.CDE.toString().trim() ? row.CDE : 'NA'" showOn="hover"></tablecell></td>
+                    <tablecell showOn="hover" :fulltext="row.CDE.toString().trim() ? row.CDE : 'NA'"></tablecell></td>
                 </tr>
               </template>
             </template>

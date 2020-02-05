@@ -223,7 +223,7 @@ func (c *Base) ExportToCsv(k *knot.WebContext) {
 	defer file.Close()
 
 	w := csv.NewWriter(file)
-	w.Comma = '\t'
+	w.Comma = ' '
 	defer w.Flush()
 
 	var headers []string

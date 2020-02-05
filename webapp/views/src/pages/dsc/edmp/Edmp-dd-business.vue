@@ -80,7 +80,7 @@
                   <v-checkbox :input-value="props.selected" primary hide-details @click="props.selected = !props.selected"></v-checkbox></td>
 
                 <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">
-                  <tablecell :fulltext="props.item.ITAM" showOn="click"></tablecell></td>
+                  <tablecell :fulltext="props.item.ITAM.toString().trim() ? props.item.ITAM : 'NA'" showOn="click"></tablecell></td>
 
                 <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
                   <tablecell :fulltext="props.item.EDM_SOURCE_SYSTEM_NAME" showOn="click"></tablecell></td>
@@ -137,23 +137,20 @@
                 <tr :key="row.TMTID" v-for="row in props.item.Tables">
                   <td>&nbsp;</td>
                   <td v-bind:style="{ width: store.left.colWidth['ITAM'] + 'px' }">
-                    <tablecell :fulltext="row.ITAM.toString().trim() ? row.ITAM : 'NA'" showOn="hover"></tablecell>
-                  </td>
+                    <tablecell :fulltext="row.ITAM.toString().trim() ? row.ITAM : 'NA'" showOn="click"></tablecell></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['EDM_SOURCE_SYSTEM_NAME'] + 'px' }">
-                    <tablecell :fulltext="row.EDM_SOURCE_SYSTEM_NAME.toString().trim() ? row.EDM_SOURCE_SYSTEM_NAME : 'NA'" showOn="hover"></tablecell>
-                  </td>
+                    <tablecell :fulltext="row.EDM_SOURCE_SYSTEM_NAME" showOn="click"></tablecell></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['DATABASE_NAME'] + 'px' }">
-                    <tablecell :fulltext="row.DATABASE_NAME.toString().trim() ? row.DATABASE_NAME : 'NA'" showOn="hover"></tablecell>
-                  </td>
+                    <tablecell :fulltext="row.DATABASE_NAME" showOn="click"></tablecell></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
-                    <tablecell :fulltext="row.TABLE_NAME.toString().trim() ? row.TABLE_NAME : 'NA'" showOn="hover"></tablecell>
+                    <span>{{ row.TABLE_NAME.toString().trim() ? row.TABLE_NAME : 'NA' }}</span>
                   </td>
 
                   <td v-bind:style="{ width: store.left.colWidth['TABLE_DESCRIPTION'] + 'px' }">
-                    <tablecell :fulltext="row.TABLE_DESCRIPTION.toString().trim() ? row.TABLE_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
+                    <tablecell showOn="hover" :fulltext="row.TABLE_DESCRIPTION.toString().trim() ? row.TABLE_DESCRIPTION : 'NA'"></tablecell>
                   </td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['COLUMN_NAME'] + 'px' }">
@@ -161,35 +158,35 @@
                   </td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['COLUMN_DESCRIPTION'] + 'px' }">
-                    <tablecell :fulltext="row.COLUMN_DESCRIPTION.toString().trim() ? row.COLUMN_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
+                    <tablecell showOn="hover" :fulltext="row.COLUMN_DESCRIPTION.toString().trim() ? row.COLUMN_DESCRIPTION : 'NA'"></tablecell>
                   </td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['BUSINESS_TERM'] + 'px' }">
-                    <tablecell :fulltext="row.BUSINESS_TERM.toString().trim() ? row.BUSINESS_TERM : 'NA'" showOn="hover"></tablecell>
+                    <tablecell showOn="hover" :fulltext="row.BUSINESS_TERM.toString().trim() ? row.BUSINESS_TERM : 'NA'"></tablecell>
                   </td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['BUSINESS_DESCRIPTION'] + 'px' }">
-                    <tablecell :fulltext="row.BUSINESS_DESCRIPTION.toString().trim() ? row.BUSINESS_DESCRIPTION : 'NA'" showOn="hover"></tablecell>
+                    <tablecell showOn="hover" :fulltext="row.BUSINESS_DESCRIPTION.toString().trim() ? row.BUSINESS_DESCRIPTION : 'NA'"></tablecell>
                   </td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['DETERMINES_CLIENT_LOCATION'] + 'px' }">
-                    <tablecell :fulltext="row.DETERMINES_CLIENT_LOCATION.toString().trim() ? row.DETERMINES_CLIENT_LOCATION : 'NA'" showOn="hover"></tablecell>
+                    <tablecell showOn="hover" :fulltext="row.DETERMINES_CLIENT_LOCATION.toString().trim() ? row.DETERMINES_CLIENT_LOCATION : 'NA'"></tablecell>
                   </td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['DETERMINES_ACCOUNT'] + 'px' }">
-                    <tablecell :fulltext="row.DETERMINES_ACCOUNT.toString().trim() ? row.DETERMINES_ACCOUNT : 'NA'" showOn="hover"></tablecell>
+                    <tablecell showOn="hover" :fulltext="row.DETERMINES_ACCOUNT.toString().trim() ? row.DETERMINES_ACCOUNT : 'NA'"></tablecell>
                   </td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['BUSINESS_SEGMENT'] + 'px' }">
-                    <tablecell :fulltext="row.BUSINESS_SEGMENT.toString().trim() ? row.BUSINESS_SEGMENT : 'NA'" showOn="hover"></tablecell>
+                    <tablecell showOn="hover" :fulltext="row.BUSINESS_SEGMENT.toString().trim() ? row.BUSINESS_SEGMENT : 'NA'"></tablecell>
                   </td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['PRODUCT_CATEGORY'] + 'px' }">
-                    <tablecell :fulltext="row.PRODUCT_CATEGORY.toString().trim() ? row.PRODUCT_CATEGORY : 'NA'" showOn="hover"></tablecell>
+                    <tablecell showOn="hover" :fulltext="row.PRODUCT_CATEGORY.toString().trim() ? row.PRODUCT_CATEGORY : 'NA'"></tablecell>
                   </td>
                   
                   <td v-bind:style="{ width: store.left.colWidth['CDE'] + 'px' }">
-                    <tablecell :fulltext="row.CDE.toString().trim() ? row.CDE : 'NA'" showOn="hover"></tablecell>
+                    <tablecell showOn="hover" :fulltext="row.CDE.toString().trim() ? row.CDE : 'NA'"></tablecell>
                   </td>
                 </tr>
               </template>
