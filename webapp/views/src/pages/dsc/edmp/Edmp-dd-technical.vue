@@ -146,7 +146,7 @@
                     <tablecell :fulltext="row.DATABASE_NAME" showOn="click"></tablecell></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['CERTIFIED'] + 'px' }">
-                    <tablecell :fulltext="row.CERTIFIED" showOn="click"></tablecell></td>
+                    <tablecell :fulltext="row.CERTIFIED.toString().trim() ? row.CERTIFIED : 'NA'" showOn="click"></tablecell></td>
 
                   <td v-bind:style="{ width: store.left.colWidth['TABLE_NAME'] + 'px' }">
                     <span>{{ row.TABLE_NAME.toString().trim() ? row.TABLE_NAME : 'NA' }}</span></td>
